@@ -5,10 +5,8 @@ generic-service:
   replicaCount: 2
 
   ingress:
-    enabled: true
     host: manage-recalls-ui-dev.hmpps.service.justice.gov.uk
     tlsSecretName: ppud-replacement-dev-cert
-    path: /
 
   env:
     INGRESS_URL: "https://manage-recalls-ui-dev.hmpps.service.justice.gov.uk"
