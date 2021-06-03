@@ -167,6 +167,7 @@ workflows:
           env: "preprod"
           context:
             - hmpps-common-vars
+            - ppud-replacement-preprod
           requires:
             - request-preprod-approval
 
