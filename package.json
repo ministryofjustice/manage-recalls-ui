@@ -13,6 +13,7 @@
     "watch-node": "DEBUG=gov-starter-server* nodemon --watch dist/ dist/server.js | bunyan -o short",
     "watch-sass": "npm run compile-sass -- --watch",
     "build": "npm run compile-sass && tsc && npm run copy-views",
+    "local:build": "npm install && npm build && npm run test",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-sass\"",
     "start-feature": "export $(cat feature.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
@@ -112,6 +113,8 @@
     "superagent": "^6.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@opentelemetry/api": "^1.0.0-rc.3",
     "@types/bunyan": "^1.8.6",
     "@types/bunyan-format": "^0.2.3",
     "@types/compression": "^1.7.0",
@@ -149,6 +152,7 @@
     "jest-junit": "^12.0.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^11.0.0",
+    "mkdirp": "^1.0.4",
     "mocha-junit-reporter": "^2.0.0",
     "nock": "^13.0.11",
     "nodemon": "^2.0.7",
