@@ -11,6 +11,14 @@ executors:
       - image: circleci/redis:buster
     working_directory: ~/app
 
+parameters:
+  alerts-slack-channel:
+    type: string
+    default: ppud-replacement-devs
+  releases-slack-channel:
+    type: string
+    default: ppud-replacement-releases
+
 jobs:
   build:
     executor:
@@ -69,7 +77,7 @@ jobs:
           command: 'npm outdated typescript govuk-frontend'
       - slack/notify:
           event: fail
-          channel: hmpps_typescript_notifications
+          channel: << pipeline.parameters.alerts-slack-channel >>
           template: basic_fail_1
 
   unit_test:
@@ -147,7 +155,7 @@ workflows:
                 - main
       - hmpps/deploy_env:
           name: deploy_dev
-          env: "dev"
+          env: dev
           context: hmpps-common-vars
           filters:
             branches:
@@ -164,12 +172,15 @@ workflows:
             - deploy_dev
       - hmpps/deploy_env:
           name: deploy_preprod
-          env: "preprod"
+          env: preprod
           context:
             - hmpps-common-vars
             - ppud-replacement-preprod
           requires:
             - request-preprod-approval
+          # TODO: I'm only putting this here for testing the slack push - we'll only really want this on prod...
+          slack_notification: true
+          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
 
   security:
     triggers:
