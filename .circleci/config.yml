@@ -153,6 +153,7 @@ workflows:
             branches:
               only:
                 - main
+
       - hmpps/deploy_env:
           name: deploy_dev
           env: dev
@@ -166,6 +167,7 @@ workflows:
             - unit_test
             - integration_test
             - build_docker
+
       - request-preprod-approval:
           type: approval
           requires:
@@ -178,9 +180,6 @@ workflows:
             - ppud-replacement-preprod
           requires:
             - request-preprod-approval
-          # TODO: I'm only putting this here for testing the slack push - we'll only really want this on prod...
-          slack_notification: true
-          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
 
       - request-prod-approval:
           type: approval
@@ -194,6 +193,8 @@ workflows:
             - ppud-replacement-prod
           requires:
             - request-prod-approval
+          slack_notification: true
+          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
 
   security:
     triggers:
