@@ -39,30 +39,12 @@
                 </a>
             </form>
 
-
-            <h2>Prisoners found:</h2>
-            {% for prisoner in prisoners %}
-                <h2>
-                    <p>
-                        Name: <span
-                                data-qa="prisoner-name">{{ prisoner.firstName }} {{ prisoner.middlesNames }} {{ prisoner.lastName }}</span></br>
-                        Date of birth: {{ prisoner.dateOfBirth }}</br>
-                        Prisoner number:{{ prisoner.nomisNumber }}</br>
-                        Aliases</br>
-                        {% for alias in prisoner.aliases %}
-                            Name: {{ alias.firstName }} {{ alias.lastName }}</br>
-                            Date of birth: {{ alias.dateOfBirth }}</br>
-                        {% endfor %}
-                    </p>
-                </h2>
-            {% endfor %}
-
             {% if prisoners %}
-            <h2 class="govuk-heading-m">
-                {{ prisoners.length }} people found
-                </h1>
+                <h2 class="govuk-heading-m">
+                    {{ prisoners.length }} people found
+                </h2>
                 <form action="/recall/sentence-breached">
-                    <table class="govuk-radios govuk-radios--small">
+                    <table class="govuk-table govuk-radios govuk-radios--small">
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
                             <th scope="col" class="govuk-table__header"></th>
@@ -82,12 +64,13 @@
                             <tr class="govuk-table__row">
                                 <td class="govuk-table__cell">
                                     <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="person" name="person" type="radio" value="1">
+                                        <input class="govuk-radios__input" id="person" name="person" type="radio"
+                                               value="1">
                                         <label class="govuk-label govuk-radios__label" for="person">
                                         </label>
                                     </div>
                                 </td>
-                                <td class="govuk-table__cell">{{ prisoner.nomisNumber}}</td>
+                                <td class="govuk-table__cell">{{ prisoner.nomisNumber }}</td>
                                 <td class="govuk-table__cell">Jack</td>
                                 <td class="govuk-table__cell">Johnson</td>
                                 <td class="govuk-table__cell">23 Feb 1970</td>
@@ -106,7 +89,7 @@
                 }) }}
                 </form>
 
-                {% endif %}
+            {% endif %}
         </div>
     </div>
 
