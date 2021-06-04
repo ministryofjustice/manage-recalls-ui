@@ -59,8 +59,8 @@ export default {
       systemClientSecret: get('SYSTEM_CLIENT_SECRET', 'clientsecret', requiredInProduction),
     },
     manageRecallsApi: {
-      url: get('MANAGE_RECALLS_API_URL', 'http://localhost:8080', requiredInProduction),
-      externalUrl: get('MANAGE_RECALLS_API_EXTERNAL_URL', get('MANAGE_RECALLS_API_URL', 'http://localhost:8080')),
+      url: get('MANAGE_RECALLS_API_URL', 'http://localhost:9091', requiredInProduction),
+      externalUrl: get('MANAGE_RECALLS_API_EXTERNAL_URL', get('MANAGE_RECALLS_API_URL', 'http://localhost:9091')),
       timeout: {
         response: Number(get('MANAGE_RECALLS_API_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('MANAGE_RECALLS_API_TIMEOUT_DEADLINE', 10000)),
