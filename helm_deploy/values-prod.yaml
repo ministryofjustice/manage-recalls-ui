@@ -5,10 +5,10 @@ generic-service:
   replicaCount: 2
 
   ingress:
-    host: manage-recalls-ui.hmpps.service.justice.gov.uk
+    host: manage-recalls.hmpps.service.justice.gov.uk
     tlsSecretName: ppud-replacement-prod-cert
 
   env:
-    INGRESS_URL: "https://manage-recalls-ui.hmpps.service.justice.gov.uk"
+    INGRESS_URL: "https://manage-recalls.hmpps.service.justice.gov.uk"
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
