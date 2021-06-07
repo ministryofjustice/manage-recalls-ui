@@ -60,16 +60,11 @@ export default {
     },
     manageRecallsApi: {
       url: get('MANAGE_RECALLS_API_URL', 'http://localhost:9091', requiredInProduction),
-      externalUrl: get('MANAGE_RECALLS_API_EXTERNAL_URL', get('MANAGE_RECALLS_API_URL', 'http://localhost:9091')),
       timeout: {
         response: Number(get('MANAGE_RECALLS_API_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('MANAGE_RECALLS_API_TIMEOUT_DEADLINE', 10000)),
       },
       agent: new AgentConfig(),
-      apiClientId: get('API_CLIENT_ID', 'elite2apiclient', requiredInProduction),
-      apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret', requiredInProduction),
-      systemClientId: get('SYSTEM_CLIENT_ID', 'clientid', requiredInProduction),
-      systemClientSecret: get('SYSTEM_CLIENT_SECRET', 'clientsecret', requiredInProduction),
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
