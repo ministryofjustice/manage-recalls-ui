@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   hmpps: ministryofjustice/hmpps@3.2
+  mem: circleci/rememborb@0.0.2
   slack: circleci/slack@4.4.2
 
 executors:
@@ -10,9 +11,10 @@ executors:
       - image: cimg/node:14.15-browsers
       - image: circleci/redis:buster
     working_directory: ~/app
-  trivy:
+  docker:
     docker:
-      - image: docker:stable-git
+      - image: cimg/python:3.9
+    working_directory: ~/app
 
 parameters:
   docker-image-name:
@@ -137,8 +139,51 @@ jobs:
       - store_artifacts:
           path: integration-tests/screenshots
 
+  build_docker:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Create app version string
+          command: |
+            DATE=$(date '+%Y-%m-%d')
+            SHORT_SHA1=$(echo $CIRCLE_SHA1 | cut -c1-7)
+            VERSION=${DATE}.${CIRCLE_BUILD_NUM}.${SHORT_SHA1}
+            echo "Created version string: ${VERSION}"
+            echo "export APP_VERSION=$VERSION" >> $BASH_ENV
+      - run:
+          name: Build container image
+          command: |
+            IMAGE_TAG=<< pipeline.parameters.docker-image-name >>:${APP_VERSION}
+            echo "export IMAGE_TAG=$IMAGE_TAG" >> $BASH_ENV
+            docker build --pull \
+              --rm=false . \
+              --build-arg BUILD_NUMBER=$APP_VERSION \
+              --build-arg GIT_REF=$CIRCLE_SHA1 \
+              --tag "${IMAGE_TAG}" \
+              --label "maintainer=dps-hmpps@digital.justice.gov.uk" \
+              --label "app.version=${APP_VERSION}" \
+              --label "build.version=${APP_VERSION}" \
+              --label "build.number=${CIRCLE_BUILD_NUM}" \
+              --label "build.url=${CIRCLE_BUILD_URL}" \
+              --label "build.gitref=${CIRCLE_SHA1}"
+      - run:
+          name: Save container image
+          command: |
+            mkdir -p docker_cache
+            docker save ${IMAGE_TAG} -o docker_cache/build_image.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - docker_cache
+      - mem/remember:
+          env_var: IMAGE_TAG
+          value: "${IMAGE_TAG}"
+
   trivy_scan:
-    executor: trivy
+    executor: docker
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -150,21 +195,21 @@ jobs:
       - run:
           name: "Trivy scan for UNKNOWN,LOW,MEDIUM CVEs - informational, WILL NOT fail build"
           command: |
-            trivy \
+            trivy image \
               --exit-code 0 \
               --no-progress \
               --severity UNKNOWN,LOW,MEDIUM \
               --ignore-unfixed \
-              << pipeline.parameters.docker-image-name >>
+              --input docker_cache/build_image.tar
       - run:
           name: "Trivy scan for HIGH,CRITICAL CVEs - WILL fail build"
           command: |
-            trivy \
+            trivy image \
               --exit-code 1 \
               --no-progress \
               --severity HIGH,CRITICAL \
               --ignore-unfixed \
-              << pipeline.parameters.docker-image-name >>
+              --input docker_cache/build_image.tar
 
 workflows:
   version: 2
@@ -186,10 +231,7 @@ workflows:
       - hmpps/helm_lint:
           name: helm_lint
 
-      - hmpps/build_docker:
-          name: build_docker
-          publish: false
-          image_name: << pipeline.parameters.docker-image-name >>
+      - build_docker
 
       - trivy_scan:
           requires:
@@ -197,6 +239,8 @@ workflows:
 
       - hmpps/build_docker:
           name: publish_docker
+          image_name: << pipeline.parameters.docker-image-name >>
+          publish: true
           requires:
             - trivy_scan
           filters:
