@@ -139,16 +139,26 @@ workflows:
         filters:
           tags:
             ignore: /.*/
+
       - unit_test:
           requires:
             - build
+
       - integration_test:
           requires:
             - build
+
       - hmpps/helm_lint:
           name: helm_lint
+
       - hmpps/build_docker:
           name: build_docker
+          publish: false
+
+      - hmpps/build_docker:
+          name: publish_docker
+          requires:
+            - build_docker
           filters:
             branches:
               only:
@@ -166,7 +176,7 @@ workflows:
             - helm_lint
             - unit_test
             - integration_test
-            - build_docker
+            - publish_docker
 
       - request-preprod-approval:
           type: approval
