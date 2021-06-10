@@ -10,8 +10,14 @@ executors:
       - image: cimg/node:14.15-browsers
       - image: circleci/redis:buster
     working_directory: ~/app
+  trivy:
+    docker:
+      - image: docker:stable-git
 
 parameters:
+  docker-image-name:
+    type: string
+    default: quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}
   alerts-slack-channel:
     type: string
     default: ppud-replacement-devs
@@ -131,6 +137,35 @@ jobs:
       - store_artifacts:
           path: integration-tests/screenshots
 
+  trivy_scan:
+    executor: trivy
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Install trivy
+          command: |
+            apk add --update-cache --upgrade curl
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+      - run:
+          name: "Trivy scan for UNKNOWN,LOW,MEDIUM CVEs - informational, WILL NOT fail build"
+          command: |
+            trivy \
+              --exit-code 0 \
+              --no-progress \
+              --severity UNKNOWN,LOW,MEDIUM \
+              --ignore-unfixed \
+              << pipeline.parameters.docker-image-name >>
+      - run:
+          name: "Trivy scan for HIGH,CRITICAL CVEs - WILL fail build"
+          command: |
+            trivy \
+              --exit-code 1 \
+              --no-progress \
+              --severity HIGH,CRITICAL \
+              --ignore-unfixed \
+              << pipeline.parameters.docker-image-name >>
+
 workflows:
   version: 2
   build-test-and-deploy:
@@ -154,11 +189,16 @@ workflows:
       - hmpps/build_docker:
           name: build_docker
           publish: false
+          image_name: << pipeline.parameters.docker-image-name >>
+
+      - trivy_scan:
+          requires:
+            - build_docker
 
       - hmpps/build_docker:
           name: publish_docker
           requires:
-            - build_docker
+            - trivy_scan
           filters:
             branches:
               only:
