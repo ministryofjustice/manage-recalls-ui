@@ -1,0 +1,80 @@
+version: '3.1'
+services:
+
+  redis:
+    image: 'bitnami/redis:5.0'
+    networks:
+      - manage-recalls-ui
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
+
+  hmpps-auth:
+    image: quay.io/hmpps/hmpps-auth:latest
+    networks:
+      - manage-recalls-ui
+    ports:
+      - "9090:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - DELIUS_ENABLED=false
+
+  wiremock:
+    image: rodolpheche/wiremock
+    networks:
+      - manage-recalls-ui
+    ports:
+      - "9999:8080"
+    restart: always
+    command: --verbose
+
+  manage-recalls-api:
+    image: quay.io/hmpps/manage-recalls-api:latest
+    networks:
+      - manage-recalls-ui
+    depends_on: [hmpps-auth, wiremock]
+    ports:
+      - "9091:9091"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - OAUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
+      - PRISONERSEARCH_ENDPOINT_URL=http://wiremock:8080
+      - PROBATIONSEARCH_ENDPOINT_URL=http://wiremock:8080
+
+#
+#  mockserver:
+#    image: mockserver/mockserver
+#    networks:
+#    - manage-recalls-ui
+#    container_name: mockserver-manage-recalls-ui
+#    restart: always
+#    ports:
+#      - "9999:1080"
+
+#  app:
+#    build: .
+#    networks:
+#      - manage-recalls-ui
+#    depends_on: [redis, hmpps-auth, mockserver]
+#    depends_on: [redis]
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - REDIS_HOST=redis
+#      - INGRESS_URL=http://localhost:3000
+#      - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
+#      - HMPPS_AUTH_URL=http://localhost:9090/auth
+#      - TOKEN_VERIFICATION_API_URL=http://localhost:9090/verification
+#      - API_CLIENT_ID=ppud-ui-client
+#      - API_CLIENT_SECRET=clientsecret
+#      - SYSTEM_CLIENT_ID=NA
+#      - SYSTEM_CLIENT_SECRET=NA
+#      - SESSION_SECRET=secret
+
+networks:
+  manage-recalls-ui:
