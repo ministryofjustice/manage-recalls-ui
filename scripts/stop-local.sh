@@ -4,7 +4,8 @@ set -euo pipefail
 
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="${SCRIPT_DIR}/.."
+readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose-with-api-and-wiremock.yml"
 
-docker compose -f $PROJECT_DIR/docker-compose-with-api-and-mocks.yml stop
+docker compose -f $DOCKER_COMPOSE_FILE stop
 
 npx kill-port 3000

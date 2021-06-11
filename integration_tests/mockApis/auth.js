@@ -1,7 +1,22 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
+import tokenVerificationApi from './tokenVerification'
 
-const { stubFor, getRequests } = require('./wiremock')
-const tokenVerification = require('./tokenVerification')
+export default function auth(wiremock, uiClientId, manageRecallsUiUrl) {
+  const tokenVerification = tokenVerificationApi(wiremock)
+  return {
+    getLoginUrl: () => getLoginUrl(wiremock),
+    stubPing: () => Promise.all([ping(wiremock), tokenVerification.stubPing()]),
+    stubLogin: () =>
+      Promise.all([
+        favicon(wiremock),
+        redirect(wiremock, uiClientId, manageRecallsUiUrl),
+        logout(wiremock),
+        token(wiremock, manageRecallsUiUrl),
+        tokenVerification.stubVerifyToken(),
+      ]),
+    stubUser: () => Promise.all([stubUser(wiremock), stubUserRoles(wiremock)]),
+  }
+}
 
 const createToken = () => {
   const payload = {
@@ -16,16 +31,16 @@ const createToken = () => {
   return jwt.sign(payload, 'secret', { expiresIn: '1h' })
 }
 
-const getLoginUrl = () =>
-  getRequests().then(data => {
+const getLoginUrl = wiremock =>
+  wiremock.getRequests().then(data => {
     const { requests } = data.body
     const stateParam = requests[0].request.queryParams.state
     const stateValue = stateParam ? stateParam.values[0] : requests[1].request.queryParams.state.values[0]
     return `/login/callback?code=codexxxx&state=${stateValue}`
   })
 
-const favicon = () =>
-  stubFor({
+const favicon = wiremock =>
+  wiremock.stubFor({
     request: {
       method: 'GET',
       urlPattern: '/favicon.ico',
@@ -35,8 +50,8 @@ const favicon = () =>
     },
   })
 
-const ping = () =>
-  stubFor({
+const ping = wiremock =>
+  wiremock.stubFor({
     request: {
       method: 'GET',
       urlPattern: '/auth/health/ping',
@@ -46,24 +61,24 @@ const ping = () =>
     },
   })
 
-const redirect = () =>
-  stubFor({
+const redirect = (wiremock, uiClientId, manageRecallsUiUrl) =>
+  wiremock.stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/auth/oauth/authorize\\?response_type=code&redirect_uri=.+?&state=.+?&client_id=clientid',
+      urlPattern: `/auth/oauth/authorize\\?response_type=code&redirect_uri=.+?&state=.+?&client_id=${uiClientId}`,
     },
     response: {
       status: 200,
       headers: {
         'Content-Type': 'text/html',
-        Location: 'http://localhost:3000/login/callback?code=codexxxx&state=stateyyyy',
+        Location: `${manageRecallsUiUrl}/login/callback?code=codexxxx&state=stateyyyy`,
       },
       body: '<html><body>Login page<h1>Sign in</h1></body></html>',
     },
   })
 
-const logout = () =>
-  stubFor({
+const logout = wiremock =>
+  wiremock.stubFor({
     request: {
       method: 'GET',
       urlPattern: '/auth/logout.*',
@@ -77,8 +92,8 @@ const logout = () =>
     },
   })
 
-const token = () =>
-  stubFor({
+const token = (wiremock, manageRecallsUiUrl) =>
+  wiremock.stubFor({
     request: {
       method: 'POST',
       urlPattern: '/auth/oauth/token',
@@ -87,7 +102,7 @@ const token = () =>
       status: 200,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        Location: 'http://localhost:3000/login/callback?code=codexxxx&state=stateyyyy',
+        Location: `${manageRecallsUiUrl}/login/callback?code=codexxxx&state=stateyyyy`,
       },
       jsonBody: {
         access_token: createToken(),
@@ -100,8 +115,8 @@ const token = () =>
     },
   })
 
-const stubUser = () =>
-  stubFor({
+const stubUser = wiremock =>
+  wiremock.stubFor({
     request: {
       method: 'GET',
       urlPattern: '/auth/api/user/me',
@@ -120,8 +135,8 @@ const stubUser = () =>
     },
   })
 
-const stubUserRoles = () =>
-  stubFor({
+const stubUserRoles = wiremock =>
+  wiremock.stubFor({
     request: {
       method: 'GET',
       urlPattern: '/auth/api/user/me/roles',
@@ -134,10 +149,3 @@ const stubUserRoles = () =>
       jsonBody: [{ roleId: 'SOME_USER_ROLE' }],
     },
   })
-
-module.exports = {
-  getLoginUrl,
-  stubPing: () => Promise.all([ping(), tokenVerification.stubPing()]),
-  stubLogin: () => Promise.all([favicon(), redirect(), logout(), token(), tokenVerification.stubVerifyToken()]),
-  stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
-}

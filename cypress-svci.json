@@ -1,8 +1,9 @@
 {
     "chromeWebSecurity": false,
     "baseUrl": "http://localhost:3000",
+    "ignoreTestFiles": "**/svci/*.spec.js",
     "fixturesFolder": "integration_tests/fixtures",
-    "integrationFolder": "integration_tests/integration/svci",
+    "integrationFolder": "integration_tests/integration",
     "pluginsFile": "integration_tests/plugins/index.js",
     "screenshotsFolder": "integration_tests/screenshots",
     "supportFile": "integration_tests/support/index.js",
@@ -13,5 +14,11 @@
     },
     "videoUploadOnPasses": false,
     "taskTimeout": 60000,
-    "video": false
+    "video": false,
+    "env": {
+        "manageRecallsUiUrl": "http://localhost:3000",
+        "wiremockUrl": "http://localhost:9999",
+        "uiClientId": "ppud-ui-client",
+        "useStubs": ["hmpps-auth"]
+    }
 }
