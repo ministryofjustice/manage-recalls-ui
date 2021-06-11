@@ -175,7 +175,7 @@ jobs:
             mkdir -p docker_cache
             docker save ${IMAGE_TAG} -o docker_cache/build_image.tar
       - persist_to_workspace:
-          root: .
+          root: ~/app
           paths:
             - docker_cache
       - mem/remember:
@@ -185,17 +185,22 @@ jobs:
   trivy_scan:
     executor: docker
     steps:
+      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - run:
           name: Install trivy
           command: |
-            apk add --update-cache --upgrade curl
-            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /tmp
+      - attach_workspace:
+          at: ~/app
       - run:
           name: "Trivy scan for UNKNOWN,LOW,MEDIUM CVEs - informational, WILL NOT fail build"
           command: |
-            trivy image \
+            pwd
+            ls -l
+            ls -l docker_cache
+            /tmp/trivy image \
               --exit-code 0 \
               --no-progress \
               --severity UNKNOWN,LOW,MEDIUM \
@@ -204,7 +209,7 @@ jobs:
       - run:
           name: "Trivy scan for HIGH,CRITICAL CVEs - WILL fail build"
           command: |
-            trivy image \
+            /tmp/trivy image \
               --exit-code 1 \
               --no-progress \
               --severity HIGH,CRITICAL \
