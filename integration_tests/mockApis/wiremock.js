@@ -1,15 +1,16 @@
-const superagent = require('superagent')
+import superagent from 'superagent'
 
-const url = 'http://localhost:9091/__admin'
+export default function wiremock(wiremockUrl) {
+  const wiremockAdminUrl = `${wiremockUrl}/__admin`
+  console.log(`wiremockAdminUrl: ${wiremockAdminUrl}`)
+  const stubFor = mapping => superagent.post(`${wiremockAdminUrl}/mappings`).send(mapping)
+  const getRequests = () => superagent.get(`${wiremockAdminUrl}/requests`)
+  const resetStubs = () =>
+    Promise.all([superagent.delete(`${wiremockAdminUrl}/mappings`), superagent.delete(`${wiremockAdminUrl}/requests`)])
 
-const stubFor = mapping => superagent.post(`${url}/mappings`).send(mapping)
-
-const getRequests = () => superagent.get(`${url}/requests`)
-
-const resetStubs = () => Promise.all([superagent.delete(`${url}/mappings`), superagent.delete(`${url}/requests`)])
-
-module.exports = {
-  stubFor,
-  getRequests,
-  resetStubs,
+  return {
+    stubFor,
+    getRequests,
+    resetStubs,
+  }
 }

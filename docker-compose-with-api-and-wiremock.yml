@@ -10,22 +10,11 @@ services:
     ports:
       - '6379:6379'
 
-  hmpps-auth:
-    image: quay.io/hmpps/hmpps-auth:latest
-    networks:
-      - manage-recalls-ui
-    ports:
-      - "9090:8080"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - DELIUS_ENABLED=false
-
   wiremock:
     image: rodolpheche/wiremock
     networks:
       - manage-recalls-ui
+    depends_on: [redis]
     ports:
       - "9999:8080"
     restart: always
@@ -35,26 +24,16 @@ services:
     image: quay.io/hmpps/manage-recalls-api:latest
     networks:
       - manage-recalls-ui
-    depends_on: [hmpps-auth, wiremock]
+    depends_on: [redis, wiremock]
     ports:
       - "9091:9091"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - OAUTH_ENDPOINT_URL=http://hmpps-auth:8080/auth
+      - OAUTH_ENDPOINT_URL=http://wiremock:8080/auth
       - PRISONERSEARCH_ENDPOINT_URL=http://wiremock:8080
       - PROBATIONSEARCH_ENDPOINT_URL=http://wiremock:8080
-
-#
-#  mockserver:
-#    image: mockserver/mockserver
-#    networks:
-#    - manage-recalls-ui
-#    container_name: mockserver-manage-recalls-ui
-#    restart: always
-#    ports:
-#      - "9999:1080"
 
 #  app:
 #    build: .

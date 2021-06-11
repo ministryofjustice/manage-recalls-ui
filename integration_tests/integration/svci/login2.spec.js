@@ -3,8 +3,8 @@ const AuthLoginPage = require('../../pages/authLogin')
 const VerifyEmailPage = require('../../pages/verifyEmail')
 
 context('Login', () => {
-  const username = 'PPUD_USER'
-  const password = `password123456`
+  const username = Cypress.env('AUTH_USERNAME')
+  const password = Cypress.env('AUTH_PASSWORD')
 
   it('Unauthenticated user directed to auth', () => {
     cy.visit('/')
@@ -12,13 +12,11 @@ context('Login', () => {
   })
 
   it('User name visible in header', () => {
-    cy.visit('/').pause()
-    AuthLoginPage.verifyOnPage()
-    cy.get('input[name=username]').type(username)
-    cy.get('input[name=password]').type(`${password}{enter}`)
+    AuthLoginPage.enterUsername(username)
+    AuthLoginPage.enterPassword(password)
 
     VerifyEmailPage.verifyOnPage()
-    cy.get('#cancel').click()
+    VerifyEmailPage.cancel().click()
 
     const landingPage = IndexPage.verifyOnPage()
     landingPage.headerUserName().should('contain.text', 'P. User')
