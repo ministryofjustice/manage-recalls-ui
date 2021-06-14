@@ -22,7 +22,7 @@ module.exports = (on, config) => {
     stubAuthUser: authApi.stubUser,
     stubAuthPing: authApi.stubPing,
     stubTokenVerificationPing: tokenVerificationApi.stubPing,
-    stubOffenderSearch: manageRecallsApi.stubOffenderSearch,
+    expectSearchResults: manageRecallsApi.expectSearchResults,
   })
   return config
 }

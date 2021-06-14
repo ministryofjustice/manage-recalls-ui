@@ -2,7 +2,7 @@ const page = require('./page')
 
 const startRecallPage = () =>
   page('Find an offender', {
-    enterSearchText: searchText => cy.get('[data-qa=search-field]').type(searchText),
+    searchFor: searchText => cy.get('[data-qa=search-field]').type(`${searchText}{enter}`),
     search: () => cy.get('[data-qa=search]').click(),
     searchResults: () => cy.get('[data-qa=search-results]'),
   })
