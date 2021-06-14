@@ -153,6 +153,9 @@ jobs:
             VERSION=${DATE}.${CIRCLE_BUILD_NUM}.${SHORT_SHA1}
             echo "Created version string: ${VERSION}"
             echo "export APP_VERSION=$VERSION" >> $BASH_ENV
+      - mem/remember:
+          env_var: APP_VERSION
+          value: "${APP_VERSION}"
       - run:
           name: Build container image
           command: |
