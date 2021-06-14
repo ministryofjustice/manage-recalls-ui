@@ -62,7 +62,7 @@ docker compose -f "${DOCKER_COMPOSE_FILE}" pull
 docker compose -f "${DOCKER_COMPOSE_FILE}" up $START_SERVICE -d --remove-orphans
 
 echo "Starting $MANAGE_RECALLS_SERVICE_NAME"
-npm install && npm run build && npm run start:local >> "${LOG_FILE}" 2>&1 &
+npm install && npm run build && npm run start:dev >> "${LOG_FILE}" 2>&1 &
 
 wait_till_service_started "$MANAGE_RECALLS_SERVICE_NAME" http://localhost:3000/ping
 
