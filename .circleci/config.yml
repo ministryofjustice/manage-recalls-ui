@@ -114,7 +114,7 @@ jobs:
           background: true
       - run:
           name: Run the node app.
-          command: npm run start-feature
+          command: npm run start:local
           background: true
       - run:
           name: Wait for node app to start
