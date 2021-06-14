@@ -182,39 +182,60 @@ jobs:
           env_var: IMAGE_TAG
           value: "${IMAGE_TAG}"
 
+  publish_docker:
+    executor: docker
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Extract saved container image
+          command: docker load --input docker_cache/build_image.tar
+      - mem/recall:
+          env_var: IMAGE_TAG
+      - run:
+          name: Publish image to repository
+          command: |
+            docker login -u="${QUAYIO_USERNAME}" -p="${QUAYIO_PASSWORD}" quay.io
+            docker tag "${IMAGE_TAG}" "<< pipeline.parameters.docker-image-name >>:latest"
+            docker push "${IMAGE_TAG}"
+            docker push "<< pipeline.parameters.docker-image-name >>:latest"
+
   trivy_scan:
     executor: docker
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
+      - attach_workspace:
+          at: ~/app
+      - run:
+          name: Extract saved container image
+          command: docker load --input docker_cache/build_image.tar
+      - mem/recall:
+          env_var: IMAGE_TAG
       - run:
           name: Install trivy
           command: |
             curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /tmp
-      - attach_workspace:
-          at: ~/app
       - run:
           name: "Trivy scan for UNKNOWN,LOW,MEDIUM CVEs - informational, WILL NOT fail build"
           command: |
-            pwd
-            ls -l
-            ls -l docker_cache
             /tmp/trivy image \
               --exit-code 0 \
               --no-progress \
               --severity UNKNOWN,LOW,MEDIUM \
               --ignore-unfixed \
-              --input docker_cache/build_image.tar
+              "${IMAGE_TAG}"
       - run:
           name: "Trivy scan for HIGH,CRITICAL CVEs - WILL fail build"
           command: |
             /tmp/trivy image \
-              --exit-code 1 \
+              --exit-code 100 \
               --no-progress \
               --severity HIGH,CRITICAL \
               --ignore-unfixed \
-              --input docker_cache/build_image.tar
+              "${IMAGE_TAG}"
 
 workflows:
   version: 2
@@ -242,10 +263,7 @@ workflows:
           requires:
             - build_docker
 
-      - hmpps/build_docker:
-          name: publish_docker
-          image_name: << pipeline.parameters.docker-image-name >>
-          publish: true
+      - publish_docker:
           requires:
             - trivy_scan
           filters:
