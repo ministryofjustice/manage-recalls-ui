@@ -7,7 +7,7 @@ readonly PROJECT_DIR="${SCRIPT_DIR}/.."
 readonly MANAGE_RECALLS_SERVICE_NAME='manage-recalls-ui'
 readonly LOG_FILE="/tmp/${MANAGE_RECALLS_SERVICE_NAME}.log"
 readonly START_SERVICE=${1:-wiremock}
-readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose-with-api-and-wiremock.yml"
+readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose-with-redis-and-wiremock.yml"
 
 case "$OSTYPE" in
   darwin*) OSX=true ;;
@@ -61,8 +61,9 @@ function update_status() {
 docker compose -f "${DOCKER_COMPOSE_FILE}" pull
 docker compose -f "${DOCKER_COMPOSE_FILE}" up $START_SERVICE -d --remove-orphans
 
+npx kill-port 3000
 echo "Starting $MANAGE_RECALLS_SERVICE_NAME"
-npm install && npm run build && npm run start:dev >> "${LOG_FILE}" 2>&1 &
+npm install && npm run build && npm run start:local >> "${LOG_FILE}" 2>&1 &
 
 wait_till_service_started "$MANAGE_RECALLS_SERVICE_NAME" http://localhost:3000/ping
 

@@ -20,21 +20,6 @@ services:
     restart: always
     command: --verbose
 
-  manage-recalls-api:
-    image: quay.io/hmpps/manage-recalls-api:latest
-    networks:
-      - manage-recalls-ui
-    depends_on: [redis, wiremock]
-    ports:
-      - "9091:9091"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
-      - OAUTH_ENDPOINT_URL=http://wiremock:8080/auth
-      - PRISONERSEARCH_ENDPOINT_URL=http://wiremock:8080
-      - PROBATIONSEARCH_ENDPOINT_URL=http://wiremock:8080
-
 #  app:
 #    build: .
 #    networks:
