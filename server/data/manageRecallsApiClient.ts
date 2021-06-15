@@ -2,22 +2,10 @@ import logger from '../../logger'
 import config from '../config'
 import RestClient from './restClient'
 
-export interface User {
-  name: string
-  activeCaseLoadId: string
-}
-
 export interface PrisonerSearchResult {
   firstName: string
   lastName: string
   nomisNumber?: string
-  dateOfBirth?: string
-  aliases?: SearchAlias[]
-}
-
-export interface SearchAlias {
-  firstName?: string
-  lastName?: string
   dateOfBirth?: string
 }
 
