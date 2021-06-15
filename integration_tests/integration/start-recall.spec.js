@@ -1,5 +1,4 @@
 const IndexPage = require('../pages/index')
-const StartRecallPage = require('../pages/startRecall')
 
 context('Search for offenders', () => {
   beforeEach(() => {
@@ -7,7 +6,7 @@ context('Search for offenders', () => {
     cy.task('stubLogin')
     cy.task('stubAuthUser')
     cy.task('expectSearchResults', {
-      expectedSearchTerm: 'Bertie Badger',
+      expectedSearchTerm: '123ABC',
       expectedSearchResults: [
         {
           firstName: 'Bobby',
@@ -22,10 +21,8 @@ context('Search for offenders', () => {
   it('User can search for a prisoner', () => {
     cy.login()
     const homePage = IndexPage.verifyOnPage()
-    homePage.startRecall()
-    const searchPage = StartRecallPage.verifyOnPage()
-    searchPage.searchFor('Bertie Badger')
-    const firstResult = searchPage.searchResults().first()
+    homePage.searchFor('123ABC')
+    const firstResult = homePage.searchResults().first()
     firstResult.get('[data-qa=nomisNumber]').should('contain.text', '123ABC')
     firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')

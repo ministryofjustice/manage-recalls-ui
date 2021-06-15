@@ -1,7 +1,7 @@
 {
   "name": "manage-recalls-ui",
   "version": "0.0.1",
-  "description": "Manage Recalls Ui",
+  "description": "Manage Recalls UI",
   "repository": "git@github.com:ministryofjustice/manage-recalls-ui.git",
   "license": "MIT",
   "scripts": {
@@ -12,8 +12,8 @@
     "watch-views": "nodemon --watch server/views -e html,njk -x npm run copy-views",
     "watch-node": "DEBUG=gov-starter-server* nodemon --watch dist/ dist/server.js | bunyan -o short",
     "watch-sass": "npm run compile-sass -- --watch",
-    "build": "npm run compile-sass && tsc && npm run copy-views",
-    "local:build": "npm install && npm build && npm run test",
+    "build": "npm run clean && npm run compile-sass && tsc && npm run copy-views",
+    "local:build": "npm install && npm build && npm run test && ./scripts/start-local.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "export $(cat local-docker.env) && npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-sass\"",
     "start:local": "export $(cat local-docker.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
@@ -31,7 +31,7 @@
     "int-test-svci-ui": "cypress open --config-file cypress-svci.json",
     "int-test-dev": "cypress run --config-file cypress-dev.json",
     "int-test-dev-ui": "cypress open --config-file cypress-dev.json",
-    "clean": "rm -rf dist build node_modules stylesheets"
+    "clean": "rm -rf dist build"
   },
   "engines": {
     "node": "^14",
