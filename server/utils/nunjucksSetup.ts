@@ -1,4 +1,5 @@
 import nunjucks from 'nunjucks'
+import nunjucksDate from 'nunjucks-date'
 import express from 'express'
 import * as pathModule from 'path'
 
@@ -25,4 +26,6 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
     const array = fullName.split(' ')
     return `${array[0][0]}. ${array.reverse()[0]}`
   })
+  nunjucksDate.setDefaultFormat('DD MMM YYYY')
+  nunjucksDate.install(njkEnv)
 }

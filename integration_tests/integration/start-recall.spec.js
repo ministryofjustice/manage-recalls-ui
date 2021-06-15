@@ -26,6 +26,6 @@ context('Search for offenders', () => {
     firstResult.get('[data-qa=nomisNumber]').should('contain.text', '123ABC')
     firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
-    firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '1999-05-28')
+    firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
   })
 })

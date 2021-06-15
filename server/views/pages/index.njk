@@ -49,7 +49,7 @@
                             <td class="govuk-table__cell" data-qa="nomisNumber">{{ prisoner.nomisNumber }}</td>
                             <td class="govuk-table__cell" data-qa="firstName">{{ prisoner.firstName }}</td>
                             <td class="govuk-table__cell" data-qa="lastName">{{ prisoner.lastName }}</td>
-                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ prisoner.dateOfBirth }}</td>
+                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ prisoner.dateOfBirth | date }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
