@@ -26,9 +26,9 @@ export default class ManageRecallsApiClient {
     return new RestClient('Manage Recalls API Client', config.apis.manageRecallsApi, token)
   }
 
-  searchForPrisoner(name: string, token: string): Promise<PrisonerSearchResult[]> {
+  searchForPrisoner(nomisNumber: string, token: string): Promise<PrisonerSearchResult[]> {
     logger.info(`Search prisoners from Manage Recalls API`)
-    const request = { name }
+    const request = { nomisNumber }
     return this.restClient(token).post({ path: '/search', data: request }) as Promise<PrisonerSearchResult[]>
   }
 }

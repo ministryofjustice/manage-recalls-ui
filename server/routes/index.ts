@@ -11,10 +11,7 @@ export default function routes(router: Router): Router {
   get('/', (req, res, next) => {
     res.render('pages/index')
   })
-  get('/recall/search', (req, res, next) => {
-    res.render('pages/recall-search')
-  })
-  post('/recall/search', searchPrisoners())
+  post('/', searchPrisoners())
 
   return router
 }
@@ -23,13 +20,13 @@ const manageRecallsApiClient = new ManageRecallsApiClient()
 
 function searchPrisoners(): RequestHandler {
   return async (req, res, next) => {
-    const { name } = req.body
+    const { nomisNumber } = req.body
 
     if (res.locals && res.locals.user && res.locals.user.token) {
-      const prisoners = await manageRecallsApiClient.searchForPrisoner(name ?? 'Smith', res.locals.user.token)
-      logger.info(`Found prisoners: ${JSON.stringify(prisoners)}`)
+      const prisoners = await manageRecallsApiClient.searchForPrisoner(nomisNumber, res.locals.user.token)
+      logger.info(`Found prisoners: ${prisoners.length}`)
       res.locals.prisoners = prisoners
     }
-    res.render('pages/recall-search')
+    res.render('pages/index')
   }
 }
