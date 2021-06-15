@@ -1,6 +1,6 @@
-import logger from '../../logger'
-import config from '../config'
-import RestClient from './restClient'
+import logger from '../../../logger'
+import config from '../../config'
+import RestClient from '../restClient'
 
 export interface PrisonerSearchResult {
   firstName: string
