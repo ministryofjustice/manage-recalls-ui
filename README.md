@@ -56,9 +56,9 @@ To get debug output when running cypress:
 `DEBUG=cypress:* npm run int-test-ui`
 
 ### Full local build
-Builds everything, runs the unit tests, starts the service and runs the integration tests
+Checks Cypress installed, builds everything, runs the unit tests, and integration tests
 
-`npm run local:build`
+`./build.sh`
 
 ### Dependency Checks
 
