@@ -1,4 +1,3 @@
-import logger from '../../../logger'
 import config from '../../config'
 import RestClient from '../restClient'
 
@@ -9,14 +8,11 @@ export interface PrisonerSearchResult {
   dateOfBirth?: string
 }
 
-export default class ManageRecallsApiClient {
-  private restClient(token: string): RestClient {
-    return new RestClient('Manage Recalls API Client', config.apis.manageRecallsApi, token)
-  }
+export default function searchByNomisNumber(nomisNumber: string, token: string): Promise<PrisonerSearchResult[]> {
+  const request = { nomisNumber }
+  return restClient(token).post({ path: '/search', data: request }) as Promise<PrisonerSearchResult[]>
+}
 
-  searchForPrisoner(nomisNumber: string, token: string): Promise<PrisonerSearchResult[]> {
-    logger.info(`Search prisoners from Manage Recalls API`)
-    const request = { nomisNumber }
-    return this.restClient(token).post({ path: '/search', data: request }) as Promise<PrisonerSearchResult[]>
-  }
+function restClient(token: string): RestClient {
+  return new RestClient('Manage Recalls API Client', config.apis.manageRecallsApi, token)
 }
