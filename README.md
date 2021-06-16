@@ -12,6 +12,7 @@ The easiest way to run the app is to use docker compose to create the service an
 The app requires: 
 * hmpps-auth - for authentication
 * redis - session store and token caching
+* manage-recalls-api - api service for managing the recall process
 
 ### Running the app for development
 
@@ -39,6 +40,9 @@ For local running, start redis and a wiremock instance in docker, and the servic
 
 `./scripts/start-local.sh`
 
+The integration tests use [Cypress](https://docs.cypress.io/) you will need to manually install the Cypress 
+`npm install cypress --save-dev`
+
 Then either, run tests in headless mode with:
 
 `npm run int-test`
@@ -46,6 +50,10 @@ Then either, run tests in headless mode with:
 Or run tests with the cypress UI:
 
 `npm run int-test-ui`
+
+To get debug output when running cypress:
+
+`DEBUG=cypress:* npm run int-test-ui`
 
 ### Full local build
 Builds everything, runs the unit tests, starts the service and runs the integration tests
