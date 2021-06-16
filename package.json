@@ -120,6 +120,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
+    "@jest-mock/express": "^1.4.2",
     "@opentelemetry/api": "^1.0.0-rc.3",
     "@types/bunyan": "^1.8.6",
     "@types/bunyan-format": "^0.2.3",
