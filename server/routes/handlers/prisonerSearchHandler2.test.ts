@@ -4,7 +4,7 @@ import config from '../../config'
 import prisonerSearchHandler from './prisonerSearchHandler'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
-const nomisNumber = 'AA123AA'
+const nomsNumber = 'AA123AA'
 
 describe('prisonerSearchHandler', () => {
   let fakeManageRecallsApi: nock.Scope
@@ -18,12 +18,12 @@ describe('prisonerSearchHandler', () => {
   })
 
   describe('searchPrisoners', () => {
-    it('should return data from api for a valid nomis number', async () => {
+    it('should return data from api for a valid noms number', async () => {
       const expectedPrisoners = [
         {
           firstName: 'Bertie',
           lastName: 'Badger',
-          nomisNumber,
+          nomsNumber,
           dateOfBirth: '1990-10-30',
         },
       ]
@@ -33,7 +33,7 @@ describe('prisonerSearchHandler', () => {
         .matchHeader('authorization', `Bearer ${userToken.access_token}`)
         .reply(200, expectedPrisoners)
 
-      const req = mockRequestWithNomisNumber()
+      const req = mockRequestWithNomsNumber()
       const { res, next } = mockResponseWithAuthenticatedUser()
 
       await prisonerSearchHandler()(req, res, next)
@@ -42,7 +42,7 @@ describe('prisonerSearchHandler', () => {
       expect(res.render).toHaveBeenCalledWith('pages/index')
     })
 
-    it('should return 400 if invalid nomis number', async () => {
+    it('should return 400 if invalid noms number', async () => {
       const req = getMockReq({
         body: {},
       })
@@ -55,9 +55,9 @@ describe('prisonerSearchHandler', () => {
   })
 })
 
-function mockRequestWithNomisNumber() {
+function mockRequestWithNomsNumber() {
   return getMockReq({
-    body: { nomisNumber },
+    body: { nomsNumber },
   })
 }
 

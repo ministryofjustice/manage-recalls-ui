@@ -4,12 +4,12 @@ import RestClient from '../restClient'
 export interface PrisonerSearchResult {
   firstName: string
   lastName: string
-  nomisNumber?: string
+  nomsNumber?: string
   dateOfBirth?: string
 }
 
-export default function searchByNomisNumber(nomisNumber: string, token: string): Promise<PrisonerSearchResult[]> {
-  const request = { nomisNumber }
+export default function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult[]> {
+  const request = { nomsNumber }
   return restClient(token).post({ path: '/search', data: request }) as Promise<PrisonerSearchResult[]>
 }
 

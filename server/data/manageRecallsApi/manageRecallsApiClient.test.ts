@@ -1,7 +1,7 @@
 import nock from 'nock'
 
 import config from '../../config'
-import searchByNomisNumber from './manageRecallsApiClient'
+import searchByNomsNumber from './manageRecallsApiClient'
 
 const token = { access_token: 'token-1', expires_in: 300 }
 
@@ -23,7 +23,7 @@ describe('manageRecallsApi', () => {
         {
           firstName: 'Bertie',
           lastName: 'Badger',
-          nomisNumber: '13AAA',
+          nomsNumber: '13AAA',
           dateOfBirth: '1990-10-30',
         },
       ]
@@ -33,7 +33,7 @@ describe('manageRecallsApi', () => {
         .matchHeader('authorization', `Bearer ${token.access_token}`)
         .reply(200, expectedResponse)
 
-      const actual = await searchByNomisNumber('NOMS_NUMBER', token.access_token)
+      const actual = await searchByNomsNumber('NOMS_NUMBER', token.access_token)
 
       expect(actual).toEqual(expectedResponse)
     })

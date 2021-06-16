@@ -20,7 +20,7 @@
                         <label class="govuk-label moj-search__label govuk-!-font-weight-bold" for="search">
                             Enter a NOMIS number
                         </label>
-                        <input class="govuk-input moj-search__input " id="search-field" name="nomisNumber" type="search"
+                        <input class="govuk-input moj-search__input " id="search-field" name="nomsNumber" type="search"
                                aria-describedby="search-hint" data-qa="search-field">
                     </div>
                     <button type="submit" class="govuk-button moj-search__button " data-module="govuk-button" data-qa="search">
@@ -46,7 +46,7 @@
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for prisoner in prisoners %}
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell" data-qa="nomisNumber">{{ prisoner.nomisNumber }}</td>
+                            <td class="govuk-table__cell" data-qa="nomsNumber">{{ prisoner.nomsNumber }}</td>
                             <td class="govuk-table__cell" data-qa="firstName">{{ prisoner.firstName }}</td>
                             <td class="govuk-table__cell" data-qa="lastName">{{ prisoner.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ prisoner.dateOfBirth | date }}</td>

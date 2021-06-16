@@ -1,13 +1,13 @@
 import type { RequestHandler } from 'express'
 import logger from '../../../logger'
-import searchByNomisNumber from '../../data/manageRecallsApi/manageRecallsApiClient'
+import searchByNomsNumber from '../../data/manageRecallsApi/manageRecallsApiClient'
 
 export default function prisonerSearchHandler(): RequestHandler {
   return async (req, res, next) => {
-    const { nomisNumber } = req.body
+    const { nomsNumber } = req.body
 
-    if (isValid(nomisNumber)) {
-      const prisoners = await searchByNomisNumber(nomisNumber, res.locals.user.token)
+    if (isValid(nomsNumber)) {
+      const prisoners = await searchByNomsNumber(nomsNumber, res.locals.user.token)
       logger.info(`Found prisoners: ${prisoners.length}`)
       res.locals.prisoners = prisoners
       res.render('pages/index')
@@ -17,4 +17,4 @@ export default function prisonerSearchHandler(): RequestHandler {
   }
 }
 
-const isValid = (nomisNumber: string) => nomisNumber && nomisNumber !== ''
+const isValid = (nomsNumber: string) => nomsNumber && nomsNumber !== ''
