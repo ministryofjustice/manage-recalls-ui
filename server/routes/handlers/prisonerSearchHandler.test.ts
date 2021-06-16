@@ -1,9 +1,9 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import prisonerSearchHandler from './prisonerSearchHandler'
-import searchByNomisNumber from '../../data/manageRecallsApi/manageRecallsApiClient'
+import searchByNomsNumber from '../../data/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../data/manageRecallsApi/manageRecallsApiClient')
-const nomisNumber = 'AA123AA'
+const nomsNumber = 'AA123AA'
 
 describe('prisonerSearchHandler', () => {
   afterEach(() => {
@@ -11,20 +11,20 @@ describe('prisonerSearchHandler', () => {
   })
 
   describe('searchPrisoners', () => {
-    it('should return data from api for a valid nomis number', async () => {
+    it('should return data from api for a valid noms number', async () => {
       const expectedPrisoners = [
         {
           firstName: 'Bertie',
           lastName: 'Badger',
-          nomisNumber: '13AAA',
+          nomsNumber: '13AAA',
           dateOfBirth: '1990-10-30',
         },
       ]
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      searchByNomisNumber.mockReturnValueOnce(expectedPrisoners)
+      searchByNomsNumber.mockReturnValueOnce(expectedPrisoners)
 
-      const req = mockRequestWithNomisNumber()
+      const req = mockRequestWithNomsNumber()
       const { res, next } = mockResponseWithAuthenticatedUser()
 
       const handler = prisonerSearchHandler()
@@ -34,7 +34,7 @@ describe('prisonerSearchHandler', () => {
       expect(res.locals.prisoners).toEqual(expectedPrisoners)
     })
 
-    it('should return 400 if invalid nomis number', async () => {
+    it('should return 400 if invalid noms number', async () => {
       const req = getMockReq({
         body: {},
       })
@@ -48,9 +48,9 @@ describe('prisonerSearchHandler', () => {
   })
 })
 
-function mockRequestWithNomisNumber() {
+function mockRequestWithNomsNumber() {
   return getMockReq({
-    body: { nomisNumber },
+    body: { nomsNumber },
   })
 }
 

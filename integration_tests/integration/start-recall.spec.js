@@ -11,7 +11,7 @@ context('Search for offenders', () => {
         {
           firstName: 'Bobby',
           lastName: 'Badger',
-          nomisNumber: '123ABC',
+          nomsNumber: '123ABC',
           dateOfBirth: '1999-05-28',
         },
       ],
@@ -23,7 +23,7 @@ context('Search for offenders', () => {
     const homePage = IndexPage.verifyOnPage()
     homePage.searchFor('123ABC')
     const firstResult = homePage.searchResults().first()
-    firstResult.get('[data-qa=nomisNumber]').should('contain.text', '123ABC')
+    firstResult.get('[data-qa=nomsNumber]').should('contain.text', '123ABC')
     firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
     firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')

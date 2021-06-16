@@ -8,7 +8,7 @@ export default function manageRecallsApi(wiremock) {
           bodyPatterns: [
             {
               equalToJson: {
-                nomisNumber: expectation.expectedSearchTerm,
+                nomsNumber: expectation.expectedSearchTerm,
               },
             },
           ],
