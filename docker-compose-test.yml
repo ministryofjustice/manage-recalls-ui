@@ -4,7 +4,7 @@ services:
   redis:
     image: 'bitnami/redis:5.0'
     networks:
-      - hmpps_int
+      - manage-recalls-ui
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
@@ -13,11 +13,12 @@ services:
   wiremock:
     image: rodolpheche/wiremock
     networks:
-    - hmpps_int
-    container_name: wiremock
-    restart: always
+      - manage-recalls-ui
+    depends_on: [redis]
     ports:
       - "9999:8080"
+    restart: always
+    command: --verbose
 
 networks:
-  hmpps_int:
+  manage-recalls-ui:

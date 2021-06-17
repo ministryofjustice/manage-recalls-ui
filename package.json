@@ -13,10 +13,9 @@
     "watch-node": "DEBUG=gov-starter-server* nodemon --watch dist/ dist/server.js | bunyan -o short",
     "watch-sass": "npm run compile-sass -- --watch",
     "build": "npm run clean && npm run compile-sass && tsc && npm run copy-views",
-    "local:build": "npm install && npm build && npm run test && ./scripts/start-local.sh && npm run int-test && ./scripts/stop-local.sh",
+    "local:build": "npm install && npm run build && npm run test && ./scripts/start-local.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
-    "start:dev": "export $(cat local-docker.env) && npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-sass\"",
-    "start:local": "export $(cat local-docker.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
+    "start:dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-sass\"",
     "start-feature": "export $(cat feature.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "watch-node-feature": "export $(cat feature.env) && nodemon --watch dist/ $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "start-feature:dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node-feature\" \"npm run watch-sass\"",
@@ -169,7 +168,7 @@
     "sass": "^1.34.0",
     "supertest": "^6.1.3",
     "ts-jest": "^26.5.6",
-    "typescript": "^4.3.2",
+    "typescript": "^4.3.3",
     "wiremock-rest-client": "^1.7.0",
     "y18n": ">=4.0.1"
   }

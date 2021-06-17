@@ -17,6 +17,7 @@ module.exports = (on, config) => {
 
   on('task', {
     reset: wiremockApi.resetStubs,
+    resetAndStubLogin: () => Promise.all([wiremockApi.resetStubs, authApi.stubLogin, authApi.stubUser]),
     getLoginUrl: authApi.getLoginUrl,
     stubLogin: authApi.stubLogin,
     stubAuthUser: authApi.stubUser,
