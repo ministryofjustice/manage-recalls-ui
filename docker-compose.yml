@@ -4,7 +4,7 @@ services:
   redis:
     image: 'bitnami/redis:5.0'
     networks:
-      - hmpps
+      - manage-recalls-ui
     container_name: redis 
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
@@ -14,8 +14,8 @@ services:
   hmpps-auth:
     image: quay.io/hmpps/hmpps-auth:latest
     networks:
-      - hmpps
-    container_name: hmpps-auth 
+      - manage-recalls-ui
+    container_name: hmpps-auth
     ports:
       - "9090:8080"
     healthcheck:
@@ -24,22 +24,36 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - DELIUS_ENABLED=false
 
-  app:
+  fake-manage-recalls-api:
+    build: ./fake-manage-recalls-api
+    networks:
+      - manage-recalls-ui
+    container_name: fake-manage-recalls-api
+    ports:
+      - "9091:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/liveness" ]
+    command: --verbose
+
+  manage-recalls-ui:
     build: .
     networks:
-      - hmpps
-    depends_on: [redis]
+      - manage-recalls-ui
+    depends_on: [redis, fake-manage-recalls-api]
     ports:
       - "3000:3000"
     environment:
+      - NODE_ENV=dev
       - REDIS_HOST=redis
+      - INGRESS_URL=http://localhost:3000
       - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
-      # These will need to match new creds in the seed auth service auth
-      - API_CLIENT_ID=elite2apiclient
-      - API_CLIENT_SECRET=client-secret
+      - MANAGE_RECALLS_API_URL=http://fake-manage-recalls-api:8080
+      - API_CLIENT_ID=ppud-ui-client
+      - API_CLIENT_SECRET=clientsecret
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
+      - SESSION_SECRET=session-secret
 
 networks:
-  hmpps:
+  manage-recalls-ui:

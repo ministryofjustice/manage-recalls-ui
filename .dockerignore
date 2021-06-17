@@ -3,6 +3,7 @@ kubectl_deploy*
 helm_deploy*
 README.md
 node_modules
+fake-manage-recalls-api
 npm-debug.log
 README.md
 .*

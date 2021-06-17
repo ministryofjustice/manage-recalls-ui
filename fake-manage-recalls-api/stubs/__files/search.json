@@ -1,0 +1,14 @@
+[
+  {
+    "firstName": "Bobby",
+    "lastName": "Badger",
+    "nomsNumber": "A1234AA",
+    "dateOfBirth": "1999-05-28"
+  },
+  {
+    "firstName": "Bertie",
+    "lastName": "Badger",
+    "nomsNumber": "A1234AA",
+    "dateOfBirth": "1980-11-25"
+  }
+]
