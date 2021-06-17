@@ -15,9 +15,9 @@ const createRedisClient = () => {
 }
 
 export default class TokenStore {
-  private getRedisAsync: (key: string) => Promise<string>
+  private readonly getRedisAsync: (key: string) => Promise<string>
 
-  private setRedisAsync: (key: string, value: string, mode: string, durationSeconds: number) => Promise<void>
+  private readonly setRedisAsync: (key: string, value: string, mode: string, durationSeconds: number) => Promise<void>
 
   constructor(redisClient: redis.RedisClient = createRedisClient()) {
     redisClient.on('error', error => {
