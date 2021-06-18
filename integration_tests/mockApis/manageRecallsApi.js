@@ -22,5 +22,18 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    stubPing: () => {
+      return wiremock.stubFor({
+        request: {
+          method: 'GET',
+          urlPattern: '/health/ping',
+        },
+        response: {
+          status: 200,
+          headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+          jsonBody: { status: 'UP' },
+        },
+      })
+    },
   }
 }
