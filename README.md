@@ -1,4 +1,7 @@
-# manage-recalls-ui
+# Manage Recalls UI
+
+[![CircleCI](https://circleci.com/gh/ministryofjustice/manage-recalls-ui/tree/main.svg?style=svg)](https://circleci.com/gh/ministryofjustice/manage-recalls-ui)
+
 UI for managing recalls
 
 ### Dependencies
