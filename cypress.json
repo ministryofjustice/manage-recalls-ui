@@ -1,7 +1,6 @@
 {
     "chromeWebSecurity": false,
     "baseUrl": "http://localhost:3000",
-    "ignoreTestFiles": "**/svci/*.spec.js",
     "fixturesFolder": "integration_tests/fixtures",
     "integrationFolder": "integration_tests/integration",
     "pluginsFile": "integration_tests/plugins/index.js",
