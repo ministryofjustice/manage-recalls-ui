@@ -1,8 +1,7 @@
 version: 2.1
 
 orbs:
-  hmpps: ministryofjustice/hmpps@3.2
-  mem: circleci/rememborb@0.0.2
+  hmpps: ministryofjustice/hmpps@3.4
   slack: circleci/slack@4.4.2
 
 executors:
@@ -11,15 +10,8 @@ executors:
       - image: cimg/node:14.15-browsers
       - image: circleci/redis:buster
     working_directory: ~/app
-  docker:
-    docker:
-      - image: cimg/python:3.9
-    working_directory: ~/app
 
 parameters:
-  docker-image-name:
-    type: string
-    default: quay.io/hmpps/${CIRCLE_PROJECT_REPONAME}
   alerts-slack-channel:
     type: string
     default: ppud-replacement-devs
@@ -139,107 +131,6 @@ jobs:
       - store_artifacts:
           path: integration-tests/screenshots
 
-  build_docker:
-    executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Create app version string
-          command: |
-            DATE=$(date '+%Y-%m-%d')
-            SHORT_SHA1=$(echo $CIRCLE_SHA1 | cut -c1-7)
-            VERSION=${DATE}.${CIRCLE_BUILD_NUM}.${SHORT_SHA1}
-            echo "Created version string: ${VERSION}"
-            echo "export APP_VERSION=$VERSION" >> $BASH_ENV
-      - mem/remember:
-          env_var: APP_VERSION
-          value: "${APP_VERSION}"
-      - run:
-          name: Build container image
-          command: |
-            IMAGE_TAG=<< pipeline.parameters.docker-image-name >>:${APP_VERSION}
-            echo "export IMAGE_TAG=$IMAGE_TAG" >> $BASH_ENV
-            docker build --pull \
-              --rm=false . \
-              --build-arg BUILD_NUMBER=$APP_VERSION \
-              --build-arg GIT_REF=$CIRCLE_SHA1 \
-              --tag "${IMAGE_TAG}" \
-              --label "maintainer=dps-hmpps@digital.justice.gov.uk" \
-              --label "app.version=${APP_VERSION}" \
-              --label "build.version=${APP_VERSION}" \
-              --label "build.number=${CIRCLE_BUILD_NUM}" \
-              --label "build.url=${CIRCLE_BUILD_URL}" \
-              --label "build.gitref=${CIRCLE_SHA1}"
-      - run:
-          name: Save container image
-          command: |
-            mkdir -p docker_cache
-            docker save ${IMAGE_TAG} -o docker_cache/build_image.tar
-      - persist_to_workspace:
-          root: ~/app
-          paths:
-            - docker_cache
-      - mem/remember:
-          env_var: IMAGE_TAG
-          value: "${IMAGE_TAG}"
-
-  publish_docker:
-    executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - attach_workspace:
-          at: ~/app
-      - run:
-          name: Extract saved container image
-          command: docker load --input docker_cache/build_image.tar
-      - mem/recall:
-          env_var: IMAGE_TAG
-      - run:
-          name: Publish image to repository
-          command: |
-            docker login -u="${QUAYIO_USERNAME}" -p="${QUAYIO_PASSWORD}" quay.io
-            docker tag "${IMAGE_TAG}" "<< pipeline.parameters.docker-image-name >>:latest"
-            docker push "${IMAGE_TAG}"
-            docker push "<< pipeline.parameters.docker-image-name >>:latest"
-
-  trivy_scan:
-    executor: docker
-    steps:
-      - checkout
-      - setup_remote_docker
-      - attach_workspace:
-          at: ~/app
-      - run:
-          name: Extract saved container image
-          command: docker load --input docker_cache/build_image.tar
-      - mem/recall:
-          env_var: IMAGE_TAG
-      - run:
-          name: Install trivy
-          command: |
-            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /tmp
-      - run:
-          name: "Trivy scan for UNKNOWN,LOW,MEDIUM CVEs - informational, WILL NOT fail build"
-          command: |
-            /tmp/trivy image \
-              --exit-code 0 \
-              --no-progress \
-              --severity UNKNOWN,LOW,MEDIUM \
-              --ignore-unfixed \
-              "${IMAGE_TAG}"
-      - run:
-          name: "Trivy scan for HIGH,CRITICAL CVEs - WILL fail build"
-          command: |
-            /tmp/trivy image \
-              --exit-code 100 \
-              --no-progress \
-              --severity HIGH,CRITICAL \
-              --ignore-unfixed \
-              "${IMAGE_TAG}"
-
 workflows:
   version: 2
   build-test-and-deploy:
@@ -260,15 +151,30 @@ workflows:
       - hmpps/helm_lint:
           name: helm_lint
 
-      - build_docker
+      - hmpps/build_docker:
+          name: build_docker
+          publish: false
+          persist_container_image: true
 
-      - trivy_scan:
+      - hmpps/trivy_pipeline_scan:
+          name: trivy_scan_low_medium_cves
+          fail_build: false
+          cve_severities_to_check: UNKNOWN,LOW,MEDIUM
           requires:
             - build_docker
 
-      - publish_docker:
+      - hmpps/trivy_pipeline_scan:
+          name: trivy_scan
           requires:
+            - build_docker
+
+      - hmpps/publish_docker:
+          name: publish_docker
+          requires:
+            - helm_lint
+            - integration_test
             - trivy_scan
+            - unit_test
           filters:
             branches:
               only:
@@ -283,9 +189,6 @@ workflows:
               only:
                 - main
           requires:
-            - helm_lint
-            - unit_test
-            - integration_test
             - publish_docker
 
       - request-preprod-approval:
@@ -331,7 +234,12 @@ workflows:
       - hmpps/npm_security_audit:
           context:
             - hmpps-common-vars
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
       - hmpps/veracode_policy_scan:
           context:
             - veracode-credentials
             - hmpps-common-vars
+      - hmpps/trivy_latest_scan:
+          context:
+            - hmpps-common-vars
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
