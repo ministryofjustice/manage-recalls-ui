@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import logger from '../../../logger'
-import searchByNomsNumber from '../../data/manageRecallsApi/manageRecallsApiClient'
+import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 
 export default function prisonerSearchHandler(): RequestHandler {
   return async (req, res, next) => {

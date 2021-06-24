@@ -1,5 +1,5 @@
 import config from '../../config'
-import RestClient from '../restClient'
+import RestClient from '../../data/restClient'
 
 export interface PrisonerSearchResult {
   firstName: string
@@ -8,9 +8,16 @@ export interface PrisonerSearchResult {
   dateOfBirth?: string
 }
 
-export default function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult[]> {
+export function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult[]> {
   const request = { nomsNumber }
   return restClient(token).post({ path: '/search', data: request }) as Promise<PrisonerSearchResult[]>
+}
+
+export function generateRevocationOrder(token: string): Promise<PrisonerSearchResult[]> {
+  const request = {}
+  return restClient(token).post({ path: '/generate-revocation-order', data: request }) as Promise<
+    PrisonerSearchResult[]
+  >
 }
 
 function restClient(token: string): RestClient {
