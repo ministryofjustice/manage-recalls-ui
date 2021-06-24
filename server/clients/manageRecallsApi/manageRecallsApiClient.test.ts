@@ -1,7 +1,7 @@
 import nock from 'nock'
 
 import config from '../../config'
-import searchByNomsNumber from './manageRecallsApiClient'
+import { searchByNomsNumber } from './manageRecallsApiClient'
 
 const token = { access_token: 'token-1', expires_in: 300 }
 

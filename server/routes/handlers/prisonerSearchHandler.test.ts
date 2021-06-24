@@ -1,6 +1,6 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import prisonerSearchHandler from './prisonerSearchHandler'
-import searchByNomsNumber from '../../data/manageRecallsApi/manageRecallsApiClient'
+import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../data/manageRecallsApi/manageRecallsApiClient')
 const nomsNumber = 'AA123AA'
