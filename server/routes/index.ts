@@ -1,7 +1,7 @@
 import type { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import prisonerSearchHandler from './handlers/prisonerSearchHandler'
-import recallDocumentGeneratorHandler from './handlers/recallDocumentGeneratorHadler'
+import generateRevocationOrderHandler from './handlers/generateRevocationOrderHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -11,6 +11,6 @@ export default function routes(router: Router): Router {
     res.render('pages/index')
   })
   post('/', prisonerSearchHandler())
-  get('/generate-revocation-order', recallDocumentGeneratorHandler())
+  get('/generate-revocation-order', generateRevocationOrderHandler())
   return router
 }
