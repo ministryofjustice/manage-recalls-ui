@@ -31,8 +31,9 @@
 
             {% if prisoners %}
                 <h2 class="govuk-heading-m" data-qa="search-results-count">
-                    {{ prisoners.length }} people found
+                    {{ prisoners.length | personOrPeople }} found
                 </h2>
+                {% if prisoners.length > 0 %}
                 <table class="govuk-table">
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
@@ -54,6 +55,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {% endif %}
             {% endif %}
         </div>
     </div>

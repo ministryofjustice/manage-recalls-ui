@@ -19,7 +19,7 @@ context('Search for offenders', () => {
     cy.login()
     const homePage = IndexPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
-    homePage.expectSearchResultsCountText('1 people found')
+    homePage.expectSearchResultsCountText('1 person found')
     homePage.searchResults().find('tr').should('have.length', 1)
     const firstResult = homePage.searchResults().first()
     firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
@@ -36,7 +36,6 @@ context('Search for offenders', () => {
     const homePage = IndexPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('0 people found')
-    homePage.searchResults().find('tr').should('have.length', 0)
   })
 
   function expectSearchResultsFromManageRecallsApi(expectedSearchTerm, expectedSearchResults) {
