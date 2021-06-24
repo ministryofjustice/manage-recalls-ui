@@ -3,6 +3,7 @@ services:
 
   redis:
     image: 'bitnami/redis:5.0'
+    container_name: redis-manage-recalls-ui
     networks:
       - manage-recalls-ui
     environment:
@@ -12,6 +13,7 @@ services:
 
   wiremock:
     image: rodolpheche/wiremock
+    container_name: wiremock-manage-recalls-ui
     networks:
       - manage-recalls-ui
     depends_on: [redis]
