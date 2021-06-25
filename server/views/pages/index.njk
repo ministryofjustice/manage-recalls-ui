@@ -41,6 +41,7 @@
                         <th scope="col" class="govuk-table__header">First name</th>
                         <th scope="col" class="govuk-table__header">Surname</th>
                         <th scope="col" class="govuk-table__header">Date of birth</th>
+                        <th scope="col" class="govuk-table__header"></th>
                     </tr>
                     </thead>
 
@@ -51,7 +52,7 @@
                             <td class="govuk-table__cell" data-qa="firstName">{{ prisoner.firstName }}</td>
                             <td class="govuk-table__cell" data-qa="lastName">{{ prisoner.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ prisoner.dateOfBirth | date }}</td>
-                            <td class="govuk-table__cell"><a href="/generate-revocation-order" data-qa="generateRevocationOrderButton">Download revocation order</a></td>
+                            <td class="govuk-table__cell"><a href="/generate-revocation-order" data-qa="generateRevocationOrderButton" download>Download revocation order</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
