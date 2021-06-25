@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/generate-revocation-order"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "generate-revocation-order.json"
+  }
+}
