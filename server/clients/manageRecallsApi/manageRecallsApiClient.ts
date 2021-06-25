@@ -9,7 +9,7 @@ export interface PrisonerSearchResult {
 }
 
 export interface Pdf {
-  contents: string
+  content: string
 }
 
 export function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult[]> {

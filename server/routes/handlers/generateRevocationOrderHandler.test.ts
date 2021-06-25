@@ -19,7 +19,7 @@ describe('generateRevocationOrderHandler', () => {
   describe('generateRevocationOrder', () => {
     it('should return pdf from manage recalls api', async () => {
       const expectedPdfContents = 'pdf contents'
-      const expectedPdf = { contents: Buffer.from(expectedPdfContents).toString('base64') }
+      const expectedPdf = { content: Buffer.from(expectedPdfContents).toString('base64') }
 
       fakeManageRecallsApi
         .post('/generate-revocation-order')

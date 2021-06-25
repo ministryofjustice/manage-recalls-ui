@@ -21,7 +21,7 @@ context('Generate revocation order', () => {
     ])
 
     cy.readFile('integration_tests/expected-revocation-order.pdf', 'base64').then(base64EncodedPdf => {
-      expectRevocationOrderFromManageRecallsApi({ contents: base64EncodedPdf })
+      expectRevocationOrderFromManageRecallsApi({ content: base64EncodedPdf })
       cy.login()
 
       const homePage = IndexPage.verifyOnPage()
