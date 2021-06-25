@@ -1,5 +1,5 @@
-import { getMockReq, getMockRes } from '@jest-mock/express'
 import nock from 'nock'
+import { mockRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import config from '../../config'
 import prisonerSearchHandler from './prisonerSearchHandler'
 
@@ -33,8 +33,8 @@ describe('prisonerSearchHandler', () => {
         .matchHeader('authorization', `Bearer ${userToken.access_token}`)
         .reply(200, expectedPrisoners)
 
-      const req = mockRequestWithNomsNumber()
-      const { res, next } = mockResponseWithAuthenticatedUser()
+      const req = mockRequest({ nomsNumber })
+      const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
       await prisonerSearchHandler()(req, res, next)
 
@@ -43,10 +43,8 @@ describe('prisonerSearchHandler', () => {
     })
 
     it('should return 400 if invalid noms number', async () => {
-      const req = getMockReq({
-        body: {},
-      })
-      const { res, next } = getMockRes()
+      const req = mockRequest({})
+      const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
       await prisonerSearchHandler()(req, res, next)
 
@@ -54,19 +52,3 @@ describe('prisonerSearchHandler', () => {
     })
   })
 })
-
-function mockRequestWithNomsNumber() {
-  return getMockReq({
-    body: { nomsNumber },
-  })
-}
-
-function mockResponseWithAuthenticatedUser() {
-  return getMockRes({
-    locals: {
-      user: {
-        token: userToken.access_token,
-      },
-    },
-  })
-}
