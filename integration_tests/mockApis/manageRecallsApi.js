@@ -22,6 +22,21 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectGenerateRevocationOrder: expectedPdfFile => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: '/generate-revocation-order',
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: expectedPdfFile,
+        },
+      })
+    },
     stubPing: () => {
       return wiremock.stubFor({
         request: {

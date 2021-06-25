@@ -2,6 +2,7 @@ import wiremock from '../mockApis/wiremock'
 import auth from '../mockApis/auth'
 import tokenVerification from '../mockApis/tokenVerification'
 import manageRecalls from '../mockApis/manageRecallsApi'
+import readPdf from './read-pdf'
 
 module.exports = (on, config) => {
   const { wiremockUrl, uiClientId } = config.env
@@ -17,7 +18,6 @@ module.exports = (on, config) => {
 
   on('task', {
     reset: wiremockApi.resetStubs,
-    resetAndStubLogin: () => Promise.all([wiremockApi.resetStubs, authApi.stubLogin, authApi.stubUser]),
     getLoginUrl: authApi.getLoginUrl,
     stubLogin: authApi.stubLogin,
     stubAuthUser: authApi.stubUser,
@@ -25,6 +25,8 @@ module.exports = (on, config) => {
     stubTokenVerificationPing: tokenVerificationApi.stubPing,
     stubManageRecallsApiPing: manageRecallsApi.stubPing,
     expectSearchResults: manageRecallsApi.expectSearchResults,
+    expectGenerateRevocationOrder: manageRecallsApi.expectGenerateRevocationOrder,
+    readPdf: readPdf.readPdf,
   })
   return config
 }

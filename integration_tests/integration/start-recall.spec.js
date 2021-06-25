@@ -2,7 +2,9 @@ const IndexPage = require('../pages/index')
 
 context('Search for offenders', () => {
   beforeEach(() => {
-    cy.task('resetAndStubLogin')
+    cy.task('reset')
+    cy.task('stubLogin')
+    cy.task('stubAuthUser')
   })
 
   const nomsNumber = '123ABC'
@@ -29,7 +31,6 @@ context('Search for offenders', () => {
   })
 
   it('prisoner search returns no results', () => {
-    cy.task('resetAndStubLogin')
     cy.login()
     expectSearchResultsFromManageRecallsApi(nomsNumber, [])
 
