@@ -48,7 +48,8 @@ describe('prisonerSearchHandler', () => {
 
       await prisonerSearchHandler()(req, res, next)
 
-      expect(res.send).toHaveBeenCalledWith(400)
+      expect(res.locals.errorMessage).toEqual('Please enter a valid NOMS number')
+      expect(res.render).toHaveBeenCalledWith('pages/index')
     })
   })
 })
