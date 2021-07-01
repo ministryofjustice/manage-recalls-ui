@@ -311,9 +311,6 @@ workflows:
               only:
                 - main
     jobs:
-      - check_outdated:
-          context:
-            - hmpps-common-vars
       - hmpps/npm_security_audit:
           context:
             - hmpps-common-vars
@@ -326,3 +323,16 @@ workflows:
           context:
             - hmpps-common-vars
           slack_channel: << pipeline.parameters.alerts-slack-channel >>
+
+  check_outdated:
+    triggers:
+      - schedule:
+          cron: "0 12 * * 5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - check_outdated:
+          context:
+            - hmpps-common-vars
