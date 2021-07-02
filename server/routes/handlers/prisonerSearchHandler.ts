@@ -10,10 +10,11 @@ export default function prisonerSearchHandler(): RequestHandler {
       const prisoners = await searchByNomsNumber(nomsNumber, res.locals.user.token)
       logger.info(`Found prisoners: ${prisoners.length}`)
       res.locals.prisoners = prisoners
-      res.render('pages/index')
     } else {
-      res.send(400)
+      // TODO: display error message
+      res.locals.errorMessage = 'Please enter a valid NOMS number'
     }
+    res.render('pages/index')
   }
 }
 

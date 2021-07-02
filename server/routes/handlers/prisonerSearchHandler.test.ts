@@ -1,4 +1,4 @@
-import { getMockReq, getMockRes } from '@jest-mock/express'
+import { mockRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import prisonerSearchHandler from './prisonerSearchHandler'
 import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 
@@ -24,8 +24,8 @@ describe('prisonerSearchHandler', () => {
       // @ts-ignore
       searchByNomsNumber.mockReturnValueOnce(expectedPrisoners)
 
-      const req = mockRequestWithNomsNumber()
-      const { res, next } = mockResponseWithAuthenticatedUser()
+      const req = mockRequest({ nomsNumber })
+      const { res, next } = mockResponseWithAuthenticatedUser('')
 
       const handler = prisonerSearchHandler()
       await handler(req, res, next)
@@ -34,32 +34,15 @@ describe('prisonerSearchHandler', () => {
       expect(res.locals.prisoners).toEqual(expectedPrisoners)
     })
 
-    it('should return 400 if invalid noms number', async () => {
-      const req = getMockReq({
-        body: {},
-      })
-      const { res, next } = getMockRes()
+    it('should return error message if invalid noms number', async () => {
+      const req = mockRequest({})
+      const { res, next } = mockResponseWithAuthenticatedUser('')
 
       const handler = prisonerSearchHandler()
       await handler(req, res, next)
 
-      expect(res.send).toHaveBeenCalledWith(400)
+      expect(res.render).toHaveBeenCalledWith('pages/index')
+      expect(res.locals.errorMessage).toEqual('Please enter a valid NOMS number')
     })
   })
 })
-
-function mockRequestWithNomsNumber() {
-  return getMockReq({
-    body: { nomsNumber },
-  })
-}
-
-function mockResponseWithAuthenticatedUser() {
-  return getMockRes({
-    locals: {
-      user: {
-        token: 'any token',
-      },
-    },
-  })
-}
