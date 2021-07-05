@@ -41,7 +41,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'POST',
-          urlPattern: '/create-recall',
+          urlPattern: '/recalls',
         },
         response: {
           status: 200,
