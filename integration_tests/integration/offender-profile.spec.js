@@ -1,8 +1,8 @@
 import validateBinaryFile from './file-utils'
 
-const IndexPage = require('../pages/index')
+const offenderProfilePage = require('../pages/offenderProfile')
 
-context('Generate revocation order', () => {
+context('Offender profile', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
@@ -24,12 +24,8 @@ context('Generate revocation order', () => {
       expectRevocationOrderFromManageRecallsApi({ content: base64EncodedPdf })
       cy.login()
 
-      const homePage = IndexPage.verifyOnPage()
-      homePage.searchFor(nomsNumber)
-      homePage.expectSearchResultsCountText('1 person found')
-      homePage.searchResults().find('tr').should('have.length', 1)
-      const firstResult = homePage.searchResults().first()
-      firstResult.get('[data-qa=generateRevocationOrderButton]').click()
+      const offenderProfile = offenderProfilePage.verifyOnPage(nomsNumber)
+      offenderProfile.generateRevocationOrder()
 
       validateBinaryFile('revocation-order.pdf', 67658)
 
@@ -39,6 +35,29 @@ context('Generate revocation order', () => {
       })
     })
   })
+
+  it('User can create a recall', () => {
+    const recallId = '123'
+    expectSearchResultsFromManageRecallsApi(nomsNumber, [
+      {
+        firstName: 'Bobby',
+        lastName: 'Badger',
+        nomsNumber,
+        dateOfBirth: '1999-05-28',
+      },
+    ])
+
+    expectCreateRecallFromManageRecallsApi({ recallId })
+    cy.login()
+
+    const offenderProfile = offenderProfilePage.verifyOnPage(nomsNumber)
+    offenderProfile.createRecall()
+    offenderProfile.expectRecallIdConfirmation(`Recall ID: ${recallId}`)
+  })
+
+  function expectCreateRecallFromManageRecallsApi(expectedResults) {
+    cy.task('expectCreateRecall', { expectedResults })
+  }
 
   function expectSearchResultsFromManageRecallsApi(expectedSearchTerm, expectedSearchResults) {
     cy.task('expectSearchResults', { expectedSearchTerm, expectedSearchResults })

@@ -1,11 +1,11 @@
 import nock from 'nock'
-import { mockRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
+import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import config from '../../config'
-import generateRevocationOrderHandler from './generateRevocationOrderHandler'
+import generateRevocationOrder from './generateRevocationOrder'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
-describe('generateRevocationOrderHandler', () => {
+describe('generateRevocationOrder', () => {
   let fakeManageRecallsApi: nock.Scope
 
   beforeEach(() => {
@@ -26,10 +26,10 @@ describe('generateRevocationOrderHandler', () => {
         .matchHeader('authorization', `Bearer ${userToken.access_token}`)
         .reply(200, expectedPdf)
 
-      const req = mockRequest({})
+      const req = mockPostRequest({})
       const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
-      await generateRevocationOrderHandler()(req, res, next)
+      await generateRevocationOrder()(req, res, next)
 
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',

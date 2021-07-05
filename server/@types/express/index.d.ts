@@ -19,3 +19,7 @@ export declare global {
     }
   }
 }
+
+export interface RequestQuery {
+  [key: string]: string
+}

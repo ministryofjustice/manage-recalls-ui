@@ -1,4 +1,5 @@
-const IndexPage = require('../pages/index')
+const findOffenderPage = require('../pages/index')
+const offenderProfilePage = require('../pages/offenderProfile')
 
 context('Search for offenders', () => {
   beforeEach(() => {
@@ -19,7 +20,7 @@ context('Search for offenders', () => {
     ])
 
     cy.login()
-    const homePage = IndexPage.verifyOnPage()
+    const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('1 person found')
     homePage.searchResults().find('tr').should('have.length', 1)
@@ -28,13 +29,15 @@ context('Search for offenders', () => {
     firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
     firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
+    firstResult.get('[data-qa=viewProfileButton]').click()
+    offenderProfilePage.verifyOnPage()
   })
 
   it('prisoner search returns no results', () => {
     cy.login()
     expectSearchResultsFromManageRecallsApi(nomsNumber, [])
 
-    const homePage = IndexPage.verifyOnPage()
+    const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('0 people found')
   })

@@ -35,7 +35,7 @@ describe('manageRecallsApi', () => {
 
       const actual = await searchByNomsNumber('NOMS_NUMBER', token.access_token)
 
-      expect(actual).toEqual(expectedResponse)
+      expect(actual).toEqual(expectedResponse[0])
     })
   })
 
