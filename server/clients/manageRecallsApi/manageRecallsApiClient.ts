@@ -31,7 +31,7 @@ export function generateRevocationOrder(token: string): Promise<Pdf> {
 
 export function createRecall(nomsNumber: string, token: string): Promise<RecallUniqueIdentifier> {
   const request = { nomsNumber }
-  return restClient(token).post<RecallUniqueIdentifier>({ path: '/create-recall', data: request })
+  return restClient(token).post<RecallUniqueIdentifier>({ path: '/recalls', data: request })
 }
 
 function restClient(token: string): RestClient {
