@@ -26,8 +26,9 @@ export async function getRecallList(token: string): Promise<Recall[]> {
   return restClient(token).get<Recall[]>({ path: '/recalls' })
 }
 
-export function generateRevocationOrder(token: string): Promise<Pdf> {
-  return restClient(token).post<Pdf>({ path: '/generate-revocation-order' })
+export function generateRevocationOrder(nomsNumber: string, token: string): Promise<Pdf> {
+  const request = { nomsNumber }
+  return restClient(token).post<Pdf>({ path: '/generate-revocation-order', data: request })
 }
 
 export function createRecall(nomsNumber: string, token: string): Promise<Recall> {

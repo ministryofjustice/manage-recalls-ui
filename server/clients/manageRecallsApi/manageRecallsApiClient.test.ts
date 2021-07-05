@@ -4,6 +4,7 @@ import config from '../../config'
 import { searchByNomsNumber, generateRevocationOrder, createRecall } from './manageRecallsApiClient'
 
 const token = { access_token: 'token-1', expires_in: 300 }
+const nomsNumber = 'NOMS_NUMBER'
 
 describe('manageRecallsApi', () => {
   let fakeManageRecallsApi: nock.Scope
@@ -33,7 +34,7 @@ describe('manageRecallsApi', () => {
         .matchHeader('authorization', `Bearer ${token.access_token}`)
         .reply(200, expectedResponse)
 
-      const actual = await searchByNomsNumber('NOMS_NUMBER', token.access_token)
+      const actual = await searchByNomsNumber(nomsNumber, token.access_token)
 
       expect(actual).toEqual(expectedResponse[0])
     })
@@ -49,7 +50,7 @@ describe('manageRecallsApi', () => {
         .matchHeader('authorization', `Bearer ${token.access_token}`)
         .reply(200, expectedResponse)
 
-      const actual = await generateRevocationOrder(token.access_token)
+      const actual = await generateRevocationOrder(nomsNumber, token.access_token)
 
       expect(actual).toEqual(expectedResponse)
     })
