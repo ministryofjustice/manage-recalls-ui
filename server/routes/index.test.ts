@@ -13,7 +13,7 @@ afterEach(() => {
 })
 
 describe('GET /', () => {
-  it('should render index page', () => {
+  it('should render "Find an offender" page', () => {
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)

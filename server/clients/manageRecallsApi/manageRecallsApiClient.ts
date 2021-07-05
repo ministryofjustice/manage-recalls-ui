@@ -12,13 +12,26 @@ export interface Pdf {
   content: string
 }
 
-export function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult[]> {
+export interface RecallUniqueIdentifier {
+  uuid: string
+}
+
+export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
   const request = { nomsNumber }
-  return restClient(token).post({ path: '/search', data: request }) as Promise<PrisonerSearchResult[]>
+  const results = await restClient(token).post<PrisonerSearchResult[]>({ path: '/search', data: request })
+  if (results && results.length) {
+    return results[0]
+  }
+  return null
 }
 
 export function generateRevocationOrder(token: string): Promise<Pdf> {
-  return restClient(token).post({ path: '/generate-revocation-order' }) as Promise<Pdf>
+  return restClient(token).post<Pdf>({ path: '/generate-revocation-order' })
+}
+
+export function createRecall(nomsNumber: string, token: string): Promise<RecallUniqueIdentifier> {
+  const request = { nomsNumber }
+  return restClient(token).post<RecallUniqueIdentifier>({ path: '/create-recall', data: request })
 }
 
 function restClient(token: string): RestClient {

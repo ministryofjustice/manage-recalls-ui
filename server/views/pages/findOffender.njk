@@ -13,8 +13,7 @@
                 Find an offender
             </h1>
 
-            <form id="search" action="" method="post" class="govuk-!-padding-5 govuk-!-margin-bottom-9 search-panel">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+            <form id="search" action="" method="get" class="govuk-!-margin-bottom-9 search-panel">
                 <div class="moj-search">
                     <div class="govuk-form-group">
                         <label class="govuk-label moj-search__label govuk-!-font-weight-bold" for="search">
@@ -29,30 +28,32 @@
                 </div>
             </form>
 
-            {% if prisoners %}
+            {% if offenders %}
                 <h2 class="govuk-heading-m" data-qa="search-results-count">
-                    {{ prisoners.length | personOrPeople }} found
+                    {{ offenders.length | personOrPeople }} found
                 </h2>
-                {% if prisoners.length > 0 %}
+                {% if offenders.length > 0 %}
                 <table class="govuk-table">
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                         <th scope="col" class="govuk-table__header">NOMIS number</th>
                         <th scope="col" class="govuk-table__header">First name</th>
-                        <th scope="col" class="govuk-table__header">Surname</th>
+                        <th scope="col" class="govuk-table__header">Last name</th>
                         <th scope="col" class="govuk-table__header">Date of birth</th>
                         <th scope="col" class="govuk-table__header"></th>
                     </tr>
                     </thead>
 
                     <tbody class="govuk-table__body" data-qa="search-results">
-                    {% for prisoner in prisoners %}
+                    {% for offender in offenders %}
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell" data-qa="nomsNumber">{{ prisoner.nomsNumber }}</td>
-                            <td class="govuk-table__cell" data-qa="firstName">{{ prisoner.firstName }}</td>
-                            <td class="govuk-table__cell" data-qa="lastName">{{ prisoner.lastName }}</td>
-                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ prisoner.dateOfBirth | date }}</td>
-                            <td class="govuk-table__cell"><a href="/generate-revocation-order" data-qa="generateRevocationOrderButton" download>Download revocation order</a></td>
+                            <td class="govuk-table__cell" data-qa="nomsNumber">{{ offender.nomsNumber }}</td>
+                            <td class="govuk-table__cell" data-qa="firstName">{{ offender.firstName }}</td>
+                            <td class="govuk-table__cell" data-qa="lastName">{{ offender.lastName }}</td>
+                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ offender.dateOfBirth | date }}</td>
+                            <td class="govuk-table__cell">
+                                <a class='govuk-link' href='/offender-profile?nomsNumber={{ offender.nomsNumber }}' data-qa='viewProfileButton'>View</a>
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>

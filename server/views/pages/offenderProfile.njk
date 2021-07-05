@@ -1,0 +1,41 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Home" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">
+                Offender profile
+            </h1>
+
+            {% if offender %}
+                <p class='govuk-body'><strong>NOMIS:</strong> {{ nomsNumber }}</p>
+                {% if recallId %}
+                    <p class='govuk-body'>Recall created. <span data-qa='recallId'>Recall ID: {{ recallId }}</span></p>
+                {% else %}
+                    <form action="/create-recall" method="post">
+                        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                        <input type='hidden' name='nomsNumber' value='{{ offender.nomsNumber }}' />
+                        <button class="govuk-button" data-module="govuk-button" data-qa="createRecallButton">
+                            Create recall
+                        </button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p class='govuk-body'>An offender with the NOMIS {{ nomsNumber }} could not be found.</p>
+            {% endif %}
+            <p class='govuk-body'>
+                <a href="/generate-revocation-order" role='button' class="govuk-button" data-module="govuk-button"
+                   data-qa="createRevocationOrderButton" download>
+                    Generate revocation order
+                </a>
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
