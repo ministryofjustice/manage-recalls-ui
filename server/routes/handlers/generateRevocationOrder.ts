@@ -3,7 +3,8 @@ import { generateRevocationOrder } from '../../clients/manageRecallsApi/manageRe
 
 export default function generateRevocationOrderHandler(): RequestHandler {
   return async (req, res, next) => {
-    const base64EncodedPdf = await generateRevocationOrder(res.locals.user.token)
+    const { nomsNumber } = req.query
+    const base64EncodedPdf = await generateRevocationOrder(nomsNumber as string, res.locals.user.token)
     const pdfContentsByteArray = Buffer.from(base64EncodedPdf.content, 'base64')
 
     res.writeHead(200, {
