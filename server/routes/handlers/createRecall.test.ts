@@ -16,12 +16,12 @@ describe('createRecall', () => {
     nock.cleanAll()
   })
 
-  it('should return pdf from manage recalls api', async () => {
+  it('should return a recall ID', async () => {
     const recallId = '123'
     const nomsNumber = '123ABC'
 
     fakeManageRecallsApi
-      .post('/create-recall')
+      .post('/recalls')
       .matchHeader('authorization', `Bearer ${userToken.access_token}`)
       .reply(200, { uuid: recallId })
 

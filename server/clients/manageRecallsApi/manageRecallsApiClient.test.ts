@@ -60,7 +60,7 @@ describe('manageRecallsApi', () => {
       const expectedResponse = { contents: 1234 }
 
       fakeManageRecallsApi
-        .post('/create-recall')
+        .post('/recalls')
         .matchHeader('authorization', `Bearer ${token.access_token}`)
         .reply(200, expectedResponse)
 
