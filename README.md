@@ -34,15 +34,23 @@ And then, to build the assets and start the app with nodemon:
 
 `npm run start:dev`
 
+### Creating a new endpoint in manage-recalls-api
+For every endpoint added to manage-recalls-api that is used by this app, a corresponding mock should be created in ./fake-manage-recalls-api. See the existing examples for the patterns to follow.
+Note - rebuilding the fake-manage-recalls-api afterwards won't be enough as it will be cached; you need to delete it then rebuild it.
+
 ### Run linter
 
 `npm run lint`
 
-### Run tests
+to fix any lint issues automatically:
+
+`npm run lint:fix`
+
+### Run unit tests
 
 `npm run test`
 
-### Running integration tests
+### Run integration tests
 
 The integration tests require redis, wiremock and the service to be running.  To start them in docker run:
 
