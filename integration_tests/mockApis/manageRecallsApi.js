@@ -48,7 +48,7 @@ export default function manageRecallsApi(wiremock) {
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: { uuid: expectation.expectedResults.recallId },
+          jsonBody: { id: expectation.expectedResults.recallId },
         },
       })
     },

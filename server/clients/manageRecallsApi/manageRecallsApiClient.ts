@@ -12,8 +12,8 @@ export interface Pdf {
   content: string
 }
 
-export interface RecallUniqueIdentifier {
-  uuid: string
+export interface Recall {
+  id: string
 }
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
@@ -29,9 +29,9 @@ export function generateRevocationOrder(token: string): Promise<Pdf> {
   return restClient(token).post<Pdf>({ path: '/generate-revocation-order' })
 }
 
-export function createRecall(nomsNumber: string, token: string): Promise<RecallUniqueIdentifier> {
+export function createRecall(nomsNumber: string, token: string): Promise<Recall> {
   const request = { nomsNumber }
-  return restClient(token).post<RecallUniqueIdentifier>({ path: '/recalls', data: request })
+  return restClient(token).post<Recall>({ path: '/recalls', data: request })
 }
 
 function restClient(token: string): RestClient {

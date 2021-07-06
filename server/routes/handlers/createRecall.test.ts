@@ -23,7 +23,7 @@ describe('createRecall', () => {
     fakeManageRecallsApi
       .post('/recalls')
       .matchHeader('authorization', `Bearer ${userToken.access_token}`)
-      .reply(200, { uuid: recallId })
+      .reply(200, { id: recallId })
 
     const req = mockPostRequest({ nomsNumber })
     const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
