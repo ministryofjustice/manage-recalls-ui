@@ -21,12 +21,12 @@ docker run --network container:wiremock-manage-recalls-ui \
 
 echo "Building ${MANAGE_RECALLS_UI_NAME}"
 npm install && npm run build
-#
-#npx kill-port 3000
-#echo "Starting ${MANAGE_RECALLS_UI_NAME}"
-#npm run start-feature >> "${LOG_FILE}" 2>&1 &
-#
-#echo
-#echo "Checking ${MANAGE_RECALLS_UI_NAME} is running..."
-#curl -s -4 --retry 10 -o /dev/null --retry-delay 1 --retry-connrefused http://localhost:3000/ping
-#echo "...done"
+
+npx kill-port 3000
+echo "Starting ${MANAGE_RECALLS_UI_NAME}"
+npm run start-feature >> "${LOG_FILE}" 2>&1 &
+
+echo
+echo "Checking ${MANAGE_RECALLS_UI_NAME} is running..."
+curl -s -4 --retry 10 -o /dev/null --retry-delay 1 --retry-connrefused http://localhost:3000/ping
+echo "...done"
