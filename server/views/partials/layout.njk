@@ -23,9 +23,11 @@
 
 {% block header %}
   {% include "./header.njk" %}
+  {% include "./phaseBanner.njk" %}
+  {%  include './primaryNav.njk' %}
 {% endblock %}
 
-{% block bodyStart %}
+{% block beforeContent %}
 {% endblock %}
 
 {% block bodyEnd %}

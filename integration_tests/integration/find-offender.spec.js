@@ -1,4 +1,4 @@
-const findOffenderPage = require('../pages/index')
+const findOffenderPage = require('../pages/findOffender')
 const offenderProfilePage = require('../pages/offenderProfile')
 
 context('Search for offenders', () => {
@@ -18,7 +18,7 @@ context('Search for offenders', () => {
         dateOfBirth: '1999-05-28',
       },
     ])
-
+    cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
@@ -34,6 +34,7 @@ context('Search for offenders', () => {
   })
 
   it('prisoner search returns no results', () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     expectSearchResultsFromManageRecallsApi(nomsNumber, [])
 

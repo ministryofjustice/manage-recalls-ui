@@ -11,6 +11,7 @@ context('Offender profile', () => {
 
   const nomsNumber = '123ABC'
   it('User can generate revocation order', () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
     expectSearchResultsFromManageRecallsApi(nomsNumber, [
       {
         firstName: 'Bobby',
@@ -38,6 +39,7 @@ context('Offender profile', () => {
 
   it('User can create a recall', () => {
     const recallId = '123'
+    cy.task('expectListRecalls', { expectedResults: [] })
     expectSearchResultsFromManageRecallsApi(nomsNumber, [
       {
         firstName: 'Bobby',

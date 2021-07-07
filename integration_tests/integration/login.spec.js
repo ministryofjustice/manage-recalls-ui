@@ -1,4 +1,4 @@
-const IndexPage = require('../pages/index')
+const IndexPage = require('../pages/findOffender')
 const AuthLoginPage = require('../pages/authLogin')
 
 context('Login', () => {
@@ -9,17 +9,20 @@ context('Login', () => {
   })
 
   it('Unauthenticated user directed to auth', () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
     cy.visit('/')
     AuthLoginPage.verifyOnPage()
   })
 
   it('User name visible in header', () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const landingPage = IndexPage.verifyOnPage()
     landingPage.headerUserName().should('contain.text', 'J. Smith')
   })
 
   it('User can log out', () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const landingPage = IndexPage.verifyOnPage()
     landingPage.logout().click()

@@ -1,0 +1,52 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - To do" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">
+                To do
+            </h1>
+
+            {% if recalls %}
+                {% if recalls.length > 0 %}
+                    <table class="govuk-table">
+                        <caption class="govuk-table__caption govuk-table__caption--m" data-qa="recalls-list-heading">
+                            <span class='govuk-!-font-size-36 govuk-!-font-weight-bold'>{{ recalls.length }}</span> new recall{% if recalls.length > 1 %}s{% endif %}
+                        </caption>
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">NOMIS number</th>
+                            <th scope="col" class="govuk-table__header">Priority</th>
+                            <th scope="col" class="govuk-table__header">First name</th>
+                            <th scope="col" class="govuk-table__header">Last name</th>
+                            <th scope="col" class="govuk-table__header">Recall date</th>
+                            <th scope="col" class="govuk-table__header">Due date</th>
+                            <th scope="col" class="govuk-table__header"><span class='govuk-visually-hidden'>View recall details</span></th>
+                        </tr>
+                        </thead>
+                        <tbody class="govuk-table__body" data-qa="search-results">
+                        {% for recall in recalls %}
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell" data-qa="nomsNumber">{{ recall.nomsNumber }}</td>
+                                <td class="govuk-table__cell" data-qa="nomsNumber">{{ recall.priority }}</td>
+                                <td class="govuk-table__cell" data-qa="firstName">{{ recall.firstName }}</td>
+                                <td class="govuk-table__cell" data-qa="lastName">{{ recall.lastName }}</td>
+                                <td class="govuk-table__cell" data-qa="lastName">{{ recall.recallDate }}</td>
+                                <td class="govuk-table__cell" data-qa="lastName">{{ recall.dueDate }}</td>
+                                <td class="govuk-table__cell" data-qa="lastName"><a href='#' data-qa='viewRecallDetails'>View</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
