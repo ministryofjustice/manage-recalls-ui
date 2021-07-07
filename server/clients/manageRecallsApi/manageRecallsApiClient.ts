@@ -8,12 +8,13 @@ export interface PrisonerSearchResult {
   dateOfBirth?: string
 }
 
-export interface Pdf {
-  content: string
-}
-
 export interface Recall {
   id: string
+  nomsNumber: string
+}
+
+export interface Pdf {
+  content: string
 }
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
@@ -23,6 +24,10 @@ export async function searchByNomsNumber(nomsNumber: string, token: string): Pro
     return results[0]
   }
   return null
+}
+
+export async function getRecallList(token: string): Promise<Recall[]> {
+  return restClient(token).get<Recall[]>({ path: '/recalls' })
 }
 
 export function generateRevocationOrder(token: string): Promise<Pdf> {

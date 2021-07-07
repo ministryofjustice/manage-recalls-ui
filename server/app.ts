@@ -146,7 +146,7 @@ export default function createApp(userService: UserService): express.Application
 
   // GovUK Template Configuration
   app.locals.asset_path = '/assets/'
-  app.locals.applicationName = 'Manage Recalls'
+  app.locals.applicationName = 'Manage a recall for an offender on license'
 
   app.use((req, res, next) => {
     res.locals.user = req.user

@@ -1,0 +1,17 @@
+{%- from "moj/components/primary-navigation/macro.njk" import mojPrimaryNavigation -%}
+
+{{ mojPrimaryNavigation({
+    label: 'Primary navigation',
+    items: [
+        {
+            text: 'To do',
+            href: '/',
+            active: isTodoPage == true
+        },
+        {
+            text: 'Find someone',
+            href: '/find-offender',
+            active: isTodoPage != true
+        }
+    ]
+}) }}
