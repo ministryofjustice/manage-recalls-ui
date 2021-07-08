@@ -11,7 +11,11 @@ export interface PrisonerSearchResult {
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
   const request = { nomsNumber }
-  const results = await restClient(token).post<PrisonerSearchResult[]>({ path: '/search', data: request })
+  const results = await restClient(token).post<PrisonerSearchResult[]>({
+    path: '/search',
+    headers: { Accept: 'application/json' },
+    data: request,
+  })
   if (results && results.length) {
     return results[0]
   }
