@@ -1,5 +1,5 @@
 import nock from 'nock'
-import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
+import { mockGetRequest, mockPostRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import config from '../../config'
 import generateRevocationOrder from './generateRevocationOrder'
 
@@ -20,13 +20,14 @@ describe('generateRevocationOrder', () => {
     it('should return pdf from manage recalls api', async () => {
       const expectedPdfContents = 'pdf contents'
       const expectedPdf = { content: Buffer.from(expectedPdfContents).toString('base64') }
+      const nomsNumber = '123ABC'
 
       fakeManageRecallsApi
         .post('/generate-revocation-order')
         .matchHeader('authorization', `Bearer ${userToken.access_token}`)
         .reply(200, expectedPdf)
 
-      const req = mockPostRequest({})
+      const req = mockGetRequest({ nomsNumber })
       const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
       await generateRevocationOrder()(req, res, next)
