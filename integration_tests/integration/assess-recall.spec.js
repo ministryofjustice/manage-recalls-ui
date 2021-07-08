@@ -1,6 +1,6 @@
 const assessRecallPage = require('../pages/assessRecall')
 
-context('Offender profile', () => {
+context('Assess a recall', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
