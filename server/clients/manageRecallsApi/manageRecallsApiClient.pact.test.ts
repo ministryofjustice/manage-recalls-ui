@@ -1,14 +1,7 @@
 import path from 'path'
 import { Pact } from '@pact-foundation/pact'
 import { searchByNomsNumber } from './manageRecallsApiClient'
-
-jest.mock('../../config', () => ({
-  apis: {
-    manageRecallsApi: {
-      url: 'http://localhost:8888',
-    },
-  },
-}))
+import * as configModule from '../../config'
 
 const provider = new Pact({
   consumer: 'manage-recalls-ui',
@@ -17,7 +10,6 @@ const provider = new Pact({
   logLevel: 'warn',
   dir: path.resolve(process.cwd(), 'pacts'),
   spec: 2,
-  port: 8888,
 })
 
 const token = { access_token: 'token-1', expires_in: 300 }
@@ -31,6 +23,10 @@ describe('Manage Recalls API Pact test', () => {
     const nomsNumber = 'A1234AA'
 
     test('can find a prisoner by NOMS number', async () => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
+
       const expectedResult = {
         firstName: 'Bertie',
         lastName: 'Badger',

@@ -31,7 +31,7 @@ export interface ApiConfig {
   agent: AgentConfig
 }
 
-export default {
+const config = {
   https: production,
   staticResourceCacheDuration: 20,
   redis: {
@@ -78,3 +78,6 @@ export default {
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
 }
+export default config
+
+export const manageRecallsApiConfig = () => config.apis.manageRecallsApi

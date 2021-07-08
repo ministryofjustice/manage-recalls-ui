@@ -1,4 +1,4 @@
-import config from '../../config'
+import { manageRecallsApiConfig } from '../../config'
 import RestClient from '../../data/restClient'
 import { RecallResponse as Recall, Pdf } from '../../@types/manage-recalls-api'
 
@@ -36,5 +36,5 @@ export function createRecall(nomsNumber: string, token: string): Promise<Recall>
 }
 
 function restClient(token: string): RestClient {
-  return new RestClient('Manage Recalls API Client', config.apis.manageRecallsApi, token)
+  return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }
