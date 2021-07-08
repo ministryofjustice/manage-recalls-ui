@@ -22,7 +22,7 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectGenerateRevocationOrder: expectedPdfFile => {
+    expectGenerateRevocationOrder: expectation => {
       return wiremock.stubFor({
         request: {
           method: 'POST',
@@ -30,7 +30,7 @@ export default function manageRecallsApi(wiremock) {
           bodyPatterns: [
             {
               equalToJson: {
-                nomsNumber: expectedPdfFile.expectedSearchTerm,
+                nomsNumber: expectation.expectedSearchTerm,
               },
             },
           ],
@@ -40,7 +40,7 @@ export default function manageRecallsApi(wiremock) {
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: expectedPdfFile,
+          jsonBody: expectation.expectedPdfFile,
         },
       })
     },
