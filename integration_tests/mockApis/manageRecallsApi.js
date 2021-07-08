@@ -27,6 +27,13 @@ export default function manageRecallsApi(wiremock) {
         request: {
           method: 'POST',
           urlPattern: '/generate-revocation-order',
+          bodyPatterns: [
+            {
+              equalToJson: {
+                nomsNumber: expectedPdfFile.expectedSearchTerm,
+              },
+            },
+          ],
         },
         response: {
           status: 200,
