@@ -6,14 +6,13 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="${SCRIPT_DIR}/.."
 readonly MANAGE_RECALLS_UI_NAME='manage-recalls-ui'
 readonly LOG_FILE="/tmp/${MANAGE_RECALLS_UI_NAME}.log"
-readonly START_SERVICE=${1:-wiremock}
 readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose-test.yml"
 
 . ${SCRIPT_DIR}/install-cypress.sh
 checkCypressInstalled $PROJECT_DIR
 
 docker compose -f "${DOCKER_COMPOSE_FILE}" pull
-docker compose -f "${DOCKER_COMPOSE_FILE}" up $START_SERVICE -d --remove-orphans
+docker compose -f "${DOCKER_COMPOSE_FILE}" up -d --remove-orphans
 
 echo "Checking wiremock is running..."
 docker run --network container:wiremock-manage-recalls-ui \

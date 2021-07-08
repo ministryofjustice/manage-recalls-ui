@@ -63,7 +63,7 @@ The integration tests require redis, wiremock and the service to be running.  To
 This is equivalent to:
 
 ```
-docker compose up -f docker-compose-test.yml
+docker compose -f docker-compose-test.yml up
 npm run start-feature
 ```
 
