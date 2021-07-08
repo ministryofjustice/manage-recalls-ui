@@ -1,5 +1,5 @@
 import nock from 'nock'
-import { mockGetRequest, mockPostRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
+import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import config from '../../config'
 import generateRevocationOrder from './generateRevocationOrder'
 
