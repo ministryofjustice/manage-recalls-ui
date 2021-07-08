@@ -63,8 +63,7 @@ docker compose up -f docker-compose-test.yml
 npm run start-feature
 ```
 
-The integration tests use [Cypress](https://docs.cypress.io/) you will need to manually install the Cypress 
-`npm install cypress --save-dev`
+The integration tests use [Cypress](https://docs.cypress.io/).
 
 Then either, run tests in headless mode with:
 

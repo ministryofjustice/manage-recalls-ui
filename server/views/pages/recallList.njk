@@ -39,7 +39,7 @@
                                 <td class="govuk-table__cell" data-qa="lastName">{{ recall.lastName }}</td>
                                 <td class="govuk-table__cell" data-qa="lastName">{{ recall.recallDate }}</td>
                                 <td class="govuk-table__cell" data-qa="lastName">{{ recall.dueDate }}</td>
-                                <td class="govuk-table__cell" data-qa="lastName"><a href='#' data-qa='viewRecallDetails'>View</a></td>
+                                <td class="govuk-table__cell" data-qa="lastName"><a href='/assess-recall?nomsNumber={{ recall.nomsNumber }}' data-qa='viewRecallDetails'>View</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
