@@ -6,12 +6,14 @@
         {
             text: 'To do',
             href: '/',
-            active: isTodoPage == true
+            active: isTodoPage == true,
+            attributes: { 'data-qa': 'navLinkToDo'}
         },
         {
             text: 'Find someone',
             href: '/find-offender',
-            active: isTodoPage != true
+            active: isTodoPage != true,
+            attributes: { 'data-qa': 'navLinkFindSomeone'}
         }
     ]
 }) }}
