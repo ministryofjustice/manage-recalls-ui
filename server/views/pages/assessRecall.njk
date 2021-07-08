@@ -1,0 +1,94 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Offender profile" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-l">
+                Assess <span data-qa='offenderName'>{{ offender.firstName }} {{ offender.lastName }}</span>'s recall
+            </h1>
+            <h2 class='govuk-heading-m'>About the offender</h2>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        First name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.firstName }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Middle names
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.middleNames }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Last name
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.lastName }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Date of birth
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.dateOfBirth | date }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Gender
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.gender }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Last known address
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.lastKnownAddress }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        CRO
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.croNumber }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        PNC
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.pncNumber }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        NOMIS
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ offender.nomsNumber }}
+                    </dd>
+                </div>
+            </dl>
+
+        </div>
+    </div>
+
+{% endblock %}
