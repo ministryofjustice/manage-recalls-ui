@@ -22,7 +22,7 @@ context('Offender profile', () => {
     ])
 
     cy.readFile('integration_tests/expected-revocation-order.pdf', 'base64').then(base64EncodedPdf => {
-      expectRevocationOrderFromManageRecallsApi({ content: base64EncodedPdf })
+      expectRevocationOrderFromManageRecallsApi(nomsNumber, { content: base64EncodedPdf })
       cy.login()
 
       const offenderProfile = offenderProfilePage.verifyOnPage(nomsNumber)
@@ -65,7 +65,7 @@ context('Offender profile', () => {
     cy.task('expectSearchResults', { expectedSearchTerm, expectedSearchResults })
   }
 
-  function expectRevocationOrderFromManageRecallsApi(expectedPdfFile) {
-    cy.task('expectGenerateRevocationOrder', expectedPdfFile)
+  function expectRevocationOrderFromManageRecallsApi(expectedSearchTerm, expectedPdfFile) {
+    cy.task('expectGenerateRevocationOrder', { expectedSearchTerm, expectedPdfFile })
   }
 })
