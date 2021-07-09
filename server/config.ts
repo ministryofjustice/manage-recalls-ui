@@ -80,4 +80,4 @@ const config = {
 }
 export default config
 
-export const manageRecallsApiConfig = () => config.apis.manageRecallsApi
+export const manageRecallsApiConfig = (): ApiConfig => config.apis.manageRecallsApi
