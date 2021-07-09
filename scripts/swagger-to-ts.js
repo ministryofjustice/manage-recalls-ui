@@ -12,6 +12,7 @@ superagent.get(swaggerUrl).then(({ body }) => {
     exportCore: false,
     exportServices: false,
   }).then(() => {
+    // TS requires that every subfolder under a @types/ folder, has a index.d.ts
     fs.closeSync(fs.openSync(`${outputPath}/models/index.d.ts`, 'w'))
     fs.rename(`${outputPath}/index.ts`, `${outputPath}/index.d.ts`, err => {
       // eslint-disable-next-line no-console
