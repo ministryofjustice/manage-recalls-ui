@@ -141,6 +141,9 @@ jobs:
             }
 
   unit_test:
+    environment:
+      PACT_BROKER_BASE_URL: "https://pact-broker-prod.apps.live-1.cloud-platform.service.justice.gov.uk"
+      PACT_BROKER_USERNAME: "manage-recalls-ui"
     executor:
       name: hmpps/node
       tag: 14.16-browsers
@@ -148,6 +151,15 @@ jobs:
       - checkout
       - node/install-packages
       - run: npm run test
+      - store_artifacts:
+          path: 'pact/pacts'
+      - run:
+          name: Upload pact files to broker
+          command: |
+            npx pact-broker publish pact/pacts \
+              --broker-base-url $PACT_BROKER_BASE_URL \
+              --consumer-app-version $CIRCLE_SHA1 --tag $CIRCLE_BRANCH \
+              -u $PACT_BROKER_USERNAME -p $PACT_BROKER_PASSWORD
       - store_test_results:
           path: test_results
       - store_artifacts:
