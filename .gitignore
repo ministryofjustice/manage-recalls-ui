@@ -127,3 +127,4 @@ integration_tests/videos/
 integration_tests/screenshots/
 */*.iml
 cypress/downloads/
+pact/

@@ -1,31 +1,14 @@
-import path from 'path'
-import { Pact } from '@pact-foundation/pact'
+import { pactWith } from 'jest-pact'
 import { searchByNomsNumber } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 
-const provider = new Pact({
-  consumer: 'manage-recalls-ui',
-  provider: 'manage-recalls-api',
-  log: path.resolve(process.cwd(), 'logs', 'pact.log'),
-  logLevel: 'warn',
-  dir: path.resolve(process.cwd(), 'pacts'),
-  spec: 2,
-})
-
-const token = { access_token: 'token-1', expires_in: 300 }
-
-describe('Manage Recalls API Pact test', () => {
-  beforeAll(() => provider.setup())
-  afterEach(() => provider.verify())
-  afterAll(() => provider.finalize())
+pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
+  const token = { access_token: 'token-1', expires_in: 300 }
+  const nomsNumber = 'A1234AA'
 
   describe('search prisoners', () => {
-    const nomsNumber = 'A1234AA'
-
     test('can find a prisoner by NOMS number', async () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
+      jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl } as never)
 
       const expectedResult = {
         firstName: 'Bertie',
@@ -36,7 +19,7 @@ describe('Manage Recalls API Pact test', () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       await provider.addInteraction({
-        state: 'prisoner exists for NOMS number',
+        state: `prisoner exists for NOMS number`,
         ...searchRequest('a search request by NOMS number', nomsNumber),
         willRespondWith: searchResponse([expectedResult], 200),
       })
@@ -91,10 +74,7 @@ describe('Manage Recalls API Pact test', () => {
       withRequest: {
         method: 'POST',
         path: '/search',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${token.access_token}`,
-        },
+        headers: { Accept: 'application/json', Authorization: `Bearer ${token.access_token}` },
         body: { nomsNumber },
       },
     }
@@ -105,9 +85,7 @@ describe('Manage Recalls API Pact test', () => {
   function searchResponse(searchResults, expectedStatus = 200) {
     return {
       status: expectedStatus,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: searchResults,
     }
   }
