@@ -3,5 +3,5 @@
 /* eslint-disable */
 
 export type Pdf = {
-  content: string
+    content: string;
 }

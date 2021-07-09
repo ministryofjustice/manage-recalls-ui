@@ -3,5 +3,5 @@
 /* eslint-disable */
 
 export type View = {
-  contentType?: string
+    contentType?: string;
 }

@@ -3,5 +3,5 @@
 /* eslint-disable */
 
 export type SearchRequest = {
-  nomsNumber: string
+    nomsNumber: string;
 }
