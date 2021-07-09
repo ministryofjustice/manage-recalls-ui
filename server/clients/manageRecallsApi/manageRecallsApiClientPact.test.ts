@@ -1,14 +1,15 @@
+// @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { searchByNomsNumber } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
-  const token = { access_token: 'token-1', expires_in: 300 }
+  const accessToken = 'accessToken-1'
   const nomsNumber = 'A1234AA'
 
   describe('search prisoners', () => {
     test('can find a prisoner by NOMS number', async () => {
-      jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl } as never)
+      jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
 
       const expectedResult = {
         firstName: 'Bertie',
@@ -16,15 +17,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         nomsNumber,
         dateOfBirth: '1990-10-30',
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       await provider.addInteraction({
         state: `prisoner exists for NOMS number`,
-        ...searchRequest('a search request by NOMS number', nomsNumber),
+        ...searchRequest('a search request by NOMS number', nomsNumber, accessToken),
         willRespondWith: searchResponse([expectedResult], 200),
       })
 
-      const actualResults = await searchByNomsNumber(nomsNumber, token.access_token)
+      const actualResults = await searchByNomsNumber(nomsNumber, accessToken)
 
       expect(actualResults).toStrictEqual(expectedResult)
     })
@@ -35,16 +34,14 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         status: 'BAD_REQUEST',
         message: 'nomsNumber: must not be blank',
       }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       await provider.addInteraction({
         state: 'search by blank NOMS number',
-        ...searchRequest('a search request with blank NOMS number', blankNomsNumber),
+        ...searchRequest('a search request with blank NOMS number', blankNomsNumber, accessToken),
         willRespondWith: searchResponse(errorResponse, 400),
       })
 
       try {
-        await searchByNomsNumber(blankNomsNumber, token.access_token)
+        await searchByNomsNumber(blankNomsNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(400)
         expect(exception.data).toEqual(errorResponse)
@@ -52,41 +49,37 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
 
     test('returns 401 if invalid user', async () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       await provider.addInteraction({
-        state: 'unauthorized user token',
-        ...searchRequest('an unauthorized search request', nomsNumber),
+        state: 'unauthorized user accessToken',
+        ...searchRequest('an unauthorized search request', nomsNumber, accessToken),
         willRespondWith: { status: 401 },
       })
 
       try {
-        await searchByNomsNumber(nomsNumber, token.access_token)
+        await searchByNomsNumber(nomsNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }
     })
   })
-
-  function searchRequest(description: string, nomsNumber: string) {
-    return {
-      uponReceiving: description,
-      withRequest: {
-        method: 'POST',
-        path: '/search',
-        headers: { Accept: 'application/json', Authorization: `Bearer ${token.access_token}` },
-        body: { nomsNumber },
-      },
-    }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  function searchResponse(searchResults, expectedStatus = 200) {
-    return {
-      status: expectedStatus,
-      headers: { 'Content-Type': 'application/json' },
-      body: searchResults,
-    }
-  }
 })
+
+function searchRequest(description: string, nomsNumber: string, token: string) {
+  return {
+    uponReceiving: description,
+    withRequest: {
+      method: 'POST',
+      path: '/search',
+      headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
+      body: { nomsNumber },
+    },
+  }
+}
+
+function searchResponse(searchResults, expectedStatus = 200) {
+  return {
+    status: expectedStatus,
+    headers: { 'Content-Type': 'application/json' },
+    body: searchResults,
+  }
+}
