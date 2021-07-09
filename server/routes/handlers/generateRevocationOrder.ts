@@ -1,10 +1,12 @@
 import type { RequestHandler } from 'express'
 import { generateRevocationOrder } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../../logger'
 
 export default function generateRevocationOrderHandler(): RequestHandler {
   return async (req, res, next) => {
     const { nomsNumber } = req.query
     if (typeof nomsNumber === 'undefined') {
+      logger.error('/generate-revocation-order called without a nomsNumber')
       return res.sendStatus(400)
     }
     const base64EncodedPdf = await generateRevocationOrder(nomsNumber as string, res.locals.user.token)
