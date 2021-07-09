@@ -25,13 +25,11 @@
     "lint": "eslint . --cache --max-warnings 0",
     "lint:fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
     "int-test": "cypress run --config video=false",
     "int-test-ui": "cypress open",
-    "clean": "rm -rf dist build",
-    "test:pact": "CI=true jest  -- 'server/clients/manageRecallsApi/manageRecallsApiClient.pact.test.ts'",
-    "posttest:pact": "node pacts/publish.pact.js"
+    "clean": "rm -rf dist build"
   },
   "engines": {
     "node": "^14",
@@ -94,7 +92,6 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^0.2.4",
-    "@pact-foundation/pact-node": "^10.12.2",
     "agentkeepalive": "^4.1.4",
     "applicationinsights": "^2.0.0",
     "body-parser": "^1.19.0",
