@@ -1,16 +1,12 @@
 import config from '../../config'
 import RestClient from '../../data/restClient'
+import { RecallResponse as Recall } from '../../@types'
 
 export interface PrisonerSearchResult {
   firstName: string
   lastName: string
   nomsNumber?: string
   dateOfBirth?: string
-}
-
-export interface Recall {
-  id: string
-  nomsNumber: string
 }
 
 export interface Pdf {
