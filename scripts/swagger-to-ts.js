@@ -5,7 +5,7 @@ const fs = require('fs')
 const swaggerUrl = 'https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/v2/api-docs'
 
 superagent.get(swaggerUrl).then(({ body }) => {
-  const outputPath = './server/@types'
+  const outputPath = './server/@types/manage-recalls-api'
   OpenAPI.generate({
     input: body,
     output: outputPath,

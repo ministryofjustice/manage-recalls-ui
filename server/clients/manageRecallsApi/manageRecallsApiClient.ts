@@ -1,6 +1,6 @@
 import config from '../../config'
 import RestClient from '../../data/restClient'
-import { RecallResponse as Recall } from '../../@types'
+import { RecallResponse as Recall } from '../../@types/manage-recalls-api'
 
 export interface PrisonerSearchResult {
   firstName: string
