@@ -4,11 +4,20 @@
 
 UI for managing recalls
 
-### Dependencies
+## Dependencies
 The app requires:
 * hmpps-auth - for authentication
 * redis - session store and token caching
 * manage-recalls-api - api service for managing the recall process
+
+### Node and NPM
+The required versions of Node.js and NPM are in package.json 'engines' field.
+Recommended that you use NVM to manage your Node versions. You can then upgrade to match the required versions with:
+```
+nvm install <version>
+nvm install-latest-npm
+```
+The Node version is also in .nvmrc so your shell can automatically switch to it when you change folders.
 
 ## Running the app
 The easiest way to run the app is to use docker compose to create the service and all dependencies. This starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui. 
