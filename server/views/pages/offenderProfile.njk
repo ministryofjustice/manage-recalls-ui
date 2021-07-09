@@ -30,7 +30,7 @@
                 <p class='govuk-body'>An offender with the NOMIS {{ nomsNumber }} could not be found.</p>
             {% endif %}
             <p class='govuk-body'>
-                <a href="/generate-revocation-order" role='button' class="govuk-button" data-module="govuk-button"
+                <a href="/generate-revocation-order?nomsNumber={{ nomsNumber }}" role='button' class="govuk-button" data-module="govuk-button"
                    data-qa="createRevocationOrderButton" download>
                     Generate revocation order
                 </a>
