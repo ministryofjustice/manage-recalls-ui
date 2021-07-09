@@ -105,6 +105,12 @@
         "semi": false,
         "arrowParens": "avoid"
       }
+    ],
+    "@typescript-eslint/ban-ts-comment": [
+      "off",
+      {
+        "ts-nocheck": false
+      }
     ]
   }
 }
