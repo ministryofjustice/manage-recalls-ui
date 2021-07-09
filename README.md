@@ -38,6 +38,10 @@ And then, to build the assets and start the app with nodemon:
 For every endpoint added to manage-recalls-api that is used by this app, a corresponding mock should be created in ./fake-manage-recalls-api. See the existing examples for the patterns to follow.
 Note - rebuilding the fake-manage-recalls-api afterwards won't be enough as it will be cached; you need to delete it then rebuild it.
 
+### Typescript definitions generated from manage-recalls-api Swagger endpoint
+This done by the NPM task `swagger-to-ts` which is run as part of `npm run build`.
+Types are output to `./server/@types/manage-recalls-api`.
+
 ### Run linter
 
 `npm run lint`

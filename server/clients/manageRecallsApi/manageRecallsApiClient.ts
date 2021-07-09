@@ -1,20 +1,12 @@
 import config from '../../config'
 import RestClient from '../../data/restClient'
+import { RecallResponse as Recall, Pdf } from '../../@types/manage-recalls-api'
 
 export interface PrisonerSearchResult {
   firstName: string
   lastName: string
   nomsNumber?: string
   dateOfBirth?: string
-}
-
-export interface Recall {
-  id: string
-  nomsNumber: string
-}
-
-export interface Pdf {
-  content: string
 }
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
