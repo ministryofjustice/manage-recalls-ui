@@ -188,8 +188,7 @@ jobs:
       - run:
           name: Wait for node app to start
           command: sleep 5
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - node/install-packages
       - run:
           name: integration tests
           command: npm run int-test
