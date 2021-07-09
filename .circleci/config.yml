@@ -143,7 +143,6 @@ jobs:
   unit_test:
     environment:
       PACT_BROKER_BASE_URL: "https://pact-broker-prod.apps.live-1.cloud-platform.service.justice.gov.uk"
-      PACT_BROKER_USERNAME: "manage-recalls-ui"
     executor:
       name: hmpps/node
       tag: 14.16-browsers
@@ -209,6 +208,7 @@ workflows:
               ignore: /.*/
 
       - unit_test:
+          context: [hmpps-common-vars]
           requires:
             - build
 
