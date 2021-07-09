@@ -3,11 +3,12 @@ version: 2.1
 orbs:
   hmpps: ministryofjustice/hmpps@3.8
   slack: circleci/slack@4.4.2
+  node: circleci/node@4.5.1
 
 executors:
   integration-tests:
     docker:
-      - image: cimg/node:14.15-browsers
+      - image: cimg/node:14.16-browsers
       - image: circleci/redis:buster
     working_directory: ~/app
 
@@ -23,22 +24,10 @@ jobs:
   build:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: 14.16-browsers
     steps:
       - checkout
-      - run:
-          name: Update npm
-          command: 'sudo npm install -g npm@latest'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm ci --no-audit
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-            - ~/.cache
+      - node/install-packages
       - run:
           command: |
             npm run build
@@ -105,18 +94,13 @@ jobs:
               exit 1
             fi
 
-
   check_outdated:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: 14.16-browsers
     steps:
       - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: install-npm
-          command: 'npm ci --no-audit'
+      - node/install-packages
       - run:
           name: Check version
           command: 'npm --version'
@@ -159,14 +143,11 @@ jobs:
   unit_test:
     executor:
       name: hmpps/node
-      tag: 14.15-browsers
+      tag: 14.16-browsers
     steps:
       - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: unit tests
-          command: npm run test
+      - node/install-packages
+      - run: npm run test
       - store_test_results:
           path: test_results
       - store_artifacts:
@@ -212,9 +193,9 @@ workflows:
   build-test-and-deploy:
     jobs:
       - build:
-        filters:
-          tags:
-            ignore: /.*/
+          filters:
+            tags:
+              ignore: /.*/
 
       - unit_test:
           requires:
