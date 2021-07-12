@@ -18,6 +18,13 @@ nvm install <version>
 nvm install-latest-npm
 ```
 
+### Pre-commit hooks
+After `npm install`, run:
+```
+npx husky install
+```
+This should create files under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
+
 ## Running the app
 The easiest way to run the app is to use docker compose to create the service and all dependencies. This starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui. 
 
