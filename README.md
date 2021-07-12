@@ -15,7 +15,7 @@ The required versions of Node.js and NPM are in package.json 'engines' field.
 Recommended that you use NVM to manage your Node versions. You can then upgrade to match the required versions with:
 ```
 nvm install <version>
-nvm install-latest-npm
+npm i -g npm@6
 ```
 
 ### Pre-commit hooks
