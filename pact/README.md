@@ -15,4 +15,4 @@ For local development you can run all the pact tests and generate the pact file 
 
 ```npm run pact-test```
 
-If the provider code is available, you can then use this file to locally verify the provider still works as expected.
+If the provider code is available, you can then use this file to locally verify the provider still works as expected.  Or you can push your changes to a branch and  circleCI will trigger a build in the provider to verify the pact file.  
