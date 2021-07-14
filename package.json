@@ -29,7 +29,8 @@
     "int-test": "cypress run --config video=false",
     "int-test-ui": "cypress open",
     "clean": "rm -rf dist build",
-    "prepare": "npx husky install"
+    "prepare": "npx husky install",
+    "pact-test": "rm -rf pact/pacts/* && jest --detectOpenHandles --config=./pact/jest.pact.config.js"
   },
   "engines": {
     "node": "14.17.3",
