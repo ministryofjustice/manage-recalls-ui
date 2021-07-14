@@ -8,7 +8,7 @@
   "interactions": [
     {
       "description": "a search request by NOMS number",
-      "providerState": "prisoner exists for NOMS number",
+      "providerState": "a prisoner exists for NOMS number",
       "request": {
         "method": "POST",
         "path": "/search",
@@ -28,16 +28,20 @@
         "body": [
           {
             "firstName": "Bertie",
+            "middleNames": "Barry",
             "lastName": "Badger",
+            "dateOfBirth": "1990-10-30",
+            "gender": "Male",
             "nomsNumber": "A1234AA",
-            "dateOfBirth": "1990-10-30"
+            "croNumber": "1234/56A",
+            "pncNumber": "98/7654Z"
           }
         ]
       }
     },
     {
       "description": "a search request with blank NOMS number",
-      "providerState": "search by blank NOMS number",
+      "providerState": "a search by blank NOMS number",
       "request": {
         "method": "POST",
         "path": "/search",
@@ -62,27 +66,7 @@
     },
     {
       "description": "an unauthorized search request",
-      "providerState": "unauthorized user token",
-      "request": {
-        "method": "POST",
-        "path": "/search",
-        "headers": {
-          "Accept": "application/json",
-          "Authorization": "Bearer token-1"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "an unauthorized search request",
-      "providerState": "unauthorized user accessToken",
+      "providerState": "an unauthorized user accessToken",
       "request": {
         "method": "POST",
         "path": "/search",
