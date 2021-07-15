@@ -1,5 +1,5 @@
 import validateBinaryFile from './file-utils'
-import searchResponseJson from '../../fake-manage-recalls-api/stubs/__files/search.json'
+import { searchResponseJson } from '../mockApis/mockResponses'
 
 const offenderProfilePage = require('../pages/offenderProfile')
 
@@ -10,13 +10,16 @@ context('Offender profile', () => {
     cy.task('stubAuthUser')
   })
 
-  const nomsNumber = '123ABC'
+  const nomsNumber = 'A1234AA'
   it('User can generate revocation order', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
-    expectSearchResultsFromManageRecallsApi(nomsNumber, searchResponseJson)
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponseJson })
 
     cy.readFile('integration_tests/expected-revocation-order.pdf', 'base64').then(base64EncodedPdf => {
-      expectRevocationOrderFromManageRecallsApi(nomsNumber, { content: base64EncodedPdf })
+      cy.task('expectGenerateRevocationOrder', {
+        expectedSearchTerm: nomsNumber,
+        expectedPdfFile: { content: base64EncodedPdf },
+      })
       cy.login()
 
       const offenderProfile = offenderProfilePage.verifyOnPage(nomsNumber)
@@ -34,32 +37,12 @@ context('Offender profile', () => {
   it('User can create a recall', () => {
     const recallId = '123'
     cy.task('expectListRecalls', { expectedResults: [] })
-    expectSearchResultsFromManageRecallsApi(nomsNumber, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-        nomsNumber,
-        dateOfBirth: '1999-05-28',
-      },
-    ])
-
-    expectCreateRecallFromManageRecallsApi({ recallId })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponseJson })
+    cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.login()
 
     const offenderProfile = offenderProfilePage.verifyOnPage(nomsNumber)
     offenderProfile.createRecall()
     offenderProfile.expectRecallIdConfirmation(`Recall ID: ${recallId}`)
   })
-
-  function expectCreateRecallFromManageRecallsApi(expectedResults) {
-    cy.task('expectCreateRecall', { expectedResults })
-  }
-
-  function expectSearchResultsFromManageRecallsApi(expectedSearchTerm, expectedSearchResults) {
-    cy.task('expectSearchResults', { expectedSearchTerm, expectedSearchResults })
-  }
-
-  function expectRevocationOrderFromManageRecallsApi(expectedSearchTerm, expectedPdfFile) {
-    cy.task('expectGenerateRevocationOrder', { expectedSearchTerm, expectedPdfFile })
-  }
 })
