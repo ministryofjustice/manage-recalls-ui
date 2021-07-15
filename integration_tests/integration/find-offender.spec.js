@@ -1,5 +1,7 @@
 const findOffenderPage = require('../pages/findOffender')
 const offenderProfilePage = require('../pages/offenderProfile')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const searchResponseJson = require('../../fake-manage-recalls-api/stubs/__files/search.json')
 
 context('Search for offenders', () => {
   beforeEach(() => {
@@ -8,16 +10,9 @@ context('Search for offenders', () => {
     cy.task('stubAuthUser')
   })
 
-  const nomsNumber = '123ABC'
+  const nomsNumber = 'A1234AA'
   it('User can search for a prisoner', () => {
-    expectSearchResultsFromManageRecallsApi(nomsNumber, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-        nomsNumber,
-        dateOfBirth: '1999-05-28',
-      },
-    ])
+    expectSearchResultsFromManageRecallsApi(nomsNumber, searchResponseJson)
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage()

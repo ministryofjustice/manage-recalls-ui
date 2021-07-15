@@ -1,4 +1,5 @@
 import validateBinaryFile from './file-utils'
+import searchResponseJson from '../../fake-manage-recalls-api/stubs/__files/search.json'
 
 const offenderProfilePage = require('../pages/offenderProfile')
 
@@ -12,14 +13,7 @@ context('Offender profile', () => {
   const nomsNumber = '123ABC'
   it('User can generate revocation order', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
-    expectSearchResultsFromManageRecallsApi(nomsNumber, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-        nomsNumber,
-        dateOfBirth: '1999-05-28',
-      },
-    ])
+    expectSearchResultsFromManageRecallsApi(nomsNumber, searchResponseJson)
 
     cy.readFile('integration_tests/expected-revocation-order.pdf', 'base64').then(base64EncodedPdf => {
       expectRevocationOrderFromManageRecallsApi(nomsNumber, { content: base64EncodedPdf })
