@@ -67,16 +67,9 @@ to fix any lint issues automatically:
 
 ### Run integration tests
 
-The integration tests require redis, wiremock and the service to be running.  To start them in docker run:
+The integration tests require redis, wiremock (fake-manage-recalls-api) and the service to be running.  To start them run:
 
 `./scripts/start-local.sh`
-
-This is equivalent to:
-
-```
-docker compose -f docker-compose-test.yml up
-npm run start-feature
-```
 
 The integration tests use [Cypress](https://docs.cypress.io/).
 
