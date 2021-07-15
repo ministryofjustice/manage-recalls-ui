@@ -1,7 +1,12 @@
 {
   "request": {
     "method": "POST",
-    "url": "/search"
+    "url": "/search",
+    "bodyPatterns": [
+      {
+        "equalToJson": "{ \"nomsNumber\": \"A1234AA\" }"
+      }
+    ]
   },
   "response": {
     "status": 200,

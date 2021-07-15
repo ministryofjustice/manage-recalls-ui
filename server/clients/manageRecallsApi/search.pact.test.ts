@@ -2,7 +2,8 @@
 import { pactWith } from 'jest-pact'
 import { searchByNomsNumber } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-import { SearchResult } from '../../@types/manage-recalls-api'
+// TODO:  Ensure this json is of the correct type
+import searchResponseJson from '../../../fake-manage-recalls-api/stubs/__files/search.json'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -14,16 +15,15 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
 
   describe('search prisoners', () => {
     test('can find a prisoner by NOMS number', async () => {
-      const expectedResult = expectedSearchResult(nomsNumber)
       await provider.addInteraction({
         state: `a prisoner exists for NOMS number`,
         ...searchRequest('a search request by NOMS number', nomsNumber, accessToken),
-        willRespondWith: searchResponse([expectedResult], 200),
+        willRespondWith: searchResponse(searchResponseJson, 200),
       })
 
       const actualResults = await searchByNomsNumber(nomsNumber, accessToken)
 
-      expect(actualResults).toStrictEqual(expectedResult)
+      expect(actualResults).toStrictEqual(searchResponseJson[0])
     })
 
     test('returns 400 if blank NOMS number provided', async () => {
@@ -79,18 +79,5 @@ function searchResponse(searchResults, expectedStatus = 200) {
     status: expectedStatus,
     headers: { 'Content-Type': 'application/json' },
     body: searchResults,
-  }
-}
-
-function expectedSearchResult(nomsNumber): SearchResult {
-  return {
-    firstName: 'Bertie',
-    middleNames: 'Barry',
-    lastName: 'Badger',
-    dateOfBirth: '1990-10-30',
-    gender: 'Male',
-    nomsNumber,
-    croNumber: '1234/56A',
-    pncNumber: '98/7654Z',
   }
 }

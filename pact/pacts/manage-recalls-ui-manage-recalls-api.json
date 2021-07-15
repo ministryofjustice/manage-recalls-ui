@@ -27,6 +27,16 @@
         },
         "body": [
           {
+            "firstName": "Bobby",
+            "middleNames": "John",
+            "lastName": "Badger",
+            "dateOfBirth": "1999-05-28",
+            "gender": "Male",
+            "nomsNumber": "A1234AA",
+            "croNumber": "1234/56A",
+            "pncNumber": "98/7654Z"
+          },
+          {
             "firstName": "Bertie",
             "middleNames": "Barry",
             "lastName": "Badger",
