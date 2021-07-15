@@ -12,7 +12,7 @@
     "watch-node": "DEBUG=gov-starter-server* nodemon --watch dist/ -- --inspect=0.0.0.0:9229 dist/server.js | bunyan -o short",
     "watch-sass": "npm run compile-sass -- --watch",
     "build": "npm run swagger-to-ts && npm run clean && npm run compile-sass && tsc && npm run copy-views",
-    "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-local.sh && npm run int-test && ./scripts/stop-local.sh",
+    "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-sass\"",
     "start:e2e": "export $(cat e2e.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",

@@ -26,6 +26,10 @@ The easiest way to run the app is to use docker compose to create the service an
 
 `docker compose up`
 
+OR use the following script to run in the background and ensure the fake-mange-recalls-api is up to date and all services start correctly:
+
+`scripts/start-local.sh` 
+
 You can login locally with `PPUD_USER` / `password123456`, this user has the `MANAGE_RECALLS` role that allows access to the service.
 
 ### Full local build
@@ -69,7 +73,7 @@ to fix any lint issues automatically:
 
 The integration tests require redis, wiremock (fake-manage-recalls-api) and the service to be running.  To start them run:
 
-`./scripts/start-local.sh`
+`./scripts/start-for-integration-tests.sh`
 
 The integration tests use [Cypress](https://docs.cypress.io/).
 

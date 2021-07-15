@@ -39,6 +39,7 @@ services:
     build: .
     networks:
       - manage-recalls-ui
+    container_name: manage-recalls-ui
     depends_on: [redis, fake-manage-recalls-api]
     ports:
       - "3000:3000"
