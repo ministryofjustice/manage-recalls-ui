@@ -165,6 +165,54 @@
         "headers": {
         }
       }
+    },
+    {
+      "description": "a get recalls request",
+      "providerState": "a list of recalls exists",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "123"
+          },
+          {
+            "id": "8ab377a6-4587-2598-abc4-98fc53737",
+            "nomsNumber": "456"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized get recalls request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+        }
+      }
     }
   ],
   "metadata": {
