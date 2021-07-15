@@ -16,7 +16,7 @@
     "taskTimeout": 60000,
     "env": {
         "manageRecallsUiUrl": "http://localhost:3000",
-        "wiremockUrl": "http://localhost:9999",
+        "wiremockUrl": "http://localhost:9091",
         "uiClientId": "ppud-ui-client",
         "useStubs": ["hmpps-auth", "manage-recalls-api"]
     }

@@ -6,16 +6,16 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly PROJECT_DIR="${SCRIPT_DIR}/.."
 readonly MANAGE_RECALLS_UI_NAME='manage-recalls-ui'
 readonly LOG_FILE="/tmp/${MANAGE_RECALLS_UI_NAME}.log"
-readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose-test.yml"
+readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose.yml"
 
 . ${SCRIPT_DIR}/install-cypress.sh
 checkCypressInstalled $PROJECT_DIR
 
-docker compose -f "${DOCKER_COMPOSE_FILE}" pull
-docker compose -f "${DOCKER_COMPOSE_FILE}" up -d --remove-orphans
+docker compose -f "${DOCKER_COMPOSE_FILE}" pull fake-manage-recalls-api redis
+docker compose -f "${DOCKER_COMPOSE_FILE}" up fake-manage-recalls-api redis -d --remove-orphans
 
 echo "Checking wiremock is running..."
-docker run --network container:wiremock-manage-recalls-ui \
+docker run --network container:fake-manage-recalls-api \
     appropriate/curl -s -4 -o /dev/null --retry 120 --retry-delay 1 --retry-connrefused http://localhost:8080/__admin/docs
 
 echo "Building ${MANAGE_RECALLS_UI_NAME}"
