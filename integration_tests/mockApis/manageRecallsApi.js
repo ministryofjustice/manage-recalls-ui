@@ -22,25 +22,20 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectGenerateRevocationOrder: expectation => {
+    expectGetRevocationOrder: expectation => {
       return wiremock.stubFor({
         request: {
-          method: 'POST',
-          urlPattern: '/generate-revocation-order',
-          bodyPatterns: [
-            {
-              equalToJson: {
-                nomsNumber: expectation.expectedSearchTerm,
-              },
-            },
-          ],
+          method: 'GET',
+          urlPattern: `/recalls/${expectation.recallId}/revocationOrder`,
         },
         response: {
           status: 200,
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: expectation.expectedPdfFile,
+          jsonBody: {
+            content: expectation.expectedPdfFile,
+          },
         },
       })
     },
@@ -71,6 +66,21 @@ export default function manageRecallsApi(wiremock) {
             'Content-Type': 'application/json;charset=UTF-8',
           },
           jsonBody: expectation.expectedResults,
+        },
+      })
+    },
+    expectGetRecall: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'GET',
+          urlPattern: `/recalls/${expectation.recallId}`,
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: expectation.expectedResult,
         },
       })
     },

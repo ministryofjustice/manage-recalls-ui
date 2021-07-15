@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Offender profile" %}
+{% set pageTitle = applicationName + " - Assess Recall" %}
 
 {% block content %}
 
@@ -12,6 +12,7 @@
             <h1 class="govuk-heading-l">
                 Assess <span data-qa='offenderName'>{{ offender.firstName }} {{ offender.lastName }}</span>'s recall
             </h1>
+            <h2 class='govuk-heading-m'>Recall ID: {{ recallId }}</h2>
             <h2 class='govuk-heading-m'>About the offender</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
@@ -87,6 +88,13 @@
                     </dd>
                 </div>
             </dl>
+
+            <p class='govuk-body'>
+                <a href="/get-revocation-order?recallId={{ recallId }}" role='button' class="govuk-button" data-module="govuk-button"
+                   data-qa="getRevocationOrderButton" download>
+                    Download revocation order
+                </a>
+            </p>
 
         </div>
     </div>
