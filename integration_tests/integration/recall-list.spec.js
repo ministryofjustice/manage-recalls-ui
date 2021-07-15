@@ -1,3 +1,5 @@
+import { searchResponseJson } from '../mockApis/mockResponses'
+
 const recallsListPage = require('../pages/recallsList')
 
 context('Todo list of recalls', () => {
@@ -7,22 +9,17 @@ context('Todo list of recalls', () => {
     cy.task('stubAuthUser')
   })
 
-  const nomsNumber = '123ABC'
+  const nomsNumber = 'A1234AA'
   it('User can view a list of recalls', () => {
-    expectSearchResultsFromManageRecallsApi(nomsNumber, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-        nomsNumber,
-        dateOfBirth: '1999-05-28',
-      },
-    ])
-    expectRecallResultsFromManageRecallsApi([
-      {
-        id: '1',
-        nomsNumber,
-      },
-    ])
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponseJson })
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          id: '1',
+          nomsNumber,
+        },
+      ],
+    })
 
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
@@ -33,12 +30,4 @@ context('Todo list of recalls', () => {
     firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
   })
-
-  function expectRecallResultsFromManageRecallsApi(expectedResults) {
-    cy.task('expectListRecalls', { expectedResults })
-  }
-
-  function expectSearchResultsFromManageRecallsApi(expectedSearchTerm, expectedSearchResults) {
-    cy.task('expectSearchResults', { expectedSearchTerm, expectedSearchResults })
-  }
 })

@@ -1,7 +1,7 @@
+import { searchResponseJson } from '../mockApis/mockResponses'
+
 const findOffenderPage = require('../pages/findOffender')
 const offenderProfilePage = require('../pages/offenderProfile')
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const searchResponseJson = require('../../fake-manage-recalls-api/stubs/__files/search.json')
 
 context('Search for offenders', () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ context('Search for offenders', () => {
 
   const nomsNumber = 'A1234AA'
   it('User can search for a prisoner', () => {
-    expectSearchResultsFromManageRecallsApi(nomsNumber, searchResponseJson)
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponseJson })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage()
@@ -30,15 +30,11 @@ context('Search for offenders', () => {
 
   it('prisoner search returns no results', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
     cy.login()
-    expectSearchResultsFromManageRecallsApi(nomsNumber, [])
 
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('0 people found')
   })
-
-  function expectSearchResultsFromManageRecallsApi(expectedSearchTerm, expectedSearchResults) {
-    cy.task('expectSearchResults', { expectedSearchTerm, expectedSearchResults })
-  }
 })

@@ -1,3 +1,5 @@
+import { searchResponseJson } from '../mockApis/mockResponses'
+
 const assessRecallPage = require('../pages/assessRecall')
 
 context('Assess a recall', () => {
@@ -11,21 +13,10 @@ context('Assess a recall', () => {
 
   it('User can assess a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
-    expectSearchResultsFromManageRecallsApi(nomsNumber, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-        nomsNumber,
-        dateOfBirth: '1999-05-28',
-      },
-    ])
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponseJson })
     cy.login()
 
     const assessRecall = assessRecallPage.verifyOnPage(nomsNumber)
     assessRecall.expectOffenderName('Bobby Badger')
   })
-
-  function expectSearchResultsFromManageRecallsApi(expectedSearchTerm, expectedSearchResults) {
-    cy.task('expectSearchResults', { expectedSearchTerm, expectedSearchResults })
-  }
 })
