@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "url": "/generate-revocation-order"
+    "url": "/recalls/00000000-0000-0000-0000-000000000000/revocationOrder"
   },
   "response": {
     "status": 200,

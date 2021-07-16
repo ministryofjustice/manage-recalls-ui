@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type RecallResponse = {
-    id: string;
-    nomsNumber: string;
+  id: string
+  nomsNumber: string
+  revocationOrderId?: string
 }
