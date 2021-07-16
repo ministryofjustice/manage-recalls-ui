@@ -25,9 +25,10 @@ module.exports = (on, config) => {
     stubTokenVerificationPing: tokenVerificationApi.stubPing,
     stubManageRecallsApiPing: manageRecallsApi.stubPing,
     expectSearchResults: manageRecallsApi.expectSearchResults,
-    expectGenerateRevocationOrder: manageRecallsApi.expectGenerateRevocationOrder,
+    expectGetRevocationOrder: manageRecallsApi.expectGetRevocationOrder,
     expectCreateRecall: manageRecallsApi.expectCreateRecall,
     expectListRecalls: manageRecallsApi.expectListRecalls,
+    expectGetRecall: manageRecallsApi.expectGetRecall,
     readPdf: readPdf.readPdf,
   })
   return config

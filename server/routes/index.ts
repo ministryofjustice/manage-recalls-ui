@@ -1,7 +1,7 @@
 import type { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findOffender } from './handlers/findOffender'
-import generateRevocationOrder from './handlers/generateRevocationOrder'
+import generateRevocationOrder from './handlers/getRevocationOrder'
 import createRecall from './handlers/createRecall'
 import { offenderProfile } from './handlers/offenderProfile'
 import { recallList } from './handlers/recallList'
@@ -15,7 +15,7 @@ export default function routes(router: Router): Router {
   get('/find-offender', findOffender)
   get('/offender-profile', offenderProfile)
   get('/assess-recall', assessRecall)
-  get('/generate-revocation-order', generateRevocationOrder())
+  get('/get-revocation-order', generateRevocationOrder())
 
   post('/create-recall', createRecall())
 

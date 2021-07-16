@@ -10,7 +10,7 @@ const offenderProfilePage = nomsNumber =>
         expect(text.trim()).to.equal(recallId)
       })
     },
-    generateRevocationOrder: () => cy.get('[data-qa=createRevocationOrderButton]').click(),
+    generateRevocationOrder: () => cy.get('[data-qa=getRevocationOrderButton]').click(),
   })
 
 module.exports = { verifyOnPage: offenderProfilePage }
