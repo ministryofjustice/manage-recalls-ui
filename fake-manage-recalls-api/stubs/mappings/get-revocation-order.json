@@ -8,6 +8,6 @@
     "headers": {
       "Content-Type": "application/json"
     },
-    "bodyFileName": "generate-revocation-order.json"
+    "bodyFileName": "get-revocation-order.json"
   }
 }
