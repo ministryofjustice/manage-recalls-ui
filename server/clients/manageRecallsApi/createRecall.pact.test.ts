@@ -36,7 +36,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'a recall can be created',
         ...createRecallRequest('a create recall request with blank nomsNumber', blankNomsNumber, accessToken),
-        willRespondWith: createRecallResponse(errorResponse, 400),
+        willRespondWith: createRecallResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
