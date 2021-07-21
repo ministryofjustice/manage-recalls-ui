@@ -100,6 +100,54 @@
       }
     },
     {
+      "description": "a get recalls request",
+      "providerState": "a list of recalls exists",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "123"
+          },
+          {
+            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+            "nomsNumber": "456"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized get recalls request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a create recall request",
       "providerState": "a recall can be created",
       "request": {
@@ -118,7 +166,7 @@
           "Content-Type": "application/json"
         },
         "body": {
-          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
           "nomsNumber": "A1234AA"
         },
         "matchingRules": {
@@ -207,54 +255,6 @@
       "request": {
         "method": "GET",
         "path": "/recalls/00000000-0000-0000-0000-000000000000/revocationOrder",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a get recalls request",
-      "providerState": "a list of recalls exists",
-      "request": {
-        "method": "GET",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "123"
-          },
-          {
-            "id": "8ab377a6-4587-2598-abc4-98fc53737",
-            "nomsNumber": "456"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recalls request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/recalls",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         }
