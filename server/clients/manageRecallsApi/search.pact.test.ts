@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
+import { Matchers } from '@pact-foundation/pact'
 import { searchByNomsNumber } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 // TODO:  Ensure this json is of the correct type
@@ -35,7 +36,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'a search by blank NOMS number',
         ...searchRequest('a search request with blank NOMS number', blankNomsNumber, accessToken),
-        willRespondWith: searchResponse(errorResponse, 400),
+        willRespondWith: searchResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
