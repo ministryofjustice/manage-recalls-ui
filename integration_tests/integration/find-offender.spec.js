@@ -1,4 +1,4 @@
-import { searchResponseJson } from '../mockApis/mockResponses'
+import { searchResponse } from '../mockApis/mockResponses'
 
 const findOffenderPage = require('../pages/findOffender')
 const offenderProfilePage = require('../pages/offenderProfile')
@@ -12,7 +12,7 @@ context('Search for offenders', () => {
 
   const nomsNumber = 'A1234AA'
   it('User can search for a prisoner', () => {
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponseJson })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage()

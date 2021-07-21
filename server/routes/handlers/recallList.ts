@@ -9,11 +9,19 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
   const { token } = res.locals.user
   const recalls = await getRecallList(token)
   const recallsWithNomsNumbers = recalls.filter(recall => Boolean(recall.nomsNumber))
-  const successful = [] as PrisonerSearchResult[]
+  const successful = [] as RecallResult[]
   const failed = [] as string[]
   if (recallsWithNomsNumbers.length) {
     const results = await Promise.allSettled(
-      recallsWithNomsNumbers.map(recall => searchByNomsNumber(recall.nomsNumber, token))
+      recallsWithNomsNumbers.map(recall =>
+        searchByNomsNumber(recall.nomsNumber, token).then(
+          prisoner =>
+            <RecallResult>{
+              recallId: recall.id,
+              offender: prisoner,
+            }
+        )
+      )
     )
     results.forEach((result, idx) => {
       if (result.status === 'fulfilled') {
@@ -28,4 +36,10 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
   res.locals.errors = failed
   res.locals.isTodoPage = true
   res.render('pages/recallList')
+}
+
+class RecallResult {
+  recallId: string
+
+  offender: PrisonerSearchResult
 }

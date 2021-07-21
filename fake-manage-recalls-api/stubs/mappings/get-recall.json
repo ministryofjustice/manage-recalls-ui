@@ -1,13 +1,13 @@
 {
   "request": {
-    "method": "POST",
-    "url": "/generate-revocation-order"
+    "method": "GET",
+    "url": "/recalls/RECALL_ID"
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
     },
-    "bodyFileName": "generate-revocation-order.json"
+    "bodyFileName": "get-recall.json"
   }
 }
