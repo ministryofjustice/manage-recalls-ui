@@ -5,5 +5,6 @@
 export type RecallResponse = {
   id: string
   nomsNumber: string
+  recallId: string
   revocationOrderId?: string
 }
