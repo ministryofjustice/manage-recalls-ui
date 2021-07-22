@@ -17,7 +17,7 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
         searchByNomsNumber(recall.nomsNumber, token).then(
           prisoner =>
             <RecallResult>{
-              recallId: recall.id,
+              recallId: recall.recallId,
               offender: prisoner,
             }
         )

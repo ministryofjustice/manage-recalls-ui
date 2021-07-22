@@ -1,6 +1,8 @@
 import { manageRecallsApiConfig } from '../../config'
 import RestClient from '../../data/restClient'
 import { RecallResponse as Recall, Pdf } from '../../@types/manage-recalls-api'
+import { RecallDocumentResponse } from '../../@types/manage-recalls-api/models/RecallDocumentResponse'
+import { RecallDocumentId } from '../../@types/manage-recalls-api/models/RecallDocumentId'
 
 export interface PrisonerSearchResult {
   firstName: string
@@ -37,6 +39,24 @@ export function getRecall(recallId: string, token: string): Promise<Recall> {
 export function createRecall(nomsNumber: string, token: string): Promise<Recall> {
   const request = { nomsNumber }
   return restClient(token).post<Recall>({ path: '/recalls', data: request })
+}
+
+export function getRecallDocument(
+  recallId: string,
+  documentId: string,
+  token: string
+): Promise<RecallDocumentResponse> {
+  return restClient(token).get<RecallDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
+}
+
+export function createRecallDocument(
+  recallId: string,
+  category: string,
+  content: string,
+  token: string
+): Promise<RecallDocumentId> {
+  const request = { category, content }
+  return restClient(token).post<RecallDocumentId>({ path: `/recalls/${recallId}/documents`, data: request })
 }
 
 function restClient(token: string): RestClient {

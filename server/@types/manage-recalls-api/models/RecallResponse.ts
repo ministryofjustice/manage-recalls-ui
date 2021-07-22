@@ -2,9 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import { RecallDocument } from './RecallDocument'
+
 export type RecallResponse = {
-  id: string
-  nomsNumber: string
   recallId: string
+  nomsNumber: string
   revocationOrderId?: string
+  documents: Array<RecallDocument>
 }

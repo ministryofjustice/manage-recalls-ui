@@ -1,10 +1,24 @@
 [
   {
     "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "nomsNumber": "123"
+    "nomsNumber": "123",
+    "revocationOrderId": "3fa85f64-5718-4562-b3fc-2c963f66afa7",
+    "documents": [
+      {
+        "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8",
+        "category": "PART_A"
+      }
+    ]
   },
   {
     "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-    "nomsNumber": "456"
+    "nomsNumber": "456",
+    "revocationOrderId": "3fa85f64-5718-4562-b3fc-2c963f66afa9",
+    "documents": [
+      {
+        "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa10",
+        "category": "PART_A"
+      }
+    ]
   }
 ]
