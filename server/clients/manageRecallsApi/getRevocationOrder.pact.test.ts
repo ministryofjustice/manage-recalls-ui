@@ -3,7 +3,6 @@ import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
 import { getRevocationOrder } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-// TODO:  Ensure this json is of the correct type
 import getRevocationOrderResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-revocation-order.json'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
