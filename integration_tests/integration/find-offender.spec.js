@@ -15,6 +15,7 @@ context('Search for offenders', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
+    const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('1 person found')
@@ -25,7 +26,7 @@ context('Search for offenders', () => {
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
     firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
     firstResult.get('[data-qa=viewProfileButton]').click()
-    offenderProfilePage.verifyOnPage()
+    offenderProfilePage.verifyOnPage({ nomsNumber, personName })
   })
 
   it('prisoner search returns no results', () => {

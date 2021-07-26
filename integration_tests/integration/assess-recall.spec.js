@@ -12,7 +12,7 @@ context('Assess a recall', () => {
   })
 
   const nomsNumber = 'A1234AA'
-  const recallId = 'RECALL_ID'
+  const recallId = '123'
 
   it('User can assess a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
