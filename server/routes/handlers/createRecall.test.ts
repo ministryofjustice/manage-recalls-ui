@@ -1,7 +1,7 @@
 import nock from 'nock'
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import config from '../../config'
-import createRecall from './createRecall'
+import { createRecall } from './createRecall'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
@@ -23,13 +23,13 @@ describe('createRecall', () => {
     fakeManageRecallsApi
       .post('/recalls')
       .matchHeader('authorization', `Bearer ${userToken.access_token}`)
-      .reply(200, { id: recallId })
+      .reply(200, { recallId })
 
-    const req = mockPostRequest({ nomsNumber })
-    const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    const req = mockPostRequest({ params: { nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
-    await createRecall()(req, res, next)
+    await createRecall(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/offender-profile?nomsNumber=${nomsNumber}&recallId=${recallId}`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}`)
   })
 })

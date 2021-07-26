@@ -1,16 +1,21 @@
-import type { RequestHandler } from 'express'
-import { createRecall } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import { Request, Response } from 'express'
+import { createRecall as createRecallApi } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../logger'
 
-export default function createRecallHandler(): RequestHandler {
-  return async (req, res, next) => {
-    const { nomsNumber } = req.body
-    try {
-      const recall = await createRecall(nomsNumber, res.locals.user.token)
-      res.redirect(303, `/offender-profile?nomsNumber=${nomsNumber}&recallId=${recall.id}`)
-    } catch (err) {
-      logger.error(err)
-      res.redirect(303, `/offender-profile?nomsNumber=${nomsNumber}`)
+export const createRecall = async (req: Request, res: Response): Promise<void> => {
+  const { nomsNumber } = req.params
+  if (!nomsNumber) {
+    res.sendStatus(400)
+    return
+  }
+  try {
+    const recall = await createRecallApi(nomsNumber, res.locals.user.token)
+    if (!recall.recallId) {
+      throw new Error("Created recall didn't return a recallId")
     }
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}`)
+  } catch (err) {
+    logger.error(err)
+    res.redirect(303, `/persons/${nomsNumber}`)
   }
 }

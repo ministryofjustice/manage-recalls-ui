@@ -12,13 +12,13 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /find-offender', () => {
+describe('GET /find-person', () => {
   it('should render "Find an offender" page', () => {
     return request(app)
-      .get('/find-offender')
+      .get('/find-person')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Find an offender')
+        expect(res.text).toContain('Find a person')
       })
   })
 })

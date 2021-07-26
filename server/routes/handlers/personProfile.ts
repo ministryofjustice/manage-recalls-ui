@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 
-export const offenderProfile = async (req: Request, res: Response): Promise<Response> | undefined => {
-  const { nomsNumber, recallId } = req.query
+export const personProfile = async (req: Request, res: Response): Promise<Response> | undefined => {
+  const { nomsNumber, recallId } = req.params
   if (nomsNumber && typeof nomsNumber !== 'string') {
     return res.send(400)
   }
@@ -11,5 +11,5 @@ export const offenderProfile = async (req: Request, res: Response): Promise<Resp
   }
   res.locals.nomsNumber = nomsNumber
   res.locals.recallId = recallId
-  res.render('pages/offenderProfile')
+  res.render('pages/personProfile')
 }
