@@ -8,7 +8,7 @@ import createRecallDocumentResponseJson from '../../../fake-manage-recalls-api/s
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const category = 'PART_A'
+  const category = 'PART_A_RECALL_REPORT'
   const content = 'blahblahblah'
 
   beforeEach(() => {
