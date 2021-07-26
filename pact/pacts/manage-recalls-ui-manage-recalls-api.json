@@ -122,7 +122,7 @@
             "documents": [
               {
                 "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8",
-                "category": "PART_A"
+                "category": "PART_A_RECALL_REPORT"
               }
             ]
           },
@@ -133,7 +133,7 @@
             "documents": [
               {
                 "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa10",
-                "category": "PART_A"
+                "category": "PART_A_RECALL_REPORT"
               }
             ]
           }
@@ -284,7 +284,7 @@
       "providerState": "a document exists",
       "request": {
         "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/3fa85f64-5718-4562-b3fc-2c963f66afa8",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         }
