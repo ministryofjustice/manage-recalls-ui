@@ -52,10 +52,10 @@ export function getRecallDocument(
 export function createRecallDocument(
   recallId: string,
   category: string,
-  content: string,
+  fileContent: string,
   token: string
 ): Promise<RecallDocumentId> {
-  const request = { category, content }
+  const request = { category, fileContent }
   return restClient(token).post<RecallDocumentId>({ path: `/recalls/${recallId}/documents`, data: request })
 }
 
