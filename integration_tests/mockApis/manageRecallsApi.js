@@ -84,6 +84,21 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectAddRecallDocument: expectation => {
+      wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: `/recalls/(.*)/documents`,
+        },
+        response: {
+          status: expectation.statusCode || 201,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: { id: '123' },
+        },
+      })
+    },
     stubPing: () => {
       return wiremock.stubFor({
         request: {

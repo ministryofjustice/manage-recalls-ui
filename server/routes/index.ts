@@ -6,6 +6,7 @@ import { createRecall } from './handlers/createRecall'
 import { personProfile } from './handlers/personProfile'
 import { recallList } from './handlers/recallList'
 import { assessRecall } from './handlers/assessRecall'
+import { uploadRecallDocumentsHandler } from './handlers/new-recall/uploadRecallDocuments'
 import { newRecall } from './handlers/new-recall/newRecall'
 
 export default function routes(router: Router): Router {
@@ -17,8 +18,9 @@ export default function routes(router: Router): Router {
   get('/persons/:nomsNumber', personProfile)
   post('/persons/:nomsNumber/recalls', createRecall)
   get('/persons/:nomsNumber/recalls/:recallId', newRecall)
+  post('/persons/:nomsNumber/recalls/:recallId', uploadRecallDocumentsHandler)
 
-  get('/assess-recall', assessRecall)
+  get('/persons/:nomsNumber/recalls/:recallId/assess', assessRecall)
   get('/get-revocation-order', getRevocationOrder())
 
   return router

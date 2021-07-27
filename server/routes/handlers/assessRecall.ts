@@ -1,17 +1,18 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import { documentTypes } from './new-recall/documentTypes'
 
-export const assessRecall = async (req: Request, res: Response): Promise<Response> | undefined => {
-  const { recallId } = req.query
-  if (recallId && typeof recallId !== 'string') {
-    return res.send(400)
-  }
-  if (recallId) {
-    const recall = await getRecall(recallId as string, res.locals.user.token)
-    res.locals.recall = recall
-    res.locals.offender = await searchByNomsNumber(recall.nomsNumber as string, res.locals.user.token)
-  }
-  res.locals.recallId = recallId
-  res.locals.isTodoPage = true
+export const assessRecall = async (req: Request, res: Response): Promise<void> => {
+  const { nomsNumber, recallId } = req.params
+  const [person, recall] = await Promise.all([
+    searchByNomsNumber(nomsNumber as string, res.locals.user.token),
+    getRecall(recallId, res.locals.user.token),
+  ])
+  recall.documents = recall.documents.map(doc => ({
+    ...doc,
+    ...(documentTypes.find(d => d.category === doc.category) || {}),
+  }))
+  res.locals.recall = recall
+  res.locals.person = person
   res.render('pages/assessRecall')
 }

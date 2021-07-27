@@ -96,6 +96,14 @@ export default function createApp(userService: UserService): express.Application
   // Resource Delivery Configuration
   app.use(compression())
 
+  app.use((req, res, next) => {
+    if (req.session.errors) {
+      res.locals.errors = req.session.errors
+      delete req.session.errors
+    }
+    next()
+  })
+
   // Cachebusting version string
   if (production) {
     // Version only changes on reboot

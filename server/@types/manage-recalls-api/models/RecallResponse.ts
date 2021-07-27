@@ -2,11 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { RecallDocument } from './RecallDocument'
+import type { ApiRecallDocument } from './ApiRecallDocument'
 
 export type RecallResponse = {
-  recallId: string
+  documents: Array<ApiRecallDocument>
+  id: string
   nomsNumber: string
+  recallId: string
   revocationOrderId?: string
-  documents: Array<RecallDocument>
 }

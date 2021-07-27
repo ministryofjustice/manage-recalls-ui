@@ -2,6 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecallDocumentId = {
+export type AddDocumentResponse = {
   documentId: string
 }

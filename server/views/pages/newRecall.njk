@@ -6,17 +6,54 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-
+            {% if errors %}
+            {{ govukErrorSummary({
+                titleText: "There is a problem",
+                errorList: errors
+            }) }}
+            {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ offender.firstName }} {{ offender.lastName }}</span>
             <h1 class="govuk-heading-l">
-                Book a recall
+                Upload documents
             </h1>
         </div>
     </div>
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-           <div class='govuk-body'>Recall ID: <span  data-qa='recallId'>{{ recall.recallId }}</span></div>
+            {% if offender %}
+
+                <form action="/persons/{{ offender.nomsNumber }}/recalls/{{ recall.recallId }}?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
+                    <div class="govuk-form-group">
+                        {% for documentType in documentTypes %}
+                        <h2 class="govuk-heading-m">{{ documentType.label }}</h2>
+                            {% if documentType.error %}
+                        {{ govukFileUpload({
+                            id: documentType.name,
+                            name: documentType.name,
+                            label: {
+                                text: "Upload a file"
+                            },
+                            errorMessage: {
+                                text: documentType.error
+                            }
+                        }) }}
+                            {% else %}
+                                {{ govukFileUpload({
+                                    id: documentType.name,
+                                    name: documentType.name,
+                                    label: {
+                                        text: "Upload a file"
+                                    }
+                                }) }}
+                            {% endif %}
+                        {%  endfor %}
+                    </div>
+                    <button class="govuk-button" data-module="govuk-button" data-qa="createRecallButton">
+                        Continue
+                    </button>
+                </form>
+            {% endif %}
         </div>
     </div>
 
