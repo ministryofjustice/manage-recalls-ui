@@ -9,7 +9,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l">
-                Find an offender
+                Find a person
             </h1>
 
             <form id="search" action="" method="get" class="govuk-!-margin-bottom-9 search-panel">
@@ -36,21 +36,23 @@
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                         <th scope="col" class="govuk-table__header">NOMIS number</th>
+                        <th scope="col" class="govuk-table__header">CRO</th>
                         <th scope="col" class="govuk-table__header">First name</th>
                         <th scope="col" class="govuk-table__header">Last name</th>
                         <th scope="col" class="govuk-table__header">Date of birth</th>
-                        <th scope="col" class="govuk-table__header"></th>
+                        <th scope="col" class="govuk-table__header">Action</th>
                     </tr>
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for offender in offenders %}
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell" data-qa="nomsNumber">{{ offender.nomsNumber }}</td>
+                            <td class="govuk-table__cell" data-qa="firstName">{{ offender.croNumber }}</td>
                             <td class="govuk-table__cell" data-qa="firstName">{{ offender.firstName }}</td>
                             <td class="govuk-table__cell" data-qa="lastName">{{ offender.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ offender.dateOfBirth | date }}</td>
                             <td class="govuk-table__cell">
-                                <a class='govuk-link' href='/offender-profile?nomsNumber={{ offender.nomsNumber }}' data-qa='viewProfileButton'>View</a>
+                                <a class='govuk-link' href='/persons/{{ offender.nomsNumber }}' data-qa='viewProfileButton'>View</a>
                             </td>
                         </tr>
                     {% endfor %}

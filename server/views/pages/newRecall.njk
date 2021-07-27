@@ -1,0 +1,23 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Offender profile" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <span class="govuk-caption-l">Book a recall for {{ offender.firstName }} {{ offender.lastName }}</span>
+            <h1 class="govuk-heading-l">
+                Book a recall
+            </h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+           <div class='govuk-body'>Recall ID: <span  data-qa='recallId'>{{ recall.recallId }}</span></div>
+        </div>
+    </div>
+
+{% endblock %}

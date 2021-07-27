@@ -23,3 +23,7 @@ export declare global {
 export interface RequestQuery {
   [key: string]: string
 }
+
+export interface ObjectStrings {
+  [key: string]: string
+}

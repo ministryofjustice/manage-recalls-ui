@@ -10,5 +10,6 @@ export const findOffender = async (req: Request, res: Response, _next: NextFunct
     const offender = await searchByNomsNumber(nomsNumber as string, res.locals.user.token)
     res.locals.offenders = offender ? [offender] : []
   }
-  res.render('pages/findOffender')
+  res.locals.isFindPersonPage = true
+  res.render('pages/findPerson')
 }
