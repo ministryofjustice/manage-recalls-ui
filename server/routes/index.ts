@@ -7,6 +7,7 @@ import { personProfile } from './handlers/personProfile'
 import { recallList } from './handlers/recallList'
 import { assessRecall } from './handlers/assessRecall'
 import { newRecall } from './handlers/new-recall/newRecall'
+import { recallType } from './handlers/new-recall/recallType'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -17,6 +18,7 @@ export default function routes(router: Router): Router {
   get('/persons/:nomsNumber', personProfile)
   post('/persons/:nomsNumber/recalls', createRecall)
   get('/persons/:nomsNumber/recalls/:recallId', newRecall)
+  get('/persons/:nomsNumber/recalls/:recallId/recall-type', recallType)
 
   get('/assess-recall', assessRecall)
   get('/get-revocation-order', getRevocationOrder())
