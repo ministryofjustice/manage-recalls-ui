@@ -38,3 +38,12 @@ and circleCI will trigger a build in the Provider to verify the same.
 
 The pact tests in this project are run by `jest`.  Specific config to make them executable
 within Idea is TBD.
+
+## Deleting pacts
+
+We have come across a situation where a pact in a consumer branch was awaiting the provider to verify it's pact file,   
+but when the provider changes were pushed to main the pact on the consumer was not marked as verified.  We had to delete the 
+pacts for that branch and re-trigger the circleCI build.  Not sure if this was a one off or is the correct way to handle this.
+But details of how to delete a pact by tag can be found here:
+
+https://docs.pact.io/pact_broker/administration/deleting_resources/
