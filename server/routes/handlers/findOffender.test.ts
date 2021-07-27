@@ -23,7 +23,7 @@ describe('findOffender', () => {
       // @ts-ignore
       searchByNomsNumber.mockReturnValueOnce(expectedOffenders)
 
-      const req = mockGetRequest({ nomsNumber })
+      const req = mockGetRequest({ query: { nomsNumber } })
       const { res, next } = mockResponseWithAuthenticatedUser('')
 
       await findOffender(req, res, next)
@@ -33,7 +33,7 @@ describe('findOffender', () => {
     })
 
     it('should return error message if invalid noms number', async () => {
-      const req = mockGetRequest({ nomsNumber: 0 as unknown as string })
+      const req = mockGetRequest({ query: { nomsNumber: 0 as unknown as string } })
       const { res, next } = mockResponseWithAuthenticatedUser('')
 
       await findOffender(req, res, next)
