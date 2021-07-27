@@ -8,4 +8,4 @@ readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose.yml"
 
 docker compose -f $DOCKER_COMPOSE_FILE stop
 
-npx kill-port 3000
+npx kill-port 3000 9091
