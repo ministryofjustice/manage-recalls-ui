@@ -12,7 +12,6 @@ const reset = () =>
 
 describe('manual stub', () => {
   xit('setup stub in wiremock', async () => {
-    await reset()
     const responseBody = { anything: 'something' }
     await stubFor({
       request: {
@@ -20,7 +19,7 @@ describe('manual stub', () => {
         urlPattern: '/test',
         bodyPatterns: [
           {
-            matchesJsonPath: '$.[?(@.test =~ /((?!.*[a-e].*).)*/)]',
+            matchesJsonPath: '$.[?(@.test =~ /((?!^(licence|conviction)$).)*/)]',
           },
         ],
       },
@@ -36,7 +35,7 @@ describe('manual stub', () => {
     // eslint-disable-next-line no-console
     console.log(JSON.stringify(mappings))
 
-    const output = await superagent.post(`${wiremockUrl}/test`).send({ test: 'FFFQQQ' })
+    const output = await superagent.post(`${wiremockUrl}/test`).send({ test: 'licence' })
     expect(output.text).toEqual(JSON.stringify(responseBody))
   })
 })
