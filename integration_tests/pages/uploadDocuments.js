@@ -1,0 +1,21 @@
+const page = require('./page')
+
+const uploadDocumentsPage = ({ nomsNumber, recallId }) =>
+  page('Upload documents', {
+    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}` : null,
+    upload: () => {
+      cy.get('[name="partARecallReport"]').attachFile({
+        filePath: '../expected-revocation-order.pdf',
+        mimeType: 'application/pdf',
+      })
+      cy.get('[data-qa="continueButton"]').click()
+    },
+    expectUploadedDocumentError: () => {
+      cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
+        const text = $searchResults.text()
+        expect(text.trim()).to.equal('expected-revocation-order.pdf - an error occurred during upload')
+      })
+    },
+  })
+
+module.exports = { verifyOnPage: uploadDocumentsPage }

@@ -10,6 +10,12 @@ const assessRecallPage = ({ nomsNumber, recallId, fullName }) =>
       })
     },
     getRevocationOrder: () => cy.get('[data-qa=getRevocationOrderButton]').click(),
+    expectUploadedDocument: ({ category, documentId }) => {
+      cy.get(`[data-qa=uploadedDocument-${category}]`).should($searchResults => {
+        const text = $searchResults.text()
+        expect(text.trim()).to.equal(documentId)
+      })
+    },
   })
 
 module.exports = { verifyOnPage: assessRecallPage }
