@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "PATCH",
-    "url": "/recalls/(.*)"
+    "urlPathPattern": "/recalls/(.*)"
   },
   "response": {
     "status": 200,
