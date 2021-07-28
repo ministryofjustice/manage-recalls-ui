@@ -7,7 +7,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
-        <span class="govuk-caption-l">Book a recall for {{ person.fullName }}</span>
+        <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
         <h1 class="govuk-heading-l">
             Recall recommendation
         </h1>
@@ -16,12 +16,12 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-        <form action="/person/{{ person.nomsNumber }}/recalls/{{recall.recallId}}/recall-type" method="post">
+        <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/recall-type" method="post">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
             {{ govukRadios({
-            idPrefix: "recallTypeRecommended",
-            name: "recallTypeRecommended",
+            idPrefix: "recommendedRecallLength",
+            name: "recommendedRecallLength",
             fieldset: {
             legend: {
             text: "What is the recommended fixed recall length?",
@@ -30,11 +30,11 @@
             },
             items: [
             {
-            value: "14 days",
+            value: "14",
             text: "14 days (under 12 months)"
             },
             {
-            value: "28 days",
+            value: "28",
             text: "28 days (12 months and over)"
             }
             ]

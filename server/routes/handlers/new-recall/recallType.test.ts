@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { recallType } from './recallType'
 import { searchByNomsNumber, getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
@@ -21,11 +22,7 @@ describe('findOffender', () => {
       }
       const recallDetails = { recallId, nomsNumber }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       searchByNomsNumber.mockReturnValueOnce(personDetails)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       getRecall.mockReturnValueOnce(recallDetails)
 
       const req = mockGetRequest({ params: { nomsNumber, recallId } })
@@ -34,7 +31,7 @@ describe('findOffender', () => {
       await recallType(req, res)
 
       expect(res.render).toHaveBeenCalledWith('pages/recallType')
-      expect(res.locals.offender).toEqual(personDetails)
+      expect(res.locals.person).toEqual(personDetails)
       expect(res.locals.recall).toEqual(recallDetails)
     })
 
