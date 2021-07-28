@@ -82,17 +82,17 @@ This user has the `MANAGE_RECALLS` role that allows access to the service.
 
 ### Running the app for development
 
-To start the main services excluding the manage recalls app: 
+To start the main services and the manage recalls ui app in dev mode with nodemon: 
 
-`docker compose up redis hmpps-auth fake-manage-recalls-api`
+`scripts/start-dev-local.sh`
 
-And then, to build the assets and start the app with nodemon:
-
-`npm run start:dev`
+If you need to update the wiremock (fake-manage-recalls-api) mappings you can use the `scripts/restart-fake-manage-recalls-api.sh` 
+to stop and start the wiremock server.  Or you can use the `manual-stub.test.ts` test to prime the running wiremock server
+with any additional expectation.
 
 ### Creating a new endpoint in manage-recalls-api
 For every endpoint added to manage-recalls-api that is used by this app, a corresponding mock should be created in ./fake-manage-recalls-api. See the existing examples for the patterns to follow.
-Note - rebuilding the fake-manage-recalls-api afterwards won't be enough as it will be cached; you need to delete it then rebuild it.
+Note - rebuilding the fake-manage-recalls-api docker container afterwards won't be enough as it will be cached; you need to delete it then rebuild it.
 
 ### Typescript definitions generated from manage-recalls-api Swagger endpoint
 This done by the NPM task `swagger-to-ts` which is run as part of `npm run build`.
