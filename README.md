@@ -8,19 +8,61 @@ UI for managing recalls
 * pact/README.md
 * helm_deploy/README.md
 
-## Dependencies
+## Dependencies/Set-up
 The app requires:
 * hmpps-auth - for authentication
 * redis - session store and token caching
 * manage-recalls-api - api service for managing the recall process
 
-### Node and NPM
-The required versions of Node.js and NPM are in package.json 'engines' field.
-Recommended that you use NVM to manage your Node versions. You can then upgrade to match the required versions with:
+For integration test these are run as docker containers so you need docker installed (try `docker --version`)
+e.g. via a local Docker Desktop installation as per https://docs.docker.com/docker-for-mac/install/.
+
+### node and npm
+This project depends on `node` and `npm`.
+It is highly recommended that you use `nvm` to manage their versions. 
+`nvm` can be installed by commands such as:
+
+```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;```  
+
+Ideally check online for a latest version of the above command.
+
+The required versions of `node` and `npm` are specified in `package.json` `engines` field.
+Install/upgrade to the required versions with these commands in your checked out project directory:
 ```
-nvm install <version>
+nvm install <node-version>
 npm i -g npm@6
 ```
+
+You can check active versions with e.g. `nvm --version`, `node --version` and `npm --version`.
+
+### node dependencies: run npm install
+
+With nvm, node and npm installed as above *all* the remaining build dependencies should be installed by:
+```
+npm install
+```
+
+Unfortunately it is not that uncommon for node/npm to be confused about which dependencies are actually/correctly
+installed.  
+If you see the build failing and not finding any one/some of the myriad node dependencies then the first course of
+action is to remove the local copies and start again.  This can be achieved by:
+```
+rm -rf node_modules
+npm install
+```
+
+### Full local build
+At this point the full build, `./build.sh`, should pass.  
+
+The intention of this is 
+a script (we use the same name across multiple repos) that builds and runs all tests so you have confidence 
+you haven't broken anything before pushing.  Obviously `circleCI` does that for you as 
+well versus any branch but this is for earlier/pre-push feedback.
+
+So this checks all dependencis installed, builds everything, runs the unit tests, 
+and integration tests including pact tests:
+
+`./build.sh`
 
 ### Pre-commit hooks
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
@@ -34,20 +76,15 @@ OR use the following script to run in the background and ensure the fake-mange-r
 
 `scripts/start-local.sh` 
 
-You can login locally with `PPUD_USER` / `password123456`, this user has the `MANAGE_RECALLS` role that allows access to the service.
-
-### Full local build
-Checks Cypress installed, builds everything, runs the unit tests, and integration tests
-
-`./build.sh`
+Either way check that this has succeeded e.g. via login locally (`http://localhost:3000/`)
+with `PPUD_USER` / `password123456`.  
+This user has the `MANAGE_RECALLS` role that allows access to the service.
 
 ### Running the app for development
 
 To start the main services excluding the manage recalls app: 
 
 `docker compose up redis hmpps-auth fake-manage-recalls-api`
-
-Install dependencies using `npm install`, ensuring you are using >= `Node v14.x`
 
 And then, to build the assets and start the app with nodemon:
 
