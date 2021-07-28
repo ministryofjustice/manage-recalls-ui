@@ -7,8 +7,6 @@ const wiremockAdminUrl = `${wiremockUrl}/__admin`
 // @ts-ignore
 const stubFor = mapping => superagent.post(`${wiremockAdminUrl}/mappings`).send(mapping)
 const getMappings = () => superagent.get(`${wiremockAdminUrl}/mappings`)
-const reset = () =>
-  Promise.all([superagent.delete(`${wiremockAdminUrl}/mappings`), superagent.delete(`${wiremockAdminUrl}/requests`)])
 
 describe('manual stub', () => {
   xit('setup stub in wiremock', async () => {
