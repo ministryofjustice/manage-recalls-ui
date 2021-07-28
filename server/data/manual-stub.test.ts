@@ -1,10 +1,9 @@
+// @ts-nocheck
 import superagent from 'superagent'
 
 const wiremockUrl = 'http://localhost:9091'
 const wiremockAdminUrl = `${wiremockUrl}/__admin`
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const stubFor = mapping => superagent.post(`${wiremockAdminUrl}/mappings`).send(mapping)
 const getMappings = () => superagent.get(`${wiremockAdminUrl}/mappings`)
 
