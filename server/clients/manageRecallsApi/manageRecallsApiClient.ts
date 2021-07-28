@@ -41,6 +41,11 @@ export function createRecall(nomsNumber: string, token: string): Promise<Recall>
   return restClient(token).post<Recall>({ path: '/recalls', data: request })
 }
 
+export function updateRecall(recallId: string, recallLength: string, token: string): Promise<Recall> {
+  const request = { recallLength }
+  return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: request })
+}
+
 export function getRecallDocument(
   recallId: string,
   documentId: string,
