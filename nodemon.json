@@ -1,6 +1,6 @@
 {
   "watch": ["server"],
-  "ext": "ts",
+  "ext": "ts,njk,html",
   "ignore": ["*.test.ts"],
   "exec": "node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts"
 }
