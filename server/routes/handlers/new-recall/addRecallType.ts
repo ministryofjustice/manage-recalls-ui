@@ -13,7 +13,7 @@ export const addRecallType = async (req: Request, res: Response): Promise<void> 
 
   try {
     const recall = await updateRecall(recallId, recommendedRecallLength, res.locals.user.token)
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}`)
+    res.redirect(303, `/assess-recall?recallId=${recall.recallId}`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

@@ -13,9 +13,7 @@ readonly FAKE_MANAGE_RECALLS_API_PORT=9091
 
 docker compose -f "${DOCKER_COMPOSE_FILE}" up hmpps-auth redis -d --remove-orphans
 
-npx kill-port $FAKE_MANAGE_RECALLS_API_PORT $MANAGE_RECALLS_UI_PORT
-echo "Starting fake-manage-recalls-api, logs can be found here: ${FAKE_MANAGE_RECALLS_API_LOG_FILE}"
-java -jar fake-manage-recalls-api/wiremock-standalone-2.27.2.jar --port ${FAKE_MANAGE_RECALLS_API_PORT} --verbose true --root-dir fake-manage-recalls-api/stubs >> "${FAKE_MANAGE_RECALLS_API_LOG_FILE}" 2>&1 &
+source "${SCRIPT_DIR}/restart-fake-manage-recalls-api.sh"
 
 echo "Starting ${MANAGE_RECALLS_UI_NAME}, logs can be found here: ${LOG_FILE}"
 npm run build
