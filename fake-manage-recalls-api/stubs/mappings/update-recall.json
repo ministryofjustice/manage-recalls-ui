@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "PATCH",
+    "url": "/recalls/(.*)"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "update-recall.json"
+  }
+}

@@ -27,7 +27,7 @@ describe('getRevocationOrder', () => {
         .matchHeader('authorization', `Bearer ${userToken.access_token}`)
         .reply(200, expectedPdf)
 
-      const req = mockGetRequest({ recallId })
+      const req = mockGetRequest({ query: { recallId } })
       const { res, next } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
       await getRevocationOrder()(req, res, next)

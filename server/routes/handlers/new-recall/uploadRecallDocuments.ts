@@ -1,11 +1,37 @@
 import { Request, Response } from 'express'
 import multer from 'multer'
-import { addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import {
+  addRecallDocument,
+  getRecall,
+  searchByNomsNumber,
+} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
+import { RecallDocumentUploadError } from '../../../@types'
 
 const storage = multer.memoryStorage()
 export const processUploads = multer({ storage }).fields(documentTypes)
+
+export const uploadDocumentsPage = async (req: Request, res: Response): Promise<void> => {
+  const { nomsNumber, recallId } = req.params
+  const [person, recall] = await Promise.all([
+    searchByNomsNumber(nomsNumber, res.locals.user.token),
+    getRecall(recallId, res.locals.user.token),
+  ])
+  res.locals.offender = person
+  res.locals.recall = recall
+  res.locals.documentTypes = documentTypes
+  if (res.locals.errors) {
+    res.locals.documentTypes = documentTypes.map(doc => {
+      const matchedErr = res.locals.errors.find((err: RecallDocumentUploadError) => err.category === doc.category)
+      if (matchedErr) {
+        return { ...doc, error: matchedErr.text }
+      }
+      return { ...doc }
+    })
+  }
+  res.render('pages/uploadDocuments')
+}
 
 export const uploadRecallDocumentsHandler = async (req: Request, res: Response) => {
   const { nomsNumber, recallId } = req.params

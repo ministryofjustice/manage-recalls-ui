@@ -5,6 +5,7 @@ import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddD
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { PrisonerSearchResult } from '../../@types'
+import { ApiRecallDocument } from '../../@types/manage-recalls-api/models/ApiRecallDocument'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
   const request = { nomsNumber }
@@ -36,8 +37,13 @@ export function createRecall(nomsNumber: string, token: string): Promise<Recall>
   return restClient(token).post<Recall>({ path: '/recalls', data: request })
 }
 
-export function getRecallDocument(recallId: string, documentId: string, token: string): Promise<AddDocumentResponse> {
-  return restClient(token).get<AddDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
+export function updateRecall(recallId: string, recallLength: string, token: string): Promise<Recall> {
+  const request = { recallLength }
+  return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: request })
+}
+
+export function getRecallDocument(recallId: string, documentId: string, token: string): Promise<ApiRecallDocument> {
+  return restClient(token).get<ApiRecallDocument>({ path: `/recalls/${recallId}/documents/${documentId}` })
 }
 
 export function addRecallDocument(

@@ -27,4 +27,4 @@ echo
 echo "Checking ${MANAGE_RECALLS_UI_NAME} is running..."
 curl -s -4 --retry 10 -o /dev/null --retry-delay 1 --retry-connrefused http://localhost:3000/ping || (echo "...FAILED, please check 'docker logs manage-recalls-ui'"; exit 1)
 echo "...done"
-echo "http://localhost:3000'
+echo "http://localhost:3000"

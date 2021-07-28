@@ -6,8 +6,10 @@ import { createRecall } from './handlers/createRecall'
 import { personProfile } from './handlers/personProfile'
 import { recallList } from './handlers/recallList'
 import { assessRecall } from './handlers/assessRecall'
-import { uploadRecallDocumentsHandler } from './handlers/new-recall/uploadRecallDocuments'
+import { uploadDocumentsPage, uploadRecallDocumentsHandler } from './handlers/new-recall/uploadRecallDocuments'
 import { newRecall } from './handlers/new-recall/newRecall'
+import { recallType } from './handlers/new-recall/recallType'
+import { addRecallType } from './handlers/new-recall/addRecallType'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -18,7 +20,10 @@ export default function routes(router: Router): Router {
   get('/persons/:nomsNumber', personProfile)
   post('/persons/:nomsNumber/recalls', createRecall)
   get('/persons/:nomsNumber/recalls/:recallId', newRecall)
-  post('/persons/:nomsNumber/recalls/:recallId', uploadRecallDocumentsHandler)
+  get('/persons/:nomsNumber/recalls/:recallId/recall-type', recallType)
+  post('/persons/:nomsNumber/recalls/:recallId/recall-type', addRecallType)
+  get('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadDocumentsPage)
+  post('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadRecallDocumentsHandler)
 
   get('/persons/:nomsNumber/recalls/:recallId/assess', assessRecall)
   get('/get-revocation-order', getRevocationOrder())

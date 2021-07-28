@@ -1,6 +1,6 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import { Request } from 'express'
-import { ObjectStrings, RequestQuery } from '../../@types/express'
+import { ObjectStrings } from '../../@types/express'
 
 export function mockPostRequest({ body, params }: { body?: ObjectStrings; params?: ObjectStrings }) {
   return getMockReq({
@@ -9,9 +9,10 @@ export function mockPostRequest({ body, params }: { body?: ObjectStrings; params
   })
 }
 
-export function mockGetRequest(queryParams: RequestQuery): Request {
+export function mockGetRequest({ query, params }: { query?: ObjectStrings; params?: ObjectStrings }): Request {
   return getMockReq<Request>({
-    query: queryParams,
+    query,
+    params,
   })
 }
 

@@ -23,6 +23,14 @@ interface PostRequest {
   raw?: boolean
 }
 
+interface PatchRequest {
+  path?: string
+  headers?: Record<string, string>
+  responseType?: string
+  data?: Record<string, unknown>
+  raw?: boolean
+}
+
 interface StreamRequest {
   path?: string
   headers?: Record<string, string>
@@ -98,6 +106,36 @@ export default class RestClient {
     } catch (error) {
       const sanitisedError = sanitiseError(error)
       logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'POST'`)
+      throw sanitisedError
+    }
+  }
+
+  async patch<T>({
+    path = null,
+    headers = {},
+    responseType = '',
+    data = {},
+    raw = false,
+  }: PatchRequest = {}): Promise<T> {
+    logger.info(`Patch using user credentials: calling ${this.name}: ${path}`)
+    try {
+      const result = await superagent
+        .patch(`${this.apiUrl()}${path}`)
+        .send(data)
+        .agent(this.agent)
+        .retry(2, (err, res) => {
+          if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
+          return undefined // retry handler only for logging retries, not to influence retry logic
+        })
+        .auth(this.token, { type: 'bearer' })
+        .set(headers)
+        .responseType(responseType)
+        .timeout(this.timeoutConfig())
+
+      return raw ? result : result.body
+    } catch (error) {
+      const sanitisedError = sanitiseError(error)
+      logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'PATCH'`)
       throw sanitisedError
     }
   }
