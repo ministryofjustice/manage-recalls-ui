@@ -25,7 +25,7 @@ describe('addRecallType', () => {
 
       await addRecallType(req, res)
 
-      expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}`)
+      expect(res.redirect).toHaveBeenCalledWith(303, `/assess-recall?recallId=${recallId}`)
     })
 
     it('should return 400 if invalid noms number', async () => {
