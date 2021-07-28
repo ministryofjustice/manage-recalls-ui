@@ -8,7 +8,7 @@ UI for managing recalls
 * pact/README.md
 * helm_deploy/README.md
 
-## Dependencies
+## Dependencies/Set-up
 The app requires:
 * hmpps-auth - for authentication
 * redis - session store and token caching
@@ -51,6 +51,19 @@ rm -rf node_modules
 npm install
 ```
 
+### Full local build
+At this point the full build, `./build.sh`, should pass.  
+
+The intention of this is 
+a script (we use the same name across multiple repos) that builds and runs all tests so you have confidence 
+you haven't broken anything before pushing.  Obviously `circleCI` does that for you as 
+well versus any branch but this is for earlier/pre-push feedback.
+
+So this checks all dependencis installed, builds everything, runs the unit tests, 
+and integration tests including pact tests:
+
+`./build.sh`
+
 ### Pre-commit hooks
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
 
@@ -66,11 +79,6 @@ OR use the following script to run in the background and ensure the fake-mange-r
 Either way check that this has succeeded e.g. via login locally (`http://localhost:3000/`)
 with `PPUD_USER` / `password123456`.  
 This user has the `MANAGE_RECALLS` role that allows access to the service.
-
-### Full local build
-Checks Cypress installed, builds everything, runs the unit tests, and integration tests including pact tests:
-
-`./build.sh`
 
 ### Running the app for development
 
