@@ -1,6 +1,6 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import { Request } from 'express'
-import { ObjectStrings, RequestQuery } from '../../@types/express'
+import { ObjectStrings } from '../../@types/express'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
