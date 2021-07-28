@@ -19,7 +19,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'a recall exists',
         ...updateRecallRequest('an update recall request', recallId, recallLength, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 201),
+        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
 
       const actual = await updateRecall(recallId, recallLength, accessToken)
