@@ -14,7 +14,7 @@
     "build": "npm run clean && npm run compile-sass && tsc && npm run copy-views",
     "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
-    "start:dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node\" \"npm run watch-sass\"",
+    "start:dev": "concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"nodemon\" \"npm run watch-sass\"",
     "start:e2e": "export $(cat e2e.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "watch-node-feature": "export $(cat feature.env) && nodemon --watch dist/ $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "start-feature": "export $(cat feature.env) && node --inspect=0.0.0.0:9229 $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
@@ -119,7 +119,8 @@
     "passport": "^0.4.1",
     "passport-oauth2": "^1.5.0",
     "redis": "^3.1.2",
-    "superagent": "^6.1.0"
+    "superagent": "^6.1.0",
+    "ts-node": "^10.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
