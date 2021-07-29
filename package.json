@@ -20,8 +20,8 @@
     "typecheck": "tsc",
     "test": "jest --detectOpenHandles",
     "security_audit": "npx audit-ci --config audit-ci.json",
-    "int-test": "cypress run --config video=false",
-    "int-test-ui": "cypress open",
+    "int-test": "rm -rf cypress/downloads && cypress run --config video=false",
+    "int-test-ui": "rm -rf cypress/downloads && cypress open",
     "clean": "rm -rf dist build",
     "prepare": "npx husky install",
     "pact-test": "rm -rf pact/pacts/* && jest --detectOpenHandles --config=./pact/jest.pact.config.js"
