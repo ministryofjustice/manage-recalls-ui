@@ -23,8 +23,8 @@ context('Upload documeents', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.upload()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
-    const { documentId, category } = getRecallResponse.documents[0]
-    assessRecall.expectUploadedDocument({ documentId, category })
+    const { documentId } = getRecallResponse.documents[0]
+    assessRecall.expectUploadedDocument({ documentId, label: 'Download PDF' })
   })
 
   it('User sees an error if upload fails', () => {

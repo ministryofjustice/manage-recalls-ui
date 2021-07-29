@@ -10,10 +10,10 @@ const assessRecallPage = ({ nomsNumber, recallId, fullName }) =>
       })
     },
     getRevocationOrder: () => cy.get('[data-qa=getRevocationOrderButton]').click(),
-    expectUploadedDocument: ({ category, documentId }) => {
+    expectUploadedDocument: ({ category, label }) => {
       cy.get(`[data-qa=uploadedDocument-${category}]`).should($searchResults => {
         const text = $searchResults.text()
-        expect(text.trim()).to.equal(documentId)
+        expect(text.trim()).to.equal(label)
       })
     },
   })
