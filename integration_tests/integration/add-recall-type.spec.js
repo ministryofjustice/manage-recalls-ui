@@ -3,7 +3,7 @@ import { searchResponse, getRecallResponse } from '../mockApis/mockResponses'
 const addRecallTypePage = require('../pages/addRecallType')
 const assessRecallPage = require('../pages/assessRecall')
 
-context('Offender profile', () => {
+context('Add recall length', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
