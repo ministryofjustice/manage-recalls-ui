@@ -50,7 +50,22 @@ export default function manageRecallsApi(wiremock) {
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: { recallId: expectation.expectedResults.recallId },
+          jsonBody: expectation.expectedResults,
+        },
+      })
+    },
+    expectUpdateRecall: recallId => {
+      return wiremock.stubFor({
+        request: {
+          method: 'PATCH',
+          urlPattern: `/recalls/${recallId}`,
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: { recallId },
         },
       })
     },

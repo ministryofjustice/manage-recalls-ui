@@ -11,6 +11,8 @@ readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose.yml"
 . ${SCRIPT_DIR}/install-cypress.sh
 checkCypressInstalled $PROJECT_DIR
 
+npx kill-port 3000 9091
+
 docker compose -f "${DOCKER_COMPOSE_FILE}" stop fake-manage-recalls-api redis
 docker rm fake-manage-recalls-api || true
 docker build fake-manage-recalls-api
@@ -30,7 +32,6 @@ echo "  less /tmp/${LOG_FILE}"
 echo "  docker logs fake-manage-recalls-api"
 echo "  docker logs redis"
 
-npx kill-port 3000
 echo "Starting ${MANAGE_RECALLS_UI_NAME}, logs can be found here: ${LOG_FILE}"
 npm run start-feature >> "${LOG_FILE}" 2>&1 &
 
