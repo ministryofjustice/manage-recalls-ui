@@ -26,7 +26,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'GET',
-          urlPattern: `/recalls/${expectation.recallId}/revocationOrder`,
+          urlPattern: '/recalls/(.*)/revocationOrder',
         },
         response: {
           status: 200,
@@ -73,7 +73,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'GET',
-          urlPattern: `/recalls/(.*)`,
+          urlPattern: `/recalls/([^/]+)$`,
         },
         response: {
           status: 200,
