@@ -8,7 +8,7 @@ import updateRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__f
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const recallLength = '14'
+  const recallLength = 'FOURTEEN_DAYS'
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
@@ -17,7 +17,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('update a recall', () => {
     test('can successfully add recommended recall length to a recall', async () => {
       await provider.addInteraction({
-        state: 'a recall exists',
+        state: 'a recall exists and can be updated',
         ...updateRecallRequest('an update recall request', recallId, recallLength, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
@@ -34,7 +34,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         message: 'recallLength: must not be blank',
       }
       await provider.addInteraction({
-        state: 'a recall exists',
+        state: 'a recall exists and can be updated',
         ...updateRecallRequest(
           'an update recall request with blank recall length',
           recallId,
