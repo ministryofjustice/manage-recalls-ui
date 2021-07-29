@@ -5,7 +5,6 @@ import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddD
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { PrisonerSearchResult } from '../../@types'
-import { ApiRecallDocument } from '../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { GetDocumentResponse } from '../../@types/manage-recalls-api'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
