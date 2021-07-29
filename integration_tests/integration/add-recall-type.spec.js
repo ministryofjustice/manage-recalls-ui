@@ -1,7 +1,7 @@
 import { searchResponse, getRecallResponse } from '../mockApis/mockResponses'
 
 const addRecallTypePage = require('../pages/addRecallType')
-const assessRecallPage = require('../pages/assessRecall')
+const uploadDocumentsPage = require('../pages/uploadDocuments')
 
 context('Add recall length', () => {
   beforeEach(() => {
@@ -29,6 +29,6 @@ context('Add recall length', () => {
     cy.get('[type="radio"]').check('FOURTEEN_DAYS')
     addRecallType.addRecallType()
 
-    assessRecallPage.verifyOnPage(recallId)
+    uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
   })
 })
