@@ -3,10 +3,6 @@ import { UploadDocumentMetadata } from '../../../@types'
 
 export const documentTypes: UploadDocumentMetadata[] = [
   {
-    label: 'Invalid',
-    name: ApiRecallDocument.category.invalid,
-  },
-  {
     label: 'Part A recall report',
     name: ApiRecallDocument.category.PART_A_RECALL_REPORT,
   },
