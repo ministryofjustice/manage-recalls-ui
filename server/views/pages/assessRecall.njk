@@ -86,10 +86,10 @@
                 <div class="govuk-summary-list__row">
             {% for document in recall.documents %}
                 <dt class="govuk-summary-list__key">
-                    {{ document.category }}
+                    {{ document.label }}
                 </dt>
                 <dd class="govuk-summary-list__value" data-qa='uploadedDocument-{{ document.category }}'>
-                    {{ document.documentId }}
+                    <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/documents/{{ document.documentId }}'>Download PDF</a>
                 </dd>
             {% endfor %}
             </dl>

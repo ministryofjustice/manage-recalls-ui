@@ -4,7 +4,7 @@
     "urlPathPattern": "/recalls/(.*)/documents",
     "bodyPatterns": [
       {
-        "matchesJsonPath": "$.array[?(@.attr =~ /(PART_A_RECALL_REPORT|LICENCE|OASYS_RISK_ASSESSMENT|PREVIOUS_CONVICTIONS_SHEET|PRE_SENTENCING_REPORT)/)]"
+        "matchesJsonPath": "$.[?(@.category =~ /(PART_A_RECALL_REPORT|LICENCE|OASYS_RISK_ASSESSMENT|PREVIOUS_CONVICTIONS_SHEET|PRE_SENTENCING_REPORT)/)]"
       }
     ]
   },
