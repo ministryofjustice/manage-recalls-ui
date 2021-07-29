@@ -10,7 +10,7 @@ export const assessRecall = async (req: Request, res: Response): Promise<void> =
   ])
   recall.documents = recall.documents.map(doc => ({
     ...doc,
-    ...(documentTypes.find(d => d.category === doc.category) || {}),
+    ...(documentTypes.find(d => d.name === doc.category) || {}),
   }))
   res.locals.recall = recall
   res.locals.person = person

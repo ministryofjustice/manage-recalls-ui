@@ -7,18 +7,12 @@
   "scripts": {
     "copy-views": "cp -R server/views dist/server/",
     "compile-sass": "sass --no-source-map --load-path=node_modules/govuk-frontend --load-path=node_modules/@ministryofjustice/frontend ./assets/sass/application.sass:./assets/stylesheets/application.css ./assets/sass/application-ie8.sass:./assets/stylesheets/application-ie8.css --style compressed",
-    "watch-ts": "tsc -w",
-    "watch-views": "nodemon --watch server/views -e html,njk -x npm run copy-views",
-    "watch-node": "DEBUG=gov-starter-server* nodemon --watch dist/ -- --inspect=0.0.0.0:9229 dist/server.js | bunyan -o short",
-    "watch-sass": "npm run compile-sass -- --watch",
     "build": "npm run clean && npm run compile-sass && tsc && npm run copy-views",
     "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
-    "start:dev": "concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"nodemon\" \"npm run watch-sass\"",
+    "start:dev": "concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"nodemon\" \"npm run compile-sass -- --watch\"",
     "start:e2e": "export $(cat e2e.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
-    "watch-node-feature": "export $(cat feature.env) && nodemon --watch dist/ $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "start-feature": "export $(cat feature.env) && node --inspect=0.0.0.0:9229 $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
-    "start-feature:dev": "npm run build && concurrently -k -p \"[{name}]\" -n \"Views,TypeScript,Node,Sass\" -c \"yellow.bold,cyan.bold,green.bold,blue.bold\" \"npm run watch-views\" \"npm run watch-ts\" \"npm run watch-node-feature\" \"npm run watch-sass\"",
     "record-build-info": "node ./bin/record-build-info",
     "swagger-to-ts": "node ./scripts/swagger-to-ts.js",
     "lint": "eslint . --cache --max-warnings 0",
@@ -77,10 +71,14 @@
       "migrations/*",
       "node_modules/*",
       "test/*",
-      "integration_tests/*"
+      "integration_tests/*",
+      "*.test.ts"
     ],
-    "delay": 2500,
-    "ext": "js,json,html,njk"
+    "ext": "ts,js,json,html,njk",
+    "watch": [
+      "server"
+    ],
+    "exec": "node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts"
   },
   "lint-staged": {
     "*.{ts,js,css}": [
@@ -107,6 +105,7 @@
     "express": "^4.17.1",
     "express-request-id": "^1.4.1",
     "express-session": "^1.17.2",
+    "form-data": "^4.0.0",
     "govuk-frontend": "^3.13.0",
     "helmet": "^4.6.0",
     "http-errors": "^1.8.0",

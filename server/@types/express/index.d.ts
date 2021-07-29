@@ -5,7 +5,7 @@ declare module 'express-session' {
   interface SessionData {
     returnTo: string
     nowInMinutes: number
-    errors: unknown[]
+    errors: unknown
   }
 }
 

@@ -2,9 +2,9 @@ const page = require('./page')
 
 const uploadDocumentsPage = ({ nomsNumber, recallId }) =>
   page('Upload documents', {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}` : null,
+    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/upload-documents` : null,
     upload: () => {
-      cy.get('[name="partARecallReport"]').attachFile({
+      cy.get('[name="PART_A_RECALL_REPORT"]').attachFile({
         filePath: '../expected-revocation-order.pdf',
         mimeType: 'application/pdf',
       })

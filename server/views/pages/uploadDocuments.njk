@@ -9,7 +9,10 @@
             {% if errors %}
                 {{ govukErrorSummary({
                     titleText: "There is a problem",
-                    errorList: errors
+                    errorList: errors,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
                 }) }}
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ offender.firstName }} {{ offender.lastName }}</span>
@@ -49,7 +52,7 @@
                             {% endif %}
                         {%  endfor %}
                     </div>
-                    <button class="govuk-button">
+                    <button class="govuk-button" data-qa='continueButton'>
                         Continue
                         </button>
                 </form>

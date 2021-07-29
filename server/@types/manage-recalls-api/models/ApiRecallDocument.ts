@@ -14,5 +14,6 @@ export namespace ApiRecallDocument {
     PART_A_RECALL_REPORT = 'PART_A_RECALL_REPORT',
     PREVIOUS_CONVICTIONS_SHEET = 'PREVIOUS_CONVICTIONS_SHEET',
     PRE_SENTENCING_REPORT = 'PRE_SENTENCING_REPORT',
+    invalid = 'invalid',
   }
 }

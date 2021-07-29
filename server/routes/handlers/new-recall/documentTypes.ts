@@ -1,25 +1,26 @@
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { UploadDocumentMetadata } from '../../../@types'
 
-export const documentTypes = [
+export const documentTypes: UploadDocumentMetadata[] = [
   {
-    name: 'partARecallReport',
+    label: 'Invalid',
+    name: ApiRecallDocument.category.invalid,
+  },
+  {
     label: 'Part A recall report',
-    category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+    name: ApiRecallDocument.category.PART_A_RECALL_REPORT,
   },
   {
-    name: 'oasysRiskAssessment',
     label: 'OASys Risk Assessment',
-    category: ApiRecallDocument.category.OASYS_RISK_ASSESSMENT,
+    name: ApiRecallDocument.category.OASYS_RISK_ASSESSMENT,
   },
-  { name: 'licence', label: 'Licence', category: ApiRecallDocument.category.LICENCE },
+  { label: 'Licence', name: ApiRecallDocument.category.LICENCE },
   {
-    name: 'previousConvictions',
     label: 'Previous convictions sheet',
-    category: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+    name: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
   },
   {
-    name: 'preSentencingReport',
     label: 'Pre-sentencing report',
-    category: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
+    name: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
   },
 ]

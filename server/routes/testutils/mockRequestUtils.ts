@@ -2,10 +2,19 @@ import { getMockReq, getMockRes } from '@jest-mock/express'
 import { Request } from 'express'
 import { ObjectStrings } from '../../@types/express'
 
-export function mockPostRequest({ body, params }: { body?: ObjectStrings; params?: ObjectStrings }) {
+export function mockPostRequest({
+  body,
+  params,
+  headers,
+}: {
+  body?: ObjectStrings
+  params?: ObjectStrings
+  headers?: ObjectStrings
+}) {
   return getMockReq({
     body,
     params,
+    headers,
   })
 }
 
