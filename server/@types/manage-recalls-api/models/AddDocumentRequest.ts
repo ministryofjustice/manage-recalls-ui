@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RecallDocumentResponse = {
-  documentId: string
+export type AddDocumentRequest = {
   category: string
-  content: string
+  fileContent: string
 }

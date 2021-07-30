@@ -2,13 +2,19 @@ import { getMockReq, getMockRes } from '@jest-mock/express'
 import { Request } from 'express'
 import { ObjectStrings } from '../../@types/express'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function mockPostRequest({ body, params }: { body?: ObjectStrings; params?: ObjectStrings }) {
+export function mockPostRequest({
+  body,
+  params,
+  headers,
+}: {
+  body?: ObjectStrings
+  params?: ObjectStrings
+  headers?: ObjectStrings
+}) {
   return getMockReq({
     body,
     params,
+    headers,
   })
 }
 
@@ -19,7 +25,6 @@ export function mockGetRequest({ query, params }: { query?: ObjectStrings; param
   })
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,camelcase
 export function mockResponseWithAuthenticatedUser(userAccessToken: string) {
   return getMockRes({
     locals: {

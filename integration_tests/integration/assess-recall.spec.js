@@ -20,8 +20,8 @@ context('Assess a recall', () => {
     cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
     cy.login()
 
-    const assessRecall = assessRecallPage.verifyOnPage(recallId)
-    assessRecall.expectOffenderName('Bobby Badger')
+    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
+    assessRecall.expectRecallId(getRecallResponse.recallId)
   })
 
   it('User can get revocation order', () => {
@@ -33,7 +33,7 @@ context('Assess a recall', () => {
       cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
       cy.login()
 
-      const recall = assessRecallPage.verifyOnPage(recallId)
+      const recall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
       recall.getRevocationOrder()
 
       validateBinaryFile('revocation-order.pdf', 67658)

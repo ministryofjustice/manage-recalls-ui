@@ -1,7 +1,7 @@
 const page = require('./page')
 
 const newRecallPage = (params = {}) =>
-  page('Book a recall', {
+  page('Start here', {
     url: params.nomsNumber ? `/persons/${params.nomsNumber}/recalls/${params.recallId}` : null,
     expectRecallIdConfirmation: recallId => {
       cy.get('[data-qa=recallId]').should($searchResults => {

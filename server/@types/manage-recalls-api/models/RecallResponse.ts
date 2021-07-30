@@ -2,11 +2,19 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { RecallDocument } from './RecallDocument'
+import type { ApiRecallDocument } from './ApiRecallDocument'
 
 export type RecallResponse = {
-  recallId: string
+  documents: Array<ApiRecallDocument>
   nomsNumber: string
+  recallId: string
+  recallLength?: RecallResponse.recallLength
   revocationOrderId?: string
-  documents: Array<RecallDocument>
+}
+
+export namespace RecallResponse {
+  export enum recallLength {
+    FOURTEEN_DAYS = 'FOURTEEN_DAYS',
+    TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
+  }
 }

@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/recalls/(.*)/documents",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.[?(@.category =~ /(PART_A_RECALL_REPORT|LICENCE|OASYS_RISK_ASSESSMENT|PREVIOUS_CONVICTIONS_SHEET|PRE_SENTENCING_REPORT)/)]"
+      }
+    ]
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "add-recall-document.json"
+  }
+}

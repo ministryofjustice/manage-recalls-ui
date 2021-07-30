@@ -1,13 +1,13 @@
 {
   "request": {
-    "method": "PATCH",
-    "urlPathPattern": "/recalls/(.*)"
+    "method": "GET",
+    "urlPathPattern": "/recalls/(.*)/documents/(.*)"
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
     },
-    "bodyFileName": "update-recall.json"
+    "bodyFileName": "get-recall-document.json"
   }
 }

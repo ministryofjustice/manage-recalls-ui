@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { createRecallDocument } from './manageRecallsApiClient'
+import { addRecallDocument } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-import createRecallDocumentResponseJson from '../../../fake-manage-recalls-api/stubs/__files/create-recall-document.json'
+import addRecallDocumentResponseJson from '../../../fake-manage-recalls-api/stubs/__files/create-recall-document.json'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -20,25 +20,19 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully create a document', async () => {
       await provider.addInteraction({
         state: 'a document can be created',
-        ...createRecallDocumentRequest(
-          'a create recall document request',
-          recallId,
-          accessToken,
-          category,
-          fileContent
-        ),
-        willRespondWith: createRecallDocumentResponse(Matchers.like(createRecallDocumentResponseJson), 201),
+        ...addRecallDocumentRequest('a create recall document request', recallId, accessToken, category, fileContent),
+        willRespondWith: addRecallDocumentResponse(Matchers.like(addRecallDocumentResponseJson), 201),
       })
 
-      const actual = await createRecallDocument(recallId, category, fileContent, accessToken)
+      const actual = await addRecallDocument(recallId, { category, fileContent }, accessToken)
 
-      expect(actual).toEqual(createRecallDocumentResponseJson)
+      expect(actual).toEqual(addRecallDocumentResponseJson)
     })
 
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...createRecallDocumentRequest(
+        ...addRecallDocumentRequest(
           'an unauthorized create recall document request',
           recallId,
           accessToken,
@@ -49,7 +43,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await createRecallDocument(recallId, category, fileContent, accessToken)
+        await addRecallDocument(recallId, { category, fileContent }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }
@@ -57,7 +51,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   })
 })
 
-function createRecallDocumentRequest(
+function addRecallDocumentRequest(
   description: string,
   recallId: string,
   token: string,
@@ -78,7 +72,7 @@ function createRecallDocumentRequest(
   }
 }
 
-function createRecallDocumentResponse(responseBody, expectedStatus = 201) {
+function addRecallDocumentResponse(responseBody, expectedStatus = 201) {
   return {
     status: expectedStatus,
     headers: { 'Content-Type': 'application/json' },

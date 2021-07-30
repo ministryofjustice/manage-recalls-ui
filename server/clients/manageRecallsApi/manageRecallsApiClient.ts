@@ -1,15 +1,11 @@
 import { manageRecallsApiConfig } from '../../config'
 import RestClient from '../../data/restClient'
-import { RecallResponse as Recall, Pdf } from '../../@types/manage-recalls-api'
-import { RecallDocumentResponse } from '../../@types/manage-recalls-api/models/RecallDocumentResponse'
-import { RecallDocumentId } from '../../@types/manage-recalls-api/models/RecallDocumentId'
-
-export interface PrisonerSearchResult {
-  firstName: string
-  lastName: string
-  nomsNumber?: string
-  dateOfBirth?: string
-}
+import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models/RecallResponse'
+import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddDocumentResponse'
+import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
+import { PrisonerSearchResult } from '../../@types'
+import { GetDocumentResponse } from '../../@types/manage-recalls-api'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
   const request = { nomsNumber }
@@ -46,22 +42,16 @@ export function updateRecall(recallId: string, recallLength: string, token: stri
   return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: request })
 }
 
-export function getRecallDocument(
-  recallId: string,
-  documentId: string,
-  token: string
-): Promise<RecallDocumentResponse> {
-  return restClient(token).get<RecallDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
+export function getRecallDocument(recallId: string, documentId: string, token: string): Promise<GetDocumentResponse> {
+  return restClient(token).get<GetDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
 }
 
-export function createRecallDocument(
+export function addRecallDocument(
   recallId: string,
-  category: string,
-  fileContent: string,
+  document: AddDocumentRequest,
   token: string
-): Promise<RecallDocumentId> {
-  const request = { category, fileContent }
-  return restClient(token).post<RecallDocumentId>({ path: `/recalls/${recallId}/documents`, data: request })
+): Promise<AddDocumentResponse> {
+  return restClient(token).post({ path: `/recalls/${recallId}/documents`, data: document })
 }
 
 function restClient(token: string): RestClient {
