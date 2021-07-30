@@ -153,54 +153,6 @@
       }
     },
     {
-      "description": "a get recalls request",
-      "providerState": "a list of recalls exists",
-      "request": {
-        "method": "GET",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "123"
-          },
-          {
-            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-            "nomsNumber": "456"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recalls request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
       "description": "a search request by NOMS number",
       "providerState": "a prisoner exists for NOMS number",
       "request": {
@@ -455,28 +407,30 @@
       }
     },
     {
-      "description": "an update recall request",
-      "providerState": "a recall exists",
+      "description": "a get recalls request",
+      "providerState": "a list of recalls exists",
       "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000",
+        "method": "GET",
+        "path": "/recalls",
         "headers": {
           "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "recallLength": "14"
         }
       },
       "response": {
-        "status": 201,
+        "status": 200,
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": {
-          "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "nomsNumber": "A1234AA",
-          "recallLength": "14"
-        },
+        "body": [
+          {
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "123"
+          },
+          {
+            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+            "nomsNumber": "456"
+          }
+        ],
         "matchingRules": {
           "$.body": {
             "match": "type"
@@ -485,68 +439,17 @@
       }
     },
     {
-      "description": "an update recall request with blank recall length",
-      "providerState": "a recall exists",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "recallLength": ""
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "recallLength: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized update recall request",
+      "description": "an unauthorized get recalls request",
       "providerState": "an unauthorized user accessToken",
       "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000",
+        "method": "GET",
+        "path": "/recalls",
         "headers": {
           "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "recallLength": "14"
         }
       },
       "response": {
         "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "an update recall request",
-      "providerState": "a recall does not exist",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "recallLength": "14"
-        }
-      },
-      "response": {
-        "status": 404,
         "headers": {
         }
       }
