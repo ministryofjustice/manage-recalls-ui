@@ -9,6 +9,7 @@ const recallsListPage = () =>
         expect(text.trim()).to.equal(expectedText)
       })
     },
+    viewRecall: () => cy.get('[data-qa=viewRecallDetails]').click(),
   })
 
 module.exports = { verifyOnPage: recallsListPage }

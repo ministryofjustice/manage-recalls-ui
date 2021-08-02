@@ -1,6 +1,7 @@
-import { searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 
 const recallsListPage = require('../pages/recallsList')
+const assessRecallPage = require('../pages/assessRecall')
 
 context('Todo list of recalls', () => {
   beforeEach(() => {
@@ -10,16 +11,18 @@ context('Todo list of recalls', () => {
   })
 
   const nomsNumber = 'A1234AA'
-  it('User can view a list of recalls', () => {
+  const recallId = '123'
+  it('User can view a list of recalls and click through to a recall page', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', {
       expectedResults: [
         {
-          id: '1',
+          recallId,
           nomsNumber,
         },
       ],
     })
+    cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
 
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
@@ -29,5 +32,8 @@ context('Todo list of recalls', () => {
     firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
     firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
     firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
+    firstResult.get('[data-qa=recallId]').should('contain.text', recallId)
+    recallsList.viewRecall()
+    assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
   })
 })
