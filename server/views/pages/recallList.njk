@@ -31,14 +31,14 @@
                         <tbody class="govuk-table__body" data-qa="search-results">
                         {% for recall in recalls %}
                             <tr class="govuk-table__row">
-                                <td class="govuk-table__cell" data-qa="nomsNumber">{{ recall.recallId }}</td>
+                                <td class="govuk-table__cell" data-qa="recallId">{{ recall.recallId }}</td>
                                 <td class="govuk-table__cell" data-qa="nomsNumber">{{ recall.offender.nomsNumber }}</td>
-                                <td class="govuk-table__cell" data-qa="nomsNumber">{{ recall.offender.priority }}</td>
+                                <td class="govuk-table__cell" data-qa="priority">{{ recall.offender.priority }}</td>
                                 <td class="govuk-table__cell" data-qa="firstName">{{ recall.offender.firstName }}</td>
                                 <td class="govuk-table__cell" data-qa="lastName">{{ recall.offender.lastName }}</td>
-                                <td class="govuk-table__cell" data-qa="lastName">{{ recall.offender.recallDate }}</td>
-                                <td class="govuk-table__cell" data-qa="lastName">{{ recall.offender.dueDate }}</td>
-                                <td class="govuk-table__cell" data-qa="lastName"><a href='/assess-recall?recallId={{ recall.recallId }}' data-qa='viewRecallDetails'>View</a></td>
+                                <td class="govuk-table__cell" data-qa="recallDate">{{ recall.offender.recallDate }}</td>
+                                <td class="govuk-table__cell" data-qa="dueDate">{{ recall.offender.dueDate }}</td>
+                                <td class="govuk-table__cell"><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='viewRecallDetails'>View</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
