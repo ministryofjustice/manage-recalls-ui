@@ -153,6 +153,83 @@
       }
     },
     {
+      "description": "a create recall request",
+      "providerState": "a recall can be created",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "nomsNumber": "A1234AA"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a create recall request with blank nomsNumber",
+      "providerState": "a recall can be created",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "nomsNumber": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST",
+          "message": "nomsNumber: must not be blank"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized create recall request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a search request by NOMS number",
       "providerState": "a prisoner exists for NOMS number",
       "request": {
@@ -233,83 +310,6 @@
         "path": "/search",
         "headers": {
           "Accept": "application/json",
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a create recall request",
-      "providerState": "a recall can be created",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "nomsNumber": "A1234AA"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a create recall request with blank nomsNumber",
-      "providerState": "a recall can be created",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "nomsNumber": ""
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "nomsNumber: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized create recall request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
           "Authorization": "Bearer accessToken-1"
         },
         "body": {
@@ -444,6 +444,55 @@
       "request": {
         "method": "GET",
         "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+        }
+      }
+    },
+    {
+      "description": "a get recall request",
+      "providerState": "a recall exists",
+      "request": {
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+          "nomsNumber": "A1234AA",
+          "recallLength": "FOURTEEN_DAYS",
+          "documents": [
+            {
+              "category": "LICENCE",
+              "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized get recall request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         }

@@ -22,6 +22,7 @@ context('Assess a recall', () => {
 
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
     assessRecall.expectRecallId(getRecallResponse.recallId)
+    assessRecall.expectRecallLength('14 days')
   })
 
   it('User can get revocation order', () => {
