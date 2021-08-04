@@ -37,9 +37,20 @@ export const assessRecallView =
 export const assessDecisionFormHandler = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
   const { agreeWithRecallRecommendation } = req.body
-  if (!nomsNumber || !recallId || !agreeWithRecallRecommendation) {
+  if (!nomsNumber || !recallId) {
+    logger.error(`nomsNumber or recallId not supplied. URL: ${req.originalUrl}`)
     res.sendStatus(400)
     return
+  }
+  if (!agreeWithRecallRecommendation) {
+    req.session.errors = [
+      {
+        name: 'agreeWithRecallRecommendation',
+        text: 'Indicate if you agree or disagree with the recommended recall length',
+        href: '#agreeWithRecallRecommendation',
+      },
+    ]
+    return res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-decision`)
   }
   try {
     const recall = await updateRecall(recallId, { agreeWithRecallRecommendation }, res.locals.user.token)

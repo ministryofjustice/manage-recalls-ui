@@ -6,11 +6,20 @@ import { isInvalid } from './viewWithRecallAndPerson'
 export const addRecallType = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
   const { recallLength } = req.body
-  if (isInvalid(nomsNumber) || isInvalid(recallId) || isInvalid(recallLength)) {
+  if (isInvalid(nomsNumber) || isInvalid(recallId)) {
     res.sendStatus(400)
     return
   }
-
+  if (isInvalid(recallLength)) {
+    req.session.errors = [
+      {
+        name: 'recallLength',
+        text: 'Recommend a fixed recall length',
+        href: '#recallLength',
+      },
+    ]
+    return res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/recall-type`)
+  }
   try {
     const recall = await updateRecall(recallId, { recallLength }, res.locals.user.token)
     res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/upload-documents`)

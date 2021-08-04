@@ -1,3 +1,5 @@
+import { NamedFormError } from '../index'
+
 export default {}
 
 declare module 'express-session' {
@@ -5,7 +7,7 @@ declare module 'express-session' {
   interface SessionData {
     returnTo: string
     nowInMinutes: number
-    errors: unknown
+    errors?: NamedFormError[]
   }
 }
 
@@ -27,4 +29,8 @@ export interface RequestQuery {
 
 export interface ObjectStrings {
   [key: string]: string
+}
+
+export interface ObjectMap<T> {
+  [key: string]: T
 }

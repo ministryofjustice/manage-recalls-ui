@@ -8,7 +8,7 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 describe('addRecallType', () => {
   const nomsNumber = 'AA123AA'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const recallLength = '28'
+  const recallLength = 'TWENTY_EIGHT_DAYS'
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -28,16 +28,25 @@ describe('addRecallType', () => {
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/upload-documents`)
     })
 
+    it('should reload the page if recallLength is invalid', async () => {
+      const recallDetails = { recallId, nomsNumber }
+
+      updateRecall.mockReturnValueOnce(recallDetails)
+
+      const req = mockPostRequest({ params: { nomsNumber, recallId }, body: { recallLength: '' } })
+      const { res } = mockResponseWithAuthenticatedUser('')
+
+      await addRecallType(req, res)
+
+      expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/recall-type`)
+    })
+
     it('should return 400 if invalid noms number', async () => {
       await addRecallTypeAndExpectBadRequestFor(0 as unknown as string, recallId, recallLength)
     })
 
     it('should return 400 if invalid recallId', async () => {
       await addRecallTypeAndExpectBadRequestFor(nomsNumber, 0 as unknown as string, recallLength)
-    })
-
-    it('should return 400 if invalid recallLength', async () => {
-      await addRecallTypeAndExpectBadRequestFor(nomsNumber, recallId, '')
     })
   })
 })
