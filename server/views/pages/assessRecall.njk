@@ -101,8 +101,8 @@
                 <dt class="govuk-summary-list__key">
                     {{ document.label }}
                 </dt>
-                <dd class="govuk-summary-list__value" data-qa='uploadedDocument-{{ document.category }}'>
-                    <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/documents/{{ document.documentId }}'>Download PDF</a>
+                <dd class="govuk-summary-list__value">
+                    <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/documents/{{ document.documentId }}' data-qa='uploadedDocument-{{ document.category }}'>Download PDF</a>
                 </dd>
             {% endfor %}
             </dl>
