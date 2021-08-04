@@ -38,7 +38,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...updateRecallRequest(
           'an update recall request with blank recall length',
           recallId,
-          recallLength,
+          blankRecallLength,
           accessToken
         ),
         willRespondWith: updateRecallResponse(Matchers.like(errorResponse), 400),
