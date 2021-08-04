@@ -5,7 +5,7 @@ const addRecallTypePage = ({ nomsNumber, recallId }) =>
     url: `/persons/${nomsNumber}/recalls/${recallId}/recall-type`,
     addRecallType: () => {
       cy.get('[value="FOURTEEN_DAYS"]').click()
-      cy.get('[data-qa=addRecallTypeButton]').click()
+      cy.get('[data-qa=continueButton]').click()
     },
     expectPersonNameInCaption: personName => {
       cy.get('[data-qa=addRecallTypeCaption]').should($results => {
