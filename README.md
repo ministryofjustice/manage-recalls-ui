@@ -8,7 +8,6 @@ UI for managing recalls
 * pact/README.md
 * helm_deploy/README.md
 
-
 ## Dependencies/Set-up
 The app requires:
 * hmpps-auth - for authentication

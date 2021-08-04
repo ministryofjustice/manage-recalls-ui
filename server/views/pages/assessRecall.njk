@@ -80,6 +80,19 @@
                     </dd>
                 </div>
             </dl>
+            {% if recall %}
+            <h2 class='govuk-heading-m'>Recall</h2>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Length of fixed recall
+                </dt>
+                <dd class="govuk-summary-list__value" data-qa='recallLength'>
+                   {{ recall.recallLengthFormatted }}
+                </dd>
+            </dl>
+
+            {% endif %}
             {% if recall.documents.length %}
             <h2 class='govuk-heading-m'>Uploaded documents</h2>
             <dl class="govuk-summary-list">
