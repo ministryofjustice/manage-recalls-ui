@@ -58,7 +58,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'PATCH',
-          urlPattern: `/recalls/${recallId}`,
+          urlPattern: `/recalls/([^/]+)$`,
         },
         response: {
           status: 200,

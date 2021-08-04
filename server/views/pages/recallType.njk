@@ -18,10 +18,9 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
         <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/recall-type" method="post">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-
             {{ govukRadios({
-            idPrefix: "recommendedRecallLength",
-            name: "recommendedRecallLength",
+            idPrefix: "recallLength",
+            name: "recallLength",
             fieldset: {
             legend: {
             text: "What is the recommended fixed recall length?",
@@ -39,7 +38,6 @@
             }
             ]
             }) }}
-
             <div class="govuk-!-margin-top-8">
                 <button class="govuk-button" data-qa="addRecallTypeButton">Continue</button>
             </div>

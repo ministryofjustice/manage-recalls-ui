@@ -8,7 +8,7 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 describe('addRecallType', () => {
   const nomsNumber = 'AA123AA'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const recommendedRecallLength = '28'
+  const recallLength = '28'
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -20,7 +20,7 @@ describe('addRecallType', () => {
 
       updateRecall.mockReturnValueOnce(recallDetails)
 
-      const req = mockPostRequest({ params: { nomsNumber, recallId }, body: { recommendedRecallLength } })
+      const req = mockPostRequest({ params: { nomsNumber, recallId }, body: { recallLength } })
       const { res } = mockResponseWithAuthenticatedUser('')
 
       await addRecallType(req, res)
@@ -29,23 +29,23 @@ describe('addRecallType', () => {
     })
 
     it('should return 400 if invalid noms number', async () => {
-      await addRecallTypeAndExpectBadRequestFor(0 as unknown as string, recallId, recommendedRecallLength)
+      await addRecallTypeAndExpectBadRequestFor(0 as unknown as string, recallId, recallLength)
     })
 
     it('should return 400 if invalid recallId', async () => {
-      await addRecallTypeAndExpectBadRequestFor(nomsNumber, 0 as unknown as string, recommendedRecallLength)
+      await addRecallTypeAndExpectBadRequestFor(nomsNumber, 0 as unknown as string, recallLength)
     })
 
-    it('should return 400 if invalid recommendedRecallLength', async () => {
+    it('should return 400 if invalid recallLength', async () => {
       await addRecallTypeAndExpectBadRequestFor(nomsNumber, recallId, '')
     })
   })
 })
 
-async function addRecallTypeAndExpectBadRequestFor(nomsNumber, recallId, recommendedRecallLength) {
+async function addRecallTypeAndExpectBadRequestFor(nomsNumber, recallId, recallLength) {
   const req = mockPostRequest({
     params: { nomsNumber, recallId },
-    body: { recommendedRecallLength },
+    body: { recallLength },
   })
   const { res } = mockResponseWithAuthenticatedUser('')
 

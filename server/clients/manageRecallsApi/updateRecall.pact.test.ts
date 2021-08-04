@@ -22,7 +22,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
 
-      const actual = await updateRecall(recallId, recallLength, accessToken)
+      const actual = await updateRecall(recallId, { recallLength }, accessToken)
 
       expect(actual).toEqual(updateRecallResponseJson)
     })
@@ -38,14 +38,14 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...updateRecallRequest(
           'an update recall request with blank recall length',
           recallId,
-          blankRecallLength,
+          recallLength,
           accessToken
         ),
         willRespondWith: updateRecallResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
-        await updateRecall(recallId, blankRecallLength, accessToken)
+        await updateRecall(recallId, { recallLength: blankRecallLength }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(400)
         expect(exception.data).toEqual(errorResponse)
@@ -60,7 +60,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await updateRecall(recallId, recallLength, accessToken)
+        await updateRecall(recallId, { recallLength }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(404)
       }
@@ -74,7 +74,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await updateRecall(recallId, recallLength, accessToken)
+        await updateRecall(recallId, { recallLength }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

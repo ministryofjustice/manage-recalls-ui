@@ -1,6 +1,6 @@
 import nock from 'nock'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
-import config from '../../config'
+import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import config from '../../../config'
 import getRevocationOrder from './getRevocationOrder'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }

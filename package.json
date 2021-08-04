@@ -10,7 +10,7 @@
     "build": "npm run clean && npm run compile-sass && tsc && npm run copy-views",
     "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
-    "start:dev": "concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"nodemon\" \"npm run compile-sass -- --watch\"",
+    "start:dev": "npx kill-port 3000,9229 && concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"nodemon\" \"npm run compile-sass -- --watch\"",
     "start:e2e": "export $(cat e2e.env) && node $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "start-feature": "export $(cat feature.env) && node --inspect=0.0.0.0:9229 $NODE_DEBUG_OPTION dist/server.js | bunyan -o short",
     "start-feature:dev": "export $(cat feature.env) && npm run start:dev",
@@ -79,7 +79,12 @@
     "watch": [
       "server"
     ],
-    "exec": "node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts"
+    "exec": "node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts",
+    "events": {
+      "restart": "npx kill-port 3000,9229",
+      "crash": "npx kill-port 3000,9229"
+    },
+    "delay": 2000
   },
   "lint-staged": {
     "*.{ts,js,css}": [
@@ -168,6 +173,7 @@
     "jest-junit": "^12.0.0",
     "jest-pact": "^0.9.1",
     "jsonwebtoken": "^8.5.1",
+    "kill-port": "^1.6.1",
     "lint-staged": "^11.0.0",
     "mkdirp": "^1.0.4",
     "mocha": "^9.0.3",

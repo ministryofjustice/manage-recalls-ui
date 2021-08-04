@@ -1,6 +1,6 @@
 import nock from 'nock'
-import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
-import config from '../../config'
+import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import config from '../../../config'
 import { createRecall } from './createRecall'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
