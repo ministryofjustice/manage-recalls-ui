@@ -5,8 +5,14 @@ const assessRecallDecisionPage = ({ nomsNumber, recallId } = {}) =>
     url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/assess-decision` : null,
     makeDecision: () => {
       cy.get('[value="YES"]').click()
-      cy.get('[data-qa=continueButton]').click()
     },
+    expectError: () => {
+      cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
+        const text = $searchResults.text()
+        expect(text.trim()).to.equal('Indicate if you agree or disagree with the recommended recall length')
+      })
+    },
+    clickContinue: () => cy.get('[data-qa=continueButton]').click(),
   })
 
 module.exports = { verifyOnPage: assessRecallDecisionPage }

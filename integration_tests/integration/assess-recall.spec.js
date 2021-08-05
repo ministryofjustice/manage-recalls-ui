@@ -28,7 +28,22 @@ context('Assess a recall', () => {
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeDecision()
+    assessRecallDecision.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: 'Bobby Badger' })
+  })
+
+  it("User sees an error if they don't make a decision", () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.login()
+
+    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
+    assessRecall.expectRecallLength('14 days')
+    assessRecall.clickContinue()
+    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
+    assessRecallDecision.clickContinue()
+    assessRecallDecision.expectError()
   })
 
   it('User can get revocation order', () => {
