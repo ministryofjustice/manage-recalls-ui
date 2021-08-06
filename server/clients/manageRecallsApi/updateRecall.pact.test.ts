@@ -3,7 +3,7 @@ import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
 import { updateRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-import updateRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/update-recall.json'
+import updateRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -22,7 +22,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
 
-      const actual = await updateRecall(recallId, recallLength, accessToken)
+      const actual = await updateRecall(recallId, { recallLength }, accessToken)
 
       expect(actual).toEqual(updateRecallResponseJson)
     })
@@ -45,7 +45,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await updateRecall(recallId, blankRecallLength, accessToken)
+        await updateRecall(recallId, { recallLength: blankRecallLength }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(400)
         expect(exception.data).toEqual(errorResponse)
@@ -60,7 +60,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await updateRecall(recallId, recallLength, accessToken)
+        await updateRecall(recallId, { recallLength }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(404)
       }
@@ -74,7 +74,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await updateRecall(recallId, recallLength, accessToken)
+        await updateRecall(recallId, { recallLength }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

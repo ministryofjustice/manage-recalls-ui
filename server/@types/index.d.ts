@@ -1,9 +1,19 @@
 import { ApiRecallDocument } from './manage-recalls-api'
 
+export interface FormError {
+  text: string
+  href: string
+}
+
+export interface NamedFormError extends FormError {
+  name: string
+}
+
 export interface UploadError {
   name: ApiRecallDocument.category
   fileName: string
   text: string
+  href: string
 }
 
 export interface UploadDocumentMetadata {

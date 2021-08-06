@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
-import { getRevocationOrder } from '../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../logger'
+import { getRevocationOrder } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../../../logger'
 
 export default function getRevocationOrderHandler(): RequestHandler {
   return async (req, res, next) => {

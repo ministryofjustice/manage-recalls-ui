@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { createRecall as createRecallApi } from '../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../logger'
+import { createRecall as createRecallApi } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../../../logger'
 
 export const createRecall = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber } = req.params

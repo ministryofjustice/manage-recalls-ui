@@ -3,9 +3,6 @@ import { documentTypes } from '../documentTypes'
 import { AddDocumentResponse } from '../../../../@types/manage-recalls-api'
 
 export const addErrorsToDocuments = (errors?: UploadError[]): UploadDocumentMetadata[] => {
-  if (!errors) {
-    return [...documentTypes]
-  }
   return documentTypes.map(doc => {
     const matchedErr = errors.find((err: UploadError) => err.name === doc.name)
     if (matchedErr) {

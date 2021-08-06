@@ -23,7 +23,7 @@ export const uploadDocumentsPage = async (req: Request, res: Response): Promise<
   ])
   res.locals.offender = person
   res.locals.recall = recall
-  res.locals.documentTypes = addErrorsToDocuments(errors)
+  res.locals.documentTypes = errors ? addErrorsToDocuments(errors.list) : [...documentTypes]
   res.render('pages/uploadDocuments')
 }
 
@@ -37,7 +37,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
     }
     const { files, session } = req
     const { user } = res.locals
-    const fileData = await makeFileData(files as UploadedFormFields)
+    const fileData = makeFileData(files as UploadedFormFields)
     const responses = await Promise.allSettled(
       fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
     )

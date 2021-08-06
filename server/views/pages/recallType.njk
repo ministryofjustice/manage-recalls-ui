@@ -6,7 +6,15 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-
+        {% if errors %}
+            {{ govukErrorSummary({
+                titleText: "There is a problem",
+                errorList: errors.list,
+                attributes: {
+                    'data-qa': 'error-list'
+                }
+            }) }}
+        {% endif %}
         <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
         <h1 class="govuk-heading-l">
             Recall recommendation
@@ -18,16 +26,18 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
         <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/recall-type" method="post">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-
             {{ govukRadios({
-            idPrefix: "recommendedRecallLength",
-            name: "recommendedRecallLength",
+            idPrefix: "recallLength",
+            name: "recallLength",
             fieldset: {
             legend: {
             text: "What is the recommended fixed recall length?",
             classes: "govuk-fieldset__legend--s"
             }
             },
+            errorMessage: {
+                text: 'Select one'
+            } if errors.recallLength else undefined,
             items: [
             {
             value: "FOURTEEN_DAYS",
@@ -39,9 +49,8 @@
             }
             ]
             }) }}
-
             <div class="govuk-!-margin-top-8">
-                <button class="govuk-button" data-qa="addRecallTypeButton">Continue</button>
+                <button class="govuk-button" data-qa="continueButton">Continue</button>
             </div>
         </form>
     </div>

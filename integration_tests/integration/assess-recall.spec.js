@@ -3,6 +3,8 @@ import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import validateBinaryFile from './file-utils'
 
 const assessRecallPage = require('../pages/assessRecall')
+const assessRecallDecisionPage = require('../pages/assessRecallDecision')
+const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation')
 
 context('Assess a recall', () => {
   beforeEach(() => {
@@ -17,12 +19,31 @@ context('Assess a recall', () => {
   it('User can assess a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectUpdateRecall', { recallId })
     cy.login()
 
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
-    assessRecall.expectRecallId(getRecallResponse.recallId)
     assessRecall.expectRecallLength('14 days')
+    assessRecall.clickContinue()
+    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
+    assessRecallDecision.makeDecision()
+    assessRecallDecision.clickContinue()
+    assessRecallConfirmationPage.verifyOnPage({ fullName: 'Bobby Badger' })
+  })
+
+  it("User sees an error if they don't make a decision", () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.login()
+
+    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
+    assessRecall.expectRecallLength('14 days')
+    assessRecall.clickContinue()
+    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
+    assessRecallDecision.clickContinue()
+    assessRecallDecision.expectError()
   })
 
   it('User can get revocation order', () => {
@@ -34,7 +55,7 @@ context('Assess a recall', () => {
       cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
       cy.login()
 
-      const recall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
+      const recall = assessRecallConfirmationPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
       recall.getRevocationOrder()
 
       validateBinaryFile('revocation-order.pdf', 67658)
