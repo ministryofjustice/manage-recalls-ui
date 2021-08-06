@@ -28,7 +28,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       expect(actual).toEqual(updateRecallResponseJson)
     })
 
-    test('can successfully add assessment agreement to a recall', async () => {
+    test('can successfully add an assessment agreement to a recall', async () => {
       const agreeWithRecallRecommendation = true
       await provider.addInteraction({
         state: 'a recall exists and can be updated with agreement',
