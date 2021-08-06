@@ -42,7 +42,7 @@ export const assessDecisionFormHandler = async (req: Request, res: Response): Pr
     res.sendStatus(400)
     return
   }
-  if (!agreeWithRecallRecommendation) {
+  if (!agreeWithRecallRecommendation || !['YES', 'NO'].includes(agreeWithRecallRecommendation)) {
     req.session.errors = [
       {
         name: 'agreeWithRecallRecommendation',
@@ -53,7 +53,12 @@ export const assessDecisionFormHandler = async (req: Request, res: Response): Pr
     return res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-decision`)
   }
   try {
-    const recall = await updateRecall(recallId, { agreeWithRecallRecommendation }, res.locals.user.token)
+    const agreePayloadValue = agreeWithRecallRecommendation === 'YES'
+    const recall = await updateRecall(
+      recallId,
+      { agreeWithRecallRecommendation: agreePayloadValue },
+      res.locals.user.token
+    )
     res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/assess-confirmation`)
   } catch (err) {
     logger.error(err)

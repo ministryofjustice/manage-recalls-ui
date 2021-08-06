@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { updateRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import updateRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import { ObjectMap } from '../../@types/express'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -17,12 +18,25 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('update a recall', () => {
     test('can successfully add recommended recall length to a recall', async () => {
       await provider.addInteraction({
-        state: 'a recall exists and can be updated',
-        ...updateRecallRequest('an update recall request', recallId, recallLength, accessToken),
+        state: 'a recall exists and can be updated with length',
+        ...updateRecallRequest('an update recall request', recallId, { recallLength }, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
 
       const actual = await updateRecall(recallId, { recallLength }, accessToken)
+
+      expect(actual).toEqual(updateRecallResponseJson)
+    })
+
+    test('can successfully add assessment agreement to a recall', async () => {
+      const agreeWithRecallRecommendation = true
+      await provider.addInteraction({
+        state: 'a recall exists and can be updated with agreement',
+        ...updateRecallRequest('an update recall request', recallId, { agreeWithRecallRecommendation }, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
+      })
+
+      const actual = await updateRecall(recallId, { agreeWithRecallRecommendation }, accessToken)
 
       expect(actual).toEqual(updateRecallResponseJson)
     })
@@ -38,7 +52,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...updateRecallRequest(
           'an update recall request with blank recall length',
           recallId,
-          blankRecallLength,
+          { recallLength: blankRecallLength },
           accessToken
         ),
         willRespondWith: updateRecallResponse(Matchers.like(errorResponse), 400),
@@ -55,7 +69,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 404 if recall not found', async () => {
       await provider.addInteraction({
         state: 'a recall does not exist',
-        ...updateRecallRequest('an update recall request', recallId, recallLength, accessToken),
+        ...updateRecallRequest('an update recall request', recallId, { recallLength }, accessToken),
         willRespondWith: { status: 404 },
       })
 
@@ -69,7 +83,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...updateRecallRequest('an unauthorized update recall request', recallId, recallLength, accessToken),
+        ...updateRecallRequest('an unauthorized update recall request', recallId, { recallLength }, accessToken),
         willRespondWith: { status: 401 },
       })
 
@@ -82,14 +96,14 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   })
 })
 
-function updateRecallRequest(description: string, recallId: string, recallLength: string, token: string) {
+function updateRecallRequest(description: string, recallId: string, body: ObjectMap<string | boolean>, token: string) {
   return {
     uponReceiving: description,
     withRequest: {
       method: 'PATCH',
       path: `/recalls/${recallId}`,
       headers: { Authorization: `Bearer ${token}` },
-      body: { recallLength },
+      body,
     },
   }
 }
