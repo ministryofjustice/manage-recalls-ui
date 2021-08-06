@@ -4,7 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { updateRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import updateRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
-import { ObjectMap } from '../../@types/express'
+import { ObjectMap } from '../../@types'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'

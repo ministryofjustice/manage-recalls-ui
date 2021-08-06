@@ -1,72 +1,45 @@
-import nock from 'nock'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
-import config from '../../../config'
-import { assessRecallView, getFormattedRecallLength } from './assessRecall'
-import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { assessDecisionFormHandler } from './assessRecall'
+import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 
-const userToken = { access_token: 'token-1', expires_in: 300 }
+jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
-describe('assessRecallView', () => {
-  let fakeManageRecallsApi: nock.Scope
+describe('assessDecisionFormHandler', () => {
+  it('should update recall and redirect to next page', async () => {
+    const nomsNumber = 'AA123AA'
+    const recallId = '00000000-0000-0000-0000-000000000000'
+    const nextPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/assess-confirmation`
 
-  beforeEach(() => {
-    fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
+    ;(updateRecall as jest.Mock).mockReturnValueOnce({ recallId, nomsNumber })
+
+    const req = mockPostRequest({
+      originalUrl: nextPageUrl,
+      params: { nomsNumber, recallId },
+      body: { agreeWithRecallRecommendation: true },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('')
+
+    await assessDecisionFormHandler(req, res)
+
+    expect(res.redirect).toHaveBeenCalledWith(303, nextPageUrl)
   })
 
-  afterEach(() => {
-    nock.cleanAll()
-  })
+  it('should reload the page if invalid data is sent', async () => {
+    const nomsNumber = 'AA123AA'
+    const recallId = '00000000-0000-0000-0000-000000000000'
+    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/assess-decision`
 
-  const recall = {
-    recallId: '123',
-    nomsNumber: 'A1234AA',
-    recallLength: 'FOURTEEN_DAYS',
-    documents: [
-      {
-        category: 'LICENCE',
-        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-    ],
-  }
+    ;(updateRecall as jest.Mock).mockReturnValueOnce({ recallId, nomsNumber })
 
-  const person = {
-    firstName: 'Bobby',
-    middleNames: 'John',
-    lastName: 'Badger',
-    dateOfBirth: '1999-05-28',
-    gender: 'Male',
-    nomsNumber: 'A1234AA',
-    croNumber: '1234/56A',
-    pncNumber: '98/7654Z',
-  }
+    const req = mockPostRequest({
+      originalUrl: currentPageUrl,
+      params: { nomsNumber, recallId },
+      body: {},
+    })
+    const { res } = mockResponseWithAuthenticatedUser('')
 
-  it('should render the assess recall view', async () => {
-    const recallId = '123'
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.post('/search').reply(200, [person])
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    await assessDecisionFormHandler(req, res)
 
-    await assessRecallView('assessRecall')(req, res)
-
-    expect(res.locals.recall.recallLengthFormatted).toEqual('14 days')
-    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
-  })
-})
-
-describe('getFormattedRecallLength', () => {
-  it('returns a string if recall length is 14 days', () => {
-    const value = getFormattedRecallLength(RecallResponse.recallLength.FOURTEEN_DAYS)
-    expect(value).toEqual('14 days')
-  })
-
-  it('returns a string if recall length is 28 days', () => {
-    const value = getFormattedRecallLength(RecallResponse.recallLength.TWENTY_EIGHT_DAYS)
-    expect(value).toEqual('28 days')
-  })
-
-  it('returns an empty string if recall length is empty', () => {
-    const value = getFormattedRecallLength()
-    expect(value).toEqual('')
+    expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
   })
 })

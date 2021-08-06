@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const addRecallTypePage = ({ nomsNumber, recallId }) =>
+const addRecallTypePage = ({ nomsNumber, recallId } = {}) =>
   page('Recall recommendation', {
-    url: `/persons/${nomsNumber}/recalls/${recallId}/recall-type`,
+    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/recall-type` : null,
     setRecallLength: () => {
       cy.get('[value="FOURTEEN_DAYS"]').click()
     },

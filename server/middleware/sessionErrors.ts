@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { ObjectMap } from '../@types/express'
-import { FormError, NamedFormError } from '../@types'
+import { FormError, NamedFormError, ObjectMap } from '../@types'
 
 export const sessionErrors = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { errors } = req.session
