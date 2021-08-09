@@ -25,7 +25,7 @@ export const makeErrorObject = ({
 }): NamedFormError => ({
   name: id,
   text,
-  href: `${id}`,
+  href: `#${id}`,
   values,
 })
 
