@@ -21,8 +21,9 @@ e.g. via a local Docker Desktop installation as per https://docs.docker.com/dock
 This project depends on `node` and `npm`.
 It is highly recommended that you use `nvm` to manage their versions. 
 `nvm` can be installed by commands such as:
-
-```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;```  
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;
+```
 
 Ideally check online for a latest version of the above command.
 
