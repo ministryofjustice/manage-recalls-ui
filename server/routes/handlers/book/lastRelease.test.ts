@@ -14,7 +14,7 @@ describe('lastRelease', () => {
     jest.clearAllMocks()
   })
 
-  describe('recall type', () => {
+  describe('last release details', () => {
     it('should update fields and redirect to recall view', async () => {
       const recallDetails = { recallId, nomsNumber }
 
@@ -33,12 +33,12 @@ describe('lastRelease', () => {
         lastReleaseDateTime: '2021-05-19T23:00:00.000Z',
         lastReleasePrison: 'Belmarsh',
       })
-      expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/upload-documents`)
+      expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/prison-police`)
     })
 
     it('should reload the page if body is invalid', async () => {
       const recallDetails = { recallId, nomsNumber }
-      const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/recall-type`
+      const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/last-release`
 
       updateRecall.mockReturnValueOnce(recallDetails)
 
