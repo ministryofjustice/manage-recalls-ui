@@ -28,6 +28,7 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Belmarsh' })
     assessRecall.assertElementHasText({ qaAttr: 'lastReleaseDateTime', textToFind: '3 Aug 2020' })
+    assessRecall.assertElementHasText({ qaAttr: 'localPoliceService', textToFind: 'Brentwood, Essex' })
     assessRecall.assertElementHasText({
       qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
       textToFind: 'Download PDF',
