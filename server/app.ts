@@ -201,14 +201,5 @@ export default function createApp(userService: UserService): express.Application
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(process.env.NODE_ENV === 'production'))
 
-  process.once('SIGUSR2', () => {
-    process.kill(process.pid, 'SIGUSR2')
-  })
-
-  process.on('SIGINT', () => {
-    // this is only called on ctrl+c, not restart
-    process.kill(process.pid, 'SIGINT')
-  })
-
   return app
 }

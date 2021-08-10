@@ -4,9 +4,8 @@ import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models
 import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
-import { PrisonerSearchResult } from '../../@types'
+import { ObjectMap, PrisonerSearchResult } from '../../@types'
 import { GetDocumentResponse } from '../../@types/manage-recalls-api'
-import { ObjectMap } from '../../@types/express'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
   const request = { nomsNumber }

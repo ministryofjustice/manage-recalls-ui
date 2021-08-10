@@ -1,0 +1,98 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class="govuk-heading-l">
+                When did you receive the recall request?
+            </h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/request-received" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukDateInput({
+                        name: 'recallEmailReceivedDateTime',
+                        id: 'recallEmailReceivedDateTime',
+                        fieldset: {
+                            legend: {
+                                text: 'Date and time you received the recall email',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: [
+                            {
+                                name: "day",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                    maxlength: 2
+                                },
+                                value: errors.recallEmailReceivedDateTime.values.day if errors.recallEmailReceivedDateTime else undefined
+                            },
+                            {
+                                name: "month",
+                                classes: "govuk-input--width-2",
+                                type: "number",
+                                attributes: {
+                                    maxlength: 2
+                                },
+                                value: errors.recallEmailReceivedDateTime.values.month if errors.recallEmailReceivedDateTime else undefined
+                            },
+                            {
+                                name: "year",
+                                classes: "govuk-input--width-4 govuk-!-margin-right-8",
+                                attributes: {
+                                    maxlength: 4
+                                },
+                                value: errors.recallEmailReceivedDateTime.values.year if errors.recallEmailReceivedDateTime else undefined
+                            },
+                            {
+                                name: "hour",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                    maxlength: 2
+                                },
+                                value: errors.recallEmailReceivedDateTime.values.hour if errors.recallEmailReceivedDateTime else undefined
+                            },
+                            {
+                                name: "minute",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                    maxlength: 2
+                                },
+                                value: errors.recallEmailReceivedDateTime.values.minute if errors.recallEmailReceivedDateTime else undefined
+                            }
+                        ],
+                        errorMessage: {
+                            text: 'Enter a valid date and time in the past'
+                        } if errors.recallEmailReceivedDateTime else undefined
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                       data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,24 +1,22 @@
 import { Request, Response } from 'express'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { isInvalid } from './viewWithRecallAndPerson'
+import { isInvalid, makeErrorObject } from '../helpers'
 
 export const addRecallType = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
   const { recallLength } = req.body
   if (isInvalid(nomsNumber) || isInvalid(recallId)) {
-    res.sendStatus(400)
-    return
+    return res.redirect(303, `/persons/${nomsNumber}`)
   }
   if (isInvalid(recallLength)) {
     req.session.errors = [
-      {
-        name: 'recallLength',
+      makeErrorObject({
+        id: 'recallLength',
         text: 'Recommend a fixed recall length',
-        href: '#recallLength',
-      },
+      }),
     ]
-    return res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/recall-type`)
+    return res.redirect(303, req.originalUrl)
   }
   try {
     const recall = await updateRecall(recallId, { recallLength }, res.locals.user.token)

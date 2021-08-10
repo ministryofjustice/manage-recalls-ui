@@ -89,6 +89,15 @@
                 <dd class="govuk-summary-list__value" data-qa='recallLength'>
                    {{ recall.recallLengthFormatted }}
                 </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Date recall email was received
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='recallEmailReceivedDateTime'>
+                        {{ recall.recallEmailReceivedDateTime | dateTime}}
+                    </dd>
+                </div>
             </dl>
 
             {% endif %}
@@ -104,6 +113,7 @@
                     <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/documents/{{ document.documentId }}' data-qa='uploadedDocument-{{ document.category }}'>Download PDF</a>
                 </dd>
             {% endfor %}
+                </div>
             </dl>
             {% endif %}
 

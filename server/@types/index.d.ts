@@ -5,8 +5,17 @@ export interface FormError {
   href: string
 }
 
+export interface ObjectMixed {
+  [key: string]: string | boolean
+}
+
+export interface ObjectMap<T> {
+  [key: string]: T
+}
+
 export interface NamedFormError extends FormError {
   name: string
+  values?: ObjectMap<string>
 }
 
 export interface UploadError {

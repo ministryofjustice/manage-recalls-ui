@@ -26,11 +26,3 @@ export declare global {
 export interface RequestQuery {
   [key: string]: string
 }
-
-export interface ObjectStrings {
-  [key: string]: string
-}
-
-export interface ObjectMap<T> {
-  [key: string]: T
-}

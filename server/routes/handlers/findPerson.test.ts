@@ -1,5 +1,5 @@
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
-import { findOffender } from './findOffender'
+import { findPerson } from './findPerson'
 import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../clients/manageRecallsApi/manageRecallsApiClient')
@@ -26,7 +26,7 @@ describe('findOffender', () => {
       const req = mockGetRequest({ query: { nomsNumber } })
       const { res, next } = mockResponseWithAuthenticatedUser('')
 
-      await findOffender(req, res, next)
+      await findPerson(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/findPerson')
       expect(res.locals.offenders).toEqual([expectedOffenders])
@@ -36,7 +36,7 @@ describe('findOffender', () => {
       const req = mockGetRequest({ query: { nomsNumber: 0 as unknown as string } })
       const { res, next } = mockResponseWithAuthenticatedUser('')
 
-      await findOffender(req, res, next)
+      await findPerson(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/findPerson')
       expect(res.locals.errorMessage).toEqual('Please enter a valid NOMS number')
