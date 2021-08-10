@@ -5,6 +5,7 @@ import assessRecallPage from '../pages/assessRecall'
 
 const offenderProfilePage = require('../pages/offenderProfile')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
+const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 
 context('Book a recall', () => {
   const recallId = '123'
@@ -36,6 +37,9 @@ context('Book a recall', () => {
     recallLastRelease.setReleasingPrison()
     recallLastRelease.setLastReleaseDate()
     recallLastRelease.clickContinue()
+    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
+    recallPrisonPolice.setLocalPoliceService()
+    recallPrisonPolice.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.upload()
     assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
@@ -45,5 +49,11 @@ context('Book a recall', () => {
     recallRequestReceived.enterRecallReceivedDate({ year: '2021', hour: '05', minute: '3' })
     recallRequestReceived.clickContinue()
     recallRequestReceived.expectError()
+  })
+
+  it('User sees an error if local police service not entered', () => {
+    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
+    recallPrisonPolice.clickContinue()
+    recallPrisonPolice.expectError()
   })
 })

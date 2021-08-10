@@ -11,6 +11,7 @@ export type ViewName =
   | 'assessRecall'
   | 'recallLastRelease'
   | 'recallRequestReceived'
+  | 'recallPrisonPolice'
 
 const getFormValues = ({
   errors = {},
