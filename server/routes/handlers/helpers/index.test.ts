@@ -1,4 +1,4 @@
-import { getFormattedRecallLength, makeErrorObject, splitIsoDateToParts, validateDate } from './index'
+import { getFormattedRecallLength, makeErrorObject, splitIsoDateToParts, convertGmtDatePartsToUtc } from './index'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 describe('getFormattedRecallLength', () => {
@@ -40,52 +40,54 @@ describe('makeErrorObject', () => {
   })
 })
 
-describe('validateDate', () => {
-  it('returns a UTC corrected date object for a valid date-time that falls within BST period', () => {
-    const result = validateDate({ year: '2021', month: '05', day: '30', hour: '14', minute: '12' })
-    expect(result.toISOString()).toEqual('2021-05-30T13:12:00.000Z')
-  })
+describe('Date helpers', () => {
+  describe('validateDate', () => {
+    it('returns a UTC corrected date object for a valid date-time that falls within BST period', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '05', day: '30', hour: '14', minute: '12' })
+      expect(result.toISOString()).toEqual('2021-05-30T13:12:00.000Z')
+    })
 
-  it('returns a UTC corrected date object for a valid date-time that falls outside BST period', () => {
-    const result = validateDate({ year: '2021', month: '01', day: '12', hour: '11', minute: '40' })
-    expect(result.toISOString()).toEqual('2021-01-12T11:40:00.000Z')
-  })
+    it('returns a UTC corrected date object for a valid date-time that falls outside BST period', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '01', day: '12', hour: '11', minute: '40' })
+      expect(result.toISOString()).toEqual('2021-01-12T11:40:00.000Z')
+    })
 
-  it('returns a date object for a valid date-time', () => {
-    const result = validateDate({ year: '2021', month: '01', day: '12', hour: '10', minute: '53' })
-    expect(result.toISOString()).toEqual('2021-01-12T10:53:00.000Z')
-  })
+    it('returns a date object for a valid date-time', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '01', day: '12', hour: '10', minute: '53' })
+      expect(result.toISOString()).toEqual('2021-01-12T10:53:00.000Z')
+    })
 
-  it('returns a date object for a valid date', () => {
-    const result = validateDate({ year: '2021', month: '01', day: '12' })
-    expect(result.toISOString()).toEqual('2021-01-12T00:00:00.000Z')
-  })
+    it('returns a date object for a valid date', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '01', day: '12' })
+      expect(result.toISOString()).toEqual('2021-01-12T00:00:00.000Z')
+    })
 
-  it('returns null for an invalid date-time', () => {
-    const result = validateDate({ year: '2021', month: '14', day: '45', hour: '10', minute: '53' })
-    expect(result).toBeNull()
-  })
+    it('returns null for an invalid date-time', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '14', day: '45', hour: '10', minute: '53' })
+      expect(result).toBeNull()
+    })
 
-  it('returns null for a blank date-time', () => {
-    const result = validateDate({ year: '', month: '', day: '', hour: '', minute: '' })
-    expect(result).toBeNull()
-  })
-})
-
-describe('splitIsoDateToParts', () => {
-  it('returns date parts for a given ISO date string, with hours corrected for the current time zone', () => {
-    const result = splitIsoDateToParts('2021-05-30T13:12:00.000Z')
-    expect(result).toEqual({
-      year: 2021,
-      month: 5,
-      day: 30,
-      hour: 14,
-      minute: 12,
+    it('returns null for a blank date-time', () => {
+      const result = convertGmtDatePartsToUtc({ year: '', month: '', day: '', hour: '', minute: '' })
+      expect(result).toBeNull()
     })
   })
 
-  it('returns undefined if passed an empty date string', () => {
-    const result = splitIsoDateToParts()
-    expect(result).toBeUndefined()
+  describe('splitIsoDateToParts', () => {
+    it('returns date parts for a given ISO date string, with hours corrected for the current time zone', () => {
+      const result = splitIsoDateToParts('2021-05-30T13:12:00.000Z')
+      expect(result).toEqual({
+        year: 2021,
+        month: 5,
+        day: 30,
+        hour: 14,
+        minute: 12,
+      })
+    })
+
+    it('returns undefined if passed an empty date string', () => {
+      const result = splitIsoDateToParts()
+      expect(result).toBeUndefined()
+    })
   })
 })

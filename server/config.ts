@@ -77,7 +77,6 @@ const config = {
     },
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
-  timeZone: 'Europe/London',
 }
 export default config
 

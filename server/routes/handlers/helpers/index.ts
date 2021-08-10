@@ -1,24 +1,35 @@
-import { isFuture, isValid, getYear, getMonth, getDate, getHours, getMinutes } from 'date-fns'
-import { toDate, zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz'
+import { isFuture, isValid } from 'date-fns'
 import { DatePartsParsed, NamedFormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
-import config from '../../../config'
 import logger from '../../../../logger'
 
-const { timeZone } = config
+const stdTimezoneOffset = (d: Date) => {
+  const jan = new Date(d.getFullYear(), 0, 1)
+  const jul = new Date(d.getFullYear(), 6, 1)
+  const offset = Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
+  return d.getTimezoneOffset() < offset
+}
 
-export const validateDate = ({ year, month, day, hour, minute }: ObjectMap<string>) => {
+export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: ObjectMap<string>) => {
   try {
     const includeTime = isDefined(hour) && isDefined(day)
     const parts = [year, month, day, ...(includeTime ? [hour, minute] : [])]
     if (parts.find(part => !Number.isInteger(parseInt(part, 10)))) {
       return null
     }
-    const dateStr = [0, 1, 2].map(idx => parts[idx].padStart(2, '0')).join('-')
-    const timeStr = includeTime ? `${parts[3].padStart(2, '0')}:${parts[4].padStart(2, '0')}:00` : '00:00:00'
-    const date = toDate(`${dateStr}T${timeStr}`, { timeZone })
-    const utc = zonedTimeToUtc(date, timeZone)
-    return !isValid(utc) || isFuture(utc) ? null : utc
+    const [y, m, d, h, min] = parts.map(part => {
+      return parseInt(part, 10)
+    })
+    let date
+    if (includeTime) {
+      date = new Date(Date.UTC(y, m - 1, d, h, min))
+    } else {
+      date = new Date(Date.UTC(y, m - 1, d))
+    }
+    if (stdTimezoneOffset(date)) {
+      date.setHours(date.getHours() - 1)
+    }
+    return !isValid(date) || isFuture(date) ? null : date
   } catch (err) {
     return null
   }
@@ -29,13 +40,16 @@ export const splitIsoDateToParts = (isoDate?: string): DatePartsParsed | undefin
     return undefined
   }
   try {
-    const date = utcToZonedTime(isoDate, timeZone)
+    const date = new Date(isoDate)
+    if (stdTimezoneOffset(date)) {
+      date.setHours(date.getHours() + 1)
+    }
     return {
-      year: getYear(date),
-      month: getMonth(date) + 1,
-      day: getDate(date),
-      hour: getHours(date),
-      minute: getMinutes(date),
+      year: date.getUTCFullYear(),
+      month: date.getUTCMonth() + 1,
+      day: date.getUTCDate(),
+      hour: date.getUTCHours(),
+      minute: date.getUTCMinutes(),
     }
   } catch (err) {
     logger.error(err)

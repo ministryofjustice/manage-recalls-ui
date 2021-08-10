@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { isInvalid, makeErrorObject, validateDate } from '../helpers'
+import { isInvalid, makeErrorObject, convertGmtDatePartsToUtc } from '../helpers'
 
 export const lastRelease = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
@@ -9,7 +9,7 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
     return res.redirect(303, `/persons/${nomsNumber}`)
   }
   const { lastReleasePrison, year, month, day } = req.body
-  const date = validateDate({ year, month, day })
+  const date = convertGmtDatePartsToUtc({ year, month, day })
   if (!date || !lastReleasePrison) {
     req.session.errors = []
     if (!lastReleasePrison) {
