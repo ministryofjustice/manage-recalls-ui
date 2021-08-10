@@ -40,7 +40,7 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       { lastReleaseDateTime: date.toISOString(), lastReleasePrison },
       res.locals.user.token
     )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/upload-documents`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/prison-police`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

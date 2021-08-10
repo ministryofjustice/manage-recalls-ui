@@ -13,6 +13,7 @@ import {
 } from './handlers/book/uploadRecallDocuments'
 import { recallRequestReceivedFormHandler } from './handlers/book/recallRequestReceived'
 import { lastRelease } from './handlers/book/lastRelease'
+import { prisonPolice } from './handlers/book/prisonPolice'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 
 export default function routes(router: Router): Router {
@@ -29,6 +30,8 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls/:recallId/request-received', recallRequestReceivedFormHandler)
   get('/persons/:nomsNumber/recalls/:recallId/last-release', viewWithRecallAndPerson('recallLastRelease'))
   post('/persons/:nomsNumber/recalls/:recallId/last-release', lastRelease)
+  get('/persons/:nomsNumber/recalls/:recallId/prison-police', viewWithRecallAndPerson('recallPrisonPolice'))
+  post('/persons/:nomsNumber/recalls/:recallId/prison-police', prisonPolice)
   get('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadDocumentsPage)
   post('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadRecallDocumentsFormHandler)
 
