@@ -29,6 +29,10 @@ describe('lastRelease', () => {
 
       await lastRelease(req, res)
 
+      expect(updateRecall.mock.calls[0][1]).toEqual({
+        lastReleaseDateTime: '2021-05-19T23:00:00.000Z',
+        lastReleasePrison: 'Belmarsh',
+      })
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/upload-documents`)
     })
 
