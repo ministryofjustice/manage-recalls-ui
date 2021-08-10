@@ -19,9 +19,17 @@ export function userNameFilter(fullName: string): string {
 }
 
 export function dateFilter(date: string) {
-  return format(parseISO(date), 'd MMM yyyy')
+  try {
+    return format(parseISO(date), 'd MMM yyyy')
+  } catch (err) {
+    return ''
+  }
 }
 
 export function dateTimeFilter(date: string) {
-  return format(parseISO(date), "d MMM yyyy 'at' HH:mm")
+  try {
+    return format(parseISO(date), "d MMM yyyy 'at' HH:mm")
+  } catch (err) {
+    return ''
+  }
 }

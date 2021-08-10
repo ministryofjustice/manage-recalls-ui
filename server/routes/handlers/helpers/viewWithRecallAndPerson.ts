@@ -1,9 +1,34 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { documentTypes } from '../book/documentTypes'
-import { getFormattedRecallLength, isInvalid } from './index'
+import { getFormattedRecallLength, isInvalid, splitIsoDateToParts } from './index'
+import { DatePartsParsed, FormError, ObjectMap, RecallFormValues } from '../../../@types'
+import { RecallResponse } from '../../../@types/manage-recalls-api'
 
-export type ViewName = 'assessConfirmation' | 'assessDecision' | 'assessRecall' | 'recallType' | 'recallRequestReceived'
+export type ViewName =
+  | 'assessConfirmation'
+  | 'assessDecision'
+  | 'assessRecall'
+  | 'recallLastRelease'
+  | 'recallRequestReceived'
+
+const getFormValues = ({
+  errors = {},
+  apiValues,
+}: {
+  errors: ObjectMap<FormError>
+  apiValues: RecallResponse
+}): RecallFormValues => {
+  const formValues = {} as RecallFormValues
+  formValues.recallEmailReceivedDateTimeParts =
+    errors.recallEmailReceivedDateTime?.values || splitIsoDateToParts(apiValues.recallEmailReceivedDateTime)
+  formValues.lastReleasePrison =
+    (errors.lastReleasePrison?.values?.lastReleasePrison as string) || apiValues.lastReleasePrison
+  formValues.lastReleaseDateTimeParts =
+    (errors.lastReleaseDateTime?.values as unknown as DatePartsParsed) ||
+    splitIsoDateToParts(apiValues.lastReleaseDateTime)
+  return formValues
+}
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
@@ -25,6 +50,7 @@ export const viewWithRecallAndPerson =
     if (recall.recallLength) {
       res.locals.recall.recallLengthFormatted = getFormattedRecallLength(recall.recallLength)
     }
+    res.locals.formValues = getFormValues({ errors: res.locals.errors, apiValues: recall })
     res.locals.person = person
     res.render(`pages/${viewName}`)
   }

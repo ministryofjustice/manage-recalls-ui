@@ -28,7 +28,7 @@ describe('recallRequestReceivedFormHandler', () => {
 
       await recallRequestReceivedFormHandler(req, res)
 
-      expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/recall-type`)
+      expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/last-release`)
     })
 
     it('should reload the page if recallLength is invalid', async () => {

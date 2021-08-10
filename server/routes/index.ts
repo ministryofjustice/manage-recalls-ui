@@ -12,7 +12,7 @@ import {
   downloadDocument,
 } from './handlers/book/uploadRecallDocuments'
 import { recallRequestReceivedFormHandler } from './handlers/book/recallRequestReceived'
-import { addRecallType } from './handlers/book/addRecallType'
+import { lastRelease } from './handlers/book/lastRelease'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 
 export default function routes(router: Router): Router {
@@ -27,8 +27,8 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls', createRecall)
   get('/persons/:nomsNumber/recalls/:recallId/request-received', viewWithRecallAndPerson('recallRequestReceived'))
   post('/persons/:nomsNumber/recalls/:recallId/request-received', recallRequestReceivedFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/recall-type', viewWithRecallAndPerson('recallType'))
-  post('/persons/:nomsNumber/recalls/:recallId/recall-type', addRecallType)
+  get('/persons/:nomsNumber/recalls/:recallId/last-release', viewWithRecallAndPerson('recallLastRelease'))
+  post('/persons/:nomsNumber/recalls/:recallId/last-release', lastRelease)
   get('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadDocumentsPage)
   post('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadRecallDocumentsFormHandler)
 

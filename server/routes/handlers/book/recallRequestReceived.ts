@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { isInvalid, makeErrorObject, parseDate } from '../helpers'
+import { isInvalid, makeErrorObject, convertGmtDatePartsToUtc } from '../helpers'
 
 export const recallRequestReceivedFormHandler = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
@@ -9,7 +9,7 @@ export const recallRequestReceivedFormHandler = async (req: Request, res: Respon
     return res.redirect(303, `/persons/${nomsNumber}`)
   }
   const { year, month, day, hour, minute } = req.body
-  const date = parseDate({ year, month, day, hour, minute })
+  const date = convertGmtDatePartsToUtc({ year, month, day, hour, minute })
   if (!date) {
     req.session.errors = [
       makeErrorObject({
@@ -26,7 +26,7 @@ export const recallRequestReceivedFormHandler = async (req: Request, res: Respon
       { recallEmailReceivedDateTime: date.toISOString() },
       res.locals.user.token
     )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/recall-type`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/last-release`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

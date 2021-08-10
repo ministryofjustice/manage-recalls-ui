@@ -5,7 +5,7 @@ const recallRequestReceivedPage = (params = {}) =>
     url: params.nomsNumber ? `/persons/${params.nomsNumber}/recalls/${params.recallId}/request-received` : null,
     enterRecallReceivedDate: values => {
       Object.keys(values).forEach(value => {
-        cy.get(`[name=${value}]`).type(values[value])
+        cy.get(`[name=${value}]`).clear().type(values[value])
       })
     },
     clickContinue: () => {

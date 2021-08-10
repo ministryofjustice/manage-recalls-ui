@@ -43,7 +43,7 @@
                         Date of birth
                     </dt>
                     <dd class="govuk-summary-list__value">
-                        {{ person.dateOfBirth | date }}
+                        {{ person.dateOfBirth | dateGov }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -98,22 +98,38 @@
                         {{ recall.recallEmailReceivedDateTime | dateTime}}
                     </dd>
                 </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Releasing prison
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='lastReleasePrison'>
+                        {{ recall.lastReleasePrison }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Last release date
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='lastReleaseDateTime'>
+                        {{ recall.lastReleaseDateTime | dateGov }}
+                    </dd>
+                </div>
             </dl>
 
             {% endif %}
             {% if recall.documents.length %}
             <h2 class='govuk-heading-m'>Uploaded documents</h2>
             <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
             {% for document in recall.documents %}
+                    <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">
                     {{ document.label }}
                 </dt>
                 <dd class="govuk-summary-list__value">
                     <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/documents/{{ document.documentId }}' data-qa='uploadedDocument-{{ document.category }}'>Download PDF</a>
                 </dd>
+                    </div>
             {% endfor %}
-                </div>
             </dl>
             {% endif %}
 

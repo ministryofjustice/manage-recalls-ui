@@ -3,6 +3,7 @@ import { ApiRecallDocument } from './manage-recalls-api'
 export interface FormError {
   text: string
   href: string
+  values?: ObjectMap<unknown>
 }
 
 export interface ObjectMixed {
@@ -15,7 +16,6 @@ export interface ObjectMap<T> {
 
 export interface NamedFormError extends FormError {
   name: string
-  values?: ObjectMap<string>
 }
 
 export interface UploadError {
@@ -47,4 +47,18 @@ export interface PrisonerSearchResult {
   lastName: string
   nomsNumber?: string
   dateOfBirth?: string
+}
+
+export interface DatePartsParsed {
+  year: number
+  month: number
+  day: number
+  hour: number
+  minute: number
+}
+
+export interface RecallFormValues {
+  recallEmailReceivedDateTimeParts: DatePartsParse
+  lastReleaseDateTimeParts: DatePartsParsed
+  lastReleasePrison: string
 }

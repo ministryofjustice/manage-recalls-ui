@@ -1,11 +1,11 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - When did you receive the recall request?" %}
+{% set pageTitle = applicationName + " - Book a recall - When was " + person.firstName + ' ' + person.lastName + ' last released from prison?' %}
 
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/request-received"
     }) }}
 {% endblock %}
 
@@ -24,22 +24,33 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class="govuk-heading-l">
-                When did you receive the recall request?
+                When was {{ person.firstName }} {{ person.lastName }} last released from prison?
             </h1>
         </div>
     </div>
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/request-received" method="post">
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/last-release" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukInput({
+                        label: {
+                            text: "Releasing prison",
+                            classes: "govuk-label--m"
+                        },
+                        id: "lastReleasePrison",
+                        name: "lastReleasePrison",
+                        value: formValues.lastReleasePrison,
+                        errorMessage: {
+                            text: 'Enter a prison name'
+                        } if errors.lastReleasePrison else undefined
+                    }) }}
                     {{ govukDateInput({
-                        name: 'recallEmailReceivedDateTime',
-                        id: 'recallEmailReceivedDateTime',
+                        name: 'lastReleaseDateTime',
+                        id: 'lastReleaseDateTime',
                         fieldset: {
                             legend: {
-                                text: 'Date and time you received the recall email',
+                                text: 'Latest release date',
                                 classes: 'govuk-fieldset__legend--m'
                             }
                         },
@@ -50,7 +61,7 @@
                                 attributes: {
                                     maxlength: 2
                                 },
-                                value: formValues.recallEmailReceivedDateTimeParts.day
+                                value: formValues.lastReleaseDateTimeParts.day
                             },
                             {
                                 name: "month",
@@ -59,7 +70,7 @@
                                 attributes: {
                                     maxlength: 2
                                 },
-                                value: formValues.recallEmailReceivedDateTimeParts.month
+                                value: formValues.lastReleaseDateTimeParts.month
                             },
                             {
                                 name: "year",
@@ -67,29 +78,14 @@
                                 attributes: {
                                     maxlength: 4
                                 },
-                                value: formValues.recallEmailReceivedDateTimeParts.year
-                            },
-                            {
-                                name: "hour",
-                                classes: "govuk-input--width-2",
-                                attributes: {
-                                    maxlength: 2
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.hour
-                            },
-                            {
-                                name: "minute",
-                                classes: "govuk-input--width-2",
-                                attributes: {
-                                    maxlength: 2
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.minute
+                                value: formValues.lastReleaseDateTimeParts.year
                             }
                         ],
                         errorMessage: {
-                            text: 'Enter a valid date and time in the past'
-                        } if errors.recallEmailReceivedDateTime else undefined
+                            text: 'Enter a valid date in the past'
+                        } if formValues.lastReleaseDateTime else undefined
                     }) }}
+
                 </div>
                 <div>
                     <button class="govuk-button"

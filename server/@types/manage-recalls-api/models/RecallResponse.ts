@@ -5,11 +5,15 @@
 import type { ApiRecallDocument } from './ApiRecallDocument'
 
 export type RecallResponse = {
+  agreeWithRecallRecommendation?: boolean
   documents: Array<ApiRecallDocument>
   nomsNumber: string
   recallId: string
   recallLength?: RecallResponse.recallLength
   revocationOrderId?: string
+  lastReleasePrison?: string
+  lastReleaseDateTime?: string
+  recallEmailReceivedDateTime?: string
 }
 
 export namespace RecallResponse {

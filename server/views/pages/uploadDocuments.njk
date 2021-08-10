@@ -2,6 +2,13 @@
 
 {% set pageTitle = applicationName + " - Upload documents" %}
 
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/last-release"
+    }) }}
+{% endblock %}
+
 {% block content %}
 
     <div class="govuk-grid-row">
@@ -15,7 +22,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ offender.firstName }} {{ offender.lastName }}</span>
+            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class="govuk-heading-l">
                 Upload documents
             </h1>
@@ -24,9 +31,9 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            {% if offender %}
+            {% if person %}
 
-                <form action="/persons/{{ offender.nomsNumber }}/recalls/{{ recall.recallId }}/upload-documents?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
+                <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/upload-documents?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
                     <div class="govuk-form-group">
                         {% for documentType in documentTypes %}
                             <h2 class="govuk-heading-m">{{ documentType.label }}</h2>
