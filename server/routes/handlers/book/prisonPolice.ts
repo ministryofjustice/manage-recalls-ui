@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { isInvalid, makeErrorObject, convertGmtDatePartsToUtc } from '../helpers'
+import { isInvalid, makeErrorObject } from '../helpers'
 
 export const prisonPolice = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
