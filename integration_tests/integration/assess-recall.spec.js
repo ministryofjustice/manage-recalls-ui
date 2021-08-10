@@ -24,7 +24,14 @@ context('Assess a recall', () => {
     cy.login()
 
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
-    assessRecall.expectRecallLength('14 days')
+    assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
+    assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
+    assessRecall.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Belmarsh' })
+    assessRecall.assertElementHasText({ qaAttr: 'lastReleaseDateTime', textToFind: '3 Aug 2020' })
+    assessRecall.assertElementHasText({
+      qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
+      textToFind: 'Download PDF',
+    })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeDecision()
@@ -39,7 +46,7 @@ context('Assess a recall', () => {
     cy.login()
 
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
-    assessRecall.expectRecallLength('14 days')
+    assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.clickContinue()

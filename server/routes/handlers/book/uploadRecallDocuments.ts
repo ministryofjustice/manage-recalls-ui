@@ -21,7 +21,7 @@ export const uploadDocumentsPage = async (req: Request, res: Response): Promise<
     searchByNomsNumber(nomsNumber, user.token),
     getRecall(recallId, user.token),
   ])
-  res.locals.offender = person
+  res.locals.person = person
   res.locals.recall = recall
   res.locals.documentTypes = errors ? addErrorsToDocuments(errors.list) : [...documentTypes]
   res.render('pages/uploadDocuments')

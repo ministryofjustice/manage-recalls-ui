@@ -3,7 +3,8 @@
 /* eslint-disable */
 
 export type UpdateRecallRequest = {
-  recallLength: UpdateRecallRequest.recallLength
+  agreeWithRecallRecommendation?: boolean
+  recallLength?: UpdateRecallRequest.recallLength
 }
 
 export namespace UpdateRecallRequest {
