@@ -1,14 +1,10 @@
 import { isFuture, isValid } from 'date-fns'
+import { getTimezoneOffset } from 'date-fns-tz'
 import { DatePartsParsed, NamedFormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import logger from '../../../../logger'
 
-const stdTimezoneOffset = (d: Date) => {
-  const jan = new Date(d.getFullYear(), 0, 1)
-  const jul = new Date(d.getFullYear(), 6, 1)
-  const offset = Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
-  return d.getTimezoneOffset() < offset
-}
+const getDaylightSavingOffset = (d: Date) => getTimezoneOffset('Europe/London', d) / (1000 * 60 * 60)
 
 export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: ObjectMap<string>) => {
   try {
@@ -26,9 +22,7 @@ export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: Obj
     } else {
       date = new Date(Date.UTC(y, m - 1, d))
     }
-    if (stdTimezoneOffset(date)) {
-      date.setHours(date.getHours() - 1)
-    }
+    date.setHours(date.getHours() - getDaylightSavingOffset(date))
     return !isValid(date) || isFuture(date) ? null : date
   } catch (err) {
     return null
@@ -41,9 +35,7 @@ export const splitIsoDateToParts = (isoDate?: string): DatePartsParsed | undefin
   }
   try {
     const date = new Date(isoDate)
-    if (stdTimezoneOffset(date)) {
-      date.setHours(date.getHours() + 1)
-    }
+    date.setHours(date.getHours() + getDaylightSavingOffset(date))
     return {
       year: date.getUTCFullYear(),
       month: date.getUTCMonth() + 1,
