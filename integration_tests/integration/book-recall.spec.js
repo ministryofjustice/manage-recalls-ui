@@ -2,6 +2,7 @@ import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallLastRelease'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
+import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 
 const offenderProfilePage = require('../pages/offenderProfile')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
@@ -40,6 +41,11 @@ context('Book a recall', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
     recallPrisonPolice.setLocalPoliceService()
     recallPrisonPolice.clickContinue()
+    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
+    recallIssuesNeeds.setVulnerabilityDiversityNo()
+    recallIssuesNeeds.setContrabandNo()
+    recallIssuesNeeds.setMappaLevel()
+    recallIssuesNeeds.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.upload()
     assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
@@ -55,5 +61,29 @@ context('Book a recall', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()
     recallPrisonPolice.expectError()
+  })
+
+  it('User sees an error if vulnerability or diversity not answered', () => {
+    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
+    recallIssuesNeeds.setContrabandNo()
+    recallIssuesNeeds.setMappaLevel()
+    recallIssuesNeeds.clickContinue()
+    recallIssuesNeeds.expectVulnerabilityDiversityError()
+  })
+
+  it('User sees an error if contraband not answered', () => {
+    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
+    recallIssuesNeeds.setVulnerabilityDiversityNo()
+    recallIssuesNeeds.setMappaLevel()
+    recallIssuesNeeds.clickContinue()
+    recallIssuesNeeds.expectContrabandError()
+  })
+
+  it('User sees an error if mappaLevel not answered', () => {
+    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
+    recallIssuesNeeds.setVulnerabilityDiversityNo()
+    recallIssuesNeeds.setContrabandNo()
+    recallIssuesNeeds.clickContinue()
+    recallIssuesNeeds.expectMappaError()
   })
 })

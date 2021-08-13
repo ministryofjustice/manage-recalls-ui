@@ -1,0 +1,165 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Are there any issues or needs?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/prison-police"
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class="govuk-heading-l">
+                Are there any issues or needs?
+            </h1>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/issues-needs" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {% set vulnerabilityDiversityYesHtml %}
+                        {{ govukTextarea({
+                            id: "vulnerabilityDiversityDetail",
+                            name: "vulnerabilityDiversityDetail",
+                            label: {
+                                text: "Provide more detail"
+                            }
+                        }) }}
+                    {% endset -%}
+
+                    {{ govukRadios({
+                        idPrefix: "vulnerabilityDiversity",
+                        name: "vulnerabilityDiversity",
+                        fieldset: {
+                            legend: {
+                                text: "Are there any vulnerability issues or diversity needs?"
+                            }
+                        },
+                        items: [
+                            {
+                                value: 'yes',
+                                text: "Yes",
+                                conditional: {
+                                    html: vulnerabilityDiversityYesHtml
+                                }
+                            },
+                            {
+                                value: 'no',
+                                text: "No"
+                            }
+                        ],
+                        errorMessage: {
+                            text: "Answer whether there any vulnerability issues or diversity needs"
+                        } if errors.vulnerabilityDiversity else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {% set contrabandYesHtml %}
+                        {{ govukTextarea({
+                            id: "contrabandDetail",
+                            name: "contrabandDetail",
+                            label: {
+                                text: "Provide more detail"
+                            }
+                        }) }}
+                    {% endset -%}
+
+                    {{ govukRadios({
+                        idPrefix: "contraband",
+                        name: "contraband",
+                        fieldset: {
+                            legend: {
+                                text: "Do you think " + person.firstName + " " + person.lastName + " will bring contraband into prison?"
+                            }
+                        },
+                        items: [
+                            {
+                                value: 'yes',
+                                text: "Yes",
+                                conditional: {
+                                    html: contrabandYesHtml
+                                }
+                            },
+                            {
+                                value: 'no',
+                                text: "No"
+                            }
+                        ],
+                        errorMessage: {
+                            text: "Answer whether you think " + person.firstName + " " + person.lastName + " will bring contraband into prison"
+                        } if errors.contraband else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukSelect({
+                        id: "mappaLevel",
+                        name: "mappaLevel",
+                        label: {
+                            text: "What is " + person.firstName + " " + person.lastName + "'s MAPPA level?"
+                        },
+                        hint: {
+                            text: "Mappa level"
+                        },
+                        items: [
+                            {
+                                value: "",
+                                text: ""
+                            },
+                            {
+                                value: "NA",
+                                text: "N/A"
+                            },
+                            {
+                                value: "LEVEL_1",
+                                text: "Level 1"
+                            },
+                            {
+                                value: "LEVEL_2",
+                                text: "Level 2"
+                            },
+                            {
+                                value: "LEVEL_3",
+                                text: "Level 3"
+                            },
+                            {
+                                value: "NOT_KNOWN",
+                                text: "Not known"
+                            },
+                            {
+                                value: "CONFIRMATION_REQUIRED",
+                                text: "Confirmation required"
+                            }
+                        ],
+                        errorMessage: {
+                            text: "Please select MAPPA level"
+                        } if errors.mappaLevel else undefined
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                       data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

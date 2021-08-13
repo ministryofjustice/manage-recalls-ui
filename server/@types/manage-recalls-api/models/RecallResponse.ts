@@ -14,6 +14,9 @@ export type RecallResponse = {
   lastReleasePrison?: string
   lastReleaseDateTime?: string
   recallEmailReceivedDateTime?: string
+  contrabandDetail?: string
+  vulnerabilityDiversityDetail?: string
+  mappaLevel?: string
 }
 
 export namespace RecallResponse {

@@ -122,6 +122,30 @@
                         {{ recall.localPoliceService }}
                     </dd>
                 </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Vulnerability issues and diversity needs
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='vulnerabilityDiversityDetail'>
+                        {{ recall.vulnerabilityDiversityDetail }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Suspected contraband issues
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='contrabandDetail'>
+                        {{ recall.contrabandDetail }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        MAPPA level
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='mappaLevel'>
+                        {{ recall.mappaLevel }}
+                    </dd>
+                </div>
             </dl>
 
             {% endif %}
