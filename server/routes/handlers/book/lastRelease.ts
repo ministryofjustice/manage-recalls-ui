@@ -25,7 +25,7 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       req.session.errors.push(
         makeErrorObject({
           id: 'lastReleaseDateTime',
-          text: 'Date and time you received the recall email',
+          text: 'Latest release date',
           values: { year, month, day },
         })
       )
