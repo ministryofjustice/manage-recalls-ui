@@ -80,6 +80,19 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       expect(actual).toEqual(updateRecallResponseJson)
     })
 
+    test('can successfully add email received date/time to a recall', async () => {
+      const recallEmailReceivedDateTime = '2020-12-05T15:33:57.000Z'
+      await provider.addInteraction({
+        state: 'a recall exists and can be updated with email received date',
+        ...updateRecallRequest('an update recall request', recallId, { recallEmailReceivedDateTime }, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
+      })
+
+      const actual = await updateRecall(recallId, { recallEmailReceivedDateTime }, accessToken)
+
+      expect(actual).toEqual(updateRecallResponseJson)
+    })
+
     test('returns 400 if blank recall length provided', async () => {
       const blankRecallLength = ''
       const errorResponse = {

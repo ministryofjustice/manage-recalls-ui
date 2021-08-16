@@ -727,6 +727,48 @@
           }
         }
       }
+    },
+    {
+      "description": "an update recall request",
+      "providerState": "a recall exists and can be updated with email received date",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+          "nomsNumber": "A1234AA",
+          "recallLength": "FOURTEEN_DAYS",
+          "agreeWithRecallRecommendation": true,
+          "documents": [
+            {
+              "category": "LICENCE",
+              "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+          ],
+          "revocationOrderId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
+          "lastReleasePrison": "Belmarsh",
+          "lastReleaseDateTime": "2020-08-03T00:00:00.000Z",
+          "localPoliceService": "Brentwood, Essex"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
     }
   ],
   "metadata": {
