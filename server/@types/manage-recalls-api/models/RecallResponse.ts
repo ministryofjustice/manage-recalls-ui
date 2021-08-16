@@ -6,21 +6,30 @@ import type { ApiRecallDocument } from './ApiRecallDocument'
 
 export type RecallResponse = {
   agreeWithRecallRecommendation?: boolean
+  contrabandDetail?: string
   documents: Array<ApiRecallDocument>
+  lastReleaseDateTime?: string
+  lastReleasePrison?: string
   localPoliceService?: string
+  mappaLevel?: RecallResponse.mappaLevel
   nomsNumber: string
+  recallEmailReceivedDateTime?: string
   recallId: string
   recallLength?: RecallResponse.recallLength
   revocationOrderId?: string
-  lastReleasePrison?: string
-  lastReleaseDateTime?: string
-  recallEmailReceivedDateTime?: string
-  contrabandDetail?: string
   vulnerabilityDiversityDetail?: string
-  mappaLevel?: string
 }
 
 export namespace RecallResponse {
+  export enum mappaLevel {
+    CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
+    LEVEL_1 = 'LEVEL_1',
+    LEVEL_2 = 'LEVEL_2',
+    LEVEL_3 = 'LEVEL_3',
+    NA = 'NA',
+    NOT_KNOWN = 'NOT_KNOWN',
+  }
+
   export enum recallLength {
     FOURTEEN_DAYS = 'FOURTEEN_DAYS',
     TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
