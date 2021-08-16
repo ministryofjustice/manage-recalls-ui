@@ -26,9 +26,15 @@ context('Assess a recall', () => {
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
     assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
-    assessRecall.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Belmarsh' })
-    assessRecall.assertElementHasText({ qaAttr: 'lastReleaseDateTime', textToFind: '3 Aug 2020' })
+    assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
+    assessRecall.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 Aug 2019' })
+    assessRecall.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 Aug 2021' })
     assessRecall.assertElementHasText({ qaAttr: 'localPoliceService', textToFind: 'Brentwood, Essex' })
+    assessRecall.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
+    assessRecall.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
+    assessRecall.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Belmarsh' })
+    assessRecall.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 Aug 2020' })
+    assessRecall.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 Dec 2021' })
     assessRecall.assertElementHasText({
       qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
       textToFind: 'Download PDF',

@@ -53,17 +53,24 @@ export interface DatePartsParsed {
   year: number
   month: number
   day: number
-  hour: number
-  minute: number
+  hour?: number
+  minute?: number
 }
 
 export interface RecallFormValues {
-  recallEmailReceivedDateTimeParts: DatePartsParse
-  lastReleaseDateTimeParts: DatePartsParsed
-  lastReleasePrison: string
-  contraband: boolean
-  contrabandDetail: string
-  vulnerabilityDiversity: boolean
-  vulnerabilityDiversityDetail: string
-  mappaLevel: string
+  recallEmailReceivedDateTimeParts?: DatePartsParsed
+  lastReleaseDateParts?: DatePartsParsed
+  sentenceDateParts?: DatePartsParsed
+  sentenceExpiryDateParts?: DatePartsParsed
+  licenceExpiryDateParts?: DatePartsParsed
+  conditionalReleaseDateParts?: DatePartsParsed
+  lastReleasePrison?: string
+  contraband?: boolean
+  contrabandDetail?: string
+  vulnerabilityDiversity?: boolean
+  vulnerabilityDiversityDetail?: string
+  mappaLevel?: string
+  sentencingCourt?: string
+  indexOffence?: string
+  localPoliceService?: string
 }

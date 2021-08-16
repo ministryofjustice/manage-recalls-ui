@@ -9,8 +9,8 @@ export const recallRequestReceivedFormHandler = async (req: Request, res: Respon
     return res.redirect(303, `/persons/${nomsNumber}`)
   }
   const { year, month, day, hour, minute } = req.body
-  const date = convertGmtDatePartsToUtc({ year, month, day, hour, minute })
-  if (!date) {
+  const recallEmailReceivedDateTime = convertGmtDatePartsToUtc({ year, month, day, hour, minute })
+  if (!recallEmailReceivedDateTime) {
     req.session.errors = [
       makeErrorObject({
         id: 'recallEmailReceivedDateTime',
@@ -21,11 +21,7 @@ export const recallRequestReceivedFormHandler = async (req: Request, res: Respon
     return res.redirect(303, req.originalUrl)
   }
   try {
-    const recall = await updateRecall(
-      recallId,
-      { recallEmailReceivedDateTime: date.toISOString() },
-      res.locals.user.token
-    )
+    const recall = await updateRecall(recallId, { recallEmailReceivedDateTime }, res.locals.user.token)
     res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/last-release`)
   } catch (err) {
     logger.error(err)

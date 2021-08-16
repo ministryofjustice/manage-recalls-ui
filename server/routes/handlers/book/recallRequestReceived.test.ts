@@ -31,16 +31,16 @@ describe('recallRequestReceivedFormHandler', () => {
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/last-release`)
     })
 
-    it('should reload the page if recallLength is invalid', async () => {
+    it('should reload the page if the date is invalid', async () => {
       const recallDetails = { recallId, nomsNumber }
-      const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/recall-type`
+      const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/request-received`
 
       updateRecall.mockReturnValueOnce(recallDetails)
 
       const req = mockPostRequest({
         originalUrl: currentPageUrl,
         params: { nomsNumber, recallId },
-        body: { day: '10', month: '05', year: '3021', hour: '05', minute: '3' },
+        body: { day: '10', month: '05', year: '', hour: '05', minute: '3' },
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 

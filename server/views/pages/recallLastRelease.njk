@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - When was " + person.firstName + ' ' + person.lastName + ' last released from prison?' %}
+{% set pageTitle = applicationName + " - Book a recall - What are the sentence, offence and release details?" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -24,7 +24,7 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class="govuk-heading-l">
-                When was {{ person.firstName }} {{ person.lastName }} last released from prison?
+                What are the sentence, offence and release details?
             </h1>
         </div>
     </div>
@@ -32,7 +32,170 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/last-release" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                <div class='govuk-body govuk-form-group'>
+                    {{ govukDateInput({
+                        name: 'sentenceDate',
+                        id: 'sentenceDate',
+                        fieldset: {
+                            legend: {
+                                text: 'Date of sentence',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: [
+                            {
+                                name: "sentenceDateDay",
+                                label: "Day",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                    maxlength: 2
+                                },
+                                value: formValues.sentenceDateParts.day
+                            },
+                            {
+                                name: "sentenceDateMonth",
+                                label: "Month",
+                                classes: "govuk-input--width-2",
+                                type: "number",
+                                attributes: {
+                                    maxlength: 2
+                                },
+                                value: formValues.sentenceDateParts.month
+                            },
+                            {
+                                name: "sentenceDateYear",
+                                label: "Year",
+                                classes: "govuk-input--width-4 govuk-!-margin-right-8",
+                                attributes: {
+                                    maxlength: 4
+                                },
+                                value: formValues.sentenceDateParts.year
+                            }
+                        ],
+                        errorMessage: {
+                            text: 'Enter a valid date in the past'
+                        } if errors.sentenceDate else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group'>
+                    {{ govukDateInput({
+                        name: 'licenceExpiryDate',
+                        id: 'licenceExpiryDate',
+                        fieldset: {
+                            legend: {
+                                text: 'Licence expiry date',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: [
+                            {
+                                name: "licenceExpiryDateDay",
+                                label: "Day",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                maxlength: 2
+                            },
+                                value: formValues.licenceExpiryDateParts.day
+                            },
+                            {
+                                name: "licenceExpiryDateMonth",
+                                label: "Month",
+                                classes: "govuk-input--width-2",
+                                type: "number",
+                                attributes: {
+                                maxlength: 2
+                            },
+                                value: formValues.licenceExpiryDateParts.month
+                            },
+                            {
+                                name: "licenceExpiryDateYear",
+                                label: "Year",
+                                classes: "govuk-input--width-4 govuk-!-margin-right-8",
+                                attributes: {
+                                maxlength: 4
+                            },
+                                value: formValues.licenceExpiryDateParts.year
+                            }
+                        ],
+                        errorMessage: {
+                            text: 'Enter a valid date in the past'
+                        } if errors.licenceExpiryDate else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group'>
+                    {{ govukDateInput({
+                        name: 'sentenceExpiryDate',
+                        id: 'sentenceExpiryDate',
+                        fieldset: {
+                            legend: {
+                                text: 'Sentence expiry date',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: [
+                            {
+                                name: "sentenceExpiryDateDay",
+                                label: "Day",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                maxlength: 2
+                            },
+                                value: formValues.sentenceExpiryDateParts.day
+                            },
+                            {
+                                name: "sentenceExpiryDateMonth",
+                                label: "Month",
+                                classes: "govuk-input--width-2",
+                                type: "number",
+                                attributes: {
+                                maxlength: 2
+                            },
+                                value: formValues.sentenceExpiryDateParts.month
+                            },
+                            {
+                                name: "sentenceExpiryDateYear",
+                                label: "Year",
+                                classes: "govuk-input--width-4 govuk-!-margin-right-8",
+                                attributes: {
+                                maxlength: 4
+                            },
+                                value: formValues.sentenceExpiryDateParts.year
+                            }
+                        ],
+                        errorMessage: {
+                            text: 'Enter a valid date in the past'
+                        } if errors.sentenceExpiryDate else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group'>
+                    {{ govukInput({
+                        label: {
+                            text: "Sentencing court",
+                            classes: "govuk-label--m"
+                        },
+                        id: "sentencingCourt",
+                        name: "sentencingCourt",
+                        value: formValues.sentencingCourt,
+                        errorMessage: {
+                            text: 'Enter a sentencing court'
+                        } if errors.sentencingCourt else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group'>
+                    {{ govukInput({
+                        label: {
+                            text: "Index offence",
+                            classes: "govuk-label--m"
+                        },
+                        id: "indexOffence",
+                        name: "indexOffence",
+                        value: formValues.indexOffence,
+                        errorMessage: {
+                            text: 'Enter an index offence'
+                        } if errors.indexOffence else undefined
+                    }) }}
+                </div>
+                <div class='govuk-body govuk-form-group'>
                     {{ govukInput({
                         label: {
                             text: "Releasing prison",
@@ -45,9 +208,11 @@
                             text: 'Enter a prison name'
                         } if errors.lastReleasePrison else undefined
                     }) }}
+                </div>
+                <div class='govuk-body govuk-form-group'>
                     {{ govukDateInput({
-                        name: 'lastReleaseDateTime',
-                        id: 'lastReleaseDateTime',
+                        name: 'lastReleaseDate',
+                        id: 'lastReleaseDate',
                         fieldset: {
                             legend: {
                                 text: 'Latest release date',
@@ -56,34 +221,83 @@
                         },
                         items: [
                             {
-                                name: "day",
+                                name: "lastReleaseDateDay",
+                                label: "Day",
                                 classes: "govuk-input--width-2",
                                 attributes: {
                                     maxlength: 2
                                 },
-                                value: formValues.lastReleaseDateTimeParts.day
+                                value: formValues.lastReleaseDateParts.day
                             },
                             {
-                                name: "month",
+                                name: "lastReleaseDateMonth",
+                                label: "Month",
                                 classes: "govuk-input--width-2",
                                 type: "number",
                                 attributes: {
                                     maxlength: 2
                                 },
-                                value: formValues.lastReleaseDateTimeParts.month
+                                value: formValues.lastReleaseDateParts.month
                             },
                             {
-                                name: "year",
+                                name: "lastReleaseDateYear",
+                                label: "Year",
                                 classes: "govuk-input--width-4 govuk-!-margin-right-8",
                                 attributes: {
                                     maxlength: 4
                                 },
-                                value: formValues.lastReleaseDateTimeParts.year
+                                value: formValues.lastReleaseDateParts.year
                             }
                         ],
                         errorMessage: {
                             text: 'Enter a valid date in the past'
-                        } if errors.lastReleaseDateTime else undefined
+                        } if errors.lastReleaseDate else undefined
+                    }) }}
+
+                </div>
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukDateInput({
+                        name: 'conditionalReleaseDate',
+                        id: 'conditionalReleaseDate',
+                        fieldset: {
+                            legend: {
+                                text: 'Conditional release date (optional)',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: [
+                            {
+                                name: "conditionalReleaseDateDay",
+                                label: "Day",
+                                classes: "govuk-input--width-2",
+                                attributes: {
+                                maxlength: 2
+                            },
+                                value: formValues.conditionalReleaseDateParts.day
+                            },
+                            {
+                                name: "conditionalReleaseDateMonth",
+                                label: "Month",
+                                classes: "govuk-input--width-2",
+                                type: "number",
+                                attributes: {
+                                maxlength: 2
+                            },
+                                value: formValues.conditionalReleaseDateParts.month
+                            },
+                            {
+                                name: "conditionalReleaseDateYear",
+                                label: "Year",
+                                classes: "govuk-input--width-4 govuk-!-margin-right-8",
+                                attributes: {
+                                maxlength: 4
+                            },
+                                value: formValues.conditionalReleaseDateParts.year
+                            }
+                        ],
+                        errorMessage: {
+                            text: 'Enter a valid date in the past'
+                        } if errors.conditionalReleaseDate else undefined
                     }) }}
                 </div>
                 <div>

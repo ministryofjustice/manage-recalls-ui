@@ -5,13 +5,19 @@
 export type UpdateRecallRequest = {
   agreeWithRecallRecommendation?: boolean
   contrabandDetail?: string
-  lastReleaseDateTime?: string
+  lastReleaseDate?: string
   lastReleasePrison?: string
   localPoliceService?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
   recallEmailReceivedDateTime?: string
   recallLength?: UpdateRecallRequest.recallLength
   vulnerabilityDiversityDetail?: string
+  sentenceDate?: string
+  licenceExpiryDate?: string
+  sentenceExpiryDate?: string
+  sentencingCourt?: string
+  indexOffence?: string
+  conditionalReleaseDate?: string
 }
 
 export namespace UpdateRecallRequest {

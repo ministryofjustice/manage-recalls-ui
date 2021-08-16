@@ -1,4 +1,4 @@
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { searchResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallLastRelease'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
@@ -20,7 +20,7 @@ context('Book a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
-    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.login()
@@ -34,9 +34,15 @@ context('Book a recall', () => {
   it('User can book a recall', () => {
     recallRequestReceived.enterRecallReceivedDate({ day: '10', month: '05', year: '2021', hour: '05', minute: '3' })
     recallRequestReceived.clickContinue()
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ personName })
-    recallLastRelease.setReleasingPrison('Belmarsh')
-    recallLastRelease.setLastReleaseDate({ day: '10', month: '05', year: '2021' })
+    const recallLastRelease = recallLastReleasePage.verifyOnPage()
+    recallLastRelease.setSentenceDate()
+    recallLastRelease.setSentenceExpiryDate()
+    recallLastRelease.setLicenceExpiryDate()
+    recallLastRelease.setConditionalReleaseExpiryDate()
+    recallLastRelease.setReleasingPrison()
+    recallLastRelease.setLastReleaseDate()
+    recallLastRelease.setSentencingCourt()
+    recallLastRelease.setIndexOffence()
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
     recallPrisonPolice.setLocalPoliceService()

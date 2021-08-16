@@ -1,12 +1,12 @@
-import { isFuture, isValid } from 'date-fns'
+import { isValid } from 'date-fns'
 import { getTimezoneOffset } from 'date-fns-tz'
-import { DatePartsParsed, NamedFormError, ObjectMap } from '../../../@types'
+import { DatePartsParsed, FormError, NamedFormError, ObjectMap, RecallFormValues } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import logger from '../../../../logger'
 
 const getDaylightSavingOffset = (d: Date) => getTimezoneOffset('Europe/London', d) / (1000 * 60 * 60)
 
-export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: ObjectMap<string>) => {
+export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: ObjectMap<string>): string | null => {
   try {
     const includeTime = isDefined(hour) && isDefined(day)
     const parts = [year, month, day, ...(includeTime ? [hour, minute] : [])]
@@ -23,7 +23,10 @@ export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: Obj
       date = new Date(Date.UTC(y, m - 1, d))
     }
     date.setHours(date.getHours() - getDaylightSavingOffset(date))
-    return !isValid(date) || isFuture(date) ? null : date
+    if (!isValid(date)) {
+      return null
+    }
+    return includeTime ? date.toISOString() : date.toISOString().substring(0, 10)
   } catch (err) {
     return null
   }
@@ -34,15 +37,22 @@ export const splitIsoDateToParts = (isoDate?: string): DatePartsParsed | undefin
     return undefined
   }
   try {
+    const includeTime = isoDate.length > 10
     const date = new Date(isoDate)
     date.setHours(date.getHours() + getDaylightSavingOffset(date))
-    return {
+    const parts = {
       year: date.getUTCFullYear(),
       month: date.getUTCMonth() + 1,
       day: date.getUTCDate(),
-      hour: date.getUTCHours(),
-      minute: date.getUTCMinutes(),
     }
+    if (includeTime) {
+      return {
+        ...parts,
+        hour: date.getUTCHours(),
+        minute: date.getUTCMinutes(),
+      }
+    }
+    return parts
   } catch (err) {
     logger.error(err)
     return undefined
@@ -79,4 +89,51 @@ export const getFormattedRecallLength = (recallLength?: RecallResponse.recallLen
   }
 }
 
+export const getFormattedMappaLevel = (mappaLevel?: RecallResponse.mappaLevel) => {
+  switch (mappaLevel) {
+    case RecallResponse.mappaLevel.CONFIRMATION_REQUIRED:
+      return 'Confirmation required'
+    case RecallResponse.mappaLevel.LEVEL_1:
+      return 'Level 1'
+    case RecallResponse.mappaLevel.LEVEL_2:
+      return 'Level 2'
+    case RecallResponse.mappaLevel.LEVEL_3:
+      return 'Level 3'
+    case RecallResponse.mappaLevel.NA:
+      return 'N/A'
+    case RecallResponse.mappaLevel.NOT_KNOWN:
+      return 'Not known'
+    default:
+      return ''
+  }
+}
+
 export const isDefined = (val: unknown) => typeof val !== 'undefined'
+
+export const getFormValues = ({
+  errors = {},
+  apiValues,
+}: {
+  errors: ObjectMap<FormError>
+  apiValues: RecallResponse
+}): RecallFormValues => {
+  return {
+    recallEmailReceivedDateTimeParts:
+      errors.recallEmailReceivedDateTime?.values || splitIsoDateToParts(apiValues.recallEmailReceivedDateTime),
+    lastReleasePrison: errors.lastReleasePrison?.values?.lastReleasePrison || apiValues.lastReleasePrison,
+    lastReleaseDateParts: errors.lastReleaseDate?.values || splitIsoDateToParts(apiValues.lastReleaseDate),
+    contrabandDetail: errors.contrabandDetail?.values?.contrabandDetail || apiValues.contrabandDetail,
+    vulnerabilityDiversityDetail:
+      errors.vulnerabilityDiversityDetail?.values?.vulnerabilityDiversityDetail ||
+      apiValues.vulnerabilityDiversityDetail,
+    mappaLevel: errors.mappaLevel?.values?.mappaLevel || apiValues.mappaLevel,
+    sentenceDateParts: errors.sentenceDate?.values || splitIsoDateToParts(apiValues.sentenceDate),
+    sentenceExpiryDateParts: errors.sentenceExpiryDate?.values || splitIsoDateToParts(apiValues.sentenceExpiryDate),
+    licenceExpiryDateParts: errors.licenceExpiryDate?.values || splitIsoDateToParts(apiValues.licenceExpiryDate),
+    conditionalReleaseDateParts:
+      errors.conditionalReleaseDate?.values || splitIsoDateToParts(apiValues.conditionalReleaseDate),
+    sentencingCourt: errors.sentencingCourt?.values?.sentencingCourt || apiValues.sentencingCourt,
+    indexOffence: errors.indexOffence?.values?.indexOffence || apiValues.indexOffence,
+    localPoliceService: errors.localPoliceService?.values?.localPoliceService || apiValues.localPoliceService,
+  } as RecallFormValues
+}

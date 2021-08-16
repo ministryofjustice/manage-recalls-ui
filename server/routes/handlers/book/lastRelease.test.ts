@@ -8,7 +8,26 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 describe('lastRelease', () => {
   const nomsNumber = 'AA123AA'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const body = { lastReleasePrison: 'Belmarsh', year: '2021', month: '05', day: '20' }
+  const body = {
+    lastReleasePrison: 'Belmarsh',
+    lastReleaseDateYear: '2021',
+    lastReleaseDateMonth: '05',
+    lastReleaseDateDay: '20',
+    sentenceDateYear: '2020',
+    sentenceDateMonth: '03',
+    sentenceDateDay: '10',
+    licenceExpiryDateYear: '2020',
+    licenceExpiryDateMonth: '08',
+    licenceExpiryDateDay: '4',
+    sentenceExpiryDateYear: '2022',
+    sentenceExpiryDateMonth: '10',
+    sentenceExpiryDateDay: '20',
+    sentencingCourt: 'Birmingham',
+    indexOffence: 'Assault',
+    conditionalReleaseDateYear: '2021',
+    conditionalReleaseDateMonth: '10',
+    conditionalReleaseDateDay: '4',
+  }
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -30,8 +49,14 @@ describe('lastRelease', () => {
       await lastRelease(req, res)
 
       expect(updateRecall.mock.calls[0][1]).toEqual({
-        lastReleaseDateTime: '2021-05-19T23:00:00.000Z',
+        conditionalReleaseDate: '2021-10-03',
+        indexOffence: 'Assault',
+        lastReleaseDate: '2021-05-19',
         lastReleasePrison: 'Belmarsh',
+        licenceExpiryDate: '2020-08-03',
+        sentenceDate: '2020-03-10',
+        sentenceExpiryDate: '2022-10-19',
+        sentencingCourt: 'Birmingham',
       })
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/prison-police`)
     })
@@ -45,7 +70,7 @@ describe('lastRelease', () => {
       const req = mockPostRequest({
         originalUrl: currentPageUrl,
         params: { nomsNumber, recallId },
-        body: { lastReleasePrison: '', year: '', month: '', day: '' },
+        body: { lastReleasePrison: '', lastReleaseDateYear: '', lastReleaseDateMonth: '', lastReleaseDateDay: '' },
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
