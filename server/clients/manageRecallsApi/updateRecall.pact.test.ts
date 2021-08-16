@@ -19,10 +19,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully add properties to a recall', async () => {
       const payload = {
         agreeWithRecallRecommendation: true,
+        contrabandDetail: 'Likely to bring in contraband because...',
         lastReleaseDateTime: '2020-08-03T00:00:00.000Z',
         lastReleasePrison: 'Belmarsh',
         localPoliceService: 'Brentwood, Essex',
+        mappaLevel: 'LEVEL_2',
         recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',
+        vulnerabilityDiversityDetail: 'Has the following needs',
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',
