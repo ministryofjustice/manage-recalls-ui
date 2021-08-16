@@ -16,79 +16,21 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   })
 
   describe('update a recall', () => {
-    test('can successfully add recommended recall length to a recall', async () => {
+    test('can successfully add properties to a recall', async () => {
+      const payload = {
+        agreeWithRecallRecommendation: true,
+        lastReleaseDateTime: '2020-08-03T00:00:00.000Z',
+        lastReleasePrison: 'Belmarsh',
+        localPoliceService: 'Brentwood, Essex',
+        recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',
+      }
       await provider.addInteraction({
-        state: 'a recall exists and can be updated with length',
-        ...updateRecallRequest('an update recall request', recallId, { recallLength }, accessToken),
+        state: 'a recall exists and can be updated',
+        ...updateRecallRequest('an update recall request', recallId, payload, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
 
-      const actual = await updateRecall(recallId, { recallLength }, accessToken)
-
-      expect(actual).toEqual(updateRecallResponseJson)
-    })
-
-    test('can successfully add assessment agreement to a recall', async () => {
-      const agreeWithRecallRecommendation = true
-      await provider.addInteraction({
-        state: 'a recall exists and can be updated with agreement',
-        ...updateRecallRequest('an update recall request', recallId, { agreeWithRecallRecommendation }, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
-      })
-
-      const actual = await updateRecall(recallId, { agreeWithRecallRecommendation }, accessToken)
-
-      expect(actual).toEqual(updateRecallResponseJson)
-    })
-
-    test('can successfully add last release date to a recall', async () => {
-      const lastReleaseDateTime = '2020-08-03T00:00:00.000Z'
-      await provider.addInteraction({
-        state: 'a recall exists and can be updated with last release date',
-        ...updateRecallRequest('an update recall request', recallId, { lastReleaseDateTime }, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
-      })
-
-      const actual = await updateRecall(recallId, { lastReleaseDateTime }, accessToken)
-
-      expect(actual).toEqual(updateRecallResponseJson)
-    })
-
-    test('can successfully add last releasing prison to a recall', async () => {
-      const lastReleasePrison = 'Belmarsh'
-      await provider.addInteraction({
-        state: 'a recall exists and can be updated with last releasing prison',
-        ...updateRecallRequest('an update recall request', recallId, { lastReleasePrison }, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
-      })
-
-      const actual = await updateRecall(recallId, { lastReleasePrison }, accessToken)
-
-      expect(actual).toEqual(updateRecallResponseJson)
-    })
-
-    test('can successfully add local police service to a recall', async () => {
-      const localPoliceService = 'Brentwood, Essex'
-      await provider.addInteraction({
-        state: 'a recall exists and can be updated with local police service',
-        ...updateRecallRequest('an update recall request', recallId, { localPoliceService }, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
-      })
-
-      const actual = await updateRecall(recallId, { localPoliceService }, accessToken)
-
-      expect(actual).toEqual(updateRecallResponseJson)
-    })
-
-    test('can successfully add email received date/time to a recall', async () => {
-      const recallEmailReceivedDateTime = '2020-12-05T15:33:57.000Z'
-      await provider.addInteraction({
-        state: 'a recall exists and can be updated with email received date',
-        ...updateRecallRequest('an update recall request', recallId, { recallEmailReceivedDateTime }, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
-      })
-
-      const actual = await updateRecall(recallId, { recallEmailReceivedDateTime }, accessToken)
+      const actual = await updateRecall(recallId, payload, accessToken)
 
       expect(actual).toEqual(updateRecallResponseJson)
     })
