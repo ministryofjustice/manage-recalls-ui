@@ -23,7 +23,7 @@ export const prisonPolice = async (req: Request, res: Response): Promise<void> =
   }
   try {
     const recall = await updateRecall(recallId, { localPoliceService }, res.locals.user.token)
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/upload-documents`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/issues-needs`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

@@ -61,4 +61,9 @@ export interface RecallFormValues {
   recallEmailReceivedDateTimeParts: DatePartsParse
   lastReleaseDateTimeParts: DatePartsParsed
   lastReleasePrison: string
+  contraband: boolean
+  contrabandDetail: string
+  vulnerabilityDiversity: boolean
+  vulnerabilityDiversityDetail: string
+  mappaLevel: string
 }

@@ -15,6 +15,7 @@ import { recallRequestReceivedFormHandler } from './handlers/book/recallRequestR
 import { lastRelease } from './handlers/book/lastRelease'
 import { prisonPolice } from './handlers/book/prisonPolice'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
+import { issuesNeeds } from './handlers/book/issuesNeeds'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -32,6 +33,8 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls/:recallId/last-release', lastRelease)
   get('/persons/:nomsNumber/recalls/:recallId/prison-police', viewWithRecallAndPerson('recallPrisonPolice'))
   post('/persons/:nomsNumber/recalls/:recallId/prison-police', prisonPolice)
+  get('/persons/:nomsNumber/recalls/:recallId/issues-needs', viewWithRecallAndPerson('recallIssuesNeeds'))
+  post('/persons/:nomsNumber/recalls/:recallId/issues-needs', issuesNeeds)
   get('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadDocumentsPage)
   post('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadRecallDocumentsFormHandler)
 
