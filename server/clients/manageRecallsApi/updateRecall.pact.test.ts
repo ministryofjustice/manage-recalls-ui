@@ -41,6 +41,45 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       expect(actual).toEqual(updateRecallResponseJson)
     })
 
+    test('can successfully add last release date to a recall', async () => {
+      const lastReleaseDateTime = '2020-08-03T00:00:00.000Z'
+      await provider.addInteraction({
+        state: 'a recall exists and can be updated with last release date',
+        ...updateRecallRequest('an update recall request', recallId, { lastReleaseDateTime }, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
+      })
+
+      const actual = await updateRecall(recallId, { lastReleaseDateTime }, accessToken)
+
+      expect(actual).toEqual(updateRecallResponseJson)
+    })
+
+    test('can successfully add last releasing prison to a recall', async () => {
+      const lastReleasePrison = 'Belmarsh'
+      await provider.addInteraction({
+        state: 'a recall exists and can be updated with last releasing prison',
+        ...updateRecallRequest('an update recall request', recallId, { lastReleasePrison }, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
+      })
+
+      const actual = await updateRecall(recallId, { lastReleasePrison }, accessToken)
+
+      expect(actual).toEqual(updateRecallResponseJson)
+    })
+
+    test('can successfully add local police service to a recall', async () => {
+      const localPoliceService = 'Brentwood, Essex'
+      await provider.addInteraction({
+        state: 'a recall exists and can be updated with local police service',
+        ...updateRecallRequest('an update recall request', recallId, { localPoliceService }, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
+      })
+
+      const actual = await updateRecall(recallId, { localPoliceService }, accessToken)
+
+      expect(actual).toEqual(updateRecallResponseJson)
+    })
+
     test('returns 400 if blank recall length provided', async () => {
       const blankRecallLength = ''
       const errorResponse = {

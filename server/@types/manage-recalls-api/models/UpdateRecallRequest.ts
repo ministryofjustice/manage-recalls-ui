@@ -4,6 +4,10 @@
 
 export type UpdateRecallRequest = {
   agreeWithRecallRecommendation?: boolean
+  lastReleaseDateTime?: string
+  lastReleasePrison?: string
+  localPoliceService?: string
+  recallEmailReceivedDateTime?: string
   recallLength?: UpdateRecallRequest.recallLength
 }
 
