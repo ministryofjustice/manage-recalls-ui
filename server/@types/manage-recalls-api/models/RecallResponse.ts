@@ -7,6 +7,7 @@ import type { ApiRecallDocument } from './ApiRecallDocument'
 export type RecallResponse = {
   agreeWithRecallRecommendation?: boolean
   documents: Array<ApiRecallDocument>
+  localPoliceService?: string
   nomsNumber: string
   recallId: string
   recallLength?: RecallResponse.recallLength
