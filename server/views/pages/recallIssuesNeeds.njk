@@ -39,7 +39,8 @@
                             name: "vulnerabilityDiversityDetail",
                             label: {
                                 text: "Provide more detail"
-                            }
+                            },
+                            value: formValues.vulnerabilityDiversityDetail
                         }) }}
                     {% endset -%}
 
@@ -48,7 +49,8 @@
                         name: "vulnerabilityDiversity",
                         fieldset: {
                             legend: {
-                                text: "Are there any vulnerability issues or diversity needs?"
+                                text: "Are there any vulnerability issues or diversity needs?",
+                                classes: "govuk-fieldset__legend--m"
                             }
                         },
                         items: [
@@ -57,7 +59,8 @@
                                 text: "Yes",
                                 conditional: {
                                     html: vulnerabilityDiversityYesHtml
-                                }
+                                },
+                                checked: true if formValues.vulnerabilityDiversityDetail
                             },
                             {
                                 value: 'no',
@@ -76,7 +79,8 @@
                             name: "contrabandDetail",
                             label: {
                                 text: "Provide more detail"
-                            }
+                            },
+                            value: formValues.contrabandDetail
                         }) }}
                     {% endset -%}
 
@@ -85,7 +89,8 @@
                         name: "contraband",
                         fieldset: {
                             legend: {
-                                text: "Do you think " + person.firstName + " " + person.lastName + " will bring contraband into prison?"
+                                text: "Do you think " + person.firstName + " " + person.lastName + " will bring contraband into prison?",
+                                classes: "govuk-fieldset__legend--m"
                             }
                         },
                         items: [
@@ -94,7 +99,8 @@
                                 text: "Yes",
                                 conditional: {
                                     html: contrabandYesHtml
-                                }
+                                },
+                                checked: true if formValues.contrabandDetail
                             },
                             {
                                 value: 'no',
@@ -111,7 +117,8 @@
                         id: "mappaLevel",
                         name: "mappaLevel",
                         label: {
-                            text: "What is " + person.firstName + " " + person.lastName + "'s MAPPA level?"
+                            text: "What is " + person.firstName + " " + person.lastName + "'s MAPPA level?",
+                            classes: "govuk-label--m"
                         },
                         hint: {
                             text: "Mappa level"
@@ -123,27 +130,33 @@
                             },
                             {
                                 value: "NA",
-                                text: "N/A"
+                                text: "N/A",
+                                selected: formValues.mappaLevel == 'NA'
                             },
                             {
                                 value: "LEVEL_1",
-                                text: "Level 1"
+                                text: "Level 1",
+                                selected: formValues.mappaLevel == 'LEVEL_1'
                             },
                             {
                                 value: "LEVEL_2",
-                                text: "Level 2"
+                                text: "Level 2",
+                                selected: formValues.mappaLevel == 'LEVEL_2'
                             },
                             {
                                 value: "LEVEL_3",
-                                text: "Level 3"
+                                text: "Level 3",
+                                selected: formValues.mappaLevel == 'LEVEL_3'
                             },
                             {
                                 value: "NOT_KNOWN",
-                                text: "Not known"
+                                text: "Not known",
+                                selected: formValues.mappaLevel == 'NOT_KNOWN'
                             },
                             {
                                 value: "CONFIRMATION_REQUIRED",
-                                text: "Confirmation required"
+                                text: "Confirmation required",
+                                selected: formValues.mappaLevel == 'CONFIRMATION_REQUIRED'
                             }
                         ],
                         errorMessage: {

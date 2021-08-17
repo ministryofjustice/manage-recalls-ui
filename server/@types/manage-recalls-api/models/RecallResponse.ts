@@ -8,7 +8,11 @@ export type RecallResponse = {
   agreeWithRecallRecommendation?: boolean
   contrabandDetail?: string
   documents: Array<ApiRecallDocument>
-  lastReleaseDateTime?: string
+  lastReleaseDate?: string
+  sentenceDate?: string
+  sentenceExpiryDate?: string
+  licenceExpiryDate?: string
+  conditionalReleaseDate?: string
   lastReleasePrison?: string
   localPoliceService?: string
   mappaLevel?: RecallResponse.mappaLevel
@@ -18,6 +22,8 @@ export type RecallResponse = {
   recallLength?: RecallResponse.recallLength
   revocationOrderId?: string
   vulnerabilityDiversityDetail?: string
+  sentencingCourt?: string
+  indexOffence?: string
 }
 
 export namespace RecallResponse {

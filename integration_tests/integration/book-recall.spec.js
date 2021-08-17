@@ -1,4 +1,4 @@
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { searchResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallLastRelease'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
@@ -20,7 +20,7 @@ context('Book a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
-    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.login()
@@ -34,9 +34,15 @@ context('Book a recall', () => {
   it('User can book a recall', () => {
     recallRequestReceived.enterRecallReceivedDate({ day: '10', month: '05', year: '2021', hour: '05', minute: '3' })
     recallRequestReceived.clickContinue()
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ personName })
-    recallLastRelease.setReleasingPrison('Belmarsh')
-    recallLastRelease.setLastReleaseDate({ day: '10', month: '05', year: '2021' })
+    const recallLastRelease = recallLastReleasePage.verifyOnPage()
+    recallLastRelease.setSentenceDate()
+    recallLastRelease.setSentenceExpiryDate()
+    recallLastRelease.setLicenceExpiryDate()
+    recallLastRelease.setConditionalReleaseExpiryDate()
+    recallLastRelease.setReleasingPrison()
+    recallLastRelease.setLastReleaseDate()
+    recallLastRelease.setSentencingCourt()
+    recallLastRelease.setIndexOffence()
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
     recallPrisonPolice.setLocalPoliceService()
@@ -57,11 +63,39 @@ context('Book a recall', () => {
     recallRequestReceived.expectError('recallEmailReceivedDateTime')
   })
 
-  it('User sees an error if an invalid release date and prison is entered', () => {
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallLastRelease.clearReleasingDate()
+  it('User sees errors if sentence, offence and release details are not entered', () => {
+    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
     recallLastRelease.clickContinue()
-    recallLastRelease.expectError('lastReleaseDateTime')
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'lastReleaseDate',
+      summaryError: 'Latest release date',
+      fieldError: 'Enter a valid date in the past',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'lastReleasePrison',
+      summaryError: 'Releasing prison',
+      fieldError: 'Enter a prison name',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentenceDate',
+      summaryError: 'Date of sentence',
+      fieldError: 'Enter a valid date in the past',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentenceExpiryDate',
+      summaryError: 'Sentence expiry date',
+      fieldError: 'Enter a valid date',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'licenceExpiryDate',
+      summaryError: 'Licence expiry date',
+      fieldError: 'Enter a valid date',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentenceExpiryDate',
+      summaryError: 'Sentence expiry date',
+      fieldError: 'Enter a valid date',
+    })
   })
 
   it('User sees an error if local police service not entered', () => {

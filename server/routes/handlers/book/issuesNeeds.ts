@@ -24,7 +24,6 @@ export const issuesNeeds = async (req: Request, res: Response): Promise<void> =>
         makeErrorObject({
           id: 'vulnerabilityDiversity',
           text: 'Vulnerability issues or diversity needs',
-          values: { vulnerabilityDiversity },
         })
       )
     }
@@ -33,7 +32,6 @@ export const issuesNeeds = async (req: Request, res: Response): Promise<void> =>
         makeErrorObject({
           id: 'contraband',
           text: 'Bring contraband to prison',
-          values: { contraband },
         })
       )
     }

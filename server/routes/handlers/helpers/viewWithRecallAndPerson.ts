@@ -1,9 +1,7 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { documentTypes } from '../book/documentTypes'
-import { getFormattedRecallLength, isInvalid, splitIsoDateToParts } from './index'
-import { DatePartsParsed, FormError, ObjectMap, RecallFormValues } from '../../../@types'
-import { RecallResponse } from '../../../@types/manage-recalls-api'
+import { getFormattedMappaLevel, getFormattedRecallLength, getFormValues, isInvalid } from './index'
 
 export type ViewName =
   | 'assessConfirmation'
@@ -13,32 +11,6 @@ export type ViewName =
   | 'recallRequestReceived'
   | 'recallPrisonPolice'
   | 'recallIssuesNeeds'
-
-const getFormValues = ({
-  errors = {},
-  apiValues,
-}: {
-  errors: ObjectMap<FormError>
-  apiValues: RecallResponse
-}): RecallFormValues => {
-  const formValues = {} as RecallFormValues
-  formValues.recallEmailReceivedDateTimeParts =
-    errors.recallEmailReceivedDateTime?.values || splitIsoDateToParts(apiValues.recallEmailReceivedDateTime)
-  formValues.lastReleasePrison =
-    (errors.lastReleasePrison?.values?.lastReleasePrison as string) || apiValues.lastReleasePrison
-  formValues.lastReleaseDateTimeParts =
-    (errors.lastReleaseDateTime?.values as unknown as DatePartsParsed) ||
-    splitIsoDateToParts(apiValues.lastReleaseDateTime)
-  formValues.contraband = errors.contraband?.values?.contraband as boolean
-  formValues.contrabandDetail =
-    (errors.contrabandDetail?.values?.contrabandDetail as string) || apiValues.contrabandDetail
-  formValues.vulnerabilityDiversity = errors.vulnerabilityDiversity?.values?.vulnerabilityDiversity as boolean
-  formValues.vulnerabilityDiversityDetail =
-    (errors.vulnerabilityDiversityDetail?.values?.vulnerabilityDiversityDetail as string) ||
-    apiValues.vulnerabilityDiversityDetail
-  formValues.mappaLevel = (errors.mappaLevel?.values?.mappaLevel as string) || apiValues.mappaLevel
-  return formValues
-}
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
@@ -56,9 +28,10 @@ export const viewWithRecallAndPerson =
       ...doc,
       ...(documentTypes.find(d => d.name === doc.category) || {}),
     }))
-    res.locals.recall = recall
-    if (recall.recallLength) {
-      res.locals.recall.recallLengthFormatted = getFormattedRecallLength(recall.recallLength)
+    res.locals.recall = {
+      ...recall,
+      recallLengthFormatted: getFormattedRecallLength(recall.recallLength),
+      mappaLevelFormatted: getFormattedMappaLevel(recall.mappaLevel),
     }
     res.locals.formValues = getFormValues({ errors: res.locals.errors, apiValues: recall })
     res.locals.person = person

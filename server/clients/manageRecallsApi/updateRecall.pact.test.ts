@@ -19,6 +19,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully add properties to a recall', async () => {
       const payload = {
         agreeWithRecallRecommendation: true,
+        lastReleaseDate: '2020-08-03',
         contrabandDetail: 'Likely to bring in contraband because...',
         lastReleaseDateTime: '2020-08-03T00:00:00.000Z',
         lastReleasePrison: 'Belmarsh',
@@ -26,15 +27,19 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         mappaLevel: 'LEVEL_2',
         recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',
         vulnerabilityDiversityDetail: 'Has the following needs',
+        sentenceDate: '2019-08-03',
+        sentenceExpiryDate: '2021-02-03',
+        licenceExpiryDate: '2021-08-03',
+        conditionalReleaseDate: '2022-03-14',
+        sentencingCourt: 'Manchester Crown Court',
+        indexOffence: 'Burglary',
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',
         ...updateRecallRequest('an update recall request', recallId, payload, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
-
       const actual = await updateRecall(recallId, payload, accessToken)
-
       expect(actual).toEqual(updateRecallResponseJson)
     })
 
@@ -54,7 +59,6 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ),
         willRespondWith: updateRecallResponse(Matchers.like(errorResponse), 400),
       })
-
       try {
         await updateRecall(recallId, { recallLength: blankRecallLength }, accessToken)
       } catch (exception) {
