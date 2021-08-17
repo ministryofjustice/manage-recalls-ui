@@ -2,7 +2,7 @@ const page = require('./page')
 
 const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
   page('What are the sentence, offence and release details?', {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/recall-type` : null,
+    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/last-release` : null,
     setSentenceDate: () => {
       cy.get('[name="sentenceDateYear"]').clear().type('2019')
       cy.get('[name="sentenceDateMonth"]').clear().type('01')
@@ -39,16 +39,6 @@ const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
     },
     clickContinue: () => {
       cy.get('[data-qa=continueButton]').click()
-    },
-    expectError: fieldName => {
-      cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
-        const text = $searchResults.text()
-        expect(text.trim()).to.equal('Latest release date')
-      })
-      cy.get(`#${fieldName}-error`).should($searchResults => {
-        const text = $searchResults.text()
-        expect(text.trim()).to.contain('Enter a valid date in the past')
-      })
     },
   })
 

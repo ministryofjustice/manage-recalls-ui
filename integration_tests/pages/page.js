@@ -7,9 +7,19 @@ module.exports = (name, pageObject = {}) => {
       expect(text.trim()).to.equal(textToFind)
     })
   }
+  const assertErrorMessage = ({ fieldName, summaryError, fieldError }) => {
+    cy.get(`[href="#${fieldName}"`).should($searchResults => {
+      const text = $searchResults.text()
+      expect(text.trim()).to.equal(summaryError)
+    })
+    cy.get(`#${fieldName}-error`).should($searchResults => {
+      const text = $searchResults.text()
+      expect(text.trim()).to.contain(fieldError)
+    })
+  }
   if (pageObject.url) {
     cy.visit(pageObject.url)
   }
   checkOnPage()
-  return { ...pageObject, checkStillOnPage: checkOnPage, logout, assertElementHasText }
+  return { ...pageObject, checkStillOnPage: checkOnPage, logout, assertElementHasText, assertErrorMessage }
 }

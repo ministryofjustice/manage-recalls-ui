@@ -63,11 +63,39 @@ context('Book a recall', () => {
     recallRequestReceived.expectError('recallEmailReceivedDateTime')
   })
 
-  it('User sees an error if an invalid release date and prison is entered', () => {
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallLastRelease.clearReleasingDate()
+  it('User sees errors if sentence, offence and release details are not entered', () => {
+    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
     recallLastRelease.clickContinue()
-    recallLastRelease.expectError('lastReleaseDateTime')
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'lastReleaseDate',
+      summaryError: 'Latest release date',
+      fieldError: 'Enter a valid date in the past',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'lastReleasePrison',
+      summaryError: 'Releasing prison',
+      fieldError: 'Enter a prison name',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentenceDate',
+      summaryError: 'Date of sentence',
+      fieldError: 'Enter a valid date in the past',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentenceExpiryDate',
+      summaryError: 'Sentence expiry date',
+      fieldError: 'Enter a valid date',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'licenceExpiryDate',
+      summaryError: 'Licence expiry date',
+      fieldError: 'Enter a valid date',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentenceExpiryDate',
+      summaryError: 'Sentence expiry date',
+      fieldError: 'Enter a valid date',
+    })
   })
 
   it('User sees an error if local police service not entered', () => {
