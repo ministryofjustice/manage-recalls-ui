@@ -23,6 +23,10 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[name="conditionalReleaseDateMonth"]').clear().type('09')
       cy.get('[name="conditionalReleaseDateDay"]').clear().type('3')
     },
+    setSentenceLength: () => {
+      cy.get('[name="sentenceLengthYears"]').clear().type('3')
+      cy.get('[name="sentenceLengthMonths"]').clear().type('2')
+    },
     setReleasingPrison: () => {
       cy.get('[name="lastReleasePrison"]').type('Belmarsh')
     },

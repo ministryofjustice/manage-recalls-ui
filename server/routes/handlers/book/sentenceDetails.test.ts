@@ -27,6 +27,9 @@ describe('lastRelease', () => {
     conditionalReleaseDateYear: '2021',
     conditionalReleaseDateMonth: '10',
     conditionalReleaseDateDay: '4',
+    sentenceLengthYears: '2',
+    sentenceLengthMonths: '',
+    sentenceLengthDays: '',
   }
 
   afterEach(() => {
@@ -57,6 +60,9 @@ describe('lastRelease', () => {
         sentenceDate: '2020-03-10',
         sentenceExpiryDate: '2022-10-20',
         sentencingCourt: 'Birmingham',
+        sentenceLength: {
+          years: 2,
+        },
       })
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/prison-police`)
     })

@@ -158,6 +158,13 @@ describe('getFormValues', () => {
     contrabandDetail: '',
     vulnerabilityDiversityDetail: '',
     mappaLevel: '',
+    sentenceLength: {
+      values: {
+        days: '',
+        months: 'rr',
+        years: '',
+      },
+    },
   }
 
   it('uses error values if no API values', () => {
@@ -194,6 +201,11 @@ describe('getFormValues', () => {
         day: '05',
         month: '12',
         year: '2020',
+      },
+      sentenceLengthParts: {
+        days: '',
+        months: 'rr',
+        years: '',
       },
     })
   })
@@ -240,6 +252,11 @@ describe('getFormValues', () => {
       },
       sentencingCourt: 'Manchester Crown Court',
       vulnerabilityDiversityDetail: 'Various...',
+      sentenceLengthParts: {
+        days: '',
+        months: 'rr',
+        years: '',
+      },
     })
   })
 
@@ -285,6 +302,11 @@ describe('getFormValues', () => {
       },
       sentencingCourt: 'Manchester Crown Court',
       vulnerabilityDiversityDetail: 'Various...',
+      sentenceLengthParts: {
+        days: 0,
+        months: 3,
+        years: 2,
+      },
     })
   })
 

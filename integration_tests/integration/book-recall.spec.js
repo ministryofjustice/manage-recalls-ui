@@ -38,6 +38,7 @@ context('Book a recall', () => {
     recallLastRelease.setSentenceDate()
     recallLastRelease.setSentenceExpiryDate()
     recallLastRelease.setLicenceExpiryDate()
+    recallLastRelease.setSentenceLength()
     recallLastRelease.setConditionalReleaseExpiryDate()
     recallLastRelease.setReleasingPrison()
     recallLastRelease.setLastReleaseDate()
@@ -92,9 +93,9 @@ context('Book a recall', () => {
       fieldError: 'Enter a valid date',
     })
     recallLastRelease.assertErrorMessage({
-      fieldName: 'sentenceExpiryDate',
-      summaryError: 'Sentence expiry date',
-      fieldError: 'Enter a valid date',
+      fieldName: 'sentenceLength',
+      summaryError: 'Length of sentence',
+      fieldError: 'Enter a valid sentence length',
     })
   })
 
