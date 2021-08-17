@@ -16,27 +16,24 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   })
 
   describe('update a recall', () => {
-    test('can successfully add recommended recall length to a recall', async () => {
+    test('can successfully add properties to a recall', async () => {
+      const payload = {
+        agreeWithRecallRecommendation: true,
+        contrabandDetail: 'Likely to bring in contraband because...',
+        lastReleaseDateTime: '2020-08-03T00:00:00.000Z',
+        lastReleasePrison: 'Belmarsh',
+        localPoliceService: 'Brentwood, Essex',
+        mappaLevel: 'LEVEL_2',
+        recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',
+        vulnerabilityDiversityDetail: 'Has the following needs',
+      }
       await provider.addInteraction({
-        state: 'a recall exists and can be updated with length',
-        ...updateRecallRequest('an update recall request', recallId, { recallLength }, accessToken),
+        state: 'a recall exists and can be updated',
+        ...updateRecallRequest('an update recall request', recallId, payload, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
       })
 
-      const actual = await updateRecall(recallId, { recallLength }, accessToken)
-
-      expect(actual).toEqual(updateRecallResponseJson)
-    })
-
-    test('can successfully add assessment agreement to a recall', async () => {
-      const agreeWithRecallRecommendation = true
-      await provider.addInteraction({
-        state: 'a recall exists and can be updated with agreement',
-        ...updateRecallRequest('an update recall request', recallId, { agreeWithRecallRecommendation }, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
-      })
-
-      const actual = await updateRecall(recallId, { agreeWithRecallRecommendation }, accessToken)
+      const actual = await updateRecall(recallId, payload, accessToken)
 
       expect(actual).toEqual(updateRecallResponseJson)
     })

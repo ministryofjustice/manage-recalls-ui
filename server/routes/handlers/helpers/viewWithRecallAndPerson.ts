@@ -12,6 +12,7 @@ export type ViewName =
   | 'recallLastRelease'
   | 'recallRequestReceived'
   | 'recallPrisonPolice'
+  | 'recallIssuesNeeds'
 
 const getFormValues = ({
   errors = {},
@@ -28,6 +29,14 @@ const getFormValues = ({
   formValues.lastReleaseDateTimeParts =
     (errors.lastReleaseDateTime?.values as unknown as DatePartsParsed) ||
     splitIsoDateToParts(apiValues.lastReleaseDateTime)
+  formValues.contraband = errors.contraband?.values?.contraband as boolean
+  formValues.contrabandDetail =
+    (errors.contrabandDetail?.values?.contrabandDetail as string) || apiValues.contrabandDetail
+  formValues.vulnerabilityDiversity = errors.vulnerabilityDiversity?.values?.vulnerabilityDiversity as boolean
+  formValues.vulnerabilityDiversityDetail =
+    (errors.vulnerabilityDiversityDetail?.values?.vulnerabilityDiversityDetail as string) ||
+    apiValues.vulnerabilityDiversityDetail
+  formValues.mappaLevel = (errors.mappaLevel?.values?.mappaLevel as string) || apiValues.mappaLevel
   return formValues
 }
 
