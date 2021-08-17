@@ -34,8 +34,8 @@ context('Book a recall', () => {
     recallRequestReceived.enterRecallReceivedDate({ day: '10', month: '05', year: '2021', hour: '05', minute: '3' })
     recallRequestReceived.clickContinue()
     const recallLastRelease = recallLastReleasePage.verifyOnPage({ personName })
-    recallLastRelease.setReleasingPrison()
-    recallLastRelease.setLastReleaseDate()
+    recallLastRelease.setReleasingPrison('Belmarsh')
+    recallLastRelease.setLastReleaseDate({ day: '10', month: '05', year: '2021' })
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
     recallPrisonPolice.setLocalPoliceService()
@@ -48,7 +48,14 @@ context('Book a recall', () => {
   it('User sees an error if an invalid email received date is entered', () => {
     recallRequestReceived.enterRecallReceivedDate({ year: '2021', hour: '05', minute: '3' })
     recallRequestReceived.clickContinue()
-    recallRequestReceived.expectError()
+    recallRequestReceived.expectError('recallEmailReceivedDateTime')
+  })
+
+  it('User sees an error if an invalid release date and prison is entered', () => {
+    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallLastRelease.clearReleasingDate()
+    recallLastRelease.clickContinue()
+    recallLastRelease.expectError('lastReleaseDateTime')
   })
 
   it('User sees an error if local police service not entered', () => {
