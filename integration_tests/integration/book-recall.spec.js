@@ -1,5 +1,5 @@
 import { searchResponse } from '../mockApis/mockResponses'
-import recallLastReleasePage from '../pages/recallLastRelease'
+import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'

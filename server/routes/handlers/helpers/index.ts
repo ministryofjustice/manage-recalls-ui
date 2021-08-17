@@ -130,6 +130,7 @@ export const getFormValues = ({
     sentenceDateParts: errors.sentenceDate?.values || splitIsoDateToParts(apiValues.sentenceDate),
     sentenceExpiryDateParts: errors.sentenceExpiryDate?.values || splitIsoDateToParts(apiValues.sentenceExpiryDate),
     licenceExpiryDateParts: errors.licenceExpiryDate?.values || splitIsoDateToParts(apiValues.licenceExpiryDate),
+    sentenceLengthParts: errors.sentenceLength?.values || apiValues.sentenceLength,
     conditionalReleaseDateParts:
       errors.conditionalReleaseDate?.values || splitIsoDateToParts(apiValues.conditionalReleaseDate),
     sentencingCourt: errors.sentencingCourt?.values?.sentencingCourt || apiValues.sentencingCourt,

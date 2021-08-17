@@ -167,6 +167,68 @@
                         } if errors.sentenceExpiryDate else undefined
                     }) }}
                 </div>
+                <div class='govuk-body govuk-form-group {%- if errors.sentenceLength %} govuk-form-group--error{% endif %}' id='sentenceLength'>
+                    {% call govukFieldset({
+                        legend: {
+                            text: "Length of sentence",
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    }) %}
+                        {% if errors.sentenceLength %}
+                            {% set errorId = "sentenceLength-error" %}
+                            {% set describedBy = describedBy + " " + errorId if describedBy else errorId %}
+                            {{ govukErrorMessage({
+                                id: errorId,
+                                text: 'Enter a valid sentence length'
+                            }) | indent(2) | trim }}
+                        {% endif %}
+                        <div class='govuk-!-display-inline-block govuk-!-margin-right-4'>
+                        {{ govukInput({
+                            label: {
+                                text: "Years",
+                                classes: "govuk-visually-hidden"
+                            },
+                            classes: "govuk-input--width-2",
+                            id: "sentenceLengthYears",
+                            name: "sentenceLengthYears",
+                            suffix: {
+                                text: "years"
+                            },
+                            value: formValues.sentenceLengthParts.years
+                        }) }}
+                        </div>
+                        <div class='govuk-!-display-inline-block govuk-!-margin-right-4'>
+                        {{ govukInput({
+                            label: {
+                                text: "Months",
+                                classes: "govuk-visually-hidden"
+                            },
+                            classes: "govuk-input--width-2",
+                            id: "sentenceLengthMonths",
+                            name: "sentenceLengthMonths",
+                            suffix: {
+                                text: "months"
+                            },
+                            value: formValues.sentenceLengthParts.months
+                        }) }}
+                        </div>
+                        <div class='govuk-!-display-inline-block'>
+                        {{ govukInput({
+                            label: {
+                                text: "Days",
+                                classes: "govuk-visually-hidden"
+                            },
+                            classes: "govuk-input--width-3",
+                            id: "sentenceLengthDays",
+                            name: "sentenceLengthDays",
+                            suffix: {
+                                text: "days"
+                            },
+                            value: formValues.sentenceLengthParts.days
+                        }) }}
+                        </div>
+                    {% endcall %}
+                </div>
                 <div class='govuk-body govuk-form-group'>
                     {{ govukInput({
                         label: {

@@ -82,9 +82,12 @@ This user has the `MANAGE_RECALLS` role that allows access to the service.
 
 ### Running the app for development
 
-To start the main services and the manage recalls ui app in dev mode with nodemon: 
+To start the main services and the manage recalls ui app in dev mode (you can attach to the Node.js debugger): 
 
-`scripts/start-dev-local.sh`
+```
+scripts/start-dev-local.sh
+npm run start:dev
+```
 
 If you need to update the wiremock (fake-manage-recalls-api) mappings you can use the `scripts/restart-fake-manage-recalls-api.sh` 
 to stop and start the wiremock server.  Or you can use the `manual-stub.test.ts` test to prime the running wiremock server

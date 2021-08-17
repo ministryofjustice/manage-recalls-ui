@@ -1,6 +1,6 @@
 const page = require('./page')
 
-const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
+const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
   page('What are the sentence, offence and release details?', {
     url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/last-release` : null,
     setSentenceDate: () => {
@@ -42,4 +42,4 @@ const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
     },
   })
 
-module.exports = { verifyOnPage: recallLastReleasePage }
+module.exports = { verifyOnPage: recallSentenceDetailsPage }

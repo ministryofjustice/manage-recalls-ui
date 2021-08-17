@@ -2,22 +2,25 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { SentenceLengthReq } from './SentenceLengthReq'
+
 export type UpdateRecallRequest = {
   agreeWithRecallRecommendation?: boolean
+  conditionalReleaseDate?: string
   contrabandDetail?: string
+  indexOffence?: string
   lastReleaseDate?: string
   lastReleasePrison?: string
+  licenceExpiryDate?: string
   localPoliceService?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
   recallEmailReceivedDateTime?: string
   recallLength?: UpdateRecallRequest.recallLength
-  vulnerabilityDiversityDetail?: string
   sentenceDate?: string
-  licenceExpiryDate?: string
   sentenceExpiryDate?: string
+  sentenceLength?: SentenceLengthReq
   sentencingCourt?: string
-  indexOffence?: string
-  conditionalReleaseDate?: string
+  vulnerabilityDiversityDetail?: string
 }
 
 export namespace UpdateRecallRequest {

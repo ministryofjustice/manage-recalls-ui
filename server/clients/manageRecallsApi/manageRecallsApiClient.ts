@@ -39,7 +39,7 @@ export function createRecall(nomsNumber: string, token: string): Promise<Recall>
 
 export function updateRecall(
   recallId: string,
-  updatedFields: ObjectMap<string | boolean>,
+  updatedFields: ObjectMap<string | boolean | ObjectMap<number>>,
   token: string
 ): Promise<Recall> {
   return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: updatedFields })

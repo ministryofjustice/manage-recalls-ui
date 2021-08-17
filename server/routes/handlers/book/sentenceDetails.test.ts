@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
-import { lastRelease } from './lastRelease'
+import { sentenceDetails } from './sentenceDetails'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
@@ -46,7 +46,7 @@ describe('lastRelease', () => {
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
-      await lastRelease(req, res)
+      await sentenceDetails(req, res)
 
       expect(updateRecall.mock.calls[0][1]).toEqual({
         conditionalReleaseDate: '2021-10-04',
@@ -74,7 +74,7 @@ describe('lastRelease', () => {
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
-      await lastRelease(req, res)
+      await sentenceDetails(req, res)
 
       expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
     })
@@ -96,7 +96,7 @@ async function invalidAddRecallType(nomsNumber, recallId, body) {
   })
   const { res } = mockResponseWithAuthenticatedUser('')
 
-  await lastRelease(req, res)
+  await sentenceDetails(req, res)
 
   expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}`)
 }

@@ -33,7 +33,7 @@ echo "  docker logs fake-manage-recalls-api"
 echo "  docker logs redis"
 
 echo "Starting ${MANAGE_RECALLS_UI_NAME}, logs can be found here: ${LOG_FILE}"
-npm run start-feature:dev >> "${LOG_FILE}" 2>&1 &
+npm run start:feature >> "${LOG_FILE}" 2>&1 &
 
 echo
 echo "Checking ${MANAGE_RECALLS_UI_NAME} is running..."
