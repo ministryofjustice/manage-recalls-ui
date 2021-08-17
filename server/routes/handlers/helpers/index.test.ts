@@ -76,14 +76,14 @@ describe('Date helpers', () => {
       expect(result).toEqual('2021-01-12')
     })
 
-    it('returns null for an invalid date-time', () => {
+    it('returns undefined for an invalid date-time', () => {
       const result = convertGmtDatePartsToUtc({ year: '2021', month: '', day: '45', hour: '10', minute: '53' })
-      expect(result).toBeNull()
+      expect(result).toBeUndefined()
     })
 
-    it('returns null for a blank date-time', () => {
+    it('returns undefined for a blank date-time', () => {
       const result = convertGmtDatePartsToUtc({ year: '', month: '', day: '', hour: '', minute: '' })
-      expect(result).toBeNull()
+      expect(result).toBeUndefined()
     })
   })
 

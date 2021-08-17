@@ -91,7 +91,6 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
         makeErrorObject({
           id: 'sentencingCourt',
           text: 'Sentencing court',
-          values: { sentencingCourt },
         })
       )
     }
@@ -100,7 +99,6 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
         makeErrorObject({
           id: 'indexOffence',
           text: 'Index offence',
-          values: { indexOffence },
         })
       )
     }
@@ -109,7 +107,6 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
         makeErrorObject({
           id: 'lastReleasePrison',
           text: 'Releasing prison',
-          values: { lastReleasePrison },
         })
       )
     }
@@ -169,13 +166,11 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
     sentenceDate,
     licenceExpiryDate,
     sentenceExpiryDate,
-    lastReleasePrison,
-    sentencingCourt,
-    indexOffence,
+    lastReleasePrison: lastReleasePrison || undefined,
+    sentencingCourt: sentencingCourt || undefined,
+    indexOffence: indexOffence || undefined,
     sentenceLength,
-  }
-  if (conditionalReleaseDate) {
-    validValues.conditionalReleaseDate = conditionalReleaseDate
+    conditionalReleaseDate,
   }
   return { errors, validValues }
 }

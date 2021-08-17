@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { isInvalid } from '../helpers'
-import { validateSentenceDetails } from './helpers/validate-sentence-details'
+import { validateSentenceDetails } from './helpers/validateSentenceDetails'
 
 export const sentenceDetails = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
