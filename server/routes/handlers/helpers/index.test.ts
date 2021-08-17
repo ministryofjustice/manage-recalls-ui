@@ -56,6 +56,11 @@ describe('Date helpers', () => {
       expect(result).toEqual('2021-05-30T13:12:00.000Z')
     })
 
+    it("doesn't apply daylight saving for dates without times within BST period", () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '05', day: '30' })
+      expect(result).toEqual('2021-05-30')
+    })
+
     it('returns a UTC corrected date object for a valid date-time that falls outside BST period', () => {
       const result = convertGmtDatePartsToUtc({ year: '2021', month: '01', day: '12', hour: '11', minute: '40' })
       expect(result).toEqual('2021-01-12T11:40:00.000Z')
