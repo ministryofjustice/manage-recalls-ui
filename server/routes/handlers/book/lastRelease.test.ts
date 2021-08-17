@@ -49,13 +49,13 @@ describe('lastRelease', () => {
       await lastRelease(req, res)
 
       expect(updateRecall.mock.calls[0][1]).toEqual({
-        conditionalReleaseDate: '2021-10-03',
+        conditionalReleaseDate: '2021-10-04',
         indexOffence: 'Assault',
-        lastReleaseDate: '2021-05-19',
+        lastReleaseDate: '2021-05-20',
         lastReleasePrison: 'Belmarsh',
-        licenceExpiryDate: '2020-08-03',
+        licenceExpiryDate: '2020-08-04',
         sentenceDate: '2020-03-10',
-        sentenceExpiryDate: '2022-10-19',
+        sentenceExpiryDate: '2022-10-20',
         sentencingCourt: 'Birmingham',
       })
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/prison-police`)

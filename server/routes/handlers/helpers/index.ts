@@ -19,10 +19,10 @@ export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: Obj
     let date
     if (includeTime) {
       date = new Date(Date.UTC(y, m - 1, d, h, min))
+      date.setHours(date.getHours() - getDaylightSavingOffset(date))
     } else {
       date = new Date(Date.UTC(y, m - 1, d))
     }
-    date.setHours(date.getHours() - getDaylightSavingOffset(date))
     if (!isValid(date)) {
       return null
     }
