@@ -11,6 +11,7 @@ export type ViewName =
   | 'recallRequestReceived'
   | 'recallPrisonPolice'
   | 'recallIssuesNeeds'
+  | 'recallProbationOfficer'
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>

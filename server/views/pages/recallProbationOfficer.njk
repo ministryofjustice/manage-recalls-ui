@@ -1,0 +1,154 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Who is " + person.firstName + " " + person.lastName + "'s probation officer ?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/issues-needs"
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class="govuk-heading-l">
+                Who is {{ person.firstName }} {{ person.lastName }}'s probation officer?
+            </h1>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/probation-officer" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukInput({
+                        label: {
+                            text: "Name",
+                            classes: "govuk-label--m"
+                        },
+                        id: "probationOfficerName",
+                        name: "probationOfficerName",
+                        value: formValues.probationOfficerName,
+                        errorMessage: {
+                            text: "Enter the probation officer's name"
+                        } if errors.probationOfficerName else undefined
+                    }) }}
+
+                    {{ govukInput({
+                        label: {
+                            text: "Email address",
+                            classes: "govuk-label--m"
+                        },
+                        id: "probationOfficerEmail",
+                        name: "probationOfficerEmail",
+                        type: 'email',
+                        value: formValues.probationOfficerEmail,
+                        errorMessage: {
+                            text: "Enter the probation officer's email address"
+                        } if errors.probationOfficerEmail else undefined
+                    }) }}
+
+                    {{ govukInput({
+                        label: {
+                            text: "Phone number",
+                            classes: "govuk-label--m"
+                        },
+                        id: "probationOfficerPhoneNumber",
+                        name: "probationOfficerPhoneNumber",
+                        type: 'tel',
+                        value: formValues.probationOfficerPhoneNumber,
+                        errorMessage: {
+                            text: "Enter the probation officer's phone number"
+                        } if errors.probationOfficerPhoneNumber else undefined
+                    }) }}
+                    {{ govukSelect({
+                        id: "probationDivision",
+                        name: "probationDivision",
+                        label: {
+                            text: "Probation division",
+                            classes: "govuk-label--m"
+                        },
+                        items: [
+                            {
+                                value: "",
+                                text: ""
+                            },
+                            {
+                                value: "LONDON",
+                                text: "London",
+                                selected: formValues.mappaLevel == 'LONDON'
+                            },
+                            {
+                                value: "MIDLANDS",
+                                text: "Midlands",
+                                selected: formValues.mappaLevel == 'MIDLANDS'
+                            },
+                            {
+                                value: "NORTH_EAST",
+                                text: "North East",
+                                selected: formValues.mappaLevel == 'NORTH_EAST'
+                            },
+                            {
+                                value: "NORTH_WEST",
+                                text: "North West",
+                                selected: formValues.mappaLevel == 'NORTH_WEST'
+                            },
+                            {
+                                value: "SOUTH_EAST",
+                                text: "South East",
+                                selected: formValues.mappaLevel == 'SOUTH_EAST'
+                            },
+                            {
+                                value: "SOUTH_WEST_CENTRAL",
+                                text: "South West and South Central",
+                                selected: formValues.mappaLevel == 'SOUTH_WEST_CENTRAL'
+                            },
+                            {
+                                value: "WALES",
+                                text: "Wales",
+                                selected: formValues.mappaLevel == 'WALES'
+                            }
+                        ],
+                        errorMessage: {
+                            text: "Select the probation division"
+                        } if errors.probationDivision else undefined
+                    }) }}
+
+
+                    {{ govukInput({
+                        label: {
+                            text: "Assistant Chief Officer (ACO) that signed-off the recall",
+                            classes: "govuk-label--m"
+                        },
+                        id: "authorisingAssistantChiefOfficer",
+                        name: "authorisingAssistantChiefOfficer",
+                        value: formValues.authorisingAssistantChiefOfficer,
+                        errorMessage: {
+                            text: "Enter the Assistant Chief Officer's name"
+                        } if errors.authorisingAssistantChiefOfficer else undefined
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                       data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

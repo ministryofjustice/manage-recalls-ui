@@ -17,9 +17,18 @@ module.exports = (name, pageObject = {}) => {
       expect(text.trim()).to.contain(fieldError)
     })
   }
+  const clickContinue = () => cy.get('[data-qa=continueButton]').click()
+
   if (pageObject.url) {
     cy.visit(pageObject.url)
   }
   checkOnPage()
-  return { ...pageObject, checkStillOnPage: checkOnPage, logout, assertElementHasText, assertErrorMessage }
+  return {
+    ...pageObject,
+    checkStillOnPage: checkOnPage,
+    logout,
+    assertElementHasText,
+    assertErrorMessage,
+    clickContinue,
+  }
 }

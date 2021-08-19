@@ -6,9 +6,6 @@ const recallPrisonPolicePage = ({ nomsNumber, recallId } = {}) =>
     setLocalPoliceService: () => {
       cy.get('[name="localPoliceService"]').type('Brentwood')
     },
-    clickContinue: () => {
-      cy.get('[data-qa=continueButton]').click()
-    },
     expectError: () => {
       cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
         const text = $searchResults.text()

@@ -22,6 +22,11 @@ export type UpdateRecallRequest = {
   sentencingCourt?: string
   vulnerabilityDiversityDetail?: string
   bookingNumber?: string
+  probationOfficerName?: string
+  probationOfficerPhoneNumber?: string
+  probationOfficerEmail?: string
+  probationDivision?: UpdateRecallRequest.probationDivision
+  authorisingAssistantChiefOfficer?: string
 }
 
 export namespace UpdateRecallRequest {
@@ -37,5 +42,15 @@ export namespace UpdateRecallRequest {
   export enum recallLength {
     FOURTEEN_DAYS = 'FOURTEEN_DAYS',
     TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
+  }
+
+  export enum probationDivision {
+    LONDON = 'LONDON',
+    MIDLANDS = 'MIDLANDS',
+    NORTH_EAST = 'NORTH_EAST',
+    NORTH_WEST = 'NORTH_WEST',
+    SOUTH_WEST_CENTRAL = 'SOUTH_WEST_CENTRAL',
+    SOUTH_EAST = 'SOUTH_EAST',
+    WALES = 'WALES',
   }
 }

@@ -222,6 +222,50 @@
                     </dd>
                 </div>
             </dl>
+
+            <h2 class='govuk-heading-m'>Probation officer</h2>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Name
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='probationOfficerName'>
+                        {{ recall.probationOfficerName }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Email
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='probationOfficerEmail'>
+                        {{ recall.probationOfficerEmail }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Phone number
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='probationOfficerPhoneNumber'>
+                        {{ recall.probationOfficerPhoneNumber }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Division
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='probationDivision'>
+                        {{ recall.probationDivision }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Assistant Chief Officer
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='authorisingAssistantChiefOfficer'>
+                        {{ recall.authorisingAssistantChiefOfficer }}
+                    </dd>
+                </div>
+            </dl>
             {% if recall.documents.length %}
             <h2 class='govuk-heading-m'>Uploaded documents</h2>
             <dl class="govuk-summary-list">
