@@ -6,12 +6,12 @@ import logger from '../../../../logger'
 
 const getDaylightSavingOffset = (d: Date) => getTimezoneOffset('Europe/London', d) / (1000 * 60 * 60)
 
-export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: ObjectMap<string>): string | null => {
+export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: ObjectMap<string>): string | undefined => {
   try {
     const includeTime = isDefined(hour) && isDefined(day)
     const parts = [year, month, day, ...(includeTime ? [hour, minute] : [])]
     if (parts.find(part => !Number.isInteger(parseInt(part, 10)))) {
-      return null
+      return undefined
     }
     const [y, m, d, h, min] = parts.map(part => {
       return parseInt(part, 10)
@@ -24,11 +24,11 @@ export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: Obj
       date = new Date(Date.UTC(y, m - 1, d))
     }
     if (!isValid(date)) {
-      return null
+      return undefined
     }
     return includeTime ? date.toISOString() : date.toISOString().substring(0, 10)
   } catch (err) {
-    return null
+    return undefined
   }
 }
 
@@ -130,6 +130,7 @@ export const getFormValues = ({
     sentenceDateParts: errors.sentenceDate?.values || splitIsoDateToParts(apiValues.sentenceDate),
     sentenceExpiryDateParts: errors.sentenceExpiryDate?.values || splitIsoDateToParts(apiValues.sentenceExpiryDate),
     licenceExpiryDateParts: errors.licenceExpiryDate?.values || splitIsoDateToParts(apiValues.licenceExpiryDate),
+    sentenceLengthParts: errors.sentenceLength?.values || apiValues.sentenceLength,
     conditionalReleaseDateParts:
       errors.conditionalReleaseDate?.values || splitIsoDateToParts(apiValues.conditionalReleaseDate),
     sentencingCourt: errors.sentencingCourt?.values?.sentencingCourt || apiValues.sentencingCourt,

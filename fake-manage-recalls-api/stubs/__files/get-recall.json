@@ -26,5 +26,10 @@
   "indexOffence": "Burglary",
   "contrabandDetail": "Intention to smuggle drugs",
   "vulnerabilityDiversityDetail": "Various...",
-  "mappaLevel": "LEVEL_1"
+  "mappaLevel": "LEVEL_1",
+  "sentenceLength": {
+    "years": 2,
+    "months": 3,
+    "days": 0
+  }
 }

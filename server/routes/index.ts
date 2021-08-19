@@ -12,7 +12,7 @@ import {
   downloadDocument,
 } from './handlers/book/uploadRecallDocuments'
 import { recallRequestReceivedFormHandler } from './handlers/book/recallRequestReceived'
-import { lastRelease } from './handlers/book/lastRelease'
+import { sentenceDetails } from './handlers/book/sentenceDetails'
 import { prisonPolice } from './handlers/book/prisonPolice'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 import { issuesNeeds } from './handlers/book/issuesNeeds'
@@ -29,8 +29,8 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls', createRecall)
   get('/persons/:nomsNumber/recalls/:recallId/request-received', viewWithRecallAndPerson('recallRequestReceived'))
   post('/persons/:nomsNumber/recalls/:recallId/request-received', recallRequestReceivedFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/last-release', viewWithRecallAndPerson('recallLastRelease'))
-  post('/persons/:nomsNumber/recalls/:recallId/last-release', lastRelease)
+  get('/persons/:nomsNumber/recalls/:recallId/last-release', viewWithRecallAndPerson('recallSentenceDetails'))
+  post('/persons/:nomsNumber/recalls/:recallId/last-release', sentenceDetails)
   get('/persons/:nomsNumber/recalls/:recallId/prison-police', viewWithRecallAndPerson('recallPrisonPolice'))
   post('/persons/:nomsNumber/recalls/:recallId/prison-police', prisonPolice)
   get('/persons/:nomsNumber/recalls/:recallId/issues-needs', viewWithRecallAndPerson('recallIssuesNeeds'))

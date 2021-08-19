@@ -3,17 +3,17 @@
 /* eslint-disable */
 
 import type { ApiRecallDocument } from './ApiRecallDocument'
+import type { SentenceLengthRes } from './SentenceLengthRes'
 
 export type RecallResponse = {
   agreeWithRecallRecommendation?: boolean
+  conditionalReleaseDate?: string
   contrabandDetail?: string
   documents: Array<ApiRecallDocument>
+  indexOffence?: string
   lastReleaseDate?: string
-  sentenceDate?: string
-  sentenceExpiryDate?: string
-  licenceExpiryDate?: string
-  conditionalReleaseDate?: string
   lastReleasePrison?: string
+  licenceExpiryDate?: string
   localPoliceService?: string
   mappaLevel?: RecallResponse.mappaLevel
   nomsNumber: string
@@ -21,9 +21,11 @@ export type RecallResponse = {
   recallId: string
   recallLength?: RecallResponse.recallLength
   revocationOrderId?: string
-  vulnerabilityDiversityDetail?: string
+  sentenceDate?: string
+  sentenceExpiryDate?: string
+  sentenceLength?: SentenceLengthRes
   sentencingCourt?: string
-  indexOffence?: string
+  vulnerabilityDiversityDetail?: string
 }
 
 export namespace RecallResponse {

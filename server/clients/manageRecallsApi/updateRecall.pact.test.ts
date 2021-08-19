@@ -33,6 +33,10 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         conditionalReleaseDate: '2022-03-14',
         sentencingCourt: 'Manchester Crown Court',
         indexOffence: 'Burglary',
+        sentenceLength: {
+          years: 2,
+          months: 3,
+        },
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',

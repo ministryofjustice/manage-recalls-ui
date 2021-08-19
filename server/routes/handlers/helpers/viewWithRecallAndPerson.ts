@@ -7,7 +7,7 @@ export type ViewName =
   | 'assessConfirmation'
   | 'assessDecision'
   | 'assessRecall'
-  | 'recallLastRelease'
+  | 'recallSentenceDetails'
   | 'recallRequestReceived'
   | 'recallPrisonPolice'
   | 'recallIssuesNeeds'

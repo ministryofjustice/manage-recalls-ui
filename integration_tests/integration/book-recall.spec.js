@@ -1,5 +1,5 @@
 import { searchResponse } from '../mockApis/mockResponses'
-import recallLastReleasePage from '../pages/recallLastRelease'
+import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
@@ -38,6 +38,7 @@ context('Book a recall', () => {
     recallLastRelease.setSentenceDate()
     recallLastRelease.setSentenceExpiryDate()
     recallLastRelease.setLicenceExpiryDate()
+    recallLastRelease.setSentenceLength()
     recallLastRelease.setConditionalReleaseExpiryDate()
     recallLastRelease.setReleasingPrison()
     recallLastRelease.setLastReleaseDate()
@@ -92,9 +93,9 @@ context('Book a recall', () => {
       fieldError: 'Enter a valid date',
     })
     recallLastRelease.assertErrorMessage({
-      fieldName: 'sentenceExpiryDate',
-      summaryError: 'Sentence expiry date',
-      fieldError: 'Enter a valid date',
+      fieldName: 'sentenceLength',
+      summaryError: 'Length of sentence',
+      fieldError: 'Enter a valid sentence length',
     })
   })
 

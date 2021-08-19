@@ -1,6 +1,6 @@
 const page = require('./page')
 
-const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
+const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
   page('What are the sentence, offence and release details?', {
     url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/last-release` : null,
     setSentenceDate: () => {
@@ -23,6 +23,10 @@ const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[name="conditionalReleaseDateMonth"]').clear().type('09')
       cy.get('[name="conditionalReleaseDateDay"]').clear().type('3')
     },
+    setSentenceLength: () => {
+      cy.get('[name="sentenceLengthYears"]').clear().type('3')
+      cy.get('[name="sentenceLengthMonths"]').clear().type('2')
+    },
     setReleasingPrison: () => {
       cy.get('[name="lastReleasePrison"]').type('Belmarsh')
     },
@@ -42,4 +46,4 @@ const recallLastReleasePage = ({ nomsNumber, recallId } = {}) =>
     },
   })
 
-module.exports = { verifyOnPage: recallLastReleasePage }
+module.exports = { verifyOnPage: recallSentenceDetailsPage }

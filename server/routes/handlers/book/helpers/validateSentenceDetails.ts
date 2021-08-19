@@ -1,14 +1,9 @@
-import { Request, Response } from 'express'
-import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../../logger'
-import { isInvalid, makeErrorObject, convertGmtDatePartsToUtc } from '../helpers'
-import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { convertGmtDatePartsToUtc, makeErrorObject } from '../../helpers'
+import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { ObjectMap } from '../../../../@types'
 
-export const lastRelease = async (req: Request, res: Response): Promise<void> => {
-  const { nomsNumber, recallId } = req.params
-  if (isInvalid(nomsNumber) || isInvalid(recallId)) {
-    return res.redirect(303, `/persons/${nomsNumber}`)
-  }
+export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
+  let errors
   const {
     lastReleasePrison,
     lastReleaseDateYear,
@@ -28,8 +23,12 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
     conditionalReleaseDateYear,
     conditionalReleaseDateMonth,
     conditionalReleaseDateDay,
-  } = req.body
+    sentenceLengthYears,
+    sentenceLengthMonths,
+    sentenceLengthDays,
+  } = requestBody
   let conditionalReleaseDate
+  let sentenceLength
   const lastReleaseDate = convertGmtDatePartsToUtc({
     year: lastReleaseDateYear,
     month: lastReleaseDateMonth,
@@ -59,9 +58,9 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
     !sentencingCourt ||
     !indexOffence
   ) {
-    req.session.errors = []
+    errors = []
     if (!sentenceDate) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'sentenceDate',
           text: 'Date of sentence',
@@ -70,7 +69,7 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       )
     }
     if (!licenceExpiryDate) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'licenceExpiryDate',
           text: 'Licence expiry date',
@@ -79,7 +78,7 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       )
     }
     if (!sentenceExpiryDate) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'sentenceExpiryDate',
           text: 'Sentence expiry date',
@@ -88,34 +87,31 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       )
     }
     if (!sentencingCourt) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'sentencingCourt',
           text: 'Sentencing court',
-          values: { sentencingCourt },
         })
       )
     }
     if (!indexOffence) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'indexOffence',
           text: 'Index offence',
-          values: { indexOffence },
         })
       )
     }
     if (!lastReleasePrison) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'lastReleasePrison',
           text: 'Releasing prison',
-          values: { lastReleasePrison },
         })
       )
     }
     if (!lastReleaseDate) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'lastReleaseDate',
           text: 'Latest release date',
@@ -131,8 +127,8 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       day: conditionalReleaseDateDay,
     })
     if (!conditionalReleaseDate) {
-      req.session.errors = req.session.errors || []
-      req.session.errors.push(
+      errors = errors || []
+      errors.push(
         makeErrorObject({
           id: 'conditionalReleaseDate',
           text: 'Conditional release date',
@@ -145,26 +141,36 @@ export const lastRelease = async (req: Request, res: Response): Promise<void> =>
       )
     }
   }
-  if (req.session.errors) {
-    return res.redirect(303, req.originalUrl)
-  }
-  try {
-    const payload: UpdateRecallRequest = {
-      lastReleaseDate,
-      sentenceDate,
-      licenceExpiryDate,
-      sentenceExpiryDate,
-      lastReleasePrison,
-      sentencingCourt,
-      indexOffence,
+
+  const years = parseInt(sentenceLengthYears, 10) || undefined
+  const months = parseInt(sentenceLengthMonths, 10) || undefined
+  const days = parseInt(sentenceLengthDays, 10) || undefined
+  if (!(years || months || days)) {
+    errors = errors || []
+    errors.push(
+      makeErrorObject({
+        id: 'sentenceLength',
+        text: 'Length of sentence',
+        values: { years: sentenceLengthYears, months: sentenceLengthMonths, days: sentenceLengthDays },
+      })
+    )
+  } else {
+    sentenceLength = {
+      years,
+      months,
+      days,
     }
-    if (conditionalReleaseDate) {
-      payload.conditionalReleaseDate = conditionalReleaseDate
-    }
-    const recall = await updateRecall(recallId, payload, res.locals.user.token)
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/prison-police`)
-  } catch (err) {
-    logger.error(err)
-    res.redirect(303, `/persons/${nomsNumber}`)
   }
+  const validValues: UpdateRecallRequest = {
+    lastReleaseDate,
+    sentenceDate,
+    licenceExpiryDate,
+    sentenceExpiryDate,
+    lastReleasePrison: lastReleasePrison || undefined,
+    sentencingCourt: sentencingCourt || undefined,
+    indexOffence: indexOffence || undefined,
+    sentenceLength,
+    conditionalReleaseDate,
+  }
+  return { errors, validValues }
 }
