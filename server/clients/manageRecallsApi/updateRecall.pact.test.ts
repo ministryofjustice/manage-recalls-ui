@@ -3,7 +3,9 @@ import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
 import { updateRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-import updateRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import fullyPopulatedRecallJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import recallWithSentencingInfoJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-with-sentencing-info.json'
+import emptyRecallJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-empty.json'
 import { ObjectMap } from '../../@types'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
@@ -16,8 +18,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   })
 
   describe('update a recall', () => {
-    test('can successfully add properties to a recall', async () => {
-      const payload = {
+    test('can successfully add all properties to a recall', async () => {
+      const request = {
         agreeWithRecallRecommendation: true,
         lastReleaseDate: '2020-08-03',
         contrabandDetail: 'Likely to bring in contraband because...',
@@ -46,35 +48,61 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',
-        ...updateRecallRequest('an update recall request', recallId, payload, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(updateRecallResponseJson), 200),
+        ...updateRecallRequest('an update recall request', recallId, request, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(fullyPopulatedRecallJson), 200),
       })
-      const actual = await updateRecall(recallId, payload, accessToken)
-      expect(actual).toEqual(updateRecallResponseJson)
+      const actual = await updateRecall(recallId, request, accessToken)
+      expect(actual).toEqual(fullyPopulatedRecallJson)
     })
 
-    test('returns 400 if blank recall length provided', async () => {
-      const blankRecallLength = ''
-      const errorResponse = {
-        status: 'BAD_REQUEST',
-        message: 'recallLength: must not be blank',
+    test('can successfully add sentencing info to an existing recall', async () => {
+      const request = {
+        sentenceDate: '2019-08-03',
+        licenceExpiryDate: '2021-08-03',
+        sentenceExpiryDate: '2021-02-03',
+        sentencingCourt: 'Manchester Crown Court',
+        indexOffence: 'Burglary',
+        conditionalReleaseDate: '2022-03-14',
+        sentenceLength: {
+          years: 2,
+          months: 3,
+          days: 20,
+        },
       }
       await provider.addInteraction({
-        state: 'a recall exists and can be updated',
+        state: 'an empty recall exists and can be updated with sentencing info',
+        ...updateRecallRequest('an update recall request with sentencing info', recallId, request, accessToken),
+        willRespondWith: updateRecallResponse(Matchers.like(recallWithSentencingInfoJson), 200),
+      })
+      const actual = await updateRecall(recallId, request, accessToken)
+      expect(actual).toEqual(recallWithSentencingInfoJson)
+    })
+
+    test('does not update recall with sentencing info if sentenceDate is missing', async () => {
+      const payload = {
+        licenceExpiryDate: '2021-08-03',
+        sentenceExpiryDate: '2021-02-03',
+        sentencingCourt: 'Manchester Crown Court',
+        indexOffence: 'Burglary',
+        conditionalReleaseDate: '2022-03-14',
+        sentenceLength: {
+          years: 2,
+          months: 3,
+          days: 20,
+        },
+      }
+      await provider.addInteraction({
+        state: 'an empty recall exists and will not be updated',
         ...updateRecallRequest(
-          'an update recall request with blank recall length',
+          'an update recall request with sentence info and no sentenceDate',
           recallId,
-          { recallLength: blankRecallLength },
+          payload,
           accessToken
         ),
-        willRespondWith: updateRecallResponse(Matchers.like(errorResponse), 400),
+        willRespondWith: updateRecallResponse(Matchers.like(emptyRecallJson), 200),
       })
-      try {
-        await updateRecall(recallId, { recallLength: blankRecallLength }, accessToken)
-      } catch (exception) {
-        expect(exception.status).toEqual(400)
-        expect(exception.data).toEqual(errorResponse)
-      }
+      const actual = await updateRecall(recallId, payload, accessToken)
+      expect(actual).toEqual(emptyRecallJson)
     })
 
     test('returns 404 if recall not found', async () => {

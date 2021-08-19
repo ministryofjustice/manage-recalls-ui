@@ -1,0 +1,15 @@
+{
+  "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+  "nomsNumber": "A1234AA",
+  "sentenceDate": "2019-08-03",
+  "licenceExpiryDate": "2021-08-03",
+  "sentenceExpiryDate": "2021-02-03",
+  "sentencingCourt": "Manchester Crown Court",
+  "indexOffence": "Burglary",
+  "conditionalReleaseDate": "2021-12-03",
+  "sentenceLength": {
+    "years": 2,
+    "months": 3,
+    "days": 20
+  }
+}
