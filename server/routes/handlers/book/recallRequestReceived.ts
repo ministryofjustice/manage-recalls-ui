@@ -8,14 +8,32 @@ export const recallRequestReceivedFormHandler = async (req: Request, res: Respon
   if (isInvalid(nomsNumber) || isInvalid(recallId)) {
     return res.redirect(303, `/persons/${nomsNumber}`)
   }
-  const { year, month, day, hour, minute } = req.body
-  const recallEmailReceivedDateTime = convertGmtDatePartsToUtc({ year, month, day, hour, minute })
+  const {
+    recallEmailReceivedDateTimeYear,
+    recallEmailReceivedDateTimeMonth,
+    recallEmailReceivedDateTimeDay,
+    recallEmailReceivedDateTimeHour,
+    recallEmailReceivedDateTimeMinute,
+  } = req.body
+  const recallEmailReceivedDateTime = convertGmtDatePartsToUtc({
+    year: recallEmailReceivedDateTimeYear,
+    month: recallEmailReceivedDateTimeMonth,
+    day: recallEmailReceivedDateTimeDay,
+    hour: recallEmailReceivedDateTimeHour,
+    minute: recallEmailReceivedDateTimeMinute,
+  })
   if (!recallEmailReceivedDateTime) {
     req.session.errors = [
       makeErrorObject({
         id: 'recallEmailReceivedDateTime',
         text: 'Date and time you received the recall email',
-        values: { year, month, day, hour, minute },
+        values: {
+          year: recallEmailReceivedDateTimeYear,
+          month: recallEmailReceivedDateTimeMonth,
+          day: recallEmailReceivedDateTimeDay,
+          hour: recallEmailReceivedDateTimeHour,
+          minute: recallEmailReceivedDateTimeMinute,
+        },
       }),
     ]
     return res.redirect(303, req.originalUrl)

@@ -2,7 +2,7 @@ import nunjucks from 'nunjucks'
 import nunjucksDate from 'nunjucks-date'
 import express from 'express'
 import * as pathModule from 'path'
-import { personOrPeopleFilter, userNameFilter, dateFilter, dateTimeFilter } from './nunjucksFilters'
+import { personOrPeopleFilter, userNameFilter, dateFilter, dateTimeFilter, dateTimeItems } from './nunjucksFunctions'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -23,6 +23,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addFilter('userName', userNameFilter)
   njkEnv.addFilter('dateGov', dateFilter)
   njkEnv.addFilter('dateTime', dateTimeFilter)
+
+  njkEnv.addGlobal('dateTimeItems', dateTimeItems)
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)
 }

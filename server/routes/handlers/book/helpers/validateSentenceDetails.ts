@@ -1,8 +1,10 @@
 import { convertGmtDatePartsToUtc, makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ObjectMap } from '../../../../@types'
+import { NamedFormError, ObjectMap } from '../../../../@types'
 
-export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
+export const validateSentenceDetails = (
+  requestBody: ObjectMap<string>
+): { errors?: NamedFormError[]; validValues: UpdateRecallRequest } => {
   let errors
   const {
     lastReleasePrison,
@@ -26,9 +28,9 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
     sentenceLengthYears,
     sentenceLengthMonths,
     sentenceLengthDays,
+    bookingNumber,
   } = requestBody
   let conditionalReleaseDate
-  let sentenceLength
   const lastReleaseDate = convertGmtDatePartsToUtc({
     year: lastReleaseDateYear,
     month: lastReleaseDateMonth,
@@ -49,6 +51,13 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
     month: sentenceExpiryDateMonth,
     day: sentenceExpiryDateDay,
   })
+
+  const sentenceLengthYearsParsed = parseInt(sentenceLengthYears, 10) || undefined
+  const sentenceLengthMonthsParsed = parseInt(sentenceLengthMonths, 10) || undefined
+  const sentenceLengthDaysParsed = parseInt(sentenceLengthDays, 10) || undefined
+  const sentenceLengthEntered = Boolean(
+    sentenceLengthYearsParsed || sentenceLengthMonthsParsed || sentenceLengthDaysParsed
+  )
   if (
     !lastReleaseDate ||
     !sentenceDate ||
@@ -56,7 +65,9 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
     !sentenceExpiryDate ||
     !lastReleasePrison ||
     !sentencingCourt ||
-    !indexOffence
+    !indexOffence ||
+    !bookingNumber ||
+    !sentenceLengthEntered
   ) {
     errors = []
     if (!sentenceDate) {
@@ -86,6 +97,15 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
         })
       )
     }
+    if (!sentenceLengthEntered) {
+      errors.push(
+        makeErrorObject({
+          id: 'sentenceLength',
+          text: 'Length of sentence',
+          values: { years: sentenceLengthYears, months: sentenceLengthMonths, days: sentenceLengthDays },
+        })
+      )
+    }
     if (!sentencingCourt) {
       errors.push(
         makeErrorObject({
@@ -107,6 +127,14 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
         makeErrorObject({
           id: 'lastReleasePrison',
           text: 'Releasing prison',
+        })
+      )
+    }
+    if (!bookingNumber) {
+      errors.push(
+        makeErrorObject({
+          id: 'bookingNumber',
+          text: 'Booking number',
         })
       )
     }
@@ -142,25 +170,6 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
     }
   }
 
-  const years = parseInt(sentenceLengthYears, 10) || undefined
-  const months = parseInt(sentenceLengthMonths, 10) || undefined
-  const days = parseInt(sentenceLengthDays, 10) || undefined
-  if (!(years || months || days)) {
-    errors = errors || []
-    errors.push(
-      makeErrorObject({
-        id: 'sentenceLength',
-        text: 'Length of sentence',
-        values: { years: sentenceLengthYears, months: sentenceLengthMonths, days: sentenceLengthDays },
-      })
-    )
-  } else {
-    sentenceLength = {
-      years,
-      months,
-      days,
-    }
-  }
   const validValues: UpdateRecallRequest = {
     lastReleaseDate,
     sentenceDate,
@@ -169,8 +178,15 @@ export const validateSentenceDetails = (requestBody: ObjectMap<string>) => {
     lastReleasePrison: lastReleasePrison || undefined,
     sentencingCourt: sentencingCourt || undefined,
     indexOffence: indexOffence || undefined,
-    sentenceLength,
     conditionalReleaseDate,
+    bookingNumber: bookingNumber || undefined,
+  }
+  if (sentenceLengthEntered) {
+    validValues.sentenceLength = {
+      years: sentenceLengthYearsParsed,
+      months: sentenceLengthMonthsParsed,
+      days: sentenceLengthDaysParsed,
+    }
   }
   return { errors, validValues }
 }

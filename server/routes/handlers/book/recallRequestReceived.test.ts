@@ -8,7 +8,13 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 describe('recallRequestReceivedFormHandler', () => {
   const nomsNumber = 'AA123AA'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const recallEmailReceivedDateTime = { day: '10', month: '05', year: '2021', hour: '05', minute: '3' }
+  const recallEmailReceivedDateTime = {
+    recallEmailReceivedDateTimeDay: '10',
+    recallEmailReceivedDateTimeMonth: '05',
+    recallEmailReceivedDateTimeYear: '2021',
+    recallEmailReceivedDateTimeHour: '05',
+    recallEmailReceivedDateTimeMinute: '3',
+  }
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -22,7 +28,13 @@ describe('recallRequestReceivedFormHandler', () => {
 
       const req = mockPostRequest({
         params: { nomsNumber, recallId },
-        body: { day: '10', month: '05', year: '2021', hour: '05', minute: '3' },
+        body: {
+          recallEmailReceivedDateTimeDay: '10',
+          recallEmailReceivedDateTimeMonth: '05',
+          recallEmailReceivedDateTimeYear: '2021',
+          recallEmailReceivedDateTimeHour: '05',
+          recallEmailReceivedDateTimeMinute: '3',
+        },
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
@@ -40,7 +52,13 @@ describe('recallRequestReceivedFormHandler', () => {
       const req = mockPostRequest({
         originalUrl: currentPageUrl,
         params: { nomsNumber, recallId },
-        body: { day: '10', month: '05', year: '', hour: '05', minute: '3' },
+        body: {
+          recallEmailReceivedDateTimeDay: '10',
+          recallEmailReceivedDateTimeMonth: '05',
+          recallEmailReceivedDateTimeYear: '',
+          recallEmailReceivedDateTimeHour: '05',
+          recallEmailReceivedDateTimeMinute: '3',
+        },
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 

@@ -1,4 +1,4 @@
-import { personOrPeopleFilter, userNameFilter } from './nunjucksFilters'
+import { personOrPeopleFilter, userNameFilter } from './nunjucksFunctions'
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {

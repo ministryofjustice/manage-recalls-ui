@@ -41,6 +41,9 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
     setIndexOffence: () => {
       cy.get('[name="indexOffence"]').type('Burglary')
     },
+    setBookingNumber: () => {
+      cy.get('[name="bookingNumber"]').type('A123456')
+    },
     clickContinue: () => {
       cy.get('[data-qa=continueButton]').click()
     },
