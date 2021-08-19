@@ -32,7 +32,13 @@ context('Book a recall', () => {
   const nomsNumber = 'A1234AA'
 
   it('User can book a recall', () => {
-    recallRequestReceived.enterRecallReceivedDate({ day: '10', month: '05', year: '2021', hour: '05', minute: '3' })
+    recallRequestReceived.enterRecallReceivedDate({
+      recallEmailReceivedDateTimeDay: '10',
+      recallEmailReceivedDateTimeMonth: '05',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '05',
+      recallEmailReceivedDateTimeMinute: '3',
+    })
     recallRequestReceived.clickContinue()
     const recallLastRelease = recallLastReleasePage.verifyOnPage()
     recallLastRelease.setSentenceDate()
@@ -44,6 +50,7 @@ context('Book a recall', () => {
     recallLastRelease.setLastReleaseDate()
     recallLastRelease.setSentencingCourt()
     recallLastRelease.setIndexOffence()
+    recallLastRelease.setBookingNumber()
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
     recallPrisonPolice.setLocalPoliceService()
@@ -59,7 +66,11 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if an invalid email received date is entered', () => {
-    recallRequestReceived.enterRecallReceivedDate({ year: '2021', hour: '05', minute: '3' })
+    recallRequestReceived.enterRecallReceivedDate({
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '05',
+      recallEmailReceivedDateTimeMinute: '3',
+    })
     recallRequestReceived.clickContinue()
     recallRequestReceived.expectError('recallEmailReceivedDateTime')
   })
@@ -96,6 +107,11 @@ context('Book a recall', () => {
       fieldName: 'sentenceLength',
       summaryError: 'Length of sentence',
       fieldError: 'Enter a valid sentence length',
+    })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'bookingNumber',
+      summaryError: 'Booking number',
+      fieldError: 'Enter a booking number',
     })
   })
 

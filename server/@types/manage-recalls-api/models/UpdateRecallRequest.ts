@@ -21,6 +21,7 @@ export type UpdateRecallRequest = {
   sentenceLength?: SentenceLengthReq
   sentencingCourt?: string
   vulnerabilityDiversityDetail?: string
+  bookingNumber?: string
 }
 
 export namespace UpdateRecallRequest {

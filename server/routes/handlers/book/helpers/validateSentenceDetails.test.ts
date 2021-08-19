@@ -23,6 +23,7 @@ describe('validateSentenceDetails', () => {
     sentenceLengthYears: '2',
     sentenceLengthMonths: '',
     sentenceLengthDays: '',
+    bookingNumber: 'A123456',
   }
 
   it('returns validValues for all valid fields', () => {
@@ -40,6 +41,7 @@ describe('validateSentenceDetails', () => {
         years: 2,
       },
       sentencingCourt: 'Birmingham',
+      bookingNumber: 'A123456',
     })
   })
 
@@ -82,6 +84,16 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
+        href: '#sentenceLength',
+        name: 'sentenceLength',
+        text: 'Length of sentence',
+        values: {
+          days: '',
+          months: '',
+          years: '',
+        },
+      },
+      {
         href: '#sentencingCourt',
         name: 'sentencingCourt',
         text: 'Sentencing court',
@@ -97,6 +109,11 @@ describe('validateSentenceDetails', () => {
         text: 'Releasing prison',
       },
       {
+        href: '#bookingNumber',
+        name: 'bookingNumber',
+        text: 'Booking number',
+      },
+      {
         href: '#lastReleaseDate',
         name: 'lastReleaseDate',
         text: 'Latest release date',
@@ -104,16 +121,6 @@ describe('validateSentenceDetails', () => {
           day: '',
           month: '',
           year: '',
-        },
-      },
-      {
-        href: '#sentenceLength',
-        name: 'sentenceLength',
-        text: 'Length of sentence',
-        values: {
-          days: '',
-          months: '',
-          years: '',
         },
       },
     ])
