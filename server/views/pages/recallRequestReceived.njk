@@ -43,49 +43,7 @@
                                 classes: 'govuk-fieldset__legend--m'
                             }
                         },
-                        items: [
-                            {
-                                name: "day",
-                                classes: "govuk-input--width-2",
-                                attributes: {
-                                    maxlength: 2
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.day
-                            },
-                            {
-                                name: "month",
-                                classes: "govuk-input--width-2",
-                                type: "number",
-                                attributes: {
-                                    maxlength: 2
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.month
-                            },
-                            {
-                                name: "year",
-                                classes: "govuk-input--width-4 govuk-!-margin-right-8",
-                                attributes: {
-                                    maxlength: 4
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.year
-                            },
-                            {
-                                name: "hour",
-                                classes: "govuk-input--width-2",
-                                attributes: {
-                                    maxlength: 2
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.hour
-                            },
-                            {
-                                name: "minute",
-                                classes: "govuk-input--width-2",
-                                attributes: {
-                                    maxlength: 2
-                                },
-                                value: formValues.recallEmailReceivedDateTimeParts.minute
-                            }
-                        ],
+                        items: dateTimeItems("recallEmailReceivedDateTime", formValues.recallEmailReceivedDateTimeParts, true),
                         errorMessage: {
                             text: 'Enter a valid date and time in the past'
                         } if errors.recallEmailReceivedDateTime else undefined

@@ -30,6 +30,7 @@ describe('lastRelease', () => {
     sentenceLengthYears: '2',
     sentenceLengthMonths: '',
     sentenceLengthDays: '',
+    bookingNumber: 'A123456',
   }
 
   afterEach(() => {
@@ -63,6 +64,7 @@ describe('lastRelease', () => {
         sentenceLength: {
           years: 2,
         },
+        bookingNumber: 'A123456',
       })
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/prison-police`)
     })
