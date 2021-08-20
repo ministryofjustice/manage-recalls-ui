@@ -7,7 +7,7 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
     res.locals.errorMessage = 'Please enter a valid NOMS number'
   }
   if (nomsNumber) {
-    const offender = await searchByNomsNumber(nomsNumber as string, res.locals.user.token)
+    const offender = await searchByNomsNumber((nomsNumber as string).trim(), res.locals.user.token)
     res.locals.offenders = offender ? [offender] : []
   }
   res.locals.isFindPersonPage = true

@@ -3,7 +3,7 @@ import { findPerson } from './findPerson'
 import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../clients/manageRecallsApi/manageRecallsApiClient')
-const nomsNumber = 'AA123AA'
+const nomsNumber = ' AA123AA '
 
 describe('findOffender', () => {
   afterEach(() => {
@@ -15,7 +15,7 @@ describe('findOffender', () => {
       const expectedOffenders = {
         firstName: 'Bertie',
         lastName: 'Badger',
-        nomsNumber: '13AAA',
+        nomsNumber,
         dateOfBirth: '1990-10-30',
       }
 
@@ -24,10 +24,11 @@ describe('findOffender', () => {
       searchByNomsNumber.mockReturnValueOnce(expectedOffenders)
 
       const req = mockGetRequest({ query: { nomsNumber } })
-      const { res, next } = mockResponseWithAuthenticatedUser('')
+      const { res, next } = mockResponseWithAuthenticatedUser('token')
 
       await findPerson(req, res, next)
 
+      expect(searchByNomsNumber).toHaveBeenCalledWith(nomsNumber.trim(), 'token')
       expect(res.render).toHaveBeenCalledWith('pages/findPerson')
       expect(res.locals.offenders).toEqual([expectedOffenders])
     })
