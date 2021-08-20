@@ -83,7 +83,13 @@
           "sentenceLength": {
             "years": 2,
             "months": 3
-          }
+          },
+          "bookingNumber": "A123456",
+          "probationOfficerName": "Dave Angel",
+          "probationOfficerPhoneNumber": "07473739388",
+          "probationOfficerEmail": "probation.office@justice.com",
+          "probationDivision": "LONDON",
+          "authorisingAssistantChiefOfficer": "Bob Monkfish"
         }
       },
       "response": {
@@ -207,6 +213,83 @@
       }
     },
     {
+      "description": "a create recall request",
+      "providerState": "a recall can be created",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recallId": "6e3ab21c-5717-4562-b3fc-2c963f66afa6",
+          "nomsNumber": "A1234AA"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a create recall request with blank nomsNumber",
+      "providerState": "a recall can be created",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "nomsNumber": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST",
+          "message": "nomsNumber: must not be blank"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized create recall request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+        }
+      }
+    },
+    {
       "description": "a search request by NOMS number",
       "providerState": "a prisoner exists for NOMS number",
       "request": {
@@ -287,83 +370,6 @@
         "path": "/search",
         "headers": {
           "Accept": "application/json",
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {
-        }
-      }
-    },
-    {
-      "description": "a create recall request",
-      "providerState": "a recall can be created",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "recallId": "6e3ab21c-5717-4562-b3fc-2c963f66afa6",
-          "nomsNumber": "A1234AA"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a create recall request with blank nomsNumber",
-      "providerState": "a recall can be created",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        },
-        "body": {
-          "nomsNumber": ""
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "nomsNumber: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized create recall request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
           "Authorization": "Bearer accessToken-1"
         },
         "body": {

@@ -37,6 +37,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
           years: 2,
           months: 3,
         },
+        bookingNumber: 'A123456',
+        probationOfficerName: 'Dave Angel',
+        probationOfficerPhoneNumber: '07473739388',
+        probationOfficerEmail: 'probation.office@justice.com',
+        probationDivision: 'LONDON',
+        authorisingAssistantChiefOfficer: 'Bob Monkfish',
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',
