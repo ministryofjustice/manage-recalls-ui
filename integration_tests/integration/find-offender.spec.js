@@ -11,9 +11,12 @@ context('Search for offenders', () => {
   })
 
   const nomsNumber = 'A1234AA'
+  const recallId = '123'
   it('User can search for a prisoner', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectCreateRecall', { expectedResults: { recallId } })
+    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.login()
     const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
     const homePage = findOffenderPage.verifyOnPage()
