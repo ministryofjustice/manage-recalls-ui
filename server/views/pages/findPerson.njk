@@ -34,22 +34,20 @@
                 {% if offenders.length > 0 %}
                 <table class="govuk-table">
                     <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header">NOMIS number</th>
-                        <th scope="col" class="govuk-table__header">CRO</th>
-                        <th scope="col" class="govuk-table__header">First name</th>
-                        <th scope="col" class="govuk-table__header">Last name</th>
-                        <th scope="col" class="govuk-table__header">Date of birth</th>
-                        <th scope="col" class="govuk-table__header">Action</th>
-                    </tr>
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">NOMIS</th>
+                            <th scope="col" class="govuk-table__header">CRO</th>
+                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header">Date of birth</th>
+                            <th scope="col" class="govuk-table__header">Action</th>
+                        </tr>
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for offender in offenders %}
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell" data-qa="nomsNumber">{{ offender.nomsNumber }}</td>
-                            <td class="govuk-table__cell" data-qa="firstName">{{ offender.croNumber }}</td>
-                            <td class="govuk-table__cell" data-qa="firstName">{{ offender.firstName }}</td>
-                            <td class="govuk-table__cell" data-qa="lastName">{{ offender.lastName }}</td>
+                            <td class="govuk-table__cell" data-qa="croNumber">{{ offender.croNumber }}</td>
+                            <td class="govuk-table__cell" data-qa="name">{{ offender.firstName }} {{ offender.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ offender.dateOfBirth | date }}</td>
                             <td class="govuk-table__cell">
                                 <form action="/persons/{{ offender.nomsNumber }}/recalls" method="post">
