@@ -12,7 +12,6 @@ const assessRecallDecisionPage = ({ nomsNumber, recallId } = {}) =>
         expect(text.trim()).to.equal('Indicate if you agree or disagree with the recommended recall length')
       })
     },
-    clickContinue: () => cy.get('[data-qa=continueButton]').click(),
   })
 
 module.exports = { verifyOnPage: assessRecallDecisionPage }

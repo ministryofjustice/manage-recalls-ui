@@ -44,9 +44,6 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
     setBookingNumber: () => {
       cy.get('[name="bookingNumber"]').type('A123456')
     },
-    clickContinue: () => {
-      cy.get('[data-qa=continueButton]').click()
-    },
   })
 
 module.exports = { verifyOnPage: recallSentenceDetailsPage }

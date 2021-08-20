@@ -37,6 +37,11 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 Dec 2021' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
     assessRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
+    assessRecall.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
+    assessRecall.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
+    assessRecall.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
+    assessRecall.assertElementHasText({ qaAttr: 'probationDivision', textToFind: 'LONDON' })
+    assessRecall.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
     assessRecall.assertElementHasText({
       qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
       textToFind: 'Download PDF',

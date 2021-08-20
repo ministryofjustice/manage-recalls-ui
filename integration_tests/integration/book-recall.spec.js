@@ -7,6 +7,7 @@ import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 const offenderProfilePage = require('../pages/offenderProfile')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
 const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
+const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
 
 context('Book a recall', () => {
   const recallId = '123'
@@ -60,6 +61,13 @@ context('Book a recall', () => {
     recallIssuesNeeds.setContrabandNo()
     recallIssuesNeeds.setMappaLevel()
     recallIssuesNeeds.clickContinue()
+    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ personName })
+    recallProbationOfficer.setProbationOfficerName()
+    recallProbationOfficer.setProbationOfficerEmail()
+    recallProbationOfficer.setProbationOfficerPhoneNumber()
+    recallProbationOfficer.setProbationDivision()
+    recallProbationOfficer.setAssistantChiefOfficer()
+    recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.upload()
     assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
@@ -121,27 +129,53 @@ context('Book a recall', () => {
     recallPrisonPolice.expectError()
   })
 
-  it('User sees an error if vulnerability or diversity not answered', () => {
+  it('User sees errors if vulnerability or diversity not answered', () => {
     const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
-    recallIssuesNeeds.setContrabandNo()
-    recallIssuesNeeds.setMappaLevel()
     recallIssuesNeeds.clickContinue()
-    recallIssuesNeeds.expectVulnerabilityDiversityError()
+    recallIssuesNeeds.assertErrorMessage({
+      fieldName: 'vulnerabilityDiversity',
+      summaryError: 'Vulnerability issues or diversity needs',
+      fieldError: 'Answer whether there are any vulnerability issues or diversity needs',
+    })
+    recallIssuesNeeds.assertErrorMessage({
+      fieldName: 'contraband',
+      summaryError: 'Contraband',
+      fieldError: `Answer whether you think ${personName} will bring contraband into prison`,
+    })
+    recallIssuesNeeds.assertErrorMessage({
+      fieldName: 'mappaLevel',
+      summaryError: 'MAPPA level',
+      fieldError: 'Please select MAPPA level',
+    })
   })
 
-  it('User sees an error if contraband not answered', () => {
-    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
-    recallIssuesNeeds.setVulnerabilityDiversityNo()
-    recallIssuesNeeds.setMappaLevel()
-    recallIssuesNeeds.clickContinue()
-    recallIssuesNeeds.expectContrabandError()
-  })
-
-  it('User sees an error if mappaLevel not answered', () => {
-    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
-    recallIssuesNeeds.setVulnerabilityDiversityNo()
-    recallIssuesNeeds.setContrabandNo()
-    recallIssuesNeeds.clickContinue()
-    recallIssuesNeeds.expectMappaError()
+  it('User sees errors if probation officer details are not entered', () => {
+    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallProbationOfficer.clickContinue()
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'probationOfficerName',
+      summaryError: "Probation officer's name",
+      fieldError: "Enter the probation officer's name",
+    })
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'probationOfficerEmail',
+      summaryError: "Probation officer's email",
+      fieldError: "Enter the probation officer's email",
+    })
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'probationOfficerPhoneNumber',
+      summaryError: "Probation officer's phone number",
+      fieldError: "Enter the probation officer's phone number",
+    })
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'probationDivision',
+      summaryError: 'Probation division',
+      fieldError: 'Select the probation division',
+    })
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'authorisingAssistantChiefOfficer',
+      summaryError: 'Assistant Chief Officer',
+      fieldError: "Enter the Assistant Chief Officer's name",
+    })
   })
 })

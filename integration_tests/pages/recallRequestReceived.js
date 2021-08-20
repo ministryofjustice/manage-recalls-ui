@@ -8,9 +8,6 @@ const recallRequestReceivedPage = (params = {}) =>
         cy.get(`[name=${value}]`).clear().type(values[value])
       })
     },
-    clickContinue: () => {
-      cy.get('[data-qa=continueButton]').click()
-    },
     expectError: fieldName => {
       cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
         const text = $searchResults.text()

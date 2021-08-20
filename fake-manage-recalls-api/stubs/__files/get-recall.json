@@ -32,5 +32,10 @@
     "months": 3,
     "days": 0
   },
-  "bookingNumber": "A123456"
+  "bookingNumber": "A123456",
+  "probationOfficerName": "Dave Angel",
+  "probationOfficerPhoneNumber": "07473739388",
+  "probationOfficerEmail": "probation.office@justice.com",
+  "probationDivision": "LONDON",
+  "authorisingAssistantChiefOfficer": "Bob Monkfish"
 }

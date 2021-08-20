@@ -31,7 +31,7 @@ export const issuesNeeds = async (req: Request, res: Response): Promise<void> =>
       req.session.errors.push(
         makeErrorObject({
           id: 'contraband',
-          text: 'Bring contraband to prison',
+          text: 'Contraband',
         })
       )
     }
@@ -57,7 +57,7 @@ export const issuesNeeds = async (req: Request, res: Response): Promise<void> =>
       req.session.errors.push(
         makeErrorObject({
           id: 'mappaLevel',
-          text: 'Select MAPPA level',
+          text: 'MAPPA level',
           values: { mappaLevel },
         })
       )
@@ -81,7 +81,7 @@ export const issuesNeeds = async (req: Request, res: Response): Promise<void> =>
       },
       res.locals.user.token
     )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/upload-documents`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/probation-officer`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)
