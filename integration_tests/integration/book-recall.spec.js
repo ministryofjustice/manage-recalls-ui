@@ -4,7 +4,6 @@ import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 
-const offenderProfilePage = require('../pages/offenderProfile')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
 const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
@@ -25,9 +24,7 @@ context('Book a recall', () => {
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.login()
-    const offenderProfile = offenderProfilePage.verifyOnPage({ nomsNumber, personName })
-    offenderProfile.createRecall()
-    recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
+    recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
   })
 
   const nomsNumber = 'A1234AA'

@@ -1,7 +1,7 @@
 import { searchResponse } from '../mockApis/mockResponses'
+import recallRequestReceivedPage from '../pages/recallRequestReceived'
 
 const findOffenderPage = require('../pages/findOffender')
-const offenderProfilePage = require('../pages/offenderProfile')
 
 context('Search for offenders', () => {
   beforeEach(() => {
@@ -22,11 +22,10 @@ context('Search for offenders', () => {
     homePage.searchResults().find('tr').should('have.length', 1)
     const firstResult = homePage.searchResults().first()
     firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
-    firstResult.get('[data-qa=firstName]').should('contain.text', 'Bobby')
-    firstResult.get('[data-qa=lastName]').should('contain.text', 'Badger')
+    firstResult.get('[data-qa=name]').should('contain.text', personName)
     firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
-    firstResult.get('[data-qa=viewProfileButton]').click()
-    offenderProfilePage.verifyOnPage({ nomsNumber, personName })
+    firstResult.get('[data-qa=bookRecallButton]').click()
+    recallRequestReceivedPage.verifyOnPage()
   })
 
   it('prisoner search returns no results', () => {

@@ -4,12 +4,12 @@ import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models
 import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
-import { PrisonerSearchResult } from '../../@types'
+import { PersonSearchResult } from '../../@types'
 import { GetDocumentResponse, UpdateRecallRequest } from '../../@types/manage-recalls-api'
 
-export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PrisonerSearchResult | null> {
+export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PersonSearchResult | null> {
   const request = { nomsNumber }
-  const results = await restClient(token).post<PrisonerSearchResult[]>({
+  const results = await restClient(token).post<PersonSearchResult[]>({
     path: '/search',
     headers: { Accept: 'application/json' },
     data: request,

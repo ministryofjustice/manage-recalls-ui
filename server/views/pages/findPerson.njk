@@ -52,7 +52,12 @@
                             <td class="govuk-table__cell" data-qa="lastName">{{ offender.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ offender.dateOfBirth | date }}</td>
                             <td class="govuk-table__cell">
-                                <a class='govuk-link' href='/persons/{{ offender.nomsNumber }}' data-qa='viewProfileButton'>View</a>
+                                <form action="/persons/{{ offender.nomsNumber }}/recalls" method="post">
+                                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                                    <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="bookRecallButton">
+                                        Book a recall
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}
