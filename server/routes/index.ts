@@ -38,6 +38,7 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls/:recallId/probation-officer', probationOfficer)
   get('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadDocumentsPage)
   post('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadRecallDocumentsFormHandler)
+  get('/persons/:nomsNumber/recalls/:recallId/confirmation', viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
   get('/persons/:nomsNumber/recalls/:recallId/assess', viewWithRecallAndPerson('assessRecall'))

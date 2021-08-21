@@ -10,8 +10,16 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-l" data-qa='personName'>
-                {{ person.firstName }} {{ person.lastName }}
+                Assess a recall for {{ person.firstName }} {{ person.lastName }}
             </h1>
+
+            <p class='govuk-body'>
+                <a href="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-decision" role='button' class="govuk-button" data-module="govuk-button"
+                   data-qa="continueButton">
+                    Make decision
+                </a>
+            </p>
+
             <h2 class='govuk-heading-m'>About the person</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
@@ -254,7 +262,7 @@
                         Division
                     </dt>
                     <dd class="govuk-summary-list__value" data-qa='probationDivision'>
-                        {{ recall.probationDivision }}
+                        {{ recall.probationDivisionFormatted }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -282,12 +290,6 @@
             </dl>
             {% endif %}
 
-            <p class='govuk-body'>
-                <a href="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-decision" role='button' class="govuk-button" data-module="govuk-button"
-                   data-qa="continueButton">
-                    Assess this recall
-                </a>
-            </p>
         </div>
     </div>
 

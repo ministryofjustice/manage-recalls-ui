@@ -1,7 +1,13 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { documentTypes } from '../book/documentTypes'
-import { getFormattedMappaLevel, getFormattedRecallLength, getFormValues, isInvalid } from './index'
+import {
+  getFormattedMappaLevel,
+  getFormattedProbationDivision,
+  getFormattedRecallLength,
+  getFormValues,
+  isInvalid,
+} from './index'
 
 export type ViewName =
   | 'assessConfirmation'
@@ -12,6 +18,7 @@ export type ViewName =
   | 'recallPrisonPolice'
   | 'recallIssuesNeeds'
   | 'recallProbationOfficer'
+  | 'recallConfirmation'
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
@@ -33,6 +40,7 @@ export const viewWithRecallAndPerson =
       ...recall,
       recallLengthFormatted: getFormattedRecallLength(recall.recallLength),
       mappaLevelFormatted: getFormattedMappaLevel(recall.mappaLevel),
+      probationDivisionFormatted: getFormattedProbationDivision(recall.probationDivision),
     }
     res.locals.formValues = getFormValues({ errors: res.locals.errors, apiValues: recall })
     res.locals.person = person
