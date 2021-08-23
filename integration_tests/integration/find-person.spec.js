@@ -3,7 +3,7 @@ import recallRequestReceivedPage from '../pages/recallRequestReceived'
 
 const findOffenderPage = require('../pages/findOffender')
 
-context('Search for offenders', () => {
+context('Find a person', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
@@ -12,7 +12,7 @@ context('Search for offenders', () => {
 
   const nomsNumber = 'A1234AA'
   const recallId = '123'
-  it('User can search for a prisoner', () => {
+  it('User can search for a person', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
@@ -31,7 +31,7 @@ context('Search for offenders', () => {
     recallRequestReceivedPage.verifyOnPage()
   })
 
-  it('prisoner search returns no results', () => {
+  it('person search returns no results', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
     cy.login()

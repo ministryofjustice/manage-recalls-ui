@@ -175,4 +175,11 @@ context('Book a recall', () => {
       fieldError: "Enter the Assistant Chief Officer's name",
     })
   })
+
+  it('User sees an error if upload fails', () => {
+    cy.task('expectAddRecallDocument', { statusCode: 400 })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.upload()
+    uploadDocuments.expectUploadedDocumentError()
+  })
 })
