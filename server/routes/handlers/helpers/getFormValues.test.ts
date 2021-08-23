@@ -1,7 +1,7 @@
 import { getFormValues } from './getFormValues'
-import updateRecallResponseJson from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { FormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
+import { updateRecallResponse } from './index.test'
 
 describe('getFormValues', () => {
   const errors = {
@@ -274,7 +274,7 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: { lastReleaseDate: errors.lastReleaseDate },
       unsavedValues: {},
-      apiValues: updateRecallResponseJson as RecallResponse,
+      apiValues: updateRecallResponse as RecallResponse,
     })
     expect(formValues).toEqual({
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
@@ -336,7 +336,7 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: {},
       unsavedValues: {},
-      apiValues: updateRecallResponseJson as RecallResponse,
+      apiValues: updateRecallResponse as RecallResponse,
     })
     expect(formValues).toEqual({
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
