@@ -3,10 +3,13 @@ import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi
 import { documentTypes } from '../book/documentTypes'
 import { getFormattedMappaLevel, getFormattedProbationDivision, getFormattedRecallLength, isInvalid } from './index'
 import { getFormValues } from './getFormValues'
+import { getActivePrisonList } from '../../../data/prisonRegisterClient'
+import { Prison } from '../../../@types'
 
 export type ViewName =
   | 'assessConfirmation'
   | 'assessDecision'
+  | 'assessPrison'
   | 'assessRecall'
   | 'recallSentenceDetails'
   | 'recallRequestReceived'
@@ -14,6 +17,9 @@ export type ViewName =
   | 'recallIssuesNeeds'
   | 'recallProbationOfficer'
   | 'recallConfirmation'
+
+const requiresPrisonList = (viewName: ViewName) =>
+  ['assessRecall', 'recallPrisonPolice', 'assessPrison'].includes(viewName)
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
@@ -23,9 +29,10 @@ export const viewWithRecallAndPerson =
       res.sendStatus(400)
       return
     }
-    const [person, recall] = await Promise.all([
+    const [person, recall, prisonList] = await Promise.all([
       searchByNomsNumber(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),
+      requiresPrisonList(viewName) ? getActivePrisonList() : undefined,
     ])
     recall.documents = recall.documents.map(doc => ({
       ...doc,
@@ -44,5 +51,11 @@ export const viewWithRecallAndPerson =
       apiValues: recall,
     })
     res.locals.person = person
+    if (prisonList) {
+      res.locals.prisonList = prisonList.map(({ prisonId, prisonName }: Prison) => ({
+        value: prisonId,
+        text: prisonName,
+      }))
+    }
     res.render(`pages/${viewName}`)
   }
