@@ -67,6 +67,13 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
     }
   }
   if (req.session.errors) {
+    req.session.unsavedValues = {
+      probationOfficerName,
+      probationOfficerEmail,
+      probationOfficerPhoneNumber,
+      probationDivision,
+      authorisingAssistantChiefOfficer,
+    }
     return res.redirect(303, req.originalUrl)
   }
   try {

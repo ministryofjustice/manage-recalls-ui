@@ -64,6 +64,13 @@ export const issuesNeeds = async (req: Request, res: Response): Promise<void> =>
     }
   }
   if (req.session.errors) {
+    req.session.unsavedValues = {
+      contraband,
+      contrabandDetail,
+      vulnerabilityDiversity,
+      vulnerabilityDiversityDetail,
+      mappaLevel,
+    }
     return res.redirect(303, req.originalUrl)
   }
   try {
