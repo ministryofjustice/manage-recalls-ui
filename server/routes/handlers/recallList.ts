@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
-import { PrisonerSearchResult } from '../../@types'
+import { PersonSearchResult } from '../../@types'
 
 export const recallList = async (req: Request, res: Response, _next: NextFunction): Promise<Response | void> => {
   const { token } = res.locals.user
@@ -38,5 +38,5 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
 class RecallResult {
   recallId: string
 
-  offender: PrisonerSearchResult
+  offender: PersonSearchResult
 }

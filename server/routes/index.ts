@@ -3,7 +3,6 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from './handlers/findPerson'
 import getRevocationOrder from './handlers/assess/getRevocationOrder'
 import { createRecall } from './handlers/book/createRecall'
-import { personProfile } from './handlers/personProfile'
 import { recallList } from './handlers/recallList'
 import { assessDecisionFormHandler } from './handlers/assess/assessRecall'
 import {
@@ -24,7 +23,6 @@ export default function routes(router: Router): Router {
 
   get('/', recallList)
   get('/find-person', findPerson)
-  get('/persons/:nomsNumber', personProfile)
 
   // BOOK A RECALL
   post('/persons/:nomsNumber/recalls', createRecall)

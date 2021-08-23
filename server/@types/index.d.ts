@@ -42,7 +42,7 @@ export interface FileDataBase64 {
   fileContent: string
 }
 
-export interface PrisonerSearchResult {
+export interface PersonSearchResult {
   firstName: string
   lastName: string
   nomsNumber?: string
