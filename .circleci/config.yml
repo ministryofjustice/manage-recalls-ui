@@ -263,6 +263,10 @@ workflows:
               only:
                 - main
     jobs:
+      - hmpps/trivy_latest_scan:
+          context:
+            - hmpps-common-vars
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
       - hmpps/npm_security_audit:
           context:
             - hmpps-common-vars
@@ -271,6 +275,7 @@ workflows:
           context:
             - veracode-credentials
             - hmpps-common-vars
+
   security-weekly:
     triggers:
       - schedule:
@@ -284,10 +289,6 @@ workflows:
           context:
             - veracode-credentials
             - hmpps-common-vars
-      - hmpps/trivy_latest_scan:
-          context:
-            - hmpps-common-vars
-          slack_channel: << pipeline.parameters.alerts-slack-channel >>
 
   check_outdated:
     triggers:
