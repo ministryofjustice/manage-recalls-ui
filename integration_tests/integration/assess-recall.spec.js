@@ -44,7 +44,11 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
     assessRecall.assertElementHasText({
       qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
-      textToFind: 'Download PDF',
+      textToFind: 'Licence',
+    })
+    assessRecall.assertElementHasText({
+      qaAttr: `uploadedDocument-${getRecallResponse.documents[1].category}`,
+      textToFind: 'Part A recall report',
     })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
