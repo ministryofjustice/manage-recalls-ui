@@ -1,7 +1,48 @@
 import { getFormValues } from './getFormValues'
 import { FormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
-import { updateRecallResponse } from './index.test'
+
+const updateRecallResponse = {
+  recallId: '8ab377a6-4587-2598-abc4-98fc53737',
+  nomsNumber: 'A1234AA',
+  recallLength: 'FOURTEEN_DAYS',
+  agreeWithRecallRecommendation: true,
+  documents: [
+    {
+      category: 'LICENCE',
+      documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    },
+    {
+      category: 'PART_A_RECALL_REPORT',
+      documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+    },
+  ],
+  revocationOrderId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+  recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',
+  lastReleasePrison: 'Belmarsh',
+  sentenceDate: '2019-08-03',
+  sentenceExpiryDate: '2021-02-03',
+  licenceExpiryDate: '2021-08-03',
+  conditionalReleaseDate: '2021-12-03',
+  lastReleaseDate: '2020-08-03',
+  localPoliceService: 'Brentwood, Essex',
+  sentencingCourt: 'Manchester Crown Court',
+  indexOffence: 'Burglary',
+  contrabandDetail: 'Intention to smuggle drugs',
+  vulnerabilityDiversityDetail: 'Various...',
+  mappaLevel: 'LEVEL_1',
+  sentenceLength: {
+    years: 2,
+    months: 3,
+    days: 0,
+  },
+  bookingNumber: 'A123456',
+  probationOfficerName: 'Dave Angel',
+  probationOfficerPhoneNumber: '07473739388',
+  probationOfficerEmail: 'probation.office@justice.com',
+  probationDivision: 'LONDON',
+  authorisingAssistantChiefOfficer: 'Bob Monkfish',
+}
 
 describe('getFormValues', () => {
   const errors = {

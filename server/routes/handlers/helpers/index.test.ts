@@ -1,8 +1,5 @@
 import { getFormattedRecallLength, makeErrorObject, getFormattedMappaLevel } from './index'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
-import updateRecallResponseJson from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
-
-export const updateRecallResponse = updateRecallResponseJson
 
 describe('getFormattedRecallLength', () => {
   it('returns a string if recall length is 14 days', () => {
