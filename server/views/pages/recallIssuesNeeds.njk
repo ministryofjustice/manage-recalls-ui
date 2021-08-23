@@ -40,7 +40,10 @@
                             label: {
                                 text: "Provide more detail"
                             },
-                            value: formValues.vulnerabilityDiversityDetail
+                            value: formValues.vulnerabilityDiversityDetail,
+                            errorMessage: {
+                                text: "Provide detail on vulnerability issues or diversity needs"
+                            } if errors.vulnerabilityDiversityDetail else undefined
                         }) }}
                     {% endset -%}
 
@@ -60,11 +63,12 @@
                                 conditional: {
                                     html: vulnerabilityDiversityYesHtml
                                 },
-                                checked: true if formValues.vulnerabilityDiversityDetail
+                                checked: true if formValues.vulnerabilityDiversity == 'yes'
                             },
                             {
                                 value: 'no',
-                                text: "No"
+                                text: "No",
+                                checked: true if formValues.vulnerabilityDiversity == 'no'
                             }
                         ],
                         errorMessage: {
@@ -80,7 +84,10 @@
                             label: {
                                 text: "Provide more detail"
                             },
-                            value: formValues.contrabandDetail
+                            value: formValues.contrabandDetail,
+                            errorMessage: {
+                                text: "Provide detail on why you think this"
+                            } if errors.vulnerabilityDiversityDetail else undefined
                         }) }}
                     {% endset -%}
 
@@ -100,11 +107,12 @@
                                 conditional: {
                                     html: contrabandYesHtml
                                 },
-                                checked: true if formValues.contrabandDetail
+                                checked: true if formValues.contraband == 'yes'
                             },
                             {
                                 value: 'no',
-                                text: "No"
+                                text: "No",
+                                checked: true if formValues.contraband == 'no'
                             }
                         ],
                         errorMessage: {

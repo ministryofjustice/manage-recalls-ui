@@ -26,10 +26,10 @@ describe('validateSentenceDetails', () => {
     bookingNumber: 'A123456',
   }
 
-  it('returns validValues for all valid fields', () => {
-    const { errors, validValues } = validateSentenceDetails(requestBody)
+  it('returns valuesToSave for all valid fields', () => {
+    const { errors, valuesToSave } = validateSentenceDetails(requestBody)
     expect(errors).toBeUndefined()
-    expect(validValues).toEqual({
+    expect(valuesToSave).toEqual({
       conditionalReleaseDate: '2021-10-04',
       indexOffence: 'Assault',
       lastReleaseDate: '2021-05-20',
@@ -50,8 +50,8 @@ describe('validateSentenceDetails', () => {
       acc[key] = ''
       return acc
     }, {})
-    const { errors, validValues } = validateSentenceDetails(emptyBody)
-    expect(validValues).toEqual({})
+    const { errors, valuesToSave } = validateSentenceDetails(emptyBody)
+    expect(valuesToSave).toEqual({})
     expect(errors).toEqual([
       {
         href: '#sentenceDate',

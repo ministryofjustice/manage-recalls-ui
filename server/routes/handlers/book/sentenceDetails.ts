@@ -9,13 +9,14 @@ export const sentenceDetails = async (req: Request, res: Response): Promise<void
   if (isInvalid(nomsNumber) || isInvalid(recallId)) {
     return res.redirect(303, `/persons/${nomsNumber}`)
   }
-  const { errors, validValues } = validateSentenceDetails(req.body)
+  const { errors, valuesToSave, unsavedValues } = validateSentenceDetails(req.body)
   if (errors) {
     req.session.errors = errors
+    req.session.unsavedValues = unsavedValues
     return res.redirect(303, req.originalUrl)
   }
   try {
-    const recall = await updateRecall(recallId, validValues, res.locals.user.token)
+    const recall = await updateRecall(recallId, valuesToSave, res.locals.user.token)
     res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/prison-police`)
   } catch (err) {
     logger.error(err)

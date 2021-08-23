@@ -1,10 +1,11 @@
-import { convertGmtDatePartsToUtc, makeErrorObject } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
+import { convertGmtDatePartsToUtc } from '../../helpers/dates'
 
 export const validateSentenceDetails = (
   requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; validValues: UpdateRecallRequest } => {
+): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
   let errors
   const {
     lastReleasePrison,
@@ -31,30 +32,35 @@ export const validateSentenceDetails = (
     bookingNumber,
   } = requestBody
   let conditionalReleaseDate
-  const lastReleaseDate = convertGmtDatePartsToUtc({
+  const lastReleaseDateParts = {
     year: lastReleaseDateYear,
     month: lastReleaseDateMonth,
     day: lastReleaseDateDay,
-  })
-  const sentenceDate = convertGmtDatePartsToUtc({
+  }
+  const sentenceDateParts = {
     year: sentenceDateYear,
     month: sentenceDateMonth,
     day: sentenceDateDay,
-  })
-  const licenceExpiryDate = convertGmtDatePartsToUtc({
+  }
+  const licenceExpiryDateParts = {
     year: licenceExpiryDateYear,
     month: licenceExpiryDateMonth,
     day: licenceExpiryDateDay,
-  })
-  const sentenceExpiryDate = convertGmtDatePartsToUtc({
+  }
+  const sentenceExpiryDateParts = {
     year: sentenceExpiryDateYear,
     month: sentenceExpiryDateMonth,
     day: sentenceExpiryDateDay,
-  })
+  }
+  const lastReleaseDate = convertGmtDatePartsToUtc(lastReleaseDateParts)
+  const sentenceDate = convertGmtDatePartsToUtc(sentenceDateParts)
+  const licenceExpiryDate = convertGmtDatePartsToUtc(licenceExpiryDateParts)
+  const sentenceExpiryDate = convertGmtDatePartsToUtc(sentenceExpiryDateParts)
 
   const sentenceLengthYearsParsed = parseInt(sentenceLengthYears, 10) || undefined
   const sentenceLengthMonthsParsed = parseInt(sentenceLengthMonths, 10) || undefined
   const sentenceLengthDaysParsed = parseInt(sentenceLengthDays, 10) || undefined
+  const sentenceLengthParts = { years: sentenceLengthYears, months: sentenceLengthMonths, days: sentenceLengthDays }
   const sentenceLengthEntered = Boolean(
     sentenceLengthYearsParsed || sentenceLengthMonthsParsed || sentenceLengthDaysParsed
   )
@@ -75,7 +81,7 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'sentenceDate',
           text: 'Date of sentence',
-          values: { year: sentenceDateYear, month: sentenceDateMonth, day: sentenceDateDay },
+          values: sentenceDateParts,
         })
       )
     }
@@ -84,7 +90,7 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'licenceExpiryDate',
           text: 'Licence expiry date',
-          values: { year: licenceExpiryDateYear, month: licenceExpiryDateMonth, day: licenceExpiryDateDay },
+          values: licenceExpiryDateParts,
         })
       )
     }
@@ -93,7 +99,7 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'sentenceExpiryDate',
           text: 'Sentence expiry date',
-          values: { year: sentenceExpiryDateYear, month: sentenceExpiryDateMonth, day: sentenceExpiryDateDay },
+          values: sentenceExpiryDateParts,
         })
       )
     }
@@ -102,7 +108,7 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'sentenceLength',
           text: 'Length of sentence',
-          values: { years: sentenceLengthYears, months: sentenceLengthMonths, days: sentenceLengthDays },
+          values: sentenceLengthParts,
         })
       )
     }
@@ -143,34 +149,31 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'lastReleaseDate',
           text: 'Latest release date',
-          values: { year: lastReleaseDateYear, month: lastReleaseDateMonth, day: lastReleaseDateDay },
+          values: lastReleaseDateParts,
         })
       )
     }
   }
+  const conditionalReleaseDateParts = {
+    year: conditionalReleaseDateYear,
+    month: conditionalReleaseDateMonth,
+    day: conditionalReleaseDateDay,
+  }
   if (conditionalReleaseDateYear || conditionalReleaseDateMonth || conditionalReleaseDateDay) {
-    conditionalReleaseDate = convertGmtDatePartsToUtc({
-      year: conditionalReleaseDateYear,
-      month: conditionalReleaseDateMonth,
-      day: conditionalReleaseDateDay,
-    })
+    conditionalReleaseDate = convertGmtDatePartsToUtc(conditionalReleaseDateParts)
     if (!conditionalReleaseDate) {
       errors = errors || []
       errors.push(
         makeErrorObject({
           id: 'conditionalReleaseDate',
           text: 'Conditional release date',
-          values: {
-            year: conditionalReleaseDateYear,
-            month: conditionalReleaseDateMonth,
-            day: conditionalReleaseDateDay,
-          },
+          values: conditionalReleaseDateParts,
         })
       )
     }
   }
 
-  const validValues: UpdateRecallRequest = {
+  const valuesToSave: UpdateRecallRequest = {
     lastReleaseDate,
     sentenceDate,
     licenceExpiryDate,
@@ -182,11 +185,25 @@ export const validateSentenceDetails = (
     bookingNumber: bookingNumber || undefined,
   }
   if (sentenceLengthEntered) {
-    validValues.sentenceLength = {
+    valuesToSave.sentenceLength = {
       years: sentenceLengthYearsParsed,
       months: sentenceLengthMonthsParsed,
       days: sentenceLengthDaysParsed,
     }
   }
-  return { errors, validValues }
+  const unsavedValues = errors
+    ? {
+        lastReleaseDateParts,
+        licenceExpiryDateParts,
+        sentenceExpiryDateParts,
+        conditionalReleaseDateParts,
+        lastReleasePrison,
+        sentenceDateParts,
+        sentencingCourt,
+        indexOffence,
+        sentenceLengthParts,
+        bookingNumber,
+      }
+    : undefined
+  return { errors, valuesToSave, unsavedValues }
 }
