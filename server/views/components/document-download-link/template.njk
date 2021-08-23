@@ -1,0 +1,12 @@
+<section class="document"
+{%- if params.classes %} {{ params.classes }}{% endif %}"{% for attribute, value in params.attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
+  <div class="document__thumb">
+    <a aria-hidden="true" tabindex="-1" href="{{ params.url }}" target="_blank">
+      <img alt="" width="99" height="140"
+           src="/assets/images/icon-document.png"></a>
+  </div>
+  <div>
+    <h3 class="govuk-heading-s"><a href="{{ params.url }}" target="_blank" data-qa='{{ params.dataQa }}'>{{ params.linkText }}</a></h3>
+    <div class="govuk-body-s"><abbr title="Portable Document Format">PDF</abbr></div>
+  </div>
+</section>

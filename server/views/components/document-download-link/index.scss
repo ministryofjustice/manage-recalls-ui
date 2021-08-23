@@ -1,0 +1,10 @@
+
+.document {
+  display: flex;
+}
+
+.document__thumb {
+  align-self: flex-start;
+  border: 1px solid $govuk-border-colour;
+  margin-right: govuk-spacing(4);
+}
