@@ -165,104 +165,82 @@ describe('getFormValues', () => {
         years: '',
       },
     },
+    bookingNumber: '',
+    probationOfficerName: '',
+    probationOfficerPhoneNumber: '',
+    probationOfficerEmail: '',
+    probationDivision: '',
+    authorisingAssistantChiefOfficer: '',
+  }
+
+  const formValuesShowingAllErrors = {
+    authorisingAssistantChiefOfficer: '',
+    bookingNumber: '',
+    conditionalReleaseDateParts: {
+      day: '05',
+      month: '12',
+      year: '2020',
+    },
+    contrabandDetail: '',
+    indexOffence: '',
+    lastReleaseDateParts: {
+      day: '05',
+      month: '12',
+      year: '2020',
+    },
+    lastReleasePrison: '',
+    licenceExpiryDateParts: {
+      day: '05',
+      month: '12',
+      year: '2020',
+    },
+    localPoliceService: '',
+    mappaLevel: '',
+    probationDivision: '',
+    probationOfficerEmail: '',
+    probationOfficerName: '',
+    probationOfficerPhoneNumber: '',
+    recallEmailReceivedDateTimeParts: {
+      day: '05',
+      hour: '15',
+      minute: '33',
+      month: '12',
+      year: '2020',
+    },
+    sentenceDateParts: {
+      day: '05',
+      month: '12',
+      year: '2020',
+    },
+    sentenceExpiryDateParts: {
+      day: '05',
+      month: '12',
+      year: '2020',
+    },
+    sentenceLengthParts: {
+      days: '',
+      months: 'rr',
+      years: '',
+    },
+    sentencingCourt: '',
+    vulnerabilityDiversityDetail: '',
   }
 
   it('uses error values if no API values', () => {
     const formValues = getFormValues({ errors, apiValues: {} })
-    expect(formValues).toEqual({
-      conditionalReleaseDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      lastReleaseDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      licenceExpiryDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      recallEmailReceivedDateTimeParts: {
-        day: '05',
-        hour: '15',
-        minute: '33',
-        month: '12',
-        year: '2020',
-      },
-      sentenceDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      sentenceExpiryDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      sentenceLengthParts: {
-        days: '',
-        months: 'rr',
-        years: '',
-      },
-    })
+    expect(formValues).toEqual(formValuesShowingAllErrors)
   })
 
   it('uses error values over API values', () => {
     const formValues = getFormValues({ errors, apiValues: updateRecallResponseJson })
-    expect(formValues).toEqual({
-      conditionalReleaseDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      contrabandDetail: 'Intention to smuggle drugs',
-      indexOffence: 'Burglary',
-      lastReleaseDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      lastReleasePrison: 'Belmarsh',
-      licenceExpiryDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      localPoliceService: 'Brentwood, Essex',
-      mappaLevel: 'LEVEL_1',
-      recallEmailReceivedDateTimeParts: {
-        day: '05',
-        hour: '15',
-        minute: '33',
-        month: '12',
-        year: '2020',
-      },
-      sentenceDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      sentenceExpiryDateParts: {
-        day: '05',
-        month: '12',
-        year: '2020',
-      },
-      sentencingCourt: 'Manchester Crown Court',
-      vulnerabilityDiversityDetail: 'Various...',
-      sentenceLengthParts: {
-        days: '',
-        months: 'rr',
-        years: '',
-      },
-    })
+    expect(formValues).toEqual(formValuesShowingAllErrors)
   })
 
   it('uses API values if no error values', () => {
     const formValues = getFormValues({ errors: {}, apiValues: updateRecallResponseJson })
     expect(formValues).toEqual({
+      authorisingAssistantChiefOfficer: 'Bob Monkfish',
+      bookingNumber: 'A123456',
       conditionalReleaseDateParts: {
         day: 3,
         month: 12,
@@ -283,6 +261,10 @@ describe('getFormValues', () => {
       },
       localPoliceService: 'Brentwood, Essex',
       mappaLevel: 'LEVEL_1',
+      probationDivision: 'LONDON',
+      probationOfficerEmail: 'probation.office@justice.com',
+      probationOfficerName: 'Dave Angel',
+      probationOfficerPhoneNumber: '07473739388',
       recallEmailReceivedDateTimeParts: {
         day: 5,
         hour: 15,
@@ -300,13 +282,13 @@ describe('getFormValues', () => {
         month: 2,
         year: 2021,
       },
-      sentencingCourt: 'Manchester Crown Court',
-      vulnerabilityDiversityDetail: 'Various...',
       sentenceLengthParts: {
         days: 0,
         months: 3,
         years: 2,
       },
+      sentencingCourt: 'Manchester Crown Court',
+      vulnerabilityDiversityDetail: 'Various...',
     })
   })
 

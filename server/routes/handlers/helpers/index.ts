@@ -108,6 +108,27 @@ export const getFormattedMappaLevel = (mappaLevel?: RecallResponse.mappaLevel) =
   }
 }
 
+export const getFormattedProbationDivision = (probationDivision?: RecallResponse.probationDivision) => {
+  switch (probationDivision) {
+    case RecallResponse.probationDivision.MIDLANDS:
+      return 'Midlands'
+    case RecallResponse.probationDivision.LONDON:
+      return 'London'
+    case RecallResponse.probationDivision.NORTH_EAST:
+      return 'North East'
+    case RecallResponse.probationDivision.NORTH_WEST:
+      return 'North West'
+    case RecallResponse.probationDivision.WALES:
+      return 'Wales'
+    case RecallResponse.probationDivision.SOUTH_EAST:
+      return 'South East'
+    case RecallResponse.probationDivision.SOUTH_WEST_CENTRAL:
+      return 'South West and South Central'
+    default:
+      return ''
+  }
+}
+
 export const isDefined = (val: unknown) => typeof val !== 'undefined'
 
 export const getFormValues = ({
@@ -117,24 +138,35 @@ export const getFormValues = ({
   errors: ObjectMap<FormError>
   apiValues: RecallResponse
 }): RecallFormValues => {
-  return {
-    recallEmailReceivedDateTimeParts:
-      errors.recallEmailReceivedDateTime?.values || splitIsoDateToParts(apiValues.recallEmailReceivedDateTime),
-    lastReleasePrison: errors.lastReleasePrison?.values?.lastReleasePrison || apiValues.lastReleasePrison,
-    lastReleaseDateParts: errors.lastReleaseDate?.values || splitIsoDateToParts(apiValues.lastReleaseDate),
-    contrabandDetail: errors.contrabandDetail?.values?.contrabandDetail || apiValues.contrabandDetail,
-    vulnerabilityDiversityDetail:
-      errors.vulnerabilityDiversityDetail?.values?.vulnerabilityDiversityDetail ||
-      apiValues.vulnerabilityDiversityDetail,
-    mappaLevel: errors.mappaLevel?.values?.mappaLevel || apiValues.mappaLevel,
-    sentenceDateParts: errors.sentenceDate?.values || splitIsoDateToParts(apiValues.sentenceDate),
-    sentenceExpiryDateParts: errors.sentenceExpiryDate?.values || splitIsoDateToParts(apiValues.sentenceExpiryDate),
-    licenceExpiryDateParts: errors.licenceExpiryDate?.values || splitIsoDateToParts(apiValues.licenceExpiryDate),
+  const values = {
     sentenceLengthParts: errors.sentenceLength?.values || apiValues.sentenceLength,
-    conditionalReleaseDateParts:
-      errors.conditionalReleaseDate?.values || splitIsoDateToParts(apiValues.conditionalReleaseDate),
-    sentencingCourt: errors.sentencingCourt?.values?.sentencingCourt || apiValues.sentencingCourt,
-    indexOffence: errors.indexOffence?.values?.indexOffence || apiValues.indexOffence,
-    localPoliceService: errors.localPoliceService?.values?.localPoliceService || apiValues.localPoliceService,
   } as RecallFormValues
+  ;[
+    'recallEmailReceivedDateTime',
+    'lastReleaseDate',
+    'sentenceDate',
+    'sentenceExpiryDate',
+    'licenceExpiryDate',
+    'conditionalReleaseDate',
+  ].forEach((key: string) => {
+    values[`${key}Parts`] = errors[key]?.values || splitIsoDateToParts(apiValues[key])
+  })
+  ;[
+    'lastReleasePrison',
+    'contrabandDetail',
+    'vulnerabilityDiversityDetail',
+    'mappaLevel',
+    'sentencingCourt',
+    'indexOffence',
+    'localPoliceService',
+    'bookingNumber',
+    'probationOfficerName',
+    'probationOfficerPhoneNumber',
+    'probationOfficerEmail',
+    'probationDivision',
+    'authorisingAssistantChiefOfficer',
+  ].forEach((key: string) => {
+    values[key] = isDefined(errors[key]) ? '' : apiValues[key]
+  })
+  return values
 }

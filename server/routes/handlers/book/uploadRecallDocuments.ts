@@ -46,7 +46,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       session.errors = failedUploads
       return redirectToUploadPage()
     }
-    res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/assess`)
+    res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/confirmation`)
   })
 }
 
