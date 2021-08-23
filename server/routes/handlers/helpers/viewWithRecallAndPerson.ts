@@ -30,6 +30,7 @@ export const viewWithRecallAndPerson =
     recall.documents = recall.documents.map(doc => ({
       ...doc,
       ...(documentTypes.find(d => d.name === doc.category) || {}),
+      url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${doc.documentId}`,
     }))
     res.locals.recall = {
       ...recall,

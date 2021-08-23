@@ -275,19 +275,18 @@
                 </div>
             </dl>
             {% if recall.documents.length %}
-            <h2 class='govuk-heading-m'>Uploaded documents</h2>
-            <dl class="govuk-summary-list">
-            {% for document in recall.documents %}
-                    <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    {{ document.label }}
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/documents/{{ document.documentId }}' data-qa='uploadedDocument-{{ document.category }}'>Download PDF</a>
-                </dd>
-                    </div>
+            <h2 class='govuk-heading-m'>Documents</h2>
+
+                {% for document in recall.documents %}
+            <div class="govuk-form-group">
+                {{ documentDownloadLink({
+                    linkText: document.label,
+                    url: document.url,
+                    dataQa: 'uploadedDocument-' + document.category
+                })
+                }}
+            </div>
             {% endfor %}
-            </dl>
             {% endif %}
 
         </div>
