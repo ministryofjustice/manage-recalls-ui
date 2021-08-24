@@ -76,7 +76,7 @@ const config = {
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     prisonRegister: {
-      url: get('PRISON_REGISTER_API_URL', 'https://prison-register.hmpps.service.justice.gov.uk', requiredInProduction),
+      url: get('PRISON_REGISTER_API_URL', 'https://prison-register.hmpps.service.justice.gov.uk'),
       agent: new AgentConfig(),
       timeout: {
         response: Number(get('PRISON_REGISTER_API_TIMEOUT_RESPONSE', 10000)),
