@@ -64,7 +64,7 @@ export const getFormattedProbationDivision = (probationDivision?: RecallResponse
       return 'Wales'
     case RecallResponse.probationDivision.SOUTH_EAST:
       return 'South East'
-    case RecallResponse.probationDivision.SOUTH_WEST_CENTRAL:
+    case RecallResponse.probationDivision.SOUTH_WEST_AND_SOUTH_CENTRAL:
       return 'South West and South Central'
     default:
       return ''

@@ -75,6 +75,14 @@ const config = {
       agent: new AgentConfig(),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
+    prisonRegister: {
+      url: get('PRISON_REGISTER_API_URL', 'https://prison-register.hmpps.service.justice.gov.uk', requiredInProduction),
+      agent: new AgentConfig(),
+      timeout: {
+        response: Number(get('PRISON_REGISTER_API_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('PRISON_REGISTER_API_TIMEOUT_DEADLINE', 10000)),
+      },
+    },
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
 }

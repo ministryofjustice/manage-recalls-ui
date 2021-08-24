@@ -40,7 +40,7 @@ interface StreamRequest {
 export default class RestClient {
   agent: Agent
 
-  constructor(private readonly name: string, private readonly config: ApiConfig, private readonly token: string) {
+  constructor(private readonly name: string, private readonly config: ApiConfig, private readonly token?: string) {
     this.agent = config.url.startsWith('https') ? new HttpsAgent(config.agent) : new Agent(config.agent)
   }
 
@@ -56,21 +56,35 @@ export default class RestClient {
     logger.warn(sanitiseError(error), `Error calling ${this.name}`)
   }
 
+  retry(err?: { code: string; message: string }): void {
+    if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
+    return undefined // retry handler only for logging retries, not to influence retry logic
+  }
+
   async get<T>({ path = null, query = '', headers = {}, responseType = '', raw = false }: GetRequest): Promise<T> {
     logger.info(`Get using user credentials: calling ${this.name}: ${path} ${query}`)
     try {
-      const result = await superagent
-        .get(`${this.apiUrl()}${path}`)
-        .agent(this.agent)
-        .retry(2, (err, res) => {
-          if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
-          return undefined // retry handler only for logging retries, not to influence retry logic
-        })
-        .query(query)
-        .auth(this.token, { type: 'bearer' })
-        .set(headers)
-        .responseType(responseType)
-        .timeout(this.timeoutConfig())
+      let result
+      if (this.token) {
+        result = await superagent
+          .get(`${this.apiUrl()}${path}`)
+          .agent(this.agent)
+          .retry(2, this.retry)
+          .query(query)
+          .auth(this.token, { type: 'bearer' })
+          .set(headers)
+          .responseType(responseType)
+          .timeout(this.timeoutConfig())
+      } else {
+        result = await superagent
+          .get(`${this.apiUrl()}${path}`)
+          .agent(this.agent)
+          .retry(2, this.retry)
+          .query(query)
+          .set(headers)
+          .responseType(responseType)
+          .timeout(this.timeoutConfig())
+      }
 
       return raw ? result : result.body
     } catch (error) {

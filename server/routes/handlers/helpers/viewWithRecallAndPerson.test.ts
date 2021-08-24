@@ -9,41 +9,45 @@ const accessToken = 'abc'
 const recallId = '123'
 
 describe('viewWithRecallAndPerson', () => {
+  const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
+  const fakePrisonRegisterApi = nock(config.apis.prisonRegister.url)
+
+  const recall = {
+    recallId: '123',
+    nomsNumber: 'A1234AA',
+    recallLength: 'FOURTEEN_DAYS',
+    documents: [
+      {
+        category: 'LICENCE',
+        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      },
+    ],
+  }
+
+  const person = {
+    firstName: 'Bobby',
+    middleNames: 'John',
+    lastName: 'Badger',
+    dateOfBirth: '1999-05-28',
+    gender: 'Male',
+    nomsNumber: 'A1234AA',
+    croNumber: '1234/56A',
+    pncNumber: '98/7654Z',
+  }
+
+  beforeEach(() => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    fakeManageRecallsApi.post('/search').reply(200, [person])
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
+
   it('should return person and recall data from api for a valid noms number and recallId', async () => {
-    const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
-
-    const recall = {
-      recallId: '123',
-      nomsNumber: 'A1234AA',
-      recallLength: 'FOURTEEN_DAYS',
-      documents: [
-        {
-          category: 'LICENCE',
-          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        },
-      ],
-    }
-
-    const person = {
-      firstName: 'Bobby',
-      middleNames: 'John',
-      lastName: 'Badger',
-      dateOfBirth: '1999-05-28',
-      gender: 'Male',
-      nomsNumber: 'A1234AA',
-      croNumber: '1234/56A',
-      pncNumber: '98/7654Z',
-    }
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.post('/search').reply(200, [person])
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
-
     await viewWithRecallAndPerson('assessRecall')(req, res)
-
     expect(res.locals.recall.recallLengthFormatted).toEqual('14 days')
     expect(res.locals.recall.documents).toEqual([
       {
@@ -55,6 +59,30 @@ describe('viewWithRecallAndPerson', () => {
       },
     ])
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
+  })
+
+  it('should fetch a prison list for specified views', async () => {
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    fakePrisonRegisterApi.get('/prisons').reply(200, [
+      {
+        prisonId: 'ALI',
+        prisonName: 'Albany (HMP)',
+        active: false,
+      },
+      {
+        prisonId: 'AKI',
+        prisonName: 'Acklington (HMP)',
+        active: true,
+      },
+    ])
+    await viewWithRecallAndPerson('recallPrisonPolice')(req, res)
+    expect(res.locals.prisonList).toEqual([
+      {
+        value: 'AKI',
+        text: 'Acklington (HMP)',
+      },
+    ])
   })
 
   it('should return 400 if invalid noms number', async () => {
