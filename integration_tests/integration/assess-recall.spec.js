@@ -1,6 +1,7 @@
 import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 
 import validateBinaryFile from './file-utils'
+import recallsListPage from '../pages/recallsList'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
@@ -17,13 +18,25 @@ context('Assess a recall', () => {
   const recallId = '123'
 
   it('User can assess a recall', () => {
-    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          recallId,
+          nomsNumber,
+        },
+      ],
+    })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
     cy.task('expectUpdateRecall', { recallId })
     cy.login()
-
-    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.expectResultsCountText('1 recall')
+    recallsList.results().find('tr').should('have.length', 1)
+    const firstResult = recallsList.results().first()
+    firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
+    recallsList.assessRecall({ recallId })
+    const assessRecall = assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
     assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
