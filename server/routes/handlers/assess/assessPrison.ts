@@ -3,30 +3,25 @@ import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApi
 import logger from '../../../../logger'
 import { makeErrorObject } from '../helpers'
 
-export const assessDecisionFormHandler = async (req: Request, res: Response): Promise<void> => {
+export const assessPrisonFormHandler = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
-  const { agreeWithRecallRecommendation } = req.body
+  const { currentPrison } = req.body
   if (!nomsNumber || !recallId) {
     logger.error(`nomsNumber or recallId not supplied. URL: ${req.originalUrl}`)
     res.sendStatus(400)
     return
   }
-  if (!agreeWithRecallRecommendation || !['YES', 'NO'].includes(agreeWithRecallRecommendation)) {
+  if (!currentPrison) {
     req.session.errors = [
       makeErrorObject({
-        id: 'agreeWithRecallRecommendation',
-        text: 'Indicate if you agree or disagree with the recommended recall length',
+        id: 'currentPrison',
+        text: 'Select a prison',
       }),
     ]
     return res.redirect(303, req.originalUrl)
   }
   try {
-    const agreePayloadValue = agreeWithRecallRecommendation === 'YES'
-    const recall = await updateRecall(
-      recallId,
-      { agreeWithRecallRecommendation: agreePayloadValue },
-      res.locals.user.token
-    )
+    const recall = await updateRecall(recallId, { currentPrison }, res.locals.user.token)
     res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/assess-confirmation`)
   } catch (err) {
     logger.error(err)

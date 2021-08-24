@@ -2,6 +2,7 @@ import wiremock from '../mockApis/wiremock'
 import auth from '../mockApis/auth'
 import tokenVerification from '../mockApis/tokenVerification'
 import manageRecalls from '../mockApis/manageRecallsApi'
+import prisonRegister from '../mockApis/prisonRegisterApi'
 import readPdf from './read-pdf'
 
 module.exports = (on, config) => {
@@ -10,6 +11,7 @@ module.exports = (on, config) => {
   const authApi = auth(wiremockApi, uiClientId, config.baseUrl)
   const tokenVerificationApi = tokenVerification(wiremockApi)
   const manageRecallsApi = manageRecalls(wiremockApi)
+  const prisonRegisterApi = prisonRegister(wiremockApi)
 
   // eslint-disable-next-line no-param-reassign
   config.env.AUTH_USERNAME = process.env.AUTH_USERNAME
@@ -31,6 +33,7 @@ module.exports = (on, config) => {
     expectGetRecall: manageRecallsApi.expectGetRecall,
     expectAddRecallDocument: manageRecallsApi.expectAddRecallDocument,
     expectUpdateRecall: manageRecallsApi.expectUpdateRecall,
+    expectPrisonList: prisonRegisterApi.expectPrisonList,
     readPdf: readPdf.readPdf,
   })
   return config

@@ -4,7 +4,7 @@ import { findPerson } from './handlers/findPerson'
 import getRevocationOrder from './handlers/assess/getRevocationOrder'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
-import { assessDecisionFormHandler } from './handlers/assess/assessRecall'
+import { assessDecisionFormHandler } from './handlers/assess/assessDecision'
 import {
   uploadDocumentsPage,
   uploadRecallDocumentsFormHandler,
@@ -16,6 +16,7 @@ import { prisonPolice } from './handlers/book/prisonPolice'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 import { issuesNeeds } from './handlers/book/issuesNeeds'
 import { probationOfficer } from './handlers/book/probationOfficer'
+import { assessPrisonFormHandler } from './handlers/assess/assessPrison'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -44,6 +45,8 @@ export default function routes(router: Router): Router {
   get('/persons/:nomsNumber/recalls/:recallId/assess', viewWithRecallAndPerson('assessRecall'))
   get('/persons/:nomsNumber/recalls/:recallId/assess-decision', viewWithRecallAndPerson('assessDecision'))
   post('/persons/:nomsNumber/recalls/:recallId/assess-decision', assessDecisionFormHandler)
+  get('/persons/:nomsNumber/recalls/:recallId/assess-prison', viewWithRecallAndPerson('assessPrison'))
+  post('/persons/:nomsNumber/recalls/:recallId/assess-prison', assessPrisonFormHandler)
   get('/persons/:nomsNumber/recalls/:recallId/assess-confirmation', viewWithRecallAndPerson('assessConfirmation'))
   get('/persons/:nomsNumber/recalls/:recallId/documents/:documentId', downloadDocument)
 

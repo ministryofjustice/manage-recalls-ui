@@ -10,6 +10,7 @@ export type UpdateRecallRequest = {
   bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string
+  currentPrison?: string
   indexOffence?: string
   lastReleaseDate?: string
   lastReleasePrison?: string

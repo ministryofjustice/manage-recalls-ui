@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns'
-import { DatePartsParsed } from '../@types'
+import { DatePartsParsed, SelectItem } from '../@types'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -91,4 +91,24 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
     ]
   }
   return items
+}
+
+export const selectItems = (items?: SelectItem[], currentValue?: string) => {
+  if (!items?.length) {
+    return []
+  }
+  const copyOfItems = [...items]
+  if (currentValue) {
+    const selectedItem = copyOfItems.find(item => item.value === currentValue)
+    if (selectedItem) {
+      selectedItem.selected = true
+    }
+  }
+  return [
+    {
+      value: '',
+      text: 'Select one',
+    },
+    ...copyOfItems,
+  ]
 }
