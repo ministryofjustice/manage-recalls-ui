@@ -35,15 +35,15 @@
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({
                         label: {
-                            text: "Local police station",
+                            text: "Local police force",
                             classes: "govuk-label--m"
                         },
-                        id: "localPoliceService",
-                        name: "localPoliceService",
-                        value: formValues.localPoliceService,
+                        id: "localPoliceForce",
+                        name: "localPoliceForce",
+                        value: formValues.localPoliceForce,
                         errorMessage: {
                             text: 'Enter a police station name'
-                        } if errors.localPoliceService else undefined
+                        } if errors.localPoliceForce else undefined
                     }) }}
                 </div>
                 <div>

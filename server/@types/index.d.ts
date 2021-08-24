@@ -72,5 +72,5 @@ export interface RecallFormValues {
   mappaLevel?: string
   sentencingCourt?: string
   indexOffence?: string
-  localPoliceService?: string
+  localPoliceForce?: string
 }

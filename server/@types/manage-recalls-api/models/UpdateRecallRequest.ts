@@ -12,7 +12,7 @@ export type UpdateRecallRequest = {
   lastReleaseDate?: string
   lastReleasePrison?: string
   licenceExpiryDate?: string
-  localPoliceService?: string
+  localPoliceForce?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
   recallEmailReceivedDateTime?: string
   recallLength?: UpdateRecallRequest.recallLength
