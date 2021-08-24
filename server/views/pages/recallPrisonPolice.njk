@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - What are the police contact details?" %}
+{% set pageTitle = applicationName + " - Book a recall - What is the local police force?" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -24,7 +24,7 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class="govuk-heading-l">
-                What are the police contact details?
+                What is the local police force?
             </h1>
         </div>
     </div>
