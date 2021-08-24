@@ -80,47 +80,35 @@
                             text: "Probation division",
                             classes: "govuk-label--m"
                         },
-                        items: [
-                            {
-                                value: "",
-                                text: ""
-                            },
+                        items: selectItems([
                             {
                                 value: "LONDON",
-                                text: "London",
-                                selected: formValues.probationDivision == 'LONDON'
+                                text: "London"
                             },
                             {
                                 value: "MIDLANDS",
-                                text: "Midlands",
-                                selected: formValues.probationDivision == 'MIDLANDS'
+                                text: "Midlands"
                             },
                             {
                                 value: "NORTH_EAST",
-                                text: "North East",
-                                selected: formValues.probationDivision == 'NORTH_EAST'
+                                text: "North East"
                             },
                             {
                                 value: "NORTH_WEST",
-                                text: "North West",
-                                selected: formValues.probationDivision == 'NORTH_WEST'
+                                text: "North West"
                             },
                             {
                                 value: "SOUTH_EAST",
-                                text: "South East",
-                                selected: formValues.probationDivision == 'SOUTH_EAST'
+                                text: "South East"
                             },
                             {
                                 value: "SOUTH_WEST_AND_SOUTH_CENTRAL",
-                                text: "South West and South Central",
-                                selected: formValues.probationDivision == 'SOUTH_WEST_AND_SOUTH_CENTRAL'
+                                text: "South West and South Central"
                             },
                             {
                                 value: "WALES",
-                                text: "Wales",
-                                selected: formValues.probationDivision == 'WALES'
-                            }
-                        ],
+                                text: "Wales"
+                            }], formValues.probationDivision),
                         errorMessage: {
                             text: "Select the probation division"
                         } if errors.probationDivision else undefined

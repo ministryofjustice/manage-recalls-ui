@@ -1,4 +1,4 @@
-import { assessDecisionFormHandler } from './assessRecall'
+import { assessDecisionFormHandler } from './assessDecision'
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 

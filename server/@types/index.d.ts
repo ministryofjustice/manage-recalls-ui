@@ -80,3 +80,9 @@ export interface Prison {
   prisonName: string
   active: boolean
 }
+
+export interface SelectItem {
+  value: string
+  text: string
+  selected?: boolean
+}

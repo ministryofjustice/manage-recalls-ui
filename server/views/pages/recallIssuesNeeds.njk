@@ -131,42 +131,32 @@
                         hint: {
                             text: "MAPPA level"
                         },
-                        items: [
-                            {
-                                value: "",
-                                text: ""
-                            },
+                        items: selectItems([
                             {
                                 value: "NA",
-                                text: "N/A",
-                                selected: formValues.mappaLevel == 'NA'
+                                text: "N/A"
                             },
                             {
                                 value: "LEVEL_1",
-                                text: "Level 1",
-                                selected: formValues.mappaLevel == 'LEVEL_1'
+                                text: "Level 1"
                             },
                             {
                                 value: "LEVEL_2",
-                                text: "Level 2",
-                                selected: formValues.mappaLevel == 'LEVEL_2'
+                                text: "Level 2"
                             },
                             {
                                 value: "LEVEL_3",
-                                text: "Level 3",
-                                selected: formValues.mappaLevel == 'LEVEL_3'
+                                text: "Level 3"
                             },
                             {
                                 value: "NOT_KNOWN",
-                                text: "Not known",
-                                selected: formValues.mappaLevel == 'NOT_KNOWN'
+                                text: "Not known"
                             },
                             {
                                 value: "CONFIRMATION_REQUIRED",
-                                text: "Confirmation required",
-                                selected: formValues.mappaLevel == 'CONFIRMATION_REQUIRED'
+                                text: "Confirmation required"
                             }
-                        ],
+                        ], formValues.mappaLevel),
                         errorMessage: {
                             text: "Please select MAPPA level"
                         } if errors.mappaLevel else undefined

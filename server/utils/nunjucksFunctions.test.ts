@@ -1,4 +1,4 @@
-import { personOrPeopleFilter, userNameFilter } from './nunjucksFunctions'
+import { personOrPeopleFilter, selectItems, userNameFilter } from './nunjucksFunctions'
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {
@@ -29,5 +29,39 @@ describe('userNameFilter', () => {
 
   it('three names returns first name capitalised and last name', () => {
     expect(userNameFilter('John Charles Smith')).toEqual('J. Smith')
+  })
+})
+
+describe('selectItems function', () => {
+  it('inserts a default "Select one" item at the front of the list', () => {
+    const items = [
+      { value: 'ABC', text: 'A Big Camp' },
+      { value: 'DFE', text: 'Dept For Excellence' },
+    ]
+    const result = selectItems(items)
+    expect(result).toEqual([{ value: '', text: 'Select one' }, ...items])
+  })
+
+  it('returns an empty array if items param is undefined', () => {
+    const result = selectItems()
+    expect(result).toEqual([])
+  })
+
+  it('returns an empty array if items param is an empty array', () => {
+    const result = selectItems([])
+    expect(result).toEqual([])
+  })
+
+  it('selects the specified item', () => {
+    const items = [
+      { value: 'ABC', text: 'A Big Camp' },
+      { value: 'DFE', text: 'Dept For Excellence' },
+    ]
+    const result = selectItems(items, 'DFE')
+    expect(result).toEqual([
+      { value: '', text: 'Select one' },
+      { value: 'ABC', text: 'A Big Camp' },
+      { value: 'DFE', text: 'Dept For Excellence', selected: true },
+    ])
   })
 })

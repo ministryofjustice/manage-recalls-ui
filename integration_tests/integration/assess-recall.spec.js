@@ -1,10 +1,11 @@
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse, getPrisonList } from '../mockApis/mockResponses'
 
 import validateBinaryFile from './file-utils'
 import recallsListPage from '../pages/recallsList'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
+const assessRecallPrisonPage = require('../pages/assessRecallPrison')
 const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation')
 
 context('Assess a recall', () => {
@@ -16,6 +17,7 @@ context('Assess a recall', () => {
 
   const nomsNumber = 'A1234AA'
   const recallId = '123'
+  const personName = 'Bobby Badger'
 
   it('User can assess a recall', () => {
     cy.task('expectListRecalls', {
@@ -29,6 +31,7 @@ context('Assess a recall', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
     cy.task('expectUpdateRecall', { recallId })
+    cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectResultsCountText('1 recall')
@@ -36,7 +39,7 @@ context('Assess a recall', () => {
     const firstResult = recallsList.results().first()
     firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
     recallsList.assessRecall({ recallId })
-    const assessRecall = assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
+    const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
@@ -67,7 +70,10 @@ context('Assess a recall', () => {
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeDecision()
     assessRecallDecision.clickContinue()
-    assessRecallConfirmationPage.verifyOnPage({ fullName: 'Bobby Badger' })
+    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ personName })
+    assessRecallPrison.enterPrison()
+    assessRecallPrison.clickContinue()
+    assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
   })
 
   it("User sees an error if they don't make a decision", () => {
@@ -82,6 +88,22 @@ context('Assess a recall', () => {
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.clickContinue()
     assessRecallDecision.expectError()
+  })
+
+  it("User sees an error if they don't enter current prison", () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectPrisonList', { expectedResults: getPrisonList })
+    cy.login()
+
+    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName })
+    assessRecallPrison.clickContinue()
+    assessRecallPrison.assertErrorMessage({
+      fieldName: 'currentPrison',
+      summaryError: 'Select a prison',
+      fieldError: 'Please select a prison',
+    })
   })
 
   it('User can get revocation order', () => {
