@@ -31,7 +31,10 @@
                     fieldset: {
                         legend: {
                             text: "Do you agree with the recommended recall length of " + recall.recallLengthFormatted,
-                            classes: "govuk-fieldset__legend--s"
+                            classes: "govuk-fieldset__legend--s",
+                            attributes: {
+                                'data-qa': 'recommended-recall-length-text'
+                            }
                         }
                     },
                     items: [

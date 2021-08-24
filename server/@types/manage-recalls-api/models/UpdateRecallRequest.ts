@@ -6,6 +6,8 @@ import type { SentenceLengthReq } from './SentenceLengthReq'
 
 export type UpdateRecallRequest = {
   agreeWithRecallRecommendation?: boolean
+  authorisingAssistantChiefOfficer?: string
+  bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string
   indexOffence?: string
@@ -14,19 +16,16 @@ export type UpdateRecallRequest = {
   licenceExpiryDate?: string
   localPoliceForce?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
+  probationDivision?: UpdateRecallRequest.probationDivision
+  probationOfficerEmail?: string
+  probationOfficerName?: string
+  probationOfficerPhoneNumber?: string
   recallEmailReceivedDateTime?: string
-  recallLength?: UpdateRecallRequest.recallLength
   sentenceDate?: string
   sentenceExpiryDate?: string
   sentenceLength?: SentenceLengthReq
   sentencingCourt?: string
   vulnerabilityDiversityDetail?: string
-  bookingNumber?: string
-  probationOfficerName?: string
-  probationOfficerPhoneNumber?: string
-  probationOfficerEmail?: string
-  probationDivision?: UpdateRecallRequest.probationDivision
-  authorisingAssistantChiefOfficer?: string
 }
 
 export namespace UpdateRecallRequest {
@@ -39,18 +38,14 @@ export namespace UpdateRecallRequest {
     NOT_KNOWN = 'NOT_KNOWN',
   }
 
-  export enum recallLength {
-    FOURTEEN_DAYS = 'FOURTEEN_DAYS',
-    TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
-  }
-
   export enum probationDivision {
     LONDON = 'LONDON',
     MIDLANDS = 'MIDLANDS',
     NORTH_EAST = 'NORTH_EAST',
     NORTH_WEST = 'NORTH_WEST',
-    SOUTH_WEST_CENTRAL = 'SOUTH_WEST_CENTRAL',
     SOUTH_EAST = 'SOUTH_EAST',
+    SOUTH_WEST = 'SOUTH_WEST',
+    SOUTH_WEST_AND_SOUTH_CENTRAL = 'SOUTH_WEST_AND_SOUTH_CENTRAL',
     WALES = 'WALES',
   }
 }
