@@ -11,7 +11,7 @@ import { ObjectMap } from '../../@types'
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const recallLength = 'FOURTEEN_DAYS'
+  const indexOffence = 'robbery'
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
@@ -108,12 +108,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 404 if recall not found', async () => {
       await provider.addInteraction({
         state: 'a recall does not exist',
-        ...updateRecallRequest('an update recall request', recallId, { recallLength }, accessToken),
+        ...updateRecallRequest('an update recall request', recallId, { indexOffence }, accessToken),
         willRespondWith: { status: 404 },
       })
 
       try {
-        await updateRecall(recallId, { recallLength }, accessToken)
+        await updateRecall(recallId, { indexOffence }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(404)
       }
@@ -122,12 +122,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...updateRecallRequest('an unauthorized update recall request', recallId, { recallLength }, accessToken),
+        ...updateRecallRequest('an unauthorized update recall request', recallId, { indexOffence }, accessToken),
         willRespondWith: { status: 401 },
       })
 
       try {
-        await updateRecall(recallId, { recallLength }, accessToken)
+        await updateRecall(recallId, { indexOffence }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }
