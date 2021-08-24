@@ -29,7 +29,7 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 Aug 2019' })
     assessRecall.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 Aug 2021' })
-    assessRecall.assertElementHasText({ qaAttr: 'localPoliceService', textToFind: 'Brentwood, Essex' })
+    assessRecall.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
     assessRecall.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
     assessRecall.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
     assessRecall.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Belmarsh' })

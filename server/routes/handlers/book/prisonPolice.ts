@@ -8,13 +8,13 @@ export const prisonPolice = async (req: Request, res: Response): Promise<void> =
   if (isInvalid(nomsNumber) || isInvalid(recallId)) {
     return res.redirect(303, `/persons/${nomsNumber}`)
   }
-  const { localPoliceService } = req.body
-  if (!localPoliceService) {
+  const { localPoliceForce } = req.body
+  if (!localPoliceForce) {
     req.session.errors = [
       makeErrorObject({
-        id: 'localPoliceService',
-        text: 'Local police station',
-        values: { localPoliceService },
+        id: 'localPoliceForce',
+        text: 'Local police force',
+        values: { localPoliceForce },
       }),
     ]
   }
@@ -22,7 +22,7 @@ export const prisonPolice = async (req: Request, res: Response): Promise<void> =
     return res.redirect(303, req.originalUrl)
   }
   try {
-    const recall = await updateRecall(recallId, { localPoliceService }, res.locals.user.token)
+    const recall = await updateRecall(recallId, { localPoliceForce }, res.locals.user.token)
     res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/issues-needs`)
   } catch (err) {
     logger.error(err)
