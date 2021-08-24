@@ -74,3 +74,9 @@ export interface RecallFormValues {
   indexOffence?: string
   localPoliceForce?: string
 }
+
+export interface Prison {
+  prisonId: string
+  prisonName: string
+  active: boolean
+}
