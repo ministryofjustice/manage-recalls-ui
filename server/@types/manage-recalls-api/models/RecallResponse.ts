@@ -14,7 +14,7 @@ export type RecallResponse = {
   lastReleaseDate?: string
   lastReleasePrison?: string
   licenceExpiryDate?: string
-  localPoliceService?: string
+  localPoliceForce?: string
   mappaLevel?: RecallResponse.mappaLevel
   nomsNumber: string
   recallEmailReceivedDateTime?: string

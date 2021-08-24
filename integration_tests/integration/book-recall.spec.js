@@ -51,7 +51,7 @@ context('Book a recall', () => {
     recallLastRelease.setBookingNumber()
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
-    recallPrisonPolice.setLocalPoliceService()
+    recallPrisonPolice.setlocalPoliceForce()
     recallPrisonPolice.clickContinue()
     const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
     recallIssuesNeeds.setVulnerabilityDiversityNo()
@@ -120,7 +120,7 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an error if local police service not entered', () => {
+  it('User sees an error if Local police force not entered', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()
     recallPrisonPolice.expectError()

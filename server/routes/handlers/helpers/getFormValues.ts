@@ -30,7 +30,7 @@ export const getFormValues = ({
     'mappaLevel',
     'sentencingCourt',
     'indexOffence',
-    'localPoliceService',
+    'localPoliceForce',
     'bookingNumber',
     'probationOfficerName',
     'probationOfficerPhoneNumber',

@@ -25,7 +25,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         contrabandDetail: 'Likely to bring in contraband because...',
         lastReleaseDateTime: '2020-08-03T00:00:00.000Z',
         lastReleasePrison: 'Belmarsh',
-        localPoliceService: 'Brentwood, Essex',
+        localPoliceForce: 'Essex',
         mappaLevel: 'LEVEL_2',
         recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',
         vulnerabilityDiversityDetail: 'Has the following needs',
