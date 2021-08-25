@@ -61,6 +61,16 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 
+  it('should make reference data available to render', async () => {
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.referenceData).toHaveProperty('reasonsForRecall')
+    expect(res.locals.referenceData).toHaveProperty('mappaLevels')
+    expect(res.locals.referenceData).toHaveProperty('recallLengths')
+    expect(res.locals.referenceData).toHaveProperty('probationDivisions')
+  })
+
   it('should fetch a prison list for specified views', async () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
@@ -77,7 +87,7 @@ describe('viewWithRecallAndPerson', () => {
       },
     ])
     await viewWithRecallAndPerson('recallPrisonPolice')(req, res)
-    expect(res.locals.prisonList).toEqual([
+    expect(res.locals.referenceData.prisonList).toEqual([
       {
         value: 'AKI',
         text: 'Acklington (HMP)',
