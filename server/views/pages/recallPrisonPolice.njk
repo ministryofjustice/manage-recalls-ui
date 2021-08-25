@@ -23,24 +23,20 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
-            <h1 class="govuk-heading-l">
-                What is the local police force?
-            </h1>
-        </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-from-desktop">
+
             <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/prison-police" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({
                         label: {
-                            text: "Local police force",
-                            classes: "govuk-label--m"
+                            text: "What is the local police force?",
+                            classes: "govuk-label--l",
+                            isPageHeading: true
                         },
                         id: "localPoliceForce",
                         name: "localPoliceForce",
                         value: formValues.localPoliceForce,
+                        classes: "govuk-input--width-30",
                         errorMessage: {
                             text: 'Enter a police station name'
                         } if errors.localPoliceForce else undefined
@@ -48,7 +44,7 @@
                 </div>
                 <div>
                     <button class="govuk-button"
-                       data-qa='continueButton'>
+                            data-qa='continueButton'>
                         Continue
                     </button>
                 </div>
