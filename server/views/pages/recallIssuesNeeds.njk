@@ -128,32 +128,9 @@
                             text: "What is " + person.firstName + " " + person.lastName + "'s MAPPA level?",
                             classes: "govuk-label--m"
                         },
-                        items: selectItems([
-                            {
-                                value: "NA",
-                                text: "N/A"
-                            },
-                            {
-                                value: "LEVEL_1",
-                                text: "Level 1"
-                            },
-                            {
-                                value: "LEVEL_2",
-                                text: "Level 2"
-                            },
-                            {
-                                value: "LEVEL_3",
-                                text: "Level 3"
-                            },
-                            {
-                                value: "NOT_KNOWN",
-                                text: "Not known"
-                            },
-                            {
-                                value: "CONFIRMATION_REQUIRED",
-                                text: "Confirmation required"
-                            }
-                        ], formValues.mappaLevel),
+                        items: selectItems(
+                            referenceData.mappaLevels
+                        , formValues.mappaLevel),
                         errorMessage: {
                             text: "Please select MAPPA level"
                         } if errors.mappaLevel else undefined

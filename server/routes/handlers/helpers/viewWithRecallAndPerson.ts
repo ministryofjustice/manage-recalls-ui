@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { documentTypes } from '../book/documentTypes'
-import { getFormattedMappaLevel, getFormattedProbationDivision, getFormattedRecallLength, isInvalid } from './index'
+import { isInvalid } from './index'
 import { getFormValues } from './getFormValues'
 import { getActivePrisonList } from '../../../data/prisonRegisterClient'
 import { Prison } from '../../../@types'
+import { getReferenceDataItemLabel, referenceData } from './referenceData/referenceData'
 
 export type ViewName =
   | 'assessConfirmation'
@@ -41,9 +42,9 @@ export const viewWithRecallAndPerson =
     }))
     res.locals.recall = {
       ...recall,
-      recallLengthFormatted: getFormattedRecallLength(recall.recallLength),
-      mappaLevelFormatted: getFormattedMappaLevel(recall.mappaLevel),
-      probationDivisionFormatted: getFormattedProbationDivision(recall.probationDivision),
+      recallLengthFormatted: getReferenceDataItemLabel('recallLengths', recall.recallLength),
+      mappaLevelFormatted: getReferenceDataItemLabel('mappaLevels', recall.mappaLevel),
+      probationDivisionFormatted: getReferenceDataItemLabel('probationDivisions', recall.probationDivision),
     }
     res.locals.formValues = getFormValues({
       errors: res.locals.errors,
@@ -51,8 +52,9 @@ export const viewWithRecallAndPerson =
       apiValues: recall,
     })
     res.locals.person = person
+    res.locals.referenceData = referenceData
     if (prisonList) {
-      res.locals.prisonList = prisonList.map(({ prisonId, prisonName }: Prison) => ({
+      res.locals.referenceData.prisonList = prisonList.map(({ prisonId, prisonName }: Prison) => ({
         value: prisonId,
         text: prisonName,
       }))

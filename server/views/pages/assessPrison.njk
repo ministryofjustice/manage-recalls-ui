@@ -22,7 +22,7 @@
             <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-prison" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-                {% if prisonList %}
+                {% if referenceData.prisonList %}
                 {{ govukSelect({
                     id: "currentPrison",
                     name: "currentPrison",
@@ -31,7 +31,7 @@
                         classes: "govuk-label--l",
                         isPageHeading: true
                     },
-                    items: selectItems(prisonList, formValues.currentPrison),
+                    items: selectItems( referenceData.prisonList, formValues.currentPrison),
                     errorMessage: {
                         text: "Please select a prison"
                     } if errors.currentPrison else undefined
