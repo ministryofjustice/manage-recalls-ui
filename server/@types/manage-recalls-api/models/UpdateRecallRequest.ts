@@ -14,6 +14,7 @@ export type UpdateRecallRequest = {
   indexOffence?: string
   lastReleaseDate?: string
   lastReleasePrison?: string
+  licenceConditionsBreached?: string
   licenceExpiryDate?: string
   localPoliceForce?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
@@ -21,6 +22,26 @@ export type UpdateRecallRequest = {
   probationOfficerEmail?: string
   probationOfficerName?: string
   probationOfficerPhoneNumber?: string
+  reasonsForRecall?: Array<
+    | 'BREACH_EXCLUSION_ZONE'
+    | 'ELM_BREACH_EXCLUSION_ZONE'
+    | 'ELM_BREACH_NON_CURFEW_CONDITION'
+    | 'ELM_EQUIPMENT_TAMPER'
+    | 'ELM_FAILURE_CHARGE_BATTERY'
+    | 'ELM_FURTHER_OFFENCE'
+    | 'FAILED_HOME_VISIT'
+    | 'FAILED_KEEP_IN_TOUCH'
+    | 'FAILED_RESIDE'
+    | 'FAILED_WORK_AS_APPROVED'
+    | 'OTHER'
+    | 'POOR_BEHAVIOUR_ALCOHOL'
+    | 'POOR_BEHAVIOUR_DRUGS'
+    | 'POOR_BEHAVIOUR_FURTHER_OFFENCE'
+    | 'POOR_BEHAVIOUR_NON_COMPLIANCE'
+    | 'POOR_BEHAVIOUR_RELATIONSHIPS'
+    | 'TRAVELLING_OUTSIDE_UK'
+  >
+  reasonsForRecallOtherDetail?: string
   recallEmailReceivedDateTime?: string
   sentenceDate?: string
   sentenceExpiryDate?: string

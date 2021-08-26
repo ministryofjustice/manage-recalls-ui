@@ -12,6 +12,7 @@ export type ViewName =
   | 'assessDecision'
   | 'assessPrison'
   | 'assessRecall'
+  | 'assessLicence'
   | 'recallSentenceDetails'
   | 'recallRequestReceived'
   | 'recallPrisonPolice'
@@ -58,6 +59,9 @@ export const viewWithRecallAndPerson =
         value: prisonId,
         text: prisonName,
       }))
+      res.locals.currentPrisonFormatted = prisonList.find(
+        item => item.prisonId === res.locals.recall.currentPrison
+      )?.prisonName
     }
     res.render(`pages/${viewName}`)
   }
