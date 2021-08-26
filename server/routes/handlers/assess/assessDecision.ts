@@ -27,7 +27,7 @@ export const assessDecisionFormHandler = async (req: Request, res: Response): Pr
       { agreeWithRecallRecommendation: agreePayloadValue },
       res.locals.user.token
     )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/assess-prison`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/assess-licence`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

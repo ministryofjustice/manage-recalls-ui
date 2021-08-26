@@ -5,6 +5,13 @@
 
 {% set pageTitle = applicationName + " - Assess a recall - In which prison is " + person.firstName + " " + person.lastName + "?" %}
 
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-licence"
+    }) }}
+{% endblock %}
+
 {% block content %}
 
     <div class="govuk-grid-row">

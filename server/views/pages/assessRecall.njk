@@ -289,6 +289,58 @@
             {% endfor %}
             {% endif %}
 
+            {% if recall.agreeWithRecallRecommendation %}
+            <h2 class='govuk-heading-m'>Recall assessment</h2>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Did band 4 agree with the recall recommendation?
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='agreeWithRecallRecommendation'>
+                        {% if recall.agreeWithRecallRecommendation %}Yes{% else %}No{% endif %}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Licence conditions breached
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='licenceConditionsBreached'>
+                        {{ recall.licenceConditionsBreached }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Reasons for recall
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        <ul class='govuk-list govuk-list--bullet'>
+                        {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
+                            <li data-qa='reasonsForRecall-{{ reason.value }}'>{{ reason.text }}</li>
+                        {% endfor %}
+                        </ul>
+                    </dd>
+                </div>
+                {% if recall.reasonsForRecallOtherDetail %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Reasons for recall - other
+                        </dt>
+                        <dd class="govuk-summary-list__value" data-qa='reasonsForRecallOtherDetail'>
+                            {{ recall.reasonsForRecallOtherDetail }}
+                        </dd>
+                    </div>
+                {% endif %}
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Current prison
+                    </dt>
+                    <dd class="govuk-summary-list__value" data-qa='currentPrison'>
+                        <ul class='govuk-list govuk-list--bullet'>
+                            {{ recall.currentPrisonFormatted }}
+                        </ul>
+                    </dd>
+                </div>
+            {% endif %}
         </div>
     </div>
 

@@ -38,8 +38,8 @@
   "probationOfficerEmail": "probation.office@justice.com",
   "probationDivision": "LONDON",
   "authorisingAssistantChiefOfficer": "Bob Monkfish",
-  "licenceConditionsBreached": "(i) one \n (ii) two",
+  "licenceConditionsBreached": "(i) one (ii) two",
   "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
   "reasonsForRecallOtherDetail": "other reason detail...",
-  "currentPrison": "BLI"
+  "currentPrison": "KTI"
 }

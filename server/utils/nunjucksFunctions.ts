@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns'
-import { DatePartsParsed, UiListItem } from '../@types'
+import { DatePartsParsed, ObjectMap, UiListItem } from '../@types'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -112,3 +112,21 @@ export const selectItems = (items?: UiListItem[], currentValue?: string) => {
     ...copyOfItems,
   ]
 }
+
+export const checkboxItems = (
+  items?: UiListItem[],
+  currentValues?: string[],
+  conditionalContent?: ObjectMap<string>
+) => {
+  return items.map(item => {
+    return {
+      ...item,
+      checked: currentValues?.includes(item.value) || undefined,
+      conditional:
+        conditionalContent && conditionalContent[item.value] ? { html: conditionalContent[item.value] } : undefined,
+    }
+  })
+}
+
+export const filterSelectedItems = (items?: UiListItem[], currentValues?: string[]) =>
+  items.filter(item => currentValues?.includes(item.value))
