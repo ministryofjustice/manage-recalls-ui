@@ -11,6 +11,7 @@ export type RecallResponse = {
   bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string
+  currentPrison?: string
   documents: Array<ApiRecallDocument>
   indexOffence?: string
   lastReleaseDate?: string
