@@ -1,0 +1,92 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Assess a recall - How has the licence been breached?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-decision"
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class="govuk-heading-l">
+                How has the licence been breached?
+            </h1>
+        </div>
+        <div class="govuk-grid-column-full">
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-licence" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                {{ govukTextarea({
+                    name: "licenceConditionsBreached",
+                    id: "licenceConditionsBreached",
+                    label: {
+                        text: "Licence conditions breached",
+                        classes: "govuk-label--m"
+                    },
+                    columns: 40,
+                    hint: {
+                        text: "Include each condition breached using the same numbering and wording as the licence"
+                    },
+                    value: formValues.licenceConditionsBreached,
+                    errorMessage: {
+                        text: "Enter the licence conditions breached"
+                    } if errors.licenceConditionsBreached else undefined
+                }) }}
+                {% set otherDetailHtml %}
+                    {{ govukTextarea({
+                        name: "reasonsForRecallOtherDetail",
+                        id: "reasonsForRecallOtherDetail",
+                        label: {
+                            text: "Provide more detail",
+                            classes: "govuk-label--s"
+                        },
+                        value: formValues.reasonsForRecallOtherDetail,
+                        errorMessage: {
+                            text: "Please provide detail"
+                        } if errors.reasonsForRecallOtherDetail else undefined
+                    }) }}
+                {% endset %}
+                {% if referenceData.reasonsForRecall %}
+                    {{ govukCheckboxes({
+                        id: "reasonsForRecall",
+                        name: "reasonsForRecall",
+                        fieldset: {
+                            legend: {
+                                text: "Reasons for recall",
+                                classes: "govuk-fieldset__legend--m"
+                            }
+                        },
+                        items: checkboxItems(referenceData.reasonsForRecall, formValues.reasonsForRecall, {
+                            OTHER: otherDetailHtml
+                        }),
+                        errorMessage: {
+                            text: "Please select at least one reason for recall"
+                        } if errors.reasonsForRecall else undefined
+                    })
+                    }}
+                {% endif %}
+                <div class="govuk-!-margin-top-8">
+                    <button class="govuk-button" data-qa="continueButton">Continue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
