@@ -42,6 +42,10 @@ const updateRecallResponse = {
   probationOfficerEmail: 'probation.office@justice.com',
   probationDivision: 'LONDON',
   authorisingAssistantChiefOfficer: 'Bob Monkfish',
+  licenceConditionsBreached: '(i) one \n (ii) two',
+  reasonsForRecall: ['OTHER', 'ELM_FAILURE_CHARGE_BATTERY'],
+  reasonsForRecallOtherDetail: 'other reason detail...',
+  currentPrison: 'BLI',
 }
 
 describe('getFormValues', () => {
@@ -104,6 +108,18 @@ describe('getFormValues', () => {
     authorisingAssistantChiefOfficer: {
       text: 'ACO',
     },
+    licenceConditionsBreached: {
+      text: 'Licence conditions breached',
+    },
+    reasonsForRecall: {
+      text: 'Reasons for recall',
+    },
+    reasonsForRecallOtherDetail: {
+      text: 'Other detail',
+    },
+    currentPrison: {
+      text: 'Current prison',
+    },
   } as unknown as ObjectMap<FormError>
   const unsavedValues = {
     recallEmailReceivedDateTimeParts: { year: '2020', month: '12', day: '05', hour: '15', minute: '33' },
@@ -132,6 +148,10 @@ describe('getFormValues', () => {
     probationOfficerEmail: 'andy@probation.gov.uk',
     probationDivision: 'SOUTH_WEST',
     authorisingAssistantChiefOfficer: 'Carrie Grant',
+    licenceConditionsBreached: '(iii) three \n (iv) four',
+    reasonsForRecall: ['POOR_BEHAVIOUR_NON_COMPLIANCE'],
+    reasonsForRecallOtherDetail: '',
+    currentPrison: 'ACL',
   }
 
   it('uses errors if no unsaved or API values', () => {
@@ -146,6 +166,7 @@ describe('getFormValues', () => {
       },
       contraband: '',
       contrabandDetail: '',
+      currentPrison: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -153,6 +174,7 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: '',
+      licenceConditionsBreached: '',
       licenceExpiryDateParts: {
         day: '05',
         month: '',
@@ -164,6 +186,8 @@ describe('getFormValues', () => {
       probationOfficerEmail: '',
       probationOfficerName: '',
       probationOfficerPhoneNumber: '',
+      reasonsForRecall: '',
+      reasonsForRecallOtherDetail: '',
       recallEmailReceivedDateTimeParts: {
         day: '05',
         hour: '15',
@@ -208,6 +232,7 @@ describe('getFormValues', () => {
       },
       contraband: 'yes',
       contrabandDetail: 'Likelihood of smuggling knives',
+      currentPrison: 'ACL',
       indexOffence: 'Assault',
       lastReleaseDateParts: {
         day: 'ee',
@@ -215,6 +240,7 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: 'Portland',
+      licenceConditionsBreached: '(iii) three \n (iv) four',
       licenceExpiryDateParts: {
         day: '05',
         month: '12',
@@ -226,6 +252,7 @@ describe('getFormValues', () => {
       probationOfficerEmail: 'andy@probation.gov.uk',
       probationOfficerName: 'Andy Fleming',
       probationOfficerPhoneNumber: '0739738383',
+      reasonsForRecall: ['POOR_BEHAVIOUR_NON_COMPLIANCE'],
       recallEmailReceivedDateTimeParts: {
         day: '05',
         hour: '15',
@@ -265,6 +292,7 @@ describe('getFormValues', () => {
       },
       contraband: '',
       contrabandDetail: '',
+      currentPrison: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -272,6 +300,7 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: '',
+      licenceConditionsBreached: '',
       licenceExpiryDateParts: {
         day: '05',
         month: '',
@@ -283,6 +312,8 @@ describe('getFormValues', () => {
       probationOfficerEmail: '',
       probationOfficerName: '',
       probationOfficerPhoneNumber: '',
+      reasonsForRecall: '',
+      reasonsForRecallOtherDetail: '',
       recallEmailReceivedDateTimeParts: {
         day: '05',
         hour: '15',
@@ -327,6 +358,7 @@ describe('getFormValues', () => {
       },
       contraband: 'yes',
       contrabandDetail: 'Intention to smuggle drugs',
+      currentPrison: 'BLI',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 'ee',
@@ -334,6 +366,7 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: 'Belmarsh',
+      licenceConditionsBreached: '(i) one \n (ii) two',
       licenceExpiryDateParts: {
         day: 3,
         month: 8,
@@ -345,6 +378,8 @@ describe('getFormValues', () => {
       probationOfficerEmail: 'probation.office@justice.com',
       probationOfficerName: 'Dave Angel',
       probationOfficerPhoneNumber: '07473739388',
+      reasonsForRecall: ['OTHER', 'ELM_FAILURE_CHARGE_BATTERY'],
+      reasonsForRecallOtherDetail: 'other reason detail...',
       recallEmailReceivedDateTimeParts: {
         day: 5,
         hour: 15,
@@ -389,6 +424,7 @@ describe('getFormValues', () => {
       },
       contraband: 'yes',
       contrabandDetail: 'Intention to smuggle drugs',
+      currentPrison: 'BLI',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 3,
@@ -396,6 +432,7 @@ describe('getFormValues', () => {
         year: 2020,
       },
       lastReleasePrison: 'Belmarsh',
+      licenceConditionsBreached: '(i) one \n (ii) two',
       licenceExpiryDateParts: {
         day: 3,
         month: 8,
@@ -407,6 +444,8 @@ describe('getFormValues', () => {
       probationOfficerEmail: 'probation.office@justice.com',
       probationOfficerName: 'Dave Angel',
       probationOfficerPhoneNumber: '07473739388',
+      reasonsForRecall: ['OTHER', 'ELM_FAILURE_CHARGE_BATTERY'],
+      reasonsForRecallOtherDetail: 'other reason detail...',
       recallEmailReceivedDateTimeParts: {
         day: 5,
         hour: 15,

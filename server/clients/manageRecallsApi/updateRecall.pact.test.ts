@@ -45,6 +45,10 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         probationOfficerEmail: 'probation.office@justice.com',
         probationDivision: 'LONDON',
         authorisingAssistantChiefOfficer: 'Bob Monkfish',
+        licenceConditionsBreached: '(i) one \n (ii) two',
+        reasonsForRecall: ['OTHER', 'ELM_FAILURE_CHARGE_BATTERY'],
+        reasonsForRecallOtherDetail: 'other reason detail...',
+        currentPrison: 'BLI',
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',

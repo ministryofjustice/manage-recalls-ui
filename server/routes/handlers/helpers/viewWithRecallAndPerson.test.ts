@@ -3,6 +3,7 @@ import nock from 'nock'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { viewWithRecallAndPerson } from './viewWithRecallAndPerson'
 import config from '../../../config'
+import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
@@ -11,18 +12,6 @@ const recallId = '123'
 describe('viewWithRecallAndPerson', () => {
   const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
   const fakePrisonRegisterApi = nock(config.apis.prisonRegister.url)
-
-  const recall = {
-    recallId: '123',
-    nomsNumber: 'A1234AA',
-    recallLength: 'FOURTEEN_DAYS',
-    documents: [
-      {
-        category: 'LICENCE',
-        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-    ],
-  }
 
   const person = {
     firstName: 'Bobby',
@@ -56,6 +45,13 @@ describe('viewWithRecallAndPerson', () => {
         label: 'Licence',
         name: 'LICENCE',
         url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      },
+      {
+        category: 'PART_A_RECALL_REPORT',
+        documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+        label: 'Part A recall report',
+        name: 'PART_A_RECALL_REPORT',
+        url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
       },
     ])
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')

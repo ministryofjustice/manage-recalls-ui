@@ -37,5 +37,9 @@
   "probationOfficerPhoneNumber": "07473739388",
   "probationOfficerEmail": "probation.office@justice.com",
   "probationDivision": "LONDON",
-  "authorisingAssistantChiefOfficer": "Bob Monkfish"
+  "authorisingAssistantChiefOfficer": "Bob Monkfish",
+  "licenceConditionsBreached": "(i) one \n (ii) two",
+  "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
+  "reasonsForRecallOtherDetail": "other reason detail...",
+  "currentPrison": "BLI"
 }
