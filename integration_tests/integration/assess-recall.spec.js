@@ -7,6 +7,7 @@ const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
 const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation')
+const assessRecallLicencePage = require('../pages/assessRecallLicence')
 
 context('Assess a recall', () => {
   beforeEach(() => {
@@ -39,7 +40,7 @@ context('Assess a recall', () => {
     const firstResult = recallsList.results().first()
     firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
     recallsList.assessRecall({ recallId })
-    const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
+    let assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
@@ -70,10 +71,24 @@ context('Assess a recall', () => {
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeDecision()
     assessRecallDecision.clickContinue()
+    const assessRecallLicence = assessRecallLicencePage.verifyOnPage()
+    assessRecallLicence.enterLicenceConditionsBreached()
+    assessRecallLicence.checkReasonsRecalled()
+    assessRecallLicence.clickContinue()
     const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ personName })
     assessRecallPrison.enterPrison()
     assessRecallPrison.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
+    assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    assessRecall.assertElementHasText({ qaAttr: 'agreeWithRecallRecommendation', textToFind: 'Yes' })
+    assessRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
+    assessRecall.assertElementHasText({
+      qaAttr: 'reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY',
+      textToFind: 'Electronic locking and monitoring (ELM) - Failure to charge battery',
+    })
+    assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecall-OTHER', textToFind: 'Other' })
+    assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecallOtherDetail', textToFind: 'other reason detail...' })
+    assessRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
   })
 
   it("User sees an error if they don't make a decision", () => {
@@ -93,7 +108,7 @@ context('Assess a recall', () => {
   it("User sees an error if they don't enter current prison", () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, currentPrison: '', recallId } })
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
 
