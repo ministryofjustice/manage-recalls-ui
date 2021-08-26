@@ -21,7 +21,7 @@ describe('getReferenceDataItemLabel', () => {
   })
 
   it('returns a label for recall reasons', () => {
-    const label = getReferenceDataItemLabel('reasonsForRecall', RecallResponse.reasonsForRecall.BREACH_EXCLUSION_ZONE)
+    const label = getReferenceDataItemLabel('reasonsForRecall', RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE)
     expect(label).toEqual('Breach of exclusion zone')
   })
 

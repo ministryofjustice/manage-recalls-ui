@@ -80,7 +80,7 @@ export namespace RecallResponse {
     TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
   }
 
-  export enum reasonsForRecall {
+  export enum reasonForRecall {
     BREACH_EXCLUSION_ZONE = 'BREACH_EXCLUSION_ZONE',
     ELM_BREACH_EXCLUSION_ZONE = 'ELM_BREACH_EXCLUSION_ZONE',
     ELM_BREACH_NON_CURFEW_CONDITION = 'ELM_BREACH_NON_CURFEW_CONDITION',
