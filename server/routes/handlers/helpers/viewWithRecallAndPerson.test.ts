@@ -81,6 +81,11 @@ describe('viewWithRecallAndPerson', () => {
         prisonName: 'Acklington (HMP)',
         active: true,
       },
+      {
+        prisonId: 'KTI',
+        prisonName: 'Kennet (HMP)',
+        active: true,
+      },
     ])
     await viewWithRecallAndPerson('recallPrisonPolice')(req, res)
     expect(res.locals.referenceData.prisonList).toEqual([
@@ -88,7 +93,12 @@ describe('viewWithRecallAndPerson', () => {
         value: 'AKI',
         text: 'Acklington (HMP)',
       },
+      {
+        value: 'KTI',
+        text: 'Kennet (HMP)',
+      },
     ])
+    expect(res.locals.recall.currentPrisonFormatted).toEqual('Kennet (HMP)')
   })
 
   it('should return 400 if invalid noms number', async () => {
