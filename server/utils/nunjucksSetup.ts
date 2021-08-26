@@ -9,6 +9,8 @@ import {
   dateTimeFilter,
   dateTimeItems,
   selectItems,
+  checkboxItems,
+  filterSelectedItems,
 } from './nunjucksFunctions'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
@@ -33,6 +35,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
 
   njkEnv.addGlobal('dateTimeItems', dateTimeItems)
   njkEnv.addGlobal('selectItems', selectItems)
+  njkEnv.addGlobal('checkboxItems', checkboxItems)
+  njkEnv.addGlobal('filterSelectedItems', filterSelectedItems)
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)
 }
