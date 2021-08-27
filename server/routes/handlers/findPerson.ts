@@ -4,7 +4,7 @@ import { searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecalls
 export const findPerson = async (req: Request, res: Response, _next: NextFunction): Promise<Response | void> => {
   const { nomsNumber } = req.query
   if (typeof nomsNumber !== 'undefined' && typeof nomsNumber !== 'string') {
-    res.locals.errorMessage = 'Please enter a valid NOMS number'
+    res.locals.errorMessage = 'Please enter a valid NOMIS number'
   }
   if (nomsNumber) {
     const offender = await searchByNomsNumber((nomsNumber as string).trim(), res.locals.user.token)
