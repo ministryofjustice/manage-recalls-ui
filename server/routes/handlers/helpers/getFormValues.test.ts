@@ -6,7 +6,8 @@ const updateRecallResponse = {
   recallId: '8ab377a6-4587-2598-abc4-98fc53737',
   nomsNumber: 'A1234AA',
   recallLength: 'FOURTEEN_DAYS',
-  agreeWithRecallRecommendation: true,
+  agreeWithRecall: 'YES',
+  agreeWithRecallDetail: 'Reasons for yes...',
   documents: [
     {
       category: 'LICENCE',
@@ -50,6 +51,12 @@ const updateRecallResponse = {
 
 describe('getFormValues', () => {
   const errors = {
+    agreeWithRecall: {
+      text: 'Decision on recall',
+    },
+    agreeWithRecallDetailYes: {
+      text: 'Provide more detail',
+    },
     recallEmailReceivedDateTime: { values: { year: '', month: '12', day: '05', hour: '15', minute: '33' } },
     lastReleasePrison: {
       text: 'Releasing prison',
@@ -122,6 +129,8 @@ describe('getFormValues', () => {
     },
   } as unknown as ObjectMap<FormError>
   const unsavedValues = {
+    agreeWithRecall: 'NO',
+    agreeWithRecallDetail: 'Reasons for no...',
     recallEmailReceivedDateTimeParts: { year: '2020', month: '12', day: '05', hour: '15', minute: '33' },
     sentenceDateParts: { year: '2020', month: '12', day: '05' },
     sentenceExpiryDateParts: { year: '2020', month: '12', day: '05' },
@@ -157,6 +166,7 @@ describe('getFormValues', () => {
   it('uses errors if no unsaved or API values', () => {
     const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as RecallResponse })
     expect(formValues).toEqual({
+      agreeWithRecall: '',
       authorisingAssistantChiefOfficer: '',
       bookingNumber: '',
       conditionalReleaseDateParts: {
@@ -223,6 +233,7 @@ describe('getFormValues', () => {
       apiValues: {} as RecallResponse,
     })
     expect(formValues).toEqual({
+      agreeWithRecall: 'NO',
       authorisingAssistantChiefOfficer: 'Carrie Grant',
       bookingNumber: '87378435D',
       conditionalReleaseDateParts: {
@@ -283,6 +294,7 @@ describe('getFormValues', () => {
   it('uses all error values over unsaved values', () => {
     const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as RecallResponse })
     expect(formValues).toEqual({
+      agreeWithRecall: '',
       authorisingAssistantChiefOfficer: '',
       bookingNumber: '',
       conditionalReleaseDateParts: {
@@ -349,6 +361,8 @@ describe('getFormValues', () => {
       apiValues: updateRecallResponse as RecallResponse,
     })
     expect(formValues).toEqual({
+      agreeWithRecall: 'YES',
+      agreeWithRecallDetailYes: 'Reasons for yes...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
       bookingNumber: 'A123456',
       conditionalReleaseDateParts: {
@@ -415,6 +429,8 @@ describe('getFormValues', () => {
       apiValues: updateRecallResponse as RecallResponse,
     })
     expect(formValues).toEqual({
+      agreeWithRecall: 'YES',
+      agreeWithRecallDetailYes: 'Reasons for yes...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
       bookingNumber: 'A123456',
       conditionalReleaseDateParts: {

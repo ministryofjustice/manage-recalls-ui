@@ -6,6 +6,8 @@ import type { ApiRecallDocument } from './ApiRecallDocument'
 import type { SentenceLengthRes } from './SentenceLengthRes'
 
 export type RecallResponse = {
+  agreeWithRecall?: RecallResponse.agreeWithRecall
+  agreeWithRecallDetail?: string
   agreeWithRecallRecommendation?: boolean
   authorisingAssistantChiefOfficer?: string
   bookingNumber?: string
@@ -44,6 +46,7 @@ export type RecallResponse = {
     | 'POOR_BEHAVIOUR_RELATIONSHIPS'
     | 'TRAVELLING_OUTSIDE_UK'
   >
+  reasonsForRecallOtherDetail?: string
   recallEmailReceivedDateTime?: string
   recallId: string
   recallLength?: RecallResponse.recallLength
@@ -56,6 +59,11 @@ export type RecallResponse = {
 }
 
 export namespace RecallResponse {
+  export enum agreeWithRecall {
+    NO_STOP = 'NO_STOP',
+    YES = 'YES',
+  }
+
   export enum mappaLevel {
     CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
     LEVEL_1 = 'LEVEL_1',

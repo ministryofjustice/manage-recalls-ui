@@ -73,6 +73,9 @@ export interface RecallFormValues {
   sentencingCourt?: string
   indexOffence?: string
   localPoliceForce?: string
+  agreeWithRecall?: RecallResponse.agreeWithRecall
+  agreeWithRecallDetailYes?: string
+  agreeWithRecallDetailNo?: string
 }
 
 export interface Prison {
