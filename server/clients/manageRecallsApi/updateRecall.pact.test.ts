@@ -20,7 +20,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('update a recall', () => {
     test('can successfully add all properties to a recall', async () => {
       const request = {
-        agreeWithRecallRecommendation: true,
+        agreeWithRecall: 'YES',
+        agreeWithRecallDetail: 'Reasons...',
         lastReleaseDate: '2020-08-03',
         contrabandDetail: 'Likely to bring in contraband because...',
         lastReleaseDateTime: '2020-08-03T00:00:00.000Z',

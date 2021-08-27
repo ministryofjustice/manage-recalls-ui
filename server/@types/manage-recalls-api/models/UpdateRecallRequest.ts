@@ -5,6 +5,8 @@
 import type { SentenceLengthReq } from './SentenceLengthReq'
 
 export type UpdateRecallRequest = {
+  agreeWithRecall?: UpdateRecallRequest.agreeWithRecall
+  agreeWithRecallDetail?: string
   agreeWithRecallRecommendation?: boolean
   authorisingAssistantChiefOfficer?: string
   bookingNumber?: string
@@ -51,6 +53,11 @@ export type UpdateRecallRequest = {
 }
 
 export namespace UpdateRecallRequest {
+  export enum agreeWithRecall {
+    NO_STOP = 'NO_STOP',
+    YES = 'YES',
+  }
+
   export enum mappaLevel {
     CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
     LEVEL_1 = 'LEVEL_1',

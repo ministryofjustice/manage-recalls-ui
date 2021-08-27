@@ -289,15 +289,15 @@
             {% endfor %}
             {% endif %}
 
-            {% if recall.agreeWithRecallRecommendation %}
+            {% if recall.agreeWithRecall %}
             <h2 class='govuk-heading-m'>Recall assessment</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
                         Did band 4 agree with the recall recommendation?
                     </dt>
-                    <dd class="govuk-summary-list__value" data-qa='agreeWithRecallRecommendation'>
-                        {% if recall.agreeWithRecallRecommendation %}Yes{% else %}No{% endif %}
+                    <dd class="govuk-summary-list__value" data-qa='agreeWithRecall'>
+                        {% if recall.agreeWithRecall == 'YES' %}Yes{% else %}No{% endif %}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">

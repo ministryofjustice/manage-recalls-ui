@@ -1,4 +1,4 @@
-import { getRecallResponse, searchResponse, getPrisonList } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import validateBinaryFile from './file-utils'
 import recallsListPage from '../pages/recallsList'
@@ -70,6 +70,7 @@ context('Assess a recall', () => {
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeDecision()
+    assessRecallDecision.addDetail()
     assessRecallDecision.clickContinue()
     const assessRecallLicence = assessRecallLicencePage.verifyOnPage()
     assessRecallLicence.enterLicenceConditionsBreached()
@@ -80,7 +81,7 @@ context('Assess a recall', () => {
     assessRecallPrison.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
-    assessRecall.assertElementHasText({ qaAttr: 'agreeWithRecallRecommendation', textToFind: 'Yes' })
+    assessRecall.assertElementHasText({ qaAttr: 'agreeWithRecall', textToFind: 'Yes' })
     assessRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
     assessRecall.assertElementHasText({
       qaAttr: 'reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY',
@@ -94,21 +95,51 @@ context('Assess a recall', () => {
   it("User sees an error if they don't make a decision", () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: { ...getEmptyRecallResponse, recallLength: 'FOURTEEN_DAYS', recallId },
+    })
+    cy.login()
+    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallDecision.clickContinue()
+    assessRecallDecision.assertErrorMessage({
+      fieldName: 'agreeWithRecall',
+      summaryError: 'Do you agree with the recall recommendation?',
+      fieldError: 'Select one',
+    })
+    assessRecallDecision.makeDecision()
+    assessRecallDecision.clickContinue()
+    assessRecallDecision.assertErrorMessage({
+      fieldName: 'agreeWithRecallDetailYes',
+      summaryError: 'Provide detail on your decision',
+      fieldError: 'Provide more detail',
+    })
+  })
+
+  it("User sees an error if they don't enter licence details", () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     cy.login()
 
-    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
-    assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
-    assessRecall.clickContinue()
-    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
-    assessRecallDecision.clickContinue()
-    assessRecallDecision.expectError()
+    const assessRecallLicence = assessRecallLicencePage.verifyOnPage({ nomsNumber, recallId, personName })
+    assessRecallLicence.clickContinue()
+    assessRecallLicence.assertErrorMessage({
+      fieldName: 'licenceConditionsBreached',
+      summaryError: 'Licence conditions breached',
+      fieldError: 'Enter the licence conditions breached',
+    })
+    assessRecallLicence.assertErrorMessage({
+      fieldName: 'reasonsForRecall',
+      summaryError: 'Reasons for recall',
+      fieldError: 'Please select at least one reason for recall',
+    })
   })
 
   it("User sees an error if they don't enter current prison", () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, currentPrison: '', recallId } })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
 

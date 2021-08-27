@@ -2,7 +2,8 @@
   "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
   "nomsNumber": "A1234AA",
   "recallLength": "FOURTEEN_DAYS",
-  "agreeWithRecallRecommendation": true,
+  "agreeWithRecall": "YES",
+  "agreeWithRecallDetail": "Reasons...",
   "documents": [
     {
       "category": "LICENCE",

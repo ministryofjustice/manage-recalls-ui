@@ -15,7 +15,7 @@ describe('assessDecisionFormHandler', () => {
     const req = mockPostRequest({
       originalUrl: nextPageUrl,
       params: { nomsNumber, recallId },
-      body: { agreeWithRecallRecommendation: true },
+      body: { agreeWithRecall: 'NO', agreeWithRecallDetail: 'Reasons..' },
     })
     const { res } = mockResponseWithAuthenticatedUser('')
 

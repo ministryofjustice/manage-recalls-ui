@@ -1,17 +1,11 @@
 const page = require('./page')
 
 const assessRecallDecisionPage = ({ nomsNumber, recallId } = {}) =>
-  page('What is your decision on the recall recommendation?', {
+  page('Do you agree with the fixed term 14 day recall recommendation?', {
     url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/assess-decision` : null,
-    makeDecision: () => {
-      cy.get('[value="YES"]').click()
-    },
-    expectError: () => {
-      cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
-        const text = $searchResults.text()
-        expect(text.trim()).to.equal('Indicate if you agree or disagree with the recommended recall length')
-      })
-    },
+    makeDecision: () => cy.get('[value="YES"]').click(),
+    addDetail: () =>
+      cy.get('[name="agreeWithRecallDetailYes"]').clear().type('No evidence that the recommendation was wrong'),
   })
 
 module.exports = { verifyOnPage: assessRecallDecisionPage }

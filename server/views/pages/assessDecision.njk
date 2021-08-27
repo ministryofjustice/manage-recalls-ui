@@ -26,37 +26,68 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
-            <h1 class="govuk-heading-l">
-                What is your decision on the recall recommendation?
-            </h1>
             <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-decision" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-
+                {% set yesHtml %}
+                    {{ govukTextarea({
+                        name: "agreeWithRecallDetailYes",
+                        id: "agreeWithRecallDetailYes",
+                        label: {
+                            text: "Provide more detail"
+                        },
+                        value: formValues.agreeWithRecallDetailYes,
+                        errorMessage: {
+                            text: 'Provide more detail'
+                        } if errors.agreeWithRecallDetailYes else undefined
+                    }) }}
+                {% endset -%}
+                {% set noHtml %}
+                    {{ govukTextarea({
+                        name: "agreeWithRecallDetailNo",
+                        id: "agreeWithRecallDetailNo",
+                        label: {
+                            text: "Provide more detail"
+                        },
+                        value: formValues.agreeWithRecallDetailNo ,
+                        errorMessage: {
+                            text: 'Provide more detail'
+                        } if errors.agreeWithRecallDetailNo else undefined
+                    }) }}
+                {% endset -%}
                 {{ govukRadios({
-                    idPrefix: "agreeWithRecallRecommendation",
-                    name: "agreeWithRecallRecommendation",
+                    idPrefix: "agreeWithRecall",
+                    name: "agreeWithRecall",
                     fieldset: {
                         legend: {
-                            html: "<span data-qa='recommended-recall-length-text'>Do you agree with the recommended recall length of " + recall.recallLengthFormatted + "</span>",
-                            classes: "govuk-fieldset__legend--s"
+                            html: "<span data-qa='recommended-recall-length-text'>Do you agree with the fixed term " + recall.recallLengthFormatted + " day recall recommendation?</span>",
+                            classes: "govuk-fieldset__legend--l",
+                            isPageHeading: true
                         }
                     },
                     items: [
                         {
                             value: "YES",
-                            text: "Yes"
+                            text: "Yes, proceed with the recommended fixed recall type",
+                            checked: formValues.agreeWithRecall == 'YES',
+                            conditional: {
+                                html: yesHtml
+                            }
                         },
                         {
-                            value: "NO",
-                            text: "No"
+                            value: "NO_STOP",
+                            text: "No, cancel the recall",
+                            checked: formValues.agreeWithRecall == 'NO_STOP',
+                            conditional: {
+                                html: noHtml
+                            }
                         }
                     ],
                     errorMessage: {
                         text: 'Select one'
-                    } if errors.agreeWithRecallRecommendation else undefined
+                    } if errors.agreeWithRecall else undefined
                 }) }}
 
-                <div class="govuk-!-margin-top-8">
+                <div class="govuk-!-margin-top-4">
                     <button class="govuk-button" data-qa="continueButton">Continue</button>
                 </div>
             </form>
