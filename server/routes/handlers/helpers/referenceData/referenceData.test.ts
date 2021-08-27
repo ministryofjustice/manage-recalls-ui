@@ -4,7 +4,7 @@ import { RecallResponse } from '../../../../@types/manage-recalls-api/models/Rec
 describe('getReferenceDataItemLabel', () => {
   it('returns a label for recall lengths', () => {
     const label = getReferenceDataItemLabel('recallLengths', RecallResponse.recallLength.FOURTEEN_DAYS)
-    expect(label).toEqual('14 days')
+    expect(label).toEqual('14')
   })
 
   it('returns a label for probation divisions', () => {

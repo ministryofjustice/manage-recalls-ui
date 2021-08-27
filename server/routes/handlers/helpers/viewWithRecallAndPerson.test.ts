@@ -37,7 +37,7 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.recallLengthFormatted).toEqual('14 days')
+    expect(res.locals.recall.recallLengthFormatted).toEqual('14')
     expect(res.locals.recall.documents).toEqual([
       {
         category: 'LICENCE',

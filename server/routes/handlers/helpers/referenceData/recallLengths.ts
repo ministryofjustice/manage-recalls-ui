@@ -3,10 +3,10 @@ import { RecallResponse } from '../../../../@types/manage-recalls-api/models/Rec
 export const recallLengths = [
   {
     value: RecallResponse.recallLength.FOURTEEN_DAYS,
-    text: '14 days',
+    text: '14',
   },
   {
     value: RecallResponse.recallLength.TWENTY_EIGHT_DAYS,
-    text: '28 days',
+    text: '28',
   },
 ]
