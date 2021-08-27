@@ -40,7 +40,7 @@ describe('findOffender', () => {
       await findPerson(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/findPerson')
-      expect(res.locals.errorMessage).toEqual('Please enter a valid NOMS number')
+      expect(res.locals.errorMessage).toEqual('Please enter a valid NOMIS number')
     })
   })
 })
