@@ -1,4 +1,4 @@
-import { searchResponse } from '../mockApis/mockResponses'
+import { getPrisonList, searchResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
@@ -23,6 +23,7 @@ context('Book a recall', () => {
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
     recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
   })

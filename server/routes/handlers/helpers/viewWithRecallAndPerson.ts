@@ -21,7 +21,7 @@ export type ViewName =
   | 'recallConfirmation'
 
 const requiresPrisonList = (viewName: ViewName) =>
-  ['assessRecall', 'recallPrisonPolice', 'assessPrison'].includes(viewName)
+  ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'assessPrison'].includes(viewName)
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
