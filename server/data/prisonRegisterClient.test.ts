@@ -32,6 +32,32 @@ describe('getActivePrisonList', () => {
     ])
   })
 
+  it('alphabetically sorts the list by prison name', async () => {
+    ;(RestClient as jest.Mock).mockImplementation(() => {
+      return {
+        get: async (): Promise<Prison[]> => [
+          {
+            prisonId: 'BEL',
+            prisonName: 'Belmarsh (HMP)',
+            active: true,
+          },
+          {
+            prisonId: 'KEN',
+            prisonName: 'Kennet (HMP)',
+            active: true,
+          },
+          {
+            prisonId: 'AKI',
+            prisonName: 'Acklington (HMP)',
+            active: true,
+          },
+        ],
+      }
+    })
+    const prisons = await getActivePrisonList()
+    expect(prisons.map(p => p.prisonName)).toEqual(['Acklington (HMP)', 'Belmarsh (HMP)', 'Kennet (HMP)'])
+  })
+
   it('returns undefined if no prisons are returned', async () => {
     ;(RestClient as jest.Mock).mockImplementation(() => {
       return {
