@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Response } from 'express'
 
 import addRequestId from 'express-request-id'
 import helmet from 'helmet'
@@ -12,6 +12,7 @@ import passport from 'passport'
 import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
+import { randomBytes } from 'crypto'
 
 import auth from './authentication/auth'
 import indexRoutes from './routes'
@@ -48,6 +49,10 @@ export default function createApp(userService: UserService): express.Application
   // Server Configuration
   app.set('port', process.env.PORT || 3000)
 
+  app.use((req, res, next) => {
+    res.locals.cspNonce = randomBytes(16).toString('hex')
+    next()
+  })
   // Secure code best practice - see:
   // 1. https://expressjs.com/en/advanced/best-practice-security.html,
   // 2. https://www.npmjs.com/package/helmet
@@ -57,7 +62,12 @@ export default function createApp(userService: UserService): express.Application
         directives: {
           defaultSrc: ["'self'"],
           // Hash allows inline script pulled in from https://github.com/alphagov/govuk-frontend/blob/master/src/govuk/template.njk
-          scriptSrc: ["'self'", 'code.jquery.com', "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='"],
+          scriptSrc: [
+            "'self'",
+            'code.jquery.com',
+            "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
+            (req, res) => `'nonce-${(res as Response).locals.cspNonce}'`,
+          ],
           styleSrc: ["'self'", 'code.jquery.com'],
           fontSrc: ["'self'"],
         },
