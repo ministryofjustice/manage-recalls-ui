@@ -32,7 +32,10 @@
                                 <td class="govuk-table__cell" data-qa="name">{{ recall.offender.firstName }} {{ recall.offender.lastName }}</td>
                                 <td class="govuk-table__cell" data-qa="recallDate">{{ recall.offender.recallDate }}</td>
                                 <td class="govuk-table__cell" data-qa="dueDate">{{ recall.offender.dueDate }}</td>
-                                <td class="govuk-table__cell"><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='assess-recall-{{ recall.recallId }}'>Assess</a></td>
+                                <td class="govuk-table__cell">
+                                    <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='assess-recall-{{ recall.recallId }}'>Assess</a></div>
+                                    <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/dossier-letter' data-qa='create-dossier-{{ recall.recallId }}'>Create dossier</a></div>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

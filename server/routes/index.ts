@@ -18,6 +18,7 @@ import { issuesNeeds } from './handlers/book/issuesNeeds'
 import { probationOfficer } from './handlers/book/probationOfficer'
 import { assessPrisonFormHandler } from './handlers/assess/assessPrison'
 import { assessLicenceFormHandler } from './handlers/assess/assessLicence'
+import { dossierLetterFormHandler } from './handlers/dossier/dossierLetter'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -52,6 +53,11 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls/:recallId/assess-licence', assessLicenceFormHandler)
   get('/persons/:nomsNumber/recalls/:recallId/assess-confirmation', viewWithRecallAndPerson('assessConfirmation'))
   get('/persons/:nomsNumber/recalls/:recallId/documents/:documentId', downloadDocument)
+
+  // CREATE DOSSIER
+  get('/persons/:nomsNumber/recalls/:recallId/dossier-letter', viewWithRecallAndPerson('dossierLetter'))
+  post('/persons/:nomsNumber/recalls/:recallId/dossier-letter', dossierLetterFormHandler)
+  get('/persons/:nomsNumber/recalls/:recallId/dossier-confirmation', viewWithRecallAndPerson('dossierConfirmation'))
 
   get('/get-revocation-order', getRevocationOrder())
 
