@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
-import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { makeErrorObject } from '../helpers'
 
 export const dossierLetterFormHandler = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
