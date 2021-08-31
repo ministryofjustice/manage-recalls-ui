@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="/assets/stylesheets/accessible-autocomplete.min.css" />
+<script type="text/javascript" src="/assets/js/accessible-autocomplete.min.js"></script>
+<script nonce='{{ params.cspNonce }}'>
+  accessibleAutocomplete.enhanceSelectElement({
+    defaultValue: '',
+    selectElement: document.querySelector('{{params.selectElement}}'),
+    showAllValues: true,
+    autoselect: false,
+    showNoOptionsFound: true,
+    displayMenu: 'overlay'
+  })
+</script>
