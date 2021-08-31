@@ -1,4 +1,6 @@
 import express, { Response } from 'express'
+import * as Sentry from '@sentry/node'
+import * as Tracing from '@sentry/tracing'
 
 import addRequestId from 'express-request-id'
 import helmet from 'helmet'
@@ -32,6 +34,44 @@ const RedisStore = connectRedis(session)
 
 export default function createApp(userService: UserService): express.Application {
   const app = express()
+
+  Sentry.init({
+    dsn: 'https://4eb36239d29c4114b9d90b810063261c@o345774.ingest.sentry.io/5939012',
+    environment: process.env.SENTRY_ENV || 'LOCAL',
+
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Tracing.Integrations.Express({ app }),
+    ],
+
+    // Quarter of all requests will be used for performance sampling
+    tracesSampler: samplingContext => {
+      const transactionName =
+        samplingContext && samplingContext.transactionContext && samplingContext.transactionContext.name
+
+      if (transactionName && (transactionName.includes('ping') || transactionName.includes('health'))) {
+        return 0
+      }
+
+      // Default sample rate
+      return 0.05
+    },
+  })
+
+  // RequestHandler creates a separate execution context using domains, so that every
+  // transaction/span/breadcrumb is attached to its own Hub instance
+  app.use(
+    Sentry.Handlers.requestHandler({
+      // Ensure we don't include `data` to avoid sending any PPI
+      request: ['cookies', 'headers', 'method', 'query_string', 'url'],
+      user: ['id', 'username', 'permissions'],
+    })
+  )
+
+  // TracingHandler creates a trace for every incoming request
+  app.use(Sentry.Handlers.tracingHandler())
 
   auth.init()
 
@@ -208,7 +248,11 @@ export default function createApp(userService: UserService): express.Application
 
   app.use(authorisationMiddleware())
   app.use('/', indexRoutes(standardRouter(userService)))
+
   app.use((req, res, next) => next(createError(404, 'Not found')))
+
+  // The error handler must be before any other error middleware and after all controllers
+  app.use(Sentry.Handlers.errorHandler())
   app.use(errorHandler(process.env.NODE_ENV === 'production'))
 
   return app
