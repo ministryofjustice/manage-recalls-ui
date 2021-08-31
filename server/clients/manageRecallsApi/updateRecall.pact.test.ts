@@ -50,6 +50,10 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         reasonsForRecall: ['OTHER', 'ELM_FAILURE_CHARGE_BATTERY'],
         reasonsForRecallOtherDetail: 'other reason detail...',
         currentPrison: 'BLI',
+        additionalLicenceConditions: true,
+        additionalLicenceConditionsDetail: 'one, two',
+        differentNomsNumber: true,
+        differentNomsNumberDetail: 'AC3408303',
       }
       await provider.addInteraction({
         state: 'a recall exists and can be updated',
