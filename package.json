@@ -7,7 +7,7 @@
   "scripts": {
     "copy-views": "cp -R server/views dist/server/",
     "copy-css": "cp -R assets/css/** assets/stylesheets",
-    "compile-sass": "sass --no-source-map --load-path=node_modules/govuk-frontend --load-path=node_modules/@ministryofjustice/frontend ./assets/sass/application.sass:./assets/stylesheets/application.css ./assets/sass/application-ie8.sass:./assets/stylesheets/application-ie8.css --style compressed",
+    "compile-sass": "npm run copy-css && sass --no-source-map --load-path=node_modules/govuk-frontend --load-path=node_modules/@ministryofjustice/frontend ./assets/sass/application.sass:./assets/stylesheets/application.css ./assets/sass/application-ie8.sass:./assets/stylesheets/application-ie8.css --style compressed",
     "build": "npm run clean && npm run compile-sass && npm run copy-css && tsc && npm run copy-views",
     "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
