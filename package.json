@@ -11,7 +11,7 @@
     "build": "npm run clean && npm run compile-sass && npm run copy-css && tsc && npm run copy-views",
     "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
-    "start:dev": "npx kill-port 3000,9229 && concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts\" \"npm run compile-sass -- --watch\"",
+    "start:dev": "npx kill-port 3000,9229 && concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts\" \"npm run compile-sass\" \"npm run copy-css\"",
     "start:e2e": "export $(cat e2e.env) && npm run start:dev",
     "start:feature": "export $(cat feature.env) && npm run start:dev",
     "record-build-info": "node ./bin/record-build-info",

@@ -5,14 +5,17 @@
 import type { SentenceLengthReq } from './SentenceLengthReq'
 
 export type UpdateRecallRequest = {
+  additionalLicenceConditions?: boolean
+  additionalLicenceConditionsDetail?: string
   agreeWithRecall?: UpdateRecallRequest.agreeWithRecall
   agreeWithRecallDetail?: string
-  agreeWithRecallRecommendation?: boolean
   authorisingAssistantChiefOfficer?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string
   currentPrison?: string
+  differentNomsNumber?: boolean
+  differentNomsNumberDetail?: string
   indexOffence?: string
   lastReleaseDate?: string
   lastReleasePrison?: string

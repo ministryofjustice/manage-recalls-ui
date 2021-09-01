@@ -36,6 +36,7 @@
                         label: {
                             text: "Provide more detail"
                         },
+                        classes: "govuk-!-width-three-quarters",
                         value: formValues.additionalLicenceConditionsDetail ,
                         errorMessage: {
                             text: 'Provide more detail'
@@ -79,9 +80,10 @@
                         label: {
                             text: "NOMIS number " + person.firstName + " " + person.lastName + " is being held under"
                         },
-                        value: formValues.differentNomsNumberDetail ,
+                        value: formValues.differentNomsNumberDetail,
+                        classes: "govuk-input--width-10",
                         errorMessage: {
-                            text: 'Provide more detail'
+                            text: 'Enter the NOMIS number'
                         } if errors.differentNomsNumberDetail else undefined
                     }) }}
                 {% endset -%}
