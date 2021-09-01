@@ -13,7 +13,7 @@ generic-service:
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     MANAGE_RECALLS_API_URL: "https://manage-recalls-api.hmpps.service.justice.gov.uk"
-    SENTRY_ENV: "PROD"
+    SENTRY_ENVIRONMENT: "PROD"
 
 generic-prometheus-alerts:
   alertSeverity: ppud-replacement-prod
