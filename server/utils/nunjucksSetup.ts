@@ -12,6 +12,7 @@ import {
   checkboxItems,
   filterSelectedItems,
 } from './nunjucksFunctions'
+import { isDefined } from '../routes/handlers/helpers'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -37,6 +38,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('selectItems', selectItems)
   njkEnv.addGlobal('checkboxItems', checkboxItems)
   njkEnv.addGlobal('filterSelectedItems', filterSelectedItems)
+  njkEnv.addGlobal('isDefined', isDefined)
+
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)
 }

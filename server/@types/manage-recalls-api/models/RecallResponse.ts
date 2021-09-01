@@ -6,14 +6,17 @@ import type { ApiRecallDocument } from './ApiRecallDocument'
 import type { SentenceLengthRes } from './SentenceLengthRes'
 
 export type RecallResponse = {
+  additionalLicenceConditions?: boolean
+  additionalLicenceConditionsDetail?: string
   agreeWithRecall?: RecallResponse.agreeWithRecall
   agreeWithRecallDetail?: string
-  agreeWithRecallRecommendation?: boolean
   authorisingAssistantChiefOfficer?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string
   currentPrison?: string
+  differentNomsNumber?: boolean
+  differentNomsNumberDetail?: string
   documents: Array<ApiRecallDocument>
   indexOffence?: string
   lastReleaseDate?: string

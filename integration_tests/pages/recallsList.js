@@ -10,6 +10,7 @@ const recallsListPage = () =>
       })
     },
     assessRecall: ({ recallId }) => cy.get(`[data-qa=assess-recall-${recallId}]`).click(),
+    createDossier: ({ recallId }) => cy.get(`[data-qa=create-dossier-${recallId}]`).click(),
   })
 
 module.exports = { verifyOnPage: recallsListPage }

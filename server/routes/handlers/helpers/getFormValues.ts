@@ -11,6 +11,12 @@ interface Args {
   apiValues: RecallResponse
 }
 
+const booleanToYesNo = (val: boolean) => {
+  if (val === true) return 'YES'
+  if (val === false) return 'NO'
+  return undefined
+}
+
 export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValues = {}, apiValues }: Args) => {
   const vals = {} as RecallFormValues
   if (agreeWithRecall === 'YES') {
@@ -58,11 +64,16 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'reasonsForRecall',
     'reasonsForRecallOtherDetail',
     'currentPrison',
+    'additionalLicenceConditionsDetail',
+    'differentNomsNumberDetail',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || apiValues[key]
   })
   ;['contraband', 'vulnerabilityDiversity'].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || (apiValues[`${key}Detail`] ? 'yes' : undefined)
+  })
+  ;['additionalLicenceConditions', 'differentNomsNumber'].forEach((key: string) => {
+    values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
   })
   values = {
     ...values,
