@@ -56,8 +56,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         differentNomsNumberDetail: 'AC3408303',
       }
       await provider.addInteraction({
-        state: 'a recall exists and can be updated',
-        ...updateRecallRequest('an update recall request', recallId, request, accessToken),
+        state: 'a recall exists',
+        ...updateRecallRequest('an update recall request with all fields populated', recallId, request, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(fullyPopulatedRecallJson), 200),
       })
       const actual = await updateRecall(recallId, request, accessToken)
@@ -79,7 +79,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         },
       }
       await provider.addInteraction({
-        state: 'an empty recall exists and can be updated with sentencing info',
+        state: 'a recall exists',
         ...updateRecallRequest('an update recall request with sentencing info', recallId, request, accessToken),
         willRespondWith: updateRecallResponse(Matchers.like(recallWithSentencingInfoJson), 200),
       })
@@ -101,7 +101,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         },
       }
       await provider.addInteraction({
-        state: 'an empty recall exists and will not be updated',
+        state: 'a recall exists',
         ...updateRecallRequest(
           'an update recall request with sentence info and no sentenceDate',
           recallId,
@@ -115,14 +115,20 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
 
     test('returns 404 if recall not found', async () => {
+      const unknownRecallId = '11100000-0000-0000-0000-000000000000'
       await provider.addInteraction({
         state: 'a recall does not exist',
-        ...updateRecallRequest('an update recall request', recallId, { indexOffence }, accessToken),
+        ...updateRecallRequest(
+          'an update recall request for a recall that does not exist',
+          unknownRecallId,
+          { indexOffence },
+          accessToken
+        ),
         willRespondWith: { status: 404 },
       })
 
       try {
-        await updateRecall(recallId, { indexOffence }, accessToken)
+        await updateRecall(unknownRecallId, { indexOffence }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(404)
       }
