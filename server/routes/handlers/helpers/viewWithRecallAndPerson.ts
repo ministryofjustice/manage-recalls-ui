@@ -5,7 +5,7 @@ import { isInvalid } from './index'
 import { getFormValues } from './getFormValues'
 import { getActivePrisonList } from '../../../data/prisonRegisterClient'
 import { Prison } from '../../../@types'
-import { getReferenceDataItemLabel, referenceData } from './referenceData/referenceData'
+import { getPrisonLabel, getReferenceDataItemLabel, referenceData } from './referenceData/referenceData'
 
 export type ViewName =
   | 'assessConfirmation'
@@ -61,9 +61,8 @@ export const viewWithRecallAndPerson =
         value: prisonId,
         text: prisonName,
       }))
-      res.locals.recall.currentPrisonFormatted = prisonList.find(
-        item => item.prisonId === res.locals.recall.currentPrison
-      )?.prisonName
+      res.locals.recall.currentPrisonFormatted = getPrisonLabel(prisonList, res.locals.recall.currentPrison)
+      res.locals.recall.lastReleasePrisonFormatted = getPrisonLabel(prisonList, res.locals.recall.lastReleasePrison)
     }
     res.render(`pages/${viewName}`)
   }
