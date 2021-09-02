@@ -167,10 +167,10 @@ jobs:
       - mem/recall:
           env_var: APP_VERSION
       - run:
-          name: Create release within Sentry
+          name: Sentry - Create a release and notify of deployment
           command: |
             export SENTRY_PROJECT=<< parameters.sentry_project >>
-            sentry-cli releases new -p << parameters.sentry_project >> $APP_VERSION
+            sentry-cli releases new $APP_VERSION --project $SENTRY_PROJECT
             sentry-cli releases set-commits $APP_VERSION --auto
             sentry-cli releases finalize $APP_VERSION
             sentry-cli releases deploys $APP_VERSION new -e << parameters.sentry_environment >>
