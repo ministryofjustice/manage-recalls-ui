@@ -5,8 +5,8 @@ const dossierLetterPage = ({ nomsNumber, recallId } = {}) =>
     url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/dossier-letter` : null,
     additionalLicenceConditions: () => cy.get('[name="additionalLicenceConditions"][value="YES"]').click(),
     differentNomsNumber: () => cy.get('[name="differentNomsNumber"][value="YES"]').click(),
-    addLicenceDetail: () => cy.get('[name="additionalLicenceConditionsDetail"]').clear().type('(i) one, (ii) two'),
-    addNomsDetail: () => cy.get('[name="differentNomsNumberDetail"]').clear().type('AC2345908'),
+    addLicenceDetail: () => cy.get('[name="additionalLicenceConditionsDetail"]').clear().type('one, two'),
+    addNomsDetail: () => cy.get('[name="differentNomsNumberDetail"]').clear().type('AC3408303'),
   })
 
 module.exports = { verifyOnPage: dossierLetterPage }
