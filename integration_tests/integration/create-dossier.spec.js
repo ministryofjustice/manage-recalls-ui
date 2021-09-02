@@ -4,6 +4,7 @@ import recallsListPage from '../pages/recallsList'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
+const assessRecallPage = require('../pages/assessRecall')
 
 context('Create a dossier', () => {
   beforeEach(() => {
@@ -14,6 +15,7 @@ context('Create a dossier', () => {
 
   const nomsNumber = 'A1234AA'
   const recallId = '123'
+  const personName = 'Bobby Badger'
 
   it('User can create a dossier', () => {
     cy.task('expectListRecalls', {
@@ -37,5 +39,10 @@ context('Create a dossier', () => {
     dossierLetter.addNomsDetail()
     dossierLetter.clickContinue()
     dossierConfirmationPage.verifyOnPage()
+    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Yes' })
+    assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditionsDetail', textToFind: 'one, two' })
+    assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'Yes' })
+    assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumberDetail', textToFind: 'AC3408303' })
   })
 })
