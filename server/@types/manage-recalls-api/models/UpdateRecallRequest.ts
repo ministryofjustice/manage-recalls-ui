@@ -53,6 +53,7 @@ export type UpdateRecallRequest = {
   sentenceLength?: SentenceLengthReq
   sentencingCourt?: string
   vulnerabilityDiversityDetail?: string
+  recallNotificationEmailSentDateTime?: string
 }
 
 export namespace UpdateRecallRequest {

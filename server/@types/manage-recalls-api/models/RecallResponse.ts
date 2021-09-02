@@ -59,6 +59,7 @@ export type RecallResponse = {
   sentenceLength?: SentenceLengthRes
   sentencingCourt?: string
   vulnerabilityDiversityDetail?: string
+  recallNotificationEmailSentDateTime?: string
 }
 
 export namespace RecallResponse {

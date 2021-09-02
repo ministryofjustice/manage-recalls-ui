@@ -54,6 +54,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         additionalLicenceConditionsDetail: 'one, two',
         differentNomsNumber: true,
         differentNomsNumberDetail: 'AC3408303',
+        recallNotificationEmailSentDateTime: '2021-08-15T13:47:43.000Z',
       }
       await provider.addInteraction({
         state: 'a recall exists',
