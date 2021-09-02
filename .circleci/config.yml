@@ -155,7 +155,7 @@ jobs:
 
   notify-sentry-deploy:
     docker:
-      - image: getsentry/sentry-cli
+      - image: cimg/python:3.9
     parameters:
       sentry_project:
         type: string
@@ -170,7 +170,10 @@ jobs:
       - run:
           name: Sentry - Create a release and notify of deployment
           command: |
+            echo "APP_VERSION=${APP_VERSION}"
+            env | sort
             export SENTRY_PROJECT=<< parameters.sentry_project >>
+            curl -sL https://sentry.io/get-cli/ | bash
             sentry-cli releases new $APP_VERSION --project $SENTRY_PROJECT
             sentry-cli releases set-commits $APP_VERSION --auto
             sentry-cli releases finalize $APP_VERSION
@@ -242,7 +245,8 @@ workflows:
           sentry_project: manage-recalls-ui
           sentry_environment: DEV
           requires:
-            - deploy_dev
+            - build_docker
+            # - deploy_dev
 
       - hmpps/trigger_job:
           name: end-to-end-tests-dev
