@@ -23,10 +23,10 @@ export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValu
     vals.agreeWithRecallDetailYes = isDefined(errors.agreeWithRecallDetailYes)
       ? ''
       : unsavedValues.agreeWithRecallDetailYes || (apiValues.agreeWithRecall && apiValues.agreeWithRecallDetail)
-  } else {
+  } else if (agreeWithRecall === 'NO_STOP') {
     vals.agreeWithRecallDetailNo = isDefined(errors.agreeWithRecallDetailNo)
       ? ''
-      : unsavedValues.agreeWithRecallDetailNo || (!apiValues.agreeWithRecall && apiValues.agreeWithRecallDetail)
+      : unsavedValues.agreeWithRecallDetailNo || apiValues.agreeWithRecallDetail
   }
   return vals
 }

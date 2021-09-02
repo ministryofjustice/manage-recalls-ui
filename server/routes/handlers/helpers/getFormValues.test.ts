@@ -1,6 +1,6 @@
 import { getFormValues } from './getFormValues'
 import { FormError, ObjectMap } from '../../../@types'
-import { RecallResponse } from '../../../@types/manage-recalls-api'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 describe('getFormValues', () => {
@@ -384,13 +384,17 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: {},
       unsavedValues: {},
-      apiValues: updateRecallResponse as RecallResponse,
+      apiValues: {
+        ...(updateRecallResponse as RecallResponse),
+        agreeWithRecall: RecallResponse.agreeWithRecall.NO_STOP,
+        agreeWithRecallDetail: 'Reasons for no...',
+      },
     })
     expect(formValues).toEqual({
       additionalLicenceConditions: 'YES',
       additionalLicenceConditionsDetail: 'one, two',
-      agreeWithRecall: 'YES',
-      agreeWithRecallDetailYes: 'Reasons...',
+      agreeWithRecall: 'NO_STOP',
+      agreeWithRecallDetailNo: 'Reasons for no...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
       bookingNumber: 'A123456',
       conditionalReleaseDateParts: {
