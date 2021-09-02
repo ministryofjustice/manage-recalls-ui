@@ -3,11 +3,6 @@ const page = require('./page')
 const recallRequestReceivedPage = (params = {}) =>
   page('When did you receive the recall request?', {
     url: params.nomsNumber ? `/persons/${params.nomsNumber}/recalls/${params.recallId}/request-received` : null,
-    enterRecallReceivedDate: values => {
-      Object.keys(values).forEach(value => {
-        cy.get(`[name=${value}]`).clear().type(values[value])
-      })
-    },
     expectError: fieldName => {
       cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
         const text = $searchResults.text()

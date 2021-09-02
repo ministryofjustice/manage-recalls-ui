@@ -350,7 +350,7 @@
             </dl>
             {% endif %}
 
-            {% if isDefined(recall.additionalLicenceConditions) %}
+            {% if isDefined(recall.recallNotificationEmailSentDateTime) %}
                 <h2 class='govuk-heading-m'>Create dossier</h2>
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
@@ -389,6 +389,14 @@
                         </dd>
                     </div>
                     {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Date/time that recall notification was sent by email
+                        </dt>
+                        <dd class="govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
+                            {{ recallNotificationEmailSentDateTime | dateTime }}
+                        </dd>
+                    </div>
                 </dl>
             {% endif %}
         </div>
