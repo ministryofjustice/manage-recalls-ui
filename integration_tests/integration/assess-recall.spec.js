@@ -8,6 +8,7 @@ const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
 const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation')
 const assessRecallLicencePage = require('../pages/assessRecallLicence')
+const assessRecallEmailPage = require('../pages/assessRecallEmail')
 
 context('Assess a recall', () => {
   beforeEach(() => {
@@ -79,6 +80,19 @@ context('Assess a recall', () => {
     const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ personName })
     assessRecallPrison.enterPrison()
     assessRecallPrison.clickContinue()
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage()
+    assessRecallEmail.confirmEmailSent()
+    assessRecallEmail.enterDateTime({
+      prefix: 'recallNotificationEmailSentDateTime',
+      values: {
+        Day: '154',
+        Month: '08',
+        Year: '2021',
+        Hour: '13',
+        Minute: '47',
+      },
+    })
+    assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'agreeWithRecall', textToFind: 'Yes' })

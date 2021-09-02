@@ -19,6 +19,12 @@ module.exports = (name, pageObject = {}) => {
   }
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
 
+  const enterDateTime = ({ prefix, values }) => {
+    Object.keys(values).forEach(value => {
+      cy.get(`[name=${prefix}${value}]`).clear().type(values[value])
+    })
+  }
+
   if (pageObject.url) {
     cy.visit(pageObject.url)
   }
@@ -30,5 +36,6 @@ module.exports = (name, pageObject = {}) => {
     assertElementHasText,
     assertErrorMessage,
     clickContinue,
+    enterDateTime,
   }
 }

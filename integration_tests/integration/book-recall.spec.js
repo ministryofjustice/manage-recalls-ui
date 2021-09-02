@@ -31,12 +31,15 @@ context('Book a recall', () => {
   const nomsNumber = 'A1234AA'
 
   it('User can book a recall', () => {
-    recallRequestReceived.enterRecallReceivedDate({
-      recallEmailReceivedDateTimeDay: '10',
-      recallEmailReceivedDateTimeMonth: '05',
-      recallEmailReceivedDateTimeYear: '2021',
-      recallEmailReceivedDateTimeHour: '05',
-      recallEmailReceivedDateTimeMinute: '3',
+    recallRequestReceived.enterDateTime({
+      prefix: 'recallEmailReceivedDateTime',
+      values: {
+        Day: '10',
+        Month: '05',
+        Year: '2021',
+        Hour: '05',
+        Minute: '3',
+      },
     })
     recallRequestReceived.clickContinue()
     const recallLastRelease = recallLastReleasePage.verifyOnPage()
@@ -72,10 +75,13 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if an invalid email received date is entered', () => {
-    recallRequestReceived.enterRecallReceivedDate({
-      recallEmailReceivedDateTimeYear: '2021',
-      recallEmailReceivedDateTimeHour: '05',
-      recallEmailReceivedDateTimeMinute: '3',
+    recallRequestReceived.enterDateTime({
+      prefix: 'recallEmailReceivedDateTime',
+      values: {
+        Year: '2021',
+        Hour: '05',
+        Minute: '3',
+      },
     })
     recallRequestReceived.clickContinue()
     recallRequestReceived.expectError('recallEmailReceivedDateTime')

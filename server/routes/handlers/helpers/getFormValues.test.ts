@@ -359,6 +359,13 @@ describe('getFormValues', () => {
         month: 12,
         year: 2020,
       },
+      recallNotificationEmailSentDateTimeParts: {
+        day: 15,
+        hour: 14,
+        minute: 47,
+        month: 8,
+        year: 2021,
+      },
       sentenceDateParts: {
         day: 3,
         month: 8,
@@ -434,6 +441,13 @@ describe('getFormValues', () => {
         minute: 33,
         month: 12,
         year: 2020,
+      },
+      recallNotificationEmailSentDateTimeParts: {
+        day: 15,
+        hour: 14,
+        minute: 47,
+        month: 8,
+        year: 2021,
       },
       sentenceDateParts: {
         day: 3,

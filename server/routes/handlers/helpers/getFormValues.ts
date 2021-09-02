@@ -17,6 +17,8 @@ const booleanToYesNo = (val: boolean) => {
   return undefined
 }
 
+// special case with Yes / No options, each with a detail field in the front end
+// whichever option is selected, its detail field is stored as agreeWithRecallDetail in the API
 export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValues = {}, apiValues }: Args) => {
   const vals = {} as RecallFormValues
   if (agreeWithRecall === 'YES') {
@@ -34,6 +36,7 @@ export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValu
 export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Args): RecallFormValues => {
   let values = {
     sentenceLengthParts: errors.sentenceLength?.values || unsavedValues.sentenceLengthParts || apiValues.sentenceLength,
+    // dates / times
   } as RecallFormValues
   ;[
     'recallEmailReceivedDateTime',
@@ -41,9 +44,12 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'sentenceDate',
     'sentenceExpiryDate',
     'licenceExpiryDate',
+    'recallNotificationEmailSentDateTime',
     'conditionalReleaseDate',
   ].forEach((key: string) => {
     values[`${key}Parts`] = errors[key]?.values || unsavedValues[`${key}Parts`] || splitIsoDateToParts(apiValues[key])
+
+    // Text / radio / checkbox fields
   })
   ;[
     'agreeWithRecall',
@@ -65,12 +71,15 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'reasonsForRecallOtherDetail',
     'currentPrison',
     'additionalLicenceConditionsDetail',
+    'confirmRecallNotificationEmailSent',
     'differentNomsNumberDetail',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || apiValues[key]
   })
   ;['contraband', 'vulnerabilityDiversity'].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || (apiValues[`${key}Detail`] ? 'yes' : undefined)
+
+    // Yes / no options - stored as booleans in the API, but sent as 'YES' / 'NO' values in the front end
   })
   ;['additionalLicenceConditions', 'differentNomsNumber'].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
