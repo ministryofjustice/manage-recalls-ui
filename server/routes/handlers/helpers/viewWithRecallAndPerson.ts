@@ -13,6 +13,7 @@ export type ViewName =
   | 'assessPrison'
   | 'assessRecall'
   | 'assessLicence'
+  | 'assessEmail'
   | 'recallSentenceDetails'
   | 'recallRequestReceived'
   | 'recallPrisonPolice'

@@ -1,0 +1,100 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Assess a recall - Email the recall notification" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-prison"
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class='govuk-heading-l'>Email the recall notification</h1>
+
+            <p class='govuk-body'>You must now email the recall notification you've downloaded to:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>the Probation Service including the:
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li>Community Offender Manager (COM)</li>
+                        <li>Senior Probation Officer (SPO)</li>
+                        <li>Assistant Chief Officer (ACO)</li>
+                        <li>functional mailbox</li>
+                    </ul>
+                </li>
+                <li>the local police force</li>
+                <li>the prison</li>
+                <li>New Scotland Yard</li>
+            </ul>
+            {{ govukWarningText({
+                text: "You must email the recall notification using Microsoft Outlook",
+                iconFallbackText: "Warning"
+            }) }}
+
+            <div class="govuk-!-margin-top-4">
+                <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-email" method="post">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    {% set emailConfirmHtml %}
+                        {{ govukDateInput({
+                            name: 'recallNotificationEmailSentDateTime',
+                            id: 'recallNotificationEmailSentDateTime',
+                            fieldset: {
+                                legend: {
+                                    text: 'When did you send the email?',
+                                    classes: 'govuk-fieldset__legend--m'
+                                }
+                            },
+                            items: dateTimeItems("recallNotificationEmailSentDateTime", formValues.recallNotificationEmailSentDateTimeParts, true),
+                            errorMessage: {
+                                text: 'Enter a valid date and time in the past'
+                            } if errors.recallNotificationEmailSentDateTime else undefined
+                        }) }}
+                    {% endset -%}
+
+                    {{ govukCheckboxes({
+                        idPrefix: "confirmRecallNotificationEmailSent",
+                        name: "confirmRecallNotificationEmailSent",
+                        fieldset: {
+                            legend: {
+                                text: "I have sent the email to all recipients",
+                                classes: "govuk-visually-hidden"
+                            }
+                        },
+                        items: [
+                            {
+                                value: "YES",
+                                text: "I have sent the email to all recipients",
+                                conditional: {
+                                    html: emailConfirmHtml
+                                },
+                                checked: true if formValues.confirmRecallNotificationEmailSent == 'YES'
+                            }
+                        ],
+                        errorMessage: {
+                            text: "Confirm you sent the email"
+                        } if errors.confirmRecallNotificationEmailSent else undefined
+                    })
+                    }}
+                    <button class="govuk-button" data-qa="continueButton">Continue</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
