@@ -110,7 +110,7 @@ export default function manageRecallsApi(wiremock) {
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: { id: '123' },
+          jsonBody: { documentId: '123' },
         },
       })
     },

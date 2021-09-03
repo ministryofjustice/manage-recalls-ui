@@ -34,6 +34,7 @@ context('Assess a recall', () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
     cy.task('expectUpdateRecall', { recallId })
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
+    cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectResultsCountText('1 recall')
@@ -92,6 +93,7 @@ context('Assess a recall', () => {
         Minute: '47',
       },
     })
+    assessRecallEmail.uploadEmail()
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
