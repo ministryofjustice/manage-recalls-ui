@@ -6,7 +6,7 @@ const assessRecallEmailPage = ({ nomsNumber, recallId } = {}) =>
     confirmEmailSent: () => cy.get('[value="YES"]').click(),
     uploadEmail: () => {
       cy.get('[name="recallNotificationEmailFileName"]').attachFile({
-        filePath: '../uploads/recall-notification.eml',
+        filePath: '../uploads/recall-notification.msg',
         mimeType: 'application/octet-stream',
       })
     },

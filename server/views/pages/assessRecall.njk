@@ -361,7 +361,7 @@
                         Uploaded recall notification email
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallNotificationEmailFileName'>
-                        <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}'>{{ recall.recallNotificationEmail.fileName if recall.recallNotificationEmail.fileName else 'recall-notification.eml' }}</a>
+                        <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}'>{{ recall.recallNotificationEmail.fileName }}</a>
                     </dd>
                 </div>
                 {% endif %}

@@ -85,7 +85,7 @@ describe('getFormValues', () => {
     },
     recallNotificationEmailFileName: {
       text: 'An error occurred uploading the email',
-      values: 'recall-notification.eml',
+      values: 'recall-notification.msg',
     },
   } as unknown as ObjectMap<FormError>
   const unsavedValues = {
@@ -121,7 +121,7 @@ describe('getFormValues', () => {
     reasonsForRecall: ['POOR_BEHAVIOUR_NON_COMPLIANCE'],
     reasonsForRecallOtherDetail: '',
     currentPrison: 'ACL',
-    recallNotificationEmailFileName: 'recall.eml',
+    recallNotificationEmailFileName: 'recall.msg',
   }
 
   const apiValues = {
@@ -174,7 +174,7 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
-      recallNotificationEmailFileName: 'recall-notification.eml',
+      recallNotificationEmailFileName: 'recall-notification.msg',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -241,7 +241,7 @@ describe('getFormValues', () => {
         month: '12',
         year: '2020',
       },
-      recallNotificationEmailFileName: 'recall.eml',
+      recallNotificationEmailFileName: 'recall.msg',
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -304,7 +304,7 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
-      recallNotificationEmailFileName: 'recall-notification.eml',
+      recallNotificationEmailFileName: 'recall-notification.msg',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -377,7 +377,7 @@ describe('getFormValues', () => {
         month: 12,
         year: 2020,
       },
-      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.eml',
+      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: 15,
         hour: 14,
@@ -468,7 +468,7 @@ describe('getFormValues', () => {
         month: 8,
         year: 2021,
       },
-      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.eml',
+      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.msg',
       sentenceDateParts: {
         day: 3,
         month: 8,

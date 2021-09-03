@@ -13,7 +13,7 @@ describe('validateEmail', () => {
   it('returns valuesToSave for all valid fields', () => {
     const { errors, valuesToSave } = validateEmail({
       requestBody,
-      fileName: 'test.eml',
+      fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
     })
@@ -30,7 +30,7 @@ describe('validateEmail', () => {
     }, {})
     const { errors, valuesToSave } = validateEmail({
       requestBody: emptyBody,
-      fileName: 'test.eml',
+      fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
     })
@@ -50,7 +50,7 @@ describe('validateEmail', () => {
     }
     const { errors, valuesToSave } = validateEmail({
       requestBody: body,
-      fileName: 'test.eml',
+      fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
     })
@@ -68,7 +68,7 @@ describe('validateEmail', () => {
   it("returns an error if an email wasn't uploaded", () => {
     const { errors, valuesToSave } = validateEmail({
       requestBody,
-      fileName: 'test.eml',
+      fileName: 'test.msg',
       emailFileSelected: false,
       uploadFailed: false,
     })
@@ -87,7 +87,7 @@ describe('validateEmail', () => {
   it('returns an error if the email upload failed', () => {
     const { errors, valuesToSave } = validateEmail({
       requestBody,
-      fileName: 'test.eml',
+      fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
     })
@@ -99,7 +99,7 @@ describe('validateEmail', () => {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
         text: 'An error occurred uploading the email',
-        values: 'test.eml',
+        values: 'test.msg',
       },
     ])
   })
