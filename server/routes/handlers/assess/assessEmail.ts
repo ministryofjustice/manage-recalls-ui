@@ -36,7 +36,7 @@ export const assessEmailFormHandler = async (req: Request, res: Response): Promi
             uploadFailed = true
           }
         } catch (e) {
-          uploadFailed = false // TODO - SET TO TRUE
+          uploadFailed = true
         }
       }
       const { errors, valuesToSave, unsavedValues } = validateEmail({
