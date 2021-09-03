@@ -9,7 +9,7 @@ import {
   uploadDocumentsPage,
   uploadRecallDocumentsFormHandler,
   downloadDocument,
-} from './handlers/book/uploadRecallDocuments'
+} from './handlers/book/recallUploadDocuments'
 import { recallRequestReceivedFormHandler } from './handlers/book/recallRequestReceived'
 import { sentenceDetails } from './handlers/book/sentenceDetails'
 import { prisonPolice } from './handlers/book/prisonPolice'

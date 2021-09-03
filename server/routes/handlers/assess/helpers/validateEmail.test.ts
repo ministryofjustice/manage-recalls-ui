@@ -99,9 +99,7 @@ describe('validateEmail', () => {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
         text: 'An error occurred uploading the email',
-        values: {
-          recallNotificationEmailFileName: 'test.eml',
-        },
+        values: 'test.eml',
       },
     ])
   })

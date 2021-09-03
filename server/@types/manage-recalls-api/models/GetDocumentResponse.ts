@@ -6,6 +6,7 @@ export type GetDocumentResponse = {
   category: GetDocumentResponse.category
   content: string
   documentId: string
+  fileName?: string
 }
 
 export namespace GetDocumentResponse {
