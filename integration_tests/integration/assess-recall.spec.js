@@ -1,3 +1,4 @@
+import path from 'path'
 import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import validateBinaryFile from './file-utils'
@@ -107,6 +108,17 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecall-OTHER', textToFind: 'Other' })
     assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecallOtherDetail', textToFind: 'other reason detail...' })
     assessRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
+    assessRecall.assertElementHasText({
+      qaAttr: 'recallNotificationEmailSentDateTime',
+      textToFind: '15 Aug 2021 at 14:47',
+    })
+    cy.readFile('integration_tests/uploads/recall-notification.msg', 'binary', { timeout: 3000 }).then(file => {
+      const fileName = '2021-07-03 Phil Jones recall.msg'
+      cy.task('expectGetRecallDocument', { category: 'RECALL_NOTIFICATION_EMAIL', file, fileName, documentId: '123' })
+      cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
+      const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
+      cy.readFile(downloadedFilename, 'binary')
+    })
   })
 
   it("User sees an error if they don't make a decision", () => {
