@@ -39,11 +39,13 @@ export const viewWithRecallAndPerson =
       getRecall(recallId, res.locals.user.token),
       requiresPrisonList(viewName) ? getActivePrisonList() : undefined,
     ])
-    recall.documents = recall.documents.map(doc => ({
-      ...doc,
-      ...(documentTypes.find(d => d.name === doc.category) || {}),
-      url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${doc.documentId}`,
-    }))
+    recall.documents = recall.documents
+      .map(doc => ({
+        ...doc,
+        ...(documentTypes.find(d => d.name === doc.category) || {}),
+        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${doc.documentId}`,
+      }))
+      .filter(doc => doc.type === 'document')
     res.locals.recall = {
       ...recall,
       recallLengthFormatted: getReferenceDataItemLabel('recallLengths', recall.recallLength),

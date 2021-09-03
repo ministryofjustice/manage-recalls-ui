@@ -28,6 +28,7 @@ export interface UploadError {
 export interface UploadDocumentMetadata {
   label: string
   name: ApiRecallDocument.category
+  type: 'document' | 'email'
   error?: string
 }
 

@@ -5,4 +5,5 @@
 export type AddDocumentRequest = {
   category: string
   fileContent: string
+  fileName?: string
 }

@@ -44,6 +44,7 @@ describe('viewWithRecallAndPerson', () => {
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         label: 'Licence',
         name: 'LICENCE',
+        type: 'document',
         url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
       },
       {
@@ -51,6 +52,7 @@ describe('viewWithRecallAndPerson', () => {
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
         label: 'Part A recall report',
         name: 'PART_A_RECALL_REPORT',
+        type: 'document',
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
       },
     ])
