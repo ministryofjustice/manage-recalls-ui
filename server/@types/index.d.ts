@@ -1,9 +1,9 @@
-import { ApiRecallDocument } from './manage-recalls-api'
+import { ApiRecallDocument, RecallResponse } from './manage-recalls-api'
 
 export interface FormError {
   text: string
   href: string
-  values?: ObjectMap<unknown>
+  values?: ObjectMap<unknown> | string
 }
 
 export interface ObjectMixed {
@@ -79,6 +79,22 @@ export interface RecallFormValues {
   agreeWithRecallDetailNo?: string
 }
 
+export interface RecallResponseWithDocuments extends RecallResponse {
+  recallNotificationEmail: DecoratedDocument
+  documents: DecoratedDocument[]
+}
+
+export interface DecoratedRecallResponse extends RecallResponseWithDocuments {
+  recallLengthFormatted: string
+  mappaLevelFormatted: string
+  probationDivisionFormatted: string
+}
+
+export interface DecoratedDocument extends UploadDocumentMetadata {
+  fileName?: string
+  url: string
+}
+
 export interface Prison {
   prisonId: string
   prisonName: string
@@ -90,3 +106,19 @@ export interface UiListItem {
   text: string
   selected?: boolean
 }
+
+export type ViewName =
+  | 'assessConfirmation'
+  | 'assessDecision'
+  | 'assessPrison'
+  | 'assessRecall'
+  | 'assessLicence'
+  | 'assessEmail'
+  | 'recallSentenceDetails'
+  | 'recallRequestReceived'
+  | 'recallPrisonPolice'
+  | 'recallIssuesNeeds'
+  | 'recallProbationOfficer'
+  | 'recallConfirmation'
+  | 'dossierLetter'
+  | 'dossierConfirmation'

@@ -64,12 +64,12 @@ export const validateEmail = ({
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
           text: 'An error occurred uploading the email',
-          values: { recallNotificationEmailFileName: fileName },
+          values: fileName,
         })
       )
     }
     unsavedValues = {
-      recallNotificationEmailFileName: '',
+      recallNotificationEmailFileName: fileName,
       confirmRecallNotificationEmailSent,
       recallNotificationEmailSentDateTimeParts,
     }
