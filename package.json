@@ -18,13 +18,13 @@
     "lint": "eslint . --cache --max-warnings 0",
     "lint:fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --forceExit",
     "security_audit": "npx audit-ci --config audit-ci.json",
     "int-test": "rm -rf cypress/downloads && cypress run --config video=false",
     "int-test-ui": "rm -rf cypress/downloads && cypress open",
     "clean": "rm -rf dist build",
     "prepare": "npx husky install",
-    "pact-test": "rm -rf pact/pacts/* && jest --detectOpenHandles --config=./pact/jest.pact.config.js"
+    "pact-test": "rm -rf pact/pacts/* && jest --forceExit --config=./pact/jest.pact.config.js"
   },
   "engines": {
     "node": "14.17.3",
