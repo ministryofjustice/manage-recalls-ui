@@ -1,27 +1,10 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { documentTypes } from '../book/documentTypes'
-import { isInvalid } from './index'
+import { decorateDocs, isInvalid } from './index'
 import { getFormValues } from './getFormValues'
 import { getActivePrisonList } from '../../../data/prisonRegisterClient'
-import { Prison } from '../../../@types'
+import { Prison, ViewName } from '../../../@types'
 import { getPrisonLabel, getReferenceDataItemLabel, referenceData } from './referenceData/referenceData'
-
-export type ViewName =
-  | 'assessConfirmation'
-  | 'assessDecision'
-  | 'assessPrison'
-  | 'assessRecall'
-  | 'assessLicence'
-  | 'assessEmail'
-  | 'recallSentenceDetails'
-  | 'recallRequestReceived'
-  | 'recallPrisonPolice'
-  | 'recallIssuesNeeds'
-  | 'recallProbationOfficer'
-  | 'recallConfirmation'
-  | 'dossierLetter'
-  | 'dossierConfirmation'
 
 const requiresPrisonList = (viewName: ViewName) =>
   ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'assessPrison'].includes(viewName)
@@ -39,24 +22,25 @@ export const viewWithRecallAndPerson =
       getRecall(recallId, res.locals.user.token),
       requiresPrisonList(viewName) ? getActivePrisonList() : undefined,
     ])
-    recall.documents = recall.documents.map(doc => ({
-      ...doc,
-      ...(documentTypes.find(d => d.name === doc.category) || {}),
-      url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${doc.documentId}`,
-    }))
+    const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
     res.locals.recall = {
       ...recall,
-      recallLengthFormatted: getReferenceDataItemLabel('recallLengths', recall.recallLength),
-      mappaLevelFormatted: getReferenceDataItemLabel('mappaLevels', recall.mappaLevel),
-      probationDivisionFormatted: getReferenceDataItemLabel('probationDivisions', recall.probationDivision),
+      ...decoratedDocs,
     }
+    // get values to preload into form inputs
     res.locals.formValues = getFormValues({
       errors: res.locals.errors,
       unsavedValues: res.locals.unsavedValues,
-      apiValues: recall,
+      apiValues: res.locals.recall,
     })
     res.locals.person = person
     res.locals.referenceData = referenceData
+    res.locals.recall.recallLengthFormatted = getReferenceDataItemLabel('recallLengths', recall.recallLength)
+    res.locals.recall.mappaLevelFormatted = getReferenceDataItemLabel('mappaLevels', recall.mappaLevel)
+    res.locals.recall.probationDivisionFormatted = getReferenceDataItemLabel(
+      'probationDivisions',
+      recall.probationDivision
+    )
     if (prisonList) {
       res.locals.referenceData.prisonList = prisonList.map(({ prisonId, prisonName }: Prison) => ({
         value: prisonId,

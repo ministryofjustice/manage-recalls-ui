@@ -1,7 +1,9 @@
 import { getFormValues } from './getFormValues'
-import { FormError, ObjectMap } from '../../../@types'
+import { RecallResponseWithDocuments, FormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import { decorateDocs } from './index'
+import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 
 describe('getFormValues', () => {
   const errors = {
@@ -81,6 +83,10 @@ describe('getFormValues', () => {
     currentPrison: {
       text: 'Current prison',
     },
+    recallNotificationEmailFileName: {
+      text: 'An error occurred uploading the email',
+      values: 'recall-notification.msg',
+    },
   } as unknown as ObjectMap<FormError>
   const unsavedValues = {
     agreeWithRecall: 'NO',
@@ -115,10 +121,19 @@ describe('getFormValues', () => {
     reasonsForRecall: ['POOR_BEHAVIOUR_NON_COMPLIANCE'],
     reasonsForRecallOtherDetail: '',
     currentPrison: 'ACL',
+    recallNotificationEmailFileName: 'recall.msg',
   }
 
+  const apiValues = {
+    ...updateRecallResponse,
+    ...decorateDocs({
+      docs: updateRecallResponse.documents as ApiRecallDocument[],
+      nomsNumber: '123',
+      recallId: '456',
+    }),
+  }
   it('uses errors if no unsaved or API values', () => {
-    const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as RecallResponse })
+    const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as RecallResponseWithDocuments })
     expect(formValues).toEqual({
       agreeWithRecall: '',
       authorisingAssistantChiefOfficer: '',
@@ -159,6 +174,7 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
+      recallNotificationEmailFileName: 'recall-notification.msg',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -184,7 +200,7 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: { lastReleaseDate: errors.lastReleaseDate },
       unsavedValues,
-      apiValues: {} as RecallResponse,
+      apiValues: {} as RecallResponseWithDocuments,
     })
     expect(formValues).toEqual({
       agreeWithRecall: 'NO',
@@ -225,6 +241,7 @@ describe('getFormValues', () => {
         month: '12',
         year: '2020',
       },
+      recallNotificationEmailFileName: 'recall.msg',
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -246,7 +263,7 @@ describe('getFormValues', () => {
   })
 
   it('uses all error values over unsaved values', () => {
-    const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as RecallResponse })
+    const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as RecallResponseWithDocuments })
     expect(formValues).toEqual({
       agreeWithRecall: '',
       authorisingAssistantChiefOfficer: '',
@@ -287,6 +304,7 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
+      recallNotificationEmailFileName: 'recall-notification.msg',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -312,7 +330,7 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: { lastReleaseDate: errors.lastReleaseDate },
       unsavedValues: {},
-      apiValues: updateRecallResponse as RecallResponse,
+      apiValues: apiValues as RecallResponseWithDocuments,
     })
     expect(formValues).toEqual({
       additionalLicenceConditions: 'YES',
@@ -359,6 +377,7 @@ describe('getFormValues', () => {
         month: 12,
         year: 2020,
       },
+      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: 15,
         hour: 14,
@@ -392,7 +411,7 @@ describe('getFormValues', () => {
       errors: {},
       unsavedValues: {},
       apiValues: {
-        ...(updateRecallResponse as RecallResponse),
+        ...(apiValues as RecallResponseWithDocuments),
         agreeWithRecall: RecallResponse.agreeWithRecall.NO_STOP,
         agreeWithRecallDetail: 'Reasons for no...',
       },
@@ -449,6 +468,7 @@ describe('getFormValues', () => {
         month: 8,
         year: 2021,
       },
+      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.msg',
       sentenceDateParts: {
         day: 3,
         month: 8,
@@ -471,7 +491,7 @@ describe('getFormValues', () => {
   })
 
   it('sets values to undefined if none supplied', () => {
-    const formValues = getFormValues({ errors: {}, unsavedValues: {}, apiValues: {} as RecallResponse })
+    const formValues = getFormValues({ errors: {}, unsavedValues: {}, apiValues: {} as RecallResponseWithDocuments })
     expect(formValues).toEqual({})
   })
 })

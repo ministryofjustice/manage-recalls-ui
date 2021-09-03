@@ -1,4 +1,6 @@
-import { NamedFormError, ObjectMap } from '../../../@types'
+import { DecoratedDocument, NamedFormError, ObjectMap } from '../../../@types'
+import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { documentTypes } from '../book/documentTypes'
 
 export const makeErrorObject = ({
   id,
@@ -7,7 +9,7 @@ export const makeErrorObject = ({
 }: {
   id: string
   text: string
-  values?: ObjectMap<string>
+  values?: ObjectMap<string> | string
 }): NamedFormError => ({
   name: id,
   text,
@@ -20,3 +22,41 @@ export const isInvalid = (value: string): boolean => {
 }
 
 export const isDefined = (val: unknown) => typeof val !== 'undefined'
+
+export const decorateDocs = ({
+  docs,
+  nomsNumber,
+  recallId,
+}: {
+  docs: ApiRecallDocument[]
+  nomsNumber: string
+  recallId: string
+}): { documents: DecoratedDocument[]; recallNotificationEmail?: DecoratedDocument } =>
+  docs
+    .map(doc => {
+      const documentType = documentTypes.find(d => d.name === doc.category)
+      if (documentType) {
+        return {
+          ...doc,
+          ...documentType,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${doc.documentId}`,
+        }
+      }
+      return undefined
+    })
+    .filter(Boolean)
+    .reduce(
+      (acc, curr) => {
+        if (curr.type === 'document') {
+          acc.documents.push(curr)
+        }
+        if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
+          acc.recallNotificationEmail = curr
+        }
+        return acc
+      },
+      {
+        documents: [],
+        recallNotificationEmail: undefined,
+      }
+    )

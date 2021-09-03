@@ -54,7 +54,14 @@ export const downloadDocument = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params
   const { user } = res.locals
   const response = await getRecallDocument(recallId, documentId, user.token)
-  res.type('application/pdf')
-  res.header('Content-Disposition', `attachment; filename="${response.category.toLowerCase()}.pdf"`)
+  const documentType = documentTypes.find(type => type.name === response.category)
+  if (documentType.type === 'document') {
+    res.contentType('application/pdf')
+    res.header('Content-Disposition', `inline; filename="${response.category.toLowerCase()}.pdf"`)
+  }
+  if (documentType.type === 'email') {
+    res.contentType('application/octet-stream')
+    res.header('Content-Disposition', `attachment; filename="${response.fileName}"`)
+  }
   res.send(Buffer.from(response.content, 'base64'))
 }

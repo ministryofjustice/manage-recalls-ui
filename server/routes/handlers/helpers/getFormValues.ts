@@ -1,4 +1,4 @@
-import { FormError, ObjectMap, RecallFormValues } from '../../../@types'
+import { FormError, ObjectMap, RecallFormValues, RecallResponseWithDocuments } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { isDefined } from './index'
 import { splitIsoDateToParts } from './dates'
@@ -8,7 +8,7 @@ interface Args {
   agreeWithRecall?: RecallResponse.agreeWithRecall
   errors: ObjectMap<FormError>
   unsavedValues: ObjectMap<any>
-  apiValues: RecallResponse
+  apiValues: RecallResponseWithDocuments
 }
 
 const booleanToYesNo = (val: boolean) => {
@@ -36,8 +36,13 @@ export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValu
 export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Args): RecallFormValues => {
   let values = {
     sentenceLengthParts: errors.sentenceLength?.values || unsavedValues.sentenceLengthParts || apiValues.sentenceLength,
-    // dates / times
+    recallNotificationEmailFileName:
+      errors.recallNotificationEmailFileName?.values ||
+      unsavedValues.recallNotificationEmailFileName ||
+      apiValues.recallNotificationEmail?.fileName,
   } as RecallFormValues
+
+  // dates / times
   ;[
     'recallEmailReceivedDateTime',
     'lastReleaseDate',
@@ -48,9 +53,9 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'conditionalReleaseDate',
   ].forEach((key: string) => {
     values[`${key}Parts`] = errors[key]?.values || unsavedValues[`${key}Parts`] || splitIsoDateToParts(apiValues[key])
-
-    // Text / radio / checkbox fields
   })
+
+  // Text / radio / checkbox fields
   ;[
     'agreeWithRecall',
     'lastReleasePrison',
@@ -78,9 +83,9 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
   })
   ;['contraband', 'vulnerabilityDiversity'].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || (apiValues[`${key}Detail`] ? 'yes' : undefined)
-
-    // Yes / no options - stored as booleans in the API, but sent as 'YES' / 'NO' values in the front end
   })
+
+  // Yes / no options - stored as booleans in the API, but sent as 'YES' / 'NO' values in the front end
   ;['additionalLicenceConditions', 'differentNomsNumber'].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
   })

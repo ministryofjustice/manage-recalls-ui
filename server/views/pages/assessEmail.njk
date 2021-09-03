@@ -27,7 +27,6 @@
             {% endif %}
             <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class='govuk-heading-l'>Email the recall notification</h1>
-
             <p class='govuk-body'>You must now email the recall notification you've downloaded to:</p>
             <ul class="govuk-list govuk-list--bullet">
                 <li>the Probation Service including the:
@@ -48,8 +47,7 @@
             }) }}
 
             <div class="govuk-!-margin-top-4">
-                <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-email" method="post">
-                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-email?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
                         {{ govukDateInput({
                             name: 'recallNotificationEmailSentDateTime',
@@ -65,6 +63,25 @@
                                 text: 'Enter a valid date and time in the past'
                             } if errors.recallNotificationEmailSentDateTime else undefined
                         }) }}
+                        {{ govukFileUpload({
+                            id: "recallNotificationEmailFileName",
+                            name: "recallNotificationEmailFileName",
+                            label: {
+                                text: "Upload the email"
+                            },
+                            hint: {
+                                html: govukInsetText({
+                                    text: "Save the email to your computer then upload the file."
+                                })
+                            },
+                            attributes: {
+                                accept: '.msg'
+                            },
+                            errorMessage: {
+                                text: errors.recallNotificationEmailFileName.text
+                            }  if errors.recallNotificationEmailFileName
+                        }) }}
+
                     {% endset -%}
 
                     {{ govukCheckboxes({
@@ -91,7 +108,7 @@
                         } if errors.confirmRecallNotificationEmailSent else undefined
                     })
                     }}
-                    <button class="govuk-button" data-qa="continueButton">Continue</button>
+                    <button class="govuk-button" data-qa="continueButton">Complete assessment</button>
                 </form>
             </div>
         </div>
