@@ -44,7 +44,7 @@ context('Assess a recall', () => {
     firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
     recallsList.assessRecall({ recallId })
     let assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
-    assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
+    assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 Aug 2019' })
@@ -87,11 +87,11 @@ context('Assess a recall', () => {
     assessRecallEmail.enterDateTime({
       prefix: 'recallNotificationEmailSentDateTime',
       values: {
-        Day: '154',
+        Day: '15',
         Month: '08',
         Year: '2021',
-        Hour: '13',
-        Minute: '47',
+        Hour: '14',
+        Minute: '04',
       },
     })
     assessRecallEmail.uploadEmail()
@@ -110,7 +110,7 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
     assessRecall.assertElementHasText({
       qaAttr: 'recallNotificationEmailSentDateTime',
-      textToFind: '15 Aug 2021 at 14:47',
+      textToFind: '15 August 2021 at 14:04',
     })
     cy.readFile('integration_tests/uploads/recall-notification.msg', 'binary', { timeout: 3000 }).then(file => {
       const fileName = '2021-07-03 Phil Jones recall.msg'

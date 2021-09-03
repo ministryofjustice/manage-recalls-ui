@@ -1,5 +1,6 @@
 import { format, parseISO } from 'date-fns'
 import { DatePartsParsed, ObjectMap, UiListItem } from '../@types'
+import { splitIsoDateToParts } from '../routes/handlers/helpers/dates'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -27,9 +28,27 @@ export function dateFilter(date: string) {
   }
 }
 
-export function dateTimeFilter(date: string) {
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
+const leftPadZeros = (num: number): string => num.toString().padStart(2, '0')
+
+export function dateTimeFilter(isoString: string) {
   try {
-    return format(parseISO(date), "d MMM yyyy 'at' HH:mm")
+    const { year, month, day, hour, minute } = splitIsoDateToParts(isoString)
+    return `${day} ${monthNames[month - 1]} ${year} at ${leftPadZeros(hour)}:${leftPadZeros(minute)}`
   } catch (err) {
     return ''
   }
