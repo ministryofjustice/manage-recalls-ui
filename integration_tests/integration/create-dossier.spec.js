@@ -28,7 +28,7 @@ context('Create a dossier', () => {
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
-    cy.task('expectUpdateRecall', { recallId })
+    cy.task('expectUpdateRecall', recallId)
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
