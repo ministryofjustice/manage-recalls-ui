@@ -7,6 +7,9 @@ export const validateSentenceDetails = (
   requestBody: ObjectMap<string>
 ): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
   let errors
+  let valuesToSave
+  let unsavedValues
+
   const {
     lastReleasePrison,
     lastReleaseDateYear,
@@ -173,37 +176,38 @@ export const validateSentenceDetails = (
     }
   }
 
-  const valuesToSave: UpdateRecallRequest = {
-    lastReleaseDate,
-    sentenceDate,
-    licenceExpiryDate,
-    sentenceExpiryDate,
-    lastReleasePrison: lastReleasePrison || undefined,
-    sentencingCourt: sentencingCourt || undefined,
-    indexOffence: indexOffence || undefined,
-    conditionalReleaseDate,
-    bookingNumber: bookingNumber || undefined,
-  }
-  if (sentenceLengthEntered) {
-    valuesToSave.sentenceLength = {
-      years: sentenceLengthYearsParsed,
-      months: sentenceLengthMonthsParsed,
-      days: sentenceLengthDaysParsed,
+  if (errors) {
+    unsavedValues = {
+      lastReleaseDateParts,
+      licenceExpiryDateParts,
+      sentenceExpiryDateParts,
+      conditionalReleaseDateParts,
+      lastReleasePrison,
+      sentenceDateParts,
+      sentencingCourt,
+      indexOffence,
+      sentenceLengthParts,
+      bookingNumber,
+    }
+  } else {
+    valuesToSave = {
+      lastReleaseDate,
+      sentenceDate,
+      licenceExpiryDate,
+      sentenceExpiryDate,
+      lastReleasePrison: lastReleasePrison || undefined,
+      sentencingCourt: sentencingCourt || undefined,
+      indexOffence: indexOffence || undefined,
+      conditionalReleaseDate,
+      bookingNumber: bookingNumber || undefined,
+      sentenceLength: sentenceLengthEntered
+        ? {
+            years: sentenceLengthYearsParsed,
+            months: sentenceLengthMonthsParsed,
+            days: sentenceLengthDaysParsed,
+          }
+        : undefined,
     }
   }
-  const unsavedValues = errors
-    ? {
-        lastReleaseDateParts,
-        licenceExpiryDateParts,
-        sentenceExpiryDateParts,
-        conditionalReleaseDateParts,
-        lastReleasePrison,
-        sentenceDateParts,
-        sentencingCourt,
-        indexOffence,
-        sentenceLengthParts,
-        bookingNumber,
-      }
-    : undefined
   return { errors, valuesToSave, unsavedValues }
 }

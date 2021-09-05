@@ -1,21 +1,20 @@
-import { Request, Response } from 'express'
-import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../../logger'
-import { makeErrorObject } from '../helpers'
+import { makeErrorObject } from '../../helpers'
+import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { NamedFormError, ObjectMap } from '../../../../@types'
 
-export const dossierLetterFormHandler = async (req: Request, res: Response): Promise<void> => {
-  const { nomsNumber, recallId } = req.params
+export const validateDossierLetter = (
+  requestBody: ObjectMap<string>
+): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+  let errors
+  let unsavedValues
+  let valuesToSave
+
   const {
     additionalLicenceConditions,
     additionalLicenceConditionsDetail,
     differentNomsNumber,
     differentNomsNumberDetail,
-  } = req.body
-  if (!nomsNumber || !recallId) {
-    logger.error(`nomsNumber or recallId not supplied. URL: ${req.originalUrl}`)
-    res.sendStatus(400)
-    return
-  }
+  } = requestBody
   const isLicenceValueValid = ['YES', 'NO'].includes(additionalLicenceConditions)
   const isNomsValueValid = ['YES', 'NO'].includes(differentNomsNumber)
   const isLicenceYes = additionalLicenceConditions === 'YES'
@@ -28,9 +27,9 @@ export const dossierLetterFormHandler = async (req: Request, res: Response): Pro
   const nomsDetailCleaned = isNomsYes ? differentNomsNumberDetail : ''
 
   if (!isLicenceValueValid || licenceDetailMissing || !isNomsValueValid || nomsDetailMissing) {
-    req.session.errors = []
+    errors = []
     if (!isLicenceValueValid) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'additionalLicenceConditions',
           text: 'Licence conditions',
@@ -38,7 +37,7 @@ export const dossierLetterFormHandler = async (req: Request, res: Response): Pro
       )
     }
     if (licenceDetailMissing) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'additionalLicenceConditionsDetail',
           text: 'Provide detail on additional licence conditions',
@@ -46,7 +45,7 @@ export const dossierLetterFormHandler = async (req: Request, res: Response): Pro
       )
     }
     if (!isNomsValueValid) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'differentNomsNumber',
           text: 'Different NOMIS number',
@@ -54,35 +53,27 @@ export const dossierLetterFormHandler = async (req: Request, res: Response): Pro
       )
     }
     if (nomsDetailMissing) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'differentNomsNumberDetail',
           text: 'Provide the different NOMIS number',
         })
       )
     }
-    req.session.unsavedValues = {
+    unsavedValues = {
       additionalLicenceConditions,
       additionalLicenceConditionsDetail: licenceDetailCleaned,
       differentNomsNumber,
       differentNomsNumberDetail: nomsDetailCleaned,
     }
-    return res.redirect(303, req.originalUrl)
   }
-  try {
-    const recall = await updateRecall(
-      recallId,
-      {
-        additionalLicenceConditions: isLicenceYes,
-        additionalLicenceConditionsDetail: licenceDetailCleaned,
-        differentNomsNumber: isNomsYes,
-        differentNomsNumberDetail: nomsDetailCleaned,
-      },
-      res.locals.user.token
-    )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/dossier-download`)
-  } catch (err) {
-    logger.error(err)
-    res.redirect(303, `/persons/${nomsNumber}`)
+  if (!errors) {
+    valuesToSave = {
+      additionalLicenceConditions: isLicenceYes,
+      additionalLicenceConditionsDetail: licenceDetailCleaned,
+      differentNomsNumber: isNomsYes,
+      differentNomsNumberDetail: nomsDetailCleaned,
+    }
   }
+  return { errors, valuesToSave, unsavedValues }
 }

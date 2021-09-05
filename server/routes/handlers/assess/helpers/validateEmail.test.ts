@@ -34,7 +34,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: false,
     })
-    expect(valuesToSave).toEqual({})
+    expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#confirmRecallNotificationEmailSent',
@@ -54,7 +54,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: false,
     })
-    expect(valuesToSave).toEqual({})
+    expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#recallNotificationEmailSentDateTime',
@@ -72,9 +72,7 @@ describe('validateEmail', () => {
       emailFileSelected: false,
       uploadFailed: false,
     })
-    expect(valuesToSave).toEqual({
-      recallNotificationEmailSentDateTime: '2021-10-04T13:47:00.000Z',
-    })
+    expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#recallNotificationEmailFileName',
@@ -91,9 +89,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: true,
     })
-    expect(valuesToSave).toEqual({
-      recallNotificationEmailSentDateTime: '2021-10-04T13:47:00.000Z',
-    })
+    expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#recallNotificationEmailFileName',
