@@ -3,7 +3,7 @@ import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi
 import { decorateDocs, isInvalid } from './index'
 import { getFormValues } from './getFormValues'
 import { getPrisonList } from '../../../data/prisonRegisterClient'
-import { Prison, ViewName } from '../../../@types'
+import { ViewName } from '../../../@types'
 import {
   getPrisonLabel,
   formatPrisonLists,
