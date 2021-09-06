@@ -5,7 +5,7 @@ const uploadDocumentsPage = ({ nomsNumber, recallId } = {}) =>
     url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/upload-documents` : null,
     upload: () => {
       cy.get('[name="PART_A_RECALL_REPORT"]').attachFile({
-        filePath: '../expected-revocation-order.pdf',
+        filePath: '../test.pdf',
         mimeType: 'application/pdf',
       })
       cy.get('[data-qa="continueButton"]').click()
@@ -13,7 +13,7 @@ const uploadDocumentsPage = ({ nomsNumber, recallId } = {}) =>
     expectUploadedDocumentError: () => {
       cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
         const text = $searchResults.text()
-        expect(text.trim()).to.equal('expected-revocation-order.pdf - an error occurred during upload')
+        expect(text.trim()).to.equal('test.pdf - an error occurred during upload')
       })
     },
   })
