@@ -2,6 +2,7 @@ import type { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from './handlers/findPerson'
 import getRevocationOrder from './handlers/assess/getRevocationOrder'
+import getDossier from './handlers/assess/getDossier'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
 import {
@@ -62,6 +63,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/documents/:documentId`, downloadDocument)
 
   get('/get-revocation-order', getRevocationOrder())
+  get('/get-dossier', getDossier())
 
   // CREATE DOSSIER
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
