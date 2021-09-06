@@ -121,4 +121,5 @@ export type ViewName =
   | 'recallProbationOfficer'
   | 'recallConfirmation'
   | 'dossierLetter'
+  | 'dossierDownload'
   | 'dossierConfirmation'

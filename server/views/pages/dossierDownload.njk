@@ -1,0 +1,44 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Download the dossier and letter" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/dossier-letter"
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+
+            <span class="govuk-caption-l" data-qa="createDossierCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class='govuk-heading-l'>Download the dossier and letter</h1>
+
+            <p class="govuk-body-l">Review the documents and check the information is correct.</p>
+
+            <h2 class='govuk-heading-m'>Recall dossier</h2>
+
+            {% if recall.documents.length %}
+            <div class="govuk-form-group">
+                {{ documentDownloadLink({
+                    linkText: 'Recall dossier',
+                    url: '/get-dossier?recallId={{ recall.recallId }}',
+                    dataQa: 'dossier-link'
+                })
+                }}
+            </div>
+            {% endif %}
+
+            <div class="govuk-!-margin-top-4">
+                <a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/dossier-confirmation' data-qa='continueButton' class="govuk-button">Continue</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
