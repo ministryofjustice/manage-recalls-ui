@@ -33,11 +33,13 @@
                                 <td class="govuk-table__cell" data-qa="recallDate">{{ recall.offender.recallDate }}</td>
                                 <td class="govuk-table__cell" data-qa="dueDate">{{ recall.offender.dueDate }}</td>
                                 <td class="govuk-table__cell">
-                                    {% if recall.status == 'RECALL_NOTIFICATION_ISSUED' %}
+                                    {% if recall.status == 'BOOKED_ON' %}
+                                        <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='assess-recall-{{ recall.recallId }}'>Assess recall</a></div>
+                                    {% elif recall.status == 'RECALL_NOTIFICATION_ISSUED' %}
                                         <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/dossier-letter' data-qa='create-dossier-{{ recall.recallId }}'>Create dossier</a></div>
-                                    {%  else %}
-                                        <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='assess-recall-{{ recall.recallId }}'>Assess</a></div>
-                                    {%  endif %}
+                                    {% else %}
+                                        <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/request-received' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
