@@ -21,6 +21,7 @@ context('Assess a recall', () => {
         {
           recallId,
           nomsNumber,
+          status,
         },
       ],
     })
@@ -34,6 +35,7 @@ context('Assess a recall', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
+  const status = 'BOOKED_ON'
 
   it('User can view details of a booked recall', () => {
     cy.login()

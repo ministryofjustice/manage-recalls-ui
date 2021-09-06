@@ -116,5 +116,6 @@ export namespace RecallResponse {
 
   export enum status {
     RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
+    BOOKED_ON = 'BOOKED_ON',
   }
 }
