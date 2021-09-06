@@ -25,14 +25,14 @@ describe('getActivePrisonList', () => {
     const prisons = await getPrisonList()
     expect(prisons).toEqual([
       {
-        prisonId: 'ALI',
-        prisonName: 'Albany (HMP)',
-        active: false,
-      },
-      {
         prisonId: 'AKI',
         prisonName: 'Acklington (HMP)',
         active: true,
+      },
+      {
+        prisonId: 'ALI',
+        prisonName: 'Albany (HMP)',
+        active: false,
       },
     ])
   })

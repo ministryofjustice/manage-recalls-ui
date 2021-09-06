@@ -52,20 +52,20 @@ describe('formatPrisonLists', () => {
     ])
     expect(all).toEqual([
       {
-        prisonId: 'ALI',
-        prisonName: 'Albany (HMP)',
+        value: 'ALI',
+        text: 'Albany (HMP)',
         active: false,
       },
       {
-        prisonId: 'AKI',
-        prisonName: 'Acklington (HMP)',
+        value: 'AKI',
+        text: 'Acklington (HMP)',
         active: true,
       },
     ])
     expect(active).toEqual([
       {
-        prisonId: 'AKI',
-        prisonName: 'Acklington (HMP)',
+        value: 'AKI',
+        text: 'Acklington (HMP)',
         active: true,
       },
     ])

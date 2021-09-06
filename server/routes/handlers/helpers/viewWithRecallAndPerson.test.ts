@@ -94,13 +94,33 @@ describe('viewWithRecallAndPerson', () => {
       {
         value: 'AKI',
         text: 'Acklington (HMP)',
+        active: true,
+      },
+      {
+        value: 'ALI',
+        text: 'Albany (HMP)',
+        active: false,
       },
       {
         value: 'KTI',
         text: 'Kennet (HMP)',
+        active: true,
+      },
+    ])
+    expect(res.locals.referenceData.activePrisonList).toEqual([
+      {
+        value: 'AKI',
+        text: 'Acklington (HMP)',
+        active: true,
+      },
+      {
+        value: 'KTI',
+        text: 'Kennet (HMP)',
+        active: true,
       },
     ])
     expect(res.locals.recall.currentPrisonFormatted).toEqual('Kennet (HMP)')
+    expect(res.locals.recall.lastReleasePrisonFormatted).toEqual('Kennet (HMP)')
   })
 
   it('should return 400 if invalid noms number', async () => {
