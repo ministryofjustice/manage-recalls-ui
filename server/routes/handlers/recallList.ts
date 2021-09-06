@@ -15,6 +15,7 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
           prisoner =>
             <RecallResult>{
               recallId: recall.recallId,
+              status: recall.status,
               offender: prisoner,
             }
         )
@@ -37,6 +38,8 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
 
 class RecallResult {
   recallId: string
+
+  status: string
 
   offender: PersonSearchResult
 }
