@@ -1,4 +1,4 @@
-import { getReferenceDataItemLabel, ReferenceDataCategories } from './referenceData'
+import { formatPrisonLists, getReferenceDataItemLabel, ReferenceDataCategories } from './referenceData'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 
 describe('getReferenceDataItemLabel', () => {
@@ -33,5 +33,41 @@ describe('getReferenceDataItemLabel', () => {
   it('returns undefined if item not found', () => {
     const label = getReferenceDataItemLabel('probationDivisions', 'France')
     expect(label).toBeUndefined()
+  })
+})
+
+describe('formatPrisonLists', () => {
+  it('returns a list of all and active prisons', async () => {
+    const { all, active } = formatPrisonLists([
+      {
+        prisonId: 'ALI',
+        prisonName: 'Albany (HMP)',
+        active: false,
+      },
+      {
+        prisonId: 'AKI',
+        prisonName: 'Acklington (HMP)',
+        active: true,
+      },
+    ])
+    expect(all).toEqual([
+      {
+        value: 'ALI',
+        text: 'Albany (HMP)',
+        active: false,
+      },
+      {
+        value: 'AKI',
+        text: 'Acklington (HMP)',
+        active: true,
+      },
+    ])
+    expect(active).toEqual([
+      {
+        value: 'AKI',
+        text: 'Acklington (HMP)',
+        active: true,
+      },
+    ])
   })
 })

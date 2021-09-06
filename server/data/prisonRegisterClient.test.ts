@@ -1,11 +1,11 @@
-import { getActivePrisonList } from './prisonRegisterClient'
+import { getPrisonList } from './prisonRegisterClient'
 import RestClient from './restClient'
 import { Prison } from '../@types'
 
 jest.mock('./restClient')
 
 describe('getActivePrisonList', () => {
-  it('returns a list of active prisons if successful', async () => {
+  it('returns a list of all prisons if successful', async () => {
     ;(RestClient as jest.Mock).mockImplementation(() => {
       return {
         get: async (): Promise<Prison[]> => [
@@ -22,12 +22,17 @@ describe('getActivePrisonList', () => {
         ],
       }
     })
-    const prisons = await getActivePrisonList()
+    const prisons = await getPrisonList()
     expect(prisons).toEqual([
       {
         prisonId: 'AKI',
         prisonName: 'Acklington (HMP)',
         active: true,
+      },
+      {
+        prisonId: 'ALI',
+        prisonName: 'Albany (HMP)',
+        active: false,
       },
     ])
   })
@@ -54,7 +59,7 @@ describe('getActivePrisonList', () => {
         ],
       }
     })
-    const prisons = await getActivePrisonList()
+    const prisons = await getPrisonList()
     expect(prisons.map(p => p.prisonName)).toEqual(['Acklington (HMP)', 'Belmarsh (HMP)', 'Kennet (HMP)'])
   })
 
@@ -64,7 +69,7 @@ describe('getActivePrisonList', () => {
         get: async (): Promise<Prison[]> => [],
       }
     })
-    const prisons = await getActivePrisonList()
+    const prisons = await getPrisonList()
     expect(prisons).toBeUndefined()
   })
 
@@ -76,7 +81,7 @@ describe('getActivePrisonList', () => {
         },
       }
     })
-    const prisons = await getActivePrisonList()
+    const prisons = await getPrisonList()
     expect(prisons).toBeUndefined()
   })
 })
