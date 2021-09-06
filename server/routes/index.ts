@@ -65,7 +65,7 @@ export default function routes(router: Router): Router {
 
   // CREATE DOSSIER
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
-  post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-confirmation'))
+  post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-download'))
   get(`${basePath}/dossier-download`, viewWithRecallAndPerson('dossierDownload'))
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
 
