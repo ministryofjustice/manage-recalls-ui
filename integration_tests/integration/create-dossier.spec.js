@@ -3,6 +3,7 @@ import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 
 const dossierLetterPage = require('../pages/dossierLetter')
+const dossierDownloadPage = require('../pages/dossierDownload')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const assessRecallPage = require('../pages/assessRecall')
 
@@ -40,6 +41,8 @@ context('Create a dossier', () => {
     dossierLetter.differentNomsNumber()
     dossierLetter.addNomsDetail()
     dossierLetter.clickContinue()
+    const dossierDownload = dossierDownloadPage.verifyOnPage()
+    dossierDownload.clickContinue()
     dossierConfirmationPage.verifyOnPage()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Yes' })
