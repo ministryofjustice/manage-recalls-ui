@@ -4,7 +4,6 @@ orbs:
   hmpps: ministryofjustice/hmpps@3.11
   slack: circleci/slack@4.4.2
   node: circleci/node@4.5.1
-  mem: circleci/rememborb@0.0.1
 
 executors:
   integration-tests:
@@ -153,29 +152,6 @@ jobs:
       - store_artifacts:
           path: integration-tests/screenshots
 
-  notify-sentry-deploy:
-    docker:
-      - image: getsentry/sentry-cli
-    parameters:
-      sentry_project:
-        type: string
-      sentry_environment:
-        type: string
-    environment:
-      SENTRY_ORG: ministryofjustice
-    steps:
-      - checkout
-      - mem/recall:
-          env_var: APP_VERSION
-      - run:
-          name: Sentry - Create a release and notify of deployment
-          command: |
-            export SENTRY_PROJECT=<< parameters.sentry_project >>
-            sentry-cli releases new $APP_VERSION --project $SENTRY_PROJECT
-            sentry-cli releases set-commits $APP_VERSION --auto
-            sentry-cli releases finalize $APP_VERSION
-            sentry-cli releases deploys $APP_VERSION new -e << parameters.sentry_environment >>
-
 workflows:
   version: 2
   build-test-and-deploy:
@@ -237,7 +213,7 @@ workflows:
           requires:
             - publish_docker
 
-      - notify-sentry-deploy:
+      - hmpps/sentry_release_and_deploy:
           name: notify_sentry_dev
           sentry_project: manage-recalls-ui
           sentry_environment: DEV
@@ -267,7 +243,7 @@ workflows:
           requires:
             - request-preprod-approval
 
-      - notify-sentry-deploy:
+      - hmpps/sentry_release_and_deploy:
           name: notify_sentry_preprod
           sentry_project: manage-recalls-ui
           sentry_environment: PRE-PROD
@@ -303,7 +279,7 @@ workflows:
           slack_notification: true
           slack_channel_name: << pipeline.parameters.releases-slack-channel >>
 
-      - notify-sentry-deploy:
+      - hmpps/sentry_release_and_deploy:
           name: notify_sentry_prod
           sentry_project: manage-recalls-ui
           sentry_environment: PROD
