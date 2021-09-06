@@ -28,6 +28,10 @@ export function getRevocationOrder(recallId: string, token: string): Promise<Pdf
   return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/revocationOrder` })
 }
 
+export function getDossier(recallId: string, token: string): Promise<Pdf> {
+  return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/dossier` })
+}
+
 export function getRecall(recallId: string, token: string): Promise<Recall> {
   return restClient(token).get<Recall>({ path: `/recalls/${recallId}` })
 }

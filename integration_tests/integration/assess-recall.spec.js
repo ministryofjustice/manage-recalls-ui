@@ -193,7 +193,7 @@ context('Assess a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
 
-    cy.readFile('integration_tests/expected-revocation-order.pdf', 'base64').then(base64EncodedPdf => {
+    cy.readFile('integration_tests/test.pdf', 'base64').then(base64EncodedPdf => {
       cy.task('expectGetRevocationOrder', { recallId, expectedPdfFile: base64EncodedPdf })
       cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
       cy.login()
@@ -201,12 +201,7 @@ context('Assess a recall', () => {
       const recall = assessRecallConfirmationPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
       recall.getRevocationOrder()
 
-      validateBinaryFile('revocation-order.pdf', 67658)
-
-      cy.task('readPdf', './cypress/downloads/revocation-order.pdf').then(({ numpages, text }) => {
-        expect(numpages, 'number of PDF pages').to.equal(1)
-        expect(text, 'has expected text').to.include('REVOCATION OF LICENCE')
-      })
+      validateBinaryFile('revocation-order.pdf', 3908)
     })
   })
 })
