@@ -381,7 +381,7 @@ describe('getFormValues', () => {
       recallNotificationEmailSentDateTimeParts: {
         day: 15,
         hour: 14,
-        minute: 47,
+        minute: 4,
         month: 8,
         year: 2021,
       },
@@ -464,7 +464,7 @@ describe('getFormValues', () => {
       recallNotificationEmailSentDateTimeParts: {
         day: 15,
         hour: 14,
-        minute: 47,
+        minute: 4,
         month: 8,
         year: 2021,
       },

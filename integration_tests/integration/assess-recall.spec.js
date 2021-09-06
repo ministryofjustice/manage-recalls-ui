@@ -1,3 +1,4 @@
+import path from 'path'
 import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import validateBinaryFile from './file-utils'
@@ -15,13 +16,6 @@ context('Assess a recall', () => {
     cy.task('reset')
     cy.task('stubLogin')
     cy.task('stubAuthUser')
-  })
-
-  const nomsNumber = 'A1234AA'
-  const recallId = '123'
-  const personName = 'Bobby Badger'
-
-  it('User can assess a recall', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -32,9 +26,16 @@ context('Assess a recall', () => {
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
-    cy.task('expectUpdateRecall', { recallId })
+    cy.task('expectUpdateRecall', recallId)
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.task('expectAddRecallDocument', { statusCode: 201 })
+  })
+
+  const nomsNumber = 'A1234AA'
+  const recallId = '123'
+  const personName = 'Bobby Badger'
+
+  it('User can view details of a booked recall', () => {
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectResultsCountText('1 recall')
@@ -42,8 +43,8 @@ context('Assess a recall', () => {
     const firstResult = recallsList.results().first()
     firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
     recallsList.assessRecall({ recallId })
-    let assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
-    assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 Dec 2020 at 15:33' })
+    const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
+    assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 Aug 2019' })
@@ -69,6 +70,18 @@ context('Assess a recall', () => {
       qaAttr: `uploadedDocument-${getRecallResponse.documents[1].category}`,
       textToFind: 'Part A recall report',
     })
+  })
+
+  it('User can assess and issue a recall', () => {
+    const fileName = '2021-07-03 Phil Jones recall.msg'
+    cy.task('expectGetRecallDocument', {
+      category: 'RECALL_NOTIFICATION_EMAIL',
+      file: 'abc',
+      fileName,
+      documentId: '123',
+    })
+    cy.login()
+    let assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeDecision()
@@ -86,11 +99,11 @@ context('Assess a recall', () => {
     assessRecallEmail.enterDateTime({
       prefix: 'recallNotificationEmailSentDateTime',
       values: {
-        Day: '154',
+        Day: '15',
         Month: '08',
         Year: '2021',
-        Hour: '13',
-        Minute: '47',
+        Hour: '14',
+        Minute: '04',
       },
     })
     assessRecallEmail.uploadEmail()
@@ -107,6 +120,13 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecall-OTHER', textToFind: 'Other' })
     assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecallOtherDetail', textToFind: 'other reason detail...' })
     assessRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
+    assessRecall.assertElementHasText({
+      qaAttr: 'recallNotificationEmailSentDateTime',
+      textToFind: '15 August 2021 at 14:04',
+    })
+    cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
+    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
+    cy.readFile(downloadedFilename, 'binary')
   })
 
   it("User sees an error if they don't make a decision", () => {
