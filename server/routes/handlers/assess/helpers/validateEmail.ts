@@ -17,6 +17,7 @@ export const validateEmail = ({
 }: Args): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
   let errors
   let unsavedValues
+  let valuesToSave
 
   const { confirmRecallNotificationEmailSent } = requestBody
   const recallNotificationEmailSentDateTimeParts = {
@@ -74,6 +75,8 @@ export const validateEmail = ({
       recallNotificationEmailSentDateTimeParts,
     }
   }
-  const valuesToSave = { recallNotificationEmailSentDateTime }
+  if (!errors) {
+    valuesToSave = { recallNotificationEmailSentDateTime }
+  }
   return { errors, valuesToSave, unsavedValues }
 }

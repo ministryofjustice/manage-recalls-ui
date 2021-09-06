@@ -1,4 +1,4 @@
-import { ApiRecallDocument, RecallResponse } from './manage-recalls-api'
+import { ApiRecallDocument, RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
 
 export interface FormError {
   text: string
@@ -123,3 +123,11 @@ export type ViewName =
   | 'dossierLetter'
   | 'dossierDownload'
   | 'dossierConfirmation'
+
+export type ReqValidatorFn = (requestBody: ObjectMap<string>) => ReqValidatorReturn
+
+export interface ReqValidatorReturn {
+  errors?: NamedFormError[]
+  valuesToSave?: UpdateRecallRequest
+  unsavedValues?: ObjectMap<unknown>
+}

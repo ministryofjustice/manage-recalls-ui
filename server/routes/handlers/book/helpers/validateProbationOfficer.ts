@@ -1,13 +1,13 @@
-import { Request, Response } from 'express'
-import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../../logger'
-import { isInvalid, makeErrorObject } from '../helpers'
+import { makeErrorObject } from '../../helpers'
+import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { NamedFormError, ObjectMap } from '../../../../@types'
 
-export const probationOfficer = async (req: Request, res: Response): Promise<void> => {
-  const { nomsNumber, recallId } = req.params
-  if (isInvalid(nomsNumber) || isInvalid(recallId)) {
-    return res.redirect(303, `/persons/${nomsNumber}`)
-  }
+export const validateProbationOfficer = (
+  requestBody: ObjectMap<string>
+): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+  let errors
+  let unsavedValues
+  let valuesToSave
 
   const {
     probationOfficerName,
@@ -15,7 +15,7 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
     probationOfficerPhoneNumber,
     probationDivision,
     authorisingAssistantChiefOfficer,
-  } = req.body
+  } = requestBody
 
   if (
     !probationOfficerName ||
@@ -24,9 +24,9 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
     !probationDivision ||
     !authorisingAssistantChiefOfficer
   ) {
-    req.session.errors = []
+    errors = []
     if (!probationOfficerName) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'probationOfficerName',
           text: "Probation officer's name",
@@ -34,7 +34,7 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
       )
     }
     if (!probationOfficerEmail) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'probationOfficerEmail',
           text: "Probation officer's email",
@@ -42,7 +42,7 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
       )
     }
     if (!probationOfficerPhoneNumber) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'probationOfficerPhoneNumber',
           text: "Probation officer's phone number",
@@ -50,7 +50,7 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
       )
     }
     if (!probationDivision) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'probationDivision',
           text: 'Probation division',
@@ -58,39 +58,29 @@ export const probationOfficer = async (req: Request, res: Response): Promise<voi
       )
     }
     if (!authorisingAssistantChiefOfficer) {
-      req.session.errors.push(
+      errors.push(
         makeErrorObject({
           id: 'authorisingAssistantChiefOfficer',
           text: 'Assistant Chief Officer',
         })
       )
     }
-  }
-  if (req.session.errors) {
-    req.session.unsavedValues = {
+    unsavedValues = {
       probationOfficerName,
       probationOfficerEmail,
       probationOfficerPhoneNumber,
       probationDivision,
       authorisingAssistantChiefOfficer,
     }
-    return res.redirect(303, req.originalUrl)
   }
-  try {
-    const recall = await updateRecall(
-      recallId,
-      {
-        probationOfficerName,
-        probationOfficerEmail,
-        probationOfficerPhoneNumber,
-        probationDivision,
-        authorisingAssistantChiefOfficer,
-      },
-      res.locals.user.token
-    )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/upload-documents`)
-  } catch (err) {
-    logger.error(err)
-    res.redirect(303, `/persons/${nomsNumber}`)
+  if (!errors) {
+    valuesToSave = {
+      probationOfficerName,
+      probationOfficerEmail,
+      probationOfficerPhoneNumber,
+      probationDivision: UpdateRecallRequest.probationDivision[probationDivision],
+      authorisingAssistantChiefOfficer,
+    }
   }
+  return { errors, valuesToSave, unsavedValues }
 }

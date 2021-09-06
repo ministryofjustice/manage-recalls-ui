@@ -1,11 +1,14 @@
 // @ts-nocheck
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
-import { recallRequestReceivedFormHandler } from './recallRequestReceived'
+import { handleRecallFormPost } from './handleRecallFormPost'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { validateRecallRequestReceived } from '../book/helpers/validateRecallRequestReceived'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
-describe('recallRequestReceivedFormHandler', () => {
+const handler = handleRecallFormPost(validateRecallRequestReceived, 'last-release')
+
+describe('handleRecallFormPost', () => {
   const nomsNumber = 'AA123AA'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const recallEmailReceivedDateTime = {
@@ -38,7 +41,7 @@ describe('recallRequestReceivedFormHandler', () => {
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
-      await recallRequestReceivedFormHandler(req, res)
+      await handler(req, res)
 
       expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/last-release`)
     })
@@ -62,16 +65,16 @@ describe('recallRequestReceivedFormHandler', () => {
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
-      await recallRequestReceivedFormHandler(req, res)
+      await handler(req, res)
 
       expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
     })
 
-    it('should return 400 if invalid noms number', async () => {
+    it('should return 404 if invalid noms number', async () => {
       await invalidrecallRequestReceived(0 as unknown as string, recallId, recallEmailReceivedDateTime)
     })
 
-    it('should return 400 if invalid recallId', async () => {
+    it('should return 404 if invalid recallId', async () => {
       await invalidrecallRequestReceived(nomsNumber, 0 as unknown as string, recallEmailReceivedDateTime)
     })
   })
@@ -84,7 +87,7 @@ async function invalidrecallRequestReceived(nomsNumber, recallId, recallEmailRec
   })
   const { res } = mockResponseWithAuthenticatedUser('')
 
-  await recallRequestReceivedFormHandler(req, res)
+  await handler(req, res)
 
-  expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}`)
+  expect(res.sendStatus).toHaveBeenCalledWith(400)
 }

@@ -51,7 +51,7 @@ describe('validateSentenceDetails', () => {
       return acc
     }, {})
     const { errors, valuesToSave } = validateSentenceDetails(emptyBody)
-    expect(valuesToSave).toEqual({})
+    expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#sentenceDate',

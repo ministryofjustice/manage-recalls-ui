@@ -4,22 +4,23 @@ import { findPerson } from './handlers/findPerson'
 import getRevocationOrder from './handlers/assess/getRevocationOrder'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
-import { assessDecisionFormHandler } from './handlers/assess/assessDecision'
 import {
   uploadDocumentsPage,
   uploadRecallDocumentsFormHandler,
   downloadDocument,
 } from './handlers/book/recallUploadDocuments'
-import { recallRequestReceivedFormHandler } from './handlers/book/recallRequestReceived'
-import { sentenceDetails } from './handlers/book/sentenceDetails'
-import { prisonPolice } from './handlers/book/prisonPolice'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
-import { issuesNeeds } from './handlers/book/issuesNeeds'
-import { probationOfficer } from './handlers/book/probationOfficer'
-import { assessPrisonFormHandler } from './handlers/assess/assessPrison'
-import { assessLicenceFormHandler } from './handlers/assess/assessLicence'
-import { dossierLetterFormHandler } from './handlers/dossier/dossierLetter'
 import { assessEmailFormHandler } from './handlers/assess/assessEmail'
+import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
+import { validateDecision } from './handlers/assess/helpers/validateDecision'
+import { validateDossierLetter } from './handlers/dossier/helpers/validateDossierLetter'
+import { validateLicence } from './handlers/assess/helpers/validateLicence'
+import { validatePrison } from './handlers/assess/helpers/validatePrison'
+import { validateRecallRequestReceived } from './handlers/book/helpers/validateRecallRequestReceived'
+import { validateSentenceDetails } from './handlers/book/helpers/validateSentenceDetails'
+import { validatePolice } from './handlers/book/helpers/validatePolice'
+import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds'
+import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -30,40 +31,43 @@ export default function routes(router: Router): Router {
 
   // BOOK A RECALL
   post('/persons/:nomsNumber/recalls', createRecall)
-  get('/persons/:nomsNumber/recalls/:recallId/request-received', viewWithRecallAndPerson('recallRequestReceived'))
-  post('/persons/:nomsNumber/recalls/:recallId/request-received', recallRequestReceivedFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/last-release', viewWithRecallAndPerson('recallSentenceDetails'))
-  post('/persons/:nomsNumber/recalls/:recallId/last-release', sentenceDetails)
-  get('/persons/:nomsNumber/recalls/:recallId/prison-police', viewWithRecallAndPerson('recallPrisonPolice'))
-  post('/persons/:nomsNumber/recalls/:recallId/prison-police', prisonPolice)
-  get('/persons/:nomsNumber/recalls/:recallId/issues-needs', viewWithRecallAndPerson('recallIssuesNeeds'))
-  post('/persons/:nomsNumber/recalls/:recallId/issues-needs', issuesNeeds)
-  get('/persons/:nomsNumber/recalls/:recallId/probation-officer', viewWithRecallAndPerson('recallProbationOfficer'))
-  post('/persons/:nomsNumber/recalls/:recallId/probation-officer', probationOfficer)
-  get('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadDocumentsPage)
-  post('/persons/:nomsNumber/recalls/:recallId/upload-documents', uploadRecallDocumentsFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/confirmation', viewWithRecallAndPerson('recallConfirmation'))
+
+  const basePath = '/persons/:nomsNumber/recalls/:recallId'
+
+  get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
+  post(`${basePath}/request-received`, handleRecallFormPost(validateRecallRequestReceived, 'last-release'))
+  get(`${basePath}/last-release`, viewWithRecallAndPerson('recallSentenceDetails'))
+  post(`${basePath}/last-release`, handleRecallFormPost(validateSentenceDetails, 'prison-police'))
+  get(`${basePath}/prison-police`, viewWithRecallAndPerson('recallPrisonPolice'))
+  post(`${basePath}/prison-police`, handleRecallFormPost(validatePolice, 'issues-needs'))
+  get(`${basePath}/issues-needs`, viewWithRecallAndPerson('recallIssuesNeeds'))
+  post(`${basePath}/issues-needs`, handleRecallFormPost(validateIssuesNeeds, 'probation-officer'))
+  get(`${basePath}/probation-officer`, viewWithRecallAndPerson('recallProbationOfficer'))
+  post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer, 'upload-documents'))
+  get(`${basePath}/upload-documents`, uploadDocumentsPage)
+  post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
+  get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
-  get('/persons/:nomsNumber/recalls/:recallId/assess', viewWithRecallAndPerson('assessRecall'))
-  get('/persons/:nomsNumber/recalls/:recallId/assess-decision', viewWithRecallAndPerson('assessDecision'))
-  post('/persons/:nomsNumber/recalls/:recallId/assess-decision', assessDecisionFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/assess-prison', viewWithRecallAndPerson('assessPrison'))
-  post('/persons/:nomsNumber/recalls/:recallId/assess-prison', assessPrisonFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/assess-licence', viewWithRecallAndPerson('assessLicence'))
-  post('/persons/:nomsNumber/recalls/:recallId/assess-licence', assessLicenceFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/assess-email', viewWithRecallAndPerson('assessEmail'))
-  post('/persons/:nomsNumber/recalls/:recallId/assess-email', assessEmailFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/assess-confirmation', viewWithRecallAndPerson('assessConfirmation'))
-  get('/persons/:nomsNumber/recalls/:recallId/documents/:documentId', downloadDocument)
-
-  // CREATE DOSSIER
-  get('/persons/:nomsNumber/recalls/:recallId/dossier-letter', viewWithRecallAndPerson('dossierLetter'))
-  post('/persons/:nomsNumber/recalls/:recallId/dossier-letter', dossierLetterFormHandler)
-  get('/persons/:nomsNumber/recalls/:recallId/dossier-download', viewWithRecallAndPerson('dossierDownload'))
-  get('/persons/:nomsNumber/recalls/:recallId/dossier-confirmation', viewWithRecallAndPerson('dossierConfirmation'))
+  get(`${basePath}/assess`, viewWithRecallAndPerson('assessRecall'))
+  get(`${basePath}/assess-decision`, viewWithRecallAndPerson('assessDecision'))
+  post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision, 'assess-licence'))
+  get(`${basePath}/assess-prison`, viewWithRecallAndPerson('assessPrison'))
+  post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison, 'assess-email'))
+  get(`${basePath}/assess-licence`, viewWithRecallAndPerson('assessLicence'))
+  post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence, 'assess-prison'))
+  get(`${basePath}/assess-email`, viewWithRecallAndPerson('assessEmail'))
+  post(`${basePath}/assess-email`, assessEmailFormHandler)
+  get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
+  get(`${basePath}/documents/:documentId`, downloadDocument)
 
   get('/get-revocation-order', getRevocationOrder())
+
+  // CREATE DOSSIER
+  get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
+  post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-download'))
+  get(`${basePath}/dossier-download`, viewWithRecallAndPerson('dossierDownload'))
+  get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
 
   return router
 }
