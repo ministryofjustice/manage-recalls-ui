@@ -80,7 +80,7 @@ export const dossierLetterFormHandler = async (req: Request, res: Response): Pro
       },
       res.locals.user.token
     )
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/dossier-confirmation`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/dossier-download`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

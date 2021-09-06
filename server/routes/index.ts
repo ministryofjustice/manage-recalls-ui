@@ -60,6 +60,7 @@ export default function routes(router: Router): Router {
   // CREATE DOSSIER
   get('/persons/:nomsNumber/recalls/:recallId/dossier-letter', viewWithRecallAndPerson('dossierLetter'))
   post('/persons/:nomsNumber/recalls/:recallId/dossier-letter', dossierLetterFormHandler)
+  get('/persons/:nomsNumber/recalls/:recallId/dossier-download', viewWithRecallAndPerson('dossierDownload'))
   get('/persons/:nomsNumber/recalls/:recallId/dossier-confirmation', viewWithRecallAndPerson('dossierConfirmation'))
 
   get('/get-revocation-order', getRevocationOrder())
