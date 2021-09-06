@@ -28,6 +28,7 @@ module.exports = (on, config) => {
     stubManageRecallsApiPing: manageRecallsApi.stubPing,
     expectSearchResults: manageRecallsApi.expectSearchResults,
     expectGetRevocationOrder: manageRecallsApi.expectGetRevocationOrder,
+    expectGetDossier: manageRecallsApi.expectGetDossier,
     expectCreateRecall: manageRecallsApi.expectCreateRecall,
     expectListRecalls: manageRecallsApi.expectListRecalls,
     expectGetRecall: manageRecallsApi.expectGetRecall,
