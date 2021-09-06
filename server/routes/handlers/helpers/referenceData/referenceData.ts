@@ -18,5 +18,17 @@ export const getReferenceDataItemLabel = (refDataCategory: ReferenceDataCategori
   return list ? list.find((item: UiListItem) => item.value === itemId)?.text || undefined : undefined
 }
 
-export const getPrisonLabel = (prisonList: Prison[], currentPrison: string) =>
-  prisonList.find(item => item.prisonId === currentPrison)?.prisonName
+export const getPrisonLabel = (prisonList: UiListItem[], currentPrison: string) =>
+  prisonList.find(item => item.value === currentPrison)?.text
+
+export const formatPrisonLists = (prisonList: Prison[]) => {
+  const all = prisonList.map(({ prisonId, prisonName, active }: Prison) => ({
+    value: prisonId,
+    text: prisonName,
+    active,
+  }))
+  return {
+    all,
+    active: all.filter(prison => prison.active),
+  }
+}

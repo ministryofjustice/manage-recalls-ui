@@ -40,7 +40,7 @@
                                     classes: "govuk-label--l",
                                     isPageHeading: true
                                 },
-                                items: selectItems( referenceData.prisonList, formValues.currentPrison),
+                                items: selectItems( referenceData.activePrisonList, formValues.currentPrison),
                                 errorMessage: {
                                     text: "Please select a prison"
                                 } if errors.currentPrison else undefined

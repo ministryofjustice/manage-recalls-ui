@@ -2,9 +2,14 @@ import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { decorateDocs, isInvalid } from './index'
 import { getFormValues } from './getFormValues'
-import { getActivePrisonList } from '../../../data/prisonRegisterClient'
+import { getPrisonList } from '../../../data/prisonRegisterClient'
 import { Prison, ViewName } from '../../../@types'
-import { getPrisonLabel, getReferenceDataItemLabel, referenceData } from './referenceData/referenceData'
+import {
+  getPrisonLabel,
+  formatPrisonLists,
+  getReferenceDataItemLabel,
+  referenceData,
+} from './referenceData/referenceData'
 
 const requiresPrisonList = (viewName: ViewName) =>
   ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'assessPrison'].includes(viewName)
@@ -20,7 +25,7 @@ export const viewWithRecallAndPerson =
     const [person, recall, prisonList] = await Promise.all([
       searchByNomsNumber(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),
-      requiresPrisonList(viewName) ? getActivePrisonList() : undefined,
+      requiresPrisonList(viewName) ? getPrisonList() : undefined,
     ])
     const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
     res.locals.recall = {
@@ -42,12 +47,17 @@ export const viewWithRecallAndPerson =
       recall.probationDivision
     )
     if (prisonList) {
-      res.locals.referenceData.prisonList = prisonList.map(({ prisonId, prisonName }: Prison) => ({
-        value: prisonId,
-        text: prisonName,
-      }))
-      res.locals.recall.currentPrisonFormatted = getPrisonLabel(prisonList, res.locals.recall.currentPrison)
-      res.locals.recall.lastReleasePrisonFormatted = getPrisonLabel(prisonList, res.locals.recall.lastReleasePrison)
+      const { all, active } = formatPrisonLists(prisonList)
+      res.locals.referenceData.prisonList = all
+      res.locals.referenceData.activePrisonList = active
+      res.locals.recall.currentPrisonFormatted = getPrisonLabel(
+        res.locals.referenceData.activePrisonList,
+        res.locals.recall.currentPrison
+      )
+      res.locals.recall.lastReleasePrisonFormatted = getPrisonLabel(
+        res.locals.referenceData.prisonList,
+        res.locals.recall.lastReleasePrison
+      )
     }
     res.render(`pages/${viewName}`)
   }
