@@ -53,13 +53,14 @@ export type RecallResponse = {
   recallEmailReceivedDateTime?: string
   recallId: string
   recallLength?: RecallResponse.recallLength
+  recallNotificationEmailSentDateTime?: string
   revocationOrderId?: string
   sentenceDate?: string
   sentenceExpiryDate?: string
   sentenceLength?: SentenceLengthRes
   sentencingCourt?: string
+  status?: RecallResponse.status
   vulnerabilityDiversityDetail?: string
-  recallNotificationEmailSentDateTime?: string
 }
 
 export namespace RecallResponse {
@@ -111,5 +112,9 @@ export namespace RecallResponse {
     POOR_BEHAVIOUR_RELATIONSHIPS = 'POOR_BEHAVIOUR_RELATIONSHIPS',
     TRAVELLING_OUTSIDE_UK = 'TRAVELLING_OUTSIDE_UK',
     OTHER = 'OTHER',
+  }
+
+  export enum status {
+    RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
   }
 }

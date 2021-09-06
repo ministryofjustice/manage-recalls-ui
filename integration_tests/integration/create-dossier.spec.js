@@ -17,6 +17,7 @@ context('Create a dossier', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
+  const status = 'RECALL_NOTIFICATION_ISSUED'
 
   it('User can create a dossier', () => {
     cy.task('expectListRecalls', {
@@ -24,6 +25,7 @@ context('Create a dossier', () => {
         {
           recallId,
           nomsNumber,
+          status,
         },
       ],
     })
