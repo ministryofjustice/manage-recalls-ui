@@ -20,7 +20,7 @@ describe('downloadPdfHandler', () => {
 
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Disposition': `inline; filename="${filename}"`,
       })
       expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents))
     })
