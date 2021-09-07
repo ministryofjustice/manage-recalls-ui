@@ -11,8 +11,6 @@ readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose.yml"
 . ${SCRIPT_DIR}/install-cypress.sh
 checkCypressInstalled $PROJECT_DIR
 
-npx kill-port 3000 9091
-
 docker compose -f "${DOCKER_COMPOSE_FILE}" stop fake-manage-recalls-api redis
 docker rm fake-manage-recalls-api || true
 docker build fake-manage-recalls-api
@@ -24,8 +22,8 @@ echo "Checking wiremock is running..."
 docker run --network container:fake-manage-recalls-api \
     appropriate/curl -s -4 -o /dev/null --retry 120 --retry-delay 1 --retry-connrefused http://localhost:8080/__admin/docs
 
-echo "Building ${MANAGE_RECALLS_UI_NAME}"
-npm install && npm run build
+echo "Installing ${MANAGE_RECALLS_UI_NAME}"
+npm install
 
 echo "Logs can be found by running:"
 echo "  less /tmp/${LOG_FILE}"
