@@ -187,6 +187,12 @@ context('Book a recall', () => {
     cy.task('expectAddRecallDocument', { statusCode: 400 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.upload()
-    uploadDocuments.expectUploadedDocumentError()
+    uploadDocuments.expectUploadedDocumentError('test.pdf - an error occurred during upload')
+  })
+
+  it('User sees an error if no documents are uploaded', () => {
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.clickContinue()
+    uploadDocuments.expectUploadedDocumentError('You must upload at least one document')
   })
 })

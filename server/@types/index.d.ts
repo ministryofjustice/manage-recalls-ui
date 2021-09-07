@@ -2,7 +2,7 @@ import { ApiRecallDocument, RecallResponse, UpdateRecallRequest } from './manage
 
 export interface FormError {
   text: string
-  href: string
+  href?: string
   values?: ObjectMap<unknown> | string
 }
 

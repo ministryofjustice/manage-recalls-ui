@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import multer from 'multer'
 import {
   addRecallDocument,
   getRecall,
@@ -10,9 +9,7 @@ import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
 import { UploadedFormFields } from '../../../@types'
 import { addErrorsToDocuments, makeFileData, listFailedUploads } from './helpers'
-
-const storage = multer.memoryStorage()
-export const processUploads = multer({ storage }).fields(documentTypes)
+import { uploadStorageFields } from '../helpers/uploadStorage'
 
 export const uploadDocumentsPage = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
@@ -30,20 +27,32 @@ export const uploadDocumentsPage = async (req: Request, res: Response): Promise<
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
   const { nomsNumber, recallId } = req.params
   const redirectToUploadPage = () => res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/upload-documents`)
-  processUploads(req, res, async err => {
+  uploadStorageFields(documentTypes)(req, res, async err => {
     if (err) {
       logger.error(err)
       return redirectToUploadPage()
     }
     const { files, session } = req
     const { user } = res.locals
+    let failedUploads
     const fileData = makeFileData(files as UploadedFormFields)
-    const responses = await Promise.allSettled(
-      fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
-    )
-    const failedUploads = listFailedUploads(fileData, responses)
-    if (failedUploads.length) {
-      session.errors = failedUploads
+    if (fileData.length) {
+      const responses = await Promise.allSettled(
+        fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
+      )
+      failedUploads = listFailedUploads(fileData, responses)
+    }
+    if (!fileData.length || failedUploads.length) {
+      session.errors = []
+      if (!fileData.length) {
+        session.errors.push({
+          text: 'You must upload at least one document',
+          name: 'documents',
+        })
+      }
+      if (failedUploads?.length) {
+        session.errors = [...session.errors, ...failedUploads]
+      }
       return redirectToUploadPage()
     }
     res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/confirmation`)

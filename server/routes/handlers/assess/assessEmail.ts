@@ -1,12 +1,11 @@
 import { Request, Response } from 'express'
-import multer from 'multer'
 import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { validateEmail } from './helpers/validateEmail'
+import { uploadStorageField } from '../helpers/uploadStorage'
 
-const storage = multer.memoryStorage()
-export const processUpload = multer({ storage }).single('recallNotificationEmailFileName')
+export const processUpload = uploadStorageField('recallNotificationEmailFileName')
 
 export const assessEmailFormHandler = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber, recallId } = req.params
