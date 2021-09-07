@@ -4,7 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { createRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import createRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/create-recall.json'
-import { pactJsonResponse } from './pactTestUtils'
+import { pactJsonResponse, pactPostRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -18,7 +18,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully create a recall', async () => {
       await provider.addInteraction({
         state: 'a recall can be created',
-        ...createRecallRequest('a create recall request', nomsNumber, accessToken),
+        ...pactPostRequest('a create recall request', '/recalls', { nomsNumber }, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(createRecallResponseJson), 201),
       })
 
@@ -35,7 +35,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       }
       await provider.addInteraction({
         state: 'a recall can be created',
-        ...createRecallRequest('a create recall request with blank nomsNumber', blankNomsNumber, accessToken),
+        ...pactPostRequest(
+          'a create recall request with blank nomsNumber',
+          '/recalls',
+          { nomsNumber: blankNomsNumber },
+          accessToken
+        ),
         willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
       })
 
@@ -50,7 +55,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...createRecallRequest('an unauthorized create recall request', nomsNumber, accessToken),
+        ...pactPostRequest('an unauthorized create recall request', '/recalls', { nomsNumber }, accessToken),
         willRespondWith: { status: 401 },
       })
 
@@ -62,15 +67,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
   })
 })
-
-function createRecallRequest(description: string, nomsNumber: string, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'POST',
-      path: '/recalls',
-      headers: { Authorization: `Bearer ${token}` },
-      body: { nomsNumber },
-    },
-  }
-}
