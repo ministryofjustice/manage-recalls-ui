@@ -4,7 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { addRecallDocument } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import addRecallDocumentResponseJson from '../../../fake-manage-recalls-api/stubs/__files/create-recall-document.json'
-import { pactJsonResponse } from './pactTestUtils'
+import { pactPostRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -21,7 +21,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully create a document', async () => {
       await provider.addInteraction({
         state: 'a document can be created',
-        ...addRecallDocumentRequest('a create recall document request', recallId, accessToken, category, fileContent),
+        ...pactPostRequest(
+          'a create recall document request',
+          `/recalls/${recallId}/documents`,
+          { category, fileContent },
+          accessToken
+        ),
         willRespondWith: pactJsonResponse(Matchers.like(addRecallDocumentResponseJson), 201),
       })
 
@@ -33,12 +38,11 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...addRecallDocumentRequest(
+        ...pactPostRequest(
           'an unauthorized create recall document request',
-          recallId,
-          accessToken,
-          category,
-          fileContent
+          `/recalls/${recallId}/documents`,
+          { category, fileContent },
+          accessToken
         ),
         willRespondWith: { status: 401 },
       })
@@ -51,24 +55,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
   })
 })
-
-function addRecallDocumentRequest(
-  description: string,
-  recallId: string,
-  token: string,
-  category: string,
-  fileContent: string
-) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'POST',
-      path: `/recalls/${recallId}/documents`,
-      headers: { Authorization: `Bearer ${token}` },
-      body: {
-        category,
-        fileContent,
-      },
-    },
-  }
-}

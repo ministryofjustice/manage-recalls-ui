@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { searchByNomsNumber } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import searchResponseJson from '../../../fake-manage-recalls-api/stubs/__files/search.json'
+import { pactPostRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -17,8 +18,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can find a prisoner by NOMS number', async () => {
       await provider.addInteraction({
         state: `a prisoner exists for NOMS number`,
-        ...searchRequest('a search request by NOMS number', nomsNumber, accessToken),
-        willRespondWith: searchResponse(searchResponseJson, 200),
+        ...pactPostRequest('a search request by NOMS number', '/search', { nomsNumber }, accessToken),
+        willRespondWith: pactJsonResponse(searchResponseJson, 200),
       })
 
       const actualResults = await searchByNomsNumber(nomsNumber, accessToken)
@@ -34,8 +35,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       }
       await provider.addInteraction({
         state: 'a search by blank NOMS number',
-        ...searchRequest('a search request with blank NOMS number', blankNomsNumber, accessToken),
-        willRespondWith: searchResponse(Matchers.like(errorResponse), 400),
+        ...pactPostRequest(
+          'a search request with blank NOMS number',
+          '/search',
+          { nomsNumber: blankNomsNumber },
+          accessToken
+        ),
+        willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
@@ -49,7 +55,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...searchRequest('an unauthorized search request', nomsNumber, accessToken),
+        ...pactPostRequest('an unauthorized search request', '/search', { nomsNumber }, accessToken),
         willRespondWith: { status: 401 },
       })
 
@@ -61,23 +67,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
   })
 })
-
-function searchRequest(description: string, nomsNumber: string, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'POST',
-      path: '/search',
-      headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
-      body: { nomsNumber },
-    },
-  }
-}
-
-function searchResponse(searchResults, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: searchResults,
-  }
-}

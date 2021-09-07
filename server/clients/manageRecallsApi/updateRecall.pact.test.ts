@@ -7,6 +7,7 @@ import fullyPopulatedRecallJson from '../../../fake-manage-recalls-api/stubs/__f
 import recallWithSentencingInfoJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-with-sentencing-info.json'
 import emptyRecallJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-empty.json'
 import { ObjectMap } from '../../@types'
+import { pactPatchRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -58,8 +59,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       }
       await provider.addInteraction({
         state: 'a recall exists',
-        ...updateRecallRequest('an update recall request with all fields populated', recallId, request, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(fullyPopulatedRecallJson), 200),
+        ...pactPatchRequest(
+          'an update recall request with all fields populated',
+          `/recalls/${recallId}`,
+          request,
+          accessToken
+        ),
+        willRespondWith: pactJsonResponse(Matchers.like(fullyPopulatedRecallJson), 200),
       })
       const actual = await updateRecall(recallId, request, accessToken)
       expect(actual).toEqual(fullyPopulatedRecallJson)
@@ -81,8 +87,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       }
       await provider.addInteraction({
         state: 'a recall exists',
-        ...updateRecallRequest('an update recall request with sentencing info', recallId, request, accessToken),
-        willRespondWith: updateRecallResponse(Matchers.like(recallWithSentencingInfoJson), 200),
+        ...pactPatchRequest(
+          'an update recall request with sentencing info',
+          `/recalls/${recallId}`,
+          request,
+          accessToken
+        ),
+        willRespondWith: pactJsonResponse(Matchers.like(recallWithSentencingInfoJson), 200),
       })
       const actual = await updateRecall(recallId, request, accessToken)
       expect(actual).toEqual(recallWithSentencingInfoJson)
@@ -103,13 +114,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       }
       await provider.addInteraction({
         state: 'a recall exists',
-        ...updateRecallRequest(
+        ...pactPatchRequest(
           'an update recall request with sentence info and no sentenceDate',
-          recallId,
+          `/recalls/${recallId}`,
           payload,
           accessToken
         ),
-        willRespondWith: updateRecallResponse(Matchers.like(emptyRecallJson), 200),
+        willRespondWith: pactJsonResponse(Matchers.like(emptyRecallJson), 200),
       })
       const actual = await updateRecall(recallId, payload, accessToken)
       expect(actual).toEqual(emptyRecallJson)
@@ -119,9 +130,9 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       const unknownRecallId = '11100000-0000-0000-0000-000000000000'
       await provider.addInteraction({
         state: 'a recall does not exist',
-        ...updateRecallRequest(
+        ...pactPatchRequest(
           'an update recall request for a recall that does not exist',
-          unknownRecallId,
+          `/recalls/${unknownRecallId}`,
           { indexOffence },
           accessToken
         ),
@@ -138,7 +149,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...updateRecallRequest('an unauthorized update recall request', recallId, { indexOffence }, accessToken),
+        ...pactPatchRequest(
+          'an unauthorized update recall request',
+          `/recalls/${recallId}`,
+          { indexOffence },
+          accessToken
+        ),
         willRespondWith: { status: 401 },
       })
 
@@ -150,23 +166,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
   })
 })
-
-function updateRecallRequest(description: string, recallId: string, body: ObjectMap<string | boolean>, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'PATCH',
-      path: `/recalls/${recallId}`,
-      headers: { Authorization: `Bearer ${token}` },
-      body,
-    },
-  }
-}
-
-function updateRecallResponse(responseBody, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: responseBody,
-  }
-}
