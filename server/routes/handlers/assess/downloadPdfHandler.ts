@@ -18,7 +18,7 @@ export default function downloadPdfHandler(
 
     res.writeHead(200, {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Content-Disposition': `inline; filename="${filename}"`,
     })
     res.end(pdfContentsByteArray)
   }

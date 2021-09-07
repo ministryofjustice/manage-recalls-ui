@@ -97,7 +97,7 @@ context('Assess a recall', () => {
     assessRecallPrison.enterPrison()
     assessRecallPrison.clickContinue()
     const assessRecallDownload = assessRecallDownloadPage.verifyOnPage()
-    assessRecallDownload.downloadRecallNotification()
+    assessRecallDownload.checkRecallNotificationLink(recallId)
     assessRecallDownload.clickContinue()
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage()
     assessRecallEmail.confirmEmailSent()
