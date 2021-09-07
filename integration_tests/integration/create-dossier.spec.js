@@ -1,7 +1,6 @@
 import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
-import validateBinaryFile from './file-utils'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierDownloadPage = require('../pages/dossierDownload')
@@ -42,13 +41,9 @@ context('Create a dossier', () => {
     dossierLetter.differentNomsNumber()
     dossierLetter.addNomsDetail()
     dossierLetter.clickContinue()
-    cy.readFile('integration_tests/test.pdf', 'base64').then(base64EncodedPdf => {
-      cy.task('expectGetDossier', { recallId, expectedPdfFile: base64EncodedPdf })
-      const dossierDownload = dossierDownloadPage.verifyOnPage()
-      dossierDownload.getDossier()
-      validateBinaryFile('dossier.pdf', 3908)
-      dossierDownload.clickContinue()
-    })
+    const dossierDownload = dossierDownloadPage.verifyOnPage()
+    dossierDownload.checkDossierLink(recallId)
+    dossierDownload.clickContinue()
     dossierConfirmationPage.verifyOnPage()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Yes' })
