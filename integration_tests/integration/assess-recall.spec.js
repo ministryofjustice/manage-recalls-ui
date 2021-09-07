@@ -1,7 +1,6 @@
 import path from 'path'
 import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
-import validateBinaryFile from './file-utils'
 import recallsListPage from '../pages/recallsList'
 
 const assessRecallPage = require('../pages/assessRecall')
@@ -9,6 +8,7 @@ const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
 const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation')
 const assessRecallLicencePage = require('../pages/assessRecallLicence')
+const assessRecallDownloadPage = require('../pages/assessRecallDownload')
 const assessRecallEmailPage = require('../pages/assessRecallEmail')
 
 context('Assess a recall', () => {
@@ -96,6 +96,9 @@ context('Assess a recall', () => {
     const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ personName })
     assessRecallPrison.enterPrison()
     assessRecallPrison.clickContinue()
+    const assessRecallDownload = assessRecallDownloadPage.verifyOnPage()
+    assessRecallDownload.downloadRecallNotification()
+    assessRecallDownload.clickContinue()
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage()
     assessRecallEmail.confirmEmailSent()
     assessRecallEmail.enterDateTime({
@@ -188,22 +191,6 @@ context('Assess a recall', () => {
       fieldName: 'currentPrison',
       summaryError: 'Select a prison',
       fieldError: 'Please select a prison',
-    })
-  })
-
-  it('User can get revocation order', () => {
-    cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-
-    cy.readFile('integration_tests/test.pdf', 'base64').then(base64EncodedPdf => {
-      cy.task('expectGetRevocationOrder', { recallId, expectedPdfFile: base64EncodedPdf })
-      cy.task('expectGetRecall', { recallId, expectedResult: getRecallResponse })
-      cy.login()
-
-      const recall = assessRecallConfirmationPage.verifyOnPage({ nomsNumber, recallId, fullName: 'Bobby Badger' })
-      recall.getRevocationOrder()
-
-      validateBinaryFile('revocation-order.pdf', 3908)
     })
   })
 })

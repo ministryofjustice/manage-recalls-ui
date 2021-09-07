@@ -1,0 +1,36 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Assess a recall - Download recall notification" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-prison"
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class='govuk-heading-l'>Download recall notification</h1>
+
+            <p class='govuk-body-l'>Review the document and check the information is correct.</p>
+            {{ documentDownloadLink({
+                linkText: "Recall notification",
+                url: "/get-revocation-order?recallId=" + recall.recallId,
+                dataQa: 'getRevocationOrderButton'
+            })
+            }}
+
+            <div class="govuk-!-margin-top-8">
+                <a class="govuk-button" data-qa="continueButton" href="/persons/{{person.nomsNumber}}/recalls/{{ recall.recallId}}/assess-email">Continue</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
