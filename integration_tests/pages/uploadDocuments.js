@@ -10,10 +10,10 @@ const uploadDocumentsPage = ({ nomsNumber, recallId } = {}) =>
       })
       cy.get('[data-qa="continueButton"]').click()
     },
-    expectUploadedDocumentError: () => {
+    expectUploadedDocumentError: errorMsg => {
       cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
         const text = $searchResults.text()
-        expect(text.trim()).to.equal('test.pdf - an error occurred during upload')
+        expect(text.trim()).to.equal(errorMsg)
       })
     },
   })
