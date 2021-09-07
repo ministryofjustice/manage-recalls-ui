@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { getRecallList } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getRecallsResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
+import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -16,8 +17,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully retrieve a list of recalls', async () => {
       await provider.addInteraction({
         state: 'a list of recalls exists',
-        ...getRecallsRequest('a get recalls request', accessToken),
-        willRespondWith: getRecallsResponse(Matchers.like(getRecallsResponseJson), 200),
+        ...pactGetRequest('a get recalls request', '/recalls', accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getRecallsResponseJson), 200),
       })
 
       const actual = await getRecallList(accessToken)
@@ -28,7 +29,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...getRecallsRequest('an unauthorized get recalls request', accessToken),
+        ...pactGetRequest('an unauthorized get recalls request', '/recalls', accessToken),
         willRespondWith: { status: 401 },
       })
 
@@ -40,22 +41,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
   })
 })
-
-function getRecallsRequest(description: string, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'GET',
-      path: '/recalls',
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  }
-}
-
-function getRecallsResponse(responseBody, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: responseBody,
-  }
-}

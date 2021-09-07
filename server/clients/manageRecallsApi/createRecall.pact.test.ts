@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { createRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import createRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/create-recall.json'
+import { pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -18,7 +19,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'a recall can be created',
         ...createRecallRequest('a create recall request', nomsNumber, accessToken),
-        willRespondWith: createRecallResponse(Matchers.like(createRecallResponseJson), 201),
+        willRespondWith: pactJsonResponse(Matchers.like(createRecallResponseJson), 201),
       })
 
       const actual = await createRecall(nomsNumber, accessToken)
@@ -35,7 +36,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'a recall can be created',
         ...createRecallRequest('a create recall request with blank nomsNumber', blankNomsNumber, accessToken),
-        willRespondWith: createRecallResponse(Matchers.like(errorResponse), 400),
+        willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
@@ -71,13 +72,5 @@ function createRecallRequest(description: string, nomsNumber: string, token: str
       headers: { Authorization: `Bearer ${token}` },
       body: { nomsNumber },
     },
-  }
-}
-
-function createRecallResponse(responseBody, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: responseBody,
   }
 }

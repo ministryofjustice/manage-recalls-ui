@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { getDossier } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getDossierResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-dossier.json'
+import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -17,8 +18,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully get a dossier', async () => {
       await provider.addInteraction({
         state: 'a dossier can be downloaded',
-        ...getDossierRequest('a get dossier request', recallId, accessToken),
-        willRespondWith: getDossierResponse(Matchers.like(getDossierResponseJson), 200),
+        ...pactGetRequest('a get dossier request', `/recalls/${recallId}/dossier`, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getDossierResponseJson), 200),
       })
 
       const actual = await getDossier(recallId, accessToken)
@@ -30,7 +31,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   test('returns 401 if invalid user', async () => {
     await provider.addInteraction({
       state: 'an unauthorized user accessToken',
-      ...getDossierRequest('an unauthorized get dossier request', recallId, accessToken),
+      ...pactGetRequest('an unauthorized get dossier request', `/recalls/${recallId}/dossier`, accessToken),
       willRespondWith: { status: 401 },
     })
 
@@ -41,22 +42,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     }
   })
 })
-
-function getDossierRequest(description: string, recallId: string, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'GET',
-      path: `/recalls/${recallId}/dossier`,
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  }
-}
-
-function getDossierResponse(responseBody, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: responseBody,
-  }
-}

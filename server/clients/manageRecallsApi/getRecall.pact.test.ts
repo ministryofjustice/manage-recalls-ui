@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { getRecall } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getRecallResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -17,8 +18,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully retrieve a recall', async () => {
       await provider.addInteraction({
         state: 'a recall exists',
-        ...getRecallRequest('a get recall request', recallId, accessToken),
-        willRespondWith: getRecallResponse(Matchers.like(getRecallResponseJson), 200),
+        ...pactGetRequest('a get recall request', `/recalls/${recallId}`, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getRecallResponseJson), 200),
       })
 
       const actual = await getRecall(recallId, accessToken)
@@ -29,7 +30,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...getRecallRequest('an unauthorized get recall request', recallId, accessToken),
+        ...pactGetRequest('an unauthorized get recall request', `/recalls/${recallId}`, accessToken),
         willRespondWith: { status: 401 },
       })
 
@@ -41,22 +42,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
   })
 })
-
-function getRecallRequest(description: string, recallId: string, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'GET',
-      path: `/recalls/${recallId}`,
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  }
-}
-
-function getRecallResponse(responseBody, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: responseBody,
-  }
-}

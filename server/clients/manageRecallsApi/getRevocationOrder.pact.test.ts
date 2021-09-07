@@ -4,6 +4,7 @@ import { Matchers } from '@pact-foundation/pact'
 import { getRevocationOrder } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getRevocationOrderResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-revocation-order.json'
+import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -17,8 +18,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully get a revocation order', async () => {
       await provider.addInteraction({
         state: 'a revocation order can be downloaded',
-        ...getRevocationOrderRequest('a get revocation order request', recallId, accessToken),
-        willRespondWith: getRevocationOrderResponse(Matchers.like(getRevocationOrderResponseJson), 200),
+        ...pactGetRequest('a get revocation order request', `/recalls/${recallId}/revocationOrder`, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getRevocationOrderResponseJson), 200),
       })
 
       const actual = await getRevocationOrder(recallId, accessToken)
@@ -30,7 +31,11 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   test('returns 401 if invalid user', async () => {
     await provider.addInteraction({
       state: 'an unauthorized user accessToken',
-      ...getRevocationOrderRequest('an unauthorized get revocation order request', recallId, accessToken),
+      ...pactGetRequest(
+        'an unauthorized get revocation order request',
+        `/recalls/${recallId}/revocationOrder`,
+        accessToken
+      ),
       willRespondWith: { status: 401 },
     })
 
@@ -41,22 +46,3 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     }
   })
 })
-
-function getRevocationOrderRequest(description: string, recallId: string, token: string) {
-  return {
-    uponReceiving: description,
-    withRequest: {
-      method: 'GET',
-      path: `/recalls/${recallId}/revocationOrder`,
-      headers: { Authorization: `Bearer ${token}` },
-    },
-  }
-}
-
-function getRevocationOrderResponse(responseBody, expectedStatus = 200) {
-  return {
-    status: expectedStatus,
-    headers: { 'Content-Type': 'application/json' },
-    body: responseBody,
-  }
-}
