@@ -2,7 +2,6 @@ import path from 'path'
 import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
-import uploadDocumentsPage from '../pages/uploadDocuments'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
