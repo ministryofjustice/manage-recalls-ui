@@ -16,6 +16,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      allowedFileExtensions: ['.msg'],
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -33,6 +34,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      allowedFileExtensions: ['.msg'],
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -53,13 +55,14 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      allowedFileExtensions: ['.msg'],
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#recallNotificationEmailSentDateTime',
         name: 'recallNotificationEmailSentDateTime',
-        text: 'Date and time you received the recall email',
+        text: 'Date and time you sent the recall email',
         values: {},
       },
     ])
@@ -71,6 +74,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: false,
       uploadFailed: false,
+      allowedFileExtensions: ['.msg'],
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -88,6 +92,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
+      allowedFileExtensions: ['.msg'],
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -96,6 +101,25 @@ describe('validateEmail', () => {
         name: 'recallNotificationEmailFileName',
         text: 'An error occurred uploading the email',
         values: 'test.msg',
+      },
+    ])
+  })
+
+  it('returns an error if an invalid email file extension was uploaded', () => {
+    const { errors, valuesToSave } = validateEmail({
+      requestBody,
+      fileName: 'test.eml',
+      emailFileSelected: true,
+      uploadFailed: true,
+      allowedFileExtensions: ['.msg'],
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#recallNotificationEmailFileName',
+        name: 'recallNotificationEmailFileName',
+        text: 'An error occurred uploading the email',
+        values: 'test.eml',
       },
     ])
   })
