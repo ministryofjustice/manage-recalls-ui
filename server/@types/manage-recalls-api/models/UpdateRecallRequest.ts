@@ -48,12 +48,12 @@ export type UpdateRecallRequest = {
   >
   reasonsForRecallOtherDetail?: string
   recallEmailReceivedDateTime?: string
+  recallNotificationEmailSentDateTime?: string
   sentenceDate?: string
   sentenceExpiryDate?: string
   sentenceLength?: SentenceLengthReq
   sentencingCourt?: string
   vulnerabilityDiversityDetail?: string
-  recallNotificationEmailSentDateTime?: string
 }
 
 export namespace UpdateRecallRequest {

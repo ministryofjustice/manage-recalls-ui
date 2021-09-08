@@ -3,6 +3,7 @@ import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 
 const dossierLetterPage = require('../pages/dossierLetter')
+const dossierCheckPage = require('../pages/dossierCheck')
 const dossierDownloadPage = require('../pages/dossierDownload')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const assessRecallPage = require('../pages/assessRecall')
@@ -41,6 +42,13 @@ context('Create a dossier', () => {
     dossierLetter.differentNomsNumber()
     dossierLetter.addNomsDetail()
     dossierLetter.clickContinue()
+    const dossierCheck = dossierCheckPage.verifyOnPage()
+    dossierCheck.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
+    dossierCheck.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: 'A1234AA' })
+    dossierCheck.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
+    dossierCheck.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
+    dossierCheck.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
+    dossierCheck.clickContinue()
     const dossierDownload = dossierDownloadPage.verifyOnPage()
     dossierDownload.checkDossierLink(recallId)
     dossierDownload.clickContinue()

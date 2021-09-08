@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type { AddDocumentRequest } from './models/AddDocumentRequest'
+export { AddDocumentRequest } from './models/AddDocumentRequest'
 export type { AddDocumentResponse } from './models/AddDocumentResponse'
 export { ApiRecallDocument } from './models/ApiRecallDocument'
 export type { BookRecallRequest } from './models/BookRecallRequest'
