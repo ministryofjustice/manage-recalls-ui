@@ -5,6 +5,8 @@ import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/Api
 import { validateEmail } from './helpers/validateEmail'
 import { uploadStorageField } from '../helpers/uploadStorage'
 
+const allowedFileExtensions = ['.msg']
+
 export const processUpload = uploadStorageField('recallNotificationEmailFileName')
 
 export const assessEmailFormHandler = async (req: Request, res: Response): Promise<void> => {
@@ -43,6 +45,7 @@ export const assessEmailFormHandler = async (req: Request, res: Response): Promi
         fileName: file?.originalname,
         emailFileSelected,
         uploadFailed,
+        allowedFileExtensions,
       })
       if (errors) {
         req.session.errors = errors
