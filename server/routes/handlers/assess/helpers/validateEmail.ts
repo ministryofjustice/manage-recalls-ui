@@ -8,12 +8,14 @@ interface Args {
   fileName: string
   emailFileSelected: boolean
   uploadFailed: boolean
+  allowedFileExtensions: string[]
 }
 export const validateEmail = ({
   requestBody,
   fileName,
   emailFileSelected,
   uploadFailed,
+  allowedFileExtensions,
 }: Args): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
   let errors
   let unsavedValues
@@ -28,9 +30,13 @@ export const validateEmail = ({
     minute: requestBody.recallNotificationEmailSentDateTimeMinute,
   }
   const recallNotificationEmailSentDateTime = convertGmtDatePartsToUtc(recallNotificationEmailSentDateTimeParts)
+  const invalidFileExtension = emailFileSelected
+    ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
+    : false
   if (
     !emailFileSelected ||
     uploadFailed ||
+    invalidFileExtension ||
     !confirmRecallNotificationEmailSent ||
     !recallNotificationEmailSentDateTime
   ) {
@@ -47,7 +53,7 @@ export const validateEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailSentDateTime',
-          text: 'Date and time you received the recall email',
+          text: 'Date and time you sent the recall email',
           values: recallNotificationEmailSentDateTimeParts,
         })
       )
@@ -65,6 +71,15 @@ export const validateEmail = ({
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
           text: 'An error occurred uploading the email',
+          values: fileName,
+        })
+      )
+    }
+    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileExtension) {
+      errors.push(
+        makeErrorObject({
+          id: 'recallNotificationEmailFileName',
+          text: `Only ${allowedFileExtensions.join(', ')} files are allowed`,
           values: fileName,
         })
       )

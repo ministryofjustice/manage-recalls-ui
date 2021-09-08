@@ -111,7 +111,7 @@ context('Assess a recall', () => {
         Minute: '04',
       },
     })
-    assessRecallEmail.uploadEmail()
+    assessRecallEmail.uploadEmail('recall-notification.msg')
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
@@ -191,6 +191,70 @@ context('Assess a recall', () => {
       fieldName: 'currentPrison',
       summaryError: 'Select a prison',
       fieldError: 'Please select a prison',
+    })
+  })
+
+  it("User sees an error if they don't upload the recall notification email", () => {
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
+    cy.login()
+
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallEmail.confirmEmailSent()
+    assessRecallEmail.enterDateTime({
+      prefix: 'recallNotificationEmailSentDateTime',
+      values: {
+        Day: '15',
+        Month: '08',
+        Year: '2021',
+        Hour: '14',
+        Minute: '04',
+      },
+    })
+    assessRecallEmail.clickContinue()
+    assessRecallEmail.assertErrorMessage({
+      fieldName: 'recallNotificationEmailFileName',
+      summaryError: 'Upload the email',
+      fieldError: 'Upload the email',
+    })
+  })
+
+  it("User sees an error if they don't enter the recall notification email sent date", () => {
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
+    cy.login()
+
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallEmail.confirmEmailSent()
+    assessRecallEmail.uploadEmail('recall-notification.msg')
+    assessRecallEmail.clickContinue()
+    assessRecallEmail.assertErrorMessage({
+      fieldName: 'recallNotificationEmailSentDateTime',
+      summaryError: 'Date and time you sent the recall email',
+      fieldError: 'Enter a valid date and time in the past',
+    })
+  })
+
+  it('User sees an error if they upload an invalid format for recall notification email', () => {
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
+    cy.login()
+
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallEmail.confirmEmailSent()
+    assessRecallEmail.enterDateTime({
+      prefix: 'recallNotificationEmailSentDateTime',
+      values: {
+        Day: '15',
+        Month: '08',
+        Year: '2021',
+        Hour: '14',
+        Minute: '04',
+      },
+    })
+    assessRecallEmail.uploadEmail('part_a_recall_report.pdf')
+    assessRecallEmail.clickContinue()
+    assessRecallEmail.assertErrorMessage({
+      fieldName: 'recallNotificationEmailFileName',
+      summaryError: 'Only .msg files are allowed',
+      fieldError: 'Only .msg files are allowed',
     })
   })
 })
