@@ -24,7 +24,7 @@ export async function getRecallList(token: string): Promise<Recall[]> {
   return restClient(token).get<Recall[]>({ path: '/recalls' })
 }
 
-export function getRevocationOrder(recallId: string, token: string): Promise<Pdf> {
+export function getRecallNotification(recallId: string, token: string): Promise<Pdf> {
   return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/revocationOrder` })
 }
 
