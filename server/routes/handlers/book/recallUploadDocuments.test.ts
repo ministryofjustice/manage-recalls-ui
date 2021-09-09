@@ -2,7 +2,7 @@
 import { getMockRes } from '@jest-mock/express'
 import nock from 'nock'
 import { uploadDocumentsPage, downloadDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
-import { getRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecallDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
