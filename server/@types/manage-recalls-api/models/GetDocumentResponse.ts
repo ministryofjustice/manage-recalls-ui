@@ -11,6 +11,7 @@ export type GetDocumentResponse = {
 
 export namespace GetDocumentResponse {
   export enum category {
+    DOSSIER_EMAIL = 'DOSSIER_EMAIL',
     LICENCE = 'LICENCE',
     OASYS_RISK_ASSESSMENT = 'OASYS_RISK_ASSESSMENT',
     PART_A_RECALL_REPORT = 'PART_A_RECALL_REPORT',

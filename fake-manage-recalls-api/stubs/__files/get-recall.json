@@ -52,5 +52,6 @@
   "additionalLicenceConditionsDetail": "one, two",
   "differentNomsNumber": true,
   "differentNomsNumberDetail": "AC3408303",
-  "recallNotificationEmailSentDateTime": "2021-08-15T13:04:43.000Z"
+  "recallNotificationEmailSentDateTime": "2021-08-15T13:04:00.000Z",
+  "dossierEmailSentDate": "2021-09-08"
 }
