@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getRevocationOrder } from './manageRecallsApiClient'
+import { getRecallNotification } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-import getRevocationOrderResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-revocation-order.json'
+import getRecallNotificationResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-notification.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
@@ -14,17 +14,17 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('get revocation order', () => {
-    test('can successfully get a revocation order', async () => {
+  describe('get recall notification', () => {
+    test('can successfully get a recall notification', async () => {
       await provider.addInteraction({
-        state: 'a revocation order can be downloaded',
-        ...pactGetRequest('a get revocation order request', `/recalls/${recallId}/revocationOrder`, accessToken),
-        willRespondWith: pactJsonResponse(Matchers.like(getRevocationOrderResponseJson), 200),
+        state: 'a recall notification can be downloaded',
+        ...pactGetRequest('a get recall notification request', `/recalls/${recallId}/revocationOrder`, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getRecallNotificationResponseJson), 200),
       })
 
-      const actual = await getRevocationOrder(recallId, accessToken)
+      const actual = await getRecallNotification(recallId, accessToken)
 
-      expect(actual).toEqual(getRevocationOrderResponseJson)
+      expect(actual).toEqual(getRecallNotificationResponseJson)
     })
   })
 
@@ -32,7 +32,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     await provider.addInteraction({
       state: 'an unauthorized user accessToken',
       ...pactGetRequest(
-        'an unauthorized get revocation order request',
+        'an unauthorized get recall notification request',
         `/recalls/${recallId}/revocationOrder`,
         accessToken
       ),
@@ -40,7 +40,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
 
     try {
-      await getRevocationOrder(recallId, accessToken)
+      await getRecallNotification(recallId, accessToken)
     } catch (exception) {
       expect(exception.status).toEqual(401)
     }

@@ -20,8 +20,9 @@ import { validateSentenceDetails } from './handlers/book/helpers/validateSentenc
 import { validatePolice } from './handlers/book/helpers/validatePolice'
 import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds'
 import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
-import { getRevocationOrder, getDossier } from '../clients/manageRecallsApi/manageRecallsApiClient'
-import downloadPdfHandler from './handlers/assess/downloadPdfHandler'
+import { getDossier } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import downloadPdfHandler from './handlers/helpers/downloadPdfHandler'
+import { getRecallNotificationPdf } from './handlers/assess/getRecallNotificationPdf'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -61,9 +62,10 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-email`, viewWithRecallAndPerson('assessEmail'))
   post(`${basePath}/assess-email`, assessEmailFormHandler)
   get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
+
+  get(`${basePath}/documents/recall-notification`, getRecallNotificationPdf)
   get(`${basePath}/documents/:documentId`, downloadDocument)
 
-  get('/get-revocation-order', downloadPdfHandler('/get-revocation-order', 'revocation-order.pdf', getRevocationOrder))
   get('/get-dossier', downloadPdfHandler('/get-dossier', 'dossier.pdf', getDossier))
 
   // CREATE DOSSIER

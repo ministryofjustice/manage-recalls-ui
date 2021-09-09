@@ -22,8 +22,8 @@
             <p class='govuk-body-l'>Review the document and check the information is correct.</p>
             {{ documentDownloadLink({
                 linkText: "Recall notification",
-                url: "/get-revocation-order?recallId=" + recall.recallId,
-                dataQa: 'getRevocationOrderLink'
+                url: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/documents/recall-notification",
+                dataQa: 'getRecallNotificationLink'
             })
             }}
 
