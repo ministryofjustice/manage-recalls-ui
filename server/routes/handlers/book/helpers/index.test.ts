@@ -1,5 +1,6 @@
 import { addErrorsToDocuments } from './index'
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { documentTypes } from '../documentTypes'
 
 describe('Upload document helpers', () => {
   describe('addErrorsToDocuments', () => {
@@ -18,7 +19,8 @@ describe('Upload document helpers', () => {
           href: '#2',
         },
       ]
-      const documents = addErrorsToDocuments(errors)
+      const filteredDocTypes = documentTypes.filter(doc => doc.type === 'document')
+      const documents = addErrorsToDocuments(filteredDocTypes, errors)
       const partAdoc = documents.find(doc => doc.name === ApiRecallDocument.category.PART_A_RECALL_REPORT)
       const preSentencingDoc = documents.find(doc => doc.name === ApiRecallDocument.category.PRE_SENTENCING_REPORT)
       expect(partAdoc.error).toEqual(errors[0].text)

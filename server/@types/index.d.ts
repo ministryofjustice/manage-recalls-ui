@@ -84,12 +84,6 @@ export interface RecallResponseWithDocuments extends RecallResponse {
   documents: DecoratedDocument[]
 }
 
-export interface DecoratedRecallResponse extends RecallResponseWithDocuments {
-  recallLengthFormatted: string
-  mappaLevelFormatted: string
-  probationDivisionFormatted: string
-}
-
 export interface DecoratedDocument extends UploadDocumentMetadata {
   fileName?: string
   url: string
