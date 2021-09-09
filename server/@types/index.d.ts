@@ -127,3 +127,9 @@ export interface ReqValidatorReturn {
   valuesToSave?: UpdateRecallRequest
   unsavedValues?: ObjectMap<unknown>
 }
+
+export interface RecallResult {
+  recallId: string
+  status: string
+  offender: PersonSearchResult
+}
