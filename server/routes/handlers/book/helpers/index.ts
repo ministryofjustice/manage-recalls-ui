@@ -2,8 +2,11 @@ import { FileDataBase64, UploadError, UploadedFormFields, UploadDocumentMetadata
 import { documentTypes } from '../documentTypes'
 import { AddDocumentResponse } from '../../../../@types/manage-recalls-api'
 
-export const addErrorsToDocuments = (errors?: UploadError[]): UploadDocumentMetadata[] => {
-  return documentTypes.map(doc => {
+export const addErrorsToDocuments = (
+  filteredDocTypes: UploadDocumentMetadata[],
+  errors?: UploadError[]
+): UploadDocumentMetadata[] => {
+  return filteredDocTypes.map(doc => {
     const matchedErr = errors.find((err: UploadError) => err.name === doc.name)
     if (matchedErr) {
       return { ...doc, error: matchedErr.text }

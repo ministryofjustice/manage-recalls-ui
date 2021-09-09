@@ -1,13 +1,41 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
-import { downloadDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
-import { getRecallDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockGetRequest } from '../../testutils/mockRequestUtils'
+import nock from 'nock'
+import { uploadDocumentsPage, downloadDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
+import { getRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
+import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { uploadStorageFields } from '../helpers/uploadStorage'
+import config from '../../../config'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
+
+describe('uploadDocumentsPage', () => {
+  const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
+  const nomsNumber = 'AA123AA'
+  const recallId = '00000000-0000-0000-0000-000000000000'
+
+  beforeEach(() => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    fakeManageRecallsApi.post('/search').reply(200, [
+      {
+        firstName: 'Bobby',
+        lastName: 'Badger',
+      },
+    ])
+  })
+
+  it("doesn't include email documents for display", async () => {
+    const req = mockGetRequest({
+      params: { nomsNumber, recallId },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('')
+    await uploadDocumentsPage(req, res)
+    expect(res.locals.documentTypes.find(doc => doc.type === 'email')).toBeUndefined()
+  })
+})
 
 describe('uploadRecallDocumentsFormHandler', () => {
   let req

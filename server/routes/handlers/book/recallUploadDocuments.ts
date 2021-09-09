@@ -20,7 +20,8 @@ export const uploadDocumentsPage = async (req: Request, res: Response): Promise<
   ])
   res.locals.person = person
   res.locals.recall = recall
-  res.locals.documentTypes = errors ? addErrorsToDocuments(errors.list) : [...documentTypes]
+  const filteredDocTypes = documentTypes.filter(doc => doc.type === 'document')
+  res.locals.documentTypes = errors ? addErrorsToDocuments(filteredDocTypes, errors.list) : filteredDocTypes
   res.render('pages/uploadDocuments')
 }
 
