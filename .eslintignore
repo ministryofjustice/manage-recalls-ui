@@ -5,3 +5,4 @@ cypress.json
 reporter-config.json
 dist/
 server/@types/manage-recalls-api
+coverage

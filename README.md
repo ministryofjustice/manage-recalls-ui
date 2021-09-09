@@ -113,6 +113,12 @@ to fix any lint issues automatically:
 
 `npm run test`
 
+with coverage:
+
+`npm run test:coverage`
+
+Coverage stats will be output to stdout and /coverage
+
 ### Run integration tests
 
 The integration tests require redis, wiremock (fake-manage-recalls-api) and the service to be running.  To start them run:

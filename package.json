@@ -20,6 +20,7 @@
     "lint:fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc",
     "test": "jest --forceExit",
+    "test:coverage": "jest --forceExit --coverage",
     "security_audit": "npx audit-ci --config audit-ci.json",
     "int-test": "rm -rf cypress/downloads && cypress run --config video=false",
     "int-test-ui": "rm -rf cypress/downloads && cypress open",
@@ -38,6 +39,9 @@
     "preset": "ts-jest",
     "collectCoverageFrom": [
       "server/**/*.{ts,js,jsx,mjs}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "@types"
     ],
     "testMatch": [
       "<rootDir>/(server|job)/**/?(*.)(spec|test).{ts,js,jsx,mjs}"
