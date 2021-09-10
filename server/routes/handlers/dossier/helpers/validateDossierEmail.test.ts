@@ -1,17 +1,15 @@
-import { validateEmail } from './validateEmail'
+import { validateDossierEmail } from './validateDossierEmail'
 
 describe('validateEmail', () => {
   const requestBody = {
-    confirmRecallNotificationEmailSent: 'YES',
-    recallNotificationEmailSentDateTimeYear: '2021',
-    recallNotificationEmailSentDateTimeMonth: '10',
-    recallNotificationEmailSentDateTimeDay: '4',
-    recallNotificationEmailSentDateTimeHour: '14',
-    recallNotificationEmailSentDateTimeMinute: '47',
+    confirmDossierEmailSent: 'YES',
+    dossierEmailSentDateYear: '2021',
+    dossierEmailSentDateMonth: '10',
+    dossierEmailSentDateDay: '4',
   }
 
   it('returns valuesToSave for all valid fields', () => {
-    const { errors, valuesToSave } = validateEmail({
+    const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -20,7 +18,7 @@ describe('validateEmail', () => {
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      recallNotificationEmailSentDateTime: '2021-10-04T13:47:00.000Z',
+      dossierEmailSentDate: '2021-10-04',
     })
   })
 
@@ -29,7 +27,7 @@ describe('validateEmail', () => {
       acc[key] = ''
       return acc
     }, {})
-    const { errors, valuesToSave } = validateEmail({
+    const { errors, valuesToSave } = validateDossierEmail({
       requestBody: emptyBody,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -39,8 +37,8 @@ describe('validateEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#confirmRecallNotificationEmailSent',
-        name: 'confirmRecallNotificationEmailSent',
+        href: '#confirmDossierEmailSent',
+        name: 'confirmDossierEmailSent',
         text: 'Confirm you sent the email to all recipients',
       },
     ])
@@ -48,9 +46,9 @@ describe('validateEmail', () => {
 
   it('returns an error for the sent date, if confirm checkbox is checked', () => {
     const body = {
-      confirmRecallNotificationEmailSent: 'YES',
+      confirmDossierEmailSent: 'YES',
     }
-    const { errors, valuesToSave } = validateEmail({
+    const { errors, valuesToSave } = validateDossierEmail({
       requestBody: body,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -60,16 +58,16 @@ describe('validateEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#recallNotificationEmailSentDateTime',
-        name: 'recallNotificationEmailSentDateTime',
-        text: 'Date and time you sent the recall email',
+        href: '#dossierEmailSentDate',
+        name: 'dossierEmailSentDate',
+        text: 'Date you sent the dossier email',
         values: {},
       },
     ])
   })
 
   it("returns an error if an email wasn't uploaded", () => {
-    const { errors, valuesToSave } = validateEmail({
+    const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: false,
@@ -79,15 +77,15 @@ describe('validateEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#recallNotificationEmailFileName',
-        name: 'recallNotificationEmailFileName',
+        href: '#dossierEmailFileName',
+        name: 'dossierEmailFileName',
         text: 'Upload the email',
       },
     ])
   })
 
   it('returns an error if the email upload failed', () => {
-    const { errors, valuesToSave } = validateEmail({
+    const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -97,8 +95,8 @@ describe('validateEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#recallNotificationEmailFileName',
-        name: 'recallNotificationEmailFileName',
+        href: '#dossierEmailFileName',
+        name: 'dossierEmailFileName',
         text: 'An error occurred uploading the email',
         values: 'test.msg',
       },
@@ -106,7 +104,7 @@ describe('validateEmail', () => {
   })
 
   it('returns an error if an invalid email file extension was uploaded', () => {
-    const { errors, valuesToSave } = validateEmail({
+    const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.eml',
       emailFileSelected: true,
@@ -116,8 +114,8 @@ describe('validateEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#recallNotificationEmailFileName',
-        name: 'recallNotificationEmailFileName',
+        href: '#dossierEmailFileName',
+        name: 'dossierEmailFileName',
         text: 'An error occurred uploading the email',
         values: 'test.eml',
       },

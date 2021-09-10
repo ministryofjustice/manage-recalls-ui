@@ -1,3 +1,4 @@
+import path from 'path'
 import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
@@ -5,6 +6,7 @@ import recallsListPage from '../pages/recallsList'
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
 const dossierDownloadPage = require('../pages/dossierDownload')
+const dossierEmailPage = require('../pages/dossierEmail')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const assessRecallPage = require('../pages/assessRecall')
 
@@ -31,8 +33,30 @@ context('Create a dossier', () => {
       ],
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        documents: [
+          ...getRecallResponse.documents,
+          {
+            category: 'DOSSIER_EMAIL',
+            documentId: '234-3455-8542-c3ac-8c963f66afa6',
+            fileName: 'email.msg',
+          },
+        ],
+      },
+    })
     cy.task('expectUpdateRecall', recallId)
+    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    const fileName = 'email.msg'
+    cy.task('expectGetRecallDocument', {
+      category: 'DOSSIER_EMAIL',
+      file: 'abc',
+      fileName,
+      documentId: '123',
+    })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
@@ -52,11 +76,30 @@ context('Create a dossier', () => {
     const dossierDownload = dossierDownloadPage.verifyOnPage()
     dossierDownload.checkDossierLink(recallId)
     dossierDownload.clickContinue()
+    const dossierEmail = dossierEmailPage.verifyOnPage()
+    dossierEmail.confirmEmailSent()
+    dossierEmail.enterDateTime({
+      prefix: 'dossierEmailSentDate',
+      values: {
+        Day: '8',
+        Month: '9',
+        Year: '2021',
+      },
+    })
+    dossierEmail.uploadEmail('email.msg')
+    dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Yes' })
     assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditionsDetail', textToFind: 'one, two' })
     assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'Yes' })
     assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumberDetail', textToFind: 'AC3408303' })
+    assessRecall.assertElementHasText({
+      qaAttr: 'dossierEmailSentDate',
+      textToFind: '8 Sep 2021',
+    })
+    cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
+    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
+    cy.readFile(downloadedFilename, 'binary')
   })
 })

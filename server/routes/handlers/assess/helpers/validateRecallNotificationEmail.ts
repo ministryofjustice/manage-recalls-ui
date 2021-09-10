@@ -1,22 +1,19 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc } from '../../helpers/dates'
 
-interface Args {
-  requestBody: ObjectMap<string>
-  fileName: string
-  emailFileSelected: boolean
-  uploadFailed: boolean
-  allowedFileExtensions: string[]
-}
-export const validateEmail = ({
+export const validateRecallNotificationEmail = ({
   requestBody,
   fileName,
   emailFileSelected,
   uploadFailed,
   allowedFileExtensions,
-}: Args): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+}: EmailUploadValidatorArgs): {
+  errors?: NamedFormError[]
+  valuesToSave: UpdateRecallRequest
+  unsavedValues: ObjectMap<unknown>
+} => {
   let errors
   let unsavedValues
   let valuesToSave

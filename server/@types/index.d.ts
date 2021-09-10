@@ -118,15 +118,25 @@ export type ViewName =
   | 'recallConfirmation'
   | 'dossierLetter'
   | 'dossierCheck'
+  | 'dossierEmail'
   | 'dossierDownload'
   | 'dossierConfirmation'
 
 export type ReqValidatorFn = (requestBody: ObjectMap<string>) => ReqValidatorReturn
+export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn
 
 export interface ReqValidatorReturn {
   errors?: NamedFormError[]
   valuesToSave?: UpdateRecallRequest
   unsavedValues?: ObjectMap<unknown>
+}
+
+export interface EmailUploadValidatorArgs {
+  requestBody: ObjectMap<string>
+  fileName: string
+  emailFileSelected: boolean
+  uploadFailed: boolean
+  allowedFileExtensions: string[]
 }
 
 export interface RecallResult {
