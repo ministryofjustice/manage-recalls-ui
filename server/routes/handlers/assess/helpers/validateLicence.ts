@@ -25,7 +25,7 @@ export const validateLicence = (
       errors.push(
         makeErrorObject({
           id: 'licenceConditionsBreached',
-          text: 'Licence conditions breached',
+          text: 'Breached licence conditions',
         })
       )
     }

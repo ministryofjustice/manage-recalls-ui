@@ -72,7 +72,7 @@ describe('getFormValues', () => {
       text: 'ACO',
     },
     licenceConditionsBreached: {
-      text: 'Licence conditions breached',
+      text: 'Breached licence conditions',
     },
     reasonsForRecall: {
       text: 'Reasons for recall',

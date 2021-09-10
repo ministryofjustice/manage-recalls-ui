@@ -168,7 +168,7 @@ context('Assess a recall', () => {
     assessRecallLicence.clickContinue()
     assessRecallLicence.assertErrorMessage({
       fieldName: 'licenceConditionsBreached',
-      summaryError: 'Licence conditions breached',
+      summaryError: 'Breached licence conditions',
       fieldError: 'Enter the licence conditions breached',
     })
     assessRecallLicence.assertErrorMessage({
