@@ -39,7 +39,7 @@ describe('getRecallNotificationPdf', () => {
       await getRecallNotificationPdf(req, res)
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="IN CUSTODY RECALL BOBBY BADGER A123456.pdf"`,
+        'Content-Disposition': `inline; filename="IN CUSTODY RECALL BADGER BOBBY A123456.pdf"`,
       })
       expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
     })
@@ -77,7 +77,7 @@ describe('getRecallNotificationPdf', () => {
       await getRecallNotificationPdf(req, res)
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="IN CUSTODY RECALL BOBBY BADGER.pdf"`,
+        'Content-Disposition': `inline; filename="IN CUSTODY RECALL BADGER BOBBY.pdf"`,
       })
       expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
     })

@@ -24,7 +24,7 @@ export const getRecallNotificationPdf = async (req: Request, res: Response) => {
   // if the other two calls fail to get metadata, we could still serve the PDF with a generic filename
   const name =
     person.status === 'fulfilled'
-      ? ` ${person.value?.firstName?.toUpperCase()} ${person.value?.lastName?.toUpperCase()}`
+      ? ` ${person.value?.lastName?.toUpperCase()} ${person.value?.firstName?.toUpperCase()}`
       : ''
   const bookingNumber = recall.status === 'fulfilled' ? ` ${recall.value?.bookingNumber?.toUpperCase()}` : ''
   const fileName = `IN CUSTODY RECALL${name}${bookingNumber}.pdf`
