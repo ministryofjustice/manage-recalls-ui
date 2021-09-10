@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
-import { PersonSearchResult } from '../../@types'
+import { RecallResult } from '../../@types'
 
-export const recallList = async (req: Request, res: Response, _next: NextFunction): Promise<Response | void> => {
+export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   const { token } = res.locals.user
   const recalls = await getRecallList(token)
   const recallsWithNomsNumbers = recalls.filter(recall => Boolean(recall.nomsNumber))
@@ -12,11 +12,11 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
     const results = await Promise.allSettled(
       recallsWithNomsNumbers.map(recall =>
         searchByNomsNumber(recall.nomsNumber, token).then(
-          prisoner =>
+          person =>
             <RecallResult>{
               recallId: recall.recallId,
               status: recall.status,
-              offender: prisoner,
+              offender: person,
             }
         )
       )
@@ -34,12 +34,4 @@ export const recallList = async (req: Request, res: Response, _next: NextFunctio
   res.locals.errors = failed
   res.locals.isTodoPage = true
   res.render('pages/recallList')
-}
-
-class RecallResult {
-  recallId: string
-
-  status: string
-
-  offender: PersonSearchResult
 }
