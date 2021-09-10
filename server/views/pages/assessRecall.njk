@@ -379,7 +379,7 @@
                             {% if recall.additionalLicenceConditions == true %}Yes{% else %}No{% endif %}
                         </dd>
                     </div>
-                    {% if isDefined(recall.additionalLicenceConditionsDetail) %}
+                    {% if recall.additionalLicenceConditionsDetail %}
                     <div class="govuk-summary-list__row">
                         <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                             Additional licence conditions
@@ -397,7 +397,7 @@
                             {% if recall.differentNomsNumber == true %}Yes{% else %}No{% endif %}
                         </dd>
                     </div>
-                    {% if isDefined(recall.differentNomsNumberDetail) %}
+                    {% if recall.differentNomsNumberDetail %}
                     <div class="govuk-summary-list__row">
                         <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                             What is the different NOMIS number?
@@ -406,6 +406,24 @@
                             {{ recall.differentNomsNumberDetail }}
                         </dd>
                     </div>
+                    {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                            Date/time that dossier was sent by email
+                        </dt>
+                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailSentDate'>
+                            {{ recall.dossierEmailSentDate | dateGov }}
+                        </dd>
+                    </div>
+                    {% if recall.dossierEmail %}
+                        <div class="govuk-summary-list__row">
+                            <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                                Uploaded dossier email
+                            </dt>
+                            <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailFileName'>
+                                <a href='{{ recall.dossierEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.dossierEmail.category}}' download>{{ recall.dossierEmail.fileName }}</a>
+                            </dd>
+                        </div>
                     {% endif %}
                 </dl>
             {% endif %}

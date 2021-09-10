@@ -80,7 +80,8 @@ export interface RecallFormValues {
 }
 
 export interface RecallResponseWithDocuments extends RecallResponse {
-  recallNotificationEmail: DecoratedDocument
+  dossierEmail?: DecoratedDocument
+  recallNotificationEmail?: DecoratedDocument
   documents: DecoratedDocument[]
 }
 

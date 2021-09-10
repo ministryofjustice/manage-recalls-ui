@@ -172,11 +172,11 @@ describe('downloadDocument', () => {
         documentId: '123',
         category: GetDocumentResponse.category.RECALL_NOTIFICATION_EMAIL,
         content: 'abc',
-        fileName: 'recall-notification.msg',
+        fileName: 'email.msg',
       })
       await downloadDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/octet-stream')
-      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="recall-notification.msg"')
+      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="email.msg"')
     })
   })
 })

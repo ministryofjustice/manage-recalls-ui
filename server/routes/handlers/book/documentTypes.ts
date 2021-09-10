@@ -32,4 +32,9 @@ export const documentTypes: UploadDocumentMetadata[] = [
     name: ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
     type: 'email',
   },
+  {
+    label: 'Dossier email',
+    name: ApiRecallDocument.category.DOSSIER_EMAIL,
+    type: 'email',
+  },
 ]
