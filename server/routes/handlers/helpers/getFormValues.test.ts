@@ -85,9 +85,18 @@ describe('getFormValues', () => {
     },
     recallNotificationEmailFileName: {
       text: 'An error occurred uploading the email',
-      values: 'recall-notification.msg',
+      values: 'email.msg',
     },
+    dossierEmailFileName: {
+      text: 'An error occurred uploading the email',
+      values: 'dossier.msg',
+    },
+    recallNotificationEmailSentDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
+    dossierEmailSentDate: { values: { year: '2016', month: '', day: '13' } },
+    confirmRecallNotificationEmailSent: { text: 'Recall notification email sent' },
+    confirmDossierEmailSent: { text: 'Dossier email sent' },
   } as unknown as ObjectMap<FormError>
+
   const unsavedValues = {
     agreeWithRecall: 'NO',
     agreeWithRecallDetail: 'Reasons for no...',
@@ -122,6 +131,11 @@ describe('getFormValues', () => {
     reasonsForRecallOtherDetail: '',
     currentPrison: 'ACL',
     recallNotificationEmailFileName: 'recall.msg',
+    recallNotificationEmailSentDateTimeParts: { year: '2019', month: '04', day: '23', hour: '6', minute: '34' },
+    dossierEmailFileName: 'dossier.msg',
+    dossierEmailSentDateParts: { year: '2020', month: '11', day: '17' },
+    confirmRecallNotificationEmailSent: 'YES',
+    confirmDossierEmailSent: 'YES',
   }
 
   const apiValues = {
@@ -143,9 +157,17 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
+      confirmDossierEmailSent: '',
+      confirmRecallNotificationEmailSent: '',
       contraband: '',
       contrabandDetail: '',
       currentPrison: '',
+      dossierEmailFileName: 'dossier.msg',
+      dossierEmailSentDateParts: {
+        day: '13',
+        month: '',
+        year: '2016',
+      },
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -174,7 +196,14 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
-      recallNotificationEmailFileName: 'recall-notification.msg',
+      recallNotificationEmailFileName: 'email.msg',
+      recallNotificationEmailSentDateTimeParts: {
+        day: '05',
+        hour: '05',
+        minute: '3',
+        month: '',
+        year: '',
+      },
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -211,9 +240,17 @@ describe('getFormValues', () => {
         month: '12',
         year: '2020',
       },
+      confirmDossierEmailSent: 'YES',
+      confirmRecallNotificationEmailSent: 'YES',
       contraband: 'yes',
       contrabandDetail: 'Likelihood of smuggling knives',
       currentPrison: 'ACL',
+      dossierEmailFileName: 'dossier.msg',
+      dossierEmailSentDateParts: {
+        day: '17',
+        month: '11',
+        year: '2020',
+      },
       indexOffence: 'Assault',
       lastReleaseDateParts: {
         day: 'ee',
@@ -242,6 +279,13 @@ describe('getFormValues', () => {
         year: '2020',
       },
       recallNotificationEmailFileName: 'recall.msg',
+      recallNotificationEmailSentDateTimeParts: {
+        day: '23',
+        hour: '6',
+        minute: '34',
+        month: '04',
+        year: '2019',
+      },
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -273,9 +317,17 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
+      confirmDossierEmailSent: '',
+      confirmRecallNotificationEmailSent: '',
       contraband: '',
       contrabandDetail: '',
       currentPrison: '',
+      dossierEmailFileName: 'dossier.msg',
+      dossierEmailSentDateParts: {
+        day: '13',
+        month: '',
+        year: '2016',
+      },
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -304,7 +356,14 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
-      recallNotificationEmailFileName: 'recall-notification.msg',
+      recallNotificationEmailFileName: 'email.msg',
+      recallNotificationEmailSentDateTimeParts: {
+        day: '05',
+        hour: '05',
+        minute: '3',
+        month: '',
+        year: '',
+      },
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -349,6 +408,11 @@ describe('getFormValues', () => {
       currentPrison: 'KTI',
       differentNomsNumber: 'YES',
       differentNomsNumberDetail: 'AC3408303',
+      dossierEmailSentDateParts: {
+        day: 8,
+        month: 9,
+        year: 2021,
+      },
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 'ee',
@@ -433,6 +497,11 @@ describe('getFormValues', () => {
       currentPrison: 'KTI',
       differentNomsNumber: 'YES',
       differentNomsNumberDetail: 'AC3408303',
+      dossierEmailSentDateParts: {
+        day: 8,
+        month: 9,
+        year: 2021,
+      },
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 3,

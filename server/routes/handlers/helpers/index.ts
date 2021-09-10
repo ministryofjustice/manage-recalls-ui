@@ -31,7 +31,7 @@ export const decorateDocs = ({
   docs: ApiRecallDocument[]
   nomsNumber: string
   recallId: string
-}): { documents: DecoratedDocument[]; recallNotificationEmail?: DecoratedDocument } =>
+}): { documents: DecoratedDocument[]; recallNotificationEmail?: DecoratedDocument; dossierEmail?: DecoratedDocument } =>
   docs
     .map(doc => {
       const documentType = documentTypes.find(d => d.name === doc.category)
@@ -53,10 +53,14 @@ export const decorateDocs = ({
         if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
           acc.recallNotificationEmail = curr
         }
+        if (curr.name === ApiRecallDocument.category.DOSSIER_EMAIL) {
+          acc.dossierEmail = curr
+        }
         return acc
       },
       {
         documents: [],
         recallNotificationEmail: undefined,
+        dossierEmail: undefined,
       }
     )

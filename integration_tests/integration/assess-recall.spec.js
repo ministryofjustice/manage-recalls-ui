@@ -111,7 +111,7 @@ context('Assess a recall', () => {
         Minute: '04',
       },
     })
-    assessRecallEmail.uploadEmail('recall-notification.msg')
+    assessRecallEmail.uploadEmail('email.msg')
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
@@ -224,7 +224,7 @@ context('Assess a recall', () => {
 
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallEmail.confirmEmailSent()
-    assessRecallEmail.uploadEmail('recall-notification.msg')
+    assessRecallEmail.uploadEmail('email.msg')
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailSentDateTime',

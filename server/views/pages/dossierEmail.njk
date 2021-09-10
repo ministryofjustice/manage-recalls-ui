@@ -3,12 +3,12 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Assess a recall - Email the recall notification" %}
+{% set pageTitle = applicationName + " - Email the dossier" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-prison"
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/dossier-download"
     }) }}
 {% endblock %}
 
@@ -26,34 +26,25 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l"
-                  data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
-            <h1 class='govuk-heading-l'>Email the recall notification</h1>
-            <p class='govuk-body'>You must now email the recall notification you've downloaded to:</p>
+                  data-qa="addRecallTypeCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class='govuk-heading-l'>Email the dossier</h1>
+            <p>You must now email the dossier and letter you've downloaded to the:</p>
             <ul class="govuk-list govuk-list--bullet">
-                <li>the Probation Service including the:
-                    <ul class="govuk-list govuk-list--bullet">
-                        <li>Community Offender Manager (COM)</li>
-                        <li>Senior Probation Officer (SPO)</li>
-                        <li>Assistant Chief Officer (ACO)</li>
-                        <li>functional mailbox</li>
-                    </ul>
-                </li>
-                <li>the local police force</li>
-                <li>the prison</li>
-                <li>New Scotland Yard</li>
+                <li>prison</li>
+                <li>probation officer and their ACO or line manager</li>
             </ul>
             {{ govukWarningText({
-                text: "You must email the recall notification using Microsoft Outlook",
+                text: "You must email the dossier and letter using Microsoft Outlook",
                 iconFallbackText: "Warning"
             }) }}
 
             <div class="govuk-!-margin-top-4">
-                <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-email?_csrf={{ csrfToken }}"
+                <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-email?_csrf={{ csrfToken }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
                         {{ govukDateInput({
-                            name: 'recallNotificationEmailSentDateTime',
-                            id: 'recallNotificationEmailSentDateTime',
+                            name: 'dossierEmailSentDate',
+                            id: 'dossierEmailSentDate',
                             fieldset: {
                                 legend: {
                                     text: 'When did you send the email?',
@@ -61,16 +52,16 @@
                                 }
                             },
                             hint: {
-                                text: 'For example, 23 5 2021 at 15:46'
+                                text: 'For example, 23 5 2021'
                             },
-                            items: dateTimeItems("recallNotificationEmailSentDateTime", formValues.recallNotificationEmailSentDateTimeParts, true),
+                            items: dateTimeItems("dossierEmailSentDate", formValues.dossierEmailSentDateParts, false),
                             errorMessage: {
-                                text: 'Enter a valid date and time in the past'
-                            } if errors.recallNotificationEmailSentDateTime else undefined
+                                text: 'Enter a valid date in the past'
+                            } if errors.dossierEmailSentDate else undefined
                         }) }}
                         {{ govukFileUpload({
-                            id: "recallNotificationEmailFileName",
-                            name: "recallNotificationEmailFileName",
+                            id: "dossierEmailFileName",
+                            name: "dossierEmailFileName",
                             label: {
                                 text: "Upload the email",
                                 classes: 'govuk-label--m'
@@ -79,15 +70,15 @@
                                 accept: '.msg'
                             },
                             errorMessage: {
-                                text: errors.recallNotificationEmailFileName.text
-                            }  if errors.recallNotificationEmailFileName
+                                text: errors.dossierEmailFileName.text
+                            }  if errors.dossierEmailFileName
                         }) }}
 
                     {% endset -%}
 
                     {{ govukCheckboxes({
-                        idPrefix: "confirmRecallNotificationEmailSent",
-                        name: "confirmRecallNotificationEmailSent",
+                        idPrefix: "confirmDossierEmailSent",
+                        name: "confirmDossierEmailSent",
                         fieldset: {
                             legend: {
                                 text: "I have sent the email to all recipients",
@@ -101,14 +92,14 @@
                                 conditional: {
                                 html: emailConfirmHtml
                             },
-                                checked: true if formValues.confirmRecallNotificationEmailSent == 'YES'
+                                checked: true if formValues.confirmDossierEmailSent == 'YES'
                             }
                         ],
                         errorMessage: {
                             text: "Confirm you sent the email"
-                        } if errors.confirmRecallNotificationEmailSent else undefined
+                        } if errors.confirmDossierEmailSent else undefined
                     }) }}
-                    <button class="govuk-button" data-qa="continueButton">Complete assessment</button>
+                    <button class="govuk-button" data-qa="continueButton">Complete dossier creation</button>
                 </form>
             </div>
         </div>

@@ -38,6 +38,11 @@ describe('decorateDocs', () => {
       documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
       fileName: '2021-07-03 Phil Jones recall.msg',
     },
+    {
+      category: ApiRecallDocument.category.DOSSIER_EMAIL,
+      documentId: '37423-2389347-234',
+      fileName: 'dossier.msg',
+    },
   ]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
@@ -62,6 +67,15 @@ describe('decorateDocs', () => {
           url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
         },
       ],
+      dossierEmail: {
+        category: 'DOSSIER_EMAIL',
+        documentId: '37423-2389347-234',
+        fileName: 'dossier.msg',
+        label: 'Dossier email',
+        name: 'DOSSIER_EMAIL',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/37423-2389347-234',
+      },
       recallNotificationEmail: {
         category: 'RECALL_NOTIFICATION_EMAIL',
         documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',

@@ -40,6 +40,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
       errors.recallNotificationEmailFileName?.values ||
       unsavedValues.recallNotificationEmailFileName ||
       apiValues.recallNotificationEmail?.fileName,
+    dossierEmailFileName:
+      errors.dossierEmailFileName?.values || unsavedValues.dossierEmailFileName || apiValues.dossierEmail?.fileName,
   } as RecallFormValues
 
   // dates / times
@@ -51,6 +53,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'licenceExpiryDate',
     'recallNotificationEmailSentDateTime',
     'conditionalReleaseDate',
+    'dossierEmailSentDate',
   ].forEach((key: string) => {
     values[`${key}Parts`] = errors[key]?.values || unsavedValues[`${key}Parts`] || splitIsoDateToParts(apiValues[key])
   })
@@ -77,6 +80,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'currentPrison',
     'additionalLicenceConditionsDetail',
     'confirmRecallNotificationEmailSent',
+    'confirmDossierEmailSent',
     'differentNomsNumberDetail',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || apiValues[key]
