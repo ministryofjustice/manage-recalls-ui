@@ -48,7 +48,7 @@ describe('validateLicence', () => {
       {
         href: '#licenceConditionsBreached',
         name: 'licenceConditionsBreached',
-        text: 'Licence conditions breached',
+        text: 'Breached licence conditions',
       },
       {
         href: '#reasonsForRecall',
