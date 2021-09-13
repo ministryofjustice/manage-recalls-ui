@@ -17,6 +17,7 @@ export type UpdateRecallRequest = {
   differentNomsNumber?: boolean
   differentNomsNumberDetail?: string
   dossierEmailSentDate?: string
+  hasDossierBeenChecked?: boolean
   hasOtherPreviousConvictionMainName?: boolean
   indexOffence?: string
   lastReleaseDate?: string
