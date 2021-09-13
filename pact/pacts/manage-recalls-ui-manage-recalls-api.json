@@ -108,6 +108,8 @@
           "recallLength": "FOURTEEN_DAYS",
           "agreeWithRecall": "YES",
           "agreeWithRecallDetail": "Reasons...",
+          "hasOtherPreviousConvictionMainName": "YES",
+          "previousConvictionMainName": "Walter Holt",
           "documents": [
             {
               "category": "LICENCE",
@@ -667,6 +669,8 @@
           "recallLength": "FOURTEEN_DAYS",
           "agreeWithRecall": "YES",
           "agreeWithRecallDetail": "Reasons...",
+          "hasOtherPreviousConvictionMainName": "YES",
+          "previousConvictionMainName": "Walter Holt",
           "documents": [
             {
               "category": "LICENCE",

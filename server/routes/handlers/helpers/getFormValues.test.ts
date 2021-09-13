@@ -95,6 +95,8 @@ describe('getFormValues', () => {
     dossierEmailSentDate: { values: { year: '2016', month: '', day: '13' } },
     confirmRecallNotificationEmailSent: { text: 'Recall notification email sent' },
     confirmDossierEmailSent: { text: 'Dossier email sent' },
+    hasOtherPreviousConvictionMainName: { text: 'What is the main name on the pre-cons?' },
+    previousConvictionMainName: { text: 'What is the other main name used?' },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -136,6 +138,8 @@ describe('getFormValues', () => {
     dossierEmailSentDateParts: { year: '2020', month: '11', day: '17' },
     confirmRecallNotificationEmailSent: 'YES',
     confirmDossierEmailSent: 'YES',
+    hasOtherPreviousConvictionMainName: 'YES',
+    previousConvictionMainName: 'Wayne Holt',
   }
 
   const apiValues = {
@@ -168,6 +172,7 @@ describe('getFormValues', () => {
         month: '',
         year: '2016',
       },
+      hasOtherPreviousConvictionMainName: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -183,6 +188,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: '',
       mappaLevel: '',
+      previousConvictionMainName: '',
       probationDivision: '',
       probationOfficerEmail: '',
       probationOfficerName: '',
@@ -251,6 +257,7 @@ describe('getFormValues', () => {
         month: '11',
         year: '2020',
       },
+      hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Assault',
       lastReleaseDateParts: {
         day: 'ee',
@@ -266,6 +273,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: 'Dorset',
       mappaLevel: 'LEVEL_2',
+      previousConvictionMainName: 'Wayne Holt',
       probationDivision: 'SOUTH_WEST',
       probationOfficerEmail: 'andy@probation.gov.uk',
       probationOfficerName: 'Andy Fleming',
@@ -328,6 +336,7 @@ describe('getFormValues', () => {
         month: '',
         year: '2016',
       },
+      hasOtherPreviousConvictionMainName: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -343,6 +352,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: '',
       mappaLevel: '',
+      previousConvictionMainName: '',
       probationDivision: '',
       probationOfficerEmail: '',
       probationOfficerName: '',
@@ -413,6 +423,7 @@ describe('getFormValues', () => {
         month: 9,
         year: 2021,
       },
+      hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 'ee',
@@ -428,6 +439,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: 'Essex',
       mappaLevel: 'LEVEL_1',
+      previousConvictionMainName: 'Walter Holt',
       probationDivision: 'LONDON',
       probationOfficerEmail: 'probation.office@justice.com',
       probationOfficerName: 'Dave Angel',
@@ -502,6 +514,7 @@ describe('getFormValues', () => {
         month: 9,
         year: 2021,
       },
+      hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 3,
@@ -517,6 +530,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: 'Essex',
       mappaLevel: 'LEVEL_1',
+      previousConvictionMainName: 'Walter Holt',
       probationDivision: 'LONDON',
       probationOfficerEmail: 'probation.office@justice.com',
       probationOfficerName: 'Dave Angel',
