@@ -14,11 +14,11 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('get revocation order', () => {
-    test('can successfully get a revocation order', async () => {
+  describe('get recall notification', () => {
+    test('can successfully get a recall notification', async () => {
       await provider.addInteraction({
-        state: 'a revocation order can be downloaded',
-        ...pactGetRequest('a get revocation order request', `/recalls/${recallId}/revocationOrder`, accessToken),
+        state: 'a recall notification can be downloaded',
+        ...pactGetRequest('a get recall notification request', `/recalls/${recallId}/recallNotification`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getRecallNotificationResponseJson), 200),
       })
 
@@ -32,8 +32,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     await provider.addInteraction({
       state: 'an unauthorized user accessToken',
       ...pactGetRequest(
-        'an unauthorized get revocation order request',
-        `/recalls/${recallId}/revocationOrder`,
+        'an unauthorized get recall notification request',
+        `/recalls/${recallId}/recallNotification`,
         accessToken
       ),
       willRespondWith: { status: 401 },
