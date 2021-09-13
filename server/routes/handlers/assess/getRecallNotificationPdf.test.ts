@@ -35,7 +35,7 @@ describe('getRecallNotificationPdf', () => {
     it('should return pdf from manage recalls api', async () => {
       fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
       fakeManageRecallsApi.post('/search').reply(200, [person])
-      fakeManageRecallsApi.get(`/recalls/${recallId}/revocationOrder`).reply(200, { content: expectedPdfContents })
+      fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).reply(200, { content: expectedPdfContents })
       await getRecallNotificationPdf(req, res)
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',
@@ -45,7 +45,7 @@ describe('getRecallNotificationPdf', () => {
     })
 
     it("should respond with 500 if PDF request isn't successful", async () => {
-      fakeManageRecallsApi.get(`/recalls/${recallId}/revocationOrder`).replyWithError({
+      fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).replyWithError({
         code: '500',
       })
       fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
@@ -59,7 +59,7 @@ describe('getRecallNotificationPdf', () => {
       fakeManageRecallsApi.post('/search').replyWithError({
         code: '404',
       })
-      fakeManageRecallsApi.get(`/recalls/${recallId}/revocationOrder`).reply(200, { content: expectedPdfContents })
+      fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).reply(200, { content: expectedPdfContents })
       await getRecallNotificationPdf(req, res)
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',
@@ -73,7 +73,7 @@ describe('getRecallNotificationPdf', () => {
         code: '404',
       })
       fakeManageRecallsApi.post('/search').reply(200, [person])
-      fakeManageRecallsApi.get(`/recalls/${recallId}/revocationOrder`).reply(200, { content: expectedPdfContents })
+      fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).reply(200, { content: expectedPdfContents })
       await getRecallNotificationPdf(req, res)
       expect(res.writeHead).toHaveBeenCalledWith(200, {
         'Content-Type': 'application/pdf',

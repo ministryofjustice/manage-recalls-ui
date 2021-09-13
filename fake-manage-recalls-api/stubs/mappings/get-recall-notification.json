@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPathPattern": "/recalls/(.*)/revocationOrder"
+    "urlPathPattern": "/recalls/(.*)/recallNotification"
   },
   "response": {
     "status": 200,
