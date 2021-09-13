@@ -26,6 +26,7 @@ import { getRecallNotificationPdf } from './handlers/assess/getRecallNotificatio
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecallDocument'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
+import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -39,6 +40,8 @@ export default function routes(router: Router): Router {
   const basePath = '/persons/:nomsNumber/recalls/:recallId'
 
   // BOOK A RECALL
+  get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
+  post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'request-received'))
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
   post(`${basePath}/request-received`, handleRecallFormPost(validateRecallRequestReceived, 'last-release'))
   get(`${basePath}/last-release`, viewWithRecallAndPerson('recallSentenceDetails'))

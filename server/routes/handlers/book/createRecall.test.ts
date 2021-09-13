@@ -30,6 +30,6 @@ describe('createRecall', () => {
 
     await createRecall(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/request-received`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/pre-cons-name`)
   })
 })

@@ -46,6 +46,8 @@ export const viewWithRecallAndPerson =
       'probationDivisions',
       recall.probationDivision
     )
+    res.locals.recall.previousConvictionMainName =
+      recall.previousConvictionMainName || `${person.firstName} ${person.lastName}`
     if (prisonList) {
       const { all, active } = formatPrisonLists(prisonList)
       res.locals.referenceData.prisonList = all

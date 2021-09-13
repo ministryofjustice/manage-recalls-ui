@@ -1,0 +1,86 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - What is the main name on " + person.firstName + " " + person.lastName + "'s pre-cons?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: "/find-person?nomsNumber=" + person.nomsNumber
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/pre-cons-name" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+
+                    {% set yesDetailHtml %}
+                        {{ govukInput({
+                            name: "previousConvictionMainName",
+                            id: "previousConvictionMainName",
+                            label: {
+                                text: "What is the main name?"
+                            },
+                            value: formValues.previousConvictionMainName,
+                            classes: "govuk-input--width-10",
+                            errorMessage: {
+                                text: 'Enter the main name'
+                            } if errors.previousConvictionMainName else undefined
+                        }) }}
+                    {% endset -%}
+                    {{ govukRadios({
+                        idPrefix: "hasOtherPreviousConvictionMainName",
+                        name: "hasOtherPreviousConvictionMainName",
+                        fieldset: {
+                            legend: {
+                                text: "What is the main name on " + person.firstName + " " + person.lastName + "'s pre-cons?",
+                                classes: "govuk-fieldset__legend--l",
+                                isPageHeading: true
+                            }
+                        },
+                        items: [
+                            {
+                                value: "NO",
+                                text: person.firstName + " " + person.lastName,
+                                checked: formValues.hasOtherPreviousConvictionMainName == 'NO'
+                            },
+                            {
+                                value: "YES",
+                                text: "Other name",
+                                checked: formValues.hasOtherPreviousConvictionMainName == 'YES',
+                                conditional: {
+                                    html: yesDetailHtml
+                                }
+                            }
+                        ],
+                        errorMessage: {
+                            text: 'Select one'
+                        } if errors.hasOtherPreviousConvictionMainName else undefined
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                            data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

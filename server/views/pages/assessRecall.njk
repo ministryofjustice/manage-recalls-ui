@@ -24,26 +24,18 @@
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        First name
+                        Name
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='firstName'>
-                        {{ person.firstName }}
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='name'>
+                        {{ person.firstName }} {{ person.lastName }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Middle names
+                        Pre-cons main name
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='middleNames'>
-                        {{ person.middleNames }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Last name
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='lastName'>
-                        {{ person.lastName }}
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='previousConvictionMainName'>
+                        {{ recall.previousConvictionMainName }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
