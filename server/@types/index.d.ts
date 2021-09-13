@@ -110,6 +110,7 @@ export type ViewName =
   | 'assessLicence'
   | 'assessDownload'
   | 'assessEmail'
+  | 'recallPreConsName'
   | 'recallSentenceDetails'
   | 'recallRequestReceived'
   | 'recallPrisonPolice'

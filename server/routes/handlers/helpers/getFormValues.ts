@@ -82,6 +82,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'confirmRecallNotificationEmailSent',
     'confirmDossierEmailSent',
     'differentNomsNumberDetail',
+    'previousConvictionMainName',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || apiValues[key]
   })
@@ -90,9 +91,11 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
   })
 
   // Yes / no options - stored as booleans in the API, but sent as 'YES' / 'NO' values in the front end
-  ;['additionalLicenceConditions', 'differentNomsNumber'].forEach((key: string) => {
-    values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
-  })
+  ;['additionalLicenceConditions', 'differentNomsNumber', 'hasOtherPreviousConvictionMainName'].forEach(
+    (key: string) => {
+      values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
+    }
+  )
   values = {
     ...values,
     ...recallRecommendation({ agreeWithRecall: values.agreeWithRecall, errors, unsavedValues, apiValues }),

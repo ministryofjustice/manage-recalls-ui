@@ -17,6 +17,7 @@ export type UpdateRecallRequest = {
   differentNomsNumber?: boolean
   differentNomsNumberDetail?: string
   dossierEmailSentDate?: string
+  hasOtherPreviousConvictionMainName?: boolean
   indexOffence?: string
   lastReleaseDate?: string
   lastReleasePrison?: string
@@ -24,6 +25,7 @@ export type UpdateRecallRequest = {
   licenceExpiryDate?: string
   localPoliceForce?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
+  previousConvictionMainName?: string
   probationDivision?: UpdateRecallRequest.probationDivision
   probationOfficerEmail?: string
   probationOfficerName?: string

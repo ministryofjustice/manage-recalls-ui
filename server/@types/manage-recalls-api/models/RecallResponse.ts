@@ -19,6 +19,7 @@ export type RecallResponse = {
   differentNomsNumberDetail?: string
   documents: Array<ApiRecallDocument>
   dossierEmailSentDate?: string
+  hasOtherPreviousConvictionMainName?: boolean
   indexOffence?: string
   lastReleaseDate?: string
   lastReleasePrison?: string
@@ -27,6 +28,7 @@ export type RecallResponse = {
   localPoliceForce?: string
   mappaLevel?: RecallResponse.mappaLevel
   nomsNumber: string
+  previousConvictionMainName?: string
   probationDivision?: RecallResponse.probationDivision
   probationOfficerEmail?: string
   probationOfficerName?: string
