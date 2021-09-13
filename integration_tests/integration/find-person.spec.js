@@ -1,5 +1,5 @@
 import { searchResponse } from '../mockApis/mockResponses'
-import recallRequestReceivedPage from '../pages/recallRequestReceived'
+import recallPreConsNamePage from '../pages/recallPreConsName'
 
 const findOffenderPage = require('../pages/findOffender')
 
@@ -28,7 +28,7 @@ context('Find a person', () => {
     firstResult.get('[data-qa=name]').should('contain.text', personName)
     firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
     firstResult.get('[data-qa=bookRecallButton]').click()
-    recallRequestReceivedPage.verifyOnPage()
+    recallPreConsNamePage.verifyOnPage({ personName })
   })
 
   it('person search returns no results', () => {
