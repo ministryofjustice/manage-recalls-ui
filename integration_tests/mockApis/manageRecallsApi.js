@@ -22,7 +22,7 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectGetRevocationOrder: expectation =>
+    expectGetRecallNotification: expectation =>
       expectGetPdfDocument(wiremock, '/recalls/(.*)/recallNotification', expectation),
     expectGetDossier: expectation => expectGetPdfDocument(wiremock, '/recalls/(.*)/dossier', expectation),
     expectCreateRecall: expectation => {
