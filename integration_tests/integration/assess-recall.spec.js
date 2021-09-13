@@ -46,6 +46,8 @@ context('Assess a recall', () => {
     firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
     recallsList.assessRecall({ recallId })
     const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
+    assessRecall.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
+    assessRecall.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
     assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
     assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 Feb 2021' })

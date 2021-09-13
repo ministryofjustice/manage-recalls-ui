@@ -13,7 +13,7 @@ export const createRecall = async (req: Request, res: Response): Promise<void> =
     if (!recall.recallId) {
       throw new Error("Created recall didn't return a recallId")
     }
-    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/request-received`)
+    res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/pre-cons-name`)
   } catch (err) {
     logger.error(err)
     res.redirect(303, `/persons/${nomsNumber}`)

@@ -15,7 +15,6 @@ describe('viewWithRecallAndPerson', () => {
 
   const person = {
     firstName: 'Bobby',
-    middleNames: 'John',
     lastName: 'Badger',
     dateOfBirth: '1999-05-28',
     gender: 'Male',
@@ -25,7 +24,6 @@ describe('viewWithRecallAndPerson', () => {
   }
 
   beforeEach(() => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     fakeManageRecallsApi.post('/search').reply(200, [person])
   })
 
@@ -34,6 +32,7 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should return person and recall data from api for a valid noms number and recallId', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -60,6 +59,7 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should make reference data available to render', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -69,7 +69,26 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.referenceData).toHaveProperty('probationDivisions')
   })
 
+  it('should previousConvictionMainName if one was specified', async () => {
+    fakeManageRecallsApi
+      .get(`/recalls/${recallId}`)
+      .reply(200, { ...recall, previousConvictionMainName: 'Barry Badger' })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.previousConvictionMainName).toEqual('Barry Badger')
+  })
+
+  it('should fall back to default name if a different previousConvictionMainName is not saved', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, { ...recall, previousConvictionMainName: '' })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Badger')
+  })
+
   it('should fetch a prison list for specified views', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     fakePrisonRegisterApi.get('/prisons').reply(200, [
@@ -124,6 +143,7 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should return 400 if invalid noms number', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     const req = mockGetRequest({
       params: {
         nomsNumber: 0 as unknown as string,
@@ -138,6 +158,7 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should return 400 if invalid recallId', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     const req = mockGetRequest({
       params: {
         nomsNumber,

@@ -4,6 +4,7 @@ import uploadDocumentsPage from '../pages/uploadDocuments'
 import assessRecallPage from '../pages/assessRecall'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 
+const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
 const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
@@ -11,7 +12,7 @@ const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
 context('Book a recall', () => {
   const recallId = '123'
   const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
-  let recallRequestReceived
+  let recallPreConsName
 
   beforeEach(() => {
     cy.task('reset')
@@ -25,12 +26,16 @@ context('Book a recall', () => {
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
-    recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
   })
 
   const nomsNumber = 'A1234AA'
 
   it('User can book a recall', () => {
+    recallPreConsName.selectOtherName()
+    recallPreConsName.enterOtherName('Wayne Holt')
+    recallPreConsName.clickContinue()
+    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
     recallRequestReceived.enterDateTime({
       prefix: 'recallEmailReceivedDateTime',
       values: {
@@ -74,7 +79,27 @@ context('Book a recall', () => {
     assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
   })
 
+  it('User sees an error if pre-cons main name question is not answered', () => {
+    recallPreConsName.clickContinue()
+    recallPreConsName.assertErrorMessage({
+      fieldName: 'hasOtherPreviousConvictionMainName',
+      summaryError: 'What is the main name on the pre-cons?',
+      fieldError: 'Select one',
+    })
+  })
+
+  it('User sees an error if pre-cons other main name is not supplied', () => {
+    recallPreConsName.selectOtherName()
+    recallPreConsName.clickContinue()
+    recallPreConsName.assertErrorMessage({
+      fieldName: 'previousConvictionMainName',
+      summaryError: 'What is the other main name used?',
+      fieldError: 'Enter the main name',
+    })
+  })
+
   it('User sees an error if an invalid email received date is entered', () => {
+    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
     recallRequestReceived.enterDateTime({
       prefix: 'recallEmailReceivedDateTime',
       values: {
