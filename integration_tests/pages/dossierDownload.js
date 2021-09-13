@@ -7,6 +7,7 @@ const dossierDownloadPage = ({ nomsNumber, recallId } = {}) =>
     checkDossierLink: recall => {
       cy.get('[data-qa=getDossierLink]').should('have.attr', 'href').and('include', `/get-dossier?recallId=${recall}`)
     },
+    confirmDossierChecked: () => cy.get(`[value="${'YES'}"]`).check(),
   })
 
 module.exports = { verifyOnPage: dossierDownloadPage }

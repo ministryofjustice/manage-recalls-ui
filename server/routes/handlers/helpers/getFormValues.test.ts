@@ -97,6 +97,7 @@ describe('getFormValues', () => {
     confirmDossierEmailSent: { text: 'Dossier email sent' },
     hasOtherPreviousConvictionMainName: { text: 'What is the main name on the pre-cons?' },
     previousConvictionMainName: { text: 'What is the other main name used?' },
+    hasDossierBeenChecked: { text: 'Has the dossier been checked for accuracy?' },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -140,6 +141,7 @@ describe('getFormValues', () => {
     confirmDossierEmailSent: 'YES',
     hasOtherPreviousConvictionMainName: 'YES',
     previousConvictionMainName: 'Wayne Holt',
+    hasDossierBeenChecked: 'YES',
   }
 
   const apiValues = {
@@ -172,6 +174,7 @@ describe('getFormValues', () => {
         month: '',
         year: '2016',
       },
+      hasDossierBeenChecked: '',
       hasOtherPreviousConvictionMainName: '',
       indexOffence: '',
       lastReleaseDateParts: {
@@ -257,6 +260,7 @@ describe('getFormValues', () => {
         month: '11',
         year: '2020',
       },
+      hasDossierBeenChecked: 'YES',
       hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Assault',
       lastReleaseDateParts: {
@@ -336,6 +340,7 @@ describe('getFormValues', () => {
         month: '',
         year: '2016',
       },
+      hasDossierBeenChecked: '',
       hasOtherPreviousConvictionMainName: '',
       indexOffence: '',
       lastReleaseDateParts: {
@@ -423,6 +428,7 @@ describe('getFormValues', () => {
         month: 9,
         year: 2021,
       },
+      hasDossierBeenChecked: 'YES',
       hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
@@ -514,6 +520,7 @@ describe('getFormValues', () => {
         month: 9,
         year: 2021,
       },
+      hasDossierBeenChecked: 'YES',
       hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {

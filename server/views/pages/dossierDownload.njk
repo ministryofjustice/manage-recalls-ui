@@ -16,16 +16,25 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
             <span class="govuk-caption-l" data-qa="createDossierCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class='govuk-heading-l'>Download the dossier and letter</h1>
+            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-download" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-            <p class="govuk-body-l">Review the documents and check the information is correct.</p>
+                <p class="govuk-body-l">Review the documents and check the information is correct.</p>
 
             <h2 class='govuk-heading-m'>Recall dossier</h2>
 
-            {% if recall.documents.length %}
-            <div class="govuk-form-group">
+            <div class="govuk-form-group govuk-!-margin-bottom-8">
                 {{ documentDownloadLink({
                     linkText: 'Recall dossier',
                     url: '/get-dossier?recallId=' + recall.recallId,
@@ -33,11 +42,34 @@
                 })
                 }}
             </div>
-            {% endif %}
 
-            <div class="govuk-!-margin-top-4">
-                <a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/dossier-email' data-qa='continueButton' class="govuk-button">Continue</a>
+                <div class="govuk-form-group govuk-!-margin-bottom-8">
+            {{ govukCheckboxes({
+                idPrefix: "hasDossierBeenChecked",
+                name: "hasDossierBeenChecked",
+                fieldset: {
+                    legend: {
+                        text: "I have checked the dossier",
+                        classes: "govuk-visually-hidden"
+                    }
+                },
+                items: [
+                    {
+                        value: "YES",
+                        text: "I have checked the dossier and letter for data accuracy",
+                        checked: true if formValues.hasDossierBeenChecked == 'YES'
+                    }
+                ],
+                errorMessage: {
+                    text: "Confirm you've checked the dossier and letter"
+                } if errors.hasDossierBeenChecked else undefined
+            }) }}
+                </div>
+            <div class="govuk-!-margin-bottom-8">
+                <button class="govuk-button" data-qa="continueButton">Continue</button>
             </div>
+
+            </form>
         </div>
     </div>
 

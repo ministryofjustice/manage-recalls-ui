@@ -19,6 +19,7 @@ export type RecallResponse = {
   differentNomsNumberDetail?: string
   documents: Array<ApiRecallDocument>
   dossierEmailSentDate?: string
+  hasDossierBeenChecked?: boolean
   hasOtherPreviousConvictionMainName?: boolean
   indexOffence?: string
   lastReleaseDate?: string

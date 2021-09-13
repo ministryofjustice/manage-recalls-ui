@@ -1,5 +1,5 @@
 import path from 'path'
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
 
@@ -11,18 +11,15 @@ const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const assessRecallPage = require('../pages/assessRecall')
 
 context('Create a dossier', () => {
-  beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-  })
-
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
   const status = 'RECALL_NOTIFICATION_ISSUED'
 
-  it('User can create a dossier', () => {
+  beforeEach(() => {
+    cy.task('reset')
+    cy.task('stubLogin')
+    cy.task('stubAuthUser')
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -33,6 +30,10 @@ context('Create a dossier', () => {
       ],
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectUpdateRecall', recallId)
+  })
+
+  it('User can create a dossier', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -48,7 +49,6 @@ context('Create a dossier', () => {
         ],
       },
     })
-    cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     const fileName = 'email.msg'
     cy.task('expectGetRecallDocument', {
@@ -75,6 +75,7 @@ context('Create a dossier', () => {
     dossierCheck.clickContinue()
     const dossierDownload = dossierDownloadPage.verifyOnPage()
     dossierDownload.checkDossierLink(recallId)
+    dossierDownload.confirmDossierChecked()
     dossierDownload.clickContinue()
     const dossierEmail = dossierEmailPage.verifyOnPage()
     dossierEmail.confirmEmailSent()
@@ -101,5 +102,23 @@ context('Create a dossier', () => {
     cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
+  })
+
+  it("User sees an error if they don't confirm the dossier was checked", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    cy.login()
+    const dossierDownload = dossierDownloadPage.verifyOnPage({ nomsNumber, recallId })
+    dossierDownload.clickContinue()
+    dossierDownload.assertErrorMessage({
+      fieldName: 'hasDossierBeenChecked',
+      summaryError: 'Have the dossier and letter been checked?',
+      fieldError: "Confirm you've checked the dossier and letter",
+    })
   })
 })

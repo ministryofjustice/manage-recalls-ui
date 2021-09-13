@@ -27,6 +27,7 @@ import { validateRecallNotificationEmail } from './handlers/assess/helpers/valid
 import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecallDocument'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
+import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -86,6 +87,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
   post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-check'))
   get(`${basePath}/dossier-check`, viewWithRecallAndPerson('dossierCheck'))
+  get(`${basePath}/dossier-download`, viewWithRecallAndPerson('dossierDownload'))
+  post(`${basePath}/dossier-download`, handleRecallFormPost(validateDossierDownload, 'dossier-email'))
   get(`${basePath}/dossier-email`, viewWithRecallAndPerson('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
@@ -96,7 +99,6 @@ export default function routes(router: Router): Router {
       nextPageUrlSuffix: 'dossier-confirmation',
     })
   )
-  get(`${basePath}/dossier-download`, viewWithRecallAndPerson('dossierDownload'))
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
   get('/get-dossier', downloadPdfHandler('/get-dossier', 'dossier.pdf', getDossier))
 
