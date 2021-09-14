@@ -105,6 +105,7 @@ export interface UiListItem {
 export type ViewName =
   | 'assessConfirmation'
   | 'assessDecision'
+  | 'assessStop'
   | 'assessPrison'
   | 'assessRecall'
   | 'assessLicence'
@@ -130,6 +131,7 @@ export interface ReqValidatorReturn {
   errors?: NamedFormError[]
   valuesToSave?: UpdateRecallRequest
   unsavedValues?: ObjectMap<unknown>
+  redirectToPage?: string
 }
 
 export interface EmailUploadValidatorArgs {

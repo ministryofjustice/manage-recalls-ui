@@ -59,6 +59,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess`, viewWithRecallAndPerson('assessRecall'))
   get(`${basePath}/assess-decision`, viewWithRecallAndPerson('assessDecision'))
   post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision, 'assess-licence'))
+  get(`${basePath}/assess-stop`, viewWithRecallAndPerson('assessStop'))
   get(`${basePath}/assess-licence`, viewWithRecallAndPerson('assessLicence'))
   post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence, 'assess-prison'))
   get(`${basePath}/assess-prison`, viewWithRecallAndPerson('assessPrison'))

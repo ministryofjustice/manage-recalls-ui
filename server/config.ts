@@ -85,6 +85,12 @@ const config = {
     },
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  sensitiveInfo: {
+    manager: {
+      name: get('MANAGER_NAME', '[name]'),
+      phone: get('MANAGER_PHONE', '[phone]'),
+    },
+  },
 }
 export default config
 
