@@ -5,7 +5,7 @@ import dossierLetterPage from '../pages/dossierLetter'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 
-context('To do recalls list', () => {
+context('To do (recalls) list', () => {
   const recallId = '123'
   const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
 
