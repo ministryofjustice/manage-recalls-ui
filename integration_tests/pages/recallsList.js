@@ -9,6 +9,10 @@ const recallsListPage = () =>
         expect(text.trim()).to.equal(expectedText)
       })
     },
+    expectActionLinkText: ({ id, text }) => {
+      cy.get(`[data-qa=${id}]`).should($results => expect($results.text().trim()).to.equal(text))
+    },
+    continueBooking: ({ recallId }) => cy.get(`[data-qa=continue-booking-${recallId}]`).click(),
     assessRecall: ({ recallId }) => cy.get(`[data-qa=assess-recall-${recallId}]`).click(),
     createDossier: ({ recallId }) => cy.get(`[data-qa=create-dossier-${recallId}]`).click(),
   })

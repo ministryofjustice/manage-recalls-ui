@@ -38,7 +38,7 @@
                                     {% elif recall.status == 'RECALL_NOTIFICATION_ISSUED' %}
                                         <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/dossier-letter' data-qa='create-dossier-{{ recall.recallId }}'>Create dossier</a></div>
                                     {% else %}
-                                        <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/request-received' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
+                                        <div><a href='/persons/{{recall.offender.nomsNumber}}/recalls/{{recall.recallId}}/pre-cons-name' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
                                     {% endif %}
                                 </td>
                             </tr>
