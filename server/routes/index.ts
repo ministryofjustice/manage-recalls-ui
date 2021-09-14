@@ -20,9 +20,7 @@ import { validateSentenceDetails } from './handlers/book/helpers/validateSentenc
 import { validatePolice } from './handlers/book/helpers/validatePolice'
 import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds'
 import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
-import { getDossier } from '../clients/manageRecallsApi/manageRecallsApiClient'
-import downloadPdfHandler from './handlers/helpers/downloadPdfHandler'
-import { getRecallNotificationPdf } from './handlers/assess/getRecallNotificationPdf'
+import { downloadDossier, downloadRecallNotification } from './handlers/helpers/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecallDocument'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
@@ -78,11 +76,6 @@ export default function routes(router: Router): Router {
   )
   get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
 
-  get(`${basePath}/documents/recall-notification`, getRecallNotificationPdf)
-  get(`${basePath}/documents/:documentId`, downloadDocument)
-
-  get('/get-dossier', downloadPdfHandler('/get-dossier', 'dossier.pdf', getDossier))
-
   // CREATE DOSSIER
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
   post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-check'))
@@ -100,7 +93,11 @@ export default function routes(router: Router): Router {
     })
   )
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
-  get('/get-dossier', downloadPdfHandler('/get-dossier', 'dossier.pdf', getDossier))
+
+  // DOCUMENTS
+  get(`${basePath}/documents/dossier`, downloadDossier)
+  get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
+  get(`${basePath}/documents/:documentId`, downloadDocument)
 
   return router
 }
