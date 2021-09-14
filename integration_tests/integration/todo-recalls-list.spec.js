@@ -8,7 +8,6 @@ const recallPreConsNamePage = require('../pages/recallPreConsName')
 context('To do recalls list', () => {
   const recallId = '123'
   const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
-  let recallPreConsName
 
   beforeEach(() => {
     cy.task('reset')
@@ -36,7 +35,7 @@ context('To do recalls list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
     recallsList.continueBooking({ recallId })
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
+    recallPreConsNamePage.verifyOnPage({ personName })
   })
 
   it('User can assess a recall', () => {
