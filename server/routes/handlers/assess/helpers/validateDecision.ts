@@ -6,6 +6,7 @@ export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorRe
   let errors
   let unsavedValues
   let valuesToSave
+  let redirectToPage
 
   const { agreeWithRecall, agreeWithRecallDetailYes, agreeWithRecallDetailNo } = requestBody
   const isAgreeValueValid = ['YES', 'NO_STOP'].includes(agreeWithRecall)
@@ -51,6 +52,9 @@ export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorRe
       agreeWithRecall: UpdateRecallRequest.agreeWithRecall[agreeWithRecall],
       agreeWithRecallDetail: detail,
     }
+    if (isNo) {
+      redirectToPage = 'assess-stop'
+    }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage }
 }

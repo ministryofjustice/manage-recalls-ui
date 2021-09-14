@@ -10,6 +10,7 @@ const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation'
 const assessRecallLicencePage = require('../pages/assessRecallLicence')
 const assessRecallDownloadPage = require('../pages/assessRecallDownload')
 const assessRecallEmailPage = require('../pages/assessRecallEmail')
+const assessRecallStopPage = require('../pages/assessRecallStop')
 
 context('Assess a recall', () => {
   beforeEach(() => {
@@ -88,8 +89,8 @@ context('Assess a recall', () => {
     let assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
-    assessRecallDecision.makeDecision()
-    assessRecallDecision.addDetail()
+    assessRecallDecision.makeYesDecision()
+    assessRecallDecision.addYesDetail()
     assessRecallDecision.clickContinue()
     const assessRecallLicence = assessRecallLicencePage.verifyOnPage()
     assessRecallLicence.enterLicenceConditionsBreached()
@@ -151,13 +152,24 @@ context('Assess a recall', () => {
       summaryError: 'Do you agree with the recall recommendation?',
       fieldError: 'Select one',
     })
-    assessRecallDecision.makeDecision()
+    assessRecallDecision.makeYesDecision()
     assessRecallDecision.clickContinue()
     assessRecallDecision.assertErrorMessage({
       fieldName: 'agreeWithRecallDetailYes',
       summaryError: 'Provide detail on your decision',
       fieldError: 'Provide more detail',
     })
+  })
+
+  it('User can stop a recall', () => {
+    cy.login()
+    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallDecision.makeNoDecision()
+    assessRecallDecision.addNoDetail()
+    assessRecallDecision.clickContinue()
+    const assessRecallStop = assessRecallStopPage.verifyOnPage({ personName })
+    assessRecallStop.assertElementHasText({ qaAttr: 'managerName', textToFind: '[name]' })
+    assessRecallStop.assertElementHasText({ qaAttr: 'managerPhone', textToFind: '[phone]' })
   })
 
   it("User sees an error if they don't enter licence details", () => {

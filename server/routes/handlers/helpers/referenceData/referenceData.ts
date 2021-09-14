@@ -2,6 +2,7 @@ import { mappaLevels } from './mappaLevels'
 import { probationDivisions } from './probationDivisions'
 import { recallLengths } from './recallLengths'
 import { reasonsForRecall } from './reasonsForRecall'
+import { sensitiveInfo } from './sensitiveInfo'
 import { Prison, UiListItem } from '../../../../@types'
 
 export const referenceData = {
@@ -9,6 +10,7 @@ export const referenceData = {
   probationDivisions,
   recallLengths,
   reasonsForRecall,
+  sensitiveInfo,
 }
 
 export type ReferenceDataCategories = 'mappaLevels' | 'probationDivisions' | 'recallLengths' | 'reasonsForRecall'

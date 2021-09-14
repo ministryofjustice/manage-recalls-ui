@@ -15,3 +15,11 @@
 .link-button {
   color: $govuk-link-colour;
 }
+
+.govuk-panel--neutral {
+  background-color: govuk-colour("light-grey")
+}
+
+pre.govuk-body {
+  white-space: pre-line;
+}

@@ -14,17 +14,18 @@ describe('validateDecision', () => {
     })
   })
 
-  it('returns valuesToSave and no errors if No + detail is submitted', () => {
+  it('returns valuesToSave, redirect, and no errors if No + detail is submitted', () => {
     const requestBody = {
       agreeWithRecall: 'NO_STOP',
       agreeWithRecallDetailNo: 'reason 3; reason 4',
     }
-    const { errors, valuesToSave } = validateDecision(requestBody)
+    const { errors, valuesToSave, redirectToPage } = validateDecision(requestBody)
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       agreeWithRecall: 'NO_STOP',
       agreeWithRecallDetail: 'reason 3; reason 4',
     })
+    expect(redirectToPage).toEqual('assess-stop')
   })
 
   it('returns an error for the Yes / No decision, if not set', () => {
