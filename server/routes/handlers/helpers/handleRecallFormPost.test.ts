@@ -20,24 +20,18 @@ describe('handleRecallFormPost', () => {
   }
 
   afterEach(() => {
-    jest.clearAllMocks()
+    jest.resetAllMocks()
   })
 
   describe('recall email request received', () => {
     it('should update recall length and redirect to recall view', async () => {
       const recallDetails = { recallId, nomsNumber }
 
-      updateRecall.mockReturnValueOnce(recallDetails)
+      updateRecall.mockResolvedValueOnce(recallDetails)
 
       const req = mockPostRequest({
         params: { nomsNumber, recallId },
-        body: {
-          recallEmailReceivedDateTimeDay: '10',
-          recallEmailReceivedDateTimeMonth: '05',
-          recallEmailReceivedDateTimeYear: '2021',
-          recallEmailReceivedDateTimeHour: '05',
-          recallEmailReceivedDateTimeMinute: '3',
-        },
+        body: recallEmailReceivedDateTime,
       })
       const { res } = mockResponseWithAuthenticatedUser('')
 
@@ -50,7 +44,7 @@ describe('handleRecallFormPost', () => {
       const recallDetails = { recallId, nomsNumber }
       const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/request-received`
 
-      updateRecall.mockReturnValueOnce(recallDetails)
+      updateRecall.mockResolvedValueOnce(recallDetails)
 
       const req = mockPostRequest({
         originalUrl: currentPageUrl,
@@ -67,6 +61,28 @@ describe('handleRecallFormPost', () => {
 
       await handler(req, res)
 
+      expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
+    })
+
+    it('should reload the page if the API errors', async () => {
+      const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/request-received`
+
+      updateRecall.mockRejectedValueOnce(new Error('API error'))
+      const req = mockPostRequest({
+        originalUrl: currentPageUrl,
+        params: { nomsNumber, recallId },
+        body: recallEmailReceivedDateTime,
+      })
+      const { res } = mockResponseWithAuthenticatedUser('')
+
+      await handler(req, res)
+
+      expect(req.session.errors).toEqual([
+        {
+          name: 'saveError',
+          text: 'An error occurred saving your changes',
+        },
+      ])
       expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
     })
 
