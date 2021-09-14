@@ -74,7 +74,7 @@ context('Create a dossier', () => {
     dossierCheck.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     dossierCheck.clickContinue()
     const dossierDownload = dossierDownloadPage.verifyOnPage()
-    dossierDownload.checkDossierLink(recallId)
+    dossierDownload.checkDossierLink({ noms: nomsNumber, recall: recallId })
     dossierDownload.confirmDossierChecked()
     dossierDownload.clickContinue()
     const dossierEmail = dossierEmailPage.verifyOnPage()

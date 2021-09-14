@@ -37,7 +37,7 @@
             <div class="govuk-form-group govuk-!-margin-bottom-8">
                 {{ documentDownloadLink({
                     linkText: 'Recall dossier',
-                    url: '/get-dossier?recallId=' + recall.recallId,
+                    url: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/documents/dossier",
                     dataQa: 'getDossierLink'
                 })
                 }}
