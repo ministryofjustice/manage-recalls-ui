@@ -32,11 +32,9 @@
 
                 <p class="govuk-body-l">Review the documents and check the information is correct.</p>
 
-            <h2 class='govuk-heading-m'>Recall dossier</h2>
-
             <div class="govuk-form-group govuk-!-margin-bottom-8">
                 {{ documentDownloadLink({
-                    linkText: 'Recall dossier',
+                    linkText: "Dossier",
                     url: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/documents/dossier",
                     dataQa: 'getDossierLink'
                 })
