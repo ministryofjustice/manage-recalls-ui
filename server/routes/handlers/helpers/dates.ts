@@ -1,5 +1,6 @@
 import { getTimezoneOffset } from 'date-fns-tz'
 import { isValid } from 'date-fns'
+import moment from 'moment'
 import { DatePartsParsed, ObjectMap } from '../../../@types'
 import logger from '../../../../logger'
 import { isDefined } from './index'
@@ -18,9 +19,15 @@ export const convertGmtDatePartsToUtc = ({ year, month, day, hour, minute }: Obj
     })
     let date
     if (includeTime) {
+      if (!moment([y, m - 1, d, h, min]).isValid()) {
+        return undefined
+      }
       date = new Date(Date.UTC(y, m - 1, d, h, min))
       date.setHours(date.getHours() - getDaylightSavingOffset(date))
     } else {
+      if (!moment([y, m - 1, d]).isValid()) {
+        return undefined
+      }
       date = new Date(Date.UTC(y, m - 1, d))
     }
     if (!isValid(date)) {

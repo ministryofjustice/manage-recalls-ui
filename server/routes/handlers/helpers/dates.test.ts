@@ -32,6 +32,26 @@ describe('Date helpers', () => {
       expect(result).toBeUndefined()
     })
 
+    it('returns undefined for an invalid month', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '13', day: '45', hour: '10', minute: '53' })
+      expect(result).toBeUndefined()
+    })
+
+    it('returns undefined for an invalid day', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '1', day: '45', hour: '10', minute: '53' })
+      expect(result).toBeUndefined()
+    })
+
+    it('returns undefined for an invalid hour', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '1', day: '1', hour: '55', minute: '53' })
+      expect(result).toBeUndefined()
+    })
+
+    it('returns undefined for an invalid minute', () => {
+      const result = convertGmtDatePartsToUtc({ year: '2021', month: '1', day: '1', hour: '1', minute: '65' })
+      expect(result).toBeUndefined()
+    })
+
     it('returns undefined for a blank date-time', () => {
       const result = convertGmtDatePartsToUtc({ year: '', month: '', day: '', hour: '', minute: '' })
       expect(result).toBeUndefined()
