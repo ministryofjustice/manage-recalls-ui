@@ -12,6 +12,33 @@ jest.mock('../helpers/uploadStorage')
 describe('uploadRecallDocumentsFormHandler', () => {
   let req
   let resp
+
+  const allFiles = {
+    LICENCE: [
+      {
+        originalname: 'licence.pdf',
+        buffer: 'abc',
+      },
+    ],
+    PRE_SENTENCING_REPORT: [
+      {
+        originalname: 'report.pdf',
+        buffer: 'def',
+      },
+    ],
+    PREVIOUS_CONVICTIONS_SHEET: [
+      {
+        originalname: 'sheet.pdf',
+        buffer: 'def',
+      },
+    ],
+    PART_A_RECALL_REPORT: [
+      {
+        originalname: 'report.pdf',
+        buffer: 'def',
+      },
+    ],
+  }
   beforeEach(() => {
     req = mockGetRequest({ params: { nomsNumber: '456', recallId: '789' } })
     const { res } = getMockRes({
@@ -27,24 +54,11 @@ describe('uploadRecallDocumentsFormHandler', () => {
       documentId: '123',
     })
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.files = {
-        LICENCE: [
-          {
-            originalname: 'licence.pdf',
-            buffer: 'abc',
-          },
-        ],
-        PRE_SENTENCING_REPORT: [
-          {
-            originalname: 'report.pdf',
-            buffer: 'def',
-          },
-        ],
-      }
+      req.files = allFiles
       cb()
     })
     await uploadRecallDocumentsFormHandler(req, resp)
-    expect(addRecallDocument).toHaveBeenCalledTimes(2)
+    expect(addRecallDocument).toHaveBeenCalledTimes(4)
     expect(req.session.errors).toBeUndefined()
   })
 
@@ -57,8 +71,24 @@ describe('uploadRecallDocumentsFormHandler', () => {
     expect(addRecallDocument).not.toHaveBeenCalled()
     expect(req.session.errors).toEqual([
       {
-        name: 'documents',
-        text: 'You must upload at least one document',
+        href: '#PART_A_RECALL_REPORT',
+        name: 'PART_A_RECALL_REPORT',
+        text: 'Part A recall report',
+      },
+      {
+        href: '#LICENCE',
+        name: 'LICENCE',
+        text: 'Licence',
+      },
+      {
+        href: '#PREVIOUS_CONVICTIONS_SHEET',
+        name: 'PREVIOUS_CONVICTIONS_SHEET',
+        text: 'Previous convictions sheet',
+      },
+      {
+        href: '#PRE_SENTENCING_REPORT',
+        name: 'PRE_SENTENCING_REPORT',
+        text: 'Pre-sentencing report',
       },
     ])
   })
@@ -66,20 +96,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
   it('creates errors for failed uploads', done => {
     ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.files = {
-        LICENCE: [
-          {
-            originalname: 'licence.pdf',
-            buffer: 'abc',
-          },
-        ],
-        PRE_SENTENCING_REPORT: [
-          {
-            originalname: 'report.pdf',
-            buffer: 'def',
-          },
-        ],
-      }
+      req.files = allFiles
       cb()
     })
     const res = {
@@ -96,6 +113,18 @@ describe('uploadRecallDocumentsFormHandler', () => {
             fileName: 'report.pdf',
             href: '#PRE_SENTENCING_REPORT',
             name: 'PRE_SENTENCING_REPORT',
+            text: 'report.pdf - an error occurred during upload',
+          },
+          {
+            fileName: 'sheet.pdf',
+            href: '#PREVIOUS_CONVICTIONS_SHEET',
+            name: 'PREVIOUS_CONVICTIONS_SHEET',
+            text: 'sheet.pdf - an error occurred during upload',
+          },
+          {
+            fileName: 'report.pdf',
+            href: '#PART_A_RECALL_REPORT',
+            name: 'PART_A_RECALL_REPORT',
             text: 'report.pdf - an error occurred during upload',
           },
         ])
