@@ -61,6 +61,9 @@ COPY --from=build --chown=appuser:appgroup \
 COPY --from=build --chown=appuser:appgroup \
         /app/node_modules ./node_modules
 
+ARG BUILD_NUMBER
+ENV SENTRY_RELEASE ${BUILD_NUMBER:-1_0_0}
+
 EXPOSE 3000
 ENV NODE_ENV='production'
 USER 2000

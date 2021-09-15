@@ -36,9 +36,6 @@ export default function createApp(userService: UserService): express.Application
   const app = express()
 
   Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.SENTRY_ENVIRONMENT || 'LOCAL',
-
     integrations: [
       // enable HTTP calls tracing
       new Sentry.Integrations.Http({ tracing: true }),
