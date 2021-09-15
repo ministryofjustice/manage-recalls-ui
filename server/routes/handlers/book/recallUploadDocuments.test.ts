@@ -1,45 +1,44 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
-import nock from 'nock'
-import { uploadDocumentsPage, downloadDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
+import { getUploadedDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
 import { getRecallDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
-import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { uploadStorageFields } from '../helpers/uploadStorage'
-import config from '../../../config'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
 
-describe('uploadDocumentsPage', () => {
-  const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
-  const nomsNumber = 'AA123AA'
-  const recallId = '00000000-0000-0000-0000-000000000000'
-
-  beforeEach(() => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.post('/search').reply(200, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-      },
-    ])
-  })
-
-  it("doesn't include email documents for display", async () => {
-    const req = mockGetRequest({
-      params: { nomsNumber, recallId },
-    })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    await uploadDocumentsPage(req, res)
-    expect(res.locals.documentTypes.find(doc => doc.type === 'email')).toBeUndefined()
-  })
-})
-
 describe('uploadRecallDocumentsFormHandler', () => {
   let req
   let resp
+
+  const allFiles = {
+    LICENCE: [
+      {
+        originalname: 'licence.pdf',
+        buffer: 'abc',
+      },
+    ],
+    PRE_SENTENCING_REPORT: [
+      {
+        originalname: 'report.pdf',
+        buffer: 'def',
+      },
+    ],
+    PREVIOUS_CONVICTIONS_SHEET: [
+      {
+        originalname: 'sheet.pdf',
+        buffer: 'def',
+      },
+    ],
+    PART_A_RECALL_REPORT: [
+      {
+        originalname: 'report.pdf',
+        buffer: 'def',
+      },
+    ],
+  }
   beforeEach(() => {
     req = mockGetRequest({ params: { nomsNumber: '456', recallId: '789' } })
     const { res } = getMockRes({
@@ -55,24 +54,11 @@ describe('uploadRecallDocumentsFormHandler', () => {
       documentId: '123',
     })
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.files = {
-        LICENCE: [
-          {
-            originalname: 'licence.pdf',
-            buffer: 'abc',
-          },
-        ],
-        PRE_SENTENCING_REPORT: [
-          {
-            originalname: 'report.pdf',
-            buffer: 'def',
-          },
-        ],
-      }
+      req.files = allFiles
       cb()
     })
     await uploadRecallDocumentsFormHandler(req, resp)
-    expect(addRecallDocument).toHaveBeenCalledTimes(2)
+    expect(addRecallDocument).toHaveBeenCalledTimes(4)
     expect(req.session.errors).toBeUndefined()
   })
 
@@ -85,8 +71,24 @@ describe('uploadRecallDocumentsFormHandler', () => {
     expect(addRecallDocument).not.toHaveBeenCalled()
     expect(req.session.errors).toEqual([
       {
-        name: 'documents',
-        text: 'You must upload at least one document',
+        href: '#PART_A_RECALL_REPORT',
+        name: 'PART_A_RECALL_REPORT',
+        text: 'Part A recall report',
+      },
+      {
+        href: '#LICENCE',
+        name: 'LICENCE',
+        text: 'Licence',
+      },
+      {
+        href: '#PREVIOUS_CONVICTIONS_SHEET',
+        name: 'PREVIOUS_CONVICTIONS_SHEET',
+        text: 'Previous convictions sheet',
+      },
+      {
+        href: '#PRE_SENTENCING_REPORT',
+        name: 'PRE_SENTENCING_REPORT',
+        text: 'Pre-sentencing report',
       },
     ])
   })
@@ -94,20 +96,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
   it('creates errors for failed uploads', done => {
     ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.files = {
-        LICENCE: [
-          {
-            originalname: 'licence.pdf',
-            buffer: 'abc',
-          },
-        ],
-        PRE_SENTENCING_REPORT: [
-          {
-            originalname: 'report.pdf',
-            buffer: 'def',
-          },
-        ],
-      }
+      req.files = allFiles
       cb()
     })
     const res = {
@@ -124,6 +113,18 @@ describe('uploadRecallDocumentsFormHandler', () => {
             fileName: 'report.pdf',
             href: '#PRE_SENTENCING_REPORT',
             name: 'PRE_SENTENCING_REPORT',
+            text: 'report.pdf - an error occurred during upload',
+          },
+          {
+            fileName: 'sheet.pdf',
+            href: '#PREVIOUS_CONVICTIONS_SHEET',
+            name: 'PREVIOUS_CONVICTIONS_SHEET',
+            text: 'sheet.pdf - an error occurred during upload',
+          },
+          {
+            fileName: 'report.pdf',
+            href: '#PART_A_RECALL_REPORT',
+            name: 'PART_A_RECALL_REPORT',
             text: 'report.pdf - an error occurred during upload',
           },
         ])
@@ -160,7 +161,7 @@ describe('downloadDocument', () => {
         category: GetDocumentResponse.category.LICENCE,
         content: 'abc',
       })
-      await downloadDocument(req, resp)
+      await getUploadedDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/pdf')
       expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="licence.pdf"')
     })
@@ -174,7 +175,7 @@ describe('downloadDocument', () => {
         content: 'abc',
         fileName: 'email.msg',
       })
-      await downloadDocument(req, resp)
+      await getUploadedDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/octet-stream')
       expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="email.msg"')
     })

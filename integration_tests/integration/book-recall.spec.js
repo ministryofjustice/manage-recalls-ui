@@ -1,8 +1,9 @@
 import { getPrisonList, searchResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
-import assessRecallPage from '../pages/assessRecall'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
+import { ApiRecallDocument } from '../../server/@types/manage-recalls-api/models/ApiRecallDocument'
+import assessRecallPage from '../pages/assessRecall'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
@@ -208,16 +209,29 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an error if upload fails', () => {
+  it('User sees errors if upload fails', () => {
     cy.task('expectAddRecallDocument', { statusCode: 400 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.upload()
-    uploadDocuments.expectUploadedDocumentError('test.pdf - an error occurred during upload')
+    uploadDocuments.assertErrorMessage({
+      fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+      summaryError: 'test.pdf - an error occurred during upload',
+      fieldError: 'Upload a file',
+    })
   })
 
-  it('User sees an error if no documents are uploaded', () => {
+  it('User sees errors if no documents are uploaded', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.clickContinue()
-    uploadDocuments.expectUploadedDocumentError('You must upload at least one document')
+    uploadDocuments.assertErrorMessage({
+      fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+      summaryError: 'Part A recall report',
+      fieldError: 'Upload a file',
+    })
+    uploadDocuments.assertErrorMessage({
+      fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+      summaryError: 'Previous convictions sheet',
+      fieldError: 'Upload a file',
+    })
   })
 })

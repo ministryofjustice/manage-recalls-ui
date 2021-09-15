@@ -99,6 +99,7 @@ context('Create a dossier', () => {
       qaAttr: 'dossierEmailSentDate',
       textToFind: '8 Sep 2021',
     })
+    assessRecall.assertElementHasText({ qaAttr: 'hasDossierBeenChecked', textToFind: 'Yes' })
     cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')

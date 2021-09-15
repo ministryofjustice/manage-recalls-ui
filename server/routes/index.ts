@@ -3,11 +3,7 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from './handlers/findPerson'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
-import {
-  uploadDocumentsPage,
-  uploadRecallDocumentsFormHandler,
-  downloadDocument,
-} from './handlers/book/recallUploadDocuments'
+import { uploadRecallDocumentsFormHandler, getUploadedDocument } from './handlers/book/recallUploadDocuments'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 import { confirmEmailSent } from './handlers/helpers/confirmEmailSent'
 import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
@@ -51,7 +47,7 @@ export default function routes(router: Router): Router {
   post(`${basePath}/issues-needs`, handleRecallFormPost(validateIssuesNeeds, 'probation-officer'))
   get(`${basePath}/probation-officer`, viewWithRecallAndPerson('recallProbationOfficer'))
   post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer, 'upload-documents'))
-  get(`${basePath}/upload-documents`, uploadDocumentsPage)
+  get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
@@ -98,7 +94,7 @@ export default function routes(router: Router): Router {
   // DOCUMENTS
   get(`${basePath}/documents/dossier`, downloadDossier)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
-  get(`${basePath}/documents/:documentId`, downloadDocument)
+  get(`${basePath}/documents/:documentId`, getUploadedDocument)
 
   return router
 }

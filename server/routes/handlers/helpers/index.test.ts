@@ -49,6 +49,37 @@ describe('decorateDocs', () => {
   it('filters out recall email document type', () => {
     const results = decorateDocs({ docs, nomsNumber, recallId })
     expect(results).toEqual({
+      documentTypes: [
+        {
+          label: 'Part A recall report',
+          name: 'PART_A_RECALL_REPORT',
+          required: true,
+          type: 'document',
+        },
+        {
+          label: 'Licence',
+          name: 'LICENCE',
+          required: true,
+          type: 'document',
+        },
+        {
+          label: 'Previous convictions sheet',
+          name: 'PREVIOUS_CONVICTIONS_SHEET',
+          required: true,
+          type: 'document',
+        },
+        {
+          label: 'Pre-sentencing report',
+          name: 'PRE_SENTENCING_REPORT',
+          required: true,
+          type: 'document',
+        },
+        {
+          label: 'OASys Risk Assessment',
+          name: 'OASYS_RISK_ASSESSMENT',
+          type: 'document',
+        },
+      ],
       documents: [
         {
           category: 'LICENCE',
@@ -57,6 +88,7 @@ describe('decorateDocs', () => {
           name: 'LICENCE',
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          required: true,
         },
         {
           category: 'PART_A_RECALL_REPORT',
@@ -65,6 +97,7 @@ describe('decorateDocs', () => {
           name: 'PART_A_RECALL_REPORT',
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+          required: true,
         },
       ],
       dossierEmail: {

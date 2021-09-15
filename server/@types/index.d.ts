@@ -30,6 +30,7 @@ export interface UploadDocumentMetadata {
   name: ApiRecallDocument.category
   type: 'document' | 'email'
   error?: string
+  required?: boolean
 }
 
 export interface UploadedFormFields {
@@ -117,6 +118,7 @@ export type ViewName =
   | 'recallPrisonPolice'
   | 'recallIssuesNeeds'
   | 'recallProbationOfficer'
+  | 'recallDocuments'
   | 'recallConfirmation'
   | 'dossierLetter'
   | 'dossierCheck'
