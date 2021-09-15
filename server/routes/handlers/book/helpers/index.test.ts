@@ -1,30 +1,57 @@
-import { addErrorsToDocuments } from './index'
+import { mandatoryDocErrors } from './index'
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { documentTypes } from '../documentTypes'
+import { FileDataBase64 } from '../../../../@types'
 
 describe('Upload document helpers', () => {
-  describe('addErrorsToDocuments', () => {
-    it('adds errors to documents', () => {
-      const errors = [
+  describe('mandatoryDocErrors', () => {
+    it("lists out mandatory docs that aren't in the uploaded files", () => {
+      const files = [
         {
-          name: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-          fileName: 'part_a.pdf',
-          text: 'part_a.pdf - an error occurred during upload',
-          href: '#1',
+          category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
         },
         {
-          name: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
-          fileName: 'pre_sentencing.pdf',
-          text: 'pre_sentencing.pdf - an error occurred during upload',
-          href: '#2',
+          category: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
         },
-      ]
-      const filteredDocTypes = documentTypes.filter(doc => doc.type === 'document')
-      const documents = addErrorsToDocuments(filteredDocTypes, errors)
-      const partAdoc = documents.find(doc => doc.name === ApiRecallDocument.category.PART_A_RECALL_REPORT)
-      const preSentencingDoc = documents.find(doc => doc.name === ApiRecallDocument.category.PRE_SENTENCING_REPORT)
-      expect(partAdoc.error).toEqual(errors[0].text)
-      expect(preSentencingDoc.error).toEqual(errors[1].text)
+      ] as unknown as FileDataBase64[]
+      const errors = mandatoryDocErrors(files)
+      expect(errors).toEqual([
+        {
+          href: '#LICENCE',
+          name: 'LICENCE',
+          text: 'Licence',
+        },
+        {
+          href: '#PREVIOUS_CONVICTIONS_SHEET',
+          name: 'PREVIOUS_CONVICTIONS_SHEET',
+          text: 'Previous convictions sheet',
+        },
+      ])
+    })
+    it('lists out all mandatory docs if there are no uploaded files', () => {
+      const files = [] as unknown as FileDataBase64[]
+      const errors = mandatoryDocErrors(files)
+      expect(errors).toEqual([
+        {
+          href: '#PART_A_RECALL_REPORT',
+          name: 'PART_A_RECALL_REPORT',
+          text: 'Part A recall report',
+        },
+        {
+          href: '#LICENCE',
+          name: 'LICENCE',
+          text: 'Licence',
+        },
+        {
+          href: '#PREVIOUS_CONVICTIONS_SHEET',
+          name: 'PREVIOUS_CONVICTIONS_SHEET',
+          text: 'Previous convictions sheet',
+        },
+        {
+          href: '#PRE_SENTENCING_REPORT',
+          name: 'PRE_SENTENCING_REPORT',
+          text: 'Pre-sentencing report',
+        },
+      ])
     })
   })
 })

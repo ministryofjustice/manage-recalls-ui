@@ -60,6 +60,7 @@ export const decorateDocs = ({
       },
       {
         documents: [],
+        documentTypes: documentTypes.filter(doc => doc.type === 'document'),
         recallNotificationEmail: undefined,
         dossierEmail: undefined,
       }

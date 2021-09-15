@@ -1,41 +1,13 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
-import nock from 'nock'
-import { uploadDocumentsPage, downloadDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
+import { getUploadedDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
 import { getRecallDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
-import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { uploadStorageFields } from '../helpers/uploadStorage'
-import config from '../../../config'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
-
-describe('uploadDocumentsPage', () => {
-  const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
-  const nomsNumber = 'AA123AA'
-  const recallId = '00000000-0000-0000-0000-000000000000'
-
-  beforeEach(() => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.post('/search').reply(200, [
-      {
-        firstName: 'Bobby',
-        lastName: 'Badger',
-      },
-    ])
-  })
-
-  it("doesn't include email documents for display", async () => {
-    const req = mockGetRequest({
-      params: { nomsNumber, recallId },
-    })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    await uploadDocumentsPage(req, res)
-    expect(res.locals.documentTypes.find(doc => doc.type === 'email')).toBeUndefined()
-  })
-})
 
 describe('uploadRecallDocumentsFormHandler', () => {
   let req
@@ -160,7 +132,7 @@ describe('downloadDocument', () => {
         category: GetDocumentResponse.category.LICENCE,
         content: 'abc',
       })
-      await downloadDocument(req, resp)
+      await getUploadedDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/pdf')
       expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="licence.pdf"')
     })
@@ -174,7 +146,7 @@ describe('downloadDocument', () => {
         content: 'abc',
         fileName: 'email.msg',
       })
-      await downloadDocument(req, resp)
+      await getUploadedDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/octet-stream')
       expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="email.msg"')
     })

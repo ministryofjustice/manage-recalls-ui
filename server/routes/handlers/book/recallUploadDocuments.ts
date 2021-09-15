@@ -1,33 +1,14 @@
 import { Request, Response } from 'express'
-import {
-  addRecallDocument,
-  getRecall,
-  searchByNomsNumber,
-  getRecallDocument,
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addRecallDocument, getRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
 import { UploadedFormFields } from '../../../@types'
-import { addErrorsToDocuments, makeFileData, listFailedUploads } from './helpers'
+import { makeFileData, listFailedUploads, mandatoryDocErrors } from './helpers'
 import { uploadStorageFields } from '../helpers/uploadStorage'
-
-export const uploadDocumentsPage = async (req: Request, res: Response): Promise<void> => {
-  const { nomsNumber, recallId } = req.params
-  const { user, errors } = res.locals
-  const [person, recall] = await Promise.all([
-    searchByNomsNumber(nomsNumber, user.token),
-    getRecall(recallId, user.token),
-  ])
-  res.locals.person = person
-  res.locals.recall = recall
-  const filteredDocTypes = documentTypes.filter(doc => doc.type === 'document')
-  res.locals.documentTypes = errors ? addErrorsToDocuments(filteredDocTypes, errors.list) : filteredDocTypes
-  res.render('pages/uploadDocuments')
-}
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
   const { nomsNumber, recallId } = req.params
-  const redirectToUploadPage = () => res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/upload-documents`)
+  const redirectToUploadPage = () => res.redirect(303, req.originalUrl)
   uploadStorageFields(documentTypes)(req, res, async err => {
     if (err) {
       logger.error(err)
@@ -35,32 +16,25 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
     }
     const { files, session } = req
     const { user } = res.locals
-    let failedUploads
     const fileData = makeFileData(files as UploadedFormFields)
-    if (fileData.length) {
-      const responses = await Promise.allSettled(
-        fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
-      )
-      failedUploads = listFailedUploads(fileData, responses)
+    const docErrors = mandatoryDocErrors(fileData)
+    if (docErrors.length) {
+      session.errors = docErrors
+      redirectToUploadPage()
     }
-    if (!fileData.length || failedUploads.length) {
-      session.errors = []
-      if (!fileData.length) {
-        session.errors.push({
-          text: 'You must upload at least one document',
-          name: 'documents',
-        })
-      }
-      if (failedUploads?.length) {
-        session.errors = [...session.errors, ...failedUploads]
-      }
+    const responses = await Promise.allSettled(
+      fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
+    )
+    const failedUploads = listFailedUploads(fileData, responses)
+    if (failedUploads.length) {
+      session.errors = failedUploads
       return redirectToUploadPage()
     }
     res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/confirmation`)
   })
 }
 
-export const downloadDocument = async (req: Request, res: Response) => {
+export const getUploadedDocument = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params
   const { user } = res.locals
   const response = await getRecallDocument(recallId, documentId, user.token)

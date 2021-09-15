@@ -1,19 +1,13 @@
-import { FileDataBase64, UploadError, UploadedFormFields, UploadDocumentMetadata } from '../../../../@types'
+import {
+  FileDataBase64,
+  UploadError,
+  UploadedFormFields,
+  UploadDocumentMetadata,
+  NamedFormError,
+} from '../../../../@types'
 import { documentTypes } from '../documentTypes'
 import { AddDocumentResponse } from '../../../../@types/manage-recalls-api'
-
-export const addErrorsToDocuments = (
-  filteredDocTypes: UploadDocumentMetadata[],
-  errors?: UploadError[]
-): UploadDocumentMetadata[] => {
-  return filteredDocTypes.map(doc => {
-    const matchedErr = errors.find((err: UploadError) => err.name === doc.name)
-    if (matchedErr) {
-      return { ...doc, error: matchedErr.text }
-    }
-    return { ...doc }
-  })
-}
+import { makeErrorObject } from '../../helpers'
 
 export const makeFileData = (files: UploadedFormFields): FileDataBase64[] => {
   return Object.entries(files).map(([key, [value]]) => {
@@ -26,6 +20,22 @@ export const makeFileData = (files: UploadedFormFields): FileDataBase64[] => {
     }
   })
 }
+
+export const mandatoryDocs = (): UploadDocumentMetadata[] =>
+  documentTypes.filter(doc => doc.type === 'document' && doc.required)
+
+export const mandatoryDocErrors = (files: FileDataBase64[]): NamedFormError[] =>
+  mandatoryDocs()
+    .map((doc: UploadDocumentMetadata) => {
+      if (!files.find(file => file.category === doc.name)) {
+        return makeErrorObject({
+          id: doc.name,
+          text: doc.label,
+        })
+      }
+      return undefined
+    })
+    .filter(Boolean)
 
 export const listFailedUploads = (
   fileData: FileDataBase64[],
