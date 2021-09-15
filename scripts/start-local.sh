@@ -11,12 +11,16 @@ docker compose -f "${DOCKER_COMPOSE_FILE}" stop
 docker rm fake-manage-recalls-api || true
 docker build fake-manage-recalls-api
 
+docker rm fake-prison-register-api || true
+docker build fake-prison-register-api
+
 docker compose -f "${DOCKER_COMPOSE_FILE}" up -d --remove-orphans
 
 echo "Logs can be found by running:"
 echo "  docker logs manage-recalls-ui"
 echo "  docker logs hmpps-auth"
 echo "  docker logs fake-manage-recalls-api"
+echo "  docker logs fake-prison-register-api"
 echo "  docker logs redis"
 
 printf "\nChecking hmpps-auth is running..."

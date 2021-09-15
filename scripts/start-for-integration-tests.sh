@@ -11,12 +11,12 @@ readonly DOCKER_COMPOSE_FILE="$PROJECT_DIR/docker-compose.yml"
 . ${SCRIPT_DIR}/install-cypress.sh
 checkCypressInstalled $PROJECT_DIR
 
-docker compose -f "${DOCKER_COMPOSE_FILE}" stop fake-manage-recalls-api redis
+docker compose -f "${DOCKER_COMPOSE_FILE}" stop fake-manage-recalls-api fake-prison-register-api redis
 docker rm fake-manage-recalls-api || true
 docker build fake-manage-recalls-api
 
-docker compose -f "${DOCKER_COMPOSE_FILE}" pull fake-manage-recalls-api redis
-docker compose -f "${DOCKER_COMPOSE_FILE}" up fake-manage-recalls-api redis -d --remove-orphans
+docker compose -f "${DOCKER_COMPOSE_FILE}" pull fake-manage-recalls-api fake-prison-register-api redis
+docker compose -f "${DOCKER_COMPOSE_FILE}" up fake-manage-recalls-api fake-prison-register-api redis -d --remove-orphans
 
 echo "Checking wiremock is running..."
 docker run --network container:fake-manage-recalls-api \

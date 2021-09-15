@@ -35,12 +35,23 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/liveness" ]
     command: --verbose
 
+  fake-prison-register-api:
+    image: quay.io/hmpps/ppud-fake-prison-register-api:latest
+    networks:
+      - manage-recalls-ui
+    container_name: fake-prison-register-api-e2e
+    ports:
+      - "9094:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/ping" ]
+    command: --verbose
+
   manage-recalls-ui:
     build: .
     networks:
       - manage-recalls-ui
     container_name: manage-recalls-ui
-    depends_on: [redis, fake-manage-recalls-api]
+    depends_on: [redis, fake-manage-recalls-api, fake-prison-register-api]
     ports:
       - "3000:3000"
     environment:
@@ -50,6 +61,7 @@ services:
       - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
       - MANAGE_RECALLS_API_URL=http://fake-manage-recalls-api:8080
+      - PRISON_REGISTER_API_URL=http://fake-prison-register-api:8080
       - API_CLIENT_ID=ppud-ui-client
       - API_CLIENT_SECRET=clientsecret
       - SYSTEM_CLIENT_ID=system-client-id
