@@ -11,8 +11,6 @@ docker compose -f "${DOCKER_COMPOSE_FILE}" stop
 docker rm fake-manage-recalls-api || true
 docker build fake-manage-recalls-api
 
-docker build fake-prison-register-api
-
 docker compose -f "${DOCKER_COMPOSE_FILE}" up -d --remove-orphans
 
 echo "Logs can be found by running:"
