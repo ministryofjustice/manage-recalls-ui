@@ -401,6 +401,14 @@
                     {% endif %}
                     <div class="govuk-summary-list__row">
                         <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                            Information in the dossier and letter has been checked
+                        </dt>
+                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailSentDate'>
+                            {% if recall.hasDossierBeenChecked %}Yes{%  else %}No{% endif %}
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                             Date/time that dossier was sent by email
                         </dt>
                         <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailSentDate'>
