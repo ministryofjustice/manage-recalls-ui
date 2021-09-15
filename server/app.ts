@@ -36,7 +36,7 @@ export default function createApp(userService: UserService): express.Application
   const app = express()
 
   Sentry.init({
-    dsn: 'https://4eb36239d29c4114b9d90b810063261c@o345774.ingest.sentry.io/5939012',
+    dsn: process.env.SENTRY_DSN,
     environment: process.env.SENTRY_ENVIRONMENT || 'LOCAL',
 
     integrations: [
