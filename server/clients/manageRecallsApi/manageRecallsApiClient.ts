@@ -5,7 +5,7 @@ import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddD
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { ObjectMap, PersonSearchResult } from '../../@types'
-import { GetDocumentResponse, UpdateRecallRequest } from '../../@types/manage-recalls-api'
+import { GetDocumentResponse, UpdateRecallRequest, UserDetailsResponse } from '../../@types/manage-recalls-api'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PersonSearchResult | null> {
   const request = { nomsNumber }
@@ -64,9 +64,14 @@ export function addRecallDocument(
 /*
 Temporarily send the userId in the request body until it is added to the JWT token and can be retrieved by the API
  */
-export function addUserDetails(userId: string, firstName: string, lastName: string, token: string): Promise<Recall> {
+export function addUserDetails(
+  userId: string,
+  firstName: string,
+  lastName: string,
+  token: string
+): Promise<UserDetailsResponse> {
   const request = { userId, firstName, lastName }
-  return restClient(token).post<Recall>({ path: '/users', data: request })
+  return restClient(token).post<UserDetailsResponse>({ path: '/users', data: request })
 }
 
 function restClient(token: string): RestClient {
