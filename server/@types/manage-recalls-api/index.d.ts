@@ -3,6 +3,7 @@
 /* eslint-disable */
 export { AddDocumentRequest } from './models/AddDocumentRequest'
 export type { AddDocumentResponse } from './models/AddDocumentResponse'
+export type { AddUserDetailsRequest } from './models/AddUserDetailsRequest'
 export { ApiRecallDocument } from './models/ApiRecallDocument'
 export type { BookRecallRequest } from './models/BookRecallRequest'
 export { GetDocumentResponse } from './models/GetDocumentResponse'
@@ -17,4 +18,5 @@ export type { SentenceLength } from './models/SentenceLength'
 export type { SentenceLengthReq } from './models/SentenceLengthReq'
 export type { SentenceLengthRes } from './models/SentenceLengthRes'
 export { UpdateRecallRequest } from './models/UpdateRecallRequest'
+export type { UserDetailsResponse } from './models/UserDetailsResponse'
 export type { View } from './models/View'
