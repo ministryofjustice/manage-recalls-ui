@@ -19,12 +19,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: `a list of recalls exists for NOMS number`,
         ...pactPostRequest('a search request by NOMS number', '/recalls/search', { nomsNumber }, accessToken),
-        willRespondWith: pactJsonResponse(getRecallsJson, 200),
+        willRespondWith: pactJsonResponse(Matchers.like(getRecallsJson), 200),
       })
 
-      const actualResults = await searchRecalls({ nomsNumber }, accessToken)
+      const actual = await searchRecalls({ nomsNumber }, accessToken)
 
-      expect(actualResults).toStrictEqual(getRecallsJson)
+      expect(actual).toEqual(getRecallsJson)
     })
 
     test('returns 400 if blank NOMS number provided', async () => {
