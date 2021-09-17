@@ -272,7 +272,7 @@
                 {% for document in recall.documents %}
             <div class="govuk-form-group">
                 {{ documentDownloadLink({
-                    linkText: document.label,
+                    linkText: document.fileName,
                     url: document.url,
                     dataQa: 'uploadedDocument-' + document.category
                 })

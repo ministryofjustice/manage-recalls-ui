@@ -30,6 +30,7 @@ export interface UploadDocumentMetadata {
   name: ApiRecallDocument.category
   type: 'document' | 'email'
   error?: string
+  fileName?: string
   required?: boolean
 }
 

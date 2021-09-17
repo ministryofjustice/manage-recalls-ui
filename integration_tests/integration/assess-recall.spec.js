@@ -69,11 +69,11 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
     assessRecall.assertElementHasText({
       qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
-      textToFind: 'Licence',
+      textToFind: 'Licence.pdf',
     })
     assessRecall.assertElementHasText({
       qaAttr: `uploadedDocument-${getRecallResponse.documents[1].category}`,
-      textToFind: 'Part A recall report',
+      textToFind: 'Part A.pdf',
     })
   })
 
