@@ -4,7 +4,7 @@ import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models
 import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
-import { PersonSearchResult } from '../../@types'
+import { ObjectMap, PersonSearchResult } from '../../@types'
 import { GetDocumentResponse, UpdateRecallRequest } from '../../@types/manage-recalls-api'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PersonSearchResult | null> {
@@ -22,6 +22,10 @@ export async function searchByNomsNumber(nomsNumber: string, token: string): Pro
 
 export async function getRecallList(token: string): Promise<Recall[]> {
   return restClient(token).get<Recall[]>({ path: '/recalls' })
+}
+
+export async function searchRecalls(searchParams: ObjectMap<string>, token: string): Promise<Recall[]> {
+  return restClient(token).post<Recall[]>({ path: '/recalls/search', data: searchParams })
 }
 
 export function getRecallNotification(recallId: string, token: string): Promise<Pdf> {
