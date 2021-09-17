@@ -16,7 +16,7 @@
                 <div class="moj-search">
                     <div class="govuk-form-group">
                         <label class="govuk-label moj-search__label govuk-!-font-weight-bold" for="search">
-                            Enter a NOMIS number
+                            NOMIS number
                         </label>
                         <input class="govuk-input moj-search__input " id="search-field" name="nomsNumber" type="search"
                                aria-describedby="search-hint" data-qa="search-field">
@@ -27,11 +27,11 @@
                 </div>
             </form>
 
-            {% if offenders %}
+            {% if persons %}
                 <h2 class="govuk-heading-m" data-qa="search-results-count">
-                    {{ offenders.length | personOrPeople }} found
+                    {{ persons.length | personOrPeople }} found
                 </h2>
-                {% if offenders.length > 0 %}
+                {% if persons.length > 0 %}
                 <table class="govuk-table">
                     <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
@@ -43,19 +43,26 @@
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
-                    {% for offender in offenders %}
+                    {% for person in persons %}
                         <tr class="govuk-table__row">
-                            <td class="govuk-table__cell" data-qa="nomsNumber">{{ offender.nomsNumber }}</td>
-                            <td class="govuk-table__cell" data-qa="croNumber">{{ offender.croNumber }}</td>
-                            <td class="govuk-table__cell" data-qa="name">{{ offender.firstName }} {{ offender.lastName }}</td>
-                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ offender.dateOfBirth | date }}</td>
+                            <td class="govuk-table__cell" data-qa="nomsNumber">{{ person.nomsNumber }}</td>
+                            <td class="govuk-table__cell" data-qa="croNumber">{{ person.croNumber }}</td>
+                            <td class="govuk-table__cell" data-qa="name">{{ person.firstName }} {{ person.lastName }}</td>
+                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ person.dateOfBirth | date }}</td>
                             <td class="govuk-table__cell">
-                                <form action="/persons/{{ offender.nomsNumber }}/recalls" method="post">
+                                <form action="/persons/{{ person.nomsNumber }}/recalls" method="post">
                                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                                     <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="bookRecallButton">
                                         Book a recall
                                     </button>
                                 </form>
+                                {% if person.recalls.length %}
+                                <div class='govuk-!-margin-top-4'>Existing recalls:</div>
+                                {% for recall in person.recalls %}
+                                    {% set recall = recall %}
+                                    {% include "../partials/recallActionLink.njk" %}
+                                {% endfor %}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

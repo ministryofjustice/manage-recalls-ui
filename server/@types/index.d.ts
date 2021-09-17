@@ -50,6 +50,7 @@ export interface PersonSearchResult {
   lastName: string
   nomsNumber?: string
   dateOfBirth?: string
+  recalls?: RecallResponse[]
 }
 
 export interface DatePartsParsed {
