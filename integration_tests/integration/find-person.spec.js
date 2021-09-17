@@ -1,5 +1,7 @@
 import { searchResponse, getRecallsResponse } from '../mockApis/mockResponses'
 import recallPreConsNamePage from '../pages/recallPreConsName'
+import assessRecallPage from '../pages/assessRecall'
+import dossierLetterPage from '../pages/dossierLetter'
 
 const findOffenderPage = require('../pages/findOffender')
 
@@ -13,7 +15,7 @@ context('Find a person', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
 
-  it('User can search for a person', () => {
+  it('User can search for a person and create a booking', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
@@ -37,6 +39,47 @@ context('Find a person', () => {
     firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`)
     firstResult.get('[data-qa=bookRecallButton]').click()
     recallPreConsNamePage.verifyOnPage({ personName })
+  })
+
+  it('User can assess a recall', () => {
+    const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.login()
+    const homePage = findOffenderPage.verifyOnPage(nomsNumber)
+    const firstResult = homePage.searchResults().first()
+    const existingRecall1 = getRecallsResponse[0]
+    firstResult.get(`[data-qa=assess-recall-${existingRecall1.recallId}]`).click()
+    assessRecallPage.verifyOnPage({ fullName: personName })
+  })
+
+  it('User can continue a booking', () => {
+    const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.login()
+    const homePage = findOffenderPage.verifyOnPage(nomsNumber)
+    const firstResult = homePage.searchResults().first()
+    const existingRecall2 = getRecallsResponse[1]
+    firstResult.get(`[data-qa=continue-booking-${existingRecall2.recallId}]`).click()
+    recallPreConsNamePage.verifyOnPage({ personName })
+  })
+
+  it('User can create a dossier', () => {
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.login()
+    const homePage = findOffenderPage.verifyOnPage(nomsNumber)
+    const firstResult = homePage.searchResults().first()
+    const existingRecall3 = getRecallsResponse[2]
+    firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`).click()
+    dossierLetterPage.verifyOnPage()
   })
 
   it('person search returns no results', () => {

@@ -33,6 +33,7 @@
                                 <td class="govuk-table__cell" data-qa="recallDate">{{ recall.offender.recallDate }}</td>
                                 <td class="govuk-table__cell" data-qa="dueDate">{{ recall.offender.dueDate }}</td>
                                 <td class="govuk-table__cell">
+                                    {% set person = recall.offender %}
                                     {% include "../partials/recallActionLink.njk" %}
                                 </td>
                             </tr>

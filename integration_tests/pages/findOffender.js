@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const indexPage = () =>
+const findPersonPage = nomsNumber =>
   page('Find a person', {
-    url: '/find-person',
+    url: nomsNumber ? `/find-person?nomsNumber=${nomsNumber}` : '/find-person',
     headerUserName: () => cy.get('[data-qa=header-user-name]'),
     searchFor: searchText => cy.get('[data-qa=search-field]').type(`${searchText}{enter}`),
     search: () => cy.get('[data-qa=search]').click(),
@@ -15,4 +15,4 @@ const indexPage = () =>
     },
   })
 
-module.exports = { verifyOnPage: indexPage }
+module.exports = { verifyOnPage: findPersonPage }
