@@ -65,7 +65,13 @@ export const confirmEmailSent =
         res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/${nextPageUrlSuffix}`)
       } catch (e) {
         logger.error(e)
-        res.redirect(303, `/persons/${nomsNumber}`)
+        req.session.errors = [
+          {
+            name: 'saveError',
+            text: 'An error occurred saving your changes',
+          },
+        ]
+        res.redirect(303, req.originalUrl)
       }
     })
   }

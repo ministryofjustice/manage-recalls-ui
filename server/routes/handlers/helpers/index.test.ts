@@ -46,35 +46,48 @@ describe('decorateDocs', () => {
   ]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
-  it('filters out recall email document type', () => {
+  it('returns document types only in document list, with uploaded docs merged into documentTypes', () => {
     const results = decorateDocs({ docs, nomsNumber, recallId })
     expect(results).toEqual({
       documentTypes: [
         {
+          fileName: 'Part A.pdf',
           label: 'Part A recall report',
           name: 'PART_A_RECALL_REPORT',
           required: true,
           type: 'document',
+          uploaded: {
+            fileName: 'Part A.pdf',
+            url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
         },
         {
+          fileName: 'Licence.pdf',
           label: 'Licence',
           name: 'LICENCE',
           required: true,
           type: 'document',
+          uploaded: {
+            fileName: 'Licence.pdf',
+            url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          },
         },
         {
+          fileName: 'Pre Cons.pdf',
           label: 'Previous convictions sheet',
           name: 'PREVIOUS_CONVICTIONS_SHEET',
           required: true,
           type: 'document',
         },
         {
+          fileName: 'PSR.pdf',
           label: 'Pre-sentencing report',
           name: 'PRE_SENTENCING_REPORT',
           required: true,
           type: 'document',
         },
         {
+          fileName: 'OASys.pdf',
           label: 'OASys Risk Assessment',
           name: 'OASYS_RISK_ASSESSMENT',
           type: 'document',
@@ -84,20 +97,22 @@ describe('decorateDocs', () => {
         {
           category: 'LICENCE',
           documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence.pdf',
           label: 'Licence',
           name: 'LICENCE',
+          required: true,
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          required: true,
         },
         {
           category: 'PART_A_RECALL_REPORT',
           documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Part A.pdf',
           label: 'Part A recall report',
           name: 'PART_A_RECALL_REPORT',
+          required: true,
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-          required: true,
         },
       ],
       dossierEmail: {

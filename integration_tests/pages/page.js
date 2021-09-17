@@ -7,6 +7,9 @@ module.exports = (name, pageObject = {}) => {
       expect(text.trim()).to.equal(textToFind)
     })
   }
+  const assertErrorNotShown = ({ fieldName }) => {
+    cy.get(`[href="#${fieldName}"`).should('not.exist')
+  }
   const assertErrorMessage = ({ fieldName, summaryError, fieldError }) => {
     cy.get(`[href="#${fieldName}"`).should($searchResults => {
       const text = $searchResults.text()
@@ -33,6 +36,7 @@ module.exports = (name, pageObject = {}) => {
     ...pageObject,
     checkStillOnPage: checkOnPage,
     logout,
+    assertErrorNotShown,
     assertElementHasText,
     assertErrorMessage,
     clickContinue,

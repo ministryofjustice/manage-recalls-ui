@@ -3,34 +3,49 @@ import { addRecallDocument, getRecallDocument } from '../../../clients/manageRec
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
 import { UploadedFormFields } from '../../../@types'
-import { makeFileData, listFailedUploads, mandatoryDocErrors } from './helpers'
+import { makeFileData, listFailedUploads } from './helpers'
 import { uploadStorageFields } from '../helpers/uploadStorage'
+import { validateUploadDocuments } from './helpers/validateUploadDocuments'
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
   const { nomsNumber, recallId } = req.params
-  const redirectToUploadPage = () => res.redirect(303, req.originalUrl)
   uploadStorageFields(documentTypes)(req, res, async err => {
-    if (err) {
-      logger.error(err)
-      return redirectToUploadPage()
+    try {
+      if (err) {
+        logger.error(err)
+        return res.redirect(303, req.originalUrl)
+      }
+      const { files, session, body } = req
+      const { user } = res.locals
+      const fileData = makeFileData(files as UploadedFormFields)
+      const { errors } = validateUploadDocuments({ fileData, requestBody: body })
+      if (errors.length) {
+        session.errors = errors
+      }
+      if (fileData.length) {
+        const responses = await Promise.allSettled(
+          fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
+        )
+        const failedUploads = listFailedUploads(fileData, responses)
+        if (failedUploads.length) {
+          session.errors = session.errors || []
+          session.errors = [...failedUploads]
+        }
+      }
+      if (session.errors && session.errors.length) {
+        return res.redirect(303, req.originalUrl)
+      }
+      res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/confirmation`)
+    } catch (e) {
+      logger.error(e)
+      req.session.errors = [
+        {
+          name: 'saveError',
+          text: 'An error occurred saving your changes',
+        },
+      ]
+      res.redirect(303, req.originalUrl)
     }
-    const { files, session } = req
-    const { user } = res.locals
-    const fileData = makeFileData(files as UploadedFormFields)
-    const docErrors = mandatoryDocErrors(fileData)
-    if (docErrors.length) {
-      session.errors = docErrors
-      redirectToUploadPage()
-    }
-    const responses = await Promise.allSettled(
-      fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
-    )
-    const failedUploads = listFailedUploads(fileData, responses)
-    if (failedUploads.length) {
-      session.errors = failedUploads
-      return redirectToUploadPage()
-    }
-    res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/confirmation`)
   })
 }
 

@@ -234,4 +234,30 @@ context('Book a recall', () => {
       fieldError: 'Upload a file',
     })
   })
+
+  it("User doesn't see errors for previously saved documents", () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          },
+        ],
+      },
+    })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.clickContinue()
+    uploadDocuments.assertErrorMessage({
+      fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+      summaryError: 'Part A recall report',
+      fieldError: 'Upload a file',
+    })
+    uploadDocuments.assertErrorNotShown({ fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET })
+    uploadDocuments.assertElementHasText({
+      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
+      textToFind: 'Pre Cons.pdf',
+    })
+  })
 })

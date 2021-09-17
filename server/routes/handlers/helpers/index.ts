@@ -31,8 +31,12 @@ export const decorateDocs = ({
   docs: ApiRecallDocument[]
   nomsNumber: string
   recallId: string
-}): { documents: DecoratedDocument[]; recallNotificationEmail?: DecoratedDocument; dossierEmail?: DecoratedDocument } =>
-  docs
+}): {
+  documents: DecoratedDocument[]
+  recallNotificationEmail?: DecoratedDocument
+  dossierEmail?: DecoratedDocument
+} => {
+  const decoratedUploadedDocs = docs
     .map(doc => {
       const documentType = documentTypes.find(d => d.name === doc.category)
       if (documentType) {
@@ -45,23 +49,33 @@ export const decorateDocs = ({
       return undefined
     })
     .filter(Boolean)
-    .reduce(
-      (acc, curr) => {
-        if (curr.type === 'document') {
-          acc.documents.push(curr)
-        }
-        if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
-          acc.recallNotificationEmail = curr
-        }
-        if (curr.name === ApiRecallDocument.category.DOSSIER_EMAIL) {
-          acc.dossierEmail = curr
-        }
-        return acc
-      },
-      {
-        documents: [],
-        documentTypes: documentTypes.filter(doc => doc.type === 'document'),
-        recallNotificationEmail: undefined,
-        dossierEmail: undefined,
+  const decoratedDocTypes = documentTypes
+    .filter(doc => doc.type === 'document')
+    .map(docType => {
+      const uploadedDoc = decoratedUploadedDocs.find(d => d.category === docType.name)
+      return {
+        ...docType,
+        uploaded: uploadedDoc && { url: uploadedDoc.url, fileName: uploadedDoc.fileName },
       }
-    )
+    })
+  return decoratedUploadedDocs.reduce(
+    (acc, curr) => {
+      if (curr.type === 'document') {
+        acc.documents.push(curr)
+      }
+      if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
+        acc.recallNotificationEmail = curr
+      }
+      if (curr.name === ApiRecallDocument.category.DOSSIER_EMAIL) {
+        acc.dossierEmail = curr
+      }
+      return acc
+    },
+    {
+      documents: [],
+      documentTypes: decoratedDocTypes,
+      recallNotificationEmail: undefined,
+      dossierEmail: undefined,
+    }
+  )
+}
