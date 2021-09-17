@@ -61,6 +61,14 @@ export function addRecallDocument(
   return restClient(token).post({ path: `/recalls/${recallId}/documents`, data: document })
 }
 
+/*
+Temporarily send the userId in the request body until it is added to the JWT token and can be retrieved by the API
+ */
+export function addUserDetails(userId: string, firstName: string, lastName: string, token: string): Promise<Recall> {
+  const request = { userId, firstName, lastName }
+  return restClient(token).post<Recall>({ path: '/users', data: request })
+}
+
 function restClient(token: string): RestClient {
   return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }
