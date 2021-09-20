@@ -74,6 +74,10 @@ export function addUserDetails(
   return restClient(token).post<UserDetailsResponse>({ path: '/users', data: request })
 }
 
+export function getUserDetails(userId: string, token: string): Promise<UserDetailsResponse> {
+  return restClient(token).get<UserDetailsResponse>({ path: `/users/${userId}` })
+}
+
 function restClient(token: string): RestClient {
   return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }

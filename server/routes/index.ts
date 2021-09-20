@@ -22,7 +22,7 @@ import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecall
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
-import { getUserDetails, postUserDetails } from './handlers/user/userDetails'
+import { getUser, postUser } from './handlers/user/userDetails'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -98,8 +98,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/documents/:documentId`, getUploadedDocument)
 
   // DETAILS FOR CURRENT USER
-  get('/user-details', getUserDetails)
-  post('/user-details', postUserDetails)
+  get('/user-details', getUser)
+  post('/user-details', postUser)
 
   return router
 }

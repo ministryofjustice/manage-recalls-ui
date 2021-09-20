@@ -1,15 +1,21 @@
 import { Request, Response } from 'express'
-import { addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 
-export const getUserDetails = async (req: Request, res: Response): Promise<void> => {
-  res.render(`pages/userDetails`)
+export const getUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { uuid, token } = res.locals.user
+    const user = await getUserDetails(uuid, token)
+    res.locals.user = { ...res.locals.user, ...user }
+  } finally {
+    res.render(`pages/userDetails`)
+  }
 }
 
-export const postUserDetails = async (req: Request, res: Response): Promise<void> => {
+export const postUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId } = res.locals.user
+    const { uuid } = res.locals.user
     const { firstName, lastName } = req.body
-    await addUserDetails(userId, firstName, lastName, res.locals.user.token)
+    await addUserDetails(uuid, firstName, lastName, res.locals.user.token)
   } catch (err) {
     req.session.errors = [
       {
