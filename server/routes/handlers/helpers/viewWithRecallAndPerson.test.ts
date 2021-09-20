@@ -22,6 +22,10 @@ describe('viewWithRecallAndPerson', () => {
     croNumber: '1234/56A',
     pncNumber: '98/7654Z',
   }
+  const assessedByUserDetails = {
+    firstName: 'Bertie',
+    lastName: 'Badger',
+  }
 
   beforeEach(() => {
     fakeManageRecallsApi.post('/search').reply(200, [person])
@@ -31,8 +35,9 @@ describe('viewWithRecallAndPerson', () => {
     jest.clearAllMocks()
   })
 
-  it('should return person and recall data from api for a valid noms number and recallId', async () => {
+  it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', async () => {
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    fakeManageRecallsApi.get('/users/00000000-0000-0000-0000-000000000000').reply(200, assessedByUserDetails)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -59,6 +64,18 @@ describe('viewWithRecallAndPerson', () => {
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
       },
     ])
+    expect(res.locals.assessedByUserName).toEqual('Bertie Badger')
+    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
+  })
+
+  it('should return assessed by user id if the user name can not be found ', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    fakeManageRecallsApi.get('/users/00000000-0000-0000-0000-000000000000').reply(404)
+
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.assessedByUserName).toEqual('00000000-0000-0000-0000-000000000000')
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 
