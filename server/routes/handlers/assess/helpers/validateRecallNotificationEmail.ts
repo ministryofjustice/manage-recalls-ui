@@ -26,7 +26,9 @@ export const validateRecallNotificationEmail = ({
     hour: requestBody.recallNotificationEmailSentDateTimeHour,
     minute: requestBody.recallNotificationEmailSentDateTimeMinute,
   }
-  const recallNotificationEmailSentDateTime = convertGmtDatePartsToUtc(recallNotificationEmailSentDateTimeParts)
+  const recallNotificationEmailSentDateTime = convertGmtDatePartsToUtc(recallNotificationEmailSentDateTimeParts, {
+    dateMustBeInPast: true,
+  })
   const invalidFileExtension = emailFileSelected
     ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
     : false

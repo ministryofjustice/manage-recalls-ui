@@ -4,7 +4,7 @@ describe('validateEmail', () => {
   const requestBody = {
     confirmDossierEmailSent: 'YES',
     dossierEmailSentDateYear: '2021',
-    dossierEmailSentDateMonth: '10',
+    dossierEmailSentDateMonth: '09',
     dossierEmailSentDateDay: '4',
   }
 
@@ -18,7 +18,7 @@ describe('validateEmail', () => {
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      dossierEmailSentDate: '2021-10-04',
+      dossierEmailSentDate: '2021-09-04',
     })
   })
 

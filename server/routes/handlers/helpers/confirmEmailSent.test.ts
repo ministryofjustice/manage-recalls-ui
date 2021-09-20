@@ -51,7 +51,7 @@ describe('confirmEmailSent', () => {
     req.body = {
       confirmDossierEmailSent: 'YES',
       dossierEmailSentDateYear: '2021',
-      dossierEmailSentDateMonth: '10',
+      dossierEmailSentDateMonth: '09',
       dossierEmailSentDateDay: '4',
     }
     const res = {

@@ -55,10 +55,10 @@ export const validateSentenceDetails = (
     month: sentenceExpiryDateMonth,
     day: sentenceExpiryDateDay,
   }
-  const lastReleaseDate = convertGmtDatePartsToUtc(lastReleaseDateParts)
-  const sentenceDate = convertGmtDatePartsToUtc(sentenceDateParts)
-  const licenceExpiryDate = convertGmtDatePartsToUtc(licenceExpiryDateParts)
-  const sentenceExpiryDate = convertGmtDatePartsToUtc(sentenceExpiryDateParts)
+  const lastReleaseDate = convertGmtDatePartsToUtc(lastReleaseDateParts, { dateMustBeInPast: true })
+  const sentenceDate = convertGmtDatePartsToUtc(sentenceDateParts, { dateMustBeInPast: true })
+  const licenceExpiryDate = convertGmtDatePartsToUtc(licenceExpiryDateParts, { dateMustBeInFuture: true })
+  const sentenceExpiryDate = convertGmtDatePartsToUtc(sentenceExpiryDateParts, { dateMustBeInFuture: true })
 
   const sentenceLengthYearsParsed = parseInt(sentenceLengthYears, 10) || undefined
   const sentenceLengthMonthsParsed = parseInt(sentenceLengthMonths, 10) || undefined
