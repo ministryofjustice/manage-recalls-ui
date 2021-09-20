@@ -9,6 +9,7 @@ export type UpdateRecallRequest = {
   additionalLicenceConditionsDetail?: string
   agreeWithRecall?: UpdateRecallRequest.agreeWithRecall
   agreeWithRecallDetail?: string
+  assessedByUserId?: string
   authorisingAssistantChiefOfficer?: string
   bookingNumber?: string
   conditionalReleaseDate?: string

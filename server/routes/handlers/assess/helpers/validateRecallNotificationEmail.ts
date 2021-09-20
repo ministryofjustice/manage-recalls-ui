@@ -9,6 +9,7 @@ export const validateRecallNotificationEmail = ({
   emailFileSelected,
   uploadFailed,
   allowedFileExtensions,
+  actionedByUserId,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave: UpdateRecallRequest
@@ -90,7 +91,7 @@ export const validateRecallNotificationEmail = ({
     }
   }
   if (!errors) {
-    valuesToSave = { recallNotificationEmailSentDateTime }
+    valuesToSave = { recallNotificationEmailSentDateTime, assessedByUserId: actionedByUserId }
   }
   return { errors, valuesToSave, unsavedValues }
 }

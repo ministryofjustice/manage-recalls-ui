@@ -55,6 +55,7 @@ export const confirmEmailSent =
           emailFileSelected,
           uploadFailed,
           allowedFileExtensions,
+          actionedByUserId: res.locals.user.uuid,
         })
         if (errors) {
           req.session.errors = errors

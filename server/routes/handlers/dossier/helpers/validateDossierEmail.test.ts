@@ -7,6 +7,7 @@ describe('validateEmail', () => {
     dossierEmailSentDateMonth: '09',
     dossierEmailSentDateDay: '4',
   }
+  const actionedByUserId = '00000000-0000-0000-0000-000000000000'
 
   it('returns valuesToSave for all valid fields', () => {
     const { errors, valuesToSave } = validateDossierEmail({
@@ -15,6 +16,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: false,
       allowedFileExtensions: ['.msg'],
+      actionedByUserId,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -33,6 +35,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: false,
       allowedFileExtensions: ['.msg'],
+      actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -54,6 +57,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: false,
       allowedFileExtensions: ['.msg'],
+      actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -73,6 +77,7 @@ describe('validateEmail', () => {
       emailFileSelected: false,
       uploadFailed: false,
       allowedFileExtensions: ['.msg'],
+      actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -91,6 +96,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: true,
       allowedFileExtensions: ['.msg'],
+      actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -110,6 +116,7 @@ describe('validateEmail', () => {
       emailFileSelected: true,
       uploadFailed: true,
       allowedFileExtensions: ['.msg'],
+      actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

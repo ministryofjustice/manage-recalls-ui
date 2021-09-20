@@ -144,6 +144,7 @@ export interface EmailUploadValidatorArgs {
   emailFileSelected: boolean
   uploadFailed: boolean
   allowedFileExtensions: string[]
+  actionedByUserId: string
 }
 
 export interface RecallResult {
