@@ -24,7 +24,7 @@ export const validateDossierEmail = ({
     month: requestBody.dossierEmailSentDateMonth,
     day: requestBody.dossierEmailSentDateDay,
   }
-  const dossierEmailSentDate = convertGmtDatePartsToUtc(dossierEmailSentDateParts)
+  const dossierEmailSentDate = convertGmtDatePartsToUtc(dossierEmailSentDateParts, { dateMustBeInPast: true })
   const invalidFileExtension = emailFileSelected
     ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
     : false

@@ -63,7 +63,7 @@
                         },
                         items: dateTimeItems("licenceExpiryDate", formValues.licenceExpiryDateParts),
                         errorMessage: {
-                            text: 'Enter a valid date'
+                            text: 'Enter a valid future date'
                         } if errors.licenceExpiryDate else undefined,
                         hint: {
                             text: 'For example, 23 5 2021'
@@ -82,7 +82,7 @@
                         },
                         items: dateTimeItems("sentenceExpiryDate", formValues.sentenceExpiryDateParts),
                         errorMessage: {
-                            text: 'Enter a valid date'
+                            text: 'Enter a valid future date'
                         } if errors.sentenceExpiryDate else undefined,
                         hint: {
                             text: 'For example, 23 5 2021'

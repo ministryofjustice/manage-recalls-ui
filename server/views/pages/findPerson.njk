@@ -48,7 +48,7 @@
                             <td class="govuk-table__cell" data-qa="nomsNumber">{{ person.nomsNumber }}</td>
                             <td class="govuk-table__cell" data-qa="croNumber">{{ person.croNumber }}</td>
                             <td class="govuk-table__cell" data-qa="name">{{ person.firstName }} {{ person.lastName }}</td>
-                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ person.dateOfBirth | date }}</td>
+                            <td class="govuk-table__cell" data-qa="dateOfBirth">{{ person.dateOfBirth | dateTime }}</td>
                             <td class="govuk-table__cell">
                                 <form action="/persons/{{ person.nomsNumber }}/recalls" method="post">
                                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />

@@ -16,7 +16,9 @@ export const validateRecallRequestReceived = (
     hour: requestBody.recallEmailReceivedDateTimeHour,
     minute: requestBody.recallEmailReceivedDateTimeMinute,
   }
-  const recallEmailReceivedDateTime = convertGmtDatePartsToUtc(recallEmailReceivedDateTimeParts)
+  const recallEmailReceivedDateTime = convertGmtDatePartsToUtc(recallEmailReceivedDateTimeParts, {
+    dateMustBeInPast: true,
+  })
   if (!recallEmailReceivedDateTime) {
     errors = [
       makeErrorObject({

@@ -43,7 +43,7 @@
                         Date of birth
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dateOfBirth'>
-                        {{ person.dateOfBirth | dateGov }}
+                        {{ person.dateOfBirth | dateTime }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -146,7 +146,7 @@
                         Sentence date
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceDate'>
-                        {{ recall.sentenceDate | dateGov }}
+                        {{ recall.sentenceDate | dateTime }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -154,7 +154,7 @@
                         Sentence expiry date
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceExpiryDate'>
-                        {{ recall.sentenceExpiryDate | dateGov }}
+                        {{ recall.sentenceExpiryDate | dateTime }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -162,7 +162,7 @@
                         Licence expiry date
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='licenceExpiryDate'>
-                        {{ recall.licenceExpiryDate | dateGov }}
+                        {{ recall.licenceExpiryDate | dateTime }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -178,7 +178,7 @@
                         Last release date
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='lastReleaseDate'>
-                        {{ recall.lastReleaseDate | dateGov }}
+                        {{ recall.lastReleaseDate | dateTime }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -194,7 +194,7 @@
                         Conditional release date
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='conditionalReleaseDate'>
-                        {{ recall.conditionalReleaseDate | dateGov }}
+                        {{ recall.conditionalReleaseDate | dateTime }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -412,7 +412,7 @@
                             Date/time that dossier was sent by email
                         </dt>
                         <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailSentDate'>
-                            {{ recall.dossierEmailSentDate | dateGov }}
+                            {{ recall.dossierEmailSentDate | dateTime }}
                         </dd>
                     </div>
                     {% if recall.dossierEmail %}

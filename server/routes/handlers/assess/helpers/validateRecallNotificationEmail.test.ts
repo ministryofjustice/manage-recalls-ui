@@ -4,7 +4,7 @@ describe('validateEmail', () => {
   const requestBody = {
     confirmRecallNotificationEmailSent: 'YES',
     recallNotificationEmailSentDateTimeYear: '2021',
-    recallNotificationEmailSentDateTimeMonth: '10',
+    recallNotificationEmailSentDateTimeMonth: '09',
     recallNotificationEmailSentDateTimeDay: '4',
     recallNotificationEmailSentDateTimeHour: '14',
     recallNotificationEmailSentDateTimeMinute: '47',
@@ -20,7 +20,7 @@ describe('validateEmail', () => {
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      recallNotificationEmailSentDateTime: '2021-10-04T13:47:00.000Z',
+      recallNotificationEmailSentDateTime: '2021-09-04T13:47:00.000Z',
     })
   })
 

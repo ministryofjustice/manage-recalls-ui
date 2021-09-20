@@ -5,14 +5,13 @@ import * as pathModule from 'path'
 import {
   personOrPeopleFilter,
   userNameFilter,
-  dateFilter,
-  dateTimeFilter,
   dateTimeItems,
   selectItems,
   checkboxItems,
   filterSelectedItems,
 } from './nunjucksFunctions'
 import { isDefined } from '../routes/handlers/helpers'
+import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -31,8 +30,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
 
   njkEnv.addFilter('personOrPeople', personOrPeopleFilter)
   njkEnv.addFilter('userName', userNameFilter)
-  njkEnv.addFilter('dateGov', dateFilter)
-  njkEnv.addFilter('dateTime', dateTimeFilter)
+  njkEnv.addFilter('dateTime', formatDateTimeFromIsoString)
 
   njkEnv.addGlobal('dateTimeItems', dateTimeItems)
   njkEnv.addGlobal('selectItems', selectItems)
