@@ -97,7 +97,7 @@ context('Create a dossier', () => {
     assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumberDetail', textToFind: 'AC3408303' })
     assessRecall.assertElementHasText({
       qaAttr: 'dossierEmailSentDate',
-      textToFind: '8 Sep 2021',
+      textToFind: '8 September 2021',
     })
     assessRecall.assertElementHasText({ qaAttr: 'hasDossierBeenChecked', textToFind: 'Yes' })
     cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()

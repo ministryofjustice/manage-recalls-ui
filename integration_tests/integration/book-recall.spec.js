@@ -134,12 +134,12 @@ context('Book a recall', () => {
     recallLastRelease.assertErrorMessage({
       fieldName: 'sentenceExpiryDate',
       summaryError: 'Sentence expiry date',
-      fieldError: 'Enter a valid date',
+      fieldError: 'Enter a valid future date',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'licenceExpiryDate',
       summaryError: 'Licence expiry date',
-      fieldError: 'Enter a valid date',
+      fieldError: 'Enter a valid future date',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'sentenceLength',

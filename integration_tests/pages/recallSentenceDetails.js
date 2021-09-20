@@ -1,4 +1,8 @@
+import { DateTime } from 'luxon'
+
 const page = require('./page')
+
+const { year, month, day } = DateTime.now().plus({ months: 1 })
 
 const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
   page('What are the sentence, offence and release details?', {
@@ -9,12 +13,12 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[name="sentenceDateDay"]').clear().type('03')
     },
     setLicenceExpiryDate: () => {
-      cy.get('[name="licenceExpiryDateYear"]').clear().type('2020')
-      cy.get('[name="licenceExpiryDateMonth"]').clear().type('01')
-      cy.get('[name="licenceExpiryDateDay"]').clear().type('03')
+      cy.get('[name="licenceExpiryDateYear"]').clear().type(year)
+      cy.get('[name="licenceExpiryDateMonth"]').clear().type(month)
+      cy.get('[name="licenceExpiryDateDay"]').clear().type(day)
     },
     setSentenceExpiryDate: () => {
-      cy.get('[name="sentenceExpiryDateYear"]').clear().type('2020')
+      cy.get('[name="sentenceExpiryDateYear"]').clear().type('2030')
       cy.get('[name="sentenceExpiryDateMonth"]').clear().type('04')
       cy.get('[name="sentenceExpiryDateDay"]').clear().type('12')
     },
