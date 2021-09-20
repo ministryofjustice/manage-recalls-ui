@@ -78,7 +78,7 @@
                         id: "localDeliveryUnit",
                         name: "localDeliveryUnit",
                         label: {
-                            text: "Local delivery unit",
+                            text: "Local Delivery Unit",
                             classes: "govuk-label--m"
                         },
                         items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit),
@@ -113,3 +113,12 @@
 
 {% endblock %}
 
+
+{% block bodyEnd %}
+    {{ super() }}
+    {{ autocomplete({
+        selectElement: '#localDeliveryUnit',
+        cspNonce: cspNonce
+    })
+    }}
+{% endblock %}

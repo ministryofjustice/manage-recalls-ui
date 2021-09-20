@@ -252,7 +252,7 @@ context('Book a recall', () => {
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'localDeliveryUnit',
-      summaryError: 'Local delivery unit',
+      summaryError: 'Local Delivery Unit',
       fieldError: 'Select the probation division',
     })
     recallProbationOfficer.assertErrorMessage({

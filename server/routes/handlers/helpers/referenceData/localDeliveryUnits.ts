@@ -6,18 +6,6 @@ export const localDeliveryUnits = [
     text: 'Central Audit Team',
   },
   {
-    value: RecallResponse.localDeliveryUnit.ISLE_OF_MAN,
-    text: 'Isle of Man',
-  },
-  {
-    value: RecallResponse.localDeliveryUnit.NORTHERN_IRELAND,
-    text: 'Northern Ireland',
-  },
-  {
-    value: RecallResponse.localDeliveryUnit.CENTRAL_AUDIT_TEAM,
-    text: 'Central Audit Team',
-  },
-  {
     value: RecallResponse.localDeliveryUnit.CHANNEL_ISLANDS,
     text: 'Channel Islands',
   },

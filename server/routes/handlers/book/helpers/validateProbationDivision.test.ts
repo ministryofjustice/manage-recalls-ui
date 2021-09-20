@@ -43,7 +43,7 @@ describe('validateProbationOfficer', () => {
       {
         href: '#localDeliveryUnit',
         name: 'localDeliveryUnit',
-        text: 'Local delivery unit',
+        text: 'Local Delivery Unit',
       },
       {
         href: '#authorisingAssistantChiefOfficer',
