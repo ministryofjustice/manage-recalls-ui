@@ -24,7 +24,7 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
 
-            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/prison-police" method="post">
+            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/prison-police" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({

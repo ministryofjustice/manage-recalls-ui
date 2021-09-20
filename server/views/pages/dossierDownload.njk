@@ -27,7 +27,7 @@
             {% endif %}
             <span class="govuk-caption-l" data-qa="createDossierCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class='govuk-heading-l'>Download the dossier and letter</h1>
-            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-download" method="post">
+            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-download" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
                 <p class="govuk-body-l">Review the documents and check the information is correct.</p>

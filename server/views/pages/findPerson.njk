@@ -12,7 +12,7 @@
                 Find a person
             </h1>
 
-            <form id="search" action="" method="get" class="govuk-!-margin-bottom-9 search-panel">
+            <form novalidate id="search" action="" method="get" class="govuk-!-margin-bottom-9 search-panel">
                 <div class="moj-search">
                     <div class="govuk-form-group">
                         <label class="govuk-label moj-search__label govuk-!-font-weight-bold" for="search">
@@ -50,7 +50,7 @@
                             <td class="govuk-table__cell" data-qa="name">{{ person.firstName }} {{ person.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ person.dateOfBirth | dateTime }}</td>
                             <td class="govuk-table__cell">
-                                <form action="/persons/{{ person.nomsNumber }}/recalls" method="post">
+                                <form novalidate action="/persons/{{ person.nomsNumber }}/recalls" method="post">
                                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                                     <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="bookRecallButton">
                                         Book a recall
