@@ -1,9 +1,9 @@
-import { getPrisonList, searchResponse } from '../mockApis/mockResponses'
+import { getPrisonList, getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 import { ApiRecallDocument } from '../../server/@types/manage-recalls-api/models/ApiRecallDocument'
-import assessRecallPage from '../pages/assessRecall'
+import checkAnswersPage from '../pages/recallCheckAnswers'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
@@ -77,7 +77,60 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.upload()
-    assessRecallPage.verifyOnPage({ fullName: 'Bobby Badger' })
+    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
+    uploadDocuments.clickContinue()
+    const checkAnswers = checkAnswersPage.verifyOnPage()
+    // personal details
+    checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
+    checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
+    checkAnswers.assertElementHasText({ qaAttr: 'gender', textToFind: 'Male' })
+    checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })
+    checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
+    checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
+    // Recall request date and time
+    checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
+    // Sentence, offence and release details
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceType', textToFind: 'Determinate' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
+    checkAnswers.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 August 2021' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 February 2021' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
+    checkAnswers.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
+    checkAnswers.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Kennet (HMP)' })
+    checkAnswers.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
+    checkAnswers.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 August 2020' })
+    checkAnswers.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 December 2021' })
+    // local police force
+    checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
+    // issues or needs
+    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversityDetail', textToFind: 'Various...' })
+    checkAnswers.assertElementHasText({ qaAttr: 'contrabandDetail', textToFind: 'Intention to smuggle drugs' })
+    checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
+    // probation details
+    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
+    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
+    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
+    // checkAnswers.assertElementHasText({ qaAttr: 'localDeliveryUnit', textToFind: 'PS - Derbyshire' })
+    checkAnswers.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
+
+    // uploaded documents
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-LICENCE',
+      textToFind: 'Licence.pdf',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
+      textToFind: 'Part A.pdf',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
+      textToFind: 'Pre Cons.pdf',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PRE_SENTENCING_REPORT',
+      textToFind: 'PSR.pdf',
+    })
   })
 
   it('User sees an error if pre-cons main name question is not answered', () => {
@@ -213,6 +266,7 @@ context('Book a recall', () => {
     cy.task('expectAddRecallDocument', { statusCode: 400 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.upload()
+    uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
       summaryError: 'test.pdf - an error occurred during upload',

@@ -50,6 +50,7 @@ export default function routes(router: Router): Router {
   post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer, 'upload-documents'))
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
+  get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL

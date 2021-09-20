@@ -58,6 +58,26 @@ describe('viewWithRecallAndPerson', () => {
         required: true,
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
       },
+      {
+        category: 'PREVIOUS_CONVICTIONS_SHEET',
+        documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+        fileName: 'Pre Cons.pdf',
+        label: 'Previous convictions sheet',
+        name: 'PREVIOUS_CONVICTIONS_SHEET',
+        required: true,
+        type: 'document',
+        url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
+      },
+      {
+        category: 'PRE_SENTENCING_REPORT',
+        documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
+        fileName: 'PSR.pdf',
+        label: 'Pre-sentencing report',
+        name: 'PRE_SENTENCING_REPORT',
+        required: true,
+        type: 'document',
+        url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
+      },
     ])
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })

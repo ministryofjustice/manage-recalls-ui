@@ -12,7 +12,9 @@ import {
 } from './referenceData/referenceData'
 
 const requiresPrisonList = (viewName: ViewName) =>
-  ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'assessPrison'].includes(viewName)
+  ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'recallCheckAnswers', 'assessPrison'].includes(
+    viewName
+  )
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
