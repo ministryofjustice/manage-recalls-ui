@@ -284,6 +284,16 @@
             {% if recall.agreeWithRecall %}
             <h2 class='govuk-heading-m'>Recall assessment</h2>
             <dl class="govuk-summary-list">
+                {% if assessedByUserName %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                        Assessed by
+                    </dt>
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='assessedByUserName'>
+                        {{ assessedByUserName }}
+                    </dd>
+                </div>
+                {% endif %}
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Did band 4 agree with the recall recommendation?

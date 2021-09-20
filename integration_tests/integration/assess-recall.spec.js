@@ -31,6 +31,7 @@ context('Assess a recall', () => {
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
   })
 
   const nomsNumber = 'A1234AA'
@@ -132,6 +133,7 @@ context('Assess a recall', () => {
       qaAttr: 'recallNotificationEmailSentDateTime',
       textToFind: '15 August 2021 at 14:04',
     })
+    assessRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
     cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
