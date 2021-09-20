@@ -27,7 +27,7 @@
             {% endif %}
             <span class="govuk-caption-l"
                   data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
-            <form action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-prison" method="post">
+            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-prison" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-two-thirds-from-desktop">
