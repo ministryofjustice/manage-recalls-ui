@@ -10,6 +10,7 @@ export type RecallResponse = {
   additionalLicenceConditionsDetail?: string
   agreeWithRecall?: RecallResponse.agreeWithRecall
   agreeWithRecallDetail?: string
+  assessedByUserId?: string
   authorisingAssistantChiefOfficer?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
