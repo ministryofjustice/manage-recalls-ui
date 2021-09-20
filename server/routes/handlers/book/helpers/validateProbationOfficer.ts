@@ -13,7 +13,7 @@ export const validateProbationOfficer = (
     probationOfficerName,
     probationOfficerEmail,
     probationOfficerPhoneNumber,
-    probationDivision,
+    localDeliveryUnit,
     authorisingAssistantChiefOfficer,
   } = requestBody
 
@@ -21,7 +21,7 @@ export const validateProbationOfficer = (
     !probationOfficerName ||
     !probationOfficerEmail ||
     !probationOfficerPhoneNumber ||
-    !probationDivision ||
+    !localDeliveryUnit ||
     !authorisingAssistantChiefOfficer
   ) {
     errors = []
@@ -49,11 +49,11 @@ export const validateProbationOfficer = (
         })
       )
     }
-    if (!probationDivision) {
+    if (!localDeliveryUnit) {
       errors.push(
         makeErrorObject({
-          id: 'probationDivision',
-          text: 'Probation division',
+          id: 'localDeliveryUnit',
+          text: 'Local delivery unit',
         })
       )
     }
@@ -69,7 +69,7 @@ export const validateProbationOfficer = (
       probationOfficerName,
       probationOfficerEmail,
       probationOfficerPhoneNumber,
-      probationDivision,
+      localDeliveryUnit,
       authorisingAssistantChiefOfficer,
     }
   }
@@ -78,7 +78,7 @@ export const validateProbationOfficer = (
       probationOfficerName,
       probationOfficerEmail,
       probationOfficerPhoneNumber,
-      probationDivision: UpdateRecallRequest.probationDivision[probationDivision],
+      localDeliveryUnit: UpdateRecallRequest.localDeliveryUnit[localDeliveryUnit],
       authorisingAssistantChiefOfficer,
     }
   }

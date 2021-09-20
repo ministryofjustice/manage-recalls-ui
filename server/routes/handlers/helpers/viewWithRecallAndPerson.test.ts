@@ -107,7 +107,7 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.referenceData).toHaveProperty('reasonsForRecall')
     expect(res.locals.referenceData).toHaveProperty('mappaLevels')
     expect(res.locals.referenceData).toHaveProperty('recallLengths')
-    expect(res.locals.referenceData).toHaveProperty('probationDivisions')
+    expect(res.locals.referenceData).toHaveProperty('localDeliveryUnits')
   })
 
   it('should previousConvictionMainName if one was specified', async () => {

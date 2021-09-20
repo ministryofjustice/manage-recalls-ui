@@ -75,16 +75,16 @@
                         } if errors.probationOfficerPhoneNumber else undefined
                     }) }}
                     {{ govukSelect({
-                        id: "probationDivision",
-                        name: "probationDivision",
+                        id: "localDeliveryUnit",
+                        name: "localDeliveryUnit",
                         label: {
-                            text: "Probation division",
+                            text: "Local delivery unit",
                             classes: "govuk-label--m"
                         },
-                        items: selectItems(referenceData.probationDivisions, formValues.probationDivision),
+                        items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit),
                         errorMessage: {
-                            text: "Select the probation division"
-                        } if errors.probationDivision else undefined
+                            text: "Select the local delivery unit"
+                        } if errors.localDeliveryUnit else undefined
                     }) }}
 
 

@@ -7,12 +7,9 @@ describe('getReferenceDataItemLabel', () => {
     expect(label).toEqual('14')
   })
 
-  it('returns a label for probation divisions', () => {
-    const label = getReferenceDataItemLabel(
-      'probationDivisions',
-      RecallResponse.probationDivision.SOUTH_WEST_AND_SOUTH_CENTRAL
-    )
-    expect(label).toEqual('South West and South Central')
+  it('returns a label for local delivery units', () => {
+    const label = getReferenceDataItemLabel('localDeliveryUnits', RecallResponse.localDeliveryUnit.ISLE_OF_MAN)
+    expect(label).toEqual('Isle of Man')
   })
 
   it('returns a label for MAPPA levels', () => {
@@ -31,7 +28,7 @@ describe('getReferenceDataItemLabel', () => {
   })
 
   it('returns undefined if item not found', () => {
-    const label = getReferenceDataItemLabel('probationDivisions', 'France')
+    const label = getReferenceDataItemLabel('localDeliveryUnits', 'France')
     expect(label).toBeUndefined()
   })
 })

@@ -44,7 +44,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         probationOfficerName: 'Dave Angel',
         probationOfficerPhoneNumber: '07473739388',
         probationOfficerEmail: 'probation.office@justice.com',
-        probationDivision: 'LONDON',
+        localDeliveryUnit: 'LONDON',
         authorisingAssistantChiefOfficer: 'Bob Monkfish',
         licenceConditionsBreached: '(i) one \n (ii) two',
         reasonsForRecall: ['OTHER', 'ELM_FAILURE_CHARGE_BATTERY'],

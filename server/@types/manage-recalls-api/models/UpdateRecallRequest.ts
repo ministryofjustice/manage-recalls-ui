@@ -27,10 +27,10 @@ export type UpdateRecallRequest = {
   lastReleasePrison?: string
   licenceConditionsBreached?: string
   licenceExpiryDate?: string
+  localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit
   localPoliceForce?: string
   mappaLevel?: UpdateRecallRequest.mappaLevel
   previousConvictionMainName?: string
-  probationDivision?: UpdateRecallRequest.probationDivision
   probationOfficerEmail?: string
   probationOfficerName?: string
   probationOfficerPhoneNumber?: string
@@ -78,14 +78,9 @@ export namespace UpdateRecallRequest {
     NOT_KNOWN = 'NOT_KNOWN',
   }
 
-  export enum probationDivision {
-    LONDON = 'LONDON',
-    MIDLANDS = 'MIDLANDS',
-    NORTH_EAST = 'NORTH_EAST',
-    NORTH_WEST = 'NORTH_WEST',
-    SOUTH_EAST = 'SOUTH_EAST',
-    SOUTH_WEST = 'SOUTH_WEST',
-    SOUTH_WEST_AND_SOUTH_CENTRAL = 'SOUTH_WEST_AND_SOUTH_CENTRAL',
-    WALES = 'WALES',
+  export enum localDeliveryUnit {
+    CENTRAL_AUDIT_TEAM = 'CENTRAL_AUDIT_TEAM',
+    ISLE_OF_MAN = 'ISLE_OF_MAN',
+    NORTHERN_IRELAND = 'NORTHERN_IRELAND',
   }
 }

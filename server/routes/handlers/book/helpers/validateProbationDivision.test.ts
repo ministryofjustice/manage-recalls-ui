@@ -6,7 +6,7 @@ describe('validateProbationOfficer', () => {
       probationOfficerName: 'Dave Angel',
       probationOfficerPhoneNumber: '07473739388',
       probationOfficerEmail: 'probation.office@justice.com',
-      probationDivision: 'LONDON',
+      localDeliveryUnit: 'CENTRAL_AUDIT_TEAM',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
     }
     const { errors, valuesToSave } = validateProbationOfficer(requestBody)
@@ -15,7 +15,7 @@ describe('validateProbationOfficer', () => {
       probationOfficerName: 'Dave Angel',
       probationOfficerPhoneNumber: '07473739388',
       probationOfficerEmail: 'probation.office@justice.com',
-      probationDivision: 'LONDON',
+      localDeliveryUnit: 'CENTRAL_AUDIT_TEAM',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
     })
   })
@@ -41,9 +41,9 @@ describe('validateProbationOfficer', () => {
         text: "Probation officer's phone number",
       },
       {
-        href: '#probationDivision',
-        name: 'probationDivision',
-        text: 'Probation division',
+        href: '#localDeliveryUnit',
+        name: 'localDeliveryUnit',
+        text: 'Local delivery unit',
       },
       {
         href: '#authorisingAssistantChiefOfficer',

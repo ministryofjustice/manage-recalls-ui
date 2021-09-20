@@ -13,7 +13,7 @@ const recallProbationOfficerPage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[name="probationOfficerPhoneNumber"]').type('07980345903')
     },
     setProbationDivision: () => {
-      cy.get('[name="probationDivision"]').select('South East')
+      cy.get('[name="localDeliveryUnit"]').select('South East')
     },
     setAssistantChiefOfficer: () => {
       cy.get('[name="authorisingAssistantChiefOfficer"]').type('Bob Monkfish')

@@ -28,11 +28,11 @@ export type RecallResponse = {
   lastReleasePrison?: string
   licenceConditionsBreached?: string
   licenceExpiryDate?: string
+  localDeliveryUnit?: RecallResponse.localDeliveryUnit
   localPoliceForce?: string
   mappaLevel?: RecallResponse.mappaLevel
   nomsNumber: string
   previousConvictionMainName?: string
-  probationDivision?: RecallResponse.probationDivision
   probationOfficerEmail?: string
   probationOfficerName?: string
   probationOfficerPhoneNumber?: string
@@ -84,15 +84,10 @@ export namespace RecallResponse {
     NOT_KNOWN = 'NOT_KNOWN',
   }
 
-  export enum probationDivision {
-    LONDON = 'LONDON',
-    MIDLANDS = 'MIDLANDS',
-    NORTH_EAST = 'NORTH_EAST',
-    NORTH_WEST = 'NORTH_WEST',
-    SOUTH_EAST = 'SOUTH_EAST',
-    SOUTH_WEST = 'SOUTH_WEST',
-    SOUTH_WEST_AND_SOUTH_CENTRAL = 'SOUTH_WEST_AND_SOUTH_CENTRAL',
-    WALES = 'WALES',
+  export enum localDeliveryUnit {
+    CENTRAL_AUDIT_TEAM = 'CENTRAL_AUDIT_TEAM',
+    ISLE_OF_MAN = 'ISLE_OF_MAN',
+    NORTHERN_IRELAND = 'NORTHERN_IRELAND',
   }
 
   export enum recallLength {

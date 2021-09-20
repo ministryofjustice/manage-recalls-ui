@@ -44,9 +44,9 @@ export const viewWithRecallAndPerson =
     res.locals.referenceData = referenceData
     res.locals.recall.recallLengthFormatted = getReferenceDataItemLabel('recallLengths', recall.recallLength)
     res.locals.recall.mappaLevelFormatted = getReferenceDataItemLabel('mappaLevels', recall.mappaLevel)
-    res.locals.recall.probationDivisionFormatted = getReferenceDataItemLabel(
-      'probationDivisions',
-      recall.probationDivision
+    res.locals.recall.localDeliveryUnitFormatted = getReferenceDataItemLabel(
+      'localDeliveryUnits',
+      recall.localDeliveryUnit
     )
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${person.firstName} ${person.lastName}`
