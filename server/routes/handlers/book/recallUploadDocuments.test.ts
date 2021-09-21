@@ -163,7 +163,7 @@ describe('downloadDocument', () => {
       })
       await getUploadedDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/pdf')
-      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="licence.pdf"')
+      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="Licence.pdf"')
     })
   })
 

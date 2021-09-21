@@ -56,7 +56,7 @@ export const getUploadedDocument = async (req: Request, res: Response) => {
   const documentType = documentTypes.find(type => type.name === response.category)
   if (documentType.type === 'document') {
     res.contentType('application/pdf')
-    res.header('Content-Disposition', `inline; filename="${response.category.toLowerCase()}.pdf"`)
+    res.header('Content-Disposition', `inline; filename="${documentType.fileName}"`)
   }
   if (documentType.type === 'email') {
     res.contentType('application/octet-stream')
