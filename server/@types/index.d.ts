@@ -18,13 +18,6 @@ export interface NamedFormError extends FormError {
   name: string
 }
 
-export interface UploadError {
-  name: ApiRecallDocument.category
-  fileName: string
-  text: string
-  href: string
-}
-
 export interface UploadDocumentMetadata {
   label: string
   name: ApiRecallDocument.category
@@ -39,7 +32,7 @@ export interface UploadedFormFields {
 }
 
 export interface FileDataBase64 {
-  fileName: string
+  originalFileName: string
   label: string
   category: ApiRecallDocument.category
   fileContent: string

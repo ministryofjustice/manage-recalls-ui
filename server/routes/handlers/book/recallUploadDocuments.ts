@@ -24,7 +24,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
       if (fileData.length) {
         const responses = await Promise.allSettled(
-          fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
+          fileData.map(({ originalFileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
         )
         const failedUploads = listFailedUploads(fileData, responses)
         if (failedUploads.length) {
