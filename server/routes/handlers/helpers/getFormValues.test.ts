@@ -66,7 +66,7 @@ describe('getFormValues', () => {
       text: 'Email',
     },
     localDeliveryUnit: {
-      text: 'Division',
+      text: 'Local Delivery Unit',
     },
     authorisingAssistantChiefOfficer: {
       text: 'ACO',
