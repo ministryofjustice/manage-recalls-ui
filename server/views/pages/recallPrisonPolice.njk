@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - What is the local police force?" %}
+{% set pageTitle = applicationName + " - Book a recall - What is the name of the local police force?" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -29,7 +29,7 @@
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({
                         label: {
-                            text: "What is the local police force?",
+                            text: "What is the name of the local police force?",
                             classes: "govuk-label--l",
                             isPageHeading: true
                         },

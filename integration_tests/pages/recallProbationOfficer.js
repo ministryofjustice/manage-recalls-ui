@@ -1,7 +1,7 @@
 const page = require('./page')
 
-const recallProbationOfficerPage = ({ nomsNumber, recallId, personName } = {}) =>
-  page(`Who is ${personName}'s probation officer?`, {
+const recallProbationOfficerPage = ({ nomsNumber, recallId } = {}) =>
+  page('Who recommended the recall?', {
     url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/probation-officer` : null,
     setProbationOfficerName: () => {
       cy.get('[name="probationOfficerName"]').type('Dave Angel')

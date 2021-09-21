@@ -45,10 +45,7 @@
                         items: dateTimeItems("sentenceDate", formValues.sentenceDateParts),
                         errorMessage: {
                             text: 'Enter a valid date in the past'
-                        } if errors.sentenceDate else undefined,
-                        hint: {
-                            text: 'For example, 23 5 2021'
-                        }
+                        } if errors.sentenceDate else undefined
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group'>
@@ -64,10 +61,7 @@
                         items: dateTimeItems("licenceExpiryDate", formValues.licenceExpiryDateParts),
                         errorMessage: {
                             text: 'Enter a valid future date'
-                        } if errors.licenceExpiryDate else undefined,
-                        hint: {
-                            text: 'For example, 23 5 2021'
-                        }
+                        } if errors.licenceExpiryDate else undefined
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group'>
@@ -83,10 +77,7 @@
                         items: dateTimeItems("sentenceExpiryDate", formValues.sentenceExpiryDateParts),
                         errorMessage: {
                             text: 'Enter a valid future date'
-                        } if errors.sentenceExpiryDate else undefined,
-                        hint: {
-                            text: 'For example, 23 5 2021'
-                        }
+                        } if errors.sentenceExpiryDate else undefined
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group'>
@@ -161,9 +152,6 @@
                         } if errors.indexOffence else undefined
                     }) }}
                 </div>
-                <h2 class="govuk-heading-m">
-                    When was {{ person.firstName }} {{ person.lastName }} last released from prison?
-                </h2>
                 <div class='govuk-body govuk-form-group'>
                     {{ govukSelect({
                         label: {
@@ -206,10 +194,7 @@
                         items: dateTimeItems("lastReleaseDate", formValues.lastReleaseDateParts),
                         errorMessage: {
                             text: 'Enter a valid date in the past'
-                        } if errors.lastReleaseDate else undefined,
-                        hint: {
-                            text: 'For example, 23 5 2021'
-                        }
+                        } if errors.lastReleaseDate else undefined
                     }) }}
 
                 </div>
@@ -226,10 +211,7 @@
                         items: dateTimeItems("conditionalReleaseDate", formValues.conditionalReleaseDateParts),
                         errorMessage: {
                             text: 'Enter a valid date'
-                        } if errors.conditionalReleaseDate else undefined,
-                        hint: {
-                            text: 'For example, 23 5 2021'
-                        }
+                        } if errors.conditionalReleaseDate else undefined
                     }) }}
                 </div>
                 <div>

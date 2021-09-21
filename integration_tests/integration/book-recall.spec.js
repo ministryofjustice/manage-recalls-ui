@@ -68,7 +68,7 @@ context('Book a recall', () => {
     recallIssuesNeeds.setContrabandNo()
     recallIssuesNeeds.setMappaLevel()
     recallIssuesNeeds.clickContinue()
-    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ personName })
+    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage()
     recallProbationOfficer.setProbationOfficerName()
     recallProbationOfficer.setProbationOfficerEmail()
     recallProbationOfficer.setProbationOfficerPhoneNumber()

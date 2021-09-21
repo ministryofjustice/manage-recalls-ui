@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Email the dossier" %}
+{% set pageTitle = applicationName + " - Email the dossier and letter" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -27,7 +27,7 @@
             {% endif %}
             <span class="govuk-caption-l"
                   data-qa="addRecallTypeCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
-            <h1 class='govuk-heading-l'>Email the dossier</h1>
+            <h1 class='govuk-heading-l'>Email the dossier and letter</h1>
             <p>You must now email the dossier and letter you've downloaded to the:</p>
             <ul class="govuk-list govuk-list--bullet">
                 <li>prison</li>
