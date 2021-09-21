@@ -95,16 +95,6 @@ describe('decorateDocs', () => {
       ],
       documents: [
         {
-          category: 'LICENCE',
-          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'Licence.pdf',
-          label: 'Licence',
-          name: 'LICENCE',
-          required: true,
-          type: 'document',
-          url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        },
-        {
           category: 'PART_A_RECALL_REPORT',
           documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
           fileName: 'Part A.pdf',
@@ -113,6 +103,16 @@ describe('decorateDocs', () => {
           required: true,
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+        },
+        {
+          category: 'LICENCE',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence.pdf',
+          label: 'Licence',
+          name: 'LICENCE',
+          required: true,
+          type: 'document',
+          url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
         },
       ],
       dossierEmail: {

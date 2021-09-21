@@ -24,7 +24,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
       if (fileData.length) {
         const responses = await Promise.allSettled(
-          fileData.map(({ fileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
+          fileData.map(({ originalFileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
         )
         const failedUploads = listFailedUploads(fileData, responses)
         if (failedUploads.length) {
@@ -56,7 +56,7 @@ export const getUploadedDocument = async (req: Request, res: Response) => {
   const documentType = documentTypes.find(type => type.name === response.category)
   if (documentType.type === 'document') {
     res.contentType('application/pdf')
-    res.header('Content-Disposition', `inline; filename="${response.category.toLowerCase()}.pdf"`)
+    res.header('Content-Disposition', `inline; filename="${documentType.fileName}"`)
   }
   if (documentType.type === 'email') {
     res.contentType('application/octet-stream')

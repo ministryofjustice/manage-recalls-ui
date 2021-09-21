@@ -44,16 +44,6 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.recall.recallLengthFormatted).toEqual('14')
     expect(res.locals.recall.documents).toEqual([
       {
-        category: 'LICENCE',
-        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        label: 'Licence',
-        name: 'LICENCE',
-        type: 'document',
-        fileName: 'Licence.pdf',
-        required: true,
-        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
         category: 'PART_A_RECALL_REPORT',
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
         label: 'Part A recall report',
@@ -62,6 +52,16 @@ describe('viewWithRecallAndPerson', () => {
         fileName: 'Part A.pdf',
         required: true,
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+      },
+      {
+        category: 'LICENCE',
+        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        label: 'Licence',
+        name: 'LICENCE',
+        type: 'document',
+        fileName: 'Licence.pdf',
+        required: true,
+        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
       },
       {
         category: 'PREVIOUS_CONVICTIONS_SHEET',

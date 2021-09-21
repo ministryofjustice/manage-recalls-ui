@@ -104,25 +104,21 @@ describe('uploadRecallDocumentsFormHandler', () => {
       redirect: () => {
         expect(req.session.errors).toEqual([
           {
-            fileName: 'licence.pdf',
             href: '#LICENCE',
             name: 'LICENCE',
             text: 'licence.pdf - an error occurred during upload',
           },
           {
-            fileName: 'report.pdf',
             href: '#PRE_SENTENCING_REPORT',
             name: 'PRE_SENTENCING_REPORT',
             text: 'report.pdf - an error occurred during upload',
           },
           {
-            fileName: 'sheet.pdf',
             href: '#PREVIOUS_CONVICTIONS_SHEET',
             name: 'PREVIOUS_CONVICTIONS_SHEET',
             text: 'sheet.pdf - an error occurred during upload',
           },
           {
-            fileName: 'report.pdf',
             href: '#PART_A_RECALL_REPORT',
             name: 'PART_A_RECALL_REPORT',
             text: 'report.pdf - an error occurred during upload',
@@ -163,7 +159,7 @@ describe('downloadDocument', () => {
       })
       await getUploadedDocument(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/pdf')
-      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="licence.pdf"')
+      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="Licence.pdf"')
     })
   })
 
