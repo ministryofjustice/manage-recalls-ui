@@ -12,6 +12,7 @@ export type RecallResponse = {
   agreeWithRecallDetail?: string
   assessedByUserId?: string
   authorisingAssistantChiefOfficer?: string
+  bookedByUserId?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string

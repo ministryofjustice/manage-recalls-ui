@@ -72,5 +72,14 @@ export const viewWithRecallAndPerson =
         res.locals.assessedByUserName = recall.assessedByUserId
       }
     }
+    if (recall.bookedByUserId) {
+      try {
+        const { firstName, lastName } = await getUserDetails(recall.bookedByUserId, res.locals.user.token)
+        res.locals.bookedByUserName = `${firstName} ${lastName}`
+      } catch (err) {
+        // What do we do if getUserDetails fails?
+        res.locals.bookedByUserName = recall.bookedByUserId
+      }
+    }
     res.render(`pages/${viewName}`)
   }
