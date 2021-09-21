@@ -36,10 +36,10 @@ export const decorateDocs = ({
   recallNotificationEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
 } => {
-  const decoratedUploadedDocs = docs
-    .map(doc => {
-      const documentType = documentTypes.find(d => d.name === doc.category)
-      if (documentType) {
+  const decoratedUploadedDocs = documentTypes
+    .map(documentType => {
+      const doc = docs.find(d => documentType.name === d.category)
+      if (doc) {
         return {
           ...doc,
           ...documentType,
