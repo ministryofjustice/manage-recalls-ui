@@ -72,7 +72,7 @@ context('Book a recall', () => {
     recallProbationOfficer.setProbationOfficerName()
     recallProbationOfficer.setProbationOfficerEmail()
     recallProbationOfficer.setProbationOfficerPhoneNumber()
-    recallProbationOfficer.setProbationDivision()
+    recallProbationOfficer.setLocalDeliveryUnit()
     recallProbationOfficer.setAssistantChiefOfficer()
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
@@ -111,7 +111,7 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
     checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
     checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
-    // checkAnswers.assertElementHasText({ qaAttr: 'localDeliveryUnit', textToFind: 'PS - Derbyshire' })
+    checkAnswers.assertElementHasText({ qaAttr: 'localDeliveryUnit', textToFind: 'Central Audit Team' })
     checkAnswers.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
 
     // uploaded documents
@@ -251,9 +251,9 @@ context('Book a recall', () => {
       fieldError: "Enter the probation officer's phone number",
     })
     recallProbationOfficer.assertErrorMessage({
-      fieldName: 'probationDivision',
-      summaryError: 'Probation division',
-      fieldError: 'Select the probation division',
+      fieldName: 'localDeliveryUnit',
+      summaryError: 'Local Delivery Unit',
+      fieldError: 'Select the Local Delivery Unit',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'authorisingAssistantChiefOfficer',

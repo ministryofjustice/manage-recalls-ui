@@ -70,7 +70,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'probationOfficerName',
     'probationOfficerPhoneNumber',
     'probationOfficerEmail',
-    'probationDivision',
+    'localDeliveryUnit',
     'authorisingAssistantChiefOfficer',
     'contrabandDetail',
     'vulnerabilityDiversityDetail',

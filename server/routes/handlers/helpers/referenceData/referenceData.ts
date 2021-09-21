@@ -1,5 +1,5 @@
 import { mappaLevels } from './mappaLevels'
-import { probationDivisions } from './probationDivisions'
+import { localDeliveryUnits } from './localDeliveryUnits'
 import { recallLengths } from './recallLengths'
 import { reasonsForRecall } from './reasonsForRecall'
 import { sensitiveInfo } from './sensitiveInfo'
@@ -7,13 +7,13 @@ import { Prison, UiListItem } from '../../../../@types'
 
 export const referenceData = {
   mappaLevels,
-  probationDivisions,
+  localDeliveryUnits,
   recallLengths,
   reasonsForRecall,
   sensitiveInfo,
 }
 
-export type ReferenceDataCategories = 'mappaLevels' | 'probationDivisions' | 'recallLengths' | 'reasonsForRecall'
+export type ReferenceDataCategories = 'mappaLevels' | 'localDeliveryUnits' | 'recallLengths' | 'reasonsForRecall'
 
 export const getReferenceDataItemLabel = (refDataCategory: ReferenceDataCategories, itemId: string) => {
   const list = referenceData[refDataCategory] as UiListItem[]
