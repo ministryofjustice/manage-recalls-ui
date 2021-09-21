@@ -11,6 +11,8 @@ export type UpdateRecallRequest = {
   agreeWithRecallDetail?: string
   assessedByUserId?: string
   authorisingAssistantChiefOfficer?: string
+  bookedByUserId?: string
+  bookedDateTime?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
   contrabandDetail?: string
