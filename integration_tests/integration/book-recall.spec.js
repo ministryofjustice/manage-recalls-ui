@@ -72,7 +72,7 @@ context('Book a recall', () => {
     recallProbationOfficer.setProbationOfficerName()
     recallProbationOfficer.setProbationOfficerEmail()
     recallProbationOfficer.setProbationOfficerPhoneNumber()
-    recallProbationOfficer.setProbationDivision()
+    recallProbationOfficer.setLocalDeliveryUnit()
     recallProbationOfficer.setAssistantChiefOfficer()
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
@@ -253,7 +253,7 @@ context('Book a recall', () => {
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'localDeliveryUnit',
       summaryError: 'Local Delivery Unit',
-      fieldError: 'Select the probation division',
+      fieldError: 'Select the Local Delivery Unit',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'authorisingAssistantChiefOfficer',
