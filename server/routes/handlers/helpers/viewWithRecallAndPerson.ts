@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall, searchByNomsNumber, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { decorateDocs, isInvalid } from './index'
 import { getFormValues } from './getFormValues'
 import { getPrisonList } from '../../../data/prisonRegisterClient'
@@ -62,6 +62,15 @@ export const viewWithRecallAndPerson =
         res.locals.referenceData.prisonList,
         res.locals.recall.lastReleasePrison
       )
+    }
+    if (recall.assessedByUserId) {
+      try {
+        const { firstName, lastName } = await getUserDetails(recall.assessedByUserId, res.locals.user.token)
+        res.locals.assessedByUserName = `${firstName} ${lastName}`
+      } catch (err) {
+        // What do we do if getUserDetails fails?
+        res.locals.assessedByUserName = recall.assessedByUserId
+      }
     }
     res.render(`pages/${viewName}`)
   }
