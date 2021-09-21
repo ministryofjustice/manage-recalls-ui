@@ -1,8 +1,6 @@
 import path from 'path'
 import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
-import recallsListPage from '../pages/recallsList'
-
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
@@ -38,45 +36,6 @@ context('Assess a recall', () => {
   const recallId = '123'
   const personName = 'Bobby Badger'
   const status = 'BOOKED_ON'
-
-  it('User can view details of a booked recall', () => {
-    cy.login()
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectResultsCountText('1 recall')
-    recallsList.results().find('tr').should('have.length', 1)
-    const firstResult = recallsList.results().first()
-    firstResult.get('[data-qa=name]').should('contain.text', 'Bobby Badger')
-    recallsList.assessRecall({ recallId })
-    const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
-    assessRecall.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
-    assessRecall.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
-    assessRecall.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
-    assessRecall.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
-    assessRecall.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 February 2021' })
-    assessRecall.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
-    assessRecall.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 August 2021' })
-    assessRecall.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
-    assessRecall.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
-    assessRecall.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
-    assessRecall.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Kennet (HMP)' })
-    assessRecall.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 August 2020' })
-    assessRecall.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 December 2021' })
-    assessRecall.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
-    assessRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
-    assessRecall.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
-    assessRecall.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
-    assessRecall.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
-    assessRecall.assertElementHasText({ qaAttr: 'probationDivision', textToFind: 'London' })
-    assessRecall.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
-    assessRecall.assertElementHasText({
-      qaAttr: `uploadedDocument-${getRecallResponse.documents[0].category}`,
-      textToFind: 'Licence.pdf',
-    })
-    assessRecall.assertElementHasText({
-      qaAttr: `uploadedDocument-${getRecallResponse.documents[1].category}`,
-      textToFind: 'Part A.pdf',
-    })
-  })
 
   it('User can assess and issue a recall', () => {
     const fileName = '2021-07-03 Phil Jones recall.msg'
