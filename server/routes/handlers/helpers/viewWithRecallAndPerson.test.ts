@@ -97,9 +97,9 @@ describe('viewWithRecallAndPerson', () => {
         url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
       },
     ])
-    expect(res.locals.assessedByUserName).toEqual('Bertie Badger')
-    expect(res.locals.bookedByUserName).toEqual('Brenda Badger')
-    expect(res.locals.dossierCreatedByUserName).toEqual('Bobby Badger')
+    expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
+    expect(res.locals.recall.bookedByUserName).toEqual('Brenda Badger')
+    expect(res.locals.recall.dossierCreatedByUserName).toEqual('Bobby Badger')
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 
@@ -110,9 +110,9 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.assessedByUserName).toEqual(assessedByUserId)
-    expect(res.locals.bookedByUserName).toEqual(bookedByUserId)
-    expect(res.locals.dossierCreatedByUserName).toEqual(dossierCreatedByUserId)
+    expect(res.locals.recall.assessedByUserName).toEqual(assessedByUserId)
+    expect(res.locals.recall.bookedByUserName).toEqual(bookedByUserId)
+    expect(res.locals.recall.dossierCreatedByUserName).toEqual(dossierCreatedByUserId)
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 

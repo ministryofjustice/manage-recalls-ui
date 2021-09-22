@@ -26,6 +26,7 @@ import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecall
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
+import { validateCheckAnswers } from './handlers/book/helpers/validateCheckAnswers'
 import { getUser, postUser } from './handlers/user/userDetails'
 
 export default function routes(router: Router): Router {
@@ -55,6 +56,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
+  post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers, 'confirmation'))
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
