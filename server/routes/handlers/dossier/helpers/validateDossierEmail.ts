@@ -9,6 +9,7 @@ export const validateDossierEmail = ({
   emailFileSelected,
   uploadFailed,
   allowedFileExtensions,
+  actionedByUserId,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave: UpdateRecallRequest
@@ -80,7 +81,7 @@ export const validateDossierEmail = ({
     }
   }
   if (!errors) {
-    valuesToSave = { dossierEmailSentDate }
+    valuesToSave = { dossierEmailSentDate, dossierCreatedByUserId: actionedByUserId }
   }
   return { errors, valuesToSave, unsavedValues }
 }

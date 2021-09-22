@@ -16,6 +16,16 @@ const requiresPrisonList = (viewName: ViewName) =>
     viewName
   )
 
+async function getUserName(userId: string, token: string): Promise<string> {
+  try {
+    const { firstName, lastName } = await getUserDetails(userId, token)
+    return `${firstName} ${lastName}`
+  } catch (err) {
+    // What do we do if getUserDetails fails?
+    return userId
+  }
+}
+
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
@@ -64,22 +74,13 @@ export const viewWithRecallAndPerson =
       )
     }
     if (recall.assessedByUserId) {
-      try {
-        const { firstName, lastName } = await getUserDetails(recall.assessedByUserId, res.locals.user.token)
-        res.locals.assessedByUserName = `${firstName} ${lastName}`
-      } catch (err) {
-        // What do we do if getUserDetails fails?
-        res.locals.assessedByUserName = recall.assessedByUserId
-      }
+      res.locals.assessedByUserName = await getUserName(recall.assessedByUserId, res.locals.user.token)
     }
     if (recall.bookedByUserId) {
-      try {
-        const { firstName, lastName } = await getUserDetails(recall.bookedByUserId, res.locals.user.token)
-        res.locals.bookedByUserName = `${firstName} ${lastName}`
-      } catch (err) {
-        // What do we do if getUserDetails fails?
-        res.locals.bookedByUserName = recall.bookedByUserId
-      }
+      res.locals.bookedByUserName = await getUserName(recall.bookedByUserId, res.locals.user.token)
+    }
+    if (recall.dossierCreatedByUserId) {
+      res.locals.dossierCreatedByUserName = await getUserName(recall.dossierCreatedByUserId, res.locals.user.token)
     }
     res.render(`pages/${viewName}`)
   }

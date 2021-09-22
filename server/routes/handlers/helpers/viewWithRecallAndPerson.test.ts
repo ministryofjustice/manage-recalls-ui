@@ -8,6 +8,9 @@ import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
 const recallId = '123'
+const assessedByUserId = '00000000-0000-0000-0000-000000000000'
+const bookedByUserId = '00000000-1111-0000-0000-000000000000'
+const dossierCreatedByUserId = '00000000-2222-0000-0000-000000000000'
 
 describe('viewWithRecallAndPerson', () => {
   const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
@@ -26,6 +29,14 @@ describe('viewWithRecallAndPerson', () => {
     firstName: 'Bertie',
     lastName: 'Badger',
   }
+  const bookedByUserDetails = {
+    firstName: 'Brenda',
+    lastName: 'Badger',
+  }
+  const dossierCreatedByUserDetails = {
+    firstName: 'Bobby',
+    lastName: 'Badger',
+  }
 
   beforeEach(() => {
     fakeManageRecallsApi.post('/search').reply(200, [person])
@@ -37,7 +48,9 @@ describe('viewWithRecallAndPerson', () => {
 
   it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', async () => {
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.get('/users/00000000-0000-0000-0000-000000000000').reply(200, assessedByUserDetails)
+    fakeManageRecallsApi.get(`/users/${assessedByUserId}`).reply(200, assessedByUserDetails)
+    fakeManageRecallsApi.get(`/users/${bookedByUserId}`).reply(200, bookedByUserDetails)
+    fakeManageRecallsApi.get(`/users/${dossierCreatedByUserId}`).reply(200, dossierCreatedByUserDetails)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -85,17 +98,21 @@ describe('viewWithRecallAndPerson', () => {
       },
     ])
     expect(res.locals.assessedByUserName).toEqual('Bertie Badger')
+    expect(res.locals.bookedByUserName).toEqual('Brenda Badger')
+    expect(res.locals.dossierCreatedByUserName).toEqual('Bobby Badger')
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 
-  it('should return assessed by user id if the user name can not be found ', async () => {
+  it('should add user ids to res.locals if the user details can not be found ', async () => {
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.get('/users/00000000-0000-0000-0000-000000000000').reply(404)
+    fakeManageRecallsApi.get(`/users/*`).reply(404)
 
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.assessedByUserName).toEqual('00000000-0000-0000-0000-000000000000')
+    expect(res.locals.assessedByUserName).toEqual(assessedByUserId)
+    expect(res.locals.bookedByUserName).toEqual(bookedByUserId)
+    expect(res.locals.dossierCreatedByUserName).toEqual(dossierCreatedByUserId)
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 
