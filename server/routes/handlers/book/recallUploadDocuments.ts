@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import {
   addRecallDocument,
-  getRecallDocument,
+  getStoredDocument,
   updateRecall,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
@@ -57,7 +57,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
 export const getUploadedDocument = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params
   const { user } = res.locals
-  const response = await getRecallDocument(recallId, documentId, user.token)
+  const response = await getStoredDocument(recallId, documentId, user.token)
   const documentType = documentTypes.find(type => type.name === response.category)
   if (documentType.type === 'document') {
     res.contentType('application/pdf')

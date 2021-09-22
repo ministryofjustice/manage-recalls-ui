@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 import {
-  getDossier,
   getRecall,
-  getRecallNotification,
+  getGeneratedDocument,
   searchByNomsNumber,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { isInvalid } from './index'
@@ -45,11 +44,16 @@ const downloadNamedPdfHandler =
   }
 
 export const downloadRecallNotification = downloadNamedPdfHandler(
-  getRecallNotification,
+  getGeneratedDocument('recallNotification'),
   ({ personName, bookingNumber }) => `IN CUSTODY RECALL ${personName}${bookingNumber}.pdf`
 )
 
 export const downloadDossier = downloadNamedPdfHandler(
-  getDossier,
+  getGeneratedDocument('dossier'),
   ({ personName, bookingNumber }) => `${personName}${bookingNumber} RECALL DOSSIER.pdf`
+)
+
+export const downloadLetter = downloadNamedPdfHandler(
+  getGeneratedDocument('letter'),
+  ({ personName, bookingNumber }) => `${personName}${bookingNumber} LETTER TO PRISON.pdf`
 )
