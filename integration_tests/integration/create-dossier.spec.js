@@ -57,6 +57,7 @@ context('Create a dossier', () => {
       fileName,
       documentId: '123',
     })
+    cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
@@ -100,6 +101,8 @@ context('Create a dossier', () => {
       textToFind: '8 September 2021',
     })
     assessRecall.assertElementHasText({ qaAttr: 'hasDossierBeenChecked', textToFind: 'Yes' })
+    assessRecall.assertElementHasText({ qaAttr: 'dossierEmailSentDate', textToFind: '8 September 2021' })
+    assessRecall.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bertie Badger' })
     cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
