@@ -17,3 +17,7 @@ generic-service:
 
 generic-prometheus-alerts:
   alertSeverity: ppud-replacement-alerts
+  extraDashboardTags:
+    - ppud-replacement
+    - manage-recalls
+    - dev
