@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
 import { getUploadedDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
-import { getRecallDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getStoredDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
 import { uploadStorageFields } from '../helpers/uploadStorage'
@@ -152,7 +152,7 @@ describe('downloadDocument', () => {
 
   describe('PDF', () => {
     it('sets headers so the document is opened not downloaded', async () => {
-      ;(getRecallDocument as jest.Mock).mockResolvedValue({
+      ;(getStoredDocument as jest.Mock).mockResolvedValue({
         documentId: '123',
         category: GetDocumentResponse.category.LICENCE,
         content: 'abc',
@@ -165,7 +165,7 @@ describe('downloadDocument', () => {
 
   describe('Email', () => {
     it('sets headers so the email is downloaded not opened', async () => {
-      ;(getRecallDocument as jest.Mock).mockResolvedValue({
+      ;(getStoredDocument as jest.Mock).mockResolvedValue({
         documentId: '123',
         category: GetDocumentResponse.category.RECALL_NOTIFICATION_EMAIL,
         content: 'abc',

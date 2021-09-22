@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getRecallDocument } from './manageRecallsApiClient'
+import { getStoredDocument } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getRecallDocumentResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-document.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
@@ -15,7 +15,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('get recall documents', () => {
+  describe('get uploaded recall documents', () => {
     test('can successfully retrieve a document', async () => {
       await provider.addInteraction({
         state: 'a document exists',
@@ -23,7 +23,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(getRecallDocumentResponseJson), 200),
       })
 
-      const actual = await getRecallDocument(recallId, documentId, accessToken)
+      const actual = await getStoredDocument(recallId, documentId, accessToken)
 
       expect(actual).toEqual(getRecallDocumentResponseJson)
     })
@@ -40,7 +40,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await getRecallDocument(recallId, documentId, accessToken)
+        await getStoredDocument(recallId, documentId, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

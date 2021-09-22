@@ -16,7 +16,11 @@ import { validateSentenceDetails } from './handlers/book/helpers/validateSentenc
 import { validatePolice } from './handlers/book/helpers/validatePolice'
 import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds'
 import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
-import { downloadDossier, downloadRecallNotification } from './handlers/helpers/downloadNamedPdfHandler'
+import {
+  downloadDossier,
+  downloadLetterToPrison,
+  downloadRecallNotification,
+} from './handlers/helpers/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecallDocument'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
@@ -95,6 +99,7 @@ export default function routes(router: Router): Router {
 
   // DOCUMENTS
   get(`${basePath}/documents/dossier`, downloadDossier)
+  get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
   get(`${basePath}/documents/:documentId`, getUploadedDocument)
 
