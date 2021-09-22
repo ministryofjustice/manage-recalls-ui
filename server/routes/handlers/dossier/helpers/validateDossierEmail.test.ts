@@ -21,6 +21,7 @@ describe('validateEmail', () => {
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       dossierEmailSentDate: '2021-09-04',
+      dossierCreatedByUserId: actionedByUserId,
     })
   })
 

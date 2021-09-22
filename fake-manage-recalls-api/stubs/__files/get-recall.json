@@ -66,5 +66,6 @@
   "dossierEmailSentDate": "2021-09-08",
   "hasDossierBeenChecked": true,
   "assessedByUserId": "00000000-0000-0000-0000-000000000000",
-  "bookedByUserId": "00000000-1111-0000-0000-000000000000"
+  "bookedByUserId": "00000000-1111-0000-0000-000000000000",
+  "dossierCreatedByUserId": "00000000-2222-0000-0000-000000000000"
 }

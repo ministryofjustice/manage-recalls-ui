@@ -20,6 +20,7 @@ export type RecallResponse = {
   differentNomsNumber?: boolean
   differentNomsNumberDetail?: string
   documents: Array<ApiRecallDocument>
+  dossierCreatedByUserId?: string
   dossierEmailSentDate?: string
   hasDossierBeenChecked?: boolean
   hasOtherPreviousConvictionMainName?: boolean

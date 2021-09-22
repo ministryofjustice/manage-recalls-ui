@@ -380,6 +380,16 @@
 
             {% if isDefined(recall.additionalLicenceConditions) %}
                 <h2 class='govuk-heading-m'>Create dossier</h2>
+                {% if dossierCreatedByUserName %}
+                    <div class="govuk-summary-list__row">
+                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                            Dossier created by
+                        </dt>
+                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierCreatedByUserName'>
+                            {{ dossierCreatedByUserName }}
+                        </dd>
+                    </div>
+                {% endif %}
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class=" govuk-summary-list__key govuk-!-width-one-half">
