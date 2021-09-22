@@ -1,7 +1,7 @@
 const page = require('./page')
 
 const assessRecallConfirmationPage = ({ nomsNumber, recallId, fullName }) =>
-  page(`Recall for ${fullName} is authorised`, {
+  page(`Recall assessed for ${fullName}`, {
     url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/assess-confirmation` : null,
   })
 
