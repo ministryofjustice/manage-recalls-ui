@@ -1,8 +1,5 @@
 import { Request, Response } from 'express'
-import {
-  addRecallDocument,
-  getStoredDocument
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addRecallDocument, getStoredDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
 import { UploadedFormFields } from '../../../@types'
