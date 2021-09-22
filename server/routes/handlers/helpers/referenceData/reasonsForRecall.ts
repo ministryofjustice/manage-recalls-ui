@@ -7,7 +7,7 @@ export const reasonsForRecall = [
   },
   {
     value: RecallResponse.reasonForRecall.ELM_BREACH_EXCLUSION_ZONE,
-    text: 'Electronic locking and monitoring (ELM) - breach of exclusion zone - detected by ELM',
+    text: 'Electronic locking and monitoring (ELM) - Breach of exclusion zone - detected by ELM',
   },
   {
     value: RecallResponse.reasonForRecall.ELM_BREACH_NON_CURFEW_CONDITION,

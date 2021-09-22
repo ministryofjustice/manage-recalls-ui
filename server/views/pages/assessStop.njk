@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Assess a recall - " + person.firstName + " " + person.lastName + "'s recall has been stopped" %}
+{% set pageTitle = applicationName + " - Assess a recall - Recall stopped for " + person.firstName + " " + person.lastName %}
 
 {% block content %}
 
@@ -11,13 +11,15 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <div class="govuk-panel govuk-panel--neutral govuk-!-margin-bottom-6">
                 <h1 class="govuk-panel__title">
-                    {{ person.firstName }} {{ person.lastName }}'s recall has been stopped
+                    Recall stopped for {{ person.firstName }} {{ person.lastName }}
                 </h1>
             </div>
-            <p class="govuk-body">This recall will not appear in any to-do lists and will be shown as stopped in any reports.</p>
-            <p class="govuk-body">No further action is required.</p>
-            <h2 class="govuk-heading-m">What to do now</h2>
-            <p class="govuk-body">If you need to change the recall type to a standard one, you can contact <span data-qa='managerName'>{{ referenceData.sensitiveInfo.manager.name }}</span> on <span data-qa='managerPhone'>{{ referenceData.sensitiveInfo.manager.phone }}</span> (between 9am to 5pm, Monday to Friday) or in her absence please contact one of the recall Team Leaders.</p>
+            <p class="govuk-body">This recall has been removed from the assess a recall to-do list and will be shown as stopped in any reports.</p>
+            <p class="govuk-body">If you disagree with the recall recommendation, contact:</p>
+            <ul class='govuk-list govuk-list--bullet'>
+                <li><span data-qa='managerName'>{{ referenceData.sensitiveInfo.manager.name }}</span> on <span data-qa='managerPhone'>{{ referenceData.sensitiveInfo.manager.phone }}</span> (between 9am and 5pm, Monday to Friday)</li>
+                <li>a recall Team Leader if {{ referenceData.sensitiveInfo.manager.name }} isn't available</li>
+            </ul>
             <div class="govuk-!-margin-top-8">
                 <p class="govuk-body"><a href="/" class="govuk-button" role="button">Assess another recall</a> </p>
             </div>

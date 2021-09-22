@@ -37,7 +37,7 @@
                     name: "licenceConditionsBreached",
                     id: "licenceConditionsBreached",
                     label: {
-                        text: "Breached licence conditions",
+                        text: "Licence conditions breached",
                         classes: "govuk-label--m"
                     },
                     columns: 40,
@@ -72,6 +72,9 @@
                                 text: "Reasons for recall",
                                 classes: "govuk-fieldset__legend--m"
                             }
+                        },
+                        hint: {
+                            text: "Select reasons that are closest to the licence conditions breached so they can be reported on"
                         },
                         items: checkboxItems(referenceData.reasonsForRecall, formValues.reasonsForRecall, {
                             OTHER: otherDetailHtml
