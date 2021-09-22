@@ -81,7 +81,7 @@ context('Create a dossier', () => {
     })
     dossierDownload.assertLinkHref({
       qaAttr: 'getLetterLink',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
     })
     dossierDownload.confirmDossierChecked()
     dossierDownload.clickContinue()

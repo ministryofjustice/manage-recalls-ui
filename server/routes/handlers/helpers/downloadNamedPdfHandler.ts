@@ -53,7 +53,7 @@ export const downloadDossier = downloadNamedPdfHandler(
   ({ personName, bookingNumber }) => `${personName}${bookingNumber} RECALL DOSSIER.pdf`
 )
 
-export const downloadLetter = downloadNamedPdfHandler(
-  getGeneratedDocument('letter'),
+export const downloadLetterToPrison = downloadNamedPdfHandler(
+  getGeneratedDocument('letter-to-prison'),
   ({ personName, bookingNumber }) => `${personName}${bookingNumber} LETTER TO PRISON.pdf`
 )
