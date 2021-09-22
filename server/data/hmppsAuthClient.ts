@@ -35,13 +35,14 @@ function getSystemClientTokenFromHmppsAuth(username?: string): Promise<superagen
 export interface User {
   name: string
   activeCaseLoadId: string
+  uuid: string
 }
 
 export interface UserRole {
   roleCode: string
 }
 
-export default class HmppsAuthClient {
+export class HmppsAuthClient {
   constructor(private readonly tokenStore: TokenStore) {}
 
   private restClient(token: string): RestClient {

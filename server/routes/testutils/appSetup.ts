@@ -16,6 +16,8 @@ const user = {
   lastName: 'smith',
   username: 'user1',
   displayName: 'John Smith',
+  activeCaseLoadId: '1',
+  uuid: '1223',
 }
 
 class MockUserService extends UserService {

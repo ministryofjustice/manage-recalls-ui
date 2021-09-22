@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import {
   addRecallDocument,
-  getStoredDocument,
-  updateRecall,
+  getStoredDocument
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
@@ -39,7 +38,6 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       if (session.errors && session.errors.length) {
         return res.redirect(303, req.originalUrl)
       }
-      await updateRecall(recallId, { bookedByUserId: res.locals.user.uuid }, res.locals.user.token)
       res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
     } catch (e) {
       logger.error(e)

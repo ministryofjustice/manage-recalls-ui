@@ -111,7 +111,7 @@
                         Booked by
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookedByUserName'>
-                        {{ bookedByUserName }}
+                        {{ recall.bookedByUserName }}
                     </dd>
                 </div>
             </dl>
@@ -292,16 +292,14 @@
             {% if recall.agreeWithRecall %}
             <h2 class='govuk-heading-m'>Recall assessment</h2>
             <dl class="govuk-summary-list">
-                {% if assessedByUserName %}
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Assessed by
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='assessedByUserName'>
-                        {{ assessedByUserName }}
+                        {{ recall.assessedByUserName }}
                     </dd>
                 </div>
-                {% endif %}
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Did band 4 agree with the recall recommendation?
@@ -380,16 +378,14 @@
 
             {% if isDefined(recall.additionalLicenceConditions) %}
                 <h2 class='govuk-heading-m'>Create dossier</h2>
-                {% if dossierCreatedByUserName %}
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Dossier created by
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierCreatedByUserName'>
-                            {{ dossierCreatedByUserName }}
-                        </dd>
-                    </div>
-                {% endif %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                        Dossier created by
+                    </dt>
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierCreatedByUserName'>
+                        {{ recall.dossierCreatedByUserName }}
+                    </dd>
+                </div>
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class=" govuk-summary-list__key govuk-!-width-one-half">

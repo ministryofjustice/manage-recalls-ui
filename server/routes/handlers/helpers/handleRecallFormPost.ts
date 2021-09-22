@@ -12,7 +12,7 @@ export const handleRecallFormPost =
       res.sendStatus(400)
       return
     }
-    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator(req.body)
+    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator(req.body, res.locals.user)
     if (errors) {
       req.session.errors = errors
       req.session.unsavedValues = unsavedValues

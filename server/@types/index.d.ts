@@ -122,7 +122,7 @@ export type ViewName =
   | 'dossierDownload'
   | 'dossierConfirmation'
 
-export type ReqValidatorFn = (requestBody: ObjectMap<string>) => ReqValidatorReturn
+export type ReqValidatorFn = (requestBody: ObjectMap<string>, user?: UserDetails) => ReqValidatorReturn
 export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn
 
 export interface ReqValidatorReturn {
