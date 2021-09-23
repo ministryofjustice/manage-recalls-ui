@@ -23,7 +23,7 @@ export default function manageRecallsApi(wiremock) {
       })
     },
     expectGetRecallNotification: expectation =>
-      expectGetPdfDocument(wiremock, '/recalls/(.*)/recallNotification', expectation),
+      expectGetPdfDocument(wiremock, '/recalls/(.*)/recallNotification/(.*)', expectation),
     expectGetDossier: expectation => expectGetPdfDocument(wiremock, '/recalls/(.*)/dossier', expectation),
     expectCreateRecall: expectation => {
       return wiremock.stubFor({

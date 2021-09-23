@@ -1,12 +1,13 @@
 import nock from 'nock'
 import { Request, Response } from 'express'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import { mockGetRequest, mockResponseWithAuthenticatedUserAndUserId } from '../../testutils/mockRequestUtils'
 import { downloadRecallNotification, downloadDossier } from './downloadNamedPdfHandler'
 import config from '../../../config'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 const nomsNumber = 'AA123AA'
 const recallId = '123'
+const userId = '321'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
@@ -22,7 +23,7 @@ describe('downloadNamedPdfHandler', () => {
 
   beforeEach(() => {
     req = mockGetRequest({ params: { nomsNumber, recallId } })
-    const { res: resp } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    const { res: resp } = mockResponseWithAuthenticatedUserAndUserId(userToken.access_token, userId)
     res = resp
   })
 
@@ -34,7 +35,9 @@ describe('downloadNamedPdfHandler', () => {
   it('should return recall notification from manage recalls api', async () => {
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     fakeManageRecallsApi.post('/search').reply(200, [person])
-    fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).reply(200, { content: expectedPdfContents })
+    fakeManageRecallsApi
+      .get(`/recalls/${recallId}/recallNotification/${userId}`)
+      .reply(200, { content: expectedPdfContents })
     await downloadRecallNotification(req, res)
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',
@@ -56,7 +59,7 @@ describe('downloadNamedPdfHandler', () => {
   })
 
   it("should respond with 500 if PDF request isn't successful", async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).replyWithError({
+    fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification/${userId}`).replyWithError({
       code: '500',
     })
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
@@ -70,7 +73,9 @@ describe('downloadNamedPdfHandler', () => {
     fakeManageRecallsApi.post('/search').replyWithError({
       code: '404',
     })
-    fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).reply(200, { content: expectedPdfContents })
+    fakeManageRecallsApi
+      .get(`/recalls/${recallId}/recallNotification/${userId}`)
+      .reply(200, { content: expectedPdfContents })
     await downloadRecallNotification(req, res)
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',
@@ -84,7 +89,9 @@ describe('downloadNamedPdfHandler', () => {
       code: '404',
     })
     fakeManageRecallsApi.post('/search').reply(200, [person])
-    fakeManageRecallsApi.get(`/recalls/${recallId}/recallNotification`).reply(200, { content: expectedPdfContents })
+    fakeManageRecallsApi
+      .get(`/recalls/${recallId}/recallNotification/${userId}`)
+      .reply(200, { content: expectedPdfContents })
     await downloadRecallNotification(req, res)
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',

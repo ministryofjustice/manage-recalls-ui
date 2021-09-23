@@ -10,7 +10,7 @@ import { Pdf } from '../../../@types/manage-recalls-api'
 
 type FormatFn = (args: { personName: string; bookingNumber: string }) => string
 
-type DownloadFn = (recallId: string, token: string) => Promise<Pdf>
+type DownloadFn = (recallId: string, user: Record<string, string>) => Promise<Pdf>
 
 const downloadNamedPdfHandler =
   (downloadFn: DownloadFn, formatNameFn: FormatFn) => async (req: Request, res: Response) => {
@@ -22,7 +22,7 @@ const downloadNamedPdfHandler =
     const [person, recall, pdf] = await Promise.allSettled([
       searchByNomsNumber(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),
-      downloadFn(recallId as string, res.locals.user.token),
+      downloadFn(recallId as string, res.locals.user),
     ])
     // if there's no PDF, we can't continue
     if (pdf.status === 'rejected') {

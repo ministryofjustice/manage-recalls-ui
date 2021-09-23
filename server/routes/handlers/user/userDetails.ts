@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { getUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
+import { uploadStorageField } from '../helpers/uploadStorage'
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -34,18 +35,24 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 export const postUser = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { uuid } = res.locals.user
-    const { firstName, lastName } = req.body
-    await addUserDetails(uuid, firstName, lastName, res.locals.user.token)
-  } catch (err) {
-    req.session.errors = [
-      {
-        name: 'error',
-        text: 'An error occurred saving your changes',
-      },
-    ]
-  } finally {
-    res.redirect('/user-details')
-  }
+  const { uuid, token } = res.locals.user
+  const processUpload = uploadStorageField('signature')
+  processUpload(req, res, async error => {
+    try {
+      // let uploadFailed = Boolean(err)
+      const { file } = req
+      const { firstName, lastName } = req.body
+      const signatureBase64 = file.buffer.toString('base64')
+      await addUserDetails(uuid, firstName, lastName, signatureBase64, token)
+    } catch (err) {
+      req.session.errors = [
+        {
+          name: 'error',
+          text: 'An error occurred saving your changes',
+        },
+      ]
+    } finally {
+      res.redirect('/user-details')
+    }
+  })
 }

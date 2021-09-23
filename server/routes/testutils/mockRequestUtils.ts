@@ -53,3 +53,14 @@ export function mockResponseWithAuthenticatedUser(userAccessToken: string) {
     },
   })
 }
+
+export function mockResponseWithAuthenticatedUserAndUserId(userAccessToken: string, userId: string) {
+  return getMockRes({
+    locals: {
+      user: {
+        token: userAccessToken,
+        uuid: userId,
+      },
+    },
+  })
+}

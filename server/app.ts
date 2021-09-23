@@ -107,6 +107,7 @@ export default function createApp(userService: UserService): express.Application
           ],
           styleSrc: ["'self'", 'code.jquery.com'],
           fontSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:'],
         },
       },
     })
