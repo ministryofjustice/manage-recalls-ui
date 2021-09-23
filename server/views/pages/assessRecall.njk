@@ -124,7 +124,7 @@
                         Vulnerability and diversity
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>
+                        {% if recall.vulnerabilityDiversityDetail %}<pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>{% else %}No{% endif %}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -132,7 +132,7 @@
                         Contraband
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>
+                        {% if recall.contrabandDetail %}<pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>{% else %}No{% endif %}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -378,15 +378,15 @@
 
             {% if isDefined(recall.additionalLicenceConditions) %}
                 <h2 class='govuk-heading-m'>Create dossier</h2>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Dossier created by
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierCreatedByUserName'>
-                        {{ recall.dossierCreatedByUserName }}
-                    </dd>
-                </div>
                 <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                            Dossier created by
+                        </dt>
+                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierCreatedByUserName'>
+                            {{ recall.dossierCreatedByUserName }}
+                        </dd>
+                    </div>
                     <div class="govuk-summary-list__row">
                         <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                             Are there additional licence conditions?
