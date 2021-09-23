@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { decorateDocs, isInvalid } from './index'
+import { decorateDocs, isDefined, isInvalid } from './index'
 import { getFormValues } from './getFormValues'
 import { getPrisonList } from '../../../data/prisonRegisterClient'
 import { ViewName } from '../../../@types'
@@ -10,13 +10,16 @@ import {
   getReferenceDataItemLabel,
   referenceData,
 } from './referenceData/referenceData'
+import { RecallResponse } from '../../../@types/manage-recalls-api'
 
 const requiresPrisonList = (viewName: ViewName) =>
   ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'recallCheckAnswers', 'assessPrison'].includes(
     viewName
   )
 
-async function getUserName(userId: string, token: string): Promise<string> {
+const requiresUser = (viewName: ViewName) => ['assessRecall'].includes(viewName)
+
+const getUserName = async (userId: string, token: string): Promise<string> => {
   try {
     const { firstName, lastName } = await getUserDetails(userId, token)
     return `${firstName} ${lastName}`
@@ -24,6 +27,32 @@ async function getUserName(userId: string, token: string): Promise<string> {
     // What do we do if getUserDetails fails?
     return userId
   }
+}
+
+interface UserNames {
+  assessedByUserName?: string
+  bookedByUserName?: string
+  dossierCreatedByUserName?: string
+}
+
+const getUserNames = async (recall: RecallResponse, token: string): Promise<UserNames> => {
+  const { assessedByUserId, bookedByUserId, dossierCreatedByUserId } = recall
+  const [assessedByResult, bookedByResult, dossierCreatedByResult] = await Promise.allSettled([
+    assessedByUserId ? getUserName(assessedByUserId, token) : undefined,
+    bookedByUserId ? getUserName(bookedByUserId, token) : undefined,
+    dossierCreatedByUserId ? getUserName(dossierCreatedByUserId, token) : undefined,
+  ])
+  const result = {} as UserNames
+  if (assessedByResult && assessedByResult.status === 'fulfilled') {
+    result.assessedByUserName = assessedByResult.value
+  }
+  if (bookedByResult && bookedByResult.status === 'fulfilled') {
+    result.bookedByUserName = bookedByResult.value
+  }
+  if (dossierCreatedByResult && dossierCreatedByResult.status === 'fulfilled') {
+    result.dossierCreatedByUserName = dossierCreatedByResult.value
+  }
+  return result
 }
 
 export const viewWithRecallAndPerson =
@@ -34,11 +63,19 @@ export const viewWithRecallAndPerson =
       res.sendStatus(400)
       return
     }
-    const [person, recall, prisonList] = await Promise.all([
+    const [personResult, recallResult, prisonListResult] = await Promise.allSettled([
       searchByNomsNumber(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),
       requiresPrisonList(viewName) ? getPrisonList() : undefined,
     ])
+    if (personResult.status === 'rejected') {
+      throw new Error(`searchByNomsNumber failed for NOMS ${nomsNumber}`)
+    }
+    const person = personResult.value
+    if (recallResult.status === 'rejected') {
+      throw new Error(`getRecall failed for ID ${recallId}`)
+    }
+    const recall = recallResult.value
     const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
     res.locals.recall = {
       ...recall,
@@ -60,8 +97,8 @@ export const viewWithRecallAndPerson =
     )
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${person.firstName} ${person.lastName}`
-    if (prisonList) {
-      const { all, active } = formatPrisonLists(prisonList)
+    if (prisonListResult && prisonListResult.status === 'fulfilled' && isDefined(prisonListResult.value)) {
+      const { all, active } = formatPrisonLists(prisonListResult.value)
       res.locals.referenceData.prisonList = all
       res.locals.referenceData.activePrisonList = active
       res.locals.recall.currentPrisonFormatted = getPrisonLabel(
@@ -73,14 +110,9 @@ export const viewWithRecallAndPerson =
         res.locals.recall.lastReleasePrison
       )
     }
-    if (recall.assessedByUserId) {
-      res.locals.assessedByUserName = await getUserName(recall.assessedByUserId, res.locals.user.token)
-    }
-    if (recall.bookedByUserId) {
-      res.locals.bookedByUserName = await getUserName(recall.bookedByUserId, res.locals.user.token)
-    }
-    if (recall.dossierCreatedByUserId) {
-      res.locals.dossierCreatedByUserName = await getUserName(recall.dossierCreatedByUserId, res.locals.user.token)
+    if (requiresUser(viewName)) {
+      const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
+      res.locals.recall = { ...res.locals.recall, ...userNames }
     }
     res.render(`pages/${viewName}`)
   }

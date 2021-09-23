@@ -1,5 +1,5 @@
 import createApp from './app'
-import HmppsAuthClient from './data/hmppsAuthClient'
+import { HmppsAuthClient } from './data/hmppsAuthClient'
 import TokenStore from './data/tokenStore'
 import UserService from './services/userService'
 

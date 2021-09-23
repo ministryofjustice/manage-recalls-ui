@@ -155,12 +155,12 @@ describe('Date helpers', () => {
 
     it('formats a date-time, adjusted if inside daylight saving', () => {
       const formatted = formatDateTimeFromIsoString('2021-06-22T08:43:00.000Z')
-      expect(formatted).toEqual('22 June 2021 at 09:43')
+      expect(formatted).toEqual('22 June 2021 at 9:43am')
     })
 
     it('formats a date-time, not adjusted if outside daylight saving', () => {
-      const formatted = formatDateTimeFromIsoString('2021-12-22T08:43:00.000Z')
-      expect(formatted).toEqual('22 December 2021 at 08:43')
+      const formatted = formatDateTimeFromIsoString('2021-12-22T18:43:00.000Z')
+      expect(formatted).toEqual('22 December 2021 at 6:43pm')
     })
   })
 })

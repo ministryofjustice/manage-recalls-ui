@@ -3,7 +3,7 @@ import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
 import { getGeneratedDocument } from './manageRecallsApiClient'
 import * as configModule from '../../config'
-import getDossierResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-dossier.json'
+import getLetterResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-letter.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
@@ -14,29 +14,29 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('get dossier', () => {
-    test('can successfully get a dossier', async () => {
+  describe('get letter', () => {
+    test('can successfully get a letter', async () => {
       await provider.addInteraction({
-        state: 'a dossier can be downloaded',
-        ...pactGetRequest('a get dossier request', `/recalls/${recallId}/dossier`, accessToken),
-        willRespondWith: pactJsonResponse(Matchers.like(getDossierResponseJson), 200),
+        state: 'a letter can be downloaded',
+        ...pactGetRequest('a get letter request', `/recalls/${recallId}/letter-to-prison`, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getLetterResponseJson), 200),
       })
 
-      const actual = await getGeneratedDocument('dossier')(recallId, accessToken)
+      const actual = await getGeneratedDocument('letter-to-prison')(recallId, accessToken)
 
-      expect(actual).toEqual(getDossierResponseJson)
+      expect(actual).toEqual(getLetterResponseJson)
     })
   })
 
   test('returns 401 if invalid user', async () => {
     await provider.addInteraction({
       state: 'an unauthorized user accessToken',
-      ...pactGetRequest('an unauthorized get dossier request', `/recalls/${recallId}/dossier`, accessToken),
+      ...pactGetRequest('an unauthorized get letter request', `/recalls/${recallId}/letter-to-prison`, accessToken),
       willRespondWith: { status: 401 },
     })
 
     try {
-      await getGeneratedDocument('dossier')(recallId, accessToken)
+      await getGeneratedDocument('letter-to-prison')(recallId, accessToken)
     } catch (exception) {
       expect(exception.status).toEqual(401)
     }

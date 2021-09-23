@@ -32,11 +32,19 @@
 
                 <p class="govuk-body-l">Review the documents and check the information is correct.</p>
 
-            <div class="govuk-form-group govuk-!-margin-bottom-8">
+            <div class="govuk-form-group govuk-!-margin-bottom-7">
                 {{ documentDownloadLink({
                     linkText: "Dossier",
                     url: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/documents/dossier",
                     dataQa: 'getDossierLink'
+                })
+                }}
+            </div>
+            <div class="govuk-form-group govuk-!-margin-bottom-8">
+                {{ documentDownloadLink({
+                    linkText: "Letter to prison",
+                    url: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/documents/letter-to-prison",
+                    dataQa: 'getLetterLink'
                 })
                 }}
             </div>

@@ -5,7 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/probation-officer"
+        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/upload-documents"
     }) }}
 {% endblock %}
 
@@ -240,7 +240,7 @@
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Local delivery unit
+                        Local Delivery Unit
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='localDeliveryUnit'>
                         {{ recall.localDeliveryUnitFormatted }}
@@ -269,9 +269,12 @@
                 {% endfor %}
             </dl>
             <div class="govuk-form-group govuk-!-margin-top-9">
-                <a class="govuk-button" data-qa="continueButton"
-                   href="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/confirmation">Complete
-                    booking</a>
+                <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/check-answers" method="post">
+                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                    <button class="govuk-button" data-qa='continueButton'>
+                        Complete booking
+                    </button>
+                </form>
             </div>
 
         </div>

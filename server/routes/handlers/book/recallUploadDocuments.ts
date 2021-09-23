@@ -1,9 +1,5 @@
 import { Request, Response } from 'express'
-import {
-  addRecallDocument,
-  getRecallDocument,
-  updateRecall,
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addRecallDocument, getStoredDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
 import { UploadedFormFields } from '../../../@types'
@@ -39,7 +35,6 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       if (session.errors && session.errors.length) {
         return res.redirect(303, req.originalUrl)
       }
-      await updateRecall(recallId, { bookedByUserId: res.locals.user.uuid }, res.locals.user.token)
       res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
     } catch (e) {
       logger.error(e)
@@ -57,7 +52,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
 export const getUploadedDocument = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params
   const { user } = res.locals
-  const response = await getRecallDocument(recallId, documentId, user.token)
+  const response = await getStoredDocument(recallId, documentId, user.token)
   const documentType = documentTypes.find(type => type.name === response.category)
   if (documentType.type === 'document') {
     res.contentType('application/pdf')

@@ -28,12 +28,14 @@ export async function searchRecalls(searchParams: ObjectMap<string>, token: stri
   return restClient(token).post<Recall[]>({ path: '/recalls/search', data: searchParams })
 }
 
-export function getRecallNotification(recallId: string, user: Record<string, string>): Promise<Pdf> {
-  return restClient(user.token).get<Pdf>({ path: `/recalls/${recallId}/recallNotification/${user.uuid}` })
-}
+export const getGeneratedDocument =
+  (pathSuffix: string) =>
+  (recallId: string, user: Record<string, string>): Promise<Pdf> => {
+    return restClient(user.token).get<Pdf>({ path: `/recalls/${recallId}/${pathSuffix}/${user.uuid}` })
+  }
 
-export function getDossier(recallId: string, user: Record<string, string>): Promise<Pdf> {
-  return restClient(user.token).get<Pdf>({ path: `/recalls/${recallId}/dossier` })
+export function getStoredDocument(recallId: string, documentId: string, token: string): Promise<GetDocumentResponse> {
+  return restClient(token).get<GetDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
 }
 
 export function getRecall(recallId: string, token: string): Promise<Recall> {
@@ -47,10 +49,6 @@ export function createRecall(nomsNumber: string, token: string): Promise<Recall>
 
 export function updateRecall(recallId: string, updatedFields: UpdateRecallRequest, token: string): Promise<Recall> {
   return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: updatedFields })
-}
-
-export function getRecallDocument(recallId: string, documentId: string, token: string): Promise<GetDocumentResponse> {
-  return restClient(token).get<GetDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
 }
 
 export function addRecallDocument(

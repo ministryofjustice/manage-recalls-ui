@@ -16,12 +16,17 @@ import { validateSentenceDetails } from './handlers/book/helpers/validateSentenc
 import { validatePolice } from './handlers/book/helpers/validatePolice'
 import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds'
 import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
-import { downloadDossier, downloadRecallNotification } from './handlers/helpers/downloadNamedPdfHandler'
+import {
+  downloadDossier,
+  downloadLetterToPrison,
+  downloadRecallNotification,
+} from './handlers/helpers/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecallDocument'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
+import { validateCheckAnswers } from './handlers/book/helpers/validateCheckAnswers'
 import { getUser, postUser } from './handlers/user/userDetails'
 
 export default function routes(router: Router): Router {
@@ -51,6 +56,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
+  post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers, 'confirmation'))
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
@@ -95,6 +101,7 @@ export default function routes(router: Router): Router {
 
   // DOCUMENTS
   get(`${basePath}/documents/dossier`, downloadDossier)
+  get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
   get(`${basePath}/documents/:documentId`, getUploadedDocument)
 

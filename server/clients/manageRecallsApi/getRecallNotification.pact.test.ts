@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getRecallNotification } from './manageRecallsApiClient'
+import { getGeneratedDocument } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getRecallNotificationResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-notification.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
@@ -15,7 +15,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('get recall notification', () => {
+  describe('get recall notification document', () => {
     test('can successfully get a recall notification', async () => {
       await provider.addInteraction({
         state: 'a recall notification can be downloaded',
@@ -27,7 +27,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(getRecallNotificationResponseJson), 200),
       })
 
-      const actual = await getRecallNotification(recallId, { token: accessToken, uuid: userId })
+      const actual = await getGeneratedDocument('recallNotification')(recallId, { token: accessToken, uuid: userId })
 
       expect(actual).toEqual(getRecallNotificationResponseJson)
     })
@@ -45,7 +45,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
 
     try {
-      await getRecallNotification(recallId, { token: accessToken, uuid: userId })
+      await getGeneratedDocument('recallNotification')(recallId, { token: accessToken, uuid: userId })
     } catch (exception) {
       expect(exception.status).toEqual(401)
     }
