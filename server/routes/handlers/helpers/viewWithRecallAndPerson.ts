@@ -77,6 +77,9 @@ export const viewWithRecallAndPerson =
       throw new Error(`getRecall failed for ID ${recallId}`)
     }
     const recall = recallResult.value
+    if (viewName === 'recallProbationOfficer') {
+      logger.info(`Probation page - localDeliveryUnit for ${recallId}: ${recall.localDeliveryUnit}`)
+    }
     const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
     res.locals.recall = {
       ...recall,
@@ -96,9 +99,6 @@ export const viewWithRecallAndPerson =
       'localDeliveryUnits',
       recall.localDeliveryUnit
     )
-    if (viewName === 'recallProbationOfficer') {
-      logger.info(`Probation page - localDeliveryUnit for ${recallId}: ${recall.localDeliveryUnit}`)
-    }
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${person.firstName} ${person.lastName}`
     if (prisonListResult && prisonListResult.status === 'fulfilled' && isDefined(prisonListResult.value)) {
