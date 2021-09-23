@@ -235,26 +235,12 @@
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Name
+                        Probation officer
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='probationOfficerName'>
-                        {{ recall.probationOfficerName }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Email
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='probationOfficerEmail'>
-                        {{ recall.probationOfficerEmail }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Phone number
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='probationOfficerPhoneNumber'>
-                        {{ recall.probationOfficerPhoneNumber }}
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+                        <p class='govuk-body' data-qa='probationOfficerName'>{{ recall.probationOfficerName }}</p>
+                        <p class='govuk-body'><a class='govuk-link' href='mailto:{{ recall.probationOfficerEmail }}' data-qa='probationOfficerEmail'>{{ recall.probationOfficerEmail }}</a></p>
+                        <p class='govuk-body' data-qa='probationOfficerPhoneNumber'>{{ recall.probationOfficerPhoneNumber }}</p>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">

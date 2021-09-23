@@ -90,7 +90,7 @@ context('Assess a recall', () => {
     assessRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
     assessRecall.assertElementHasText({
       qaAttr: 'recallNotificationEmailSentDateTime',
-      textToFind: '15 August 2021 at 2:04pm',
+      textToFind: '15 August 2021 at 14:04',
     })
     assessRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
     cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
