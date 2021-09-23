@@ -11,6 +11,7 @@ import {
   referenceData,
 } from './referenceData/referenceData'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
+import logger from '../../../../logger'
 
 const requiresPrisonList = (viewName: ViewName) =>
   ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'recallCheckAnswers', 'assessPrison'].includes(
@@ -95,6 +96,9 @@ export const viewWithRecallAndPerson =
       'localDeliveryUnits',
       recall.localDeliveryUnit
     )
+    if (viewName === 'recallProbationOfficer') {
+      logger.info(`Probation page - localDeliveryUnit for ${recallId}: ${recall.localDeliveryUnit}`)
+    }
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${person.firstName} ${person.lastName}`
     if (prisonListResult && prisonListResult.status === 'fulfilled' && isDefined(prisonListResult.value)) {
