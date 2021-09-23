@@ -17,8 +17,7 @@
             <h1 class="govuk-heading-l">
                 User details
             </h1>
-            <form action="/user-details" method="post">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+            <form novalidate action="/user-details?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({
                         label: {
@@ -60,6 +59,15 @@
 {#                        type: 'tel',#}
 {#                        classes: "govuk-input--width-20"#}
 {#                    }) }}#}
+                    {{ govukFileUpload({
+                        id: 'signature',
+                        name: 'signature',
+                        label: {
+                            text: 'Upload a signature'
+                        }
+                    }) }}
+
+                    <img src="data:image/jpeg;base64,{{ user.signature }}"/>
                 </div>
                 <div>
                     <button class="govuk-button" data-qa='updateButton'>
