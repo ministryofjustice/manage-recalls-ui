@@ -80,7 +80,7 @@ export const formatDateTimeFromIsoString = (isoDate: string) => {
     const date = DateTime.fromISO(isoDate, { zone: 'utc' }).setZone(timeZone)
 
     if (includeTime) {
-      return date.toFormat("d MMMM yyyy' at 'HH:mm")
+      return `${date.toFormat('d MMMM yyyy')} at ${date.toFormat('h:mma').toLowerCase()}`
     }
     return date.toFormat('d MMMM yyyy')
   } catch (err) {
