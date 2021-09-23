@@ -61,7 +61,6 @@ export type RecallResponse = {
   recallId: string
   recallLength?: RecallResponse.recallLength
   recallNotificationEmailSentDateTime?: string
-  revocationOrderId?: string
   sentenceDate?: string
   sentenceExpiryDate?: string
   sentenceLength?: SentenceLengthRes
