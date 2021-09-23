@@ -88,10 +88,7 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
     checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
     // Recall request date and time
-    checkAnswers.assertElementHasText({
-      qaAttr: 'recallEmailReceivedDateTime',
-      textToFind: '5 December 2020 at 3:33pm',
-    })
+    checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
     // Sentence, offence and release details
     checkAnswers.assertElementHasText({ qaAttr: 'sentenceType', textToFind: 'Determinate' })
     checkAnswers.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
