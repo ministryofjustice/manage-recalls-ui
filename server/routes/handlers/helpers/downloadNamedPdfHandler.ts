@@ -3,25 +3,27 @@ import {
   getRecall,
   getGeneratedDocument,
   searchByNomsNumber,
+  getRecallNotification,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { isInvalid } from './index'
 import { Pdf } from '../../../@types/manage-recalls-api'
 
 type FormatFn = (args: { personName: string; bookingNumber: string }) => string
 
-type DownloadFn = (recallId: string, user: Record<string, string>) => Promise<Pdf>
+type DownloadFn = (recallId: string, token: string, uuid?: string) => Promise<Pdf>
 
 const downloadNamedPdfHandler =
   (downloadFn: DownloadFn, formatNameFn: FormatFn) => async (req: Request, res: Response) => {
     const { nomsNumber, recallId } = req.params
+    const { token, uuid } = res.locals.user
     if (isInvalid(nomsNumber) || isInvalid(recallId)) {
       res.sendStatus(400)
       return
     }
     const [person, recall, pdf] = await Promise.allSettled([
-      searchByNomsNumber(nomsNumber as string, res.locals.user.token),
-      getRecall(recallId, res.locals.user.token),
-      downloadFn(recallId as string, res.locals.user),
+      searchByNomsNumber(nomsNumber as string, token),
+      getRecall(recallId, token),
+      downloadFn(recallId as string, token, uuid),
     ])
     // if there's no PDF, we can't continue
     if (pdf.status === 'rejected') {
@@ -44,7 +46,7 @@ const downloadNamedPdfHandler =
   }
 
 export const downloadRecallNotification = downloadNamedPdfHandler(
-  getGeneratedDocument('recallNotification'),
+  getRecallNotification(),
   ({ personName, bookingNumber }) => `IN CUSTODY RECALL ${personName}${bookingNumber}.pdf`
 )
 

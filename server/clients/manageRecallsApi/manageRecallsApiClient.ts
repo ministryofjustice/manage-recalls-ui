@@ -28,10 +28,16 @@ export async function searchRecalls(searchParams: ObjectMap<string>, token: stri
   return restClient(token).post<Recall[]>({ path: '/recalls/search', data: searchParams })
 }
 
+export const getRecallNotification =
+  () =>
+  (recallId: string, token: string, uuid?: string): Promise<Pdf> => {
+    return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/recallNotification/${uuid}` })
+  }
+
 export const getGeneratedDocument =
   (pathSuffix: string) =>
-  (recallId: string, user: Record<string, string>): Promise<Pdf> => {
-    return restClient(user.token).get<Pdf>({ path: `/recalls/${recallId}/${pathSuffix}/${user.uuid}` })
+  (recallId: string, token: string): Promise<Pdf> => {
+    return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/${pathSuffix}` })
   }
 
 export function getStoredDocument(recallId: string, documentId: string, token: string): Promise<GetDocumentResponse> {

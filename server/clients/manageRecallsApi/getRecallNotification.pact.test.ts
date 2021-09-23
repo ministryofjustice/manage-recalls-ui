@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getGeneratedDocument } from './manageRecallsApiClient'
+import { getRecallNotification } from './manageRecallsApiClient'
 import * as configModule from '../../config'
 import getRecallNotificationResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-notification.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
@@ -27,7 +27,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(getRecallNotificationResponseJson), 200),
       })
 
-      const actual = await getGeneratedDocument('recallNotification')(recallId, { token: accessToken, uuid: userId })
+      const actual = await getRecallNotification()(recallId, accessToken, userId)
 
       expect(actual).toEqual(getRecallNotificationResponseJson)
     })
@@ -45,7 +45,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
 
     try {
-      await getGeneratedDocument('recallNotification')(recallId, { token: accessToken, uuid: userId })
+      await getRecallNotification()(recallId, accessToken, userId)
     } catch (exception) {
       expect(exception.status).toEqual(401)
     }

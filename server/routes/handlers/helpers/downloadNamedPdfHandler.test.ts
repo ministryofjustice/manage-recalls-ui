@@ -1,7 +1,7 @@
 import nock from 'nock'
 import { Request, Response } from 'express'
 import { mockGetRequest, mockResponseWithAuthenticatedUserAndUserId } from '../../testutils/mockRequestUtils'
-import { downloadRecallNotification, downloadDossier } from './downloadNamedPdfHandler'
+import { downloadDossier, downloadLetterToPrison, downloadRecallNotification } from './downloadNamedPdfHandler'
 import config from '../../../config'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
@@ -46,6 +46,18 @@ describe('downloadNamedPdfHandler', () => {
     expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
 
+  it('should return letter from manage recalls api', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    fakeManageRecallsApi.post('/search').reply(200, [person])
+    fakeManageRecallsApi.get(`/recalls/${recallId}/letter-to-prison`).reply(200, { content: expectedPdfContents })
+    await downloadLetterToPrison(req, res)
+    expect(res.writeHead).toHaveBeenCalledWith(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="BADGER BOBBY A123456 LETTER TO PRISON.pdf"`,
+    })
+    expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+  })
+
   it('should return dossier from manage recalls api', async () => {
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
     fakeManageRecallsApi.post('/search').reply(200, [person])
@@ -73,13 +85,11 @@ describe('downloadNamedPdfHandler', () => {
     fakeManageRecallsApi.post('/search').replyWithError({
       code: '404',
     })
-    fakeManageRecallsApi
-      .get(`/recalls/${recallId}/recallNotification/${userId}`)
-      .reply(200, { content: expectedPdfContents })
-    await downloadRecallNotification(req, res)
+    fakeManageRecallsApi.get(`/recalls/${recallId}/dossier`).reply(200, { content: expectedPdfContents })
+    await downloadDossier(req, res)
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename="IN CUSTODY RECALL  A123456.pdf"`,
+      'Content-Disposition': `inline; filename=" A123456 RECALL DOSSIER.pdf"`,
     })
     expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
@@ -89,13 +99,11 @@ describe('downloadNamedPdfHandler', () => {
       code: '404',
     })
     fakeManageRecallsApi.post('/search').reply(200, [person])
-    fakeManageRecallsApi
-      .get(`/recalls/${recallId}/recallNotification/${userId}`)
-      .reply(200, { content: expectedPdfContents })
-    await downloadRecallNotification(req, res)
+    fakeManageRecallsApi.get(`/recalls/${recallId}/dossier`).reply(200, { content: expectedPdfContents })
+    await downloadDossier(req, res)
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename="IN CUSTODY RECALL BADGER BOBBY.pdf"`,
+      'Content-Disposition': `inline; filename="BADGER BOBBY RECALL DOSSIER.pdf"`,
     })
     expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
