@@ -71,6 +71,15 @@ describe('selectItems function', () => {
       { value: 'DFE', text: 'Dept For Excellence', selected: true },
     ])
   })
+
+  it('returns a separate copy of all items, not references to the same ones', () => {
+    const items = [
+      { value: 'ABC', text: 'A Big Camp' },
+      { value: 'DFE', text: 'Dept For Excellence' },
+    ]
+    const result = selectItems(items)
+    expect(result[1]).not.toBe(items[0])
+  })
 })
 
 describe('checkboxItems function', () => {
