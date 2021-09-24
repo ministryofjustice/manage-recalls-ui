@@ -80,7 +80,7 @@ export const selectItems = (items?: UiListItem[], currentValue?: string) => {
   if (!items?.length) {
     return []
   }
-  const copyOfItems = [...items]
+  const copyOfItems = items.map(item => ({ ...item }))
   if (currentValue) {
     const selectedItem = copyOfItems.find(item => item.value === currentValue)
     if (selectedItem) {
