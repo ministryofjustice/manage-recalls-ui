@@ -77,8 +77,8 @@ export const viewWithRecallAndPerson =
       throw new Error(`getRecall failed for ID ${recallId}`)
     }
     const recall = recallResult.value
-    if (viewName === 'recallProbationOfficer') {
-      logger.info(`Probation page - localDeliveryUnit for ${recallId}: ${recall.localDeliveryUnit}`)
+    if (viewName === 'recallProbationOfficer' && recall.localDeliveryUnit && !recall.probationOfficerName) {
+      logger.info(`localDeliveryUnit set for ${recallId}: ${recall.localDeliveryUnit}`)
     }
     const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
     res.locals.recall = {
