@@ -160,7 +160,7 @@
                         },
                         id: "lastReleasePrison",
                         name: "lastReleasePrison",
-                        items: selectItems( referenceData.prisonList, formValues.lastReleasePrison),
+                        items: selectItems( referenceData.prisonList, formValues.lastReleasePrison, true),
                         errorMessage: {
                             text: 'Enter a prison name'
                         } if errors.lastReleasePrison else undefined

@@ -81,7 +81,7 @@
                             text: "Local Delivery Unit",
                             classes: "govuk-label--m"
                         },
-                        items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit),
+                        items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit, true),
                         errorMessage: {
                             text: "Select the Local Delivery Unit"
                         } if errors.localDeliveryUnit else undefined

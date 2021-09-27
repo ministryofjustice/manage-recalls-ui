@@ -76,7 +76,7 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
   return items
 }
 
-export const selectItems = (items?: UiListItem[], currentValue?: string) => {
+export const selectItems = (items?: UiListItem[], currentValue?: string, isAutocomplete?: boolean) => {
   if (!items?.length) {
     return []
   }
@@ -90,7 +90,7 @@ export const selectItems = (items?: UiListItem[], currentValue?: string) => {
   return [
     {
       value: '',
-      text: 'Select one',
+      text: isAutocomplete ? '' : 'Select one',
     },
     ...copyOfItems,
   ]
