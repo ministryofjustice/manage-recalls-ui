@@ -20,9 +20,7 @@ function getSystemClientTokenFromHmppsAuth(username?: string): Promise<superagen
     ? querystring.stringify({ grant_type: 'client_credentials', username })
     : querystring.stringify({ grant_type: 'client_credentials' })
 
-  logger.info(
-    `HMPPS Auth request '${authRequest}' for client id '${config.apis.hmppsAuth.systemClientId}' and user '${username}'`
-  )
+  logger.info(`HMPPS Auth request`)
 
   return superagent
     .post(`${hmppsAuthUrl}/oauth/token`)

@@ -70,7 +70,7 @@ export const viewWithRecallAndPerson =
       requiresPrisonList(viewName) ? getPrisonList() : undefined,
     ])
     if (personResult.status === 'rejected') {
-      throw new Error(`searchByNomsNumber failed for NOMS ${nomsNumber}`)
+      throw new Error(`searchByNomsNumber failed for NOMS`)
     }
     const person = personResult.value
     if (recallResult.status === 'rejected') {
