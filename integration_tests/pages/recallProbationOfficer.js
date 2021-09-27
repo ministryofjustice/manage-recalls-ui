@@ -6,11 +6,11 @@ const recallProbationOfficerPage = ({ nomsNumber, recallId } = {}) =>
     setProbationOfficerName: () => {
       cy.get('[name="probationOfficerName"]').type('Dave Angel')
     },
-    setProbationOfficerEmail: () => {
-      cy.get('[name="probationOfficerEmail"]').type('probation.office@justice.com')
+    setProbationOfficerEmail: email => {
+      cy.get('[name="probationOfficerEmail"]').type(email || 'probation.office@justice.com')
     },
-    setProbationOfficerPhoneNumber: () => {
-      cy.get('[name="probationOfficerPhoneNumber"]').type('07980345903')
+    setProbationOfficerPhoneNumber: phone => {
+      cy.get('[name="probationOfficerPhoneNumber"]').type(phone || '07980345903')
     },
     setLocalDeliveryUnit: () => {
       cy.get('[id="localDeliveryUnit"]').clear().type('Centr')

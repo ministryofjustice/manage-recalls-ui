@@ -213,7 +213,7 @@
       "providerState": "a search by blank NOMS number",
       "request": {
         "method": "POST",
-        "path": "/recalls/search",
+        "path": "/search",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         },
@@ -242,7 +242,7 @@
       "providerState": "an unauthorized user accessToken",
       "request": {
         "method": "POST",
-        "path": "/recalls/search",
+        "path": "/search",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         },
