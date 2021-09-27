@@ -49,6 +49,15 @@ describe('selectItems function', () => {
     expect(result).toEqual([{ value: '', text: 'Select one' }, ...items])
   })
 
+  it('sets the default item to a blank string if the select will be used as an autocomplete', () => {
+    const items = [
+      { value: 'ABC', text: 'A Big Camp' },
+      { value: 'DFE', text: 'Dept For Excellence' },
+    ]
+    const result = selectItems(items, 'ABC', true)
+    expect(result).toEqual([{ value: '', text: '' }, ...items])
+  })
+
   it('returns an empty array if items param is undefined', () => {
     const result = selectItems()
     expect(result).toEqual([])
