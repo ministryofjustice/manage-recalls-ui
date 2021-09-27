@@ -5,15 +5,18 @@ import { documentTypes } from '../book/documentTypes'
 export const makeErrorObject = ({
   id,
   text,
+  errorMsgForField,
   values,
 }: {
   id: string
   text: string
+  errorMsgForField?: string
   values?: ObjectMap<string> | string
 }): NamedFormError => ({
   name: id,
   text,
   href: `#${id}`,
+  errorMsgForField,
   values,
 })
 

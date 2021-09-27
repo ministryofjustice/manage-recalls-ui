@@ -61,9 +61,11 @@ describe('getFormValues', () => {
     },
     probationOfficerPhoneNumber: {
       text: 'Phone',
+      values: '999',
     },
     probationOfficerEmail: {
       text: 'Email',
+      values: 'invalid@email',
     },
     localDeliveryUnit: {
       text: 'Local Delivery Unit',
@@ -193,9 +195,9 @@ describe('getFormValues', () => {
       mappaLevel: '',
       previousConvictionMainName: '',
       localDeliveryUnit: '',
-      probationOfficerEmail: '',
+      probationOfficerEmail: 'invalid@email',
       probationOfficerName: '',
-      probationOfficerPhoneNumber: '',
+      probationOfficerPhoneNumber: '999',
       reasonsForRecall: '',
       reasonsForRecallOtherDetail: '',
       recallEmailReceivedDateTimeParts: {
@@ -359,9 +361,9 @@ describe('getFormValues', () => {
       mappaLevel: '',
       previousConvictionMainName: '',
       localDeliveryUnit: '',
-      probationOfficerEmail: '',
+      probationOfficerEmail: 'invalid@email',
       probationOfficerName: '',
-      probationOfficerPhoneNumber: '',
+      probationOfficerPhoneNumber: '999',
       reasonsForRecall: '',
       reasonsForRecallOtherDetail: '',
       recallEmailReceivedDateTimeParts: {

@@ -56,7 +56,7 @@
                         type: 'email',
                         value: formValues.probationOfficerEmail,
                         errorMessage: {
-                            text: "Enter the probation officer's email address"
+                            text: errors.probationOfficerEmail.errorMsgForField
                         } if errors.probationOfficerEmail else undefined
                     }) }}
 
@@ -71,7 +71,7 @@
                         classes: "govuk-input--width-20",
                         value: formValues.probationOfficerPhoneNumber,
                         errorMessage: {
-                            text: "Enter the probation officer's phone number"
+                            text: errors.probationOfficerPhoneNumber.errorMsgForField
                         } if errors.probationOfficerPhoneNumber else undefined
                     }) }}
                     {{ govukSelect({
