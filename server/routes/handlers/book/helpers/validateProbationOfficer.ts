@@ -1,6 +1,10 @@
+import { PhoneNumberUtil } from 'google-libphonenumber'
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
+
+const validEmailRegex =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/
 
 export const validateProbationOfficer = (
   requestBody: ObjectMap<string>
@@ -16,11 +20,20 @@ export const validateProbationOfficer = (
     localDeliveryUnit,
     authorisingAssistantChiefOfficer,
   } = requestBody
-
+  let isPhoneValid = true
+  const isEmailValid = validEmailRegex.test(probationOfficerEmail)
+  try {
+    const phoneUtil = PhoneNumberUtil.getInstance()
+    isPhoneValid = phoneUtil.isValidNumberForRegion(phoneUtil.parse(probationOfficerPhoneNumber, 'GB'), 'GB')
+  } catch (err) {
+    isPhoneValid = false
+  }
   if (
     !probationOfficerName ||
     !probationOfficerEmail ||
+    !isEmailValid ||
     !probationOfficerPhoneNumber ||
+    !isPhoneValid ||
     !localDeliveryUnit ||
     !authorisingAssistantChiefOfficer
   ) {
@@ -38,6 +51,17 @@ export const validateProbationOfficer = (
         makeErrorObject({
           id: 'probationOfficerEmail',
           text: "Probation officer's email",
+          errorMsgForField: "Enter the probation officer's email address",
+        })
+      )
+    }
+    if (probationOfficerEmail && !isEmailValid) {
+      errors.push(
+        makeErrorObject({
+          id: 'probationOfficerEmail',
+          text: "Probation officer's email",
+          errorMsgForField: 'Enter a valid email address',
+          values: probationOfficerEmail,
         })
       )
     }
@@ -46,6 +70,17 @@ export const validateProbationOfficer = (
         makeErrorObject({
           id: 'probationOfficerPhoneNumber',
           text: "Probation officer's phone number",
+          errorMsgForField: "Enter the probation officer's phone number",
+        })
+      )
+    }
+    if (probationOfficerPhoneNumber && !isPhoneValid) {
+      errors.push(
+        makeErrorObject({
+          id: 'probationOfficerPhoneNumber',
+          text: "Probation officer's phone number",
+          errorMsgForField: 'Enter a valid UK phone number',
+          values: probationOfficerPhoneNumber,
         })
       )
     }

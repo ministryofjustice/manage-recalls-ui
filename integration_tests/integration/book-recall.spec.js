@@ -27,12 +27,12 @@ context('Book a recall', () => {
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
   })
 
   const nomsNumber = 'A1234AA'
 
   it('User can book a recall', () => {
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.selectOtherName()
     recallPreConsName.enterOtherName('Wayne Holt')
     recallPreConsName.clickContinue()
@@ -134,6 +134,7 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if pre-cons main name question is not answered', () => {
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'hasOtherPreviousConvictionMainName',
@@ -143,6 +144,7 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if pre-cons other main name is not supplied', () => {
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.selectOtherName()
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
@@ -259,6 +261,23 @@ context('Book a recall', () => {
       fieldName: 'authorisingAssistantChiefOfficer',
       summaryError: 'Assistant Chief Officer',
       fieldError: "Enter the Assistant Chief Officer's name",
+    })
+  })
+
+  it('User sees errors if invalid probation officer email and phone are entered', () => {
+    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallProbationOfficer.setProbationOfficerEmail('invalid@email')
+    recallProbationOfficer.setProbationOfficerPhoneNumber('12343')
+    recallProbationOfficer.clickContinue()
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'probationOfficerEmail',
+      summaryError: "Probation officer's email",
+      fieldError: 'Enter a valid email address',
+    })
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'probationOfficerPhoneNumber',
+      summaryError: "Probation officer's phone number",
+      fieldError: 'Enter a valid UK phone number',
     })
   })
 

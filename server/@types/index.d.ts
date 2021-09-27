@@ -16,6 +16,7 @@ export interface ObjectMap<T> {
 
 export interface NamedFormError extends FormError {
   name: string
+  errorMsgForField?: string
 }
 
 export interface UploadDocumentMetadata {
