@@ -55,7 +55,11 @@ describe('selectItems function', () => {
       { value: 'DFE', text: 'Dept For Excellence' },
     ]
     const result = selectItems(items, 'ABC', true)
-    expect(result).toEqual([{ value: '', text: '' }, ...items])
+    expect(result).toEqual([
+      { value: '', text: '' },
+      { value: 'ABC', text: 'A Big Camp', selected: true },
+      { value: 'DFE', text: 'Dept For Excellence' },
+    ])
   })
 
   it('returns an empty array if items param is undefined', () => {
