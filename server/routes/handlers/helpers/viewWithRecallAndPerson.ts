@@ -11,7 +11,6 @@ import {
   referenceData,
 } from './referenceData/referenceData'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
-import logger from '../../../../logger'
 
 const requiresPrisonList = (viewName: ViewName) =>
   ['assessRecall', 'recallPrisonPolice', 'recallSentenceDetails', 'recallCheckAnswers', 'assessPrison'].includes(
