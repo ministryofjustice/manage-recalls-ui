@@ -14,7 +14,7 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
         searchRecalls({ nomsNumber: nomsNumber as string }, res.locals.user.token),
       ])
       if (personResult.status === 'rejected') {
-        throw new Error(`searchByNomsNumber failed for NOMS ${nomsNumber}`)
+        throw new Error(`searchByNomsNumber failed for NOMIS`)
       }
       const person = personResult.value
       if (person) {
@@ -28,7 +28,7 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
     res.locals.errors = [
       {
         name: 'saveError',
-        text: `An error occurred searching for NOMIS "${nomsNumber}"`,
+        text: `An error occurred searching for NOMIS"`,
       },
     ]
   } finally {
