@@ -23,7 +23,7 @@ describe('validateSentenceDetails', () => {
     sentenceLengthYears: '2',
     sentenceLengthMonths: '',
     sentenceLengthDays: '',
-    bookingNumber: 'A123456',
+    bookingNumber: 'A12345',
   }
 
   it('returns valuesToSave for all valid fields', () => {
@@ -41,7 +41,7 @@ describe('validateSentenceDetails', () => {
         years: 2,
       },
       sentencingCourt: 'Birmingham',
-      bookingNumber: 'A123456',
+      bookingNumber: 'A12345',
     })
   })
 
@@ -112,6 +112,7 @@ describe('validateSentenceDetails', () => {
         href: '#bookingNumber',
         name: 'bookingNumber',
         text: 'Booking number',
+        errorMsgForField: 'Enter a booking number',
       },
       {
         href: '#lastReleaseDate',
@@ -122,6 +123,24 @@ describe('validateSentenceDetails', () => {
           month: '',
           year: '',
         },
+      },
+    ])
+  })
+
+  it('returns an error for invalid booking number, and no valuesToSave', () => {
+    const body = {
+      ...requestBody,
+      bookingNumber: '123',
+    }
+    const { errors, valuesToSave } = validateSentenceDetails(body)
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#bookingNumber',
+        name: 'bookingNumber',
+        text: 'Booking number',
+        errorMsgForField: 'You entered an incorrect booking number format',
+        values: '123',
       },
     ])
   })

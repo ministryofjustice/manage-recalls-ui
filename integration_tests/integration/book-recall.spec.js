@@ -208,6 +208,17 @@ context('Book a recall', () => {
     })
   })
 
+  it('User sees an error if invalid booking number is entered', () => {
+    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
+    recallLastRelease.setBookingNumber('12343')
+    recallLastRelease.clickContinue()
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'bookingNumber',
+      summaryError: 'Booking number',
+      fieldError: 'You entered an incorrect booking number format',
+    })
+  })
+
   it('User sees an error if Local police force not entered', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()

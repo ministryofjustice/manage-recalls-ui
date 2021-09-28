@@ -2,6 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc } from '../../helpers/dates'
+import { isBookingNumberValid } from '../../helpers/validations'
 
 export const validateSentenceDetails = (
   requestBody: ObjectMap<string>
@@ -59,7 +60,6 @@ export const validateSentenceDetails = (
   const sentenceDate = convertGmtDatePartsToUtc(sentenceDateParts, { dateMustBeInPast: true })
   const licenceExpiryDate = convertGmtDatePartsToUtc(licenceExpiryDateParts, { dateMustBeInFuture: true })
   const sentenceExpiryDate = convertGmtDatePartsToUtc(sentenceExpiryDateParts, { dateMustBeInFuture: true })
-
   const sentenceLengthYearsParsed = parseInt(sentenceLengthYears, 10) || undefined
   const sentenceLengthMonthsParsed = parseInt(sentenceLengthMonths, 10) || undefined
   const sentenceLengthDaysParsed = parseInt(sentenceLengthDays, 10) || undefined
@@ -67,6 +67,7 @@ export const validateSentenceDetails = (
   const sentenceLengthEntered = Boolean(
     sentenceLengthYearsParsed || sentenceLengthMonthsParsed || sentenceLengthDaysParsed
   )
+  const bookingNumberValid = isBookingNumberValid(bookingNumber)
   if (
     !lastReleaseDate ||
     !sentenceDate ||
@@ -76,6 +77,7 @@ export const validateSentenceDetails = (
     !sentencingCourt ||
     !indexOffence ||
     !bookingNumber ||
+    !bookingNumberValid ||
     !sentenceLengthEntered
   ) {
     errors = []
@@ -144,6 +146,17 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'bookingNumber',
           text: 'Booking number',
+          errorMsgForField: 'Enter a booking number',
+        })
+      )
+    }
+    if (bookingNumber && !bookingNumberValid) {
+      errors.push(
+        makeErrorObject({
+          id: 'bookingNumber',
+          text: 'Booking number',
+          values: bookingNumber,
+          errorMsgForField: 'You entered an incorrect booking number format',
         })
       )
     }
