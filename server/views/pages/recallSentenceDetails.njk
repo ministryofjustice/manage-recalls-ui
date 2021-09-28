@@ -177,7 +177,7 @@
                         value: formValues.bookingNumber,
                         classes: "govuk-input--width-10",
                         errorMessage: {
-                            text: 'Enter a booking number'
+                            text: errors.bookingNumber.errorMsgForField
                         } if errors.bookingNumber else undefined
                     }) }}
                 </div>
