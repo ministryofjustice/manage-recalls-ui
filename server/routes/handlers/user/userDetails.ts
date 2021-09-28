@@ -42,7 +42,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       if (error) {
         throw error
       }
-      const { firstName, lastName, signatureEncoded } = req.body
+      const { firstName, lastName, signatureEncoded, email, phoneNumber } = req.body
       const { file } = req
       let signatureBase64
       if (file) {
@@ -50,7 +50,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       } else {
         signatureBase64 = signatureEncoded
       }
-      await addUserDetails(uuid, firstName, lastName, signatureBase64, token)
+      await addUserDetails(uuid, firstName, lastName, signatureBase64, email, phoneNumber, token)
     } catch (err) {
       logger.error(err)
       req.session.errors = [

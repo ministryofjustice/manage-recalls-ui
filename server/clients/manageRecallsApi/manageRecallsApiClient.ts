@@ -73,9 +73,11 @@ export function addUserDetails(
   firstName: string,
   lastName: string,
   signature: string,
+  email: string,
+  phoneNumber: string,
   token: string
 ): Promise<UserDetailsResponse> {
-  const request = { userId, firstName, lastName, signature }
+  const request = { userId, firstName, lastName, signature, email, phoneNumber }
   return restClient(token).post<UserDetailsResponse>({ path: '/users', data: request })
 }
 
