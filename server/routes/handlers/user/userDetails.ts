@@ -39,12 +39,21 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
   const processUpload = uploadStorageField('signature')
   processUpload(req, res, async error => {
     try {
-      // let uploadFailed = Boolean(err)
+      if (error) {
+        throw error
+      }
       const { file } = req
+      let signatureBase64
+      if (file) {
+        signatureBase64 = file.buffer.toString('base64')
+      } else {
+        const { signature } = await getUserDetails(uuid, token)
+        signatureBase64 = signature
+      }
       const { firstName, lastName } = req.body
-      const signatureBase64 = file.buffer.toString('base64')
       await addUserDetails(uuid, firstName, lastName, signatureBase64, token)
     } catch (err) {
+      logger.error(err)
       req.session.errors = [
         {
           name: 'error',
