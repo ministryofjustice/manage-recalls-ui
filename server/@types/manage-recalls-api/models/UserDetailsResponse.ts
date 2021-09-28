@@ -7,4 +7,6 @@ export type UserDetailsResponse = {
   lastName: string
   userId: string
   signature: string
+  email: string
+  phoneNumber: string
 }

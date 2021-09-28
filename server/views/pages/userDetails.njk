@@ -39,26 +39,29 @@
                         value: user.lastName
                     }) }}
 
-{#                    {{ govukInput({#}
-{#                        label: {#}
-{#                            text: "Email address",#}
-{#                            classes: "govuk-label--m"#}
-{#                        },#}
-{#                        id: "email",#}
-{#                        name: "email",#}
-{#                        type: 'email'#}
-{#                    }) }}#}
+                    {{ govukInput({
+                        label: {
+                            text: "Email address",
+                            classes: "govuk-label--m"
+                        },
+                        id: "email",
+                        name: "email",
+                        type: 'email',
+                        value: user.email
+                    }) }}
 
-{#                    {{ govukInput({#}
-{#                        label: {#}
-{#                            text: "Phone number",#}
-{#                            classes: "govuk-label--m"#}
-{#                        },#}
-{#                        id: "phoneNumber",#}
-{#                        name: "phoneNumber",#}
-{#                        type: 'tel',#}
-{#                        classes: "govuk-input--width-20"#}
-{#                    }) }}#}
+                    {{ govukInput({
+                        label: {
+                            text: "Phone number",
+                            classes: "govuk-label--m"
+                        },
+                        id: "phoneNumber",
+                        name: "phoneNumber",
+                        type: 'tel',
+                        classes: "govuk-input--width-20",
+                        value: user.phoneNumber
+                    }) }}
+
                     {{ govukFileUpload({
                         id: 'signature',
                         name: 'signature',
