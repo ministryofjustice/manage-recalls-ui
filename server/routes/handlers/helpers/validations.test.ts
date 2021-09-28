@@ -1,4 +1,4 @@
-import { isEmailValid, isPhoneValid } from './validations'
+import { isEmailValid, isPhoneValid, isBookingNumberValid, isNomsNumberValid } from './validations'
 
 describe('Validations', () => {
   describe('isEmailValid', () => {
@@ -38,6 +38,34 @@ describe('Validations', () => {
 
     it('passes if it has a mobile number without zero prefix', () => {
       expect(isPhoneValid('7934526353')).toEqual(true)
+    })
+  })
+
+  describe('isBookingNumberValid', () => {
+    it('fails for the wrong format', () => {
+      expect(isBookingNumberValid('231')).toEqual(false)
+    })
+
+    it('passes for format 12345A', () => {
+      expect(isBookingNumberValid('12345A')).toEqual(true)
+    })
+
+    it('passes for format A12345', () => {
+      expect(isBookingNumberValid('A12345')).toEqual(true)
+    })
+
+    it('passes for format AB1234', () => {
+      expect(isBookingNumberValid('AB1234')).toEqual(true)
+    })
+  })
+
+  describe('isNomsNumberValid', () => {
+    it('fails for the wrong format', () => {
+      expect(isNomsNumberValid('ABC')).toEqual(false)
+    })
+
+    it('passes for format A1234AB', () => {
+      expect(isNomsNumberValid('A1234AB')).toEqual(true)
     })
   })
 })
