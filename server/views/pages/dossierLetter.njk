@@ -83,7 +83,7 @@
                         value: formValues.differentNomsNumberDetail,
                         classes: "govuk-input--width-10",
                         errorMessage: {
-                            text: 'Enter the NOMIS number'
+                            text: errors.differentNomsNumberDetail.errorMsgForField
                         } if errors.differentNomsNumberDetail else undefined
                     }) }}
                 {% endset -%}

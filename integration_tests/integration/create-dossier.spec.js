@@ -132,4 +132,49 @@ context('Create a dossier', () => {
       fieldError: "Confirm you've checked the dossier and letter",
     })
   })
+
+  it("User sees errors if they don't enter info on the letter page", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    cy.login()
+    const dossierLetter = dossierLetterPage.verifyOnPage({ nomsNumber, recallId })
+    dossierLetter.clickContinue()
+    dossierLetter.assertErrorMessage({
+      fieldName: 'additionalLicenceConditions',
+      summaryError: 'Licence conditions',
+      fieldError: 'Select one',
+    })
+    dossierLetter.assertErrorMessage({
+      fieldName: 'differentNomsNumber',
+      summaryError: 'Different NOMIS number',
+      fieldError: 'Select one',
+    })
+  })
+
+  it("User sees an error if they don't enter a valid NOMIS on the letter page", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    cy.login()
+    const dossierLetter = dossierLetterPage.verifyOnPage({ nomsNumber, recallId })
+    dossierLetter.additionalLicenceConditions()
+    dossierLetter.addLicenceDetail()
+    dossierLetter.differentNomsNumber()
+    dossierLetter.addNomsDetail('123')
+    dossierLetter.clickContinue()
+    dossierLetter.assertErrorMessage({
+      fieldName: 'differentNomsNumberDetail',
+      summaryError: 'Different NOMIS number',
+      fieldError: 'You entered an incorrect NOMIS number format',
+    })
+  })
 })
