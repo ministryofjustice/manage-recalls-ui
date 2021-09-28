@@ -1,10 +1,7 @@
-import { PhoneNumberUtil } from 'google-libphonenumber'
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
-
-const validEmailRegex =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/
+import { isEmailValid, isPhoneValid } from '../../helpers/validations'
 
 export const validateProbationOfficer = (
   requestBody: ObjectMap<string>
@@ -20,20 +17,14 @@ export const validateProbationOfficer = (
     localDeliveryUnit,
     authorisingAssistantChiefOfficer,
   } = requestBody
-  let isPhoneValid = true
-  const isEmailValid = validEmailRegex.test(probationOfficerEmail)
-  try {
-    const phoneUtil = PhoneNumberUtil.getInstance()
-    isPhoneValid = phoneUtil.isValidNumberForRegion(phoneUtil.parse(probationOfficerPhoneNumber, 'GB'), 'GB')
-  } catch (err) {
-    isPhoneValid = false
-  }
+  const emailValid = isEmailValid(probationOfficerEmail)
+  const phoneValid = isPhoneValid(probationOfficerPhoneNumber)
   if (
     !probationOfficerName ||
     !probationOfficerEmail ||
-    !isEmailValid ||
+    !emailValid ||
     !probationOfficerPhoneNumber ||
-    !isPhoneValid ||
+    !phoneValid ||
     !localDeliveryUnit ||
     !authorisingAssistantChiefOfficer
   ) {
@@ -55,7 +46,7 @@ export const validateProbationOfficer = (
         })
       )
     }
-    if (probationOfficerEmail && !isEmailValid) {
+    if (probationOfficerEmail && !emailValid) {
       errors.push(
         makeErrorObject({
           id: 'probationOfficerEmail',
@@ -74,7 +65,7 @@ export const validateProbationOfficer = (
         })
       )
     }
-    if (probationOfficerPhoneNumber && !isPhoneValid) {
+    if (probationOfficerPhoneNumber && !phoneValid) {
       errors.push(
         makeErrorObject({
           id: 'probationOfficerPhoneNumber',
