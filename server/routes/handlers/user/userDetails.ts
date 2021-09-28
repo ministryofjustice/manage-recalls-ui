@@ -42,15 +42,14 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       if (error) {
         throw error
       }
+      const { firstName, lastName, signatureEncoded } = req.body
       const { file } = req
       let signatureBase64
       if (file) {
         signatureBase64 = file.buffer.toString('base64')
       } else {
-        const { signature } = await getUserDetails(uuid, token)
-        signatureBase64 = signature
+        signatureBase64 = signatureEncoded
       }
-      const { firstName, lastName } = req.body
       await addUserDetails(uuid, firstName, lastName, signatureBase64, token)
     } catch (err) {
       logger.error(err)
