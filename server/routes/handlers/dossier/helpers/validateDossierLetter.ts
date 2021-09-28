@@ -1,6 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
+import { isNomsNumberValid } from '../../helpers/validations'
 
 export const validateDossierLetter = (
   requestBody: ObjectMap<string>
@@ -15,20 +16,22 @@ export const validateDossierLetter = (
     differentNomsNumber,
     differentNomsNumberDetail,
   } = requestBody
-  const isLicenceValueValid = ['YES', 'NO'].includes(additionalLicenceConditions)
-  const isNomsValueValid = ['YES', 'NO'].includes(differentNomsNumber)
+  const isLicenceChoiceValid = ['YES', 'NO'].includes(additionalLicenceConditions)
+  const isNomsChoiceValid = ['YES', 'NO'].includes(differentNomsNumber)
   const isLicenceYes = additionalLicenceConditions === 'YES'
   const isNomsYes = differentNomsNumber === 'YES'
   const licenceDetailMissing = isLicenceYes && !additionalLicenceConditionsDetail
   const nomsDetailMissing = isNomsYes && !differentNomsNumberDetail
+  const nomsDetailInvalid =
+    (isNomsYes && differentNomsNumberDetail && !isNomsNumberValid(differentNomsNumberDetail)) || false
 
   // only use the detail fields if 'Yes' was checked; ignore them if 'No' was the last option checked
   const licenceDetailCleaned = isLicenceYes ? additionalLicenceConditionsDetail : ''
   const nomsDetailCleaned = isNomsYes ? differentNomsNumberDetail : ''
 
-  if (!isLicenceValueValid || licenceDetailMissing || !isNomsValueValid || nomsDetailMissing) {
+  if (!isLicenceChoiceValid || licenceDetailMissing || !isNomsChoiceValid || nomsDetailMissing || nomsDetailInvalid) {
     errors = []
-    if (!isLicenceValueValid) {
+    if (!isLicenceChoiceValid) {
       errors.push(
         makeErrorObject({
           id: 'additionalLicenceConditions',
@@ -44,7 +47,7 @@ export const validateDossierLetter = (
         })
       )
     }
-    if (!isNomsValueValid) {
+    if (!isNomsChoiceValid) {
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumber',
@@ -56,7 +59,18 @@ export const validateDossierLetter = (
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumberDetail',
-          text: 'Provide the different NOMIS number',
+          text: 'Different NOMIS number',
+          errorMsgForField: 'Enter the NOMIS number',
+        })
+      )
+    }
+    if (nomsDetailInvalid) {
+      errors.push(
+        makeErrorObject({
+          id: 'differentNomsNumberDetail',
+          text: 'Different NOMIS number',
+          values: differentNomsNumberDetail,
+          errorMsgForField: 'You entered an incorrect NOMIS number format',
         })
       )
     }

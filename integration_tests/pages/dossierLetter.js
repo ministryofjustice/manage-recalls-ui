@@ -6,7 +6,11 @@ const dossierLetterPage = ({ nomsNumber, recallId } = {}) =>
     additionalLicenceConditions: () => cy.get('[name="additionalLicenceConditions"][value="YES"]').click(),
     differentNomsNumber: () => cy.get('[name="differentNomsNumber"][value="YES"]').click(),
     addLicenceDetail: () => cy.get('[name="additionalLicenceConditionsDetail"]').clear().type('one, two'),
-    addNomsDetail: () => cy.get('[name="differentNomsNumberDetail"]').clear().type('AC3408303'),
+    addNomsDetail: noms =>
+      cy
+        .get('[name="differentNomsNumberDetail"]')
+        .clear()
+        .type(noms || 'A1234AB'),
   })
 
 module.exports = { verifyOnPage: dossierLetterPage }

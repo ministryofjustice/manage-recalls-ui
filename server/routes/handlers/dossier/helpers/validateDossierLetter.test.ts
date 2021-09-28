@@ -6,7 +6,7 @@ describe('validateDossierLetter', () => {
       additionalLicenceConditions: 'YES',
       additionalLicenceConditionsDetail: 'one, two',
       differentNomsNumber: 'YES',
-      differentNomsNumberDetail: 'AC298345',
+      differentNomsNumberDetail: 'A1234AB',
     }
     const { errors, valuesToSave } = validateDossierLetter(requestBody)
     expect(errors).toBeUndefined()
@@ -14,7 +14,7 @@ describe('validateDossierLetter', () => {
       additionalLicenceConditions: true,
       additionalLicenceConditionsDetail: 'one, two',
       differentNomsNumber: true,
-      differentNomsNumberDetail: 'AC298345',
+      differentNomsNumberDetail: 'A1234AB',
     })
   })
 
@@ -49,7 +49,7 @@ describe('validateDossierLetter', () => {
     ])
   })
 
-  it('returns an error for differentNomsNumber, if not set, and no valuesToSave', () => {
+  it("returns an error if the user didn't choose Yes or No for NOMIS number, and no valuesToSave", () => {
     const requestBody = {
       additionalLicenceConditions: 'YES',
       additionalLicenceConditionsDetail: 'Reasons',
@@ -61,6 +61,26 @@ describe('validateDossierLetter', () => {
         href: '#differentNomsNumber',
         name: 'differentNomsNumber',
         text: 'Different NOMIS number',
+      },
+    ])
+  })
+
+  it('returns an error for differentNomsNumberDetail, if invalid, and no valuesToSave', () => {
+    const requestBody = {
+      additionalLicenceConditions: 'YES',
+      additionalLicenceConditionsDetail: 'Reasons',
+      differentNomsNumber: 'YES',
+      differentNomsNumberDetail: '123',
+    }
+    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#differentNomsNumberDetail',
+        name: 'differentNomsNumberDetail',
+        text: 'Different NOMIS number',
+        errorMsgForField: 'You entered an incorrect NOMIS number format',
+        values: '123',
       },
     ])
   })
@@ -79,9 +99,10 @@ describe('validateDossierLetter', () => {
         text: 'Provide detail on additional licence conditions',
       },
       {
+        errorMsgForField: 'Enter the NOMIS number',
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
-        text: 'Provide the different NOMIS number',
+        text: 'Different NOMIS number',
       },
     ])
   })
