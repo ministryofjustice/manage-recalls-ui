@@ -4,6 +4,7 @@ export interface FormError {
   text: string
   href?: string
   values?: ObjectMap<unknown> | string
+  errorMsgForField?: string
 }
 
 export interface ObjectMixed {
@@ -16,7 +17,10 @@ export interface ObjectMap<T> {
 
 export interface NamedFormError extends FormError {
   name: string
-  errorMsgForField?: string
+}
+
+export interface KeyedFormErrors extends ObjectMap<FormError> {
+  list: NamedFormError[]
 }
 
 export interface UploadDocumentMetadata {

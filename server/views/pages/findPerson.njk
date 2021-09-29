@@ -8,19 +8,35 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
             <h1 class="govuk-heading-l">
                 Find a person
             </h1>
 
             <form novalidate id="search" action="" method="get" class="govuk-!-margin-bottom-9 search-panel">
                 <div class="moj-search">
-                    <div class="govuk-form-group">
-                        <label class="govuk-label moj-search__label govuk-!-font-weight-bold" for="search">
-                            NOMIS number
-                        </label>
-                        <input class="govuk-input moj-search__input " id="search-field" name="nomsNumber" type="search"
-                               aria-describedby="search-hint" data-qa="search-field">
-                    </div>
+                    {{ govukInput({
+                        label: {
+                            text: "NOMIS number",
+                            classes: "govuk-label--m"
+                        },
+                        id: "nomsNumber",
+                        name: "nomsNumber",
+                        attributes: {
+                            'data-qa': 'search-field'
+                        },
+                        errorMessage: {
+                            text: errors.nomsNumber.errorMsgForField
+                        } if errors.nomsNumber else undefined
+                    }) }}
                     <button type="submit" class="govuk-button moj-search__button " data-module="govuk-button" data-qa="search">
                         Search
                     </button>
