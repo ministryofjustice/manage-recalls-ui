@@ -1,4 +1,4 @@
-import { DecoratedDocument, NamedFormError, ObjectMap } from '../../../@types'
+import { DecoratedDocument, FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { documentTypes } from '../book/documentTypes'
 
@@ -25,6 +25,8 @@ export const isInvalid = (value: string): boolean => {
 }
 
 export const isDefined = (val: unknown) => typeof val !== 'undefined'
+
+export const isString = (val: unknown) => typeof val === 'string'
 
 export const decorateDocs = ({
   docs,
@@ -81,4 +83,16 @@ export const decorateDocs = ({
       dossierEmail: undefined,
     }
   )
+}
+
+export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormErrors => {
+  const errorMap = errors.reduce((acc: ObjectMap<FormError>, curr: NamedFormError) => {
+    const { name, ...rest } = curr
+    acc[name] = rest
+    return acc
+  }, {})
+  return {
+    list: errors,
+    ...errorMap,
+  } as KeyedFormErrors
 }

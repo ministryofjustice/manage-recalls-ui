@@ -1,6 +1,6 @@
 import type { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
-import { findPerson } from './handlers/findPerson'
+import { findPerson } from './handlers/person/findPerson'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
 import { uploadRecallDocumentsFormHandler, getUploadedDocument } from './handlers/book/recallUploadDocuments'

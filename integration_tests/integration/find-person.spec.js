@@ -87,9 +87,22 @@ context('Find a person', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     cy.login()
-
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('0 people found')
+  })
+
+  it('person search with an invalid NOMIS number returns an error', () => {
+    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.login()
+    const homePage = findOffenderPage.verifyOnPage()
+    homePage.searchFor('A123')
+    homePage.assertErrorMessage({
+      fieldName: 'nomsNumber',
+      summaryError: 'NOMIS number',
+      fieldError: '"A123" is not a valid NOMIS number',
+    })
   })
 })
