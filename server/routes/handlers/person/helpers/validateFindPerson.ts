@@ -5,16 +5,15 @@ export const validateFindPerson = (nomsNumber?: string) => {
   let errors
   if (isDefined(nomsNumber)) {
     if (!isString(nomsNumber) || !isNomsNumberValid((nomsNumber as string).trim())) {
-      let errorMsgForField = 'Enter a NOMIS number'
+      let text = 'Enter a NOMIS number'
       if (nomsNumber !== '' && isString(nomsNumber) && !isNomsNumberValid((nomsNumber as string).trim())) {
-        errorMsgForField = `"${nomsNumber}" is not a valid NOMIS number`
+        text = 'Enter a NOMIS number in the correct format'
       }
       errors = [
         makeErrorObject({
           id: 'nomsNumber',
-          text: 'NOMIS number',
+          text,
           values: nomsNumber as string,
-          errorMsgForField,
         }),
       ]
     }

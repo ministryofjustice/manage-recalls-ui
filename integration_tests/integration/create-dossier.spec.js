@@ -129,7 +129,6 @@ context('Create a dossier', () => {
     dossierDownload.assertErrorMessage({
       fieldName: 'hasDossierBeenChecked',
       summaryError: 'Have the dossier and letter been checked?',
-      fieldError: "Confirm you've checked the dossier and letter",
     })
   })
 
@@ -146,13 +145,11 @@ context('Create a dossier', () => {
     dossierLetter.clickContinue()
     dossierLetter.assertErrorMessage({
       fieldName: 'additionalLicenceConditions',
-      summaryError: 'Licence conditions',
-      fieldError: 'Select one',
+      summaryError: 'Are there additional licence conditions?',
     })
     dossierLetter.assertErrorMessage({
       fieldName: 'differentNomsNumber',
-      summaryError: 'Different NOMIS number',
-      fieldError: 'Select one',
+      summaryError: 'Is Bobby Badger being held under a different NOMIS number to the one on the licence?',
     })
   })
 
@@ -173,8 +170,7 @@ context('Create a dossier', () => {
     dossierLetter.clickContinue()
     dossierLetter.assertErrorMessage({
       fieldName: 'differentNomsNumberDetail',
-      summaryError: 'Different NOMIS number',
-      fieldError: 'You entered an incorrect NOMIS number format',
+      summaryError: 'Enter a NOMIS number in the correct format',
     })
   })
 })

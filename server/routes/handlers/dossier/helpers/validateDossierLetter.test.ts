@@ -44,7 +44,7 @@ describe('validateDossierLetter', () => {
       {
         href: '#additionalLicenceConditions',
         name: 'additionalLicenceConditions',
-        text: 'Licence conditions',
+        text: 'Are there additional licence conditions?',
       },
     ])
   })
@@ -60,7 +60,7 @@ describe('validateDossierLetter', () => {
       {
         href: '#differentNomsNumber',
         name: 'differentNomsNumber',
-        text: 'Different NOMIS number',
+        text: 'Is {{person.firstName}} {{person.lastName}} being held under a different NOMIS number to the one on the licence?',
       },
     ])
   })
@@ -78,8 +78,7 @@ describe('validateDossierLetter', () => {
       {
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
-        text: 'Different NOMIS number',
-        errorMsgForField: 'You entered an incorrect NOMIS number format',
+        text: 'Enter a NOMIS number in the correct format',
         values: '123',
       },
     ])
@@ -96,13 +95,12 @@ describe('validateDossierLetter', () => {
       {
         href: '#additionalLicenceConditionsDetail',
         name: 'additionalLicenceConditionsDetail',
-        text: 'Provide detail on additional licence conditions',
+        text: 'Provide more detail',
       },
       {
-        errorMsgForField: 'Enter the NOMIS number',
+        text: 'Enter the NOMIS number {{person.firstName}} {{person.lastName}} is being held under',
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
-        text: 'Different NOMIS number',
       },
     ])
   })

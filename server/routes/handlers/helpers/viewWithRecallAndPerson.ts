@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { decorateDocs, isDefined, isInvalid } from './index'
+import { decorateDocs, isDefined, isInvalid, renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { getPrisonList } from '../../../data/prisonRegisterClient'
 import { ViewName } from '../../../@types'
@@ -97,6 +97,7 @@ export const viewWithRecallAndPerson =
     )
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${person.firstName} ${person.lastName}`
+    res.locals.errors = renderErrorMessages(res.locals.errors, res.locals)
     if (prisonListResult && prisonListResult.status === 'fulfilled' && isDefined(prisonListResult.value)) {
       const { all, active } = formatPrisonLists(prisonListResult.value)
       res.locals.referenceData.prisonList = all

@@ -33,7 +33,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'probationOfficerName',
-          text: "Probation officer's name",
+          text: 'Enter a name',
         })
       )
     }
@@ -41,8 +41,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'probationOfficerEmail',
-          text: "Probation officer's email",
-          errorMsgForField: "Enter the probation officer's email address",
+          text: 'Enter an email',
         })
       )
     }
@@ -50,8 +49,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'probationOfficerEmail',
-          text: "Probation officer's email",
-          errorMsgForField: 'Enter a valid email address',
+          text: 'Enter an email address in the correct format, like name@example.com',
           values: probationOfficerEmail,
         })
       )
@@ -60,8 +58,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'probationOfficerPhoneNumber',
-          text: "Probation officer's phone number",
-          errorMsgForField: "Enter the probation officer's phone number",
+          text: 'Enter a phone number',
         })
       )
     }
@@ -69,8 +66,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'probationOfficerPhoneNumber',
-          text: "Probation officer's phone number",
-          errorMsgForField: 'Enter a valid UK phone number',
+          text: 'Enter a phone number in the correct format, like 01277 960901',
           values: probationOfficerPhoneNumber,
         })
       )
@@ -79,7 +75,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'localDeliveryUnit',
-          text: 'Local Delivery Unit',
+          text: 'Select a Local Delivery Unit',
         })
       )
     }
@@ -87,7 +83,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'authorisingAssistantChiefOfficer',
-          text: 'Assistant Chief Officer',
+          text: 'Enter the Assistant Chief Officer',
         })
       )
     }

@@ -1,4 +1,4 @@
-import { decorateDocs, makeErrorObject } from './index'
+import { decorateDocs, makeErrorObject, renderErrorMessages, transformErrorMessages } from './index'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 
 describe('makeErrorObject', () => {
@@ -133,6 +133,46 @@ describe('decorateDocs', () => {
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
       },
+    })
+  })
+})
+
+describe('renderErrorMessages', () => {
+  it('returns error messages with placeholders filled with data', () => {
+    const errors = [
+      {
+        href: '#additionalLicenceConditionsDetail',
+        name: 'additionalLicenceConditionsDetail',
+        text: 'Provide detail on additional licence conditions',
+      },
+      {
+        text: 'Enter the NOMIS number {{person.firstName}} {{person.lastName}} is being held under',
+        href: '#differentNomsNumberDetail',
+        name: 'differentNomsNumberDetail',
+      },
+    ]
+    const result = renderErrorMessages(transformErrorMessages(errors), {
+      person: { firstName: 'Dave', lastName: 'Angel' },
+    })
+    expect(result).toEqual({
+      additionalLicenceConditionsDetail: {
+        text: 'Provide detail on additional licence conditions',
+      },
+      differentNomsNumberDetail: {
+        text: 'Enter the NOMIS number Dave Angel is being held under',
+      },
+      list: [
+        {
+          href: '#additionalLicenceConditionsDetail',
+          name: 'additionalLicenceConditionsDetail',
+          text: 'Provide detail on additional licence conditions',
+        },
+        {
+          href: '#differentNomsNumberDetail',
+          name: 'differentNomsNumberDetail',
+          text: 'Enter the NOMIS number Dave Angel is being held under',
+        },
+      ],
     })
   })
 })

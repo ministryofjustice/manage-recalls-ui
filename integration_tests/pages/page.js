@@ -17,7 +17,7 @@ module.exports = (name, pageObject = {}) => {
     })
     cy.get(`#${fieldName}-error`).should($searchResults => {
       const text = $searchResults.text()
-      expect(text.trim()).to.contain(fieldError)
+      expect(text.trim()).to.contain(fieldError || summaryError)
     })
   }
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()

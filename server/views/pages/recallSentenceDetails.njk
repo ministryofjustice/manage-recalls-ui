@@ -44,7 +44,7 @@
                         },
                         items: dateTimeItems("sentenceDate", formValues.sentenceDateParts),
                         errorMessage: {
-                            text: 'Enter a valid date in the past'
+                            text: errors.sentenceDate.text
                         } if errors.sentenceDate else undefined
                     }) }}
                 </div>
@@ -60,7 +60,7 @@
                         },
                         items: dateTimeItems("licenceExpiryDate", formValues.licenceExpiryDateParts),
                         errorMessage: {
-                            text: 'Enter a valid future date'
+                            text: errors.licenceExpiryDate.text
                         } if errors.licenceExpiryDate else undefined
                     }) }}
                 </div>
@@ -76,7 +76,7 @@
                         },
                         items: dateTimeItems("sentenceExpiryDate", formValues.sentenceExpiryDateParts),
                         errorMessage: {
-                            text: 'Enter a valid future date'
+                            text: errors.sentenceExpiryDate.text
                         } if errors.sentenceExpiryDate else undefined
                     }) }}
                 </div>
@@ -120,7 +120,7 @@
                             }
                         ],
                         errorMessage: {
-                            text: 'Enter a valid sentence length'
+                            text: errors.sentenceLength.text
                         } if errors.sentenceLength else undefined
                     }) }}
                 </div>
@@ -134,7 +134,7 @@
                         name: "sentencingCourt",
                         value: formValues.sentencingCourt,
                         errorMessage: {
-                            text: 'Enter a sentencing court'
+                            text: errors.sentencingCourt.text
                         } if errors.sentencingCourt else undefined
                     }) }}
                 </div>
@@ -148,7 +148,7 @@
                         name: "indexOffence",
                         value: formValues.indexOffence,
                         errorMessage: {
-                            text: 'Enter an index offence'
+                            text: errors.indexOffence.text
                         } if errors.indexOffence else undefined
                     }) }}
                 </div>
@@ -162,7 +162,7 @@
                         name: "lastReleasePrison",
                         items: selectItems( referenceData.prisonList, formValues.lastReleasePrison, true),
                         errorMessage: {
-                            text: 'Enter a prison name'
+                            text: errors.lastReleasePrison.text
                         } if errors.lastReleasePrison else undefined
                     }) }}
                 </div>
@@ -177,7 +177,7 @@
                         value: formValues.bookingNumber,
                         classes: "govuk-input--width-10",
                         errorMessage: {
-                            text: errors.bookingNumber.errorMsgForField
+                            text: errors.bookingNumber.text
                         } if errors.bookingNumber else undefined
                     }) }}
                 </div>
@@ -193,7 +193,7 @@
                         },
                         items: dateTimeItems("lastReleaseDate", formValues.lastReleaseDateParts),
                         errorMessage: {
-                            text: 'Enter a valid date in the past'
+                            text: errors.lastReleaseDate.text
                         } if errors.lastReleaseDate else undefined
                     }) }}
 
@@ -210,7 +210,7 @@
                         },
                         items: dateTimeItems("conditionalReleaseDate", formValues.conditionalReleaseDateParts),
                         errorMessage: {
-                            text: 'Enter a valid date'
+                            text: errors.conditionalReleaseDate.text
                         } if errors.conditionalReleaseDate else undefined
                     }) }}
                 </div>

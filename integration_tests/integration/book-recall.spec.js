@@ -173,38 +173,31 @@ context('Book a recall', () => {
     recallLastRelease.clickContinue()
     recallLastRelease.assertErrorMessage({
       fieldName: 'lastReleaseDate',
-      summaryError: 'Latest release date',
-      fieldError: 'Enter a valid date in the past',
+      summaryError: 'Enter a latest release date',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'lastReleasePrison',
-      summaryError: 'Releasing prison',
-      fieldError: 'Enter a prison name',
+      summaryError: 'Select a releasing prison',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'sentenceDate',
-      summaryError: 'Date of sentence',
-      fieldError: 'Enter a valid date in the past',
+      summaryError: 'Enter the date of sentence',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'sentenceExpiryDate',
-      summaryError: 'Sentence expiry date',
-      fieldError: 'Enter a valid future date',
+      summaryError: 'Enter a sentence expiry date',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'licenceExpiryDate',
-      summaryError: 'Licence expiry date',
-      fieldError: 'Enter a valid future date',
+      summaryError: 'Enter a licence expiry date',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'sentenceLength',
-      summaryError: 'Length of sentence',
-      fieldError: 'Enter a valid sentence length',
+      summaryError: 'Enter the length of sentence',
     })
     recallLastRelease.assertErrorMessage({
       fieldName: 'bookingNumber',
-      summaryError: 'Booking number',
-      fieldError: 'Enter a booking number',
+      summaryError: 'Enter a booking number',
     })
   })
 
@@ -214,8 +207,7 @@ context('Book a recall', () => {
     recallLastRelease.clickContinue()
     recallLastRelease.assertErrorMessage({
       fieldName: 'bookingNumber',
-      summaryError: 'Booking number',
-      fieldError: 'You entered an incorrect booking number format',
+      summaryError: 'Enter a booking number in the correct format, like 12345C, A12347 or AB1234',
     })
   })
 
@@ -250,28 +242,23 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'probationOfficerName',
-      summaryError: "Probation officer's name",
-      fieldError: "Enter the probation officer's name",
+      summaryError: 'Enter a name',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'probationOfficerEmail',
-      summaryError: "Probation officer's email",
-      fieldError: "Enter the probation officer's email",
+      summaryError: 'Enter an email',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'probationOfficerPhoneNumber',
-      summaryError: "Probation officer's phone number",
-      fieldError: "Enter the probation officer's phone number",
+      summaryError: 'Enter a phone number',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'localDeliveryUnit',
-      summaryError: 'Local Delivery Unit',
-      fieldError: 'Select the Local Delivery Unit',
+      summaryError: 'Select a Local Delivery Unit',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'authorisingAssistantChiefOfficer',
-      summaryError: 'Assistant Chief Officer',
-      fieldError: "Enter the Assistant Chief Officer's name",
+      summaryError: 'Enter the Assistant Chief Officer',
     })
   })
 
@@ -282,13 +269,11 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'probationOfficerEmail',
-      summaryError: "Probation officer's email",
-      fieldError: 'Enter a valid email address',
+      summaryError: 'Enter an email address in the correct format, like name@example.com',
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'probationOfficerPhoneNumber',
-      summaryError: "Probation officer's phone number",
-      fieldError: 'Enter a valid UK phone number',
+      summaryError: 'Enter a phone number in the correct format, like 01277 960901',
     })
   })
 
