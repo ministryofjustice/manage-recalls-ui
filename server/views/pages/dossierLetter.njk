@@ -39,7 +39,7 @@
                         classes: "govuk-!-width-three-quarters",
                         value: formValues.additionalLicenceConditionsDetail ,
                         errorMessage: {
-                            text: 'Provide more detail'
+                            text: errors.additionalLicenceConditionsDetail.text
                         } if errors.additionalLicenceConditionsDetail else undefined
                     }) }}
                 {% endset -%}
@@ -68,7 +68,7 @@
                         }
                     ],
                     errorMessage: {
-                        text: 'Select one'
+                        text: errors.additionalLicenceConditions.text
                     } if errors.additionalLicenceConditions else undefined
                 }) }}
 
@@ -83,7 +83,7 @@
                         value: formValues.differentNomsNumberDetail,
                         classes: "govuk-input--width-10",
                         errorMessage: {
-                            text: errors.differentNomsNumberDetail.errorMsgForField
+                            text: errors.differentNomsNumberDetail.text
                         } if errors.differentNomsNumberDetail else undefined
                     }) }}
                 {% endset -%}
@@ -112,7 +112,7 @@
                         }
                     ],
                     errorMessage: {
-                        text: 'Select one'
+                        text: errors.differentNomsNumber.text
                     } if errors.differentNomsNumber else undefined
                 }) }}
                 <div class="govuk-!-margin-top-4">

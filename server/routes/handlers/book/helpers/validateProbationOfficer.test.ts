@@ -28,29 +28,27 @@ describe('validateProbationOfficer', () => {
       {
         href: '#probationOfficerName',
         name: 'probationOfficerName',
-        text: "Probation officer's name",
+        text: 'Enter a name',
       },
       {
         href: '#probationOfficerEmail',
         name: 'probationOfficerEmail',
-        text: "Probation officer's email",
-        errorMsgForField: "Enter the probation officer's email address",
+        text: 'Enter an email',
       },
       {
         href: '#probationOfficerPhoneNumber',
         name: 'probationOfficerPhoneNumber',
-        text: "Probation officer's phone number",
-        errorMsgForField: "Enter the probation officer's phone number",
+        text: 'Enter a phone number',
       },
       {
         href: '#localDeliveryUnit',
         name: 'localDeliveryUnit',
-        text: 'Local Delivery Unit',
+        text: 'Select a Local Delivery Unit',
       },
       {
         href: '#authorisingAssistantChiefOfficer',
         name: 'authorisingAssistantChiefOfficer',
-        text: 'Assistant Chief Officer',
+        text: 'Enter the Assistant Chief Officer',
       },
     ])
   })
@@ -69,15 +67,13 @@ describe('validateProbationOfficer', () => {
       {
         href: '#probationOfficerEmail',
         name: 'probationOfficerEmail',
-        text: "Probation officer's email",
-        errorMsgForField: 'Enter a valid email address',
+        text: 'Enter an email address in the correct format, like name@example.com',
         values: 'probation.office',
       },
       {
         href: '#probationOfficerPhoneNumber',
         name: 'probationOfficerPhoneNumber',
-        text: "Probation officer's phone number",
-        errorMsgForField: 'Enter a valid UK phone number',
+        text: 'Enter a phone number in the correct format, like 01277 960901',
         values: '003139485349',
       },
     ])

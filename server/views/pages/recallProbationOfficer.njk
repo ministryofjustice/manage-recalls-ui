@@ -42,7 +42,7 @@
                         name: "probationOfficerName",
                         value: formValues.probationOfficerName,
                         errorMessage: {
-                            text: "Enter the probation officer's name"
+                            text: errors.probationOfficerName.text
                         } if errors.probationOfficerName else undefined
                     }) }}
 
@@ -56,7 +56,7 @@
                         type: 'email',
                         value: formValues.probationOfficerEmail,
                         errorMessage: {
-                            text: errors.probationOfficerEmail.errorMsgForField
+                            text: errors.probationOfficerEmail.text
                         } if errors.probationOfficerEmail else undefined
                     }) }}
 
@@ -71,7 +71,7 @@
                         classes: "govuk-input--width-20",
                         value: formValues.probationOfficerPhoneNumber,
                         errorMessage: {
-                            text: errors.probationOfficerPhoneNumber.errorMsgForField
+                            text: errors.probationOfficerPhoneNumber.text
                         } if errors.probationOfficerPhoneNumber else undefined
                     }) }}
                     {{ govukSelect({
@@ -83,7 +83,7 @@
                         },
                         items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit, true),
                         errorMessage: {
-                            text: "Select the Local Delivery Unit"
+                            text: errors.localDeliveryUnit.text
                         } if errors.localDeliveryUnit else undefined
                     }) }}
 
@@ -97,7 +97,7 @@
                         name: "authorisingAssistantChiefOfficer",
                         value: formValues.authorisingAssistantChiefOfficer,
                         errorMessage: {
-                            text: "Enter the Assistant Chief Officer's name"
+                            text: errors.authorisingAssistantChiefOfficer.text
                         } if errors.authorisingAssistantChiefOfficer else undefined
                     }) }}
                 </div>

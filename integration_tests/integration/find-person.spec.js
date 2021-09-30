@@ -101,8 +101,7 @@ context('Find a person', () => {
     homePage.searchFor('A123')
     homePage.assertErrorMessage({
       fieldName: 'nomsNumber',
-      summaryError: 'NOMIS number',
-      fieldError: '"A123" is not a valid NOMIS number',
+      summaryError: 'Enter a NOMIS number in the correct format',
     })
   })
 })

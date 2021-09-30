@@ -35,7 +35,7 @@ export const validateDossierLetter = (
       errors.push(
         makeErrorObject({
           id: 'additionalLicenceConditions',
-          text: 'Licence conditions',
+          text: 'Are there additional licence conditions?',
         })
       )
     }
@@ -43,7 +43,7 @@ export const validateDossierLetter = (
       errors.push(
         makeErrorObject({
           id: 'additionalLicenceConditionsDetail',
-          text: 'Provide detail on additional licence conditions',
+          text: 'Provide more detail',
         })
       )
     }
@@ -51,7 +51,7 @@ export const validateDossierLetter = (
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumber',
-          text: 'Different NOMIS number',
+          text: 'Is {{person.firstName}} {{person.lastName}} being held under a different NOMIS number to the one on the licence?',
         })
       )
     }
@@ -59,8 +59,7 @@ export const validateDossierLetter = (
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumberDetail',
-          text: 'Different NOMIS number',
-          errorMsgForField: 'Enter the NOMIS number',
+          text: 'Enter the NOMIS number {{person.firstName}} {{person.lastName}} is being held under',
         })
       )
     }
@@ -68,9 +67,8 @@ export const validateDossierLetter = (
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumberDetail',
-          text: 'Different NOMIS number',
+          text: 'Enter a NOMIS number in the correct format',
           values: differentNomsNumberDetail,
-          errorMsgForField: 'You entered an incorrect NOMIS number format',
         })
       )
     }

@@ -1,3 +1,4 @@
+import nunjucks from 'nunjucks'
 import { DecoratedDocument, FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { documentTypes } from '../book/documentTypes'
@@ -95,4 +96,29 @@ export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormError
     list: errors,
     ...errorMap,
   } as KeyedFormErrors
+}
+
+export const renderTemplateString = (str: string, data: ObjectMap<unknown>): string => nunjucks.renderString(str, data)
+
+export const renderErrorMessages = (
+  errors: KeyedFormErrors,
+  locals: ObjectMap<unknown>
+): KeyedFormErrors | undefined => {
+  if (!errors) {
+    return undefined
+  }
+  return Object.entries(errors).reduce(
+    (acc, [key, val]) => {
+      if (key === 'list') {
+        acc.list = (val as unknown as NamedFormError[]).map(err => ({
+          ...err,
+          text: renderTemplateString(err.text, locals),
+        }))
+      } else {
+        acc[key] = { ...acc[key], text: renderTemplateString(val.text, locals) }
+      }
+      return acc
+    },
+    { list: [] }
+  ) as KeyedFormErrors
 }

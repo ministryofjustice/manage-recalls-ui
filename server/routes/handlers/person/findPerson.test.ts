@@ -73,17 +73,15 @@ describe('findPerson', () => {
     expect(res.locals.errors).toEqual({
       list: [
         {
-          errorMsgForField: 'Enter a NOMIS number',
+          text: 'Enter a NOMIS number',
           href: '#nomsNumber',
           name: 'nomsNumber',
-          text: 'NOMIS number',
           values: 0,
         },
       ],
       nomsNumber: {
-        errorMsgForField: 'Enter a NOMIS number',
+        text: 'Enter a NOMIS number',
         href: '#nomsNumber',
-        text: 'NOMIS number',
         values: 0,
       },
     })

@@ -85,7 +85,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceDate',
-          text: 'Date of sentence',
+          text: 'Enter the date of sentence',
           values: sentenceDateParts,
         })
       )
@@ -94,7 +94,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'licenceExpiryDate',
-          text: 'Licence expiry date',
+          text: 'Enter a licence expiry date',
           values: licenceExpiryDateParts,
         })
       )
@@ -103,7 +103,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceExpiryDate',
-          text: 'Sentence expiry date',
+          text: 'Enter a sentence expiry date',
           values: sentenceExpiryDateParts,
         })
       )
@@ -112,7 +112,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceLength',
-          text: 'Length of sentence',
+          text: 'Enter the length of sentence',
           values: sentenceLengthParts,
         })
       )
@@ -121,7 +121,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentencingCourt',
-          text: 'Sentencing court',
+          text: 'Select a sentencing court',
         })
       )
     }
@@ -129,7 +129,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'indexOffence',
-          text: 'Index offence',
+          text: 'Select an index offence',
         })
       )
     }
@@ -137,7 +137,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'lastReleasePrison',
-          text: 'Releasing prison',
+          text: 'Select a releasing prison',
         })
       )
     }
@@ -145,8 +145,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'bookingNumber',
-          text: 'Booking number',
-          errorMsgForField: 'Enter a booking number',
+          text: 'Enter a booking number',
         })
       )
     }
@@ -154,9 +153,8 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'bookingNumber',
-          text: 'Booking number',
           values: bookingNumber,
-          errorMsgForField: 'You entered an incorrect booking number format',
+          text: 'Enter a booking number in the correct format, like 12345C, A12347 or AB1234',
         })
       )
     }
@@ -164,7 +162,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'lastReleaseDate',
-          text: 'Latest release date',
+          text: 'Enter a latest release date',
           values: lastReleaseDateParts,
         })
       )
@@ -182,7 +180,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'conditionalReleaseDate',
-          text: 'Conditional release date',
+          text: 'Enter a conditional release date',
           values: conditionalReleaseDateParts,
         })
       )

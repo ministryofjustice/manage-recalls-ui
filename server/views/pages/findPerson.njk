@@ -33,8 +33,11 @@
                         attributes: {
                             'data-qa': 'search-field'
                         },
+                        hint: {
+                            text: 'For example, A1234AA'
+                        },
                         errorMessage: {
-                            text: errors.nomsNumber.errorMsgForField
+                            text: errors.nomsNumber.text
                         } if errors.nomsNumber else undefined
                     }) }}
                     <button type="submit" class="govuk-button moj-search__button " data-module="govuk-button" data-qa="search">

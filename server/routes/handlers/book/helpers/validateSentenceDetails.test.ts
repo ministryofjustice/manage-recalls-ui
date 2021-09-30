@@ -56,7 +56,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#sentenceDate',
         name: 'sentenceDate',
-        text: 'Date of sentence',
+        text: 'Enter the date of sentence',
         values: {
           day: '',
           month: '',
@@ -66,7 +66,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#licenceExpiryDate',
         name: 'licenceExpiryDate',
-        text: 'Licence expiry date',
+        text: 'Enter a licence expiry date',
         values: {
           day: '',
           month: '',
@@ -76,7 +76,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#sentenceExpiryDate',
         name: 'sentenceExpiryDate',
-        text: 'Sentence expiry date',
+        text: 'Enter a sentence expiry date',
         values: {
           day: '',
           month: '',
@@ -86,7 +86,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#sentenceLength',
         name: 'sentenceLength',
-        text: 'Length of sentence',
+        text: 'Enter the length of sentence',
         values: {
           days: '',
           months: '',
@@ -96,28 +96,27 @@ describe('validateSentenceDetails', () => {
       {
         href: '#sentencingCourt',
         name: 'sentencingCourt',
-        text: 'Sentencing court',
+        text: 'Select a sentencing court',
       },
       {
         href: '#indexOffence',
         name: 'indexOffence',
-        text: 'Index offence',
+        text: 'Select an index offence',
       },
       {
         href: '#lastReleasePrison',
         name: 'lastReleasePrison',
-        text: 'Releasing prison',
+        text: 'Select a releasing prison',
       },
       {
         href: '#bookingNumber',
         name: 'bookingNumber',
-        text: 'Booking number',
-        errorMsgForField: 'Enter a booking number',
+        text: 'Enter a booking number',
       },
       {
         href: '#lastReleaseDate',
         name: 'lastReleaseDate',
-        text: 'Latest release date',
+        text: 'Enter a latest release date',
         values: {
           day: '',
           month: '',
@@ -138,8 +137,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#bookingNumber',
         name: 'bookingNumber',
-        text: 'Booking number',
-        errorMsgForField: 'You entered an incorrect booking number format',
+        text: 'Enter a booking number in the correct format, like 12345C, A12347 or AB1234',
         values: '123',
       },
     ])
