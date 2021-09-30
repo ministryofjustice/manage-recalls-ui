@@ -38,7 +38,7 @@
                             value: formValues.previousConvictionMainName,
                             classes: "govuk-input--width-10",
                             errorMessage: {
-                                text: 'Enter the main name'
+                                text: errors.previousConvictionMainName.text
                             } if errors.previousConvictionMainName else undefined
                         }) }}
                     {% endset -%}
@@ -68,7 +68,7 @@
                             }
                         ],
                         errorMessage: {
-                            text: 'Select one'
+                            text: errors.hasOtherPreviousConvictionMainName.text
                         } if errors.hasOtherPreviousConvictionMainName else undefined
                     }) }}
                 </div>
