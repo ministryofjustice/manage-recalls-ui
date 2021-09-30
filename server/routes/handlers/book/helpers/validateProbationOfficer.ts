@@ -2,6 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { isEmailValid, isPhoneValid } from '../../helpers/validations'
+import { isStringValidReferenceData } from '../../helpers/referenceData/referenceData'
 
 export const validateProbationOfficer = (
   requestBody: ObjectMap<string>
@@ -15,10 +16,15 @@ export const validateProbationOfficer = (
     probationOfficerEmail,
     probationOfficerPhoneNumber,
     localDeliveryUnit,
+    localDeliveryUnitInput,
     authorisingAssistantChiefOfficer,
   } = requestBody
   const emailValid = isEmailValid(probationOfficerEmail)
   const phoneValid = isPhoneValid(probationOfficerPhoneNumber)
+  // localDeliveryUnit is the value of the hidden select dropdown that's populated by the autocomplete
+  // localDeliveryUnitInput is what the user typed into the autocomplete input. It might be a random string and not a valid LDU, so need validating
+  const localDeliveryUnitValid =
+    localDeliveryUnit && isStringValidReferenceData('localDeliveryUnits', localDeliveryUnitInput)
   if (
     !probationOfficerName ||
     !probationOfficerEmail ||
@@ -26,6 +32,7 @@ export const validateProbationOfficer = (
     !probationOfficerPhoneNumber ||
     !phoneValid ||
     !localDeliveryUnit ||
+    !localDeliveryUnitValid ||
     !authorisingAssistantChiefOfficer
   ) {
     errors = []
@@ -71,7 +78,7 @@ export const validateProbationOfficer = (
         })
       )
     }
-    if (!localDeliveryUnit) {
+    if (!localDeliveryUnit || !localDeliveryUnitValid) {
       errors.push(
         makeErrorObject({
           id: 'localDeliveryUnit',
