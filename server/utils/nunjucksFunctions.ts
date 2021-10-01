@@ -1,4 +1,5 @@
 import { DatePartsParsed, ObjectMap, UiListItem } from '../@types'
+import { allowedEmailFileExtensions } from '../routes/handlers/helpers/uploadStorage'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -113,3 +114,5 @@ export const checkboxItems = (
 
 export const filterSelectedItems = (items?: UiListItem[], currentValues?: string[]) =>
   items.filter(item => currentValues?.includes(item.value))
+
+export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.join(',')

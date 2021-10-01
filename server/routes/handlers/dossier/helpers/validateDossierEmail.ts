@@ -2,13 +2,13 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
+import { allowedEmailFileExtensions } from '../../helpers/uploadStorage'
 
 export const validateDossierEmail = ({
   requestBody,
   fileName,
   emailFileSelected,
   uploadFailed,
-  allowedFileExtensions,
   actionedByUserId,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
@@ -27,7 +27,7 @@ export const validateDossierEmail = ({
   }
   const dossierEmailSentDate = convertGmtDatePartsToUtc(dossierEmailSentDateParts, { dateMustBeInPast: true })
   const invalidFileExtension = emailFileSelected
-    ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
+    ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
     : false
   if (
     !emailFileSelected ||
@@ -75,7 +75,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: `The selected file must be an ${allowedFileExtensions.join(' or ')}`,
+          text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
           values: fileName,
         })
       )

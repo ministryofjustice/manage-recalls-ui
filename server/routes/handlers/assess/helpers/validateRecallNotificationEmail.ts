@@ -2,13 +2,13 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
+import { allowedEmailFileExtensions } from '../../helpers/uploadStorage'
 
 export const validateRecallNotificationEmail = ({
   requestBody,
   fileName,
   emailFileSelected,
   uploadFailed,
-  allowedFileExtensions,
   actionedByUserId,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
@@ -32,7 +32,7 @@ export const validateRecallNotificationEmail = ({
     includeTime: true,
   })
   const invalidFileExtension = emailFileSelected
-    ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
+    ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
     : false
   if (
     !emailFileSelected ||
@@ -80,7 +80,7 @@ export const validateRecallNotificationEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
-          text: `The selected file must be an ${allowedFileExtensions.join(' or ')}`,
+          text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
           values: fileName,
         })
       )
