@@ -45,7 +45,7 @@
                         },
                         items: dateTimeItems("recallEmailReceivedDateTime", formValues.recallEmailReceivedDateTimeParts, true),
                         errorMessage: {
-                            text: 'Enter a valid date and time in the past'
+                            text: errors.recallEmailReceivedDateTime.text
                         } if errors.recallEmailReceivedDateTime else undefined,
                         hint: {
                             text: 'For example, 23 5 2021 at 15:46'

@@ -138,8 +138,7 @@ context('Book a recall', () => {
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'hasOtherPreviousConvictionMainName',
-      summaryError: 'What is the main name on the pre-cons?',
-      fieldError: 'Select one',
+      summaryError: "Is Bobby Badger's name different on the previous convictions report (pre-cons)?",
     })
   })
 
@@ -149,8 +148,7 @@ context('Book a recall', () => {
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'previousConvictionMainName',
-      summaryError: 'What is the other main name used?',
-      fieldError: 'Enter the main name',
+      summaryError: 'Enter the name on the pre-cons',
     })
   })
 
@@ -165,7 +163,10 @@ context('Book a recall', () => {
       },
     })
     recallRequestReceived.clickContinue()
-    recallRequestReceived.expectError('recallEmailReceivedDateTime')
+    recallRequestReceived.assertErrorMessage({
+      fieldName: 'recallEmailReceivedDateTime',
+      summaryError: 'Enter the date and time you received the recall email',
+    })
   })
 
   it('User sees errors if sentence, offence and release details are not entered', () => {

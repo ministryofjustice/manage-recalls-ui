@@ -17,7 +17,7 @@ export const validatePreConsName = (
       errors.push(
         makeErrorObject({
           id: 'hasOtherPreviousConvictionMainName',
-          text: 'What is the main name on the pre-cons?',
+          text: "Is {{person.firstName}} {{person.lastName}}'s name different on the previous convictions report (pre-cons)?",
         })
       )
     }
@@ -25,7 +25,7 @@ export const validatePreConsName = (
       errors.push(
         makeErrorObject({
           id: 'previousConvictionMainName',
-          text: 'What is the other main name used?',
+          text: 'Enter the name on the pre-cons',
         })
       )
     }

@@ -23,7 +23,7 @@ export const validateRecallRequestReceived = (
     errors = [
       makeErrorObject({
         id: 'recallEmailReceivedDateTime',
-        text: 'Date and time you received the recall email',
+        text: 'Enter the date and time you received the recall email',
         values: recallEmailReceivedDateTimeParts,
       }),
     ]
@@ -32,7 +32,7 @@ export const validateRecallRequestReceived = (
     }
   }
   if (!errors) {
-    valuesToSave = { recallEmailReceivedDateTime }
+    valuesToSave = { recallEmailReceivedDateTime: recallEmailReceivedDateTime as string }
   }
   return { errors, valuesToSave, unsavedValues }
 }
