@@ -151,3 +151,22 @@ export interface RecallResult {
   status: string
   offender: PersonSearchResult
 }
+
+export type DateValidationErrorType =
+  | 'dateMustBeInPast'
+  | 'dateMustBeInFuture'
+  | 'blankDateTime'
+  | 'invalidDate'
+  | 'invalidTime'
+  | 'missingDateParts'
+export type DatePartNames = 'year' | 'month' | 'day' | 'hour' | 'minute'
+
+export interface DateTimePart {
+  name: DatePartNames
+  value: string
+}
+
+export interface DateValidationError {
+  error: DateValidationErrorType
+  invalidParts?: DatePartNames[]
+}

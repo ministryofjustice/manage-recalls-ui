@@ -1,7 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
-import { convertGmtDatePartsToUtc } from '../../helpers/dates'
+import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 
 export const validateRecallNotificationEmail = ({
   requestBody,
@@ -29,6 +29,7 @@ export const validateRecallNotificationEmail = ({
   }
   const recallNotificationEmailSentDateTime = convertGmtDatePartsToUtc(recallNotificationEmailSentDateTimeParts, {
     dateMustBeInPast: true,
+    includeTime: true,
   })
   const invalidFileExtension = emailFileSelected
     ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
@@ -38,22 +39,22 @@ export const validateRecallNotificationEmail = ({
     uploadFailed ||
     invalidFileExtension ||
     !confirmRecallNotificationEmailSent ||
-    !recallNotificationEmailSentDateTime
+    dateHasError(recallNotificationEmailSentDateTime)
   ) {
     errors = []
     if (!confirmRecallNotificationEmailSent) {
       errors.push(
         makeErrorObject({
           id: 'confirmRecallNotificationEmailSent',
-          text: 'Confirm you sent the email to all recipients',
+          text: "Confirm you've sent the email to all recipients",
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !recallNotificationEmailSentDateTime) {
+    if (confirmRecallNotificationEmailSent && dateHasError(recallNotificationEmailSentDateTime)) {
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailSentDateTime',
-          text: 'Date and time you sent the recall email',
+          text: 'Enter the date and time you sent the email',
           values: recallNotificationEmailSentDateTimeParts,
         })
       )
@@ -62,7 +63,7 @@ export const validateRecallNotificationEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
-          text: 'Upload the email',
+          text: 'Select an email',
         })
       )
     }
@@ -70,7 +71,7 @@ export const validateRecallNotificationEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
-          text: 'An error occurred uploading the email',
+          text: 'The selected file could not be uploaded – try again',
           values: fileName,
         })
       )
@@ -79,7 +80,7 @@ export const validateRecallNotificationEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
-          text: `Only ${allowedFileExtensions.join(', ')} files are allowed`,
+          text: `The selected file must be an ${allowedFileExtensions.join(' or ')}`,
           values: fileName,
         })
       )
@@ -91,7 +92,7 @@ export const validateRecallNotificationEmail = ({
     }
   }
   if (!errors) {
-    valuesToSave = { recallNotificationEmailSentDateTime, assessedByUserId: actionedByUserId }
+    valuesToSave = { recallNotificationEmailSentDateTime, assessedByUserId: actionedByUserId } as UpdateRecallRequest
   }
   return { errors, valuesToSave, unsavedValues }
 }

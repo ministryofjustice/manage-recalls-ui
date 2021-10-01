@@ -43,7 +43,7 @@ describe('validateEmail', () => {
       {
         href: '#confirmDossierEmailSent',
         name: 'confirmDossierEmailSent',
-        text: 'Confirm you sent the email to all recipients',
+        text: "Confirm you've sent the email to all recipients",
       },
     ])
   })
@@ -65,7 +65,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailSentDate',
         name: 'dossierEmailSentDate',
-        text: 'Date you sent the dossier email',
+        text: 'Enter the date you sent the email',
         values: {},
       },
     ])
@@ -85,7 +85,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'Upload the email',
+        text: 'Select an email',
       },
     ])
   })
@@ -104,7 +104,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'An error occurred uploading the email',
+        text: 'The selected file could not be uploaded – try again',
         values: 'test.msg',
       },
     ])
@@ -124,7 +124,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'An error occurred uploading the email',
+        text: 'The selected file could not be uploaded – try again',
         values: 'test.eml',
       },
     ])
