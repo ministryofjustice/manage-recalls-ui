@@ -37,14 +37,20 @@ context('Assess a recall', () => {
   const personName = 'Bobby Badger'
   const status = 'BOOKED_ON'
 
-  it('User can assess and issue a recall', () => {
-    const fileName = '2021-07-03 Phil Jones recall.msg'
+  const mockFileDownload = ({ fileName, docCategory }) => {
     cy.task('expectGetRecallDocument', {
-      category: 'RECALL_NOTIFICATION_EMAIL',
+      category: docCategory,
       file: 'abc',
       fileName,
       documentId: '123',
     })
+  }
+  const checkDownload = fileName => {
+    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
+    cy.readFile(downloadedFilename, 'binary')
+  }
+
+  it('User can assess and issue a recall', () => {
     cy.login()
     let assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.clickContinue()
@@ -74,7 +80,7 @@ context('Assess a recall', () => {
         Minute: '04',
       },
     })
-    assessRecallEmail.uploadEmail('email.msg')
+    assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
@@ -93,9 +99,16 @@ context('Assess a recall', () => {
       textToFind: '15 August 2021 at 14:04',
     })
     assessRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+
+    let fileName = 'recall-request.eml'
+    mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
+    cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
+    checkDownload(fileName)
+
+    fileName = '2021-07-03 Phil Jones recall.msg'
+    mockFileDownload({ fileName, docCategory: 'RECALL_NOTIFICATION_EMAIL' })
     cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
-    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
-    cy.readFile(downloadedFilename, 'binary')
+    checkDownload(fileName)
   })
 
   it("User sees an error if they don't make a decision", () => {
@@ -198,7 +211,7 @@ context('Assess a recall', () => {
 
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallEmail.confirmEmailSent()
-    assessRecallEmail.uploadEmail('email.msg')
+    assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailSentDateTime',
@@ -222,7 +235,10 @@ context('Assess a recall', () => {
         Minute: '04',
       },
     })
-    assessRecallEmail.uploadEmail('part_a_recall_report.pdf')
+    assessRecallEmail.uploadEmail({
+      fieldName: 'recallNotificationEmailFileName',
+      fileName: 'part_a_recall_report.pdf',
+    })
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',

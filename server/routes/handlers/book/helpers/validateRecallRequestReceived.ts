@@ -1,7 +1,9 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { DateValidationError, NamedFormError, ObjectMap } from '../../../../@types'
+import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
+import { allowedEmailFileExtensions } from '../../helpers/uploadStorage'
+import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 
 const makeErrorMessage = (validationError: DateValidationError): string => {
   switch (validationError.error) {
@@ -20,9 +22,16 @@ const makeErrorMessage = (validationError: DateValidationError): string => {
   }
 }
 
-export const validateRecallRequestReceived = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateRecallRequestReceived = ({
+  requestBody,
+  fileName,
+  emailFileSelected,
+  uploadFailed,
+}: EmailUploadValidatorArgs): {
+  errors?: NamedFormError[]
+  valuesToSave: UpdateRecallRequest
+  unsavedValues: ObjectMap<unknown>
+} => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -37,14 +46,53 @@ export const validateRecallRequestReceived = (
     dateMustBeInPast: true,
     includeTime: true,
   })
-  if (dateHasError(recallEmailReceivedDateTime)) {
-    errors = [
-      makeErrorObject({
-        id: 'recallEmailReceivedDateTime',
-        text: makeErrorMessage(recallEmailReceivedDateTime as DateValidationError),
-        values: recallEmailReceivedDateTimeParts,
-      }),
-    ]
+  const invalidFileExtension = emailFileSelected
+    ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
+    : false
+  const existingUpload = requestBody[AddDocumentRequest.category.RECALL_REQUEST_EMAIL] === 'existingUpload'
+  if (
+    (!emailFileSelected && !existingUpload) ||
+    uploadFailed ||
+    invalidFileExtension ||
+    dateHasError(recallEmailReceivedDateTime)
+  ) {
+    errors = []
+    if (dateHasError(recallEmailReceivedDateTime)) {
+      errors.push(
+        makeErrorObject({
+          id: 'recallEmailReceivedDateTime',
+          text: makeErrorMessage(recallEmailReceivedDateTime as DateValidationError),
+          values: recallEmailReceivedDateTimeParts,
+        })
+      )
+    }
+
+    if (!emailFileSelected && !existingUpload) {
+      errors.push(
+        makeErrorObject({
+          id: 'recallRequestEmailFileName',
+          text: 'Select an email',
+        })
+      )
+    }
+    if (uploadFailed) {
+      errors.push(
+        makeErrorObject({
+          id: 'recallRequestEmailFileName',
+          text: 'The selected file could not be uploaded – try again',
+          values: fileName,
+        })
+      )
+    }
+    if (!uploadFailed && invalidFileExtension) {
+      errors.push(
+        makeErrorObject({
+          id: 'recallRequestEmailFileName',
+          text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
+          values: fileName,
+        })
+      )
+    }
     unsavedValues = {
       recallEmailReceivedDateTimeParts,
     }

@@ -100,6 +100,14 @@
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                        Recall email uploaded
+                    </dt>
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallRequestEmailFileName'>
+                        <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Local police force
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='localPoliceForce'>

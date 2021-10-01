@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
-import { confirmEmailSent } from './confirmEmailSent'
+import { emailUploadForm } from './emailUploadForm'
 import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { uploadStorageField } from './uploadStorage'
@@ -10,7 +10,7 @@ import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/Api
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
 
-const handler = confirmEmailSent({
+const handler = emailUploadForm({
   emailFieldName: 'dossierEmailFileName',
   validator: validateDossierEmail,
   documentCategory: ApiRecallDocument.category.DOSSIER_EMAIL,

@@ -95,7 +95,7 @@ context('Create a dossier', () => {
         Year: '2021',
       },
     })
-    dossierEmail.uploadEmail('email.msg')
+    dossierEmail.uploadEmail({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
     dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })

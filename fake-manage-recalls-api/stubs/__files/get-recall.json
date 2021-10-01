@@ -27,6 +27,11 @@
       "category": "RECALL_NOTIFICATION_EMAIL",
       "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
       "fileName": "2021-07-03 Phil Jones recall.msg"
+    },
+    {
+      "category": "RECALL_REQUEST_EMAIL",
+      "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
+      "fileName": "recall-request.eml"
     }
   ],
   "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
