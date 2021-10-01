@@ -1,21 +1,19 @@
 import { Request, Response } from 'express'
 import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { uploadStorageField } from './uploadStorage'
+import { allowedEmailFileExtensions, uploadStorageField } from './uploadStorage'
 
-import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { ReqEmailUploadValidatorFn } from '../../../@types'
-
-const allowedFileExtensions = ['.msg']
 
 interface Args {
   emailFieldName: string
   validator: ReqEmailUploadValidatorFn
-  documentCategory: ApiRecallDocument.category
+  documentCategory: AddDocumentRequest.category
   nextPageUrlSuffix: string
 }
 
-export const confirmEmailSent =
+export const emailUploadForm =
   ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix }: Args) =>
   async (req: Request, res: Response): Promise<void> => {
     const processUpload = uploadStorageField(emailFieldName)
@@ -54,7 +52,7 @@ export const confirmEmailSent =
           fileName: file?.originalname,
           emailFileSelected,
           uploadFailed,
-          allowedFileExtensions,
+          allowedFileExtensions: allowedEmailFileExtensions,
           actionedByUserId: res.locals.user.uuid,
         })
         if (errors) {

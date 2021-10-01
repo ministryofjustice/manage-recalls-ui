@@ -5,7 +5,7 @@ import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
 import { uploadRecallDocumentsFormHandler, getUploadedDocument } from './handlers/book/recallUploadDocuments'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
-import { confirmEmailSent } from './handlers/helpers/confirmEmailSent'
+import { emailUploadForm } from './handlers/helpers/emailUploadForm'
 import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
 import { validateDecision } from './handlers/assess/helpers/validateDecision'
 import { validateDossierLetter } from './handlers/dossier/helpers/validateDossierLetter'
@@ -22,7 +22,7 @@ import {
   downloadRecallNotification,
 } from './handlers/helpers/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
-import { ApiRecallDocument } from '../@types/manage-recalls-api/models/ApiRecallDocument'
+import { AddDocumentRequest } from '../@types/manage-recalls-api/models/AddDocumentRequest'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
@@ -44,7 +44,15 @@ export default function routes(router: Router): Router {
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
   post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'request-received'))
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
-  post(`${basePath}/request-received`, handleRecallFormPost(validateRecallRequestReceived, 'last-release'))
+  post(
+    `${basePath}/request-received`,
+    emailUploadForm({
+      emailFieldName: 'recallRequestEmailFileName',
+      validator: validateRecallRequestReceived,
+      documentCategory: AddDocumentRequest.category.RECALL_REQUEST_EMAIL,
+      nextPageUrlSuffix: 'last-release',
+    })
+  )
   get(`${basePath}/last-release`, viewWithRecallAndPerson('recallSentenceDetails'))
   post(`${basePath}/last-release`, handleRecallFormPost(validateSentenceDetails, 'prison-police'))
   get(`${basePath}/prison-police`, viewWithRecallAndPerson('recallPrisonPolice'))
@@ -72,10 +80,10 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-email`, viewWithRecallAndPerson('assessEmail'))
   post(
     `${basePath}/assess-email`,
-    confirmEmailSent({
+    emailUploadForm({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      documentCategory: ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+      documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
   )
@@ -90,10 +98,10 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-email`, viewWithRecallAndPerson('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
-    confirmEmailSent({
+    emailUploadForm({
       emailFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
-      documentCategory: ApiRecallDocument.category.DOSSIER_EMAIL,
+      documentCategory: AddDocumentRequest.category.DOSSIER_EMAIL,
       nextPageUrlSuffix: 'dossier-confirmation',
     })
   )

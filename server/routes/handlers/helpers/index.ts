@@ -40,6 +40,7 @@ export const decorateDocs = ({
 }): {
   documents: DecoratedDocument[]
   recallNotificationEmail?: DecoratedDocument
+  recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
 } => {
   const decoratedUploadedDocs = documentTypes
@@ -72,6 +73,9 @@ export const decorateDocs = ({
       if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
         acc.recallNotificationEmail = curr
       }
+      if (curr.name === ApiRecallDocument.category.RECALL_REQUEST_EMAIL) {
+        acc.recallRequestEmail = curr
+      }
       if (curr.name === ApiRecallDocument.category.DOSSIER_EMAIL) {
         acc.dossierEmail = curr
       }
@@ -81,6 +85,7 @@ export const decorateDocs = ({
       documents: [],
       documentTypes: decoratedDocTypes,
       recallNotificationEmail: undefined,
+      recallRequestEmail: undefined,
       dossierEmail: undefined,
     }
   )

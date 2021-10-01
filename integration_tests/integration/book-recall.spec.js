@@ -47,6 +47,7 @@ context('Book a recall', () => {
         Minute: '3',
       },
     })
+    recallRequestReceived.uploadEmail({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
     recallRequestReceived.clickContinue()
     const recallLastRelease = recallLastReleasePage.verifyOnPage()
     recallLastRelease.setSentenceDate()
@@ -166,6 +167,15 @@ context('Book a recall', () => {
     recallRequestReceived.assertErrorMessage({
       fieldName: 'recallEmailReceivedDateTime',
       summaryError: 'The date you received the email must include: month, day',
+    })
+  })
+
+  it('User sees an error if a recall email is not uploaded', () => {
+    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
+    recallRequestReceived.clickContinue()
+    recallRequestReceived.assertErrorMessage({
+      fieldName: 'recallRequestEmailFileName',
+      summaryError: 'Select an email',
     })
   })
 

@@ -31,6 +31,13 @@ module.exports = (name, pageObject = {}) => {
     })
   }
 
+  const uploadEmail = ({ fieldName, fileName }) => {
+    cy.get(`[name="${fieldName}"]`).attachFile({
+      filePath: `../uploads/${fileName}`,
+      mimeType: 'application/octet-stream',
+    })
+  }
+
   if (pageObject.url) {
     cy.visit(pageObject.url)
   }
@@ -45,5 +52,6 @@ module.exports = (name, pageObject = {}) => {
     assertLinkHref,
     clickContinue,
     enterDateTime,
+    uploadEmail,
   }
 }
