@@ -1,7 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
-import { convertGmtDatePartsToUtc } from '../../helpers/dates'
+import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { isBookingNumberValid } from '../../helpers/validations'
 
 export const validateSentenceDetails = (
@@ -56,10 +56,10 @@ export const validateSentenceDetails = (
     month: sentenceExpiryDateMonth,
     day: sentenceExpiryDateDay,
   }
-  const lastReleaseDate = convertGmtDatePartsToUtc(lastReleaseDateParts, { dateMustBeInPast: true })
   const sentenceDate = convertGmtDatePartsToUtc(sentenceDateParts, { dateMustBeInPast: true })
   const licenceExpiryDate = convertGmtDatePartsToUtc(licenceExpiryDateParts, { dateMustBeInFuture: true })
   const sentenceExpiryDate = convertGmtDatePartsToUtc(sentenceExpiryDateParts, { dateMustBeInFuture: true })
+  const lastReleaseDate = convertGmtDatePartsToUtc(lastReleaseDateParts, { dateMustBeInPast: true })
   const sentenceLengthYearsParsed = parseInt(sentenceLengthYears, 10) || undefined
   const sentenceLengthMonthsParsed = parseInt(sentenceLengthMonths, 10) || undefined
   const sentenceLengthDaysParsed = parseInt(sentenceLengthDays, 10) || undefined
@@ -69,10 +69,10 @@ export const validateSentenceDetails = (
   )
   const bookingNumberValid = isBookingNumberValid(bookingNumber)
   if (
-    !lastReleaseDate ||
-    !sentenceDate ||
-    !licenceExpiryDate ||
-    !sentenceExpiryDate ||
+    dateHasError(sentenceDate) ||
+    dateHasError(licenceExpiryDate) ||
+    dateHasError(sentenceExpiryDate) ||
+    dateHasError(lastReleaseDate) ||
     !lastReleasePrison ||
     !sentencingCourt ||
     !indexOffence ||
@@ -81,7 +81,7 @@ export const validateSentenceDetails = (
     !sentenceLengthEntered
   ) {
     errors = []
-    if (!sentenceDate) {
+    if (dateHasError(sentenceDate)) {
       errors.push(
         makeErrorObject({
           id: 'sentenceDate',
@@ -90,7 +90,7 @@ export const validateSentenceDetails = (
         })
       )
     }
-    if (!licenceExpiryDate) {
+    if (dateHasError(licenceExpiryDate)) {
       errors.push(
         makeErrorObject({
           id: 'licenceExpiryDate',
@@ -99,7 +99,7 @@ export const validateSentenceDetails = (
         })
       )
     }
-    if (!sentenceExpiryDate) {
+    if (dateHasError(sentenceExpiryDate)) {
       errors.push(
         makeErrorObject({
           id: 'sentenceExpiryDate',
@@ -158,7 +158,7 @@ export const validateSentenceDetails = (
         })
       )
     }
-    if (!lastReleaseDate) {
+    if (dateHasError(lastReleaseDate)) {
       errors.push(
         makeErrorObject({
           id: 'lastReleaseDate',
@@ -175,7 +175,7 @@ export const validateSentenceDetails = (
   }
   if (conditionalReleaseDateYear || conditionalReleaseDateMonth || conditionalReleaseDateDay) {
     conditionalReleaseDate = convertGmtDatePartsToUtc(conditionalReleaseDateParts)
-    if (!conditionalReleaseDate) {
+    if (dateHasError(conditionalReleaseDate)) {
       errors = errors || []
       errors.push(
         makeErrorObject({
@@ -218,7 +218,7 @@ export const validateSentenceDetails = (
             days: sentenceLengthDaysParsed,
           }
         : undefined,
-    }
+    } as UpdateRecallRequest
   }
   return { errors, valuesToSave, unsavedValues }
 }

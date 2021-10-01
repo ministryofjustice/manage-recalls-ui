@@ -62,7 +62,7 @@ describe('confirmEmailSent', () => {
           {
             href: '#dossierEmailFileName',
             name: 'dossierEmailFileName',
-            text: 'An error occurred uploading the email',
+            text: 'The selected file could not be uploaded – try again',
             values: 'report.pdf',
           },
         ])

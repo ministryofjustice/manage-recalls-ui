@@ -165,7 +165,7 @@ context('Book a recall', () => {
     recallRequestReceived.clickContinue()
     recallRequestReceived.assertErrorMessage({
       fieldName: 'recallEmailReceivedDateTime',
-      summaryError: 'Enter the date and time you received the recall email',
+      summaryError: 'The date you received the email must include: month, day',
     })
   })
 
