@@ -85,7 +85,7 @@ describe('validateRecallRequestReceived', () => {
   })
 
   it('returns an error if the date-time is not in the past', () => {
-    const { year, month, day, hour, minute } = DateTime.now().plus({ hours: 1 })
+    const { year, month, day, hour, minute } = DateTime.now().plus({ hours: 2 })
     const requestBody = {
       recallEmailReceivedDateTimeDay: day.toString(),
       recallEmailReceivedDateTimeMonth: month.toString(),
