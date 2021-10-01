@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import { validateRecallRequestReceived } from './validateRecallRequestReceived'
 
 describe('validateRecallRequestReceived', () => {
@@ -42,7 +43,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'Date and time you received the recall email',
+        text: 'Enter the date you received the email',
         values: {},
       },
     ])
@@ -71,7 +72,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'Date and time you received the recall email',
+        text: 'The date you received the email must include: month, hour',
         values: {
           day: '23',
           hour: '',
@@ -81,5 +82,42 @@ describe('validateRecallRequestReceived', () => {
         },
       },
     ])
+  })
+
+  it('returns an error if the date-time is not in the past', () => {
+    const { year, month, day, hour, minute } = DateTime.now().plus({ hours: 2 })
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: day.toString(),
+      recallEmailReceivedDateTimeMonth: month.toString(),
+      recallEmailReceivedDateTimeYear: year.toString(),
+      recallEmailReceivedDateTimeHour: hour.toString(),
+      recallEmailReceivedDateTimeMinute: minute.toString(),
+    }
+    const { errors } = validateRecallRequestReceived(requestBody)
+    expect(errors[0].text).toEqual('The date you received the email must be today or in the past')
+  })
+
+  it('returns an error if the date is invalid', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '13',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '10',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors } = validateRecallRequestReceived(requestBody)
+    expect(errors[0].text).toEqual('The date you received the email must be a real date')
+  })
+
+  it('returns an error if the time is invalid', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '24',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors } = validateRecallRequestReceived(requestBody)
+    expect(errors[0].text).toEqual('The time you received the email must be a real time')
   })
 })

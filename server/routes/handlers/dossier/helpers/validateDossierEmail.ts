@@ -1,7 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
-import { convertGmtDatePartsToUtc } from '../../helpers/dates'
+import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 
 export const validateDossierEmail = ({
   requestBody,
@@ -29,21 +29,27 @@ export const validateDossierEmail = ({
   const invalidFileExtension = emailFileSelected
     ? !allowedFileExtensions.some((ext: string) => fileName.endsWith(ext))
     : false
-  if (!emailFileSelected || uploadFailed || invalidFileExtension || !confirmDossierEmailSent || !dossierEmailSentDate) {
+  if (
+    !emailFileSelected ||
+    uploadFailed ||
+    invalidFileExtension ||
+    !confirmDossierEmailSent ||
+    dateHasError(dossierEmailSentDate)
+  ) {
     errors = []
     if (!confirmDossierEmailSent) {
       errors.push(
         makeErrorObject({
           id: 'confirmDossierEmailSent',
-          text: 'Confirm you sent the email to all recipients',
+          text: "Confirm you've sent the email to all recipients",
         })
       )
     }
-    if (confirmDossierEmailSent && !dossierEmailSentDate) {
+    if (confirmDossierEmailSent && dateHasError(dossierEmailSentDate)) {
       errors.push(
         makeErrorObject({
           id: 'dossierEmailSentDate',
-          text: 'Date you sent the dossier email',
+          text: 'Enter the date you sent the email',
           values: dossierEmailSentDateParts,
         })
       )
@@ -52,7 +58,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: 'Upload the email',
+          text: 'Select an email',
         })
       )
     }
@@ -60,7 +66,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: 'An error occurred uploading the email',
+          text: 'The selected file could not be uploaded – try again',
           values: fileName,
         })
       )
@@ -69,7 +75,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: `Only ${allowedFileExtensions.join(', ')} files are allowed`,
+          text: `The selected file must be an ${allowedFileExtensions.join(' or ')}`,
           values: fileName,
         })
       )
@@ -81,7 +87,7 @@ export const validateDossierEmail = ({
     }
   }
   if (!errors) {
-    valuesToSave = { dossierEmailSentDate, dossierCreatedByUserId: actionedByUserId }
+    valuesToSave = { dossierEmailSentDate: dossierEmailSentDate as string, dossierCreatedByUserId: actionedByUserId }
   }
   return { errors, valuesToSave, unsavedValues }
 }

@@ -188,8 +188,7 @@ context('Assess a recall', () => {
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
-      summaryError: 'Upload the email',
-      fieldError: 'Upload the email',
+      summaryError: 'Select an email',
     })
   })
 
@@ -203,8 +202,7 @@ context('Assess a recall', () => {
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailSentDateTime',
-      summaryError: 'Date and time you sent the recall email',
-      fieldError: 'Enter a valid date and time in the past',
+      summaryError: 'Enter the date and time you sent the email',
     })
   })
 
@@ -228,8 +226,7 @@ context('Assess a recall', () => {
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
-      summaryError: 'Only .msg files are allowed',
-      fieldError: 'Only .msg files are allowed',
+      summaryError: 'The selected file must be an .msg',
     })
   })
 })

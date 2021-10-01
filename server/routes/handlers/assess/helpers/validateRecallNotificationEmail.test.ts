@@ -45,7 +45,7 @@ describe('validateEmail', () => {
       {
         href: '#confirmRecallNotificationEmailSent',
         name: 'confirmRecallNotificationEmailSent',
-        text: 'Confirm you sent the email to all recipients',
+        text: "Confirm you've sent the email to all recipients",
       },
     ])
   })
@@ -67,7 +67,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailSentDateTime',
         name: 'recallNotificationEmailSentDateTime',
-        text: 'Date and time you sent the recall email',
+        text: 'Enter the date and time you sent the email',
         values: {},
       },
     ])
@@ -87,7 +87,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'Upload the email',
+        text: 'Select an email',
       },
     ])
   })
@@ -106,7 +106,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'An error occurred uploading the email',
+        text: 'The selected file could not be uploaded – try again',
         values: 'test.msg',
       },
     ])
@@ -126,7 +126,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'An error occurred uploading the email',
+        text: 'The selected file could not be uploaded – try again',
         values: 'test.eml',
       },
     ])
