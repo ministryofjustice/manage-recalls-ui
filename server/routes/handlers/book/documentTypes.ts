@@ -37,6 +37,11 @@ export const documentTypes: UploadDocumentMetadata[] = [
     fileName: 'OASys.pdf',
   },
   {
+    label: 'Recall request email',
+    name: ApiRecallDocument.category.RECALL_REQUEST_EMAIL,
+    type: 'email',
+  },
+  {
     label: 'Recall notification email',
     name: ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
     type: 'email',
