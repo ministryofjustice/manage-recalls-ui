@@ -15,7 +15,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(errors).toBeUndefined()
@@ -35,7 +34,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -57,7 +55,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -77,7 +74,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: false,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -96,7 +92,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -113,10 +108,9 @@ describe('validateEmail', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
-      fileName: 'test.eml',
+      fileName: 'test.msl',
       emailFileSelected: true,
-      uploadFailed: true,
-      allowedFileExtensions: ['.msg'],
+      uploadFailed: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -124,8 +118,8 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'The selected file could not be uploaded – try again',
-        values: 'test.eml',
+        text: 'The selected file must be an .msg or .eml',
+        values: 'test.msl',
       },
     ])
   })

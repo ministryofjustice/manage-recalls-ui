@@ -8,3 +8,5 @@ interface Field {
 }
 export const uploadStorageFields = (fields: Field[]) => uploadStorage.fields(fields)
 export const uploadStorageField = (fieldName: string) => uploadStorage.single(fieldName)
+
+export const allowedEmailFileExtensions = ['.msg', '.eml']

@@ -9,6 +9,7 @@ import {
   selectItems,
   checkboxItems,
   filterSelectedItems,
+  allowedEmailFileExtensionList,
 } from './nunjucksFunctions'
 import { isDefined } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
@@ -37,6 +38,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('checkboxItems', checkboxItems)
   njkEnv.addGlobal('filterSelectedItems', filterSelectedItems)
   njkEnv.addGlobal('isDefined', isDefined)
+  njkEnv.addGlobal('allowedEmailFileExtensionList', allowedEmailFileExtensionList)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)
