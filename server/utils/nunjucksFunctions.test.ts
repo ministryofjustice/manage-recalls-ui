@@ -1,5 +1,6 @@
 import {
   checkboxItems,
+  dateTimeItems,
   filterSelectedItems,
   personOrPeopleFilter,
   selectItems,
@@ -181,6 +182,61 @@ describe('filterSelectedItems', () => {
       {
         text: 'Electronic locking and monitoring (ELM) - Breach of non-curfew related condition',
         value: 'BREACH_EXCLUSION_ZONE',
+      },
+    ])
+  })
+})
+
+describe('dateTimeItems', () => {
+  it('generates a list of items for input values', () => {
+    const items = dateTimeItems('testField', { year: 2021, month: 8, day: 20, hour: 0, minute: 5 }, true)
+    expect(items).toEqual([
+      {
+        attributes: {
+          maxlength: 2,
+        },
+        classes: 'govuk-input--width-2',
+        label: 'Day',
+        name: 'testFieldDay',
+        value: '20',
+      },
+      {
+        attributes: {
+          maxlength: 2,
+        },
+        classes: 'govuk-input--width-2',
+        label: 'Month',
+        name: 'testFieldMonth',
+        type: 'number',
+        value: '8',
+      },
+      {
+        attributes: {
+          maxlength: 4,
+        },
+        classes: 'govuk-input--width-4 govuk-!-margin-right-8',
+        label: 'Year',
+        name: 'testFieldYear',
+        value: '2021',
+      },
+      {
+        attributes: {
+          maxlength: 2,
+        },
+        classes: 'govuk-input--width-2',
+        label: 'Hour',
+        name: 'testFieldHour',
+        type: 'number',
+        value: '0',
+      },
+      {
+        attributes: {
+          maxlength: 2,
+        },
+        classes: 'govuk-input--width-2 govuk-!-margin-right-8',
+        label: 'Minute',
+        name: 'testFieldMinute',
+        value: '5',
       },
     ])
   })

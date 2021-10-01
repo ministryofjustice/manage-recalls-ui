@@ -27,7 +27,7 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
       attributes: {
         maxlength: 2,
       },
-      value: values?.day,
+      value: values?.day.toString(),
     },
     {
       name: `${fieldName}Month`,
@@ -37,7 +37,7 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
       attributes: {
         maxlength: 2,
       },
-      value: values?.month,
+      value: values?.month.toString(),
     },
     {
       name: `${fieldName}Year`,
@@ -46,7 +46,7 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
       attributes: {
         maxlength: 4,
       },
-      value: values?.year,
+      value: values?.year.toString(),
     },
   ]
   if (includeTime) {
@@ -60,7 +60,7 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
         attributes: {
           maxlength: 2,
         },
-        value: values?.hour,
+        value: values?.hour.toString(),
       },
       {
         name: `${fieldName}Minute`,
@@ -69,7 +69,7 @@ export const dateTimeItems = (fieldName: string, values: DatePartsParsed, includ
         attributes: {
           maxlength: 2,
         },
-        value: values?.minute,
+        value: values?.minute.toString(),
       },
     ]
   }
