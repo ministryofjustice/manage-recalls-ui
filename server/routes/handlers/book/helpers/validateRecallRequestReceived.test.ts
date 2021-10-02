@@ -221,7 +221,6 @@ describe('validateRecallRequestReceived', () => {
         href: '#recallRequestEmailFileName',
         name: 'recallRequestEmailFileName',
         text: 'The selected file could not be uploaded – try again',
-        values: 'test.msg',
       },
     ])
   })
@@ -246,7 +245,6 @@ describe('validateRecallRequestReceived', () => {
         href: '#recallRequestEmailFileName',
         name: 'recallRequestEmailFileName',
         text: 'The selected file must be an .msg or .eml',
-        values: 'test.msl',
       },
     ])
   })

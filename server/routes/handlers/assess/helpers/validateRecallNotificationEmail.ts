@@ -2,7 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
-import { allowedEmailFileExtensions } from '../../helpers/uploadStorage'
+import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
 
 export const validateRecallNotificationEmail = ({
   requestBody,

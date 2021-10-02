@@ -100,7 +100,6 @@ describe('validateEmail', () => {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
         text: 'The selected file could not be uploaded – try again',
-        values: 'test.msg',
       },
     ])
   })
@@ -119,7 +118,6 @@ describe('validateEmail', () => {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
         text: 'The selected file must be an .msg or .eml',
-        values: 'test.msl',
       },
     ])
   })

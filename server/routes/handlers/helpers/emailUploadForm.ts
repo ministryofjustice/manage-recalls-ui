@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { allowedEmailFileExtensions, uploadStorageField } from './uploadStorage'
+import { uploadStorageField } from './uploadStorage'
 
 import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { ReqEmailUploadValidatorFn } from '../../../@types'
+import { makeErrorObject } from './index'
 
 interface Args {
   emailFieldName: string
@@ -24,12 +25,27 @@ export const emailUploadForm =
       res.sendStatus(400)
       return
     }
+    const saveError = [
+      makeErrorObject({
+        id: emailFieldName,
+        text: 'The selected file could not be uploaded – try again',
+      }),
+    ]
     processUpload(req, res, async err => {
       try {
-        let uploadFailed = Boolean(err)
+        const uploadFailed = Boolean(err)
         const { file } = req
         const emailFileSelected = Boolean(file)
-        if (emailFileSelected && !uploadFailed) {
+        let saveToApiSuccessful = false
+
+        const { errors, valuesToSave, unsavedValues } = validator({
+          requestBody: req.body,
+          fileName: file?.originalname,
+          emailFileSelected,
+          uploadFailed,
+          actionedByUserId: res.locals.user.uuid,
+        })
+        if (!errors && emailFileSelected && !uploadFailed) {
           try {
             const response = await addRecallDocument(
               recallId,
@@ -40,36 +56,23 @@ export const emailUploadForm =
               },
               user.token
             )
-            if (!response.documentId) {
-              uploadFailed = true
+            if (response.documentId) {
+              saveToApiSuccessful = true
             }
           } catch (e) {
-            uploadFailed = true
+            saveToApiSuccessful = false
           }
         }
-        const { errors, valuesToSave, unsavedValues } = validator({
-          requestBody: req.body,
-          fileName: file?.originalname,
-          emailFileSelected,
-          uploadFailed,
-          allowedFileExtensions: allowedEmailFileExtensions,
-          actionedByUserId: res.locals.user.uuid,
-        })
-        if (errors) {
-          req.session.errors = errors
+        if (errors || !saveToApiSuccessful) {
+          req.session.errors = errors || saveError
           req.session.unsavedValues = unsavedValues
           return res.redirect(303, req.originalUrl)
         }
-        const recall = await updateRecall(recallId, valuesToSave, res.locals.user.token)
-        res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/${nextPageUrlSuffix}`)
+        await updateRecall(recallId, valuesToSave, res.locals.user.token)
+        res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/${nextPageUrlSuffix}`)
       } catch (e) {
         logger.error(e)
-        req.session.errors = [
-          {
-            name: 'saveError',
-            text: 'An error occurred saving your changes',
-          },
-        ]
+        req.session.errors = saveError
         res.redirect(303, req.originalUrl)
       }
     })
