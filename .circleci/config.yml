@@ -105,6 +105,7 @@ jobs:
       - checkout
       - node/install-packages
       - run: npm run test
+      - run: npm run pact-test
       - store_artifacts:
           path: 'pact/pacts'
       - run:

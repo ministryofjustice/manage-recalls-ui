@@ -1,10 +1,10 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { searchRecalls } from './manageRecallsApiClient'
-import * as configModule from '../../config'
-import getRecallsJson from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
-import { pactPostRequest, pactJsonResponse } from './pactTestUtils'
+import { createRecall } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import * as configModule from '../server/config'
+import createRecallResponseJson from '../fake-manage-recalls-api/stubs/__files/create-recall.json'
+import { pactJsonResponse, pactPostRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -14,17 +14,17 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('search recalls', () => {
-    test('can get recalls by NOMS number', async () => {
+  describe('create a recall', () => {
+    test('can successfully create a recall', async () => {
       await provider.addInteraction({
-        state: `a list of recalls exists for NOMS number`,
-        ...pactPostRequest('a search request by NOMS number', '/recalls/search', { nomsNumber }, accessToken),
-        willRespondWith: pactJsonResponse(Matchers.like(getRecallsJson), 200),
+        state: 'a recall can be created',
+        ...pactPostRequest('a create recall request', '/recalls', { nomsNumber }, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(createRecallResponseJson), 201),
       })
 
-      const actual = await searchRecalls({ nomsNumber }, accessToken)
+      const actual = await createRecall(nomsNumber, accessToken)
 
-      expect(actual).toEqual(getRecallsJson)
+      expect(actual).toEqual(createRecallResponseJson)
     })
 
     test('returns 400 if blank NOMS number provided', async () => {
@@ -34,10 +34,10 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         message: 'nomsNumber: must not be blank',
       }
       await provider.addInteraction({
-        state: 'a search by blank NOMS number',
+        state: 'a recall can be created',
         ...pactPostRequest(
-          'a search request with blank NOMS number',
-          '/recalls/search',
+          'a create recall request with blank nomsNumber',
+          '/recalls',
           { nomsNumber: blankNomsNumber },
           accessToken
         ),
@@ -45,7 +45,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await searchRecalls({ nomsNumber: blankNomsNumber }, accessToken)
+        await createRecall(blankNomsNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(400)
         expect(exception.data).toEqual(errorResponse)
@@ -55,12 +55,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...pactPostRequest('an unauthorized search request', '/recalls/search', { nomsNumber }, accessToken),
+        ...pactPostRequest('an unauthorized create recall request', '/recalls', { nomsNumber }, accessToken),
         willRespondWith: { status: 401 },
       })
 
       try {
-        await searchRecalls({ nomsNumber }, accessToken)
+        await createRecall(nomsNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

@@ -8,7 +8,7 @@
     "copy-views": "cp -R server/views dist/server/",
     "compile-sass": "sass --no-source-map --load-path=node_modules/govuk-frontend --load-path=node_modules/@ministryofjustice/frontend ./assets/sass/application.sass:./assets/stylesheets/application.css ./assets/sass/application-ie8.sass:./assets/stylesheets/application-ie8.css --style compressed",
     "build": "npm run clean && npm run compile-sass && tsc && npm run copy-views",
-    "local:build": "npm install && npm run build && npm run lint && npm run test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
+    "local:build": "npm install && npm run build && npm run lint && npm run test && npm run pact-test && ./scripts/start-for-integration-tests.sh && npm run int-test && ./scripts/stop-local.sh",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts\" \"npm run compile-sass -- --watch\"",
     "start:e2e": "export $(cat e2e.env) && npm run start:dev",
@@ -26,7 +26,7 @@
     "int-test-ui": "rm -rf cypress/downloads && cypress open",
     "clean": "rm -rf dist build",
     "prepare": "npx husky install",
-    "pact-test": "rm -rf pact/pacts/* && jest --forceExit --config=./pact/jest.pact.config.js"
+    "pact-test": "rm -rf pact/pacts/* && jest --runInBand --forceExit --config=./pact/jest.pact.config.js"
   },
   "engines": {
     "node": "14.17.3",
