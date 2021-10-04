@@ -2,11 +2,12 @@
 <script nonce='{{ params.cspNonce }}'>
   accessibleAutocomplete.enhanceSelectElement({
     defaultValue: '',
-    selectElement: document.querySelector('{{params.selectElement}}'),
+    selectElement: document.querySelector('#{{params.name}}'),
     showAllValues: true,
     autoselect: true,
     showNoOptionsFound: true,
     displayMenu: 'overlay',
-    preserveNullOptions: true
+    preserveNullOptions: true,
+    name: '{{ params.name }}Input'
   })
 </script>

@@ -56,7 +56,7 @@
                             },
                             items: dateTimeItems("dossierEmailSentDate", formValues.dossierEmailSentDateParts, false),
                             errorMessage: {
-                                text: 'Enter a valid date in the past'
+                                text: errors.dossierEmailSentDate.text
                             } if errors.dossierEmailSentDate else undefined
                         }) }}
                         {{ govukFileUpload({
@@ -67,7 +67,7 @@
                                 classes: 'govuk-label--m'
                             },
                             attributes: {
-                                accept: '.msg'
+                                accept: allowedEmailFileExtensionList()
                             },
                             errorMessage: {
                                 text: errors.dossierEmailFileName.text
@@ -96,7 +96,7 @@
                             }
                         ],
                         errorMessage: {
-                            text: "Confirm you sent the email"
+                            text: errors.confirmDossierEmailSent.text
                         } if errors.confirmDossierEmailSent else undefined
                     }) }}
                     <button class="govuk-button" data-qa="continueButton">Complete dossier creation</button>

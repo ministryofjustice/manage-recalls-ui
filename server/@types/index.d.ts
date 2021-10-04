@@ -142,12 +142,30 @@ export interface EmailUploadValidatorArgs {
   fileName: string
   emailFileSelected: boolean
   uploadFailed: boolean
-  allowedFileExtensions: string[]
-  actionedByUserId: string
+  actionedByUserId?: string
 }
 
 export interface RecallResult {
   recallId: string
   status: string
   offender: PersonSearchResult
+}
+
+export type DateValidationErrorType =
+  | 'dateMustBeInPast'
+  | 'dateMustBeInFuture'
+  | 'blankDateTime'
+  | 'invalidDate'
+  | 'invalidTime'
+  | 'missingDateParts'
+export type DatePartNames = 'year' | 'month' | 'day' | 'hour' | 'minute'
+
+export interface DateTimePart {
+  name: DatePartNames
+  value: string
+}
+
+export interface DateValidationError {
+  error: DateValidationErrorType
+  invalidParts?: DatePartNames[]
 }

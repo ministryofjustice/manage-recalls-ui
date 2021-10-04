@@ -31,8 +31,8 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/request-received" method="post">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/request-received?_csrf={{ csrfToken }}"
+                  method="post" enctype="multipart/form-data">
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukDateInput({
                         name: 'recallEmailReceivedDateTime',
@@ -45,11 +45,32 @@
                         },
                         items: dateTimeItems("recallEmailReceivedDateTime", formValues.recallEmailReceivedDateTimeParts, true),
                         errorMessage: {
-                            text: 'Enter a valid date and time in the past'
+                            text: errors.recallEmailReceivedDateTime.text
                         } if errors.recallEmailReceivedDateTime else undefined,
                         hint: {
                             text: 'For example, 23 5 2021 at 15:46'
                         }
+                    }) }}
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the recall email</h2>
+                    {% if recall.recallRequestEmail %}
+                        <input type='hidden' name='{{ recall.recallRequestEmail.name}}' value='existingUpload'>
+                        <div class='govuk-body govuk-!-margin-bottom-4'>
+                            <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
+                        </div>
+                    {% endif %}
+                    {{ govukFileUpload({
+                        id: "recallRequestEmailFileName",
+                        name: "recallRequestEmailFileName",
+                        label: {
+                            text: "Upload the recall email",
+                            classes: 'govuk-visually-hidden'
+                        },
+                        attributes: {
+                            accept: allowedEmailFileExtensionList()
+                        },
+                        errorMessage: {
+                            text: errors.recallRequestEmailFileName.text
+                        }  if errors.recallRequestEmailFileName
                     }) }}
                 </div>
                 <div>

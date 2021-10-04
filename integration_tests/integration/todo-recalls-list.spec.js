@@ -22,7 +22,7 @@ context('To do (recalls) list', () => {
 
   const nomsNumber = 'A1234AA'
 
-  it('User can continue a previous booking', () => {
+  it('User can continue a previous booking if recall status is null', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -38,7 +38,7 @@ context('To do (recalls) list', () => {
     recallPreConsNamePage.verifyOnPage({ personName })
   })
 
-  it('User can assess a recall', () => {
+  it('User can move on to assessRecall if the recall has status BOOKED_ON', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -55,7 +55,7 @@ context('To do (recalls) list', () => {
     assessRecallPage.verifyOnPage({ fullName: personName })
   })
 
-  it('User can create a dossier', () => {
+  it('User can move on to createDossier if the recall has status RECALL_NOTIFICATION_ISSUED', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -70,5 +70,22 @@ context('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
     recallsList.createDossier({ recallId })
     dossierLetterPage.verifyOnPage()
+  })
+
+  it('User can move on to assessRecall if the recall has status DOSSIER_ISSUED', () => {
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          recallId,
+          nomsNumber,
+          status: 'DOSSIER_ISSUED',
+        },
+      ],
+    })
+    cy.login()
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
+    recallsList.viewRecall({ recallId })
+    assessRecallPage.verifyOnPage({ fullName: personName })
   })
 })

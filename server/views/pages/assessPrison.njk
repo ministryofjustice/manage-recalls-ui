@@ -60,7 +60,7 @@
 {% block bodyEnd %}
     {{ super() }}
     {{ autocomplete({
-        selectElement: '#currentPrison',
+        name: 'currentPrison',
         cspNonce: cspNonce
     })
     }}

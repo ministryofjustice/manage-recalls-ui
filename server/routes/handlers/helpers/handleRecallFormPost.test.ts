@@ -2,60 +2,50 @@
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { handleRecallFormPost } from './handleRecallFormPost'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { validateRecallRequestReceived } from '../book/helpers/validateRecallRequestReceived'
+import { validatePolice } from '../book/helpers/validatePolice'
 import { validateDecision } from '../assess/helpers/validateDecision'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
-const handler = handleRecallFormPost(validateRecallRequestReceived, 'last-release')
+const handler = handleRecallFormPost(validatePolice, 'issues-needs')
 
 describe('handleRecallFormPost', () => {
   const nomsNumber = 'AA123AA'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const recallEmailReceivedDateTime = {
-    recallEmailReceivedDateTimeDay: '10',
-    recallEmailReceivedDateTimeMonth: '05',
-    recallEmailReceivedDateTimeYear: '2021',
-    recallEmailReceivedDateTimeHour: '05',
-    recallEmailReceivedDateTimeMinute: '3',
+  const requestBody = {
+    localPoliceForce: 'Kent',
   }
 
   afterEach(() => {
     jest.resetAllMocks()
   })
 
-  it('should update recall length and redirect to recall view', async () => {
+  it('should update recall and redirect to recall view', async () => {
     const recallDetails = { recallId, nomsNumber }
 
     updateRecall.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
       params: { nomsNumber, recallId },
-      body: recallEmailReceivedDateTime,
+      body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
 
     await handler(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/last-release`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/issues-needs`)
   })
 
-  it('should reload the page if the date is invalid', async () => {
+  it('should reload the page if the request body is invalid', async () => {
     const recallDetails = { recallId, nomsNumber }
-    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/request-received`
+    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/prison-police`
 
     updateRecall.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
       originalUrl: currentPageUrl,
       params: { nomsNumber, recallId },
-      body: {
-        recallEmailReceivedDateTimeDay: '10',
-        recallEmailReceivedDateTimeMonth: '05',
-        recallEmailReceivedDateTimeYear: '',
-        recallEmailReceivedDateTimeHour: '05',
-        recallEmailReceivedDateTimeMinute: '3',
-      },
+      body: {},
     })
     const { res } = mockResponseWithAuthenticatedUser('')
 
@@ -65,13 +55,13 @@ describe('handleRecallFormPost', () => {
   })
 
   it('should reload the page if the API errors', async () => {
-    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/request-received`
+    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/prison-police`
 
     updateRecall.mockRejectedValueOnce(new Error('API error'))
     const req = mockPostRequest({
       originalUrl: currentPageUrl,
       params: { nomsNumber, recallId },
-      body: recallEmailReceivedDateTime,
+      body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
 
@@ -87,11 +77,11 @@ describe('handleRecallFormPost', () => {
   })
 
   it('should return 404 if invalid noms number', async () => {
-    await invalidrecallRequestReceived(0 as unknown as string, recallId, recallEmailReceivedDateTime)
+    await invalidrecallRequestReceived(0 as unknown as string, recallId, requestBody)
   })
 
   it('should return 404 if invalid recallId', async () => {
-    await invalidrecallRequestReceived(nomsNumber, 0 as unknown as string, recallEmailReceivedDateTime)
+    await invalidrecallRequestReceived(nomsNumber, 0 as unknown as string, requestBody)
   })
 
   it('should redirect if the validator returns redirectToPage', async () => {
@@ -115,10 +105,10 @@ describe('handleRecallFormPost', () => {
   })
 })
 
-async function invalidrecallRequestReceived(nomsNumber, recallId, recallEmailReceivedDateTime) {
+async function invalidrecallRequestReceived(nomsNumber, recallId, requestBody) {
   const req = mockPostRequest({
     params: { nomsNumber, recallId },
-    body: recallEmailReceivedDateTime,
+    body: requestBody,
   })
   const { res } = mockResponseWithAuthenticatedUser('')
 

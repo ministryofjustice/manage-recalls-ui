@@ -2,6 +2,8 @@
 <div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='assess-recall-{{ recall.recallId }}'>Assess recall</a></div>
 {% elif recall.status == 'RECALL_NOTIFICATION_ISSUED' %}
 <div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/dossier-letter' data-qa='create-dossier-{{ recall.recallId }}'>Create dossier</a></div>
+{% elif recall.status == 'DOSSIER_ISSUED' %}
+<div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='view-recall-{{ recall.recallId }}'>View recall</a></div>
 {% else %}
 <div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/pre-cons-name' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
 {% endif %}

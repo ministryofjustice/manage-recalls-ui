@@ -17,7 +17,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(errors).toBeUndefined()
@@ -37,7 +36,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -45,7 +43,7 @@ describe('validateEmail', () => {
       {
         href: '#confirmRecallNotificationEmailSent',
         name: 'confirmRecallNotificationEmailSent',
-        text: 'Confirm you sent the email to all recipients',
+        text: "Confirm you've sent the email to all recipients",
       },
     ])
   })
@@ -59,7 +57,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -67,7 +64,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailSentDateTime',
         name: 'recallNotificationEmailSentDateTime',
-        text: 'Date and time you sent the recall email',
+        text: 'Enter the date and time you sent the email',
         values: {},
       },
     ])
@@ -79,7 +76,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: false,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -87,7 +83,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'Upload the email',
+        text: 'Select an email',
       },
     ])
   })
@@ -98,7 +94,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -106,7 +101,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'An error occurred uploading the email',
+        text: 'The selected file could not be uploaded – try again',
         values: 'test.msg',
       },
     ])
@@ -115,10 +110,9 @@ describe('validateEmail', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
-      fileName: 'test.eml',
+      fileName: 'test.msl',
       emailFileSelected: true,
-      uploadFailed: true,
-      allowedFileExtensions: ['.msg'],
+      uploadFailed: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -126,8 +120,8 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'An error occurred uploading the email',
-        values: 'test.eml',
+        text: 'The selected file must be an .msg or .eml',
+        values: 'test.msl',
       },
     ])
   })

@@ -20,6 +20,11 @@ export const getReferenceDataItemLabel = (refDataCategory: ReferenceDataCategori
   return list ? list.find((item: UiListItem) => item.value === itemId)?.text || undefined : undefined
 }
 
+export const isStringValidReferenceData = (refDataCategory: ReferenceDataCategories, str: string) => {
+  const list = referenceData[refDataCategory] as UiListItem[]
+  return list.some((item: UiListItem) => item.text === str)
+}
+
 export const getPrisonLabel = (prisonList: UiListItem[], currentPrison: string) =>
   prisonList.find(item => item.value === currentPrison)?.text
 

@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon'
 import { validateRecallRequestReceived } from './validateRecallRequestReceived'
 
 describe('validateRecallRequestReceived', () => {
@@ -9,7 +10,12 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeHour: '05',
       recallEmailReceivedDateTimeMinute: '3',
     }
-    const { errors, valuesToSave } = validateRecallRequestReceived(requestBody)
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallEmailReceivedDateTime: '2021-05-10T04:03:00.000Z',
@@ -24,16 +30,47 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeHour: '4',
       recallEmailReceivedDateTimeMinute: '23',
     }
-    const { errors, valuesToSave } = validateRecallRequestReceived(requestBody)
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallEmailReceivedDateTime: '2019-12-23T04:23:00.000Z',
     })
   })
 
+  it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '22',
+      recallEmailReceivedDateTimeMinute: '14',
+      RECALL_REQUEST_EMAIL: 'existingUpload',
+    }
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.eml',
+      emailFileSelected: false,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toEqual({
+      recallEmailReceivedDateTime: '2021-09-12T21:14:00.000Z',
+    })
+    expect(errors).toBeUndefined()
+  })
+
   it('returns an error if all fields are missing, and no valuesToSave', () => {
     const requestBody = {}
-    const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived(requestBody)
+    const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
       recallEmailReceivedDateTimeParts: {},
@@ -42,7 +79,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'Date and time you received the recall email',
+        text: 'Enter the date you received the email',
         values: {},
       },
     ])
@@ -56,7 +93,12 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeHour: '',
       recallEmailReceivedDateTimeMinute: '23',
     }
-    const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived(requestBody)
+    const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
       recallEmailReceivedDateTimeParts: {
@@ -71,7 +113,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'Date and time you received the recall email',
+        text: 'The date you received the email must include: month, hour',
         values: {
           day: '23',
           hour: '',
@@ -79,6 +121,130 @@ describe('validateRecallRequestReceived', () => {
           month: '',
           year: '2019',
         },
+      },
+    ])
+  })
+
+  it('returns an error if the date-time is not in the past', () => {
+    const { year, month, day, hour, minute } = DateTime.now().plus({ hours: 2 })
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: day.toString(),
+      recallEmailReceivedDateTimeMonth: month.toString(),
+      recallEmailReceivedDateTimeYear: year.toString(),
+      recallEmailReceivedDateTimeHour: hour.toString(),
+      recallEmailReceivedDateTimeMinute: minute.toString(),
+    }
+    const { errors } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
+    expect(errors[0].text).toEqual('The date you received the email must be today or in the past')
+  })
+
+  it('returns an error if the date is invalid', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '13',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '10',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
+    expect(errors[0].text).toEqual('The date you received the email must be a real date')
+  })
+
+  it('returns an error if the time is invalid', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '24',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
+    expect(errors[0].text).toEqual('The time you received the email must be a real time')
+  })
+
+  it("returns an error if an email wasn't uploaded", () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '22',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.eml',
+      emailFileSelected: false,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#recallRequestEmailFileName',
+        name: 'recallRequestEmailFileName',
+        text: 'Select an email',
+      },
+    ])
+  })
+
+  it('returns an error if the email upload failed', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '22',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msg',
+      emailFileSelected: true,
+      uploadFailed: true,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#recallRequestEmailFileName',
+        name: 'recallRequestEmailFileName',
+        text: 'The selected file could not be uploaded – try again',
+      },
+    ])
+  })
+
+  it('returns an error if an invalid email file extension was uploaded', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '22',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      fileName: 'test.msl',
+      emailFileSelected: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#recallRequestEmailFileName',
+        name: 'recallRequestEmailFileName',
+        text: 'The selected file must be an .msg or .eml',
       },
     ])
   })

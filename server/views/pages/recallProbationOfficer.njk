@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             {% if errors %}
@@ -87,7 +86,6 @@
                         } if errors.localDeliveryUnit else undefined
                     }) }}
 
-
                     {{ govukInput({
                         label: {
                             text: "Assistant Chief Officer (ACO) that signed-off the recall",
@@ -110,14 +108,12 @@
             </form>
         </div>
     </div>
-
 {% endblock %}
-
 
 {% block bodyEnd %}
     {{ super() }}
     {{ autocomplete({
-        selectElement: '#localDeliveryUnit',
+        name: 'localDeliveryUnit',
         cspNonce: cspNonce
     })
     }}

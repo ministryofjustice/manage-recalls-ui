@@ -65,7 +65,7 @@
                             },
                             items: dateTimeItems("recallNotificationEmailSentDateTime", formValues.recallNotificationEmailSentDateTimeParts, true),
                             errorMessage: {
-                                text: 'Enter a valid date and time in the past'
+                                text: errors.recallNotificationEmailSentDateTime.text
                             } if errors.recallNotificationEmailSentDateTime else undefined
                         }) }}
                         {{ govukFileUpload({
@@ -76,7 +76,7 @@
                                 classes: 'govuk-label--m'
                             },
                             attributes: {
-                                accept: '.msg'
+                                accept: allowedEmailFileExtensionList()
                             },
                             errorMessage: {
                                 text: errors.recallNotificationEmailFileName.text
@@ -105,7 +105,7 @@
                             }
                         ],
                         errorMessage: {
-                            text: "Confirm you sent the email"
+                            text: errors.confirmRecallNotificationEmailSent.text
                         } if errors.confirmRecallNotificationEmailSent else undefined
                     }) }}
                     <button class="govuk-button" data-qa="continueButton">Complete assessment</button>

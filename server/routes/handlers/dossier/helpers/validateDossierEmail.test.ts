@@ -15,7 +15,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(errors).toBeUndefined()
@@ -35,7 +34,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -43,7 +41,7 @@ describe('validateEmail', () => {
       {
         href: '#confirmDossierEmailSent',
         name: 'confirmDossierEmailSent',
-        text: 'Confirm you sent the email to all recipients',
+        text: "Confirm you've sent the email to all recipients",
       },
     ])
   })
@@ -57,7 +55,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -65,7 +62,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailSentDate',
         name: 'dossierEmailSentDate',
-        text: 'Date you sent the dossier email',
+        text: 'Enter the date you sent the email',
         values: {},
       },
     ])
@@ -77,7 +74,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: false,
       uploadFailed: false,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -85,7 +81,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'Upload the email',
+        text: 'Select an email',
       },
     ])
   })
@@ -96,7 +92,6 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
-      allowedFileExtensions: ['.msg'],
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -104,8 +99,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'An error occurred uploading the email',
-        values: 'test.msg',
+        text: 'The selected file could not be uploaded – try again',
       },
     ])
   })
@@ -113,10 +107,9 @@ describe('validateEmail', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
-      fileName: 'test.eml',
+      fileName: 'test.msl',
       emailFileSelected: true,
-      uploadFailed: true,
-      allowedFileExtensions: ['.msg'],
+      uploadFailed: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -124,8 +117,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'An error occurred uploading the email',
-        values: 'test.eml',
+        text: 'The selected file must be an .msg or .eml',
       },
     ])
   })
