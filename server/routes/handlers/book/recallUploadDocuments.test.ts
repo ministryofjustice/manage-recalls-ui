@@ -18,24 +18,28 @@ describe('uploadRecallDocumentsFormHandler', () => {
       {
         originalname: 'licence.pdf',
         buffer: 'abc',
+        mimetype: 'application/pdf',
       },
     ],
     PRE_SENTENCING_REPORT: [
       {
         originalname: 'report.pdf',
         buffer: 'def',
+        mimetype: 'application/pdf',
       },
     ],
     PREVIOUS_CONVICTIONS_SHEET: [
       {
         originalname: 'sheet.pdf',
         buffer: 'def',
+        mimetype: 'application/pdf',
       },
     ],
     PART_A_RECALL_REPORT: [
       {
         originalname: 'report.pdf',
         buffer: 'def',
+        mimetype: 'application/pdf',
       },
     ],
   }
@@ -62,7 +66,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     expect(req.session.errors).toBeUndefined()
   })
 
-  it('creates an error if no documents are uploaded', async () => {
+  it('creates errors if no documents are uploaded', async () => {
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = {}
       cb()
@@ -73,27 +77,27 @@ describe('uploadRecallDocumentsFormHandler', () => {
       {
         href: '#PART_A_RECALL_REPORT',
         name: 'PART_A_RECALL_REPORT',
-        text: 'Part A recall report',
+        text: 'Select a Part A recall report',
       },
       {
         href: '#LICENCE',
         name: 'LICENCE',
-        text: 'Licence',
+        text: 'Select a Licence',
       },
       {
         href: '#PREVIOUS_CONVICTIONS_SHEET',
         name: 'PREVIOUS_CONVICTIONS_SHEET',
-        text: 'Previous convictions sheet',
+        text: 'Select a Previous convictions sheet',
       },
       {
         href: '#PRE_SENTENCING_REPORT',
         name: 'PRE_SENTENCING_REPORT',
-        text: 'Pre-sentencing report',
+        text: 'Select a Pre-sentencing report',
       },
     ])
   })
 
-  it('creates errors for failed uploads', done => {
+  it('creates errors for failed saves to the API', done => {
     ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = allFiles
@@ -106,22 +110,55 @@ describe('uploadRecallDocumentsFormHandler', () => {
           {
             href: '#LICENCE',
             name: 'LICENCE',
-            text: 'licence.pdf - an error occurred during upload',
+            text: 'Licence - an error occurred during upload',
           },
           {
             href: '#PRE_SENTENCING_REPORT',
             name: 'PRE_SENTENCING_REPORT',
-            text: 'report.pdf - an error occurred during upload',
+            text: 'Pre-sentencing report - an error occurred during upload',
           },
           {
             href: '#PREVIOUS_CONVICTIONS_SHEET',
             name: 'PREVIOUS_CONVICTIONS_SHEET',
-            text: 'sheet.pdf - an error occurred during upload',
+            text: 'Previous convictions sheet - an error occurred during upload',
           },
           {
             href: '#PART_A_RECALL_REPORT',
             name: 'PART_A_RECALL_REPORT',
-            text: 'report.pdf - an error occurred during upload',
+            text: 'Part A recall report - an error occurred during upload',
+          },
+        ])
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('creates errors for files with either invalid file extensions or MIME types', done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+      const copyOfFiles = JSON.parse(JSON.stringify(allFiles))
+      copyOfFiles.LICENCE[0].originalname = 'licence.doc'
+      copyOfFiles.PART_A_RECALL_REPORT[0].mimetype = 'application/msword'
+      req.files = copyOfFiles
+      cb()
+    })
+    const res = {
+      locals: { user: {} },
+      redirect: () => {
+        expect(addRecallDocument).toHaveBeenCalledTimes(2) // for the two valid files
+        expect(req.session.errors).toEqual([
+          {
+            href: '#PART_A_RECALL_REPORT',
+            name: 'PART_A_RECALL_REPORT',
+            text: 'Part A recall report must be a .pdf',
+          },
+          {
+            href: '#LICENCE',
+            name: 'LICENCE',
+            text: 'Licence must be a .pdf',
           },
         ])
         done()

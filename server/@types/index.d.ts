@@ -4,7 +4,6 @@ export interface FormError {
   text: string
   href?: string
   values?: ObjectMap<unknown> | string
-  errorMsgForField?: string
 }
 
 export interface ObjectMixed {
@@ -38,6 +37,7 @@ export interface UploadedFormFields {
 
 export interface FileDataBase64 {
   originalFileName: string
+  mimeType: string
   label: string
   category: ApiRecallDocument.category
   fileContent: string

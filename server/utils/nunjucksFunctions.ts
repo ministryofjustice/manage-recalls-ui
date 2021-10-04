@@ -1,5 +1,8 @@
 import { DatePartsParsed, ObjectMap, UiListItem } from '../@types'
-import { allowedEmailFileExtensions } from '../routes/handlers/helpers/allowedUploadExtensions'
+import {
+  allowedDocumentFileExtensions,
+  allowedEmailFileExtensions,
+} from '../routes/handlers/helpers/allowedUploadExtensions'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -116,3 +119,4 @@ export const filterSelectedItems = (items?: UiListItem[], currentValues?: string
   items.filter(item => currentValues?.includes(item.value))
 
 export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.join(',')
+export const allowedDocumentFileExtensionList = () => allowedDocumentFileExtensions.map(ext => ext.extension).join(',')
