@@ -1,5 +1,5 @@
 import { DatePartsParsed, ObjectMap, UiListItem } from '../@types'
-import { allowedEmailFileExtensions } from '../routes/handlers/helpers/uploadStorage'
+import { allowedEmailFileExtensions } from '../routes/handlers/helpers/allowedUploadExtensions'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {

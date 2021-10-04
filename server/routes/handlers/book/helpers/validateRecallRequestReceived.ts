@@ -2,8 +2,8 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
-import { allowedEmailFileExtensions } from '../../helpers/uploadStorage'
 import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
 
 const makeErrorMessage = (validationError: DateValidationError): string => {
   switch (validationError.error) {
@@ -46,6 +46,7 @@ export const validateRecallRequestReceived = ({
     dateMustBeInPast: true,
     includeTime: true,
   })
+
   const invalidFileExtension = emailFileSelected
     ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
     : false
@@ -80,7 +81,6 @@ export const validateRecallRequestReceived = ({
         makeErrorObject({
           id: 'recallRequestEmailFileName',
           text: 'The selected file could not be uploaded – try again',
-          values: fileName,
         })
       )
     }
@@ -89,7 +89,6 @@ export const validateRecallRequestReceived = ({
         makeErrorObject({
           id: 'recallRequestEmailFileName',
           text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
-          values: fileName,
         })
       )
     }
