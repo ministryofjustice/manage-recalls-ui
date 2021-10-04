@@ -45,7 +45,8 @@ export const emailUploadForm =
           actionedByUserId: res.locals.user.uuid,
         })
         let saveToApiSuccessful = false
-        const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
+        const uploadHasErrors = errors && errors.find(uploadError => uploadError.name === emailFieldName)
+        const shouldSaveToApi = !uploadHasErrors && emailFileSelected && !uploadFailed
         if (shouldSaveToApi) {
           try {
             const response = await addRecallDocument(

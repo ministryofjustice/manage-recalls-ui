@@ -130,4 +130,41 @@ describe('emailUploadForm', () => {
     }
     handler(req, res)
   })
+
+  it("saves the email to the API if it's valid but there are validation errors for the date", done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    req.body.recallEmailReceivedDateTimeYear = ''
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    const res = {
+      locals: { user: {} },
+      redirect: () => {
+        expect(addRecallDocument).toHaveBeenCalledTimes(1)
+        expect(updateRecall).not.toHaveBeenCalled()
+        expect(req.session.errors).toEqual([
+          {
+            href: '#recallEmailReceivedDateTime',
+            name: 'recallEmailReceivedDateTime',
+            text: 'The date you received the email must include: year',
+            values: {
+              year: '',
+              month: '5',
+              day: '20',
+              hour: '0',
+              minute: '30',
+            },
+          },
+        ])
+        done()
+      },
+    }
+    handler(req, res)
+  })
 })
