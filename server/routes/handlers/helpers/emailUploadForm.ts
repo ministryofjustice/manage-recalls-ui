@@ -36,7 +36,6 @@ export const emailUploadForm =
         const uploadFailed = Boolean(err)
         const { file } = req
         const emailFileSelected = Boolean(file)
-        let saveToApiSuccessful = false
 
         const { errors, valuesToSave, unsavedValues } = validator({
           requestBody: req.body,
@@ -45,7 +44,9 @@ export const emailUploadForm =
           uploadFailed,
           actionedByUserId: res.locals.user.uuid,
         })
-        if (!errors && emailFileSelected && !uploadFailed) {
+        let saveToApiSuccessful = false
+        const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
+        if (shouldSaveToApi) {
           try {
             const response = await addRecallDocument(
               recallId,
@@ -63,7 +64,7 @@ export const emailUploadForm =
             saveToApiSuccessful = false
           }
         }
-        if (errors || !saveToApiSuccessful) {
+        if (errors || (shouldSaveToApi && !saveToApiSuccessful)) {
           req.session.errors = errors || saveError
           req.session.unsavedValues = unsavedValues
           return res.redirect(303, req.originalUrl)
