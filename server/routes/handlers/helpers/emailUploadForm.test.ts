@@ -101,7 +101,7 @@ describe('emailUploadForm', () => {
           {
             href: '#recallRequestEmailFileName',
             name: 'recallRequestEmailFileName',
-            text: 'The selected file must be an .msg or .eml',
+            text: 'The selected file must be an MSG or EML',
           },
         ])
         done()

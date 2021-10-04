@@ -117,7 +117,7 @@ describe('validateEmail', () => {
       {
         href: '#dossierEmailFileName',
         name: 'dossierEmailFileName',
-        text: 'The selected file must be an .msg or .eml',
+        text: 'The selected file must be an MSG or EML',
       },
     ])
   })

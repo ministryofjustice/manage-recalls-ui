@@ -120,7 +120,7 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: 'The selected file must be an .msg or .eml',
+        text: 'The selected file must be an MSG or EML',
         values: 'test.msl',
       },
     ])

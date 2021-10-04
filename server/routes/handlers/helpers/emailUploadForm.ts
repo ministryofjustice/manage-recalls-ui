@@ -6,6 +6,7 @@ import { uploadStorageField } from './uploadStorage'
 import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { ReqEmailUploadValidatorFn } from '../../../@types'
 import { makeErrorObject } from './index'
+import { allowedEmailFileExtensions } from './allowedUploadExtensions'
 
 interface Args {
   emailFieldName: string
@@ -36,12 +37,15 @@ export const emailUploadForm =
         const uploadFailed = Boolean(err)
         const { file } = req
         const emailFileSelected = Boolean(file)
-
+        const invalidFileFormat = emailFileSelected
+          ? !allowedEmailFileExtensions.some(ext => file.originalname.endsWith(ext.extension))
+          : false
         const { errors, valuesToSave, unsavedValues } = validator({
           requestBody: req.body,
           fileName: file?.originalname,
           emailFileSelected,
           uploadFailed,
+          invalidFileFormat,
           actionedByUserId: res.locals.user.uuid,
         })
         let saveToApiSuccessful = false

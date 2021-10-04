@@ -109,7 +109,7 @@ describe('validateUploadDocuments', () => {
       {
         href: '#PART_A_RECALL_REPORT',
         name: 'PART_A_RECALL_REPORT',
-        text: 'Part A recall report must be a .pdf',
+        text: 'Part A recall report must be a PDF',
       },
       {
         href: '#LICENCE',
@@ -124,7 +124,7 @@ describe('validateUploadDocuments', () => {
       {
         href: '#PRE_SENTENCING_REPORT',
         name: 'PRE_SENTENCING_REPORT',
-        text: 'Pre-sentencing report must be a .pdf',
+        text: 'Pre-sentencing report must be a PDF',
       },
     ])
   })
