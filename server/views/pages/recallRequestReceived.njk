@@ -52,12 +52,9 @@
                         }
                     }) }}
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the recall email</h2>
-                    {% if recall.recallRequestEmail %}
-                        <input type='hidden' name='{{ recall.recallRequestEmail.name}}' value='existingUpload'>
-                        <div class='govuk-body govuk-!-margin-bottom-4'>
-                            <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
-                        </div>
-                    {% endif %}
+                    {%  set emailField = recall.recallRequestEmail %}
+                    {%  include '../partials/uploadedEmailLink.njk' %}
+
                     {{ govukFileUpload({
                         id: "recallRequestEmailFileName",
                         name: "recallRequestEmailFileName",
