@@ -43,6 +43,7 @@
     "coveragePathIgnorePatterns": [
       "@types"
     ],
+    "maxWorkers": 1,
     "testMatch": [
       "<rootDir>/(server|job)/**/?(*.)(spec|test).{ts,js,jsx,mjs}"
     ],
@@ -63,10 +64,8 @@
       ]
     ],
     "moduleFileExtensions": [
-      "web.js",
       "js",
       "json",
-      "node",
       "ts"
     ]
   },
