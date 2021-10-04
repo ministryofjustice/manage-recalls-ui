@@ -79,7 +79,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'Enter the date you received the email',
+        text: 'Enter the date and time you received the recall email',
         values: {},
       },
     ])
@@ -113,7 +113,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'The date you received the email must include: month, hour',
+        text: 'The date and time you received the email must include: month, hour',
         values: {
           day: '23',
           hour: '',

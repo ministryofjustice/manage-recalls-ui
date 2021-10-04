@@ -1,4 +1,6 @@
 import {
+  allowedDocumentFileExtensionList,
+  allowedEmailFileExtensionList,
   checkboxItems,
   dateTimeItems,
   filterSelectedItems,
@@ -239,5 +241,17 @@ describe('dateTimeItems', () => {
         value: '5',
       },
     ])
+  })
+})
+
+describe('allowedDocumentFileExtensionList', () => {
+  it('should return a list of extensions', () => {
+    expect(allowedDocumentFileExtensionList()).toEqual('.pdf')
+  })
+})
+
+describe('allowedEmailFileExtensionList', () => {
+  it('should return a list of extensions', () => {
+    expect(allowedEmailFileExtensionList()).toEqual('.msg,.eml')
   })
 })

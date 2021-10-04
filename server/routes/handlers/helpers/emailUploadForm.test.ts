@@ -152,7 +152,7 @@ describe('emailUploadForm', () => {
           {
             href: '#recallEmailReceivedDateTime',
             name: 'recallEmailReceivedDateTime',
-            text: 'The date you received the email must include: year',
+            text: 'The date and time you received the email must include: year',
             values: {
               year: '',
               month: '5',

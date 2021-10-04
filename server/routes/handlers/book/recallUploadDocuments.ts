@@ -9,24 +9,30 @@ import { validateUploadDocuments } from './helpers/validateUploadDocuments'
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
   const { nomsNumber, recallId } = req.params
-  uploadStorageFields(documentTypes)(req, res, async err => {
+  uploadStorageFields(documentTypes)(req, res, async uploadError => {
     try {
-      if (err) {
-        logger.error(err)
+      if (uploadError) {
+        logger.error(uploadError)
         return res.redirect(303, req.originalUrl)
       }
       const { files, session, body } = req
       const { user } = res.locals
       const fileData = makeFileData(files as UploadedFormFields)
       const { errors } = validateUploadDocuments({ fileData, requestBody: body })
-      if (errors.length) {
+      if (errors) {
         session.errors = errors
       }
       if (fileData.length) {
         const responses = await Promise.allSettled(
-          fileData.map(({ originalFileName, label, ...file }) => addRecallDocument(recallId, file, user.token))
+          fileData.map(file => {
+            if (errors && errors.find(e => e.name === file.category)) {
+              return undefined
+            }
+            const { category, fileContent } = file
+            return addRecallDocument(recallId, { category, fileContent }, user.token)
+          })
         )
-        const failedUploads = listFailedUploads(fileData, responses)
+        const failedUploads = listFailedUploads(fileData, responses.filter(Boolean))
         if (failedUploads.length) {
           session.errors = session.errors || []
           session.errors = [...failedUploads]

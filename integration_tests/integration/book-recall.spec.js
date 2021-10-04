@@ -166,7 +166,7 @@ context('Book a recall', () => {
     recallRequestReceived.clickContinue()
     recallRequestReceived.assertErrorMessage({
       fieldName: 'recallEmailReceivedDateTime',
-      summaryError: 'The date you received the email must include: month, day',
+      summaryError: 'The date and time you received the email must include: month, day',
     })
   })
 
@@ -295,8 +295,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'test.pdf - an error occurred during upload',
-      fieldError: 'Upload a file',
+      summaryError: 'Part A recall report - an error occurred during upload',
     })
   })
 
@@ -305,13 +304,11 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Part A recall report',
-      fieldError: 'Upload a file',
+      summaryError: 'Select a Part A recall report',
     })
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
-      summaryError: 'Previous convictions sheet',
-      fieldError: 'Upload a file',
+      summaryError: 'Select a Previous convictions sheet',
     })
   })
 
@@ -331,8 +328,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Part A recall report',
-      fieldError: 'Upload a file',
+      summaryError: 'Select a Part A recall report',
     })
     uploadDocuments.assertErrorNotShown({ fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET })
     uploadDocuments.assertElementHasText({

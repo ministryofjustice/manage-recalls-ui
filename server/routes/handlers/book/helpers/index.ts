@@ -8,6 +8,7 @@ export const makeFileData = (files: UploadedFormFields): FileDataBase64[] => {
     const documentType = documentTypes.find(doc => doc.name === key)
     return {
       originalFileName: value.originalname,
+      mimeType: value.mimetype,
       label: documentType.label,
       category: documentType.name,
       fileContent: value.buffer.toString('base64'),
@@ -27,7 +28,7 @@ export const listFailedUploads = (
       if (result.status === 'rejected') {
         return makeErrorObject({
           id: fileData[idx].category,
-          text: `${fileData[idx].originalFileName} - an error occurred during upload`,
+          text: `${fileData[idx].label} - an error occurred during upload`,
         })
       }
       return null

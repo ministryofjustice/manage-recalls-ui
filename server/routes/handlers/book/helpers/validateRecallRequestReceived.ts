@@ -8,7 +8,7 @@ import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtension
 const makeErrorMessage = (validationError: DateValidationError): string => {
   switch (validationError.error) {
     case 'blankDateTime':
-      return 'Enter the date you received the email'
+      return 'Enter the date and time you received the recall email'
     case 'dateMustBeInPast':
       return 'The date you received the email must be today or in the past'
     case 'invalidDate':
@@ -16,7 +16,7 @@ const makeErrorMessage = (validationError: DateValidationError): string => {
     case 'invalidTime':
       return 'The time you received the email must be a real time'
     case 'missingDateParts':
-      return `The date you received the email must include: ${validationError.invalidParts.join(', ')}`
+      return `The date and time you received the email must include: ${validationError.invalidParts.join(', ')}`
     default:
       return 'Error - recall email received'
   }

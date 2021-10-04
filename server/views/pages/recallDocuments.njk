@@ -50,8 +50,11 @@
                                     text: 'Upload a ' + documentType.label,
                                     classes: 'govuk-visually-hidden'
                                 },
+                                attributes: {
+                                    accept: allowedDocumentFileExtensionList()
+                                },
                                 errorMessage: {
-                                    text: "Upload a file"
+                                    text: errors[documentType.name].text
                                 } if errors[documentType.name] else undefined
                             }) }}
                         {%  endfor %}
