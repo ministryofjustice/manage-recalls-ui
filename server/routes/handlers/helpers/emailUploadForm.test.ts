@@ -3,29 +3,30 @@ import { emailUploadForm } from './emailUploadForm'
 import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockPostRequest } from '../../testutils/mockRequestUtils'
 import { uploadStorageField } from './uploadStorage'
-import { validateDossierEmail } from '../dossier/helpers/validateDossierEmail'
+import { validateRecallRequestReceived } from '../book/helpers/validateRecallRequestReceived'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('./uploadStorage')
 
 const handler = emailUploadForm({
-  emailFieldName: 'dossierEmailFileName',
-  validator: validateDossierEmail,
-  documentCategory: ApiRecallDocument.category.DOSSIER_EMAIL,
-  nextPageUrlSuffix: 'dossier-confirmation',
+  emailFieldName: 'recallRequestEmailFileName',
+  validator: validateRecallRequestReceived,
+  documentCategory: ApiRecallDocument.category.RECALL_REQUEST_EMAIL,
+  nextPageUrlSuffix: 'last-release',
 })
 
-describe('confirmEmailSent', () => {
+describe('emailUploadForm', () => {
   let req
   beforeEach(() => {
     req = mockPostRequest({
       params: { nomsNumber: '456', recallId: '789' },
       body: {
-        confirmDossierEmailSent: 'YES',
-        dossierEmailSentDateYear: '2021',
-        dossierEmailSentDateMonth: '5',
-        dossierEmailSentDateDay: '20',
+        recallEmailReceivedDateTimeYear: '2021',
+        recallEmailReceivedDateTimeMonth: '5',
+        recallEmailReceivedDateTimeDay: '20',
+        recallEmailReceivedDateTimeHour: '0',
+        recallEmailReceivedDateTimeMinute: '30',
       },
     })
   })
@@ -50,7 +51,7 @@ describe('confirmEmailSent', () => {
         expect(updateRecall).toHaveBeenCalledTimes(1)
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/dossier-confirmation')
+        expect(path).toEqual('/persons/456/recalls/789/last-release')
         done()
       },
     }
@@ -72,8 +73,8 @@ describe('confirmEmailSent', () => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
-            href: '#dossierEmailFileName',
-            name: 'dossierEmailFileName',
+            href: '#recallRequestEmailFileName',
+            name: 'recallRequestEmailFileName',
             text: 'The selected file could not be uploaded – try again',
           },
         ])
@@ -98,11 +99,32 @@ describe('confirmEmailSent', () => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
-            href: '#dossierEmailFileName',
-            name: 'dossierEmailFileName',
+            href: '#recallRequestEmailFileName',
+            name: 'recallRequestEmailFileName',
             text: 'The selected file must be an .msg or .eml',
           },
         ])
+        done()
+      },
+    }
+    handler(req, res)
+  })
+
+  it("doesn't try to save to the API if a new email has not been uploaded but one has previously", done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.body.RECALL_REQUEST_EMAIL = 'existingUpload'
+      cb()
+    })
+    const res = {
+      locals: { user: { token: 'TOKEN' } },
+      redirect: () => {
+        expect(addRecallDocument).not.toHaveBeenCalled()
+        expect(updateRecall).toHaveBeenCalledWith(
+          '789',
+          { recallEmailReceivedDateTime: '2021-05-19T23:30:00.000Z' },
+          'TOKEN'
+        )
+        expect(req.session.errors).toBeUndefined()
         done()
       },
     }
