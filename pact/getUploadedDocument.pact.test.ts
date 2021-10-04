@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getStoredDocument } from './manageRecallsApiClient'
-import * as configModule from '../../config'
-import getRecallDocumentResponseJson from '../../../fake-manage-recalls-api/stubs/__files/get-recall-document.json'
+import { getStoredDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import * as configModule from '../server/config'
+import getRecallDocumentResponseJson from '../fake-manage-recalls-api/stubs/__files/get-recall-document.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
