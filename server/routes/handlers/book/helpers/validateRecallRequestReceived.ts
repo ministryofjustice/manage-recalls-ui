@@ -24,7 +24,6 @@ const makeErrorMessage = (validationError: DateValidationError): string => {
 
 export const validateRecallRequestReceived = ({
   requestBody,
-  fileName,
   emailFileSelected,
   uploadFailed,
   invalidFileFormat,
