@@ -28,6 +28,7 @@ import { validatePreConsName } from './handlers/book/helpers/validatePreConsName
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
 import { validateCheckAnswers } from './handlers/book/helpers/validateCheckAnswers'
 import { getUser, postUser } from './handlers/user/userDetails'
+import { parseUrlParams } from '../middleware/parseUrlParams'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -39,6 +40,8 @@ export default function routes(router: Router): Router {
   post('/persons/:nomsNumber/recalls', createRecall)
 
   const basePath = '/persons/:nomsNumber/recalls/:recallId'
+
+  router.use(basePath, parseUrlParams)
 
   // BOOK A RECALL
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))

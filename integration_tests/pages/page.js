@@ -21,6 +21,7 @@ module.exports = (name, pageObject = {}) => {
     })
   }
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
+  const clickElement = ({ qaAttr }) => cy.get(`[data-qa="${qaAttr}"]`).click()
   const assertLinkHref = ({ qaAttr, href }) => {
     cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
   }
@@ -51,6 +52,7 @@ module.exports = (name, pageObject = {}) => {
     assertErrorMessage,
     assertLinkHref,
     clickContinue,
+    clickElement,
     enterDateTime,
     uploadEmail,
   }

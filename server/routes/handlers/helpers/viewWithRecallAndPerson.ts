@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { decorateDocs, isDefined, isInvalid, renderErrorMessages } from './index'
+import { decorateDocs, isDefined, renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { getPrisonList } from '../../../data/prisonRegisterClient'
 import { ViewName } from '../../../@types'
@@ -59,10 +59,6 @@ export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
     const { nomsNumber, recallId } = req.params
-    if (isInvalid(nomsNumber) || isInvalid(recallId)) {
-      res.sendStatus(400)
-      return
-    }
     const [personResult, recallResult, prisonListResult] = await Promise.allSettled([
       searchByNomsNumber(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),

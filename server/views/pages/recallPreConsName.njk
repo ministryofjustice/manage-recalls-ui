@@ -5,7 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/find-person?nomsNumber=" + person.nomsNumber
+        href: backLinkUrl("/find-person?nomsNumber=" + person.nomsNumber, urlInfo)
     }) }}
 {% endblock %}
 
@@ -24,7 +24,7 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
 
-            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/pre-cons-name" method="post">
+            <form novalidate action="{{ formActionUrl('pre-cons-name', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
 

@@ -10,7 +10,7 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 const handler = handleRecallFormPost(validatePolice, 'issues-needs')
 
 describe('handleRecallFormPost', () => {
-  const nomsNumber = 'AA123AA'
+  const nomsNumber = 'A1234AB'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const requestBody = {
     localPoliceForce: 'Kent',
@@ -30,6 +30,9 @@ describe('handleRecallFormPost', () => {
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+    }
 
     await handler(req, res)
 
@@ -48,6 +51,9 @@ describe('handleRecallFormPost', () => {
       body: {},
     })
     const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+    }
 
     await handler(req, res)
 
@@ -64,6 +70,9 @@ describe('handleRecallFormPost', () => {
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+    }
 
     await handler(req, res)
 
@@ -76,15 +85,7 @@ describe('handleRecallFormPost', () => {
     expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
   })
 
-  it('should return 404 if invalid noms number', async () => {
-    await invalidrecallRequestReceived(0 as unknown as string, recallId, requestBody)
-  })
-
-  it('should return 404 if invalid recallId', async () => {
-    await invalidrecallRequestReceived(nomsNumber, 0 as unknown as string, requestBody)
-  })
-
-  it('should redirect if the validator returns redirectToPage', async () => {
+  it('should use redirectToPage if one is returned from the validator function', async () => {
     const recallDetails = { recallId, nomsNumber }
     const requestHandler = handleRecallFormPost(validateDecision, 'assess-licence')
 
@@ -98,21 +99,36 @@ describe('handleRecallFormPost', () => {
       },
     })
     const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+    }
 
     await requestHandler(req, res)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-stop`)
   })
-})
 
-async function invalidrecallRequestReceived(nomsNumber, recallId, requestBody) {
-  const req = mockPostRequest({
-    params: { nomsNumber, recallId },
-    body: requestBody,
+  it('should redirect to fromPage if one is supplied in res.locals', async () => {
+    const recallDetails = { recallId, nomsNumber }
+    const requestHandler = handleRecallFormPost(validateDecision, 'assess-licence')
+
+    updateRecall.mockResolvedValueOnce(recallDetails)
+
+    const req = mockPostRequest({
+      params: { nomsNumber, recallId },
+      body: {
+        agreeWithRecall: 'YES',
+        agreeWithRecallDetailYes: 'Reasons',
+      },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      fromPage: 'check-answers',
+    }
+
+    await requestHandler(req, res)
+
+    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
   })
-  const { res } = mockResponseWithAuthenticatedUser('')
-
-  await handler(req, res)
-
-  expect(res.sendStatus).toHaveBeenCalledWith(400)
-}
+})

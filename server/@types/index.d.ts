@@ -170,3 +170,8 @@ export interface DateValidationError {
   error: DateValidationErrorType
   invalidParts?: DatePartNames[]
 }
+
+export interface UrlInfo {
+  fromPage: string
+  basePath: string
+}

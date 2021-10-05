@@ -6,21 +6,17 @@ import { ReqValidatorFn } from '../../../@types'
 export const handleRecallFormPost =
   (validator: ReqValidatorFn, nextPageUrlSuffix: string) =>
   async (req: Request, res: Response): Promise<void> => {
-    const { nomsNumber, recallId } = req.params
-    if (!nomsNumber || !recallId) {
-      logger.error(`nomsNumber or recallId not supplied. URL: ${req.originalUrl}`)
-      res.sendStatus(400)
-      return
-    }
-    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator(req.body, res.locals.user)
+    const { recallId } = req.params
+    const { user, urlInfo } = res.locals
+    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator(req.body, user)
     if (errors) {
       req.session.errors = errors
       req.session.unsavedValues = unsavedValues
       return res.redirect(303, req.originalUrl)
     }
     try {
-      const recall = await updateRecall(recallId, valuesToSave, res.locals.user.token)
-      res.redirect(303, `/persons/${nomsNumber}/recalls/${recall.recallId}/${redirectToPage || nextPageUrlSuffix}`)
+      await updateRecall(recallId, valuesToSave, user.token)
+      res.redirect(303, `${urlInfo.basePath}${redirectToPage || urlInfo.fromPage || nextPageUrlSuffix}`)
     } catch (err) {
       logger.error(err)
       req.session.errors = [

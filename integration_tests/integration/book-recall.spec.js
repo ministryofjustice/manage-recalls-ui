@@ -336,4 +336,12 @@ context('Book a recall', () => {
       textToFind: 'Pre Cons.pdf',
     })
   })
+
+  it('user can check and change their answers then navigate back to the check answers page', () => {
+    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
+    checkAnswers.clickElement({ qaAttr: 'previousConvictionMainNameChange' })
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
+    recallPreConsName.clickContinue()
+    checkAnswersPage.verifyOnPage()
+  })
 })

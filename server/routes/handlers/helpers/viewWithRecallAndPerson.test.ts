@@ -199,34 +199,4 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.recall.currentPrisonFormatted).toEqual('Kennet (HMP)')
     expect(res.locals.recall.lastReleasePrisonFormatted).toEqual('Kennet (HMP)')
   })
-
-  it('should return 400 if invalid noms number', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    const req = mockGetRequest({
-      params: {
-        nomsNumber: 0 as unknown as string,
-        recallId,
-      },
-    })
-    const { res } = mockResponseWithAuthenticatedUser('')
-
-    await viewWithRecallAndPerson('recallType')(req, res)
-
-    expect(res.sendStatus).toHaveBeenCalledWith(400)
-  })
-
-  it('should return 400 if invalid recallId', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    const req = mockGetRequest({
-      params: {
-        nomsNumber,
-        recallId: 0 as unknown as string,
-      },
-    })
-    const { res } = mockResponseWithAuthenticatedUser('')
-
-    await viewWithRecallAndPerson('recallType')(req, res)
-
-    expect(res.sendStatus).toHaveBeenCalledWith(400)
-  })
 })
