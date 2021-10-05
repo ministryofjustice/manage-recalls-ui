@@ -173,5 +173,6 @@ export interface DateValidationError {
 
 export interface UrlInfo {
   fromPage?: string
+  currentPage: string
   basePath: string
 }

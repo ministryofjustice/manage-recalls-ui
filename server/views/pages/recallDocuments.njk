@@ -5,7 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/probation-officer"
+        href: backLinkUrl("probation-officer", urlInfo)
     }) }}
 {% endblock %}
 
@@ -32,8 +32,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
             {% if person %}
-
-                <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/upload-documents?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
+                <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post" enctype="multipart/form-data">
                     <div class="govuk-form-group">
                         {% for documentType in recall.documentTypes %}
                             <h2 class="govuk-heading-m govuk-!-margin-bottom-3">{{ documentType.label }}{% if documentType.required != true %} (optional){% endif %}</h2>

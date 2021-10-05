@@ -5,7 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/last-release"
+        href: backLinkUrl("last-release", urlInfo)
     }) }}
 {% endblock %}
 
@@ -24,9 +24,9 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
 
-            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/prison-police" method="post">
+            <form novalidate action="{{ formActionUrl('prison-police', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='localPoliceForceGroup'>
                     {{ govukInput({
                         label: {
                             text: "What is the name of the local police force?",

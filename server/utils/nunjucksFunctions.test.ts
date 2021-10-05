@@ -263,43 +263,67 @@ describe('formActionUrl', () => {
   it('uses fromPage and CSRF query strings if both are supplied', () => {
     const url = formActionUrl(
       'request-received',
-      { fromPage: 'check-answers', basePath: '/person/123/recalls/456/' },
+      { fromPage: 'check-answers', currentPage: 'check-answers', basePath: '/person/123/recalls/456/' },
       'a1b2c3'
     )
     expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers&_csrf=a1b2c3')
   })
 
   it('uses fromPage query string if supplied', () => {
-    const url = formActionUrl('request-received', { fromPage: 'check-answers', basePath: '/person/123/recalls/456/' })
+    const url = formActionUrl('request-received', {
+      fromPage: 'check-answers',
+      currentPage: 'check-answers',
+      basePath: '/person/123/recalls/456/',
+    })
     expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers')
   })
 
   it('uses CSRF query string if supplied', () => {
-    const url = formActionUrl('request-received', { basePath: '/person/123/recalls/456/' }, 'a1b2c3')
+    const url = formActionUrl(
+      'request-received',
+      { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
+      'a1b2c3'
+    )
     expect(url).toEqual('/person/123/recalls/456/request-received?_csrf=a1b2c3')
   })
 })
 
 describe('changeLinkUrl', () => {
-  it('adds "check-answers" as the fromPage param', () => {
-    const url = changeLinkUrl('request-received', { basePath: '/person/123/recalls/456/' })
+  it('adds currentPage as the fromPage param', () => {
+    const url = changeLinkUrl('request-received', {
+      basePath: '/person/123/recalls/456/',
+      currentPage: 'check-answers',
+    })
     expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers')
+  })
+
+  it('adds a hash if supplied', () => {
+    const url = changeLinkUrl(
+      'last-release',
+      { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
+      '#sentenceExpiryDateFieldset'
+    )
+    expect(url).toEqual('/person/123/recalls/456/last-release?fromPage=check-answers#sentenceExpiryDateFieldset')
   })
 })
 
 describe('backLinkUrl', () => {
   it('uses the fromPage param if supplied', () => {
-    const url = backLinkUrl('request-received', { fromPage: 'check-answers', basePath: '/person/123/recalls/456/' })
+    const url = backLinkUrl('request-received', {
+      fromPage: 'check-answers',
+      currentPage: 'check-answers',
+      basePath: '/person/123/recalls/456/',
+    })
     expect(url).toEqual('/person/123/recalls/456/check-answers')
   })
 
   it('uses the path parameter if fromPage param not supplied', () => {
-    const url = backLinkUrl('request-received', { basePath: '/person/123/recalls/456/' })
+    const url = backLinkUrl('request-received', { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' })
     expect(url).toEqual('/person/123/recalls/456/request-received')
   })
 
   it("doesn't use the basePath if the path has a leading /", () => {
-    const url = backLinkUrl('/find-person', { basePath: '/person/123/recalls/456/' })
+    const url = backLinkUrl('/find-person', { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' })
     expect(url).toEqual('/find-person')
   })
 })

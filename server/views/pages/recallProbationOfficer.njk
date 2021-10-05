@@ -5,7 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/issues-needs"
+        href: backLinkUrl("issues-needs", urlInfo)
     }) }}
 {% endblock %}
 
@@ -29,9 +29,9 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/probation-officer" method="post">
+            <form novalidate action="{{ formActionUrl('probation-officer', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                <div class='govuk-body govuk-form-group' id='probationOfficerGroup'>
                     {{ govukInput({
                         label: {
                             text: "Name",
@@ -73,6 +73,8 @@
                             text: errors.probationOfficerPhoneNumber.text
                         } if errors.probationOfficerPhoneNumber else undefined
                     }) }}
+                </div>
+                <div id='localDeliveryUnitGroup'>
                     {{ govukSelect({
                         id: "localDeliveryUnit",
                         name: "localDeliveryUnit",
@@ -85,7 +87,8 @@
                             text: errors.localDeliveryUnit.text
                         } if errors.localDeliveryUnit else undefined
                     }) }}
-
+                </div>
+                <div id='authorisingAssistantChiefOfficerGroup'>
                     {{ govukInput({
                         label: {
                             text: "Assistant Chief Officer (ACO) that signed-off the recall",
@@ -99,7 +102,7 @@
                         } if errors.authorisingAssistantChiefOfficer else undefined
                     }) }}
                 </div>
-                <div>
+                <div class='govuk-!-margin-top-8'>
                     <button class="govuk-button"
                        data-qa='continueButton'>
                         Continue

@@ -1,29 +1,38 @@
 <h2 class='govuk-heading-m govuk-!-margin-top-9'>Probation details</h2>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
-    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+    <dt class=" govuk-summary-list__key">
       Probation officer
     </dt>
-    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+    <dd class=" govuk-summary-list__value">
       <p class='govuk-body' data-qa='probationOfficerName'>{{ recall.probationOfficerName }}</p>
       <p class='govuk-body'><a class='govuk-link' href='mailto:{{ recall.probationOfficerEmail }}' data-qa='probationOfficerEmail'>{{ recall.probationOfficerEmail }}</a></p>
       <p class='govuk-body' data-qa='probationOfficerPhoneNumber'>{{ recall.probationOfficerPhoneNumber }}</p>
     </dd>
-  </div>
-  <div class="govuk-summary-list__row">
-    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-      Local Delivery Unit
-    </dt>
-    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='localDeliveryUnit'>
-      {{ recall.localDeliveryUnitFormatted }}
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#probationOfficerGroup') }}' data-qa='probationOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> probation officer details</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
-    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+    <dt class=" govuk-summary-list__key">
+      Local Delivery Unit
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='localDeliveryUnit'>
+      {{ recall.localDeliveryUnitFormatted }}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#localDeliveryUnitGroup') }}' data-qa='localDeliveryUnitChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> Local Delivery Unit</span></a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
       ACO
     </dt>
-    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='authorisingAssistantChiefOfficer'>
+    <dd class=" govuk-summary-list__value" data-qa='authorisingAssistantChiefOfficer'>
       {{ recall.authorisingAssistantChiefOfficer }}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#authorisingAssistantChiefOfficerGroup') }}' data-qa='authorisingAssistantChiefOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> ACO</span></a>
     </dd>
   </div>
 </dl>
