@@ -138,5 +138,7 @@ export const formActionUrl = (pageSlug: string, urlInfo: UrlInfo, csrfToken?: st
   return `${urlInfo.basePath}${pageSlug}${queryParams ? `?${queryParams}` : ''}`
 }
 
-export const changeLinkUrl = (pageSlug: string, urlInfo: UrlInfo) =>
-  formActionUrl(pageSlug, { ...urlInfo, fromPage: 'check-answers' })
+export const changeLinkUrl = (pageSlug: string, urlInfo: UrlInfo, hash?: string) => {
+  const url = formActionUrl(pageSlug, { ...urlInfo, fromPage: 'check-answers' })
+  return `${url}${hash || ''}`
+}

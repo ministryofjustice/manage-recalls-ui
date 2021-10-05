@@ -30,9 +30,9 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/last-release" method="post">
+            <form novalidate action="{{ formActionUrl('last-release', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='sentenceDateGroup'>
                     {{ govukDateInput({
                         name: 'sentenceDate',
                         id: 'sentenceDate',
@@ -48,7 +48,7 @@
                         } if errors.sentenceDate else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='licenceExpiryDateGroup'>
                     {{ govukDateInput({
                         name: 'licenceExpiryDate',
                         id: 'licenceExpiryDate',
@@ -64,7 +64,7 @@
                         } if errors.licenceExpiryDate else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='sentenceExpiryDateGroup'>
                     {{ govukDateInput({
                         name: 'sentenceExpiryDate',
                         id: 'sentenceExpiryDate',
@@ -80,7 +80,7 @@
                         } if errors.sentenceExpiryDate else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='sentenceLengthGroup'>
                     {{ govukDateInput({
                         name: 'sentenceLength',
                         id: 'sentenceLength',
@@ -124,7 +124,7 @@
                         } if errors.sentenceLength else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='sentencingCourtGroup'>
                     {{ govukInput({
                         label: {
                             text: "Sentencing court",
@@ -138,7 +138,7 @@
                         } if errors.sentencingCourt else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='indexOffenceGroup'>
                     {{ govukInput({
                         label: {
                             text: "Index offence",
@@ -152,7 +152,7 @@
                         } if errors.indexOffence else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='lastReleasePrisonGroup'>
                     {{ govukSelect({
                         label: {
                             text: "Releasing prison",
@@ -166,7 +166,7 @@
                         } if errors.lastReleasePrison else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='bookingNumberGroup'>
                     {{ govukInput({
                         label: {
                             text: "Booking number",
@@ -181,7 +181,7 @@
                         } if errors.bookingNumber else undefined
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group'>
+                <div class='govuk-body govuk-form-group' id='lastReleaseDateGroup'>
                     {{ govukDateInput({
                         name: 'lastReleaseDate',
                         id: 'lastReleaseDate',
@@ -198,7 +198,7 @@
                     }) }}
 
                 </div>
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='conditionalReleaseDateGroup'>
                     {{ govukDateInput({
                         name: 'conditionalReleaseDate',
                         id: 'conditionalReleaseDate',

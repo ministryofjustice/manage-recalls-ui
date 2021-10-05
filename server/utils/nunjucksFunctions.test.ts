@@ -285,6 +285,11 @@ describe('changeLinkUrl', () => {
     const url = changeLinkUrl('request-received', { basePath: '/person/123/recalls/456/' })
     expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers')
   })
+
+  it('adds a hash if supplied', () => {
+    const url = changeLinkUrl('last-release', { basePath: '/person/123/recalls/456/' }, '#sentenceExpiryDateFieldset')
+    expect(url).toEqual('/person/123/recalls/456/last-release?fromPage=check-answers#sentenceExpiryDateFieldset')
+  })
 })
 
 describe('backLinkUrl', () => {

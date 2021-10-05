@@ -41,10 +41,10 @@
             <dl class="govuk-summary-list">
                 {% for document in recall.documents %}
                 <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+                    <dt class=" govuk-summary-list__key">
                         {{ document.label }}
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+                    <dd class=" govuk-summary-list__value">
                         <a class='govuk-link' href='{{ document.url }}' target='_blank' data-qa='uploadedDocument-{{ document.category }}'>{{ document.fileName }}</a>
                     </dd>
                 </div>
