@@ -15,6 +15,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(errors).toBeUndefined()
@@ -34,6 +35,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -55,6 +57,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -74,6 +77,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: false,
       uploadFailed: false,
+      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -92,6 +96,7 @@ describe('validateEmail', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
+      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -110,6 +115,7 @@ describe('validateEmail', () => {
       fileName: 'test.msl',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: true,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
