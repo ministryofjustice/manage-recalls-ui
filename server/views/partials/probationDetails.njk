@@ -9,6 +9,9 @@
       <p class='govuk-body'><a class='govuk-link' href='mailto:{{ recall.probationOfficerEmail }}' data-qa='probationOfficerEmail'>{{ recall.probationOfficerEmail }}</a></p>
       <p class='govuk-body' data-qa='probationOfficerPhoneNumber'>{{ recall.probationOfficerPhoneNumber }}</p>
     </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#probationOfficerGroup') }}' data-qa='probationOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> probation officer details</span></a>
+    </dd>
   </div>
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -17,6 +20,9 @@
     <dd class=" govuk-summary-list__value" data-qa='localDeliveryUnit'>
       {{ recall.localDeliveryUnitFormatted }}
     </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#localDeliveryUnitGroup') }}' data-qa='localDeliveryUnitChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> Local Delivery Unit</span></a>
+    </dd>
   </div>
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -24,6 +30,9 @@
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='authorisingAssistantChiefOfficer'>
       {{ recall.authorisingAssistantChiefOfficer }}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#authorisingAssistantChiefOfficerGroup') }}' data-qa='authorisingAssistantChiefOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> ACO</span></a>
     </dd>
   </div>
 </dl>

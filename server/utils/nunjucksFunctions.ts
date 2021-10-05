@@ -139,6 +139,6 @@ export const formActionUrl = (pageSlug: string, urlInfo: UrlInfo, csrfToken?: st
 }
 
 export const changeLinkUrl = (pageSlug: string, urlInfo: UrlInfo, hash?: string) => {
-  const url = formActionUrl(pageSlug, { ...urlInfo, fromPage: 'check-answers' })
+  const url = formActionUrl(pageSlug, { ...urlInfo, fromPage: urlInfo.currentPage })
   return `${url}${hash || ''}`
 }

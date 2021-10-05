@@ -4,8 +4,11 @@
     <dt class=" govuk-summary-list__key">
       Vulnerability and diversity
     </dt>
-    <dd class=" govuk-summary-list__value">
+    <dd class="govuk-summary-list__value">
       {% if recall.vulnerabilityDiversityDetail %}<pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>{% else %}No{% endif %}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, '#vulnerabilityDiversityGroup') }}' data-qa='vulnerabilityDiversityChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> vulnerability and diversity</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -15,13 +18,19 @@
     <dd class=" govuk-summary-list__value">
       {% if recall.contrabandDetail %}<pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>{% else %}No{% endif %}
     </dd>
+    <dd class="govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, '#contrabandGroup') }}' data-qa='contrabandChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> contraband</span></a>
+    </dd>
   </div>
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       MAPPA level
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='mappaLevel'>
+    <dd class="govuk-summary-list__value" data-qa='mappaLevel'>
       {{ recall.mappaLevelFormatted }}
+    </dd>
+    <dd class="govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, '#mappaLevelGroup') }}' data-qa='mappaLevelChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> MAPPA level</span></a>
     </dd>
   </div>
 </dl>

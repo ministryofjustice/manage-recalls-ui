@@ -41,7 +41,7 @@ export default function routes(router: Router): Router {
 
   const basePath = '/persons/:nomsNumber/recalls/:recallId'
 
-  router.use(basePath, parseUrlParams)
+  router.use(`${basePath}/:pageSlug`, parseUrlParams)
 
   // BOOK A RECALL
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
