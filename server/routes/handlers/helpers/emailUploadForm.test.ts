@@ -45,13 +45,41 @@ describe('emailUploadForm', () => {
       documentId: '123',
     })
     const res = {
-      locals: { user: {} },
+      locals: {
+        user: {},
+        urlInfo: { basePath: '/persons/456/recalls/789/' },
+      },
       redirect: (httpStatus, path) => {
         expect(addRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).toHaveBeenCalledTimes(1)
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/persons/456/recalls/789/last-release')
+        done()
+      },
+    }
+    handler(req, res)
+  })
+
+  it('redirects to the fromPage if supplied eg check answers', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: { fromPage: 'check-answers', basePath: '/persons/456/recalls/789/' },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/persons/456/recalls/789/check-answers')
         done()
       },
     }
@@ -68,7 +96,7 @@ describe('emailUploadForm', () => {
     })
     ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     const res = {
-      locals: { user: {} },
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -93,7 +121,7 @@ describe('emailUploadForm', () => {
       cb()
     })
     const res = {
-      locals: { user: {} },
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
         expect(addRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).not.toHaveBeenCalled()
@@ -116,7 +144,7 @@ describe('emailUploadForm', () => {
       cb()
     })
     const res = {
-      locals: { user: { token: 'TOKEN' } },
+      locals: { user: { token: 'TOKEN' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
         expect(addRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).toHaveBeenCalledWith(
@@ -144,7 +172,7 @@ describe('emailUploadForm', () => {
       documentId: '123',
     })
     const res = {
-      locals: { user: {} },
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
         expect(addRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).not.toHaveBeenCalled()

@@ -13,6 +13,7 @@ import {
   allowedDocumentFileExtensionList,
   backLinkUrl,
   formActionUrl,
+  changeLinkUrl,
 } from './nunjucksFunctions'
 import { isDefined } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
@@ -45,6 +46,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('allowedDocumentFileExtensionList', allowedDocumentFileExtensionList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
   njkEnv.addGlobal('formActionUrl', formActionUrl)
+  njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)
