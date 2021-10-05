@@ -7,6 +7,9 @@
     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallEmailReceivedDateTime'>
       {{ recall.recallEmailReceivedDateTime | dateTime}}
     </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('request-received', urlInfo) }}' data-qa='recallEmailReceivedDateTimeChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> recall email received date</span></a>
+    </dd>
   </div>
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
@@ -14,6 +17,9 @@
     </dt>
     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallRequestEmailFileName'>
       <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('request-received', urlInfo) }}' data-qa='recallRequestEmailFileNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> uploaded recall email</span></a>
     </dd>
   </div>
 </dl>

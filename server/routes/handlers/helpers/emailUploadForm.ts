@@ -19,13 +19,8 @@ export const emailUploadForm =
   ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix }: Args) =>
   async (req: Request, res: Response): Promise<void> => {
     const processUpload = uploadStorageField(emailFieldName)
-    const { nomsNumber, recallId } = req.params
-    const { user } = res.locals
-    if (!nomsNumber || !recallId) {
-      logger.error(`nomsNumber or recallId not supplied. URL: ${req.originalUrl}`)
-      res.sendStatus(400)
-      return
-    }
+    const { recallId } = req.params
+    const { user, urlInfo } = res.locals
     const saveError = [
       makeErrorObject({
         id: emailFieldName,
@@ -75,7 +70,7 @@ export const emailUploadForm =
           return res.redirect(303, req.originalUrl)
         }
         await updateRecall(recallId, valuesToSave, res.locals.user.token)
-        res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/${nextPageUrlSuffix}`)
+        res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
       } catch (e) {
         logger.error(e)
         req.session.errors = saveError

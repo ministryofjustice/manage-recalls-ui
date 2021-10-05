@@ -54,7 +54,7 @@
       {{ recall.previousConvictionMainName }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/pre-cons-name?fromPage=check-answers' data-qa='previousConvictionMainNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> pre-cons main name</span></a>
+      <a href='{{ changeLinkUrl('pre-cons-name', urlInfo) }}' data-qa='previousConvictionMainNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> pre-cons main name</span></a>
     </dd>
   </div>
 </dl>
