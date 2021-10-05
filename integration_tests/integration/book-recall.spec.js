@@ -341,6 +341,8 @@ context('Book a recall', () => {
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
     checkAnswers.clickElement({ qaAttr: 'previousConvictionMainNameChange' })
     recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
+    recallPreConsName.selectOtherName()
+    recallPreConsName.enterOtherName('Walter Holt')
     recallPreConsName.clickContinue()
     checkAnswersPage.verifyOnPage()
   })
