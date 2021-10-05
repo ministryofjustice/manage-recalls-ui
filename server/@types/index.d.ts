@@ -142,6 +142,7 @@ export interface EmailUploadValidatorArgs {
   fileName: string
   emailFileSelected: boolean
   uploadFailed: boolean
+  invalidFileFormat: boolean
   actionedByUserId?: string
 }
 

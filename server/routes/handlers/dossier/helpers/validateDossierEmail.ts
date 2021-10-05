@@ -9,6 +9,7 @@ export const validateDossierEmail = ({
   fileName,
   emailFileSelected,
   uploadFailed,
+  invalidFileFormat,
   actionedByUserId,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
@@ -26,13 +27,10 @@ export const validateDossierEmail = ({
     day: requestBody.dossierEmailSentDateDay,
   }
   const dossierEmailSentDate = convertGmtDatePartsToUtc(dossierEmailSentDateParts, { dateMustBeInPast: true })
-  const invalidFileExtension = emailFileSelected
-    ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
-    : false
   if (
     !emailFileSelected ||
     uploadFailed ||
-    invalidFileExtension ||
+    invalidFileFormat ||
     !confirmDossierEmailSent ||
     dateHasError(dossierEmailSentDate)
   ) {
@@ -70,11 +68,11 @@ export const validateDossierEmail = ({
         })
       )
     }
-    if (confirmDossierEmailSent && !uploadFailed && invalidFileExtension) {
+    if (confirmDossierEmailSent && !uploadFailed && invalidFileFormat) {
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
+          text: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
         })
       )
     }

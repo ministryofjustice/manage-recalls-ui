@@ -153,12 +153,12 @@ describe('uploadRecallDocumentsFormHandler', () => {
           {
             href: '#PART_A_RECALL_REPORT',
             name: 'PART_A_RECALL_REPORT',
-            text: 'Part A recall report must be a .pdf',
+            text: 'Part A recall report must be a PDF',
           },
           {
             href: '#LICENCE',
             name: 'LICENCE',
-            text: 'Licence must be a .pdf',
+            text: 'Licence must be a PDF',
           },
         ])
         done()

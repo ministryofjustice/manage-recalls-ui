@@ -118,5 +118,5 @@ export const checkboxItems = (
 export const filterSelectedItems = (items?: UiListItem[], currentValues?: string[]) =>
   items.filter(item => currentValues?.includes(item.value))
 
-export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.join(',')
+export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.map(ext => ext.extension).join(',')
 export const allowedDocumentFileExtensionList = () => allowedDocumentFileExtensions.map(ext => ext.extension).join(',')

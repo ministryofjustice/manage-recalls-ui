@@ -9,6 +9,7 @@ export const validateRecallNotificationEmail = ({
   fileName,
   emailFileSelected,
   uploadFailed,
+  invalidFileFormat,
   actionedByUserId,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
@@ -31,13 +32,11 @@ export const validateRecallNotificationEmail = ({
     dateMustBeInPast: true,
     includeTime: true,
   })
-  const invalidFileExtension = emailFileSelected
-    ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
-    : false
+
   if (
     !emailFileSelected ||
     uploadFailed ||
-    invalidFileExtension ||
+    invalidFileFormat ||
     !confirmRecallNotificationEmailSent ||
     dateHasError(recallNotificationEmailSentDateTime)
   ) {
@@ -76,11 +75,11 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileExtension) {
+    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileFormat) {
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
-          text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
+          text: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
           values: fileName,
         })
       )

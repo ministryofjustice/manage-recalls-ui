@@ -242,7 +242,7 @@ context('Assess a recall', () => {
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
-      summaryError: 'The selected file must be an .msg or .eml',
+      summaryError: 'The selected file must be an MSG or EML',
     })
   })
 })

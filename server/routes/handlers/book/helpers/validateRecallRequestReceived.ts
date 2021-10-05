@@ -24,9 +24,9 @@ const makeErrorMessage = (validationError: DateValidationError): string => {
 
 export const validateRecallRequestReceived = ({
   requestBody,
-  fileName,
   emailFileSelected,
   uploadFailed,
+  invalidFileFormat,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave: UpdateRecallRequest
@@ -47,14 +47,11 @@ export const validateRecallRequestReceived = ({
     includeTime: true,
   })
 
-  const invalidFileExtension = emailFileSelected
-    ? !allowedEmailFileExtensions.some((ext: string) => fileName.endsWith(ext))
-    : false
   const existingUpload = requestBody[AddDocumentRequest.category.RECALL_REQUEST_EMAIL] === 'existingUpload'
   if (
     (!emailFileSelected && !existingUpload) ||
     uploadFailed ||
-    invalidFileExtension ||
+    invalidFileFormat ||
     dateHasError(recallEmailReceivedDateTime)
   ) {
     errors = []
@@ -84,11 +81,11 @@ export const validateRecallRequestReceived = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileExtension) {
+    if (!uploadFailed && invalidFileFormat) {
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
-          text: `The selected file must be an ${allowedEmailFileExtensions.join(' or ')}`,
+          text: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
         })
       )
     }

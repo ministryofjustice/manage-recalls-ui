@@ -15,6 +15,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -35,6 +36,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -56,6 +58,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.eml',
       emailFileSelected: false,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(valuesToSave).toEqual({
       recallEmailReceivedDateTime: '2021-09-12T21:14:00.000Z',
@@ -70,6 +73,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -98,6 +102,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -139,6 +144,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you received the email must be today or in the past')
   })
@@ -156,6 +162,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you received the email must be a real date')
   })
@@ -173,6 +180,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The time you received the email must be a real time')
   })
@@ -190,6 +198,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.eml',
       emailFileSelected: false,
       uploadFailed: false,
+      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -214,6 +223,7 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msg',
       emailFileSelected: true,
       uploadFailed: true,
+      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -238,13 +248,14 @@ describe('validateRecallRequestReceived', () => {
       fileName: 'test.msl',
       emailFileSelected: true,
       uploadFailed: false,
+      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#recallRequestEmailFileName',
         name: 'recallRequestEmailFileName',
-        text: 'The selected file must be an .msg or .eml',
+        text: 'The selected file must be an MSG or EML',
       },
     ])
   })
