@@ -1,0 +1,86 @@
+{% if recall.assessedByUserId %}
+  <h2 class='govuk-heading-m'>Recall assessment</h2>
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Assessed by
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='assessedByUserName'>
+        {{ recall.assessedByUserName }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Did band 4 agree with the recall recommendation?
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='agreeWithRecall'>
+        {% if recall.agreeWithRecall == 'YES' %}Yes{% else %}No{% endif %}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Details on why band 4 agreed or disagreed
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+        <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Licence conditions breached
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+        <pre class='govuk-body' data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Reasons for recall
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+        <ul class='govuk-list govuk-list--bullet'>
+          {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
+            <li data-qa='reasonsForRecall-{{ reason.value }}'>{{ reason.text }}</li>
+          {% endfor %}
+        </ul>
+      </dd>
+    </div>
+    {% if recall.reasonsForRecallOtherDetail %}
+      <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+          Reasons for recall - other
+        </dt>
+        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='reasonsForRecallOtherDetail'>
+          {{ recall.reasonsForRecallOtherDetail }}
+        </dd>
+      </div>
+    {% endif %}
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Current prison
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='currentPrison'>
+        {{ recall.currentPrisonFormatted }}
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+        Date/time that recall notification was sent by email
+      </dt>
+      <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallNotificationEmailSentDateTime'>
+        {{ recall.recallNotificationEmailSentDateTime | dateTime }}
+      </dd>
+    </div>
+    {% if recall.recallNotificationEmail %}
+      <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+          Uploaded recall notification email
+        </dt>
+        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallNotificationEmailFileName'>
+          <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
+        </dd>
+      </div>
+    {% endif %}
+  </dl>
+{% endif %}

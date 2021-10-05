@@ -1,0 +1,59 @@
+
+<h2 class='govuk-heading-m'>Personal details</h2>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Name
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='name'>
+      {{ person.firstName }} {{ person.lastName }}
+    </dd>
+    <dd class=" govuk-summary-list__actions"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Date of birth
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='dateOfBirth'>
+      {{ person.dateOfBirth | dateTime }}
+    </dd>
+    <dd class=" govuk-summary-list__actions"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Gender
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='gender'>
+      {{ person.gender }}
+    </dd>
+    <dd class=" govuk-summary-list__actions"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      NOMIS
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='nomsNumber'>
+      {{ person.nomsNumber }}
+    </dd>
+    <dd class=" govuk-summary-list__actions"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      CRO
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='croNumber'>
+      {{ person.croNumber }}
+    </dd>
+    <dd class=" govuk-summary-list__actions"></dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Name on pre-cons
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='previousConvictionMainName'>
+      {{ recall.previousConvictionMainName }}
+    </dd>
+    <dd class=" govuk-summary-list__actions" data-qa='previousConvictionMainNameChange'>
+    </dd>
+  </div>
+</dl>
