@@ -1,0 +1,91 @@
+<h2 class='govuk-heading-m govuk-!-margin-top-9'>Sentence, offence and release details</h2>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Sentence type
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceType'>
+      Determinate
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Date of sentence
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceDate'>
+      {{ recall.sentenceDate | dateTime }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Licence expiry date
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='licenceExpiryDate'>
+      {{ recall.licenceExpiryDate | dateTime }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Sentence expiry date
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceExpiryDate'>
+      {{ recall.sentenceExpiryDate | dateTime }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Length of sentence
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceLength'>
+      {% if recall.sentenceLength.years %}{{ recall.sentenceLength.years }} years {% endif %}{% if recall.sentenceLength.months %}{{ recall.sentenceLength.months }} months {% endif %}{% if recall.sentenceLength.days %}{{ recall.sentenceLength.days }} days{% endif %}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Sentencing court
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentencingCourt'>
+      {{ recall.sentencingCourt }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Index offence
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='indexOffence'>
+      {{ recall.indexOffence }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Releasing prison
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='lastReleasePrison'>
+      {{ recall.lastReleasePrisonFormatted }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Booking number
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookingNumber'>
+      {{ recall.bookingNumber }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Latest release date
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='lastReleaseDate'>
+      {{ recall.lastReleaseDate | dateTime }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Conditional release date
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='conditionalReleaseDate'>
+      {{ recall.conditionalReleaseDate | dateTime }}
+    </dd>
+  </div>
+</dl>

@@ -20,66 +20,8 @@
                 </a>
             </p>
 
-            <h2 class='govuk-heading-m'>Personal details</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Name
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='name'>
-                        {{ person.firstName }} {{ person.lastName }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Name on pre-cons
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='previousConvictionMainName'>
-                        {{ recall.previousConvictionMainName }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Date of birth
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dateOfBirth'>
-                        {{ person.dateOfBirth | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Gender
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='gender'>
-                        {{ person.gender }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        CRO
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='croNumber'>
-                        {{ person.croNumber }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        PNC
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='pncNumber'>
-                        {{ person.pncNumber }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        NOMIS
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='nomsNumber'>
-                        {{ person.nomsNumber }}
-                    </dd>
-                </div>
-            </dl>
-            {% if recall %}
+            {% include '../partials/personDetails.njk' %}
+
             <h2 class='govuk-heading-m'>Recall</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
@@ -92,30 +34,6 @@
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Date recall email was received
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallEmailReceivedDateTime'>
-                        {{ recall.recallEmailReceivedDateTime | dateTime}}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Recall email uploaded
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallRequestEmailFileName'>
-                        <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Local police force
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='localPoliceForce'>
-                        {{ recall.localPoliceForce }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Booked by
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookedByUserName'>
@@ -123,327 +41,28 @@
                     </dd>
                 </div>
             </dl>
+            {% include '../partials/recallRequestDetails.njk' %}
+            {% include '../partials/sentenceDetails.njk' %}
+            {% include '../partials/policeDetails.njk' %}
+            {% include '../partials/issuesDetails.njk' %}
+            {% include '../partials/probationDetails.njk' %}
 
+            {% include '../partials/assessDetails.njk' %}
+            {% include '../partials/dossierDetails.njk' %}
 
-                <h2 class='govuk-heading-m'>Issues or needs</h2>
-                <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Vulnerability and diversity
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        {% if recall.vulnerabilityDiversityDetail %}<pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>{% else %}No{% endif %}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Contraband
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        {% if recall.contrabandDetail %}<pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>{% else %}No{% endif %}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        MAPPA level
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='mappaLevel'>
-                        {{ recall.mappaLevelFormatted }}
-                    </dd>
-                </div>
-            </dl>
-
-            {% endif %}
-
-            <h2 class='govuk-heading-m'>Sentence, offence and release details</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Date of sentence
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceDate'>
-                        {{ recall.sentenceDate | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Sentence expiry date
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceExpiryDate'>
-                        {{ recall.sentenceExpiryDate | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Licence expiry date
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='licenceExpiryDate'>
-                        {{ recall.licenceExpiryDate | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Releasing prison
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='lastReleasePrison'>
-                        {{ recall.lastReleasePrisonFormatted }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Last release date
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='lastReleaseDate'>
-                        {{ recall.lastReleaseDate | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Length of sentence
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentenceLength'>
-                        {% if recall.sentenceLength.years %}{{ recall.sentenceLength.years }} years {% endif %}{% if recall.sentenceLength.months %}{{ recall.sentenceLength.months }} months {% endif %}{% if recall.sentenceLength.days %}{{ recall.sentenceLength.days }} days{% endif %}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Conditional release date
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='conditionalReleaseDate'>
-                        {{ recall.conditionalReleaseDate | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Sentencing court
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='sentencingCourt'>
-                        {{ recall.sentencingCourt }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Index offence
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='indexOffence'>
-                        {{ recall.indexOffence }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Booking number
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookingNumber'>
-                        {{ recall.bookingNumber }}
-                    </dd>
-                </div>
-            </dl>
-
-            <h2 class='govuk-heading-m'>Probation details</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Probation officer
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <p class='govuk-body' data-qa='probationOfficerName'>{{ recall.probationOfficerName }}</p>
-                        <p class='govuk-body'><a class='govuk-link' href='mailto:{{ recall.probationOfficerEmail }}' data-qa='probationOfficerEmail'>{{ recall.probationOfficerEmail }}</a></p>
-                        <p class='govuk-body' data-qa='probationOfficerPhoneNumber'>{{ recall.probationOfficerPhoneNumber }}</p>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Local Delivery Unit
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='localDeliveryUnit'>
-                        {{ recall.localDeliveryUnitFormatted }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Assistant Chief Officer
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='authorisingAssistantChiefOfficer'>
-                        {{ recall.authorisingAssistantChiefOfficer }}
-                    </dd>
-                </div>
-            </dl>
             {% if recall.documents.length %}
-            <h2 class='govuk-heading-m'>Documents</h2>
+                <h2 class='govuk-heading-m'>Documents</h2>
 
                 {% for document in recall.documents %}
-            <div class="govuk-form-group">
-                {{ documentDownloadLink({
-                    linkText: document.fileName,
-                    url: document.url,
-                    dataQa: 'uploadedDocument-' + document.category
-                })
-                }}
-            </div>
-            {% endfor %}
-            {% endif %}
-
-            {% if recall.agreeWithRecall %}
-            <h2 class='govuk-heading-m'>Recall assessment</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Assessed by
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='assessedByUserName'>
-                        {{ recall.assessedByUserName }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Did band 4 agree with the recall recommendation?
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='agreeWithRecall'>
-                        {% if recall.agreeWithRecall == 'YES' %}Yes{% else %}No{% endif %}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Details on why band 4 agreed or disagreed
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
-                    </dd>
-                </div>
-
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Licence conditions breached
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <pre class='govuk-body' data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Reasons for recall
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <ul class='govuk-list govuk-list--bullet'>
-                        {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
-                            <li data-qa='reasonsForRecall-{{ reason.value }}'>{{ reason.text }}</li>
-                        {% endfor %}
-                        </ul>
-                    </dd>
-                </div>
-                {% if recall.reasonsForRecallOtherDetail %}
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Reasons for recall - other
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='reasonsForRecallOtherDetail'>
-                            {{ recall.reasonsForRecallOtherDetail }}
-                        </dd>
+                    <div class="govuk-form-group">
+                        {{ documentDownloadLink({
+                            linkText: document.fileName,
+                            url: document.url,
+                            dataQa: 'uploadedDocument-' + document.category
+                        })
+                        }}
                     </div>
-                {% endif %}
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Current prison
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='currentPrison'>
-                        {{ recall.currentPrisonFormatted }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Date/time that recall notification was sent by email
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallNotificationEmailSentDateTime'>
-                        {{ recall.recallNotificationEmailSentDateTime | dateTime }}
-                    </dd>
-                </div>
-                {% if recall.recallNotificationEmail %}
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Uploaded recall notification email
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallNotificationEmailFileName'>
-                        <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
-                    </dd>
-                </div>
-                {% endif %}
-            </dl>
-            {% endif %}
-
-            {% if isDefined(recall.additionalLicenceConditions) %}
-                <h2 class='govuk-heading-m'>Create dossier</h2>
-                <dl class="govuk-summary-list">
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Dossier created by
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierCreatedByUserName'>
-                            {{ recall.dossierCreatedByUserName }}
-                        </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Are there additional licence conditions?
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='additionalLicenceConditions'>
-                            {% if recall.additionalLicenceConditions == true %}Yes{% else %}No{% endif %}
-                        </dd>
-                    </div>
-                    {% if recall.additionalLicenceConditionsDetail %}
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Additional licence conditions
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                            <pre class='govuk-body' data-qa='additionalLicenceConditionsDetail'>{{ recall.additionalLicenceConditionsDetail }}</pre>
-                        </dd>
-                    </div>
-                    {% endif %}
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Is {{ person.firstName }} {{ person.lastName }} being held under a different NOMIS number to the one on the licence?
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='differentNomsNumber'>
-                            {% if recall.differentNomsNumber == true %}Yes{% else %}No{% endif %}
-                        </dd>
-                    </div>
-                    {% if recall.differentNomsNumberDetail %}
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            What is the different NOMIS number?
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='differentNomsNumberDetail'>
-                            {{ recall.differentNomsNumberDetail }}
-                        </dd>
-                    </div>
-                    {% endif %}
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Information in the dossier and letter has been checked
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='hasDossierBeenChecked'>
-                            {% if recall.hasDossierBeenChecked %}Yes{%  else %}No{% endif %}
-                        </dd>
-                    </div>
-                    <div class="govuk-summary-list__row">
-                        <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                            Date/time that dossier was sent by email
-                        </dt>
-                        <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailSentDate'>
-                            {{ recall.dossierEmailSentDate | dateTime }}
-                        </dd>
-                    </div>
-                    {% if recall.dossierEmail %}
-                        <div class="govuk-summary-list__row">
-                            <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                                Uploaded dossier email
-                            </dt>
-                            <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='dossierEmailFileName'>
-                                <a href='{{ recall.dossierEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.dossierEmail.category}}' download>{{ recall.dossierEmail.fileName }}</a>
-                            </dd>
-                        </div>
-                    {% endif %}
-                </dl>
+                {% endfor %}
             {% endif %}
         </div>
     </div>

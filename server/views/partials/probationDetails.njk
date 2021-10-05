@@ -1,0 +1,29 @@
+<h2 class='govuk-heading-m govuk-!-margin-top-9'>Probation details</h2>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Probation officer
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+      <p class='govuk-body' data-qa='probationOfficerName'>{{ recall.probationOfficerName }}</p>
+      <p class='govuk-body'><a class='govuk-link' href='mailto:{{ recall.probationOfficerEmail }}' data-qa='probationOfficerEmail'>{{ recall.probationOfficerEmail }}</a></p>
+      <p class='govuk-body' data-qa='probationOfficerPhoneNumber'>{{ recall.probationOfficerPhoneNumber }}</p>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      Local Delivery Unit
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='localDeliveryUnit'>
+      {{ recall.localDeliveryUnitFormatted }}
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
+      ACO
+    </dt>
+    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='authorisingAssistantChiefOfficer'>
+      {{ recall.authorisingAssistantChiefOfficer }}
+    </dd>
+  </div>
+</dl>
