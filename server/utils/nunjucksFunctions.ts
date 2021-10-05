@@ -1,4 +1,4 @@
-import { DatePartsParsed, ObjectMap, UiListItem } from '../@types'
+import { DatePartsParsed, ObjectMap, UiListItem, UrlInfo } from '../@types'
 import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
@@ -120,3 +120,13 @@ export const filterSelectedItems = (items?: UiListItem[], currentValues?: string
 
 export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.map(ext => ext.extension).join(',')
 export const allowedDocumentFileExtensionList = () => allowedDocumentFileExtensions.map(ext => ext.extension).join(',')
+
+export const backLinkUrl = (url: string, urlInfo: UrlInfo) => {
+  if (urlInfo.fromPage) {
+    return `${urlInfo.basePath}${urlInfo.fromPage}`
+  }
+  return url
+}
+
+export const formActionUrl = (pageSlug: string, urlInfo: UrlInfo) =>
+  `${urlInfo.basePath}pre-cons-name${urlInfo.fromPage ? `?fromPage=${urlInfo.fromPage}` : ''}`

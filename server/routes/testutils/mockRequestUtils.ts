@@ -30,17 +30,20 @@ export function mockGetRequest({
   params,
   session = {} as SessionData,
   originalUrl,
+  path,
 }: {
   query?: ObjectMixed
   params?: ObjectMixed
   session?: SessionData
   originalUrl?: string
+  path?: string
 }): Request {
   return getMockReq<Request>({
     query,
     params,
     session,
     originalUrl,
+    path,
   })
 }
 
