@@ -15,6 +15,7 @@ export type RecallResponse = {
   bookedByUserId?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
+  contraband?: boolean
   contrabandDetail?: string
   currentPrison?: string
   differentNomsNumber?: boolean
@@ -66,6 +67,7 @@ export type RecallResponse = {
   sentenceLength?: SentenceLengthRes
   sentencingCourt?: string
   status?: RecallResponse.status
+  vulnerabilityDiversity?: boolean
   vulnerabilityDiversityDetail?: string
 }
 
@@ -73,15 +75,6 @@ export namespace RecallResponse {
   export enum agreeWithRecall {
     NO_STOP = 'NO_STOP',
     YES = 'YES',
-  }
-
-  export enum mappaLevel {
-    CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
-    LEVEL_1 = 'LEVEL_1',
-    LEVEL_2 = 'LEVEL_2',
-    LEVEL_3 = 'LEVEL_3',
-    NA = 'NA',
-    NOT_KNOWN = 'NOT_KNOWN',
   }
 
   export enum localDeliveryUnit {
@@ -122,8 +115,8 @@ export namespace RecallResponse {
     PS_CROYDON = 'PS_CROYDON',
     PS_CUMBRIA = 'PS_CUMBRIA',
     PS_CWM_TAF_MORGANNWG = 'PS_CWM_TAF_MORGANNWG',
-    PS_DERBY_CITY = 'PS_DERBY_CITY',
     PS_DERBYSHIRE = 'PS_DERBYSHIRE',
+    PS_DERBY_CITY = 'PS_DERBY_CITY',
     PS_DEVON_AND_TORBAY = 'PS_DEVON_AND_TORBAY',
     PS_DONCASTER = 'PS_DONCASTER',
     PS_DORSET = 'PS_DORSET',
@@ -177,15 +170,15 @@ export namespace RecallResponse {
     PS_NEWCASTLE_UPON_TYNE = 'PS_NEWCASTLE_UPON_TYNE',
     PS_NEWHAM = 'PS_NEWHAM',
     PS_NORFOLK = 'PS_NORFOLK',
+    PS_NORTHAMPTONSHIRE = 'PS_NORTHAMPTONSHIRE',
+    PS_NORTHUMBERLAND = 'PS_NORTHUMBERLAND',
+    PS_NORTHWICH = 'PS_NORTHWICH',
     PS_NORTH_DURHAM = 'PS_NORTH_DURHAM',
     PS_NORTH_EAST_LINCOLNSHIRE = 'PS_NORTH_EAST_LINCOLNSHIRE',
     PS_NORTH_LINCOLNSHIRE = 'PS_NORTH_LINCOLNSHIRE',
     PS_NORTH_TYNESIDE = 'PS_NORTH_TYNESIDE',
     PS_NORTH_WALES = 'PS_NORTH_WALES',
     PS_NORTH_YORKSHIRE = 'PS_NORTH_YORKSHIRE',
-    PS_NORTHAMPTONSHIRE = 'PS_NORTHAMPTONSHIRE',
-    PS_NORTHUMBERLAND = 'PS_NORTHUMBERLAND',
-    PS_NORTHWICH = 'PS_NORTHWICH',
     PS_NOTTINGHAM = 'PS_NOTTINGHAM',
     PS_NOTTINGHAMSHIRE = 'PS_NOTTINGHAMSHIRE',
     PS_OLDHAM = 'PS_OLDHAM',
@@ -205,15 +198,15 @@ export namespace RecallResponse {
     PS_SKELMERSDALE = 'PS_SKELMERSDALE',
     PS_SOLIHULL = 'PS_SOLIHULL',
     PS_SOMERSET = 'PS_SOMERSET',
-    PS_SOUTH_DURHAM = 'PS_SOUTH_DURHAM',
-    PS_SOUTH_TYNESIDE = 'PS_SOUTH_TYNESIDE',
     PS_SOUTHAMPTON_EASTLEIGH_AND_NEW_FOREST = 'PS_SOUTHAMPTON_EASTLEIGH_AND_NEW_FOREST',
     PS_SOUTHWARK = 'PS_SOUTHWARK',
-    PS_ST_HELENS = 'PS_ST_HELENS',
+    PS_SOUTH_DURHAM = 'PS_SOUTH_DURHAM',
+    PS_SOUTH_TYNESIDE = 'PS_SOUTH_TYNESIDE',
     PS_STAFFORDSHIRE = 'PS_STAFFORDSHIRE',
     PS_STOCKPORT = 'PS_STOCKPORT',
     PS_STOCKTON = 'PS_STOCKTON',
     PS_STOKE = 'PS_STOKE',
+    PS_ST_HELENS = 'PS_ST_HELENS',
     PS_SUFFOLK = 'PS_SUFFOLK',
     PS_SUNDERLAND = 'PS_SUNDERLAND',
     PS_SURREY = 'PS_SURREY',
@@ -244,6 +237,15 @@ export namespace RecallResponse {
     YOT_SEE_COMMENTS = 'YOT_SEE_COMMENTS',
   }
 
+  export enum mappaLevel {
+    CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
+    LEVEL_1 = 'LEVEL_1',
+    LEVEL_2 = 'LEVEL_2',
+    LEVEL_3 = 'LEVEL_3',
+    NA = 'NA',
+    NOT_KNOWN = 'NOT_KNOWN',
+  }
+
   export enum recallLength {
     FOURTEEN_DAYS = 'FOURTEEN_DAYS',
     TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
@@ -251,6 +253,7 @@ export namespace RecallResponse {
 
   export enum status {
     BOOKED_ON = 'BOOKED_ON',
+    DOSSIER_ISSUED = 'DOSSIER_ISSUED',
     RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
   }
 

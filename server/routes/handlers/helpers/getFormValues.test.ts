@@ -120,9 +120,9 @@ describe('getFormValues', () => {
     localPoliceForce: 'Dorset',
     sentencingCourt: 'Dorchester',
     indexOffence: 'Assault',
-    contraband: 'yes',
+    contraband: 'YES',
     contrabandDetail: 'Likelihood of smuggling knives',
-    vulnerabilityDiversity: 'no',
+    vulnerabilityDiversity: 'NO',
     vulnerabilityDiversityDetail: '',
     mappaLevel: 'LEVEL_2',
     bookingNumber: '87378435D',
@@ -253,7 +253,7 @@ describe('getFormValues', () => {
       },
       confirmDossierEmailSent: 'YES',
       confirmRecallNotificationEmailSent: 'YES',
-      contraband: 'yes',
+      contraband: 'YES',
       contrabandDetail: 'Likelihood of smuggling knives',
       currentPrison: 'ACL',
       dossierEmailFileName: 'dossier.msg',
@@ -316,7 +316,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: 'Dorchester',
-      vulnerabilityDiversity: 'no',
+      vulnerabilityDiversity: 'NO',
     })
   })
 
@@ -420,7 +420,7 @@ describe('getFormValues', () => {
         month: 12,
         year: 2021,
       },
-      contraband: 'yes',
+      contraband: 'YES',
       contrabandDetail: 'Intention to smuggle drugs',
       currentPrison: 'KTI',
       differentNomsNumber: 'YES',
@@ -485,7 +485,7 @@ describe('getFormValues', () => {
         years: 2,
       },
       sentencingCourt: 'Manchester Crown Court',
-      vulnerabilityDiversity: 'yes',
+      vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
     })
   })
@@ -512,7 +512,7 @@ describe('getFormValues', () => {
         month: 12,
         year: 2021,
       },
-      contraband: 'yes',
+      contraband: 'YES',
       contrabandDetail: 'Intention to smuggle drugs',
       currentPrison: 'KTI',
       differentNomsNumber: 'YES',
@@ -577,7 +577,7 @@ describe('getFormValues', () => {
         years: 2,
       },
       sentencingCourt: 'Manchester Crown Court',
-      vulnerabilityDiversity: 'yes',
+      vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
     })
   })
