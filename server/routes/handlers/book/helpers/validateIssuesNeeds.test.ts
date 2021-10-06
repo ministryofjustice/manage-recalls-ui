@@ -49,7 +49,7 @@ describe('validateIssuesNeeds', () => {
       {
         href: '#contraband',
         name: 'contraband',
-        text: 'Contraband',
+        text: 'Do you think {{person.firstName}} {{person.lastName}} will bring contraband into prison?',
       },
     ])
   })
@@ -66,7 +66,7 @@ describe('validateIssuesNeeds', () => {
       {
         href: '#vulnerabilityDiversity',
         name: 'vulnerabilityDiversity',
-        text: 'Vulnerability issues or diversity needs',
+        text: 'Are there any vulnerability issues or diversity needs?',
       },
     ])
   })
@@ -81,22 +81,14 @@ describe('validateIssuesNeeds', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#contrabandDetail',
-        name: 'contrabandDetail',
-        text: 'Bring contraband to prison detail',
-        values: {
-          contraband: 'YES',
-          vulnerabilityDiversity: 'YES',
-        },
-      },
-      {
         href: '#vulnerabilityDiversityDetail',
         name: 'vulnerabilityDiversityDetail',
-        text: 'Vulnerability issues or diversity needs detail',
-        values: {
-          contraband: 'YES',
-          vulnerabilityDiversity: 'YES',
-        },
+        text: 'Vulnerability issues or diversity needs - provide more detail',
+      },
+      {
+        href: '#contrabandDetail',
+        name: 'contrabandDetail',
+        text: 'Contraband - provide more detail',
       },
     ])
   })
@@ -114,7 +106,7 @@ describe('validateIssuesNeeds', () => {
       {
         href: '#mappaLevel',
         name: 'mappaLevel',
-        text: 'MAPPA level',
+        text: 'Select a MAPPA level',
       },
     ])
   })

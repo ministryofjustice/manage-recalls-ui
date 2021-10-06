@@ -159,6 +159,7 @@ export type DateValidationErrorType =
   | 'invalidDate'
   | 'invalidTime'
   | 'missingDateParts'
+
 export type DatePartNames = 'year' | 'month' | 'day' | 'hour' | 'minute'
 
 export interface DateTimePart {

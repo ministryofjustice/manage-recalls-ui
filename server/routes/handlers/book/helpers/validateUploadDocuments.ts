@@ -27,7 +27,9 @@ export const validateUploadDocuments = ({ fileData, requestBody }: Args): { erro
       if (uploadedFile && invalidFileFormat(uploadedFile)) {
         return makeErrorObject({
           id: uploadedFile.category,
-          text: `${uploadedFile.label} must be a ${allowedDocumentFileExtensions.map(ext => ext.label).join(' or ')}`,
+          text: `The ${uploadedFile.label} must be a ${allowedDocumentFileExtensions
+            .map(ext => ext.label)
+            .join(' or ')}`,
         })
       }
       return undefined

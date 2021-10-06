@@ -19,8 +19,7 @@ describe('validatePolice', () => {
       {
         href: '#localPoliceForce',
         name: 'localPoliceForce',
-        text: 'Local police force',
-        values: {},
+        text: 'Select a local police force',
       },
     ])
     expect(valuesToSave).toBeUndefined()

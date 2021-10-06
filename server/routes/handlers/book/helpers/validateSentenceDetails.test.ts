@@ -66,7 +66,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#licenceExpiryDate',
         name: 'licenceExpiryDate',
-        text: 'Enter a licence expiry date',
+        text: 'Enter the licence expiry date',
         values: {
           day: '',
           month: '',
@@ -76,7 +76,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#sentenceExpiryDate',
         name: 'sentenceExpiryDate',
-        text: 'Enter a sentence expiry date',
+        text: 'Enter the sentence expiry date',
         values: {
           day: '',
           month: '',
@@ -116,7 +116,7 @@ describe('validateSentenceDetails', () => {
       {
         href: '#lastReleaseDate',
         name: 'lastReleaseDate',
-        text: 'Enter a latest release date',
+        text: 'Enter the latest release date',
         values: {
           day: '',
           month: '',

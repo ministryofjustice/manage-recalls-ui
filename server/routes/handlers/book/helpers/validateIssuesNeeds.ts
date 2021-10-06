@@ -23,7 +23,7 @@ export const validateIssuesNeeds = (
       errors.push(
         makeErrorObject({
           id: 'vulnerabilityDiversity',
-          text: 'Vulnerability issues or diversity needs',
+          text: 'Are there any vulnerability issues or diversity needs?',
         })
       )
     }
@@ -31,16 +31,7 @@ export const validateIssuesNeeds = (
       errors.push(
         makeErrorObject({
           id: 'contraband',
-          text: 'Contraband',
-        })
-      )
-    }
-    if (contraband === 'YES' && !contrabandDetail) {
-      errors.push(
-        makeErrorObject({
-          id: 'contrabandDetail',
-          text: 'Bring contraband to prison detail',
-          values: { contraband, vulnerabilityDiversity, contrabandDetail, vulnerabilityDiversityDetail },
+          text: 'Do you think {{person.firstName}} {{person.lastName}} will bring contraband into prison?',
         })
       )
     }
@@ -48,8 +39,15 @@ export const validateIssuesNeeds = (
       errors.push(
         makeErrorObject({
           id: 'vulnerabilityDiversityDetail',
-          text: 'Vulnerability issues or diversity needs detail',
-          values: { contraband, vulnerabilityDiversity, contrabandDetail, vulnerabilityDiversityDetail },
+          text: 'Vulnerability issues or diversity needs - provide more detail',
+        })
+      )
+    }
+    if (contraband === 'YES' && !contrabandDetail) {
+      errors.push(
+        makeErrorObject({
+          id: 'contrabandDetail',
+          text: 'Contraband - provide more detail',
         })
       )
     }
@@ -57,7 +55,7 @@ export const validateIssuesNeeds = (
       errors.push(
         makeErrorObject({
           id: 'mappaLevel',
-          text: 'MAPPA level',
+          text: 'Select a MAPPA level',
         })
       )
     }

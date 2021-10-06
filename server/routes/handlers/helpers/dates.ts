@@ -25,9 +25,9 @@ export const convertGmtDatePartsToUtc = (
     }
   }
   const dateParts = [
-    { name: 'year', value: year },
-    { name: 'month', value: month },
     { name: 'day', value: day },
+    { name: 'month', value: month },
+    { name: 'year', value: year },
   ]
   let timeParts = [] as DateTimePart[]
   if (options.includeTime) {
@@ -50,7 +50,7 @@ export const convertGmtDatePartsToUtc = (
       invalidParts: datePartErrors,
     }
   }
-  const [y, m, d, h, min] = [...dateParts, ...timeParts].map(({ value }) => {
+  const [d, m, y, h, min] = [...dateParts, ...timeParts].map(({ value }) => {
     return parseInt(value, 10)
   })
   try {

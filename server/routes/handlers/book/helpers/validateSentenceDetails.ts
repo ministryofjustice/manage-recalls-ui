@@ -1,8 +1,9 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { DateValidationError, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { isBookingNumberValid } from '../../helpers/validations'
+import { errorMsgDate } from '../../helpers/errorMessages'
 
 export const validateSentenceDetails = (
   requestBody: ObjectMap<string>
@@ -85,7 +86,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceDate',
-          text: 'Enter the date of sentence',
+          text: errorMsgDate(sentenceDate as DateValidationError, 'date of sentence'),
           values: sentenceDateParts,
         })
       )
@@ -94,7 +95,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'licenceExpiryDate',
-          text: 'Enter a licence expiry date',
+          text: errorMsgDate(licenceExpiryDate as DateValidationError, 'licence expiry date'),
           values: licenceExpiryDateParts,
         })
       )
@@ -103,7 +104,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceExpiryDate',
-          text: 'Enter a sentence expiry date',
+          text: errorMsgDate(sentenceExpiryDate as DateValidationError, 'sentence expiry date'),
           values: sentenceExpiryDateParts,
         })
       )
@@ -162,7 +163,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'lastReleaseDate',
-          text: 'Enter a latest release date',
+          text: errorMsgDate(lastReleaseDate as DateValidationError, 'latest release date'),
           values: lastReleaseDateParts,
         })
       )
@@ -180,7 +181,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'conditionalReleaseDate',
-          text: 'Enter a conditional release date',
+          text: errorMsgDate(conditionalReleaseDate as DateValidationError, 'conditional release date'),
           values: conditionalReleaseDateParts,
         })
       )

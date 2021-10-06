@@ -28,7 +28,7 @@ export const listFailedUploads = (
       if (result.status === 'rejected') {
         return makeErrorObject({
           id: fileData[idx].category,
-          text: `${fileData[idx].label} - an error occurred during upload`,
+          text: `The ${fileData[idx].label} could not be uploaded - try again`,
         })
       }
       return null

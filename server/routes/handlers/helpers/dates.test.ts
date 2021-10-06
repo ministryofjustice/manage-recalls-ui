@@ -122,7 +122,7 @@ describe('Date helpers', () => {
 
     it('returns an error for a date with any parts missing', () => {
       const result = convertGmtDatePartsToUtc({ year: '2021', month: '', day: '' })
-      expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['month', 'day'] })
+      expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['day', 'month'] })
     })
 
     it('returns an error for a date-time with any time parts missing', () => {
