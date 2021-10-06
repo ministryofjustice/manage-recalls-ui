@@ -198,6 +198,7 @@ workflows:
             - helm_lint
             - integration_test
 #            - trivy_scan
+            - build_docker #needs removing when trivy re-enabled
             - unit_test
           filters:
             branches:
