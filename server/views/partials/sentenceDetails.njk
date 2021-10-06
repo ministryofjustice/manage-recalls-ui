@@ -1,4 +1,4 @@
-<h2 class='govuk-heading-m govuk-!-margin-top-9'>Sentence, offence and release details</h2>
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='sentenceDetails'>Sentence, offence and release details</h2>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -18,7 +18,7 @@
       {{ recall.sentenceDate | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#sentenceDateGroup') }}' data-qa='sentenceDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> date of sentence</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'sentenceDateGroup') }}' data-qa='sentenceDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> date of sentence</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -29,7 +29,7 @@
       {{ recall.licenceExpiryDate | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#licenceExpiryDateGroup') }}' data-qa='licenceDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> licence expiry date</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'licenceExpiryDateGroup') }}' data-qa='licenceDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> licence expiry date</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -40,7 +40,7 @@
       {{ recall.sentenceExpiryDate | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#sentenceExpiryDateGroup') }}' data-qa='sentenceDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentence expiry date</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'sentenceExpiryDateGroup') }}' data-qa='sentenceDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentence expiry date</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -51,7 +51,7 @@
       {% if recall.sentenceLength.years %}{{ recall.sentenceLength.years }} years {% endif %}{% if recall.sentenceLength.months %}{{ recall.sentenceLength.months }} months {% endif %}{% if recall.sentenceLength.days %}{{ recall.sentenceLength.days }} days{% endif %}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#sentenceLengthGroup') }}' data-qa='sentenceLengthChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentence length</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'sentenceLengthGroup') }}' data-qa='sentenceLengthChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentence length</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -62,7 +62,7 @@
       {{ recall.sentencingCourt }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#sentencingCourtGroup') }}' data-qa='sentencingCourtChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentencing court</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'sentencingCourtGroup') }}' data-qa='sentencingCourtChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentencing court</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -73,7 +73,7 @@
       {{ recall.indexOffence }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#indexOffenceGroup') }}' data-qa='indexOffenceChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> index offence</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'indexOffenceGroup') }}' data-qa='indexOffenceChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> index offence</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -84,7 +84,7 @@
       {{ recall.lastReleasePrisonFormatted }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#lastReleasePrisonGroup') }}' data-qa='lastReleasePrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> releasing prison</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'lastReleasePrisonGroup') }}' data-qa='lastReleasePrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> releasing prison</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -95,7 +95,7 @@
       {{ recall.bookingNumber }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#bookingNumberGroup') }}' data-qa='bookingNumberChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> booking number</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'bookingNumberGroup') }}' data-qa='bookingNumberChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> booking number</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -106,7 +106,7 @@
       {{ recall.lastReleaseDate | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#lastReleaseDateGroup') }}' data-qa='lastReleaseDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> latest release date</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'lastReleaseDateGroup') }}' data-qa='lastReleaseDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> latest release date</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -117,7 +117,7 @@
       {{ recall.conditionalReleaseDate | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('last-release', urlInfo, '#conditionalReleaseDateGroup') }}' data-qa='conditionalReleaseDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> conditional release date</span></a>
+      <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'conditionalReleaseDateGroup') }}' data-qa='conditionalReleaseDateChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> conditional release date</span></a>
     </dd>
   </div>
 </dl>

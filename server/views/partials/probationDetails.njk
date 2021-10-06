@@ -1,4 +1,4 @@
-<h2 class='govuk-heading-m govuk-!-margin-top-9'>Probation details</h2>
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='probation'>Probation details</h2>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -10,7 +10,7 @@
       <p class='govuk-body' data-qa='probationOfficerPhoneNumber'>{{ recall.probationOfficerPhoneNumber }}</p>
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#probationOfficerGroup') }}' data-qa='probationOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> probation officer details</span></a>
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, 'probation', 'probationOfficerGroup') }}' data-qa='probationOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> probation officer details</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -21,7 +21,7 @@
       {{ recall.localDeliveryUnitFormatted }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#localDeliveryUnitGroup') }}' data-qa='localDeliveryUnitChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> Local Delivery Unit</span></a>
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, 'probation', 'localDeliveryUnitGroup') }}' data-qa='localDeliveryUnitChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> Local Delivery Unit</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -32,7 +32,7 @@
       {{ recall.authorisingAssistantChiefOfficer }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('probation-officer', urlInfo, '#authorisingAssistantChiefOfficerGroup') }}' data-qa='authorisingAssistantChiefOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> ACO</span></a>
+      <a href='{{ changeLinkUrl('probation-officer', urlInfo, 'probation', 'authorisingAssistantChiefOfficerGroup') }}' data-qa='authorisingAssistantChiefOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> ACO</span></a>
     </dd>
   </div>
 </dl>

@@ -37,6 +37,17 @@ describe('parseUrlParams', () => {
     expect(res.locals.urlInfo.fromPage).toEqual('check-answers')
   })
 
+  it('parses fromHash from URL', () => {
+    const req = mockGetRequest({
+      params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },
+      query: { fromHash: 'sentence' },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('user_access_token')
+    const next = jest.fn()
+    parseUrlParams(req, res, next)
+    expect(res.locals.urlInfo.fromHash).toEqual('sentence')
+  })
+
   it('reloads the page without the query string if the fromPage param is invalid', () => {
     const req = mockGetRequest({
       params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },

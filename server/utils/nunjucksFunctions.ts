@@ -121,24 +121,29 @@ export const filterSelectedItems = (items?: UiListItem[], currentValues?: string
 export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.map(ext => ext.extension).join(',')
 export const allowedDocumentFileExtensionList = () => allowedDocumentFileExtensions.map(ext => ext.extension).join(',')
 
-export const backLinkUrl = (path: string, urlInfo: UrlInfo) => {
-  if (urlInfo.fromPage) {
-    return `${urlInfo.basePath}${urlInfo.fromPage}`
+export const backLinkUrl = (path: string, { fromPage, fromHash, basePath }: UrlInfo) => {
+  if (fromPage) {
+    return `${basePath}${fromPage}${fromHash ? `#${fromHash}` : ''}`
   }
   if (path.startsWith('/')) {
     return path
   }
-  return `${urlInfo.basePath}${path}`
+  return `${basePath}${path}`
 }
 
-export const formActionUrl = (pageSlug: string, urlInfo: UrlInfo, csrfToken?: string) => {
-  const fromPageQueryParam = urlInfo.fromPage ? `fromPage=${urlInfo.fromPage}` : undefined
+export const formActionUrl = (pageSlug: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
+  const fromPageQueryParam = fromPage ? `fromPage=${fromPage}` : undefined
   const csrfQueryParam = csrfToken ? `_csrf=${csrfToken}` : undefined
   const queryParams = [fromPageQueryParam, csrfQueryParam].filter(Boolean).join('&')
-  return `${urlInfo.basePath}${pageSlug}${queryParams ? `?${queryParams}` : ''}`
+  return `${basePath}${pageSlug}${queryParams ? `?${queryParams}` : ''}${fromHash ? `#${fromHash}` : ''}`
 }
 
-export const changeLinkUrl = (pageSlug: string, urlInfo: UrlInfo, hash?: string) => {
-  const url = formActionUrl(pageSlug, { ...urlInfo, fromPage: urlInfo.currentPage })
-  return `${url}${hash || ''}`
+export const changeLinkUrl = (
+  pageSlug: string,
+  { currentPage, basePath }: UrlInfo,
+  fromHash: string,
+  toHash?: string
+) => {
+  const queryParam = currentPage ? `?fromPage=${currentPage}&fromHash=${fromHash}` : ''
+  return `${basePath}${pageSlug}${queryParam}${toHash ? `#${toHash}` : ''}`
 }

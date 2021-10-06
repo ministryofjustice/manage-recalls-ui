@@ -290,20 +290,27 @@ describe('formActionUrl', () => {
 
 describe('changeLinkUrl', () => {
   it('adds currentPage as the fromPage param', () => {
-    const url = changeLinkUrl('request-received', {
-      basePath: '/person/123/recalls/456/',
-      currentPage: 'check-answers',
-    })
-    expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers')
+    const url = changeLinkUrl(
+      'request-received',
+      {
+        basePath: '/person/123/recalls/456/',
+        currentPage: 'check-answers',
+      },
+      'recallRequest'
+    )
+    expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers&fromHash=recallRequest')
   })
 
   it('adds a hash if supplied', () => {
     const url = changeLinkUrl(
       'last-release',
       { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
-      '#sentenceExpiryDateFieldset'
+      'sentenceDetails',
+      'sentenceExpiryDateFieldset'
     )
-    expect(url).toEqual('/person/123/recalls/456/last-release?fromPage=check-answers#sentenceExpiryDateFieldset')
+    expect(url).toEqual(
+      '/person/123/recalls/456/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceExpiryDateFieldset'
+    )
   })
 })
 
@@ -315,6 +322,16 @@ describe('backLinkUrl', () => {
       basePath: '/person/123/recalls/456/',
     })
     expect(url).toEqual('/person/123/recalls/456/check-answers')
+  })
+
+  it('uses the fromHash param if supplied', () => {
+    const url = backLinkUrl('request-received', {
+      fromPage: 'check-answers',
+      fromHash: 'sentenceDetails',
+      currentPage: 'check-answers',
+      basePath: '/person/123/recalls/456/',
+    })
+    expect(url).toEqual('/person/123/recalls/456/check-answers#sentenceDetails')
   })
 
   it('uses the path parameter if fromPage param not supplied', () => {

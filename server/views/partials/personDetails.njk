@@ -1,5 +1,5 @@
 
-<h2 class='govuk-heading-m'>Personal details</h2>
+<h2 class='govuk-heading-m' id='personalDetails'>Personal details</h2>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -54,7 +54,7 @@
       {{ recall.previousConvictionMainName }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('pre-cons-name', urlInfo) }}' data-qa='previousConvictionMainNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> pre-cons main name</span></a>
+      <a href='{{ changeLinkUrl('pre-cons-name', urlInfo, 'personalDetails') }}' data-qa='previousConvictionMainNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> pre-cons main name</span></a>
     </dd>
   </div>
 </dl>

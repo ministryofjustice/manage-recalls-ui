@@ -1,4 +1,4 @@
-<h2 class='govuk-heading-m govuk-!-margin-top-9'>Issues or needs</h2>
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='issues'>Issues or needs</h2>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -8,7 +8,7 @@
       {% if recall.vulnerabilityDiversityDetail %}<pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>{% else %}No{% endif %}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('issues-needs', urlInfo, '#vulnerabilityDiversityGroup') }}' data-qa='vulnerabilityDiversityChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> vulnerability and diversity</span></a>
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'vulnerabilityDiversityGroup') }}' data-qa='vulnerabilityDiversityChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> vulnerability and diversity</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -19,7 +19,7 @@
       {% if recall.contrabandDetail %}<pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>{% else %}No{% endif %}
     </dd>
     <dd class="govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('issues-needs', urlInfo, '#contrabandGroup') }}' data-qa='contrabandChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> contraband</span></a>
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'contrabandGroup') }}' data-qa='contrabandChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> contraband</span></a>
     </dd>
   </div>
   <div class="govuk-summary-list__row">
@@ -30,7 +30,7 @@
       {{ recall.mappaLevelFormatted }}
     </dd>
     <dd class="govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('issues-needs', urlInfo, '#mappaLevelGroup') }}' data-qa='mappaLevelChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> MAPPA level</span></a>
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'mappaLevelGroup') }}' data-qa='mappaLevelChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> MAPPA level</span></a>
     </dd>
   </div>
 </dl>
