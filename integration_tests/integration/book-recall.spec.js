@@ -338,12 +338,18 @@ context('Book a recall', () => {
   })
 
   it('user can check and change their answers then navigate back to the check answers page', () => {
+    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
+    checkAnswers.checkChangeLinks()
     checkAnswers.clickElement({ qaAttr: 'previousConvictionMainNameChange' })
     recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
     recallPreConsName.selectOtherName()
     recallPreConsName.enterOtherName('Walter Holt')
     recallPreConsName.clickContinue()
+    checkAnswersPage.verifyOnPage()
+    checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
+    uploadDocuments.clickElement({ qaAttr: 'backLinkUploadDocuments' })
     checkAnswersPage.verifyOnPage()
   })
 })
