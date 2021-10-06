@@ -5,7 +5,18 @@
       Vulnerability and diversity
     </dt>
     <dd class="govuk-summary-list__value">
-      {% if recall.vulnerabilityDiversityDetail %}<pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>{% else %}No{% endif %}
+      <pre class='govuk-body' data-qa='vulnerabilityDiversity'>{{ recall.vulnerabilityDiversity }}</pre>
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'vulnerabilityDiversityGroup') }}' data-qa='vulnerabilityDiversityChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> vulnerability and diversity</span></a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Vulnerability and diversity Detail
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <pre class='govuk-body' data-qa='vulnerabilityDiversityDetail'>{{ recall.vulnerabilityDiversityDetail }}</pre>
     </dd>
     <dd class=" govuk-summary-list__actions">
       <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'vulnerabilityDiversityGroup') }}' data-qa='vulnerabilityDiversityChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> vulnerability and diversity</span></a>
@@ -16,7 +27,18 @@
       Contraband
     </dt>
     <dd class=" govuk-summary-list__value">
-      {% if recall.contrabandDetail %}<pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>{% else %}No{% endif %}
+      <pre class='govuk-body' data-qa='contraband'>{{ recall.contraband }}</pre>
+    </dd>
+    <dd class="govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'contrabandGroup') }}' data-qa='contrabandChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> contraband</span></a>
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Contraband Detail
+    </dt>
+    <dd class=" govuk-summary-list__value">
+      <pre class='govuk-body' data-qa='contrabandDetail'>{{ recall.contrabandDetail }}</pre>
     </dd>
     <dd class="govuk-summary-list__actions">
       <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'contrabandGroup') }}' data-qa='contrabandChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> contraband</span></a>
