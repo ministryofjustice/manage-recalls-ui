@@ -105,7 +105,9 @@ context('Book a recall', () => {
     // local police force
     checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
     // issues or needs
+    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Yes' })
     checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversityDetail', textToFind: 'Various...' })
+    checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Yes' })
     checkAnswers.assertElementHasText({ qaAttr: 'contrabandDetail', textToFind: 'Intention to smuggle drugs' })
     checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
     // probation details
