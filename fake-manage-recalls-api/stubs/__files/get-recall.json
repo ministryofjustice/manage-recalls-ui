@@ -44,7 +44,9 @@
   "localPoliceForce": "Essex",
   "sentencingCourt": "Manchester Crown Court",
   "indexOffence": "Burglary",
+  "contraband": true,
   "contrabandDetail": "Intention to smuggle drugs",
+  "vulnerabilityDiversity": true,
   "vulnerabilityDiversityDetail": "Various...",
   "mappaLevel": "LEVEL_1",
   "sentenceLength": {

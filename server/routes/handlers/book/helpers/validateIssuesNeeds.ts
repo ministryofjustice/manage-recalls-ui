@@ -14,8 +14,8 @@ export const validateIssuesNeeds = (
   if (
     !contraband ||
     !vulnerabilityDiversity ||
-    (contraband === 'yes' && !contrabandDetail) ||
-    (vulnerabilityDiversity === 'yes' && !vulnerabilityDiversityDetail) ||
+    (contraband === 'YES' && !contrabandDetail) ||
+    (vulnerabilityDiversity === 'YES' && !vulnerabilityDiversityDetail) ||
     !mappaLevel
   ) {
     errors = []
@@ -35,7 +35,7 @@ export const validateIssuesNeeds = (
         })
       )
     }
-    if (contraband === 'yes' && !contrabandDetail) {
+    if (contraband === 'YES' && !contrabandDetail) {
       errors.push(
         makeErrorObject({
           id: 'contrabandDetail',
@@ -44,7 +44,7 @@ export const validateIssuesNeeds = (
         })
       )
     }
-    if (vulnerabilityDiversity === 'yes' && !vulnerabilityDiversityDetail) {
+    if (vulnerabilityDiversity === 'YES' && !vulnerabilityDiversityDetail) {
       errors.push(
         makeErrorObject({
           id: 'vulnerabilityDiversityDetail',
@@ -72,12 +72,12 @@ export const validateIssuesNeeds = (
   if (!errors) {
     // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
     // Using blanks as server cannot handle nulls and will just not overwrite existing value
-    const contrabandDetailCleaned = contraband === 'yes' ? contrabandDetail : ''
-    const vulnerabilityDiversityDetailCleaned = vulnerabilityDiversity === 'yes' ? vulnerabilityDiversityDetail : ''
+    const contrabandDetailCleaned = contraband === 'YES' ? contrabandDetail : ''
+    const vulnerabilityDiversityDetailCleaned = vulnerabilityDiversity === 'YES' ? vulnerabilityDiversityDetail : ''
     valuesToSave = {
-      contraband: contraband === 'yes',
+      contraband: contraband === 'YES',
       contrabandDetail: contrabandDetailCleaned,
-      vulnerabilityDiversity: vulnerabilityDiversity === 'yes',
+      vulnerabilityDiversity: vulnerabilityDiversity === 'YES',
       vulnerabilityDiversityDetail: vulnerabilityDiversityDetailCleaned,
       mappaLevel: UpdateRecallRequest.mappaLevel[mappaLevel],
     }

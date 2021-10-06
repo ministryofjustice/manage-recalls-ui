@@ -86,9 +86,6 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })
-  ;['contraband', 'vulnerabilityDiversity'].forEach((key: string) => {
-    values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || (apiValues[`${key}Detail`] ? 'yes' : undefined)
-  })
 
   // Yes / no options - stored as booleans in the API, but sent as 'YES' / 'NO' values in the front end
   ;[
@@ -96,6 +93,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'differentNomsNumber',
     'hasOtherPreviousConvictionMainName',
     'hasDossierBeenChecked',
+    'contraband',
+    'vulnerabilityDiversity',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
   })

@@ -3,10 +3,10 @@
 /* eslint-disable */
 
 export type UserDetailsResponse = {
+  email: string
   firstName: string
   lastName: string
-  userId: string
-  signature: string
-  email: string
   phoneNumber: string
+  signature: string
+  userId: string
 }

@@ -11,6 +11,7 @@ export type AddDocumentRequest = {
 export namespace AddDocumentRequest {
   export enum category {
     DOSSIER_EMAIL = 'DOSSIER_EMAIL',
+    LETTER_TO_PRISON = 'LETTER_TO_PRISON',
     LICENCE = 'LICENCE',
     OASYS_RISK_ASSESSMENT = 'OASYS_RISK_ASSESSMENT',
     PART_A_RECALL_REPORT = 'PART_A_RECALL_REPORT',
