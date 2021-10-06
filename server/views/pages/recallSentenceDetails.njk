@@ -43,9 +43,7 @@
                             }
                         },
                         items: dateTimeItems("sentenceDate", formValues.sentenceDateParts),
-                        errorMessage: {
-                            text: errors.sentenceDate.text
-                        } if errors.sentenceDate else undefined
+                        errorMessage: errorMessage(errors.sentenceDate)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='licenceExpiryDateGroup'>
@@ -59,9 +57,7 @@
                             }
                         },
                         items: dateTimeItems("licenceExpiryDate", formValues.licenceExpiryDateParts),
-                        errorMessage: {
-                            text: errors.licenceExpiryDate.text
-                        } if errors.licenceExpiryDate else undefined
+                        errorMessage: errorMessage(errors.licenceExpiryDate)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='sentenceExpiryDateGroup'>
@@ -75,9 +71,7 @@
                             }
                         },
                         items: dateTimeItems("sentenceExpiryDate", formValues.sentenceExpiryDateParts),
-                        errorMessage: {
-                            text: errors.sentenceExpiryDate.text
-                        } if errors.sentenceExpiryDate else undefined
+                        errorMessage: errorMessage(errors.sentenceExpiryDate)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='sentenceLengthGroup'>
@@ -119,9 +113,7 @@
                                 value: formValues.sentenceLengthParts.days
                             }
                         ],
-                        errorMessage: {
-                            text: errors.sentenceLength.text
-                        } if errors.sentenceLength else undefined
+                        errorMessage: errorMessage(errors.sentenceLength)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='sentencingCourtGroup'>
@@ -133,9 +125,7 @@
                         id: "sentencingCourt",
                         name: "sentencingCourt",
                         value: formValues.sentencingCourt,
-                        errorMessage: {
-                            text: errors.sentencingCourt.text
-                        } if errors.sentencingCourt else undefined
+                        errorMessage: errorMessage(errors.sentencingCourt)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='indexOffenceGroup'>
@@ -147,9 +137,7 @@
                         id: "indexOffence",
                         name: "indexOffence",
                         value: formValues.indexOffence,
-                        errorMessage: {
-                            text: errors.indexOffence.text
-                        } if errors.indexOffence else undefined
+                        errorMessage: errorMessage(errors.indexOffence)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='lastReleasePrisonGroup'>
@@ -161,9 +149,7 @@
                         id: "lastReleasePrison",
                         name: "lastReleasePrison",
                         items: selectItems( referenceData.prisonList, formValues.lastReleasePrison, true),
-                        errorMessage: {
-                            text: errors.lastReleasePrison.text
-                        } if errors.lastReleasePrison else undefined
+                        errorMessage: errorMessage(errors.lastReleasePrison)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='bookingNumberGroup'>
@@ -176,9 +162,7 @@
                         name: "bookingNumber",
                         value: formValues.bookingNumber,
                         classes: "govuk-input--width-10",
-                        errorMessage: {
-                            text: errors.bookingNumber.text
-                        } if errors.bookingNumber else undefined
+                        errorMessage: errorMessage(errors.bookingNumber)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='lastReleaseDateGroup'>
@@ -192,9 +176,7 @@
                             }
                         },
                         items: dateTimeItems("lastReleaseDate", formValues.lastReleaseDateParts),
-                        errorMessage: {
-                            text: errors.lastReleaseDate.text
-                        } if errors.lastReleaseDate else undefined
+                        errorMessage: errorMessage(errors.lastReleaseDate)
                     }) }}
 
                 </div>
@@ -209,9 +191,7 @@
                             }
                         },
                         items: dateTimeItems("conditionalReleaseDate", formValues.conditionalReleaseDateParts),
-                        errorMessage: {
-                            text: errors.conditionalReleaseDate.text
-                        } if errors.conditionalReleaseDate else undefined
+                        errorMessage: errorMessage(errors.conditionalReleaseDate)
                     }) }}
                 </div>
                 <div>

@@ -40,9 +40,7 @@
                         id: "probationOfficerName",
                         name: "probationOfficerName",
                         value: formValues.probationOfficerName,
-                        errorMessage: {
-                            text: errors.probationOfficerName.text
-                        } if errors.probationOfficerName else undefined
+                        errorMessage: errorMessage(errors.probationOfficerName)
                     }) }}
 
                     {{ govukInput({
@@ -54,9 +52,7 @@
                         name: "probationOfficerEmail",
                         type: 'email',
                         value: formValues.probationOfficerEmail,
-                        errorMessage: {
-                            text: errors.probationOfficerEmail.text
-                        } if errors.probationOfficerEmail else undefined
+                        errorMessage: errorMessage(errors.probationOfficerEmail)
                     }) }}
 
                     {{ govukInput({
@@ -69,9 +65,7 @@
                         type: 'tel',
                         classes: "govuk-input--width-20",
                         value: formValues.probationOfficerPhoneNumber,
-                        errorMessage: {
-                            text: errors.probationOfficerPhoneNumber.text
-                        } if errors.probationOfficerPhoneNumber else undefined
+                        errorMessage: errorMessage(errors.probationOfficerPhoneNumber)
                     }) }}
                 </div>
                 <div id='localDeliveryUnitGroup'>
@@ -83,9 +77,7 @@
                             classes: "govuk-label--m"
                         },
                         items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit, true),
-                        errorMessage: {
-                            text: errors.localDeliveryUnit.text
-                        } if errors.localDeliveryUnit else undefined
+                        errorMessage: errorMessage(errors.localDeliveryUnit)
                     }) }}
                 </div>
                 <div id='authorisingAssistantChiefOfficerGroup'>
@@ -97,9 +89,7 @@
                         id: "authorisingAssistantChiefOfficer",
                         name: "authorisingAssistantChiefOfficer",
                         value: formValues.authorisingAssistantChiefOfficer,
-                        errorMessage: {
-                            text: errors.authorisingAssistantChiefOfficer.text
-                        } if errors.authorisingAssistantChiefOfficer else undefined
+                        errorMessage: errorMessage(errors.authorisingAssistantChiefOfficer)
                     }) }}
                 </div>
                 <div class='govuk-!-margin-top-8'>

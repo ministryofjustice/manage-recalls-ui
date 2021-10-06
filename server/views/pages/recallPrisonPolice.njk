@@ -37,9 +37,7 @@
                         name: "localPoliceForce",
                         value: formValues.localPoliceForce,
                         classes: "govuk-input--width-30",
-                        errorMessage: {
-                            text: errors.localPoliceForce.text
-                        } if errors.localPoliceForce else undefined
+                        errorMessage: errorMessage(errors.localPoliceForce)
                     }) }}
                 </div>
                 <div>

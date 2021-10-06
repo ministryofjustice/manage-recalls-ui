@@ -44,9 +44,7 @@
                             }
                         },
                         items: dateTimeItems("recallEmailReceivedDateTime", formValues.recallEmailReceivedDateTimeParts, true),
-                        errorMessage: {
-                            text: errors.recallEmailReceivedDateTime.text
-                        } if errors.recallEmailReceivedDateTime else undefined,
+                        errorMessage: errorMessage(errors.recallEmailReceivedDateTime),
                         hint: {
                             text: 'For example, 23 5 2021 at 15:46'
                         }
@@ -65,9 +63,7 @@
                         attributes: {
                             accept: allowedEmailFileExtensionList()
                         },
-                        errorMessage: {
-                            text: errors.recallRequestEmailFileName.text
-                        }  if errors.recallRequestEmailFileName
+                        errorMessage: errorMessage(errors.recallRequestEmailFileName)
                     }) }}
                 </div>
                 <div>
