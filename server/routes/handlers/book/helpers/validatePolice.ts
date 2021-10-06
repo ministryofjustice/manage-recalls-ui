@@ -13,8 +13,8 @@ export const validatePolice = (
     errors = [
       makeErrorObject({
         id: 'localPoliceForce',
-        text: 'Local police force',
-        values: { localPoliceForce },
+        text: 'Select a local police force',
+        values: localPoliceForce,
       }),
     ]
   }

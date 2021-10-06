@@ -1,26 +1,9 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
-import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
-import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
-
-const makeErrorMessage = (validationError: DateValidationError): string => {
-  switch (validationError.error) {
-    case 'blankDateTime':
-      return 'Enter the date and time you received the recall email'
-    case 'dateMustBeInPast':
-      return 'The date you received the email must be today or in the past'
-    case 'invalidDate':
-      return 'The date you received the email must be a real date'
-    case 'invalidTime':
-      return 'The time you received the email must be a real time'
-    case 'missingDateParts':
-      return `The date and time you received the email must include: ${validationError.invalidParts.join(', ')}`
-    default:
-      return 'Error - recall email received'
-  }
-}
+import { errorMsgUserActionDateTime, errorMsgEmailUpload } from '../../helpers/errorMessages'
 
 export const validateRecallRequestReceived = ({
   requestBody,
@@ -59,7 +42,10 @@ export const validateRecallRequestReceived = ({
       errors.push(
         makeErrorObject({
           id: 'recallEmailReceivedDateTime',
-          text: makeErrorMessage(recallEmailReceivedDateTime as DateValidationError),
+          text: errorMsgUserActionDateTime(
+            recallEmailReceivedDateTime as DateValidationError,
+            'received the recall email'
+          ),
           values: recallEmailReceivedDateTimeParts,
         })
       )
@@ -69,7 +55,7 @@ export const validateRecallRequestReceived = ({
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
-          text: 'Select an email',
+          text: errorMsgEmailUpload.noFile,
         })
       )
     }
@@ -77,7 +63,7 @@ export const validateRecallRequestReceived = ({
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
-          text: 'The selected file could not be uploaded – try again',
+          text: errorMsgEmailUpload.uploadFailed,
         })
       )
     }
@@ -85,7 +71,7 @@ export const validateRecallRequestReceived = ({
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
-          text: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
+          text: errorMsgEmailUpload.invalidFileFormat,
         })
       )
     }

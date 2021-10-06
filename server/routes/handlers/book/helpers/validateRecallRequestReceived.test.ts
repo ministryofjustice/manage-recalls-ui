@@ -118,7 +118,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallEmailReceivedDateTime',
         name: 'recallEmailReceivedDateTime',
-        text: 'The date and time you received the email must include: month, hour',
+        text: 'The date and time you received the recall email must include a month and hour',
         values: {
           day: '23',
           hour: '',
@@ -146,7 +146,7 @@ describe('validateRecallRequestReceived', () => {
       uploadFailed: false,
       invalidFileFormat: false,
     })
-    expect(errors[0].text).toEqual('The date you received the email must be today or in the past')
+    expect(errors[0].text).toEqual('The time you received the recall email must be in the past')
   })
 
   it('returns an error if the date is invalid', () => {
@@ -164,7 +164,7 @@ describe('validateRecallRequestReceived', () => {
       uploadFailed: false,
       invalidFileFormat: false,
     })
-    expect(errors[0].text).toEqual('The date you received the email must be a real date')
+    expect(errors[0].text).toEqual('The date you received the recall email must be a real date')
   })
 
   it('returns an error if the time is invalid', () => {
@@ -182,7 +182,7 @@ describe('validateRecallRequestReceived', () => {
       uploadFailed: false,
       invalidFileFormat: false,
     })
-    expect(errors[0].text).toEqual('The time you received the email must be a real time')
+    expect(errors[0].text).toEqual('The time you received the recall email must be a real time')
   })
 
   it("returns an error if an email wasn't uploaded", () => {

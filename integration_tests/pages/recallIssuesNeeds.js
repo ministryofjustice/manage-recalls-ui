@@ -9,6 +9,12 @@ const recallIssuesNeedsPage = ({ nomsNumber, recallId } = {}) =>
     setContrabandNo: () => {
       cy.get('[id="contraband-2"]').click()
     },
+    setVulnerabilityDiversityYes: () => {
+      cy.get('[id="vulnerabilityDiversity"]').click()
+    },
+    setContrabandYes: () => {
+      cy.get('[id="contraband"]').click()
+    },
     setMappaLevel: () => {
       cy.get('[id="mappaLevel"]').select('Not known')
     },

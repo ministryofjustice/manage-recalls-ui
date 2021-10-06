@@ -6,12 +6,6 @@ const recallPrisonPolicePage = ({ nomsNumber, recallId } = {}) =>
     setlocalPoliceForce: () => {
       cy.get('[name="localPoliceForce"]').type('Essex')
     },
-    expectError: () => {
-      cy.get(`[data-qa=error-list] li:first-child`).should($searchResults => {
-        const text = $searchResults.text()
-        expect(text.trim()).to.equal('Local police force')
-      })
-    },
   })
 
 module.exports = { verifyOnPage: recallPrisonPolicePage }

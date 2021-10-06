@@ -42,7 +42,7 @@
                             },
                             value: formValues.vulnerabilityDiversityDetail,
                             errorMessage: {
-                                text: "Provide detail on vulnerability issues or diversity needs"
+                                text: errors.vulnerabilityDiversityDetail.text
                             } if errors.vulnerabilityDiversityDetail else undefined
                         }) }}
                     {% endset -%}
@@ -72,7 +72,7 @@
                             }
                         ],
                         errorMessage: {
-                            text: "Answer whether there are any vulnerability issues or diversity needs"
+                            text: errors.vulnerabilityDiversity.text
                         } if errors.vulnerabilityDiversity else undefined
                     }) }}
                 </div>
@@ -86,7 +86,7 @@
                             },
                             value: formValues.contrabandDetail,
                             errorMessage: {
-                                text: "Provide detail on why you think this"
+                                text: errors.contrabandDetail.text
                             } if errors.contrabandDetail else undefined
                         }) }}
                     {% endset -%}
@@ -116,7 +116,7 @@
                             }
                         ],
                         errorMessage: {
-                            text: "Answer whether you think " + person.firstName + " " + person.lastName + " will bring contraband into prison"
+                            text: errors.contraband.text
                         } if errors.contraband else undefined
                     }) }}
                 </div>
@@ -132,7 +132,7 @@
                             referenceData.mappaLevels
                         , formValues.mappaLevel),
                         errorMessage: {
-                            text: "Please select MAPPA level"
+                            text: errors.mappaLevel.text
                         } if errors.mappaLevel else undefined
                     }) }}
                 </div>

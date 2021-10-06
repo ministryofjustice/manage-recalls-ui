@@ -12,8 +12,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
   uploadStorageFields(documentTypes)(req, res, async uploadError => {
     try {
       if (uploadError) {
-        logger.error(uploadError)
-        return res.redirect(303, req.originalUrl)
+        throw uploadError
       }
       const { files, session, body } = req
       const { user } = res.locals

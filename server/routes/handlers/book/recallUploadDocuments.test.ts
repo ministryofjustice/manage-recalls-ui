@@ -110,22 +110,22 @@ describe('uploadRecallDocumentsFormHandler', () => {
           {
             href: '#LICENCE',
             name: 'LICENCE',
-            text: 'Licence - an error occurred during upload',
+            text: 'The Licence could not be uploaded - try again',
           },
           {
             href: '#PRE_SENTENCING_REPORT',
             name: 'PRE_SENTENCING_REPORT',
-            text: 'Pre-sentencing report - an error occurred during upload',
+            text: 'The Pre-sentencing report could not be uploaded - try again',
           },
           {
             href: '#PREVIOUS_CONVICTIONS_SHEET',
             name: 'PREVIOUS_CONVICTIONS_SHEET',
-            text: 'Previous convictions sheet - an error occurred during upload',
+            text: 'The Previous convictions sheet could not be uploaded - try again',
           },
           {
             href: '#PART_A_RECALL_REPORT',
             name: 'PART_A_RECALL_REPORT',
-            text: 'Part A recall report - an error occurred during upload',
+            text: 'The Part A recall report could not be uploaded - try again',
           },
         ])
         done()
@@ -153,12 +153,12 @@ describe('uploadRecallDocumentsFormHandler', () => {
           {
             href: '#PART_A_RECALL_REPORT',
             name: 'PART_A_RECALL_REPORT',
-            text: 'Part A recall report must be a PDF',
+            text: 'The Part A recall report must be a PDF',
           },
           {
             href: '#LICENCE',
             name: 'LICENCE',
-            text: 'Licence must be a PDF',
+            text: 'The Licence must be a PDF',
           },
         ])
         done()
