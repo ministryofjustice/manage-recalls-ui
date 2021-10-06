@@ -41,9 +41,7 @@
                                 text: "Provide more detail"
                             },
                             value: formValues.vulnerabilityDiversityDetail,
-                            errorMessage: {
-                                text: errors.vulnerabilityDiversityDetail.text
-                            } if errors.vulnerabilityDiversityDetail else undefined
+                            errorMessage: errorMessage(errors.vulnerabilityDiversityDetail)
                         }) }}
                     {% endset -%}
 
@@ -71,9 +69,7 @@
                                 checked: true if formValues.vulnerabilityDiversity == 'NO'
                             }
                         ],
-                        errorMessage: {
-                            text: errors.vulnerabilityDiversity.text
-                        } if errors.vulnerabilityDiversity else undefined
+                        errorMessage: errorMessage(errors.vulnerabilityDiversity)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='contrabandGroup'>
@@ -85,9 +81,7 @@
                                 text: "Provide more detail"
                             },
                             value: formValues.contrabandDetail,
-                            errorMessage: {
-                                text: errors.contrabandDetail.text
-                            } if errors.contrabandDetail else undefined
+                            errorMessage: errorMessage(errors.contrabandDetail)
                         }) }}
                     {% endset -%}
 
@@ -115,9 +109,7 @@
                                 checked: true if formValues.contraband == 'NO'
                             }
                         ],
-                        errorMessage: {
-                            text: errors.contraband.text
-                        } if errors.contraband else undefined
+                        errorMessage: errorMessage(errors.contraband)
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='mappaLevelGroup'>
@@ -131,9 +123,7 @@
                         items: selectItems(
                             referenceData.mappaLevels
                         , formValues.mappaLevel),
-                        errorMessage: {
-                            text: errors.mappaLevel.text
-                        } if errors.mappaLevel else undefined
+                        errorMessage: errorMessage(errors.mappaLevel)
                     }) }}
                 </div>
                 <div>

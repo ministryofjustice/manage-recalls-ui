@@ -55,9 +55,7 @@
                                 attributes: {
                                     accept: allowedDocumentFileExtensionList()
                                 },
-                                errorMessage: {
-                                    text: errors[documentType.name].text
-                                } if errors[documentType.name] else undefined
+                                errorMessage: errorMessage(errors[documentType.name])
                             }) }}
                         {%  endfor %}
                     </div>

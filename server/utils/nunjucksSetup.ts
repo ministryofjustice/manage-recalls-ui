@@ -14,6 +14,7 @@ import {
   backLinkUrl,
   formActionUrl,
   changeLinkUrl,
+  errorMessage,
 } from './nunjucksFunctions'
 import { isDefined } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
@@ -47,6 +48,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
   njkEnv.addGlobal('formActionUrl', formActionUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
+  njkEnv.addGlobal('errorMessage', errorMessage)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)

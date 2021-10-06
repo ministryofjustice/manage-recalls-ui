@@ -30,112 +30,112 @@ context('Book a recall', () => {
   })
 
   const nomsNumber = 'A1234AA'
-  //
-  // it('User can book a recall', () => {
-  //   recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
-  //   recallPreConsName.selectOtherName()
-  //   recallPreConsName.enterOtherName('Wayne Holt')
-  //   recallPreConsName.clickContinue()
-  //   const recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
-  //   recallRequestReceived.enterDateTime({
-  //     prefix: 'recallEmailReceivedDateTime',
-  //     values: {
-  //       Day: '10',
-  //       Month: '05',
-  //       Year: '2021',
-  //       Hour: '05',
-  //       Minute: '3',
-  //     },
-  //   })
-  //   recallRequestReceived.uploadEmail({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
-  //   recallRequestReceived.clickContinue()
-  //   const recallLastRelease = recallLastReleasePage.verifyOnPage()
-  //   recallLastRelease.setSentenceDate()
-  //   recallLastRelease.setSentenceExpiryDate()
-  //   recallLastRelease.setLicenceExpiryDate()
-  //   recallLastRelease.setSentenceLength()
-  //   recallLastRelease.setConditionalReleaseExpiryDate()
-  //   recallLastRelease.setReleasingPrison()
-  //   recallLastRelease.setLastReleaseDate()
-  //   recallLastRelease.setSentencingCourt()
-  //   recallLastRelease.setIndexOffence()
-  //   recallLastRelease.setBookingNumber()
-  //   recallLastRelease.clickContinue()
-  //   const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
-  //   recallPrisonPolice.setlocalPoliceForce()
-  //   recallPrisonPolice.clickContinue()
-  //   const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
-  //   recallIssuesNeeds.setVulnerabilityDiversityNo()
-  //   recallIssuesNeeds.setContrabandNo()
-  //   recallIssuesNeeds.setMappaLevel()
-  //   recallIssuesNeeds.clickContinue()
-  //   const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage()
-  //   recallProbationOfficer.setProbationOfficerName()
-  //   recallProbationOfficer.setProbationOfficerEmail()
-  //   recallProbationOfficer.setProbationOfficerPhoneNumber()
-  //   recallProbationOfficer.setLocalDeliveryUnit()
-  //   recallProbationOfficer.setAssistantChiefOfficer()
-  //   recallProbationOfficer.clickContinue()
-  //   const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-  //   uploadDocuments.upload()
-  //   cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
-  //   uploadDocuments.clickContinue()
-  //   const checkAnswers = checkAnswersPage.verifyOnPage()
-  //   // personal details
-  //   checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'gender', textToFind: 'Male' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
-  //   // Recall request date and time
-  //   checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
-  //   // Sentence, offence and release details
-  //   checkAnswers.assertElementHasText({ qaAttr: 'sentenceType', textToFind: 'Determinate' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 August 2021' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 February 2021' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Kennet (HMP)' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 August 2020' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 December 2021' })
-  //   // local police force
-  //   checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
-  //   // issues or needs
-  //   checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Yes' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversityDetail', textToFind: 'Various...' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Yes' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'contrabandDetail', textToFind: 'Intention to smuggle drugs' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
-  //   // probation details
-  //   checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'localDeliveryUnit', textToFind: 'Central Audit Team' })
-  //   checkAnswers.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
-  //
-  //   // uploaded documents
-  //   checkAnswers.assertElementHasText({
-  //     qaAttr: 'uploadedDocument-LICENCE',
-  //     textToFind: 'Licence.pdf',
-  //   })
-  //   checkAnswers.assertElementHasText({
-  //     qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-  //     textToFind: 'Part A.pdf',
-  //   })
-  //   checkAnswers.assertElementHasText({
-  //     qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
-  //     textToFind: 'Pre Cons.pdf',
-  //   })
-  //   checkAnswers.assertElementHasText({
-  //     qaAttr: 'uploadedDocument-PRE_SENTENCING_REPORT',
-  //     textToFind: 'PSR.pdf',
-  //   })
-  // })
-  //
+
+  it('User can book a recall', () => {
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallPreConsName.selectOtherName()
+    recallPreConsName.enterOtherName('Wayne Holt')
+    recallPreConsName.clickContinue()
+    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
+    recallRequestReceived.enterDateTime({
+      prefix: 'recallEmailReceivedDateTime',
+      values: {
+        Day: '10',
+        Month: '05',
+        Year: '2021',
+        Hour: '05',
+        Minute: '3',
+      },
+    })
+    recallRequestReceived.uploadEmail({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
+    recallRequestReceived.clickContinue()
+    const recallLastRelease = recallLastReleasePage.verifyOnPage()
+    recallLastRelease.setSentenceDate()
+    recallLastRelease.setSentenceExpiryDate()
+    recallLastRelease.setLicenceExpiryDate()
+    recallLastRelease.setSentenceLength()
+    recallLastRelease.setConditionalReleaseExpiryDate()
+    recallLastRelease.setReleasingPrison()
+    recallLastRelease.setLastReleaseDate()
+    recallLastRelease.setSentencingCourt()
+    recallLastRelease.setIndexOffence()
+    recallLastRelease.setBookingNumber()
+    recallLastRelease.clickContinue()
+    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
+    recallPrisonPolice.setlocalPoliceForce()
+    recallPrisonPolice.clickContinue()
+    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
+    recallIssuesNeeds.setVulnerabilityDiversityNo()
+    recallIssuesNeeds.setContrabandNo()
+    recallIssuesNeeds.setMappaLevel()
+    recallIssuesNeeds.clickContinue()
+    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage()
+    recallProbationOfficer.setProbationOfficerName()
+    recallProbationOfficer.setProbationOfficerEmail()
+    recallProbationOfficer.setProbationOfficerPhoneNumber()
+    recallProbationOfficer.setLocalDeliveryUnit()
+    recallProbationOfficer.setAssistantChiefOfficer()
+    recallProbationOfficer.clickContinue()
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
+    uploadDocuments.upload()
+    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
+    uploadDocuments.clickContinue()
+    const checkAnswers = checkAnswersPage.verifyOnPage()
+    // personal details
+    checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
+    checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
+    checkAnswers.assertElementHasText({ qaAttr: 'gender', textToFind: 'Male' })
+    checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })
+    checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
+    checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
+    // Recall request date and time
+    checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
+    // Sentence, offence and release details
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceType', textToFind: 'Determinate' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
+    checkAnswers.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 August 2021' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 February 2021' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
+    checkAnswers.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
+    checkAnswers.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Kennet (HMP)' })
+    checkAnswers.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
+    checkAnswers.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 August 2020' })
+    checkAnswers.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 December 2021' })
+    // local police force
+    checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
+    // issues or needs
+    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Yes' })
+    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversityDetail', textToFind: 'Various...' })
+    checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Yes' })
+    checkAnswers.assertElementHasText({ qaAttr: 'contrabandDetail', textToFind: 'Intention to smuggle drugs' })
+    checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
+    // probation details
+    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
+    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
+    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
+    checkAnswers.assertElementHasText({ qaAttr: 'localDeliveryUnit', textToFind: 'Central Audit Team' })
+    checkAnswers.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
+
+    // uploaded documents
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-LICENCE',
+      textToFind: 'Licence.pdf',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
+      textToFind: 'Part A.pdf',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
+      textToFind: 'Pre Cons.pdf',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PRE_SENTENCING_REPORT',
+      textToFind: 'PSR.pdf',
+    })
+  })
+
   it('User sees an error if pre-cons main name question is not answered', () => {
     recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.clickContinue()

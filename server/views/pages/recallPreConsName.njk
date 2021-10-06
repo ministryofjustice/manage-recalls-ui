@@ -37,9 +37,7 @@
                             },
                             value: formValues.previousConvictionMainName,
                             classes: "govuk-input--width-10",
-                            errorMessage: {
-                                text: errors.previousConvictionMainName.text
-                            } if errors.previousConvictionMainName else undefined
+                            errorMessage: errorMessage(errors.previousConvictionMainName)
                         }) }}
                     {% endset -%}
                     {{ govukRadios({
@@ -67,9 +65,7 @@
                                 }
                             }
                         ],
-                        errorMessage: {
-                            text: errors.hasOtherPreviousConvictionMainName.text
-                        } if errors.hasOtherPreviousConvictionMainName else undefined
+                        errorMessage: errorMessage(errors.hasOtherPreviousConvictionMainName)
                     }) }}
                 </div>
                 <div>

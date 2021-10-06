@@ -1,4 +1,4 @@
-import { DatePartsParsed, ObjectMap, UiListItem, UrlInfo } from '../@types'
+import { DatePartsParsed, FormError, ObjectMap, UiListItem, UrlInfo } from '../@types'
 import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
@@ -147,3 +147,5 @@ export const changeLinkUrl = (
   const queryParam = currentPage ? `?fromPage=${currentPage}&fromHash=${fromHash}` : ''
   return `${basePath}${pageSlug}${queryParam}${toHash ? `#${toHash}` : ''}`
 }
+
+export const errorMessage = (field: FormError) => (field ? { text: field.text } : undefined)
