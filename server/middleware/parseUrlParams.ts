@@ -12,13 +12,18 @@ export const parseUrlParams = (req: Request, res: Response, next: NextFunction) 
     logger.error('Invalid nomsNumber or recallId')
     return res.sendStatus(400)
   }
-  const { fromPage } = req.query
+  const { fromPage, fromHash } = req.query
   if (fromPage && !isValidFromPage(fromPage)) {
     logger.error(`Invalid fromPage: ${fromPage}`)
     return res.redirect(req.baseUrl)
   }
+  if (fromHash && !isString(fromHash)) {
+    logger.error(`Invalid fromHash: ${fromHash}`)
+    return res.redirect(req.baseUrl)
+  }
   res.locals.urlInfo = {
     fromPage,
+    fromHash,
     currentPage: pageSlug,
     basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
   }

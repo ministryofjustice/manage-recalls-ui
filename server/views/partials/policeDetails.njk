@@ -1,4 +1,4 @@
-<h2 class='govuk-heading-m govuk-!-margin-top-9'>Local police force</h2>
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='police'>Local police force</h2>
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
@@ -8,7 +8,7 @@
       {{ recall.localPoliceForce }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('prison-police', urlInfo, '#localPoliceForceGroup') }}' data-qa='localPoliceForceChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> local police force</span></a>
+      <a href='{{ changeLinkUrl('prison-police', urlInfo, 'police') }}' data-qa='localPoliceForceChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> local police force</span></a>
     </dd>
   </div>
 </dl>
