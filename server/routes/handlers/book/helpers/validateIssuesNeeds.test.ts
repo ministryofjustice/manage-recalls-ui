@@ -12,7 +12,9 @@ describe('validateIssuesNeeds', () => {
     const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
+      contraband: true,
       contrabandDetail: 'Will smuggle',
+      vulnerabilityDiversity: true,
       vulnerabilityDiversityDetail: 'Substance addiction',
       mappaLevel: 'LEVEL_1',
     })
@@ -28,7 +30,9 @@ describe('validateIssuesNeeds', () => {
     expect(errors).toBeUndefined()
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
+      contraband: false,
       contrabandDetail: '',
+      vulnerabilityDiversity: false,
       mappaLevel: 'LEVEL_3',
       vulnerabilityDiversityDetail: '',
     })

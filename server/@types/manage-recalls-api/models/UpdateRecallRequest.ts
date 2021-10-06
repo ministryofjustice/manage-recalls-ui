@@ -15,6 +15,7 @@ export type UpdateRecallRequest = {
   bookedDateTime?: string
   bookingNumber?: string
   conditionalReleaseDate?: string
+  contraband?: boolean
   contrabandDetail?: string
   currentPrison?: string
   differentNomsNumber?: boolean
@@ -61,6 +62,7 @@ export type UpdateRecallRequest = {
   sentenceExpiryDate?: string
   sentenceLength?: SentenceLengthReq
   sentencingCourt?: string
+  vulnerabilityDiversity?: boolean
   vulnerabilityDiversityDetail?: string
 }
 

@@ -75,7 +75,9 @@ export const validateIssuesNeeds = (
     const contrabandDetailCleaned = contraband === 'yes' ? contrabandDetail : ''
     const vulnerabilityDiversityDetailCleaned = vulnerabilityDiversity === 'yes' ? vulnerabilityDiversityDetail : ''
     valuesToSave = {
+      contraband: contraband === 'yes',
       contrabandDetail: contrabandDetailCleaned,
+      vulnerabilityDiversity: vulnerabilityDiversity === 'yes',
       vulnerabilityDiversityDetail: vulnerabilityDiversityDetailCleaned,
       mappaLevel: UpdateRecallRequest.mappaLevel[mappaLevel],
     }
