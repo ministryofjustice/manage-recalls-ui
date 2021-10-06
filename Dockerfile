@@ -36,18 +36,15 @@ RUN export BUILD_NUMBER=${BUILD_NUMBER} && \
         export GIT_REF=${GIT_REF} && \
         npm run record-build-info
 
-RUN npm prune --no-audit --production
-
 # Stage: copy production assets and dependencies
 FROM base
 
-RUN apt-get autoremove -y && \
+RUN apt-get install -y make python g++ && \
+        apt-get autoremove -y && \
         rm -rf /var/lib/apt/lists/*
 
-COPY --from=build --chown=appuser:appgroup \
-        /app/package.json \
-        /app/package-lock.json \
-        ./
+COPY package*.json ./
+RUN npm install --no-audit --production
 
 COPY --from=build --chown=appuser:appgroup \
         /app/build-info.json ./dist/build-info.json
@@ -57,9 +54,6 @@ COPY --from=build --chown=appuser:appgroup \
 
 COPY --from=build --chown=appuser:appgroup \
         /app/dist ./dist
-
-COPY --from=build --chown=appuser:appgroup \
-        /app/node_modules ./node_modules
 
 ARG BUILD_NUMBER
 ENV SENTRY_RELEASE ${BUILD_NUMBER:-1_0_0}
