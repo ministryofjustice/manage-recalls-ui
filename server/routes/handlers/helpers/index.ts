@@ -26,6 +26,8 @@ export const isDefined = (val: unknown) => typeof val !== 'undefined'
 
 export const isString = (val: unknown) => typeof val === 'string'
 
+export const areStringArraysTheSame = (arr1: unknown[], arr2: unknown[]) => arr1.join('') === arr2.join('')
+
 export const decorateDocs = ({
   docs,
   nomsNumber,

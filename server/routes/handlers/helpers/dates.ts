@@ -1,7 +1,7 @@
 import { DateTime, Settings } from 'luxon'
 import { DatePartNames, DatePartsParsed, DateTimePart, DateValidationError, ObjectMap } from '../../../@types'
 import logger from '../../../../logger'
-import { isDefined } from './index'
+import { areStringArraysTheSame, isDefined } from './index'
 
 const timeZone = 'Europe/London'
 Settings.throwOnInvalid = true
@@ -37,6 +37,16 @@ export const convertGmtDatePartsToUtc = (
     ]
     const dateTimePartErrors = parseDateTimeParts([...dateParts, ...timeParts])
     if (dateTimePartErrors.length) {
+      if (areStringArraysTheSame(dateTimePartErrors, ['day', 'month', 'year'])) {
+        return {
+          error: 'missingDate',
+        }
+      }
+      if (areStringArraysTheSame(dateTimePartErrors, ['hour', 'minute'])) {
+        return {
+          error: 'missingTime',
+        }
+      }
       return {
         error: 'missingDateParts',
         invalidParts: dateTimePartErrors,

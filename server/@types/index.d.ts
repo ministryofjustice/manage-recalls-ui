@@ -157,7 +157,9 @@ export type DateValidationErrorType =
   | 'dateMustBeInFuture'
   | 'blankDateTime'
   | 'invalidDate'
+  | 'missingDate'
   | 'invalidTime'
+  | 'missingTime'
   | 'missingDateParts'
 
 export type DatePartNames = 'year' | 'month' | 'day' | 'hour' | 'minute'

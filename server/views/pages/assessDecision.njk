@@ -36,9 +36,7 @@
                             text: "Provide more detail"
                         },
                         value: formValues.agreeWithRecallDetailYes,
-                        errorMessage: {
-                            text: 'Provide more detail'
-                        } if errors.agreeWithRecallDetailYes else undefined
+                        errorMessage: errorMessage(errors.agreeWithRecallDetailYes)
                     }) }}
                 {% endset -%}
                 {% set noHtml %}
@@ -49,9 +47,7 @@
                             text: "Provide more detail"
                         },
                         value: formValues.agreeWithRecallDetailNo ,
-                        errorMessage: {
-                            text: 'Provide more detail'
-                        } if errors.agreeWithRecallDetailNo else undefined
+                        errorMessage: errorMessage(errors.agreeWithRecallDetailNo)
                     }) }}
                 {% endset -%}
                 {{ govukRadios({
@@ -82,9 +78,7 @@
                             }
                         }
                     ],
-                    errorMessage: {
-                        text: 'Select one'
-                    } if errors.agreeWithRecall else undefined
+                    errorMessage: errorMessage(errors.agreeWithRecall)
                 }) }}
 
                 <div class="govuk-!-margin-top-4">

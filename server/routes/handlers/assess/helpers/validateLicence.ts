@@ -2,6 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
+import { errorMsgProvideDetail } from '../../helpers/errorMessages'
 
 export const validateLicence = (
   requestBody: ObjectMap<unknown>
@@ -25,7 +26,7 @@ export const validateLicence = (
       errors.push(
         makeErrorObject({
           id: 'licenceConditionsBreached',
-          text: 'Breached licence conditions',
+          text: 'Enter the licence conditions breached',
         })
       )
     }
@@ -33,7 +34,7 @@ export const validateLicence = (
       errors.push(
         makeErrorObject({
           id: 'reasonsForRecall',
-          text: 'Reasons for recall',
+          text: 'Select reasons for recall',
         })
       )
     }
@@ -41,7 +42,7 @@ export const validateLicence = (
       errors.push(
         makeErrorObject({
           id: 'reasonsForRecallOtherDetail',
-          text: 'Reasons for recall - provide detail on Other',
+          text: errorMsgProvideDetail,
         })
       )
     }

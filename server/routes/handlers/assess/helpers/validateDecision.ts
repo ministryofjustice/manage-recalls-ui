@@ -1,6 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
+import { errorMsgProvideDetail } from '../../helpers/errorMessages'
 
 export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
   let errors
@@ -28,7 +29,7 @@ export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorRe
       errors.push(
         makeErrorObject({
           id: 'agreeWithRecallDetailYes',
-          text: 'Provide detail on your decision',
+          text: errorMsgProvideDetail,
         })
       )
     }
@@ -36,7 +37,7 @@ export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorRe
       errors.push(
         makeErrorObject({
           id: 'agreeWithRecallDetailNo',
-          text: 'Provide detail on your decision',
+          text: errorMsgProvideDetail,
         })
       )
     }

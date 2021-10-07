@@ -124,14 +124,12 @@ context('Assess a recall', () => {
     assessRecallDecision.assertErrorMessage({
       fieldName: 'agreeWithRecall',
       summaryError: 'Do you agree with the recall recommendation?',
-      fieldError: 'Select one',
     })
     assessRecallDecision.makeYesDecision()
     assessRecallDecision.clickContinue()
     assessRecallDecision.assertErrorMessage({
       fieldName: 'agreeWithRecallDetailYes',
-      summaryError: 'Provide detail on your decision',
-      fieldError: 'Provide more detail',
+      summaryError: 'Provide more detail',
     })
   })
 
@@ -156,13 +154,11 @@ context('Assess a recall', () => {
     assessRecallLicence.clickContinue()
     assessRecallLicence.assertErrorMessage({
       fieldName: 'licenceConditionsBreached',
-      summaryError: 'Breached licence conditions',
-      fieldError: 'Enter the licence conditions breached',
+      summaryError: 'Enter the licence conditions breached',
     })
     assessRecallLicence.assertErrorMessage({
       fieldName: 'reasonsForRecall',
-      summaryError: 'Reasons for recall',
-      fieldError: 'Please select at least one reason for recall',
+      summaryError: 'Select reasons for recall',
     })
   })
 
@@ -178,7 +174,6 @@ context('Assess a recall', () => {
     assessRecallPrison.assertErrorMessage({
       fieldName: 'currentPrison',
       summaryError: 'Select a prison',
-      fieldError: 'Please select a prison',
     })
   })
 
