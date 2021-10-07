@@ -1,8 +1,9 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
+import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
+import { errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 
 export const validateDossierEmail = ({
   requestBody,
@@ -47,7 +48,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailSentDate',
-          text: 'Enter the date you sent the email',
+          text: errorMsgUserActionDateTime(dossierEmailSentDate as DateValidationError, 'sent the email', true),
           values: dossierEmailSentDateParts,
         })
       )

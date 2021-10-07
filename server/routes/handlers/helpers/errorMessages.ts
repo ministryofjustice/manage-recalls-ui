@@ -10,12 +10,17 @@ export const listItems = (list: string[]) => {
   return `${copy.join(', ')} and ${lastItem}`
 }
 
-export const errorMsgUserActionDateTime = (validationError: DateValidationError, userAction: string): string => {
+export const errorMsgUserActionDateTime = (
+  validationError: DateValidationError,
+  userAction: string,
+  dateOnly?: boolean
+): string => {
+  const noun = dateOnly ? 'date' : 'date and time'
   switch (validationError.error) {
     case 'blankDateTime':
-      return `Enter the date and time you ${userAction}`
+      return `Enter the ${noun} you ${userAction}`
     case 'dateMustBeInPast':
-      return `The time you ${userAction} must be in the past`
+      return `The ${dateOnly ? 'date' : 'time'} you ${userAction} must be in the past`
     case 'missingDate':
       return `Enter the date you ${userAction}`
     case 'missingTime':
@@ -25,9 +30,9 @@ export const errorMsgUserActionDateTime = (validationError: DateValidationError,
     case 'invalidTime':
       return `The time you ${userAction} must be a real time`
     case 'missingDateParts':
-      return `The date and time you ${userAction} must include a ${listItems(validationError.invalidParts)}`
+      return `The ${noun} you ${userAction} must include a ${listItems(validationError.invalidParts)}`
     default:
-      return `Error with the date and time ${userAction}`
+      return `Error with the ${noun} ${userAction}`
   }
 }
 

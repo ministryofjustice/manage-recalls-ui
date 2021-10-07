@@ -66,9 +66,7 @@
                         checked: true if formValues.hasDossierBeenChecked == 'YES'
                     }
                 ],
-                errorMessage: {
-                    text: errors.hasDossierBeenChecked.text
-                } if errors.hasDossierBeenChecked else undefined
+                errorMessage: errorMessage(errors.hasDossierBeenChecked)
             }) }}
                 </div>
             <div class="govuk-!-margin-bottom-8">
