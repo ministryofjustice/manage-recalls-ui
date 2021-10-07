@@ -125,12 +125,28 @@ describe('Date helpers', () => {
       expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['day', 'month'] })
     })
 
+    it('returns an error for a date-time with all date parts missing', () => {
+      const result = convertGmtDatePartsToUtc(
+        { year: '', month: '', day: '', hour: '3', minute: '4' },
+        { includeTime: true }
+      )
+      expect(result).toEqual({ error: 'missingDate' })
+    })
+
     it('returns an error for a date-time with any time parts missing', () => {
+      const result = convertGmtDatePartsToUtc(
+        { year: '2021', month: '3', day: '25', hour: '5', minute: '' },
+        { includeTime: true }
+      )
+      expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['minute'] })
+    })
+
+    it('returns an error for a date-time with all time parts missing', () => {
       const result = convertGmtDatePartsToUtc(
         { year: '2021', month: '3', day: '25', hour: '', minute: '' },
         { includeTime: true }
       )
-      expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['hour', 'minute'] })
+      expect(result).toEqual({ error: 'missingTime' })
     })
 
     it('returns an error if a date-time must be in the past but is in the future', () => {

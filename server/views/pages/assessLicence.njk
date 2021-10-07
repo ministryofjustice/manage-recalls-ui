@@ -45,9 +45,7 @@
                         text: "Include each condition breached using the same numbering and wording as the licence"
                     },
                     value: formValues.licenceConditionsBreached,
-                    errorMessage: {
-                        text: "Enter the licence conditions breached"
-                    } if errors.licenceConditionsBreached else undefined
+                    errorMessage: errorMessage(errors.licenceConditionsBreached)
                 }) }}
                 {% set otherDetailHtml %}
                     {{ govukTextarea({
@@ -58,9 +56,7 @@
                             classes: "govuk-label--s"
                         },
                         value: formValues.reasonsForRecallOtherDetail,
-                        errorMessage: {
-                            text: "Please provide detail"
-                        } if errors.reasonsForRecallOtherDetail else undefined
+                        errorMessage: errorMessage(errors.reasonsForRecallOtherDetail)
                     }) }}
                 {% endset %}
                 {% if referenceData.reasonsForRecall %}
@@ -79,9 +75,7 @@
                         items: checkboxItems(referenceData.reasonsForRecall, formValues.reasonsForRecall, {
                             OTHER: otherDetailHtml
                         }),
-                        errorMessage: {
-                            text: "Please select at least one reason for recall"
-                        } if errors.reasonsForRecall else undefined
+                        errorMessage: errorMessage(errors.reasonsForRecall)
                     })
                     }}
                 {% endif %}

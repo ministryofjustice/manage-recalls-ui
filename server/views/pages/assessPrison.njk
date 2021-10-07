@@ -41,9 +41,7 @@
                                     isPageHeading: true
                                 },
                                 items: selectItems( referenceData.activePrisonList, formValues.currentPrison, true),
-                                errorMessage: {
-                                    text: "Please select a prison"
-                                } if errors.currentPrison else undefined
+                                errorMessage: errorMessage(errors.currentPrison)
                             }) }}
                         {% endif %}
                         <div class="govuk-!-margin-top-8">

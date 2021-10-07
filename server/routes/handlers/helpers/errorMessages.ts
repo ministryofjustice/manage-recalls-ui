@@ -16,6 +16,10 @@ export const errorMsgUserActionDateTime = (validationError: DateValidationError,
       return `Enter the date and time you ${userAction}`
     case 'dateMustBeInPast':
       return `The time you ${userAction} must be in the past`
+    case 'missingDate':
+      return `Enter the date you ${userAction}`
+    case 'missingTime':
+      return `Enter the time you ${userAction}`
     case 'invalidDate':
       return `The date you ${userAction} must be a real date`
     case 'invalidTime':
@@ -48,4 +52,7 @@ export const errorMsgEmailUpload = {
   noFile: 'Select an email',
   uploadFailed: 'The selected file could not be uploaded – try again',
   invalidFileFormat: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
+  confirmSent: "Confirm you've sent the email to all recipients",
 }
+
+export const errorMsgProvideDetail = 'Provide more detail'

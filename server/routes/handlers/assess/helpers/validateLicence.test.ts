@@ -48,12 +48,12 @@ describe('validateLicence', () => {
       {
         href: '#licenceConditionsBreached',
         name: 'licenceConditionsBreached',
-        text: 'Breached licence conditions',
+        text: 'Enter the licence conditions breached',
       },
       {
         href: '#reasonsForRecall',
         name: 'reasonsForRecall',
-        text: 'Reasons for recall',
+        text: 'Select reasons for recall',
       },
     ])
     expect(valuesToSave).toBeUndefined()
@@ -68,7 +68,7 @@ describe('validateLicence', () => {
       {
         href: '#reasonsForRecall',
         name: 'reasonsForRecall',
-        text: 'Reasons for recall',
+        text: 'Select reasons for recall',
       },
     ])
     expect(valuesToSave).toBeUndefined()
@@ -84,7 +84,7 @@ describe('validateLicence', () => {
       {
         href: '#reasonsForRecallOtherDetail',
         name: 'reasonsForRecallOtherDetail',
-        text: 'Reasons for recall - provide detail on Other',
+        text: 'Provide more detail',
       },
     ])
     expect(valuesToSave).toBeUndefined()

@@ -64,9 +64,7 @@
                                 text: 'For example, 23 5 2021 at 15:46'
                             },
                             items: dateTimeItems("recallNotificationEmailSentDateTime", formValues.recallNotificationEmailSentDateTimeParts, true),
-                            errorMessage: {
-                                text: errors.recallNotificationEmailSentDateTime.text
-                            } if errors.recallNotificationEmailSentDateTime else undefined
+                            errorMessage: errorMessage(errors.recallNotificationEmailSentDateTime)
                         }) }}
                         {{ govukFileUpload({
                             id: "recallNotificationEmailFileName",
@@ -78,9 +76,7 @@
                             attributes: {
                                 accept: allowedEmailFileExtensionList()
                             },
-                            errorMessage: {
-                                text: errors.recallNotificationEmailFileName.text
-                            }  if errors.recallNotificationEmailFileName
+                            errorMessage: errorMessage(errors.recallNotificationEmailFileName)
                         }) }}
 
                     {% endset -%}
@@ -104,9 +100,7 @@
                                 checked: true if formValues.confirmRecallNotificationEmailSent == 'YES'
                             }
                         ],
-                        errorMessage: {
-                            text: errors.confirmRecallNotificationEmailSent.text
-                        } if errors.confirmRecallNotificationEmailSent else undefined
+                        errorMessage: errorMessage(errors.confirmRecallNotificationEmailSent)
                     }) }}
                     <button class="govuk-button" data-qa="continueButton">Complete assessment</button>
                 </form>

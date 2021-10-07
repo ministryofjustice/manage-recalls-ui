@@ -47,7 +47,7 @@ describe('validateDecision', () => {
       {
         href: '#agreeWithRecallDetailYes',
         name: 'agreeWithRecallDetailYes',
-        text: 'Provide detail on your decision',
+        text: 'Provide more detail',
       },
     ])
   })
@@ -59,7 +59,7 @@ describe('validateDecision', () => {
       {
         href: '#agreeWithRecallDetailNo',
         name: 'agreeWithRecallDetailNo',
-        text: 'Provide detail on your decision',
+        text: 'Provide more detail',
       },
     ])
   })
