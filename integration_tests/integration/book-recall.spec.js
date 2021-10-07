@@ -321,11 +321,11 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Select a Part A recall report',
+      summaryError: 'Select a part A recall report',
     })
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
-      summaryError: 'Select a Previous convictions sheet',
+      summaryError: 'Select a previous convictions sheet',
     })
   })
 
@@ -345,7 +345,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Select a Part A recall report',
+      summaryError: 'Select a part A recall report',
     })
     uploadDocuments.assertErrorNotShown({ fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET })
     uploadDocuments.assertElementHasText({

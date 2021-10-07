@@ -58,6 +58,7 @@ describe('decorateDocs', () => {
         {
           fileName: 'Part A.pdf',
           label: 'Part A recall report',
+          labelLowerCase: 'part A recall report',
           name: 'PART_A_RECALL_REPORT',
           required: true,
           type: 'document',
@@ -94,6 +95,7 @@ describe('decorateDocs', () => {
         {
           fileName: 'OASys.pdf',
           label: 'OASys Risk Assessment',
+          labelLowerCase: 'OASys risk assessment',
           name: 'OASYS_RISK_ASSESSMENT',
           type: 'document',
         },
@@ -104,6 +106,7 @@ describe('decorateDocs', () => {
           documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
           fileName: 'Part A.pdf',
           label: 'Part A recall report',
+          labelLowerCase: 'part A recall report',
           name: 'PART_A_RECALL_REPORT',
           required: true,
           type: 'document',
