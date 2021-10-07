@@ -4,6 +4,7 @@ import { UploadDocumentMetadata } from '../../../@types'
 export const documentTypes: UploadDocumentMetadata[] = [
   {
     label: 'Part A recall report',
+    labelLowerCase: 'part A recall report',
     name: ApiRecallDocument.category.PART_A_RECALL_REPORT,
     type: 'document',
     required: true,
@@ -32,6 +33,7 @@ export const documentTypes: UploadDocumentMetadata[] = [
   },
   {
     label: 'OASys Risk Assessment',
+    labelLowerCase: 'OASys risk assessment',
     name: ApiRecallDocument.category.OASYS_RISK_ASSESSMENT,
     type: 'document',
     fileName: 'OASys.pdf',

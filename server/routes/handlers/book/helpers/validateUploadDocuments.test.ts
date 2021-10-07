@@ -25,12 +25,12 @@ describe('validateUploadDocuments', () => {
       {
         href: '#LICENCE',
         name: 'LICENCE',
-        text: 'Select a Licence',
+        text: 'Select a licence',
       },
       {
         href: '#PREVIOUS_CONVICTIONS_SHEET',
         name: 'PREVIOUS_CONVICTIONS_SHEET',
-        text: 'Select a Previous convictions sheet',
+        text: 'Select a previous convictions sheet',
       },
     ])
   })
@@ -42,22 +42,22 @@ describe('validateUploadDocuments', () => {
       {
         href: '#PART_A_RECALL_REPORT',
         name: 'PART_A_RECALL_REPORT',
-        text: 'Select a Part A recall report',
+        text: 'Select a part A recall report',
       },
       {
         href: '#LICENCE',
         name: 'LICENCE',
-        text: 'Select a Licence',
+        text: 'Select a licence',
       },
       {
         href: '#PREVIOUS_CONVICTIONS_SHEET',
         name: 'PREVIOUS_CONVICTIONS_SHEET',
-        text: 'Select a Previous convictions sheet',
+        text: 'Select a previous convictions sheet',
       },
       {
         href: '#PRE_SENTENCING_REPORT',
         name: 'PRE_SENTENCING_REPORT',
-        text: 'Select a Pre-sentencing report',
+        text: 'Select a pre-sentencing report',
       },
     ])
   })
@@ -77,12 +77,12 @@ describe('validateUploadDocuments', () => {
       {
         href: '#PREVIOUS_CONVICTIONS_SHEET',
         name: 'PREVIOUS_CONVICTIONS_SHEET',
-        text: 'Select a Previous convictions sheet',
+        text: 'Select a previous convictions sheet',
       },
       {
         href: '#PRE_SENTENCING_REPORT',
         name: 'PRE_SENTENCING_REPORT',
-        text: 'Select a Pre-sentencing report',
+        text: 'Select a pre-sentencing report',
       },
     ])
   })
@@ -109,22 +109,22 @@ describe('validateUploadDocuments', () => {
       {
         href: '#PART_A_RECALL_REPORT',
         name: 'PART_A_RECALL_REPORT',
-        text: 'The Part A recall report must be a PDF',
+        text: 'The part A recall report must be a PDF',
       },
       {
         href: '#LICENCE',
         name: 'LICENCE',
-        text: 'Select a Licence',
+        text: 'Select a licence',
       },
       {
         href: '#PREVIOUS_CONVICTIONS_SHEET',
         name: 'PREVIOUS_CONVICTIONS_SHEET',
-        text: 'Select a Previous convictions sheet',
+        text: 'Select a previous convictions sheet',
       },
       {
         href: '#PRE_SENTENCING_REPORT',
         name: 'PRE_SENTENCING_REPORT',
-        text: 'The Pre-sentencing report must be a PDF',
+        text: 'The pre-sentencing report must be a PDF',
       },
     ])
   })

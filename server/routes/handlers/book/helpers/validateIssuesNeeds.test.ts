@@ -83,12 +83,12 @@ describe('validateIssuesNeeds', () => {
       {
         href: '#vulnerabilityDiversityDetail',
         name: 'vulnerabilityDiversityDetail',
-        text: 'Vulnerability issues or diversity needs - provide more detail',
+        text: 'Provide more detail for any vulnerability issues or diversity needs',
       },
       {
         href: '#contrabandDetail',
         name: 'contrabandDetail',
-        text: 'Contraband - provide more detail',
+        text: 'Provide more detail on why you think {{person.firstName}} {{person.lastName}} will bring contraband into prison',
       },
     ])
   })

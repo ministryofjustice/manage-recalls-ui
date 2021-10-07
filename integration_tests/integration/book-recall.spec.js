@@ -257,11 +257,11 @@ context('Book a recall', () => {
     recallIssuesNeeds.clickContinue()
     recallIssuesNeeds.assertErrorMessage({
       fieldName: 'vulnerabilityDiversityDetail',
-      summaryError: 'Vulnerability issues or diversity needs - provide more detail',
+      summaryError: 'Provide more detail for any vulnerability issues or diversity needs',
     })
     recallIssuesNeeds.assertErrorMessage({
       fieldName: 'contrabandDetail',
-      summaryError: 'Contraband - provide more detail',
+      summaryError: 'Provide more detail on why you think Bobby Badger will bring contraband into prison',
     })
   })
 
@@ -312,7 +312,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'The Part A recall report could not be uploaded - try again',
+      summaryError: 'The part A recall report could not be uploaded - try again',
     })
   })
 
@@ -321,11 +321,11 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Select a Part A recall report',
+      summaryError: 'Select a part A recall report',
     })
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
-      summaryError: 'Select a Previous convictions sheet',
+      summaryError: 'Select a previous convictions sheet',
     })
   })
 
@@ -345,7 +345,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Select a Part A recall report',
+      summaryError: 'Select a part A recall report',
     })
     uploadDocuments.assertErrorNotShown({ fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET })
     uploadDocuments.assertElementHasText({

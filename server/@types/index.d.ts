@@ -24,6 +24,7 @@ export interface KeyedFormErrors extends ObjectMap<FormError> {
 
 export interface UploadDocumentMetadata {
   label: string
+  labelLowerCase?: string
   name: ApiRecallDocument.category
   type: 'document' | 'email'
   error?: string
@@ -39,6 +40,7 @@ export interface FileDataBase64 {
   originalFileName: string
   mimeType: string
   label: string
+  labelLowerCase?: string
   category: ApiRecallDocument.category
   fileContent: string
 }

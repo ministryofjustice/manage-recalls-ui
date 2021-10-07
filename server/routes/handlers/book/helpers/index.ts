@@ -10,6 +10,7 @@ export const makeFileData = (files: UploadedFormFields): FileDataBase64[] => {
       originalFileName: value.originalname,
       mimeType: value.mimetype,
       label: documentType.label,
+      labelLowerCase: documentType.labelLowerCase,
       category: documentType.name,
       fileContent: value.buffer.toString('base64'),
     }
@@ -28,7 +29,9 @@ export const listFailedUploads = (
       if (result.status === 'rejected') {
         return makeErrorObject({
           id: fileData[idx].category,
-          text: `The ${fileData[idx].label} could not be uploaded - try again`,
+          text: `The ${
+            fileData[idx].labelLowerCase || fileData[idx].label.toLowerCase()
+          } could not be uploaded - try again`,
         })
       }
       return null

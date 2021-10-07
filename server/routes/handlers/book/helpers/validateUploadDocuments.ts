@@ -18,18 +18,17 @@ export const validateUploadDocuments = ({ fileData, requestBody }: Args): { erro
   const validationErrors = documentTypes
     .map(docType => {
       const uploadedFile = fileData.find(file => file.category === docType.name)
+      const label = docType.labelLowerCase || docType.label.toLowerCase()
       if (docType.required && !uploadedFile && !requestBody[docType.name]) {
         return makeErrorObject({
           id: docType.name,
-          text: `Select a ${docType.label}`,
+          text: `Select a ${label}`,
         })
       }
       if (uploadedFile && invalidFileFormat(uploadedFile)) {
         return makeErrorObject({
           id: uploadedFile.category,
-          text: `The ${uploadedFile.label} must be a ${allowedDocumentFileExtensions
-            .map(ext => ext.label)
-            .join(' or ')}`,
+          text: `The ${label} must be a ${allowedDocumentFileExtensions.map(ext => ext.label).join(' or ')}`,
         })
       }
       return undefined

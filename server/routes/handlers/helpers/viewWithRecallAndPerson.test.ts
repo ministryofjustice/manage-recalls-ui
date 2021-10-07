@@ -60,6 +60,7 @@ describe('viewWithRecallAndPerson', () => {
         category: 'PART_A_RECALL_REPORT',
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
         label: 'Part A recall report',
+        labelLowerCase: 'part A recall report',
         name: 'PART_A_RECALL_REPORT',
         type: 'document',
         fileName: 'Part A.pdf',
