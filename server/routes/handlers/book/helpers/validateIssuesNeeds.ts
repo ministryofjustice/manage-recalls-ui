@@ -39,7 +39,7 @@ export const validateIssuesNeeds = (
       errors.push(
         makeErrorObject({
           id: 'vulnerabilityDiversityDetail',
-          text: 'Vulnerability issues or diversity needs - provide more detail',
+          text: 'Provide more detail for any vulnerability issues or diversity needs',
         })
       )
     }
@@ -47,7 +47,7 @@ export const validateIssuesNeeds = (
       errors.push(
         makeErrorObject({
           id: 'contrabandDetail',
-          text: 'Contraband - provide more detail',
+          text: 'Provide more detail on why you think {{person.firstName}} {{person.lastName}} will bring contraband into prison',
         })
       )
     }

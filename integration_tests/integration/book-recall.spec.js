@@ -257,11 +257,11 @@ context('Book a recall', () => {
     recallIssuesNeeds.clickContinue()
     recallIssuesNeeds.assertErrorMessage({
       fieldName: 'vulnerabilityDiversityDetail',
-      summaryError: 'Vulnerability issues or diversity needs - provide more detail',
+      summaryError: 'Provide more detail for any vulnerability issues or diversity needs',
     })
     recallIssuesNeeds.assertErrorMessage({
       fieldName: 'contrabandDetail',
-      summaryError: 'Contraband - provide more detail',
+      summaryError: 'Provide more detail on why you think Bobby Badger will bring contraband into prison',
     })
   })
 
