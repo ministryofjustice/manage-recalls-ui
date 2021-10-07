@@ -312,7 +312,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     uploadDocuments.assertErrorMessage({
       fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'The Part A recall report could not be uploaded - try again',
+      summaryError: 'The part A recall report could not be uploaded - try again',
     })
   })
 
