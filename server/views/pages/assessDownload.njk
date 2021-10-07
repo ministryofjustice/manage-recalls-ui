@@ -8,7 +8,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-prison"
+        href: backLinkUrl("assess-prison", urlInfo)
     }) }}
 {% endblock %}
 

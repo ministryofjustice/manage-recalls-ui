@@ -8,7 +8,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess-download"
+        href: backLinkUrl("assess-download", urlInfo)
     }) }}
 {% endblock %}
 
@@ -48,7 +48,7 @@
             }) }}
 
             <div class="govuk-!-margin-top-4">
-                <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/assess-email?_csrf={{ csrfToken }}"
+                <form novalidate action="{{ formActionUrl('assess-email', urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
                         {{ govukDateInput({

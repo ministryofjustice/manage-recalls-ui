@@ -8,7 +8,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: "/persons/" + person.nomsNumber + "/recalls/" + recall.recallId + "/assess"
+        href: backLinkUrl("assess", urlInfo)
     }) }}
 {% endblock %}
 
@@ -27,7 +27,7 @@
             {% endif %}
             <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
             <h1 class='govuk-heading-l'>Add information to the prison letter</h1>
-            <form novalidate action="/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-letter" method="post">
+            <form novalidate action="{{ formActionUrl('dossier-letter', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {% set yesHtml %}
                     {{ govukTextarea({
