@@ -128,7 +128,46 @@ context('Create a dossier', () => {
     dossierDownload.clickContinue()
     dossierDownload.assertErrorMessage({
       fieldName: 'hasDossierBeenChecked',
-      summaryError: 'Have the dossier and letter been checked?',
+      summaryError: "Confirm you've checked the information in the dossier and letter",
+    })
+  })
+
+  it("User sees an error if they don't confirm sending the dossier", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    cy.login()
+    const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
+    dossierEmail.clickContinue()
+    dossierEmail.assertErrorMessage({
+      fieldName: 'confirmDossierEmailSent',
+      summaryError: "Confirm you've sent the email to all recipients",
+    })
+  })
+
+  it("User sees an error if they confirm sending but don't enter a send date or upload an email", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    cy.login()
+    const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
+    dossierEmail.confirmEmailSent()
+    dossierEmail.clickContinue()
+    dossierEmail.assertErrorMessage({
+      fieldName: 'dossierEmailSentDate',
+      summaryError: 'Enter the date you sent the email',
+    })
+    dossierEmail.assertErrorMessage({
+      fieldName: 'dossierEmailFileName',
+      summaryError: 'Select an email',
     })
   })
 

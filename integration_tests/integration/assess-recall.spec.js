@@ -177,37 +177,17 @@ context('Assess a recall', () => {
     })
   })
 
-  it("User sees an error if they don't upload the recall notification email", () => {
+  it("User sees an error if they don't upload the recall notification email or enter a sent date", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     cy.login()
 
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallEmail.confirmEmailSent()
-    assessRecallEmail.enterDateTime({
-      prefix: 'recallNotificationEmailSentDateTime',
-      values: {
-        Day: '15',
-        Month: '08',
-        Year: '2021',
-        Hour: '14',
-        Minute: '04',
-      },
-    })
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
       summaryError: 'Select an email',
     })
-  })
-
-  it("User sees an error if they don't enter the recall notification email sent date", () => {
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
-    cy.login()
-
-    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
-    assessRecallEmail.confirmEmailSent()
-    assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
-    assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailSentDateTime',
       summaryError: 'Enter the date and time you sent the email',

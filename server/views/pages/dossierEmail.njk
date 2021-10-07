@@ -55,9 +55,7 @@
                                 text: 'For example, 23 5 2021'
                             },
                             items: dateTimeItems("dossierEmailSentDate", formValues.dossierEmailSentDateParts, false),
-                            errorMessage: {
-                                text: errors.dossierEmailSentDate.text
-                            } if errors.dossierEmailSentDate else undefined
+                            errorMessage: errorMessage(errors.dossierEmailSentDate)
                         }) }}
                         {{ govukFileUpload({
                             id: "dossierEmailFileName",
@@ -69,9 +67,7 @@
                             attributes: {
                                 accept: allowedEmailFileExtensionList()
                             },
-                            errorMessage: {
-                                text: errors.dossierEmailFileName.text
-                            }  if errors.dossierEmailFileName
+                            errorMessage: errorMessage(errors.dossierEmailFileName)
                         }) }}
 
                     {% endset -%}
@@ -95,9 +91,7 @@
                                 checked: true if formValues.confirmDossierEmailSent == 'YES'
                             }
                         ],
-                        errorMessage: {
-                            text: errors.confirmDossierEmailSent.text
-                        } if errors.confirmDossierEmailSent else undefined
+                        errorMessage: errorMessage(errors.confirmDossierEmailSent)
                     }) }}
                     <button class="govuk-button" data-qa="continueButton">Complete dossier creation</button>
                 </form>

@@ -20,7 +20,7 @@ describe('validateDossierDownload', () => {
       {
         href: '#hasDossierBeenChecked',
         name: 'hasDossierBeenChecked',
-        text: 'Have the dossier and letter been checked?',
+        text: "Confirm you've checked the information in the dossier and letter",
       },
     ])
   })
