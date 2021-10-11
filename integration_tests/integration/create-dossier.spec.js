@@ -87,14 +87,7 @@ context('Create a dossier', () => {
     dossierDownload.clickContinue()
     const dossierEmail = dossierEmailPage.verifyOnPage()
     dossierEmail.confirmEmailSent()
-    dossierEmail.enterDateTime({
-      prefix: 'dossierEmailSentDate',
-      values: {
-        Day: '8',
-        Month: '9',
-        Year: '2021',
-      },
-    })
+    dossierEmail.clickTodayLink()
     dossierEmail.uploadEmail({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
     dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()

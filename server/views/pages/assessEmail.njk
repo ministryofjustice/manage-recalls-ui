@@ -51,9 +51,14 @@
                 <form novalidate action="{{ formActionUrl('assess-email', urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
+
+                    <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                         {{ govukDateInput({
                             name: 'recallNotificationEmailSentDateTime',
                             id: 'recallNotificationEmailSentDateTime',
+                            formGroup: {
+                                classes: 'govuk-!-margin-bottom-3'
+                            },
                             fieldset: {
                                 legend: {
                                     text: 'When did you send the email?',
@@ -66,6 +71,12 @@
                             items: dateTimeItems("recallNotificationEmailSentDateTime", formValues.recallNotificationEmailSentDateTimeParts, true),
                             errorMessage: errorMessage(errors.recallNotificationEmailSentDateTime)
                         }) }}
+                        <div class='govuk-!-margin-bottom-6'>
+                            {{ todayLink({
+                                name: 'recallNotificationEmailSentDateTime',
+                                cspNonce: cspNonce
+                            }) }}
+                        </div>
                         {{ govukFileUpload({
                             id: "recallNotificationEmailFileName",
                             name: "recallNotificationEmailFileName",
@@ -78,7 +89,7 @@
                             },
                             errorMessage: errorMessage(errors.recallNotificationEmailFileName)
                         }) }}
-
+                    </div>
                     {% endset -%}
 
                     {{ govukCheckboxes({

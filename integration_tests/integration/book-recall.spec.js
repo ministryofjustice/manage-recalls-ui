@@ -37,14 +37,12 @@ context('Book a recall', () => {
     recallPreConsName.enterOtherName('Wayne Holt')
     recallPreConsName.clickContinue()
     const recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
+    recallRequestReceived.clickTodayLink()
     recallRequestReceived.enterDateTime({
       prefix: 'recallEmailReceivedDateTime',
       values: {
-        Day: '10',
-        Month: '05',
-        Year: '2021',
-        Hour: '05',
-        Minute: '3',
+        Hour: '00',
+        Minute: '0',
       },
     })
     recallRequestReceived.uploadEmail({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
