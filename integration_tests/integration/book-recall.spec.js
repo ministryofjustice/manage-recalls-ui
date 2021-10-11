@@ -26,7 +26,6 @@ context('Book a recall', () => {
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectPrisonList', { expectedResults: getPrisonList })
-    cy.task('expectPrison', { prisonId: getRecallResponse.lastReleasePrison, expectedResults: getPrisonList[2] })
     cy.login()
   })
 
