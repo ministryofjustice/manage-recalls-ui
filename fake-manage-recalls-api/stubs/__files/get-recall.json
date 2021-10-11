@@ -63,7 +63,7 @@
   "licenceConditionsBreached": "(i) one (ii) two",
   "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
   "reasonsForRecallOtherDetail": "other reason detail...",
-  "currentPrison": "KTI",
+  "currentPrison": "ALI",
   "additionalLicenceConditions": true,
   "additionalLicenceConditionsDetail": "one, two",
   "differentNomsNumber": true,

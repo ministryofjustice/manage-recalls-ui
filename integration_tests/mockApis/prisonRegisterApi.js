@@ -15,5 +15,20 @@ export default function prisonRegisterApi(wiremock) {
         },
       })
     },
+    expectPrison: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'GET',
+          urlPattern: `/prisons/id/${expectation.prisonId}`,
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: expectation.expectedResults,
+        },
+      })
+    },
   }
 }

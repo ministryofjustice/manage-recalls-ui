@@ -25,9 +25,6 @@ export const isStringValidReferenceData = (refDataCategory: ReferenceDataCategor
   return list.some((item: UiListItem) => item.text === str)
 }
 
-export const getPrisonLabel = (prisonList: UiListItem[], currentPrison: string) =>
-  prisonList.find(item => item.value === currentPrison)?.text
-
 export const formatPrisonLists = (prisonList: Prison[]) => {
   const all = prisonList.map(({ prisonId, prisonName, active }: Prison) => ({
     value: prisonId,
