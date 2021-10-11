@@ -70,14 +70,12 @@ context('Assess a recall', () => {
     assessRecallDownload.clickContinue()
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage()
     assessRecallEmail.confirmEmailSent()
+    assessRecallEmail.clickTodayLink()
     assessRecallEmail.enterDateTime({
       prefix: 'recallNotificationEmailSentDateTime',
       values: {
-        Day: '15',
-        Month: '08',
-        Year: '2021',
-        Hour: '14',
-        Minute: '04',
+        Hour: '0',
+        Minute: '0',
       },
     })
     assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })

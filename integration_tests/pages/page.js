@@ -32,6 +32,8 @@ module.exports = (name, pageObject = {}) => {
     })
   }
 
+  const clickTodayLink = () => cy.get('[data-qa="today-link"]').click()
+
   const uploadEmail = ({ fieldName, fileName }) => {
     cy.get(`[name="${fieldName}"]`).attachFile({
       filePath: `../uploads/${fileName}`,
@@ -54,6 +56,7 @@ module.exports = (name, pageObject = {}) => {
     clickContinue,
     clickElement,
     enterDateTime,
+    clickTodayLink,
     uploadEmail,
   }
 }

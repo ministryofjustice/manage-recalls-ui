@@ -39,37 +39,49 @@
             }) }}
 
             <div class="govuk-!-margin-top-4">
+
                 <form novalidate action="{{ formActionUrl('dossier-email', urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
-                        {{ govukDateInput({
-                            name: 'dossierEmailSentDate',
-                            id: 'dossierEmailSentDate',
-                            fieldset: {
-                                legend: {
-                                    text: 'When did you send the email?',
-                                    classes: 'govuk-fieldset__legend--m'
-                                }
-                            },
-                            hint: {
-                                text: 'For example, 23 5 2021'
-                            },
-                            items: dateTimeItems("dossierEmailSentDate", formValues.dossierEmailSentDateParts, false),
-                            errorMessage: errorMessage(errors.dossierEmailSentDate)
-                        }) }}
-                        {{ govukFileUpload({
-                            id: "dossierEmailFileName",
-                            name: "dossierEmailFileName",
-                            label: {
-                                text: "Upload the email",
-                                classes: 'govuk-label--m'
-                            },
-                            attributes: {
-                                accept: allowedEmailFileExtensionList()
-                            },
-                            errorMessage: errorMessage(errors.dossierEmailFileName)
-                        }) }}
+                        <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                            {{ govukDateInput({
+                                name: 'dossierEmailSentDate',
+                                id: 'dossierEmailSentDate',
+                                formGroup: {
+                                    classes: 'govuk-!-margin-bottom-3'
+                                },
+                                fieldset: {
+                                    legend: {
+                                        text: 'When did you send the email?',
+                                        classes: 'govuk-fieldset__legend--m'
+                                    }
+                                },
+                                hint: {
+                                    text: 'For example, 23 5 2021'
+                                },
+                                items: dateTimeItems("dossierEmailSentDate", formValues.dossierEmailSentDateParts, false),
+                                errorMessage: errorMessage(errors.dossierEmailSentDate)
+                            }) }}
 
+                            <div class='govuk-!-margin-bottom-6'>
+                                {{ todayLink({
+                                    name: 'dossierEmailSentDate',
+                                    cspNonce: cspNonce
+                                }) }}
+                            </div>
+                            {{ govukFileUpload({
+                                id: "dossierEmailFileName",
+                                name: "dossierEmailFileName",
+                                label: {
+                                    text: "Upload the email",
+                                    classes: 'govuk-label--m'
+                                },
+                                attributes: {
+                                    accept: allowedEmailFileExtensionList()
+                                },
+                                errorMessage: errorMessage(errors.dossierEmailFileName)
+                            }) }}
+                        </div>
                     {% endset -%}
 
                     {{ govukCheckboxes({

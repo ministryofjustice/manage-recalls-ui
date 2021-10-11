@@ -37,6 +37,9 @@
                     {{ govukDateInput({
                         name: 'recallEmailReceivedDateTime',
                         id: 'recallEmailReceivedDateTime',
+                        formGroup: {
+                            classes: 'govuk-!-margin-bottom-3'
+                        },
                         fieldset: {
                             legend: {
                                 text: 'Date and time you received the recall email',
@@ -49,6 +52,12 @@
                             text: 'For example, 23 5 2021 at 15:46'
                         }
                     }) }}
+                    <div class='govuk-!-margin-bottom-6'>
+                    {{ todayLink({
+                        name: 'recallEmailReceivedDateTime',
+                        cspNonce: cspNonce
+                    }) }}
+                    </div>
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the recall email</h2>
                     {%  set emailField = recall.recallRequestEmail %}
                     {%  include '../partials/uploadedEmailLink.njk' %}
@@ -77,4 +86,3 @@
     </div>
 
 {% endblock %}
-
