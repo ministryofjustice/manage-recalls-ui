@@ -1,15 +1,10 @@
 import { Request, Response } from 'express'
-import { getRecall, searchByNomsNumber, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall, getUserDetails, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { decorateDocs, isDefined, renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
-import { getPrisonList } from '../../../data/prisonRegisterClient'
+import { findPrisonById, getPrisonList } from '../../../data/prisonRegisterClient'
 import { ViewName } from '../../../@types'
-import {
-  getPrisonLabel,
-  formatPrisonLists,
-  getReferenceDataItemLabel,
-  referenceData,
-} from './referenceData/referenceData'
+import { formatPrisonLists, getReferenceDataItemLabel, referenceData } from './referenceData/referenceData'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
 
 const requiresPrisonList = (viewName: ViewName) =>
@@ -18,6 +13,10 @@ const requiresPrisonList = (viewName: ViewName) =>
   )
 
 const requiresUser = (viewName: ViewName) => ['assessRecall'].includes(viewName)
+
+const requiresCurrentPrison = (viewName: ViewName) => ['assessRecall'].includes(viewName)
+
+const requiresLastReleasePrison = (viewName: ViewName) => ['assessRecall', 'recallCheckAnswers'].includes(viewName)
 
 const getUserName = async (userId: string, token: string): Promise<string> => {
   try {
@@ -53,6 +52,11 @@ const getUserNames = async (recall: RecallResponse, token: string): Promise<User
     result.dossierCreatedByUserName = dossierCreatedByResult.value
   }
   return result
+}
+
+const getPrisonName = async (prisonId: string): Promise<string> => {
+  const prison = await findPrisonById(prisonId)
+  return prison?.prisonName
 }
 
 export const viewWithRecallAndPerson =
@@ -98,14 +102,12 @@ export const viewWithRecallAndPerson =
       const { all, active } = formatPrisonLists(prisonListResult.value)
       res.locals.referenceData.prisonList = all
       res.locals.referenceData.activePrisonList = active
-      res.locals.recall.currentPrisonFormatted = getPrisonLabel(
-        res.locals.referenceData.activePrisonList,
-        res.locals.recall.currentPrison
-      )
-      res.locals.recall.lastReleasePrisonFormatted = getPrisonLabel(
-        res.locals.referenceData.prisonList,
-        res.locals.recall.lastReleasePrison
-      )
+    }
+    if (requiresCurrentPrison(viewName)) {
+      res.locals.recall.currentPrisonFormatted = await getPrisonName(res.locals.recall.currentPrison)
+    }
+    if (requiresLastReleasePrison(viewName)) {
+      res.locals.recall.lastReleasePrisonFormatted = await getPrisonName(res.locals.recall.lastReleasePrison)
     }
     if (requiresUser(viewName)) {
       const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
