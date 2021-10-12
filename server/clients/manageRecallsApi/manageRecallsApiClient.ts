@@ -3,6 +3,7 @@ import RestClient from '../../data/restClient'
 import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { LocalDeliveryUnitResponse } from '../../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { ObjectMap, PersonSearchResult } from '../../@types'
 import { GetDocumentResponse, UpdateRecallRequest, UserDetailsResponse } from '../../@types/manage-recalls-api'
@@ -85,6 +86,10 @@ export function getUserDetails(userId: string, token: string): Promise<UserDetai
   return restClient(token).get<UserDetailsResponse>({ path: `/users/${userId}` })
 }
 
-function restClient(token: string): RestClient {
+export function getLocalDeliveryUnits(): Promise<LocalDeliveryUnitResponse[]> {
+  return restClient().get<LocalDeliveryUnitResponse[]>({ path: '/reference-data/local-delivery-units' })
+}
+
+function restClient(token?: string): RestClient {
   return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }

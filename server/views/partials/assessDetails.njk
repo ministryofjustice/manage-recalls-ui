@@ -61,7 +61,9 @@
         Current prison
       </dt>
       <dd class=" govuk-summary-list__value" data-qa='currentPrison'>
-        {{ recall.currentPrisonFormatted }}
+        {{ getReferenceDataItemLabel('prisons',
+          recall.currentPrison
+        ) }}
       </dd>
     </div>
     <div class="govuk-summary-list__row">

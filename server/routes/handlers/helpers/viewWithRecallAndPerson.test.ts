@@ -14,7 +14,6 @@ const dossierCreatedByUserId = '00000000-2222-0000-0000-000000000000'
 
 describe('viewWithRecallAndPerson', () => {
   const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
-  const fakePrisonRegisterApi = nock(config.apis.prisonRegister.url)
 
   const person = {
     firstName: 'Bobby',
@@ -54,7 +53,6 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.recallLengthFormatted).toEqual('14')
     expect(res.locals.recall.documents).toEqual([
       {
         category: 'PART_A_RECALL_REPORT',
@@ -126,6 +124,7 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.referenceData).toHaveProperty('mappaLevels')
     expect(res.locals.referenceData).toHaveProperty('recallLengths')
     expect(res.locals.referenceData).toHaveProperty('localDeliveryUnits')
+    expect(res.locals.referenceData).toHaveProperty('prisons')
   })
 
   it('should previousConvictionMainName if one was specified', async () => {
@@ -144,93 +143,5 @@ describe('viewWithRecallAndPerson', () => {
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Badger')
-  })
-
-  it('should fetch a prison list for specified views', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    fakePrisonRegisterApi.get('/prisons').reply(200, [
-      {
-        prisonId: 'ALI',
-        prisonName: 'Albany (HMP)',
-        active: false,
-      },
-      {
-        prisonId: 'AKI',
-        prisonName: 'Acklington (HMP)',
-        active: true,
-      },
-      {
-        prisonId: 'KTI',
-        prisonName: 'Kennet (HMP)',
-        active: true,
-      },
-    ])
-    await viewWithRecallAndPerson('recallPrisonPolice')(req, res)
-    expect(res.locals.referenceData.prisonList).toEqual([
-      {
-        value: 'AKI',
-        text: 'Acklington (HMP)',
-        active: true,
-      },
-      {
-        value: 'ALI',
-        text: 'Albany (HMP)',
-        active: false,
-      },
-      {
-        value: 'KTI',
-        text: 'Kennet (HMP)',
-        active: true,
-      },
-    ])
-    expect(res.locals.referenceData.activePrisonList).toEqual([
-      {
-        value: 'AKI',
-        text: 'Acklington (HMP)',
-        active: true,
-      },
-      {
-        value: 'KTI',
-        text: 'Kennet (HMP)',
-        active: true,
-      },
-    ])
-    expect(res.locals.recall.currentPrisonFormatted).toBeUndefined()
-    expect(res.locals.recall.lastReleasePrisonFormatted).toBeUndefined()
-  })
-
-  it('should fetch current prison name for specified views', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    fakePrisonRegisterApi.get('/prisons/id/ALI').reply(200, {
-      prisonId: 'ALI',
-      prisonName: 'Albany (HMP)',
-      active: false,
-    })
-    fakePrisonRegisterApi.get('/prisons/id/KTI').reply(200, {
-      value: 'KTI',
-      prisonName: 'Kennet (HMP)',
-      active: true,
-    })
-    await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.currentPrisonFormatted).toEqual('Albany (HMP)')
-    expect(res.locals.recall.lastReleasePrisonFormatted).toEqual('Kennet (HMP)')
-  })
-
-  it('should fetch last release prison name for specified views', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    fakePrisonRegisterApi.get('/prisons/id/KTI').reply(200, {
-      value: 'KTI',
-      prisonName: 'Kennet (HMP)',
-      active: true,
-    })
-    await viewWithRecallAndPerson('recallCheckAnswers')(req, res)
-    expect(res.locals.recall.currentPrisonFormatted).toBeUndefined()
-    expect(res.locals.recall.lastReleasePrisonFormatted).toEqual('Kennet (HMP)')
   })
 })

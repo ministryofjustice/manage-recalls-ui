@@ -102,6 +102,7 @@ export interface Prison {
 export interface UiListItem {
   value: string
   text: string
+  active?: boolean
   selected?: boolean
 }
 

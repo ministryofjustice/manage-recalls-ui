@@ -1,0 +1,38 @@
+[
+  {
+    "name": "CENTRAL_AUDIT_TEAM",
+    "label": "Central Audit Team"
+  },
+  {
+    "name": "CHANNEL_ISLANDS",
+    "label": "Channel Islands"
+  },
+  {
+    "name": "ISLE_OF_MAN",
+    "label": "Isle of Man"
+  },
+  {
+    "name": "NORTHERN_IRELAND",
+    "label": "Northern Ireland"
+  },
+  {
+    "name": "NOT_APPLICABLE",
+    "label": "Not applicable"
+  },
+  {
+    "name": "NOT_SPECIFIED",
+    "label": "Not specified"
+  },
+  {
+    "name": "PS_BARKING_DAGENHAM_HAVERING",
+    "label": "PS - Barking, Dagenham & Havering"
+  },
+  {
+    "name": "PS_BARNET",
+    "label": "PS - Barnet"
+  },
+  {
+    "name": "PS_BARNSLEY",
+    "label": "PS - Barnsley"
+  }
+]
