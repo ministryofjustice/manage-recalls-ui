@@ -1,10 +1,10 @@
 import { prisons } from './prisons'
-import { getPrisonList } from '../data/prisonRegisterClient'
+import { getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
 
-jest.mock('../data/prisonRegisterClient')
+jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 
 describe('prisons refdata', () => {
-  ;(getPrisonList as jest.Mock).mockResolvedValue([
+  ;(getPrisons as jest.Mock).mockResolvedValue([
     {
       prisonId: 'ALI',
       prisonName: 'Albany (HMP)',

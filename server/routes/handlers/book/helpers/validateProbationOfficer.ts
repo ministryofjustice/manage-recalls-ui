@@ -22,7 +22,7 @@ export const validateProbationOfficer = (
   const emailValid = isEmailValid(probationOfficerEmail)
   const phoneValid = isPhoneValid(probationOfficerPhoneNumber)
   // localDeliveryUnit is the value of the hidden select dropdown that's populated by the autocomplete
-  // localDeliveryUnitInput is what the user typed into the autocomplete input. It might be a random string and not a valid LDU, so need validating
+  // localDeliveryUnitInput is what the user typed into the autocomplete input. It might be a random string and not a valid LDU, so needs validating
   const localDeliveryUnitValid =
     localDeliveryUnit && isStringValidReferenceData('localDeliveryUnits', localDeliveryUnitInput)
   if (

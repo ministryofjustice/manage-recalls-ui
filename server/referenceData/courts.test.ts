@@ -3,7 +3,7 @@ import { getCourts } from '../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 
-describe('formatCourtsList', () => {
+describe('Courts ref data', () => {
   ;(getCourts as jest.Mock).mockResolvedValue([
     {
       courtId: 'ONE',
@@ -15,7 +15,7 @@ describe('formatCourtsList', () => {
     },
   ])
 
-  it('fetches and formats a list of Courts', async () => {
+  it('fetches and formats a list of courts', async () => {
     await courts.updateData()
     expect(courts.data).toEqual([
       {

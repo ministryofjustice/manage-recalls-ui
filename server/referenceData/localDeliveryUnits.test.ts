@@ -3,7 +3,7 @@ import { getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecalls
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 
-describe('formatLocalDeliveryUnitsList', () => {
+describe('Local Delivery Units ref data', () => {
   ;(getLocalDeliveryUnits as jest.Mock).mockResolvedValue([
     {
       name: 'ONE',

@@ -1,5 +1,5 @@
 import { Prison, UiListItem } from '../@types'
-import { getPrisonList } from '../data/prisonRegisterClient'
+import { getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
 
 class Prisons {
   private static instance: Prisons
@@ -24,7 +24,7 @@ class Prisons {
   }
 
   async updateData() {
-    const data = await getPrisonList()
+    const data = await getPrisons()
     this.data = this.formatPrisonList(data)
   }
 }
