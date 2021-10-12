@@ -36,7 +36,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         sentenceExpiryDate: '2021-02-03',
         licenceExpiryDate: '2021-08-03',
         conditionalReleaseDate: '2022-03-14',
-        sentencingCourt: 'Manchester Crown Court',
+        sentencingCourt: 'SOUTCT',
         indexOffence: 'Burglary',
         sentenceLength: {
           years: 2,
@@ -81,7 +81,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         sentenceDate: '2019-08-03',
         licenceExpiryDate: '2021-08-03',
         sentenceExpiryDate: '2021-02-03',
-        sentencingCourt: 'Manchester Crown Court',
+        sentencingCourt: 'SOUTCT',
         indexOffence: 'Burglary',
         conditionalReleaseDate: '2022-03-14',
         sentenceLength: {
@@ -108,7 +108,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       const payload = {
         licenceExpiryDate: '2021-08-03',
         sentenceExpiryDate: '2021-02-03',
-        sentencingCourt: 'Manchester Crown Court',
+        sentencingCourt: 'SOUTCT',
         indexOffence: 'Burglary',
         conditionalReleaseDate: '2022-03-14',
         sentenceLength: {
