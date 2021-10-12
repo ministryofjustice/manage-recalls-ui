@@ -9,6 +9,7 @@ import {
   selectItems,
   checkboxItems,
   filterSelectedItems,
+  filterActiveItems,
   allowedEmailFileExtensionList,
   allowedDocumentFileExtensionList,
   backLinkUrl,
@@ -18,6 +19,7 @@ import {
 } from './nunjucksFunctions'
 import { isDefined } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
+import { getReferenceDataItemLabel } from '../referenceData'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -49,6 +51,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('formActionUrl', formActionUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
   njkEnv.addGlobal('errorMessage', errorMessage)
+  njkEnv.addGlobal('getReferenceDataItemLabel', getReferenceDataItemLabel)
+  njkEnv.addGlobal('filterActiveItems', filterActiveItems)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)

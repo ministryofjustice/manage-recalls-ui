@@ -81,7 +81,9 @@
       Releasing prison
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='lastReleasePrison'>
-      {{ recall.lastReleasePrisonFormatted }}
+      {{ getReferenceDataItemLabel('prisons',
+        recall.lastReleasePrison
+      ) }}
     </dd>
     <dd class=" govuk-summary-list__actions">
       <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'lastReleasePrisonGroup') }}' data-qa='lastReleasePrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> releasing prison</span></a>

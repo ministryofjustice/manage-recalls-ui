@@ -160,6 +160,21 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectLocalDeliveryUnits: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'GET',
+          urlPattern: '/reference-data/local-delivery-units',
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: expectation.expectedResults,
+        },
+      })
+    },
     stubPing: () => {
       return wiremock.stubFor({
         request: {

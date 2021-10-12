@@ -18,7 +18,10 @@
       Local Delivery Unit
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='localDeliveryUnit'>
-      {{ recall.localDeliveryUnitFormatted }}
+      {{ getReferenceDataItemLabel(
+        'localDeliveryUnits',
+        recall.localDeliveryUnit
+      ) }}
     </dd>
     <dd class=" govuk-summary-list__actions">
       <a href='{{ changeLinkUrl('probation-officer', urlInfo, 'probation', 'localDeliveryUnitGroup') }}' data-qa='localDeliveryUnitChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> Local Delivery Unit</span></a>

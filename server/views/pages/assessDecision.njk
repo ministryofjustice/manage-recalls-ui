@@ -55,7 +55,7 @@
                     name: "agreeWithRecall",
                     fieldset: {
                         legend: {
-                            html: "<span data-qa='recommended-recall-length-text'>Do you agree with the fixed term " + recall.recallLengthFormatted + " day recall recommendation?</span>",
+                            html: "<span data-qa='recommended-recall-length-text'>Do you agree with the fixed term " + getReferenceDataItemLabel('recallLengths', recall.recallLength) + " day recall recommendation?</span>",
                             classes: "govuk-fieldset__legend--l",
                             isPageHeading: true
                         }

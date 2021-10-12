@@ -1,5 +1,5 @@
 import path from 'path'
-import { getRecallResponse, searchResponse, getPrisonList, getEmptyRecallResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
@@ -27,7 +27,6 @@ context('Assess a recall', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
     cy.task('expectUpdateRecall', recallId)
-    cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
   })
@@ -164,7 +163,6 @@ context('Assess a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
-    cy.task('expectPrisonList', { expectedResults: getPrisonList })
     cy.login()
 
     const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName })

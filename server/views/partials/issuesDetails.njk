@@ -53,7 +53,7 @@
       MAPPA level
     </dt>
     <dd class="govuk-summary-list__value" data-qa='mappaLevel'>
-      {{ recall.mappaLevelFormatted }}
+      {{ getReferenceDataItemLabel('mappaLevels', recall.mappaLevel) }}
     </dd>
     <dd class="govuk-summary-list__actions">
       <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'mappaLevelGroup') }}' data-qa='mappaLevelChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> MAPPA level</span></a>
