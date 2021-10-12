@@ -3,7 +3,8 @@ import * as referenceDataExports from '../../../../referenceData'
 
 describe('validateSentenceDetails', () => {
   const requestBody = {
-    lastReleasePrison: 'BEL',
+    lastReleasePrison: 'BAI',
+    lastReleasePrisonInput: 'Belmarsh (HMP)',
     lastReleaseDateYear: '2021',
     lastReleaseDateMonth: '05',
     lastReleaseDateDay: '20',
@@ -38,6 +39,12 @@ describe('validateSentenceDetails', () => {
           text: 'Aberdare County Court',
         },
       ],
+      prisons: [
+        {
+          value: 'BAI',
+          text: 'Belmarsh (HMP)',
+        },
+      ],
     })
   })
 
@@ -48,7 +55,7 @@ describe('validateSentenceDetails', () => {
       conditionalReleaseDate: '2021-10-04',
       indexOffence: 'Assault',
       lastReleaseDate: '2021-05-20',
-      lastReleasePrison: 'BEL',
+      lastReleasePrison: 'BAI',
       licenceExpiryDate: '2030-08-04',
       sentenceDate: '2020-03-10',
       sentenceExpiryDate: '2030-10-20',
@@ -166,6 +173,18 @@ describe('validateSentenceDetails', () => {
         href: '#sentencingCourt',
         name: 'sentencingCourt',
         text: 'Select a sentencing court',
+      },
+    ])
+  })
+
+  it('returns an error for invalid releasing prison, and no valuesToSave', () => {
+    const { errors, valuesToSave } = validateSentenceDetails({ ...requestBody, lastReleasePrisonInput: '123' })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#lastReleasePrison',
+        name: 'lastReleasePrison',
+        text: 'Select a releasing prison',
       },
     ])
   })

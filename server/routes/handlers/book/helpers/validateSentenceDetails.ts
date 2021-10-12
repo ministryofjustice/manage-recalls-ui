@@ -15,6 +15,7 @@ export const validateSentenceDetails = (
 
   const {
     lastReleasePrison,
+    lastReleasePrisonInput,
     lastReleaseDateYear,
     lastReleaseDateMonth,
     lastReleaseDateDay,
@@ -38,9 +39,6 @@ export const validateSentenceDetails = (
     sentenceLengthDays,
     bookingNumber,
   } = requestBody
-  // sentencingCourt is the value of the hidden select dropdown that's populated by the autocomplete
-  // sentencingCourtInput is what the user typed into the autocomplete input. It might be a random string and not a valid LDU, so need validating
-  const sentencingCourtValid = sentencingCourt && isStringValidReferenceData('courts', sentencingCourtInput)
   let conditionalReleaseDate
   const lastReleaseDateParts = {
     year: lastReleaseDateYear,
@@ -74,12 +72,20 @@ export const validateSentenceDetails = (
     sentenceLengthYearsParsed || sentenceLengthMonthsParsed || sentenceLengthDaysParsed
   )
   const bookingNumberValid = isBookingNumberValid(bookingNumber)
+  // sentencingCourt is the value of the hidden select dropdown that's populated by the autocomplete
+  // sentencingCourtInput is what the user typed into the autocomplete input. It might be a random string and not a valid court name, so needs validating
+  const sentencingCourtValid = sentencingCourt && isStringValidReferenceData('courts', sentencingCourtInput)
+  // lastReleasePrison is the value of the hidden select dropdown that's populated by the autocomplete
+  // lastReleasePrisonInput is what the user typed into the autocomplete input. It might be a random string and not a valid prison, so needs validating
+  const lastReleasePrisonValid = lastReleasePrison && isStringValidReferenceData('prisons', lastReleasePrisonInput)
+
   if (
     dateHasError(sentenceDate) ||
     dateHasError(licenceExpiryDate) ||
     dateHasError(sentenceExpiryDate) ||
     dateHasError(lastReleaseDate) ||
     !lastReleasePrison ||
+    !lastReleasePrisonValid ||
     !sentencingCourt ||
     !sentencingCourtValid ||
     !indexOffence ||
@@ -140,7 +146,7 @@ export const validateSentenceDetails = (
         })
       )
     }
-    if (!lastReleasePrison) {
+    if (!lastReleasePrison || !lastReleasePrisonValid) {
       errors.push(
         makeErrorObject({
           id: 'lastReleasePrison',

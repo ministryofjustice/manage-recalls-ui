@@ -11,10 +11,11 @@ buildAppInsightsClient()
 import { fetchRemoteRefData } from './server/referenceData'
 import app from './server/index'
 import logger from './logger'
-;(async function refData() {
-  await fetchRemoteRefData()
-})()
 
-app.listen(app.get('port'), () => {
-  logger.info(`Server listening on port ${app.get('port')}`)
-})
+fetchRemoteRefData()
+  .then(() => {
+    app.listen(app.get('port'), () => {
+      logger.info(`Server listening on port ${app.get('port')}`)
+    })
+  })
+  .catch(err => logger.error(err))
