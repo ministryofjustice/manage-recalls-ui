@@ -1,8 +1,9 @@
 import { validateSentenceDetails } from './validateSentenceDetails'
+import * as referenceDataExports from '../../../../referenceData'
 
 describe('validateSentenceDetails', () => {
   const requestBody = {
-    lastReleasePrison: 'Belmarsh',
+    lastReleasePrison: 'BEL',
     lastReleaseDateYear: '2021',
     lastReleaseDateMonth: '05',
     lastReleaseDateDay: '20',
@@ -15,7 +16,8 @@ describe('validateSentenceDetails', () => {
     sentenceExpiryDateYear: '2030',
     sentenceExpiryDateMonth: '10',
     sentenceExpiryDateDay: '20',
-    sentencingCourt: 'Birmingham',
+    sentencingCourt: 'ABDRCT',
+    sentencingCourtInput: 'Aberdare County Court',
     indexOffence: 'Assault',
     conditionalReleaseDateYear: '2021',
     conditionalReleaseDateMonth: '10',
@@ -26,6 +28,19 @@ describe('validateSentenceDetails', () => {
     bookingNumber: 'A12345',
   }
 
+  beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    jest.spyOn(referenceDataExports, 'referenceData').mockReturnValue({
+      courts: [
+        {
+          value: 'ABDRCT',
+          text: 'Aberdare County Court',
+        },
+      ],
+    })
+  })
+
   it('returns valuesToSave for all valid fields', () => {
     const { errors, valuesToSave } = validateSentenceDetails(requestBody)
     expect(errors).toBeUndefined()
@@ -33,14 +48,14 @@ describe('validateSentenceDetails', () => {
       conditionalReleaseDate: '2021-10-04',
       indexOffence: 'Assault',
       lastReleaseDate: '2021-05-20',
-      lastReleasePrison: 'Belmarsh',
+      lastReleasePrison: 'BEL',
       licenceExpiryDate: '2030-08-04',
       sentenceDate: '2020-03-10',
       sentenceExpiryDate: '2030-10-20',
       sentenceLength: {
         years: 2,
       },
-      sentencingCourt: 'Birmingham',
+      sentencingCourt: 'ABDRCT',
       bookingNumber: 'A12345',
     })
   })
@@ -139,6 +154,18 @@ describe('validateSentenceDetails', () => {
         name: 'bookingNumber',
         text: 'Enter a booking number in the correct format, like 12345C, A12347 or AB1234',
         values: '123',
+      },
+    ])
+  })
+
+  it('returns an error for invalid Sentencing Court, and no valuesToSave', () => {
+    const { errors, valuesToSave } = validateSentenceDetails({ ...requestBody, sentencingCourtInput: '123' })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#sentencingCourt',
+        name: 'sentencingCourt',
+        text: 'Select a sentencing court',
       },
     ])
   })

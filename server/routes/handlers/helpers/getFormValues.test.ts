@@ -484,7 +484,7 @@ describe('getFormValues', () => {
         months: 3,
         years: 2,
       },
-      sentencingCourt: 'Manchester Crown Court',
+      sentencingCourt: 'ABDRCT',
       vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
     })
@@ -576,7 +576,7 @@ describe('getFormValues', () => {
         months: 3,
         years: 2,
       },
-      sentencingCourt: 'Manchester Crown Court',
+      sentencingCourt: 'ABDRCT',
       vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
     })
