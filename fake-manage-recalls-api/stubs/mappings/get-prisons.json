@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/prisons"
+    "url": "/reference-data/prisons"
   },
   "response": {
     "status": 200,
