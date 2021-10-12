@@ -13,7 +13,6 @@ generic-service:
     enabled: true
     host: app-hostname.local    # override per environment
     tlsSecretName: manage-recalls-ui-cert
-    path: /
 
   livenessProbe:
     httpGet:
