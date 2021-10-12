@@ -59,7 +59,7 @@ a script (we use the same name across multiple repos) that builds and runs all t
 you haven't broken anything before pushing.  Obviously `circleCI` does that for you as 
 well versus any branch but this is for earlier/pre-push feedback.
 
-So this checks all dependencis installed, builds everything, runs the unit tests, 
+So this checks all dependencies installed, builds everything, runs the unit tests, 
 and integration tests including pact tests:
 
 `./build.sh`
@@ -138,6 +138,10 @@ Or run tests with the cypress UI:
 To get debug output when running cypress:
 
 `DEBUG=cypress:* npm run int-test-ui`
+
+For easy creation of IntelliJ run config for these Cypress tests 
+(the `integration/*.spec.js` tests) try installing the Cypress support plugin: https://plugins.jetbrains.com/plugin/13819-cypress-support
+That should yield a `Cy` cypress run option for all such tests).
 
 ### Dependency Checks
 

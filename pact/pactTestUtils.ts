@@ -33,7 +33,7 @@ function pactRequestWithBody(description: string, method: string, path: string, 
     withRequest: {
       method,
       path,
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       body,
     },
   }

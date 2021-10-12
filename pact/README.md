@@ -36,8 +36,9 @@ and circleCI will trigger a build in the Provider to verify the same.
 
 ## Running PACTs in IntelliJ
 
-The pact tests in this project are run by `jest`.  Specific config to make them executable
-within Idea is TBD.
+The pact tests in this project are run by `jest`.  They can be executed locally by Jest,
+e.g. from an IDE run-config, given
+only that the required specific config file is specified: `pact/jest.pact.config.js`.
 
 ## Deleting pacts
 

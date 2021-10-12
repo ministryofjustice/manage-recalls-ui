@@ -13,7 +13,7 @@ checkCypressInstalled $PROJECT_DIR
 
 docker compose -f "${DOCKER_COMPOSE_FILE}" stop fake-manage-recalls-api redis
 docker rm fake-manage-recalls-api || true
-docker build fake-manage-recalls-api
+docker compose build fake-manage-recalls-api
 
 docker compose -f "${DOCKER_COMPOSE_FILE}" pull fake-manage-recalls-api redis
 docker compose -f "${DOCKER_COMPOSE_FILE}" up fake-manage-recalls-api redis -d --remove-orphans
