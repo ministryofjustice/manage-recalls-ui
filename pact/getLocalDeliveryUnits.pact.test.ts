@@ -17,28 +17,11 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully retrieve a list of local delivery units', async () => {
       await provider.addInteraction({
         state: 'a list of recalls exists',
-        ...pactGetRequest('a get local delivery units request', '/reference-data/local-delivery-units', accessToken),
+        ...pactGetRequest('a get local delivery units request', '/reference-data/local-delivery-units'),
         willRespondWith: pactJsonResponse(Matchers.like(getLocalDeliveryUnitsJson), 200),
       })
       const actual = await getLocalDeliveryUnits(accessToken)
       expect(actual).toEqual(getLocalDeliveryUnitsJson)
-    })
-
-    test('returns 401 if invalid user', async () => {
-      await provider.addInteraction({
-        state: 'an unauthorized user accessToken',
-        ...pactGetRequest(
-          'an unauthorized get local delivery units request',
-          '/reference-data/local-delivery-units',
-          accessToken
-        ),
-        willRespondWith: { status: 401 },
-      })
-      try {
-        await getLocalDeliveryUnits(accessToken)
-      } catch (exception) {
-        expect(exception.status).toEqual(401)
-      }
     })
   })
 })
