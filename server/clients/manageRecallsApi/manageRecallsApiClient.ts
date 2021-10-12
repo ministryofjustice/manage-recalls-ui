@@ -6,7 +6,7 @@ import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDo
 import { LocalDeliveryUnitResponse } from '../../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { ObjectMap, PersonSearchResult } from '../../@types'
-import { GetDocumentResponse, UpdateRecallRequest, UserDetailsResponse } from '../../@types/manage-recalls-api'
+import { Court, GetDocumentResponse, UpdateRecallRequest, UserDetailsResponse } from '../../@types/manage-recalls-api'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PersonSearchResult | null> {
   const request = { nomsNumber }
@@ -88,6 +88,10 @@ export function getUserDetails(userId: string, token: string): Promise<UserDetai
 
 export function getLocalDeliveryUnits(): Promise<LocalDeliveryUnitResponse[]> {
   return restClient().get<LocalDeliveryUnitResponse[]>({ path: '/reference-data/local-delivery-units' })
+}
+
+export function getCourts(): Promise<Court[]> {
+  return restClient().get<Court[]>({ path: '/reference-data/courts' })
 }
 
 function restClient(token?: string): RestClient {

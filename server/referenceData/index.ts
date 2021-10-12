@@ -6,6 +6,7 @@ import { prisons } from './prisons'
 import { UiListItem } from '../@types'
 import { localDeliveryUnits } from './localDeliveryUnits'
 import logger from '../../logger'
+import { courts } from './courts'
 
 export const referenceData = () => ({
   mappaLevels,
@@ -14,6 +15,7 @@ export const referenceData = () => ({
   sensitiveInfo,
   prisons: prisons.data,
   localDeliveryUnits: localDeliveryUnits.data,
+  courts: courts.data,
 })
 
 export type ReferenceDataCategories =
@@ -22,17 +24,22 @@ export type ReferenceDataCategories =
   | 'reasonsForRecall'
   | 'prisons'
   | 'localDeliveryUnits'
+  | 'courts'
 
 export const fetchRemoteRefData = async () => {
-  const [prisonsResult, localDeliveryUnitsResult] = await Promise.allSettled([
+  const [prisonsResult, localDeliveryUnitsResult, courtResult] = await Promise.allSettled([
     prisons.updateData(),
     localDeliveryUnits.updateData(),
+    courts.updateData(),
   ])
   if (prisonsResult.status === 'rejected') {
     logger.error('Failed to fetch prisons')
   }
   if (localDeliveryUnitsResult.status === 'rejected') {
     logger.error('Failed to fetch Local Delivery Units')
+  }
+  if (courtResult.status === 'rejected') {
+    logger.error('Failed to fetch Courts')
   }
 }
 

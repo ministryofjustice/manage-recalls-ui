@@ -41,7 +41,8 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[name="lastReleaseDateDay"]').clear().type('03')
     },
     setSentencingCourt: () => {
-      cy.get('[name="sentencingCourt"]').type('Manchester Crown Court')
+      cy.get('[id="sentencingCourt"]').clear().type('Aberdare')
+      cy.contains('Aberdare County Court').click()
     },
     setIndexOffence: () => {
       cy.get('[name="indexOffence"]').type('Burglary')

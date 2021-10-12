@@ -93,7 +93,7 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 August 2021' })
     checkAnswers.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 February 2021' })
     checkAnswers.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
-    checkAnswers.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Manchester Crown Court' })
+    checkAnswers.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Aberdare County Court' })
     checkAnswers.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
     checkAnswers.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Kennet (HMP)' })
     checkAnswers.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })

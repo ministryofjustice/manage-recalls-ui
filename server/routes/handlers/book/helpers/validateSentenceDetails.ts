@@ -4,6 +4,7 @@ import { DateValidationError, NamedFormError, ObjectMap } from '../../../../@typ
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { isBookingNumberValid } from '../../helpers/validations'
 import { errorMsgDate } from '../../helpers/errorMessages'
+import { isStringValidReferenceData } from '../../../../referenceData'
 
 export const validateSentenceDetails = (
   requestBody: ObjectMap<string>
@@ -27,6 +28,7 @@ export const validateSentenceDetails = (
     sentenceExpiryDateMonth,
     sentenceExpiryDateDay,
     sentencingCourt,
+    sentencingCourtInput,
     indexOffence,
     conditionalReleaseDateYear,
     conditionalReleaseDateMonth,
@@ -36,6 +38,9 @@ export const validateSentenceDetails = (
     sentenceLengthDays,
     bookingNumber,
   } = requestBody
+  // sentencingCourt is the value of the hidden select dropdown that's populated by the autocomplete
+  // sentencingCourtInput is what the user typed into the autocomplete input. It might be a random string and not a valid LDU, so need validating
+  const sentencingCourtValid = sentencingCourt && isStringValidReferenceData('courts', sentencingCourtInput)
   let conditionalReleaseDate
   const lastReleaseDateParts = {
     year: lastReleaseDateYear,
@@ -76,6 +81,7 @@ export const validateSentenceDetails = (
     dateHasError(lastReleaseDate) ||
     !lastReleasePrison ||
     !sentencingCourt ||
+    !sentencingCourtValid ||
     !indexOffence ||
     !bookingNumber ||
     !bookingNumberValid ||
@@ -118,7 +124,7 @@ export const validateSentenceDetails = (
         })
       )
     }
-    if (!sentencingCourt) {
+    if (!sentencingCourt || !sentencingCourtValid) {
       errors.push(
         makeErrorObject({
           id: 'sentencingCourt',

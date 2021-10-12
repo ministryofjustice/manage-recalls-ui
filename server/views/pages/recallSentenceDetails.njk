@@ -117,14 +117,14 @@
                     }) }}
                 </div>
                 <div class='govuk-body govuk-form-group' id='sentencingCourtGroup'>
-                    {{ govukInput({
+                    {{ govukSelect({
                         label: {
                             text: "Sentencing court",
                             classes: "govuk-label--m"
                         },
                         id: "sentencingCourt",
                         name: "sentencingCourt",
-                        value: formValues.sentencingCourt,
+                        items: selectItems( referenceData.courts, formValues.sentencingCourt, true),
                         errorMessage: errorMessage(errors.sentencingCourt)
                     }) }}
                 </div>
@@ -209,8 +209,13 @@
 {% block bodyEnd %}
     {{ super() }}
     {{ autocomplete({
-        name: 'lastReleasePrison',
-        cspNonce: cspNonce
-    })
+            name: 'lastReleasePrison',
+            cspNonce: cspNonce
+        })
+    }}
+    {{ autocomplete({
+            name: 'sentencingCourt',
+            cspNonce: cspNonce
+        })
     }}
 {% endblock %}
