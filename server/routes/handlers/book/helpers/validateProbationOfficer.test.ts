@@ -1,4 +1,5 @@
 import { validateProbationOfficer } from './validateProbationOfficer'
+import * as referenceDataExports from '../../../../referenceData'
 
 describe('validateProbationOfficer', () => {
   const requestBody = {
@@ -9,6 +10,22 @@ describe('validateProbationOfficer', () => {
     localDeliveryUnitInput: 'Central Audit Team',
     authorisingAssistantChiefOfficer: 'Bob Monkfish',
   }
+  beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    jest.spyOn(referenceDataExports, 'referenceData').mockReturnValue({
+      localDeliveryUnits: [
+        {
+          value: 'CENTRAL_AUDIT_TEAM',
+          text: 'Central Audit Team',
+        },
+        {
+          value: 'CHANNEL_ISLANDS',
+          text: 'Channel Islands',
+        },
+      ],
+    })
+  })
   it('returns valuesToSave and no errors if all fields are submitted', () => {
     const { errors, valuesToSave } = validateProbationOfficer(requestBody)
     expect(errors).toBeUndefined()

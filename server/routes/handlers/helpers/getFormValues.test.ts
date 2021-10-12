@@ -422,7 +422,7 @@ describe('getFormValues', () => {
       },
       contraband: 'YES',
       contrabandDetail: 'Intention to smuggle drugs',
-      currentPrison: 'ALI',
+      currentPrison: 'KTI',
       differentNomsNumber: 'YES',
       differentNomsNumberDetail: 'AC3408303',
       dossierEmailSentDateParts: {
@@ -514,7 +514,7 @@ describe('getFormValues', () => {
       },
       contraband: 'YES',
       contrabandDetail: 'Intention to smuggle drugs',
-      currentPrison: 'ALI',
+      currentPrison: 'KTI',
       differentNomsNumber: 'YES',
       differentNomsNumberDetail: 'AC3408303',
       dossierEmailSentDateParts: {

@@ -1,4 +1,4 @@
-import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
+import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 
 export const reasonsForRecall = [
   {

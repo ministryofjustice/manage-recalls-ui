@@ -1,12 +1,12 @@
 // @ts-nocheck
 
-export function pactGetRequest(description: string, requestPath: string, token: string) {
+export function pactGetRequest(description: string, requestPath: string, token?: string) {
   return {
     uponReceiving: description,
     withRequest: {
       method: 'GET',
       path: requestPath,
-      headers: { Authorization: `Bearer ${token}` },
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     },
   }
 }

@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/reference-data/local-delivery-units"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "get-local-delivery-units.json"
+  }
+}

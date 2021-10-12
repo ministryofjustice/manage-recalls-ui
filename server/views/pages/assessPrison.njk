@@ -31,7 +31,6 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-two-thirds-from-desktop">
-                        {% if referenceData.prisonList %}
                             {{ govukSelect({
                                 id: "currentPrison",
                                 name: "currentPrison",
@@ -40,10 +39,9 @@
                                     classes: "govuk-label--l",
                                     isPageHeading: true
                                 },
-                                items: selectItems( referenceData.activePrisonList, formValues.currentPrison, true),
+                                items: selectItems( filterActiveItems(referenceData.prisons), formValues.currentPrison, true),
                                 errorMessage: errorMessage(errors.currentPrison)
                             }) }}
-                        {% endif %}
                         <div class="govuk-!-margin-top-8">
                             <button class="govuk-button" data-qa="continueButton">Continue</button>
                         </div>

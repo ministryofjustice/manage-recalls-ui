@@ -2,7 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { isEmailValid, isPhoneValid } from '../../helpers/validations'
-import { isStringValidReferenceData } from '../../helpers/referenceData/referenceData'
+import { isStringValidReferenceData } from '../../../../referenceData'
 
 export const validateProbationOfficer = (
   requestBody: ObjectMap<string>

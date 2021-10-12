@@ -58,6 +58,7 @@ export type RecallResponse = {
     | 'TRAVELLING_OUTSIDE_UK'
   >
   reasonsForRecallOtherDetail?: string
+  recallAssessmentDueDateTime?: string
   recallEmailReceivedDateTime?: string
   recallId: string
   recallLength?: RecallResponse.recallLength
