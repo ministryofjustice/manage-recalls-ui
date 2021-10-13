@@ -20,7 +20,7 @@ export const errorMsgUserActionDateTime = (
     case 'blankDateTime':
       return `Enter the ${noun} you ${userAction}`
     case 'dateMustBeInPast':
-      return `The ${dateOnly ? 'date' : 'time'} you ${userAction} must be in the past`
+      return `The ${dateOnly ? 'date' : 'time'} you ${userAction} must be today or in the past`
     case 'missingDate':
       return `Enter the date you ${userAction}`
     case 'missingTime':
@@ -41,7 +41,7 @@ export const errorMsgDate = (validationError: DateValidationError, fieldLabel: s
     case 'blankDateTime':
       return `Enter the ${fieldLabel}`
     case 'dateMustBeInPast':
-      return `The  ${fieldLabel} must be in the past`
+      return `The  ${fieldLabel} must be today or in the past`
     case 'dateMustBeInFuture':
       return `The  ${fieldLabel} must be in the future`
     case 'invalidDate':
