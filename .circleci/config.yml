@@ -187,17 +187,18 @@ workflows:
           requires:
             - build_docker
 
-      - hmpps/trivy_pipeline_scan:
-          name: trivy_scan
-          requires:
-            - build_docker
+#      - hmpps/trivy_pipeline_scan:
+#          name: trivy_scan
+#          requires:
+#            - build_docker
 
       - hmpps/publish_docker:
           name: publish_docker
           requires:
             - helm_lint
             - integration_test
-            - trivy_scan
+            - build_docker #can be removed when trivy_scan reenabled
+#            - trivy_scan
             - unit_test
           filters:
             branches:
