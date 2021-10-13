@@ -1,5 +1,6 @@
 import { Prison, UiListItem } from '../@types'
 import { getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../logger'
 
 class Prisons {
   private static instance: Prisons
@@ -23,9 +24,25 @@ class Prisons {
     }))
   }
 
-  async updateData() {
-    const data = await getPrisons()
-    this.data = this.formatPrisonList(data)
+  pollForData(intervalId: NodeJS.Timeout) {
+    return getPrisons()
+      .then(data => {
+        if (data) {
+          this.data = this.formatPrisonList(data)
+          clearInterval(intervalId)
+        }
+      })
+      .catch(err => logger.error(err))
+  }
+
+  updateData() {
+    return new Promise(resolve => {
+      const intervalId = setInterval(() => {
+        this.pollForData(intervalId).then(() => {
+          resolve(true)
+        })
+      }, 5000)
+    })
   }
 }
 
