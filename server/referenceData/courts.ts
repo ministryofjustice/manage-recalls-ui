@@ -1,5 +1,5 @@
 import { UiListItem } from '../@types'
-import { getCourts } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCourts, getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { Court } from '../@types/manage-recalls-api'
 
 class Courts {
@@ -22,8 +22,16 @@ class Courts {
   }
 
   async updateData() {
-    const data = await getCourts()
-    this.data = this.formatCourtsList(data)
+    let data
+    const interval = setInterval(() => {
+      ;(async () => {
+        data = await getCourts()
+        if (data) {
+          this.data = this.formatCourtsList(data)
+          clearInterval(interval)
+        }
+      })()
+    }, 10000)
   }
 }
 

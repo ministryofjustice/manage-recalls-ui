@@ -1,6 +1,7 @@
 import { UiListItem } from '../@types'
-import { getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getLocalDeliveryUnits, getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api'
+import logger from '../../logger'
 
 class LocalDeliveryUnits {
   private static instance: LocalDeliveryUnits
@@ -21,9 +22,21 @@ class LocalDeliveryUnits {
     }))
   }
 
-  async updateData() {
-    const data = await getLocalDeliveryUnits()
-    this.data = this.formatLocalDeliveryUnitsList(data)
+  updateData() {
+    return new Promise(resolve => {
+      const interval = setInterval(() => {
+        getLocalDeliveryUnits()
+          .then(data => {
+            if (data) {
+              this.data = this.formatLocalDeliveryUnitsList(data)
+              clearInterval(interval)
+              resolve(true)
+            }
+          })
+          .catch(err => logger.error(err))
+      }, 10000)
+
+    })
   }
 }
 
