@@ -1,5 +1,5 @@
 import { Prison, UiListItem } from '../@types'
-import { getLocalDeliveryUnits, getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../logger'
 
 class Prisons {

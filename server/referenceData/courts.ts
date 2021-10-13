@@ -1,5 +1,5 @@
 import { UiListItem } from '../@types'
-import { getCourts, getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCourts } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { Court } from '../@types/manage-recalls-api'
 import logger from '../../logger'
 
