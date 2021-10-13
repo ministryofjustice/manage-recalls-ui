@@ -16,7 +16,8 @@ describe('Local Delivery Units ref data', () => {
   ])
 
   it('fetches and formats a list of Local Delivery Units', async () => {
-    await localDeliveryUnits.updateData()
+    const timeout = setTimeout(() => undefined, 1)
+    await localDeliveryUnits.pollForData(timeout)
     expect(localDeliveryUnits.data).toEqual([
       {
         value: 'ONE',

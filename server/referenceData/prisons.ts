@@ -24,33 +24,25 @@ class Prisons {
     }))
   }
 
-  updateData() {
-    return new Promise(resolve => {
-      const interval = setInterval(() => {
-        getLocalDeliveryUnits()
-          .then(data => {
-            if (data) {
-              this.data = this.formatLocalDeliveryUnitsList(data)
-              clearInterval(interval)
-              resolve(true)
-            }
-          })
-          .catch(err => logger.error(err))
-      }, 10000)
-
-    })
-  }
-  async updateData() {
-    let data
-    const interval = setInterval(() => {
-      ;(async () => {
-        data = await getPrisons()
+  pollForData(intervalId: NodeJS.Timeout) {
+    return getPrisons()
+      .then(data => {
         if (data) {
           this.data = this.formatPrisonList(data)
-          clearInterval(interval)
+          clearInterval(intervalId)
         }
-      })()
-    }, 10000)
+      })
+      .catch(err => logger.error(err))
+  }
+
+  updateData() {
+    return new Promise(resolve => {
+      const intervalId = setInterval(() => {
+        this.pollForData(intervalId).then(() => {
+          resolve(true)
+        })
+      }, 5000)
+    })
   }
 }
 

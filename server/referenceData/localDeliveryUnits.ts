@@ -1,5 +1,5 @@
 import { UiListItem } from '../@types'
-import { getLocalDeliveryUnits, getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api'
 import logger from '../../logger'
 
@@ -22,20 +22,24 @@ class LocalDeliveryUnits {
     }))
   }
 
+  pollForData(intervalId: NodeJS.Timeout) {
+    return getLocalDeliveryUnits()
+      .then(data => {
+        if (data) {
+          this.data = this.formatLocalDeliveryUnitsList(data)
+          clearInterval(intervalId)
+        }
+      })
+      .catch(err => logger.error(err))
+  }
+
   updateData() {
     return new Promise(resolve => {
-      const interval = setInterval(() => {
-        getLocalDeliveryUnits()
-          .then(data => {
-            if (data) {
-              this.data = this.formatLocalDeliveryUnitsList(data)
-              clearInterval(interval)
-              resolve(true)
-            }
-          })
-          .catch(err => logger.error(err))
-      }, 10000)
-
+      const intervalId = setInterval(() => {
+        this.pollForData(intervalId).then(() => {
+          resolve(true)
+        })
+      }, 5000)
     })
   }
 }

@@ -1,6 +1,7 @@
 import { UiListItem } from '../@types'
-import { getCourts, getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCourts, getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { Court } from '../@types/manage-recalls-api'
+import logger from '../../logger'
 
 class Courts {
   private static instance: Courts
@@ -21,17 +22,25 @@ class Courts {
     }))
   }
 
-  async updateData() {
-    let data
-    const interval = setInterval(() => {
-      ;(async () => {
-        data = await getCourts()
+  pollForData(intervalId: NodeJS.Timeout) {
+    return getCourts()
+      .then(data => {
         if (data) {
           this.data = this.formatCourtsList(data)
-          clearInterval(interval)
+          clearInterval(intervalId)
         }
-      })()
-    }, 10000)
+      })
+      .catch(err => logger.error(err))
+  }
+
+  updateData() {
+    return new Promise(resolve => {
+      const intervalId = setInterval(() => {
+        this.pollForData(intervalId).then(() => {
+          resolve(true)
+        })
+      }, 5000)
+    })
   }
 }
 
