@@ -283,7 +283,7 @@ context('Book a recall', () => {
     })
     recallProbationOfficer.assertErrorMessage({
       fieldName: 'authorisingAssistantChiefOfficer',
-      summaryError: 'Enter the Assistant Chief Officer',
+      summaryError: 'Enter the Assistant Chief Officer that signed-off the recall',
     })
   })
 

@@ -90,7 +90,7 @@ export const validateProbationOfficer = (
       errors.push(
         makeErrorObject({
           id: 'authorisingAssistantChiefOfficer',
-          text: 'Enter the Assistant Chief Officer',
+          text: 'Enter the Assistant Chief Officer that signed-off the recall',
         })
       )
     }
