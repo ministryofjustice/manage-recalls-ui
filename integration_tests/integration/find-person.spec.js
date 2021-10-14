@@ -70,6 +70,7 @@ context('Find a person', () => {
   })
 
   it('User can create a dossier', () => {
+    const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
@@ -79,7 +80,7 @@ context('Find a person', () => {
     const firstResult = homePage.searchResults().first()
     const existingRecall3 = getRecallsResponse[2]
     firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`).click()
-    dossierRecallInformationPage.verifyOnPage()
+    dossierRecallInformationPage.verifyOnPage({ personName })
   })
 
   it('person search returns no results', () => {

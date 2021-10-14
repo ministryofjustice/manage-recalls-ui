@@ -69,7 +69,7 @@ context('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
     recallsList.createDossier({ recallId })
-    dossierRecallInformationPage.verifyOnPage()
+    dossierRecallInformationPage.verifyOnPage({ personName })
   })
 
   it('User can move on to assessRecall if the recall has status DOSSIER_ISSUED', () => {
