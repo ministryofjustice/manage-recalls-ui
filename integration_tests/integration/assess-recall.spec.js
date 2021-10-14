@@ -25,7 +25,7 @@ context('Assess a recall', () => {
       ],
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId } })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId, status: 'BOOKED_ON' } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
@@ -51,7 +51,7 @@ context('Assess a recall', () => {
 
   it('User can assess and issue a recall', () => {
     cy.login()
-    let assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeYesDecision()
@@ -80,31 +80,10 @@ context('Assess a recall', () => {
     assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
-    assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
-    assessRecall.assertElementHasText({ qaAttr: 'agreeWithRecall', textToFind: 'Yes' })
-    assessRecall.assertElementHasText({ qaAttr: 'agreeWithRecallDetail', textToFind: 'Reasons...' })
-    assessRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
-    assessRecall.assertElementHasText({
-      qaAttr: 'reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY',
-      textToFind: 'Electronic locking and monitoring (ELM) - Failure to charge battery',
-    })
-    assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecall-OTHER', textToFind: 'Other' })
-    assessRecall.assertElementHasText({ qaAttr: 'reasonsForRecallOtherDetail', textToFind: 'other reason detail...' })
-    assessRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
-    assessRecall.assertElementHasText({
-      qaAttr: 'recallNotificationEmailSentDateTime',
-      textToFind: '15 August 2021 at 14:04',
-    })
-    assessRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
-
-    let fileName = 'recall-request.eml'
+    assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    const fileName = 'recall-request.eml'
     mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
     cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
-    checkDownload(fileName)
-
-    fileName = '2021-07-03 Phil Jones recall.msg'
-    mockFileDownload({ fileName, docCategory: 'RECALL_NOTIFICATION_EMAIL' })
-    cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
     checkDownload(fileName)
   })
 

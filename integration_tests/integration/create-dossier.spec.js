@@ -1,4 +1,3 @@
-import path from 'path'
 import { getRecallResponse, searchResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
@@ -8,7 +7,7 @@ const dossierCheckPage = require('../pages/dossierCheck')
 const dossierDownloadPage = require('../pages/dossierDownload')
 const dossierEmailPage = require('../pages/dossierEmail')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
-const assessRecallPage = require('../pages/assessRecall')
+const dossierRecallPage = require('../pages/dossierRecallInformation')
 
 context('Create a dossier', () => {
   const nomsNumber = 'A1234AA'
@@ -31,6 +30,33 @@ context('Create a dossier', () => {
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectUpdateRecall', recallId)
+    cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
+  })
+
+  it('User can verify recall details before creating a dossier', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status,
+      },
+    })
+    cy.login()
+    const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
+    dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
+    dossierRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+    dossierRecall.assertElementHasText({ qaAttr: 'agreeWithRecallDetail', textToFind: 'Reasons...' })
+    dossierRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY',
+      textToFind: 'Electronic locking and monitoring (ELM) - Failure to charge battery',
+    })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'reasonsForRecall-OTHER',
+      textToFind: 'Other - other reason detail...',
+    })
+    dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
   })
 
   it('User can create a dossier', () => {
@@ -39,6 +65,7 @@ context('Create a dossier', () => {
       expectedResult: {
         ...getRecallResponse,
         recallId,
+        status,
         documents: [
           ...getRecallResponse.documents,
           {
@@ -57,10 +84,11 @@ context('Create a dossier', () => {
       fileName,
       documentId: '123',
     })
-    cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
+    const dossierRecall = dossierRecallPage.verifyOnPage({ personName })
+    dossierRecall.clickContinue()
     const dossierLetter = dossierLetterPage.verifyOnPage()
     dossierLetter.additionalLicenceConditions()
     dossierLetter.addLicenceDetail()
@@ -91,21 +119,6 @@ context('Create a dossier', () => {
     dossierEmail.uploadEmail({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
     dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()
-    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
-    assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Yes' })
-    assessRecall.assertElementHasText({ qaAttr: 'additionalLicenceConditionsDetail', textToFind: 'one, two' })
-    assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'Yes' })
-    assessRecall.assertElementHasText({ qaAttr: 'differentNomsNumberDetail', textToFind: 'AC3408303' })
-    assessRecall.assertElementHasText({
-      qaAttr: 'dossierEmailSentDate',
-      textToFind: '8 September 2021',
-    })
-    assessRecall.assertElementHasText({ qaAttr: 'hasDossierBeenChecked', textToFind: 'Yes' })
-    assessRecall.assertElementHasText({ qaAttr: 'dossierEmailSentDate', textToFind: '8 September 2021' })
-    assessRecall.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bertie Badger' })
-    cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
-    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
-    cy.readFile(downloadedFilename, 'binary')
   })
 
   it("User sees an error if they don't confirm the dossier was checked", () => {
