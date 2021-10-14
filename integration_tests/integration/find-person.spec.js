@@ -1,7 +1,7 @@
 import { searchResponse, getRecallsResponse } from '../mockApis/mockResponses'
 import recallPreConsNamePage from '../pages/recallPreConsName'
 import assessRecallPage from '../pages/assessRecall'
-import dossierLetterPage from '../pages/dossierLetter'
+import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 
 const findOffenderPage = require('../pages/findOffender')
 
@@ -79,7 +79,7 @@ context('Find a person', () => {
     const firstResult = homePage.searchResults().first()
     const existingRecall3 = getRecallsResponse[2]
     firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`).click()
-    dossierLetterPage.verifyOnPage()
+    dossierRecallInformationPage.verifyOnPage()
   })
 
   it('person search returns no results', () => {
