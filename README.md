@@ -68,19 +68,41 @@ and integration tests including pact tests:
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
 
 ## Running the app
-The easiest way to run the app is to use docker compose to create the service and all dependencies. This starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui. 
+In easiest way to run ui and api is to use 
 
-`docker compose up`
+`./start-local-services.sh`
 
-OR use the following script to run in the background and ensure the fake-mange-recalls-api is up to date and all services start correctly:
-
-`scripts/start-local.sh` 
+script in manage-recall-e2e project. 
 
 Either way check that this has succeeded e.g. via login locally (`http://localhost:3000/`)
 with `PPUD_USER` / `password123456`.  
 This user has the `MANAGE_RECALLS` role that allows access to the service.
 
-### Running the app for development
+### Running the app for the development
+For development run of the ui run 
+
+` npm run start:e2e`
+
+In order to restart the ui during development changes, kill the ui by running
+
+`npm run kill`
+
+And rerun ui with
+
+` npm run start:e2e`
+
+### Old way to run the app
+The old way was to run the app using docker compose to create the service and all dependencies. 
+This method is no longer the best due to limited functionality of fake api. Will keep it here till future changes.
+It starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui. 
+
+`docker compose up`
+
+OR use the following script to run in the background and ensure the fake-mange-recalls-api is up to date and all services start correctly:
+
+`scripts/start-local.sh`
+
+#### Running the app for development
 
 To start the main services and the manage recalls ui app in dev mode (you can attach to the Node.js debugger): 
 
