@@ -1,7 +1,7 @@
 import { searchResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 import assessRecallPage from '../pages/assessRecall'
-import dossierLetterPage from '../pages/dossierLetter'
+import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 
@@ -69,7 +69,7 @@ context('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
     recallsList.createDossier({ recallId })
-    dossierLetterPage.verifyOnPage()
+    dossierRecallInformationPage.verifyOnPage({ personName })
   })
 
   it('User can move on to assessRecall if the recall has status DOSSIER_ISSUED', () => {

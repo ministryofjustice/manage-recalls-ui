@@ -93,6 +93,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
 
   // CREATE DOSSIER
+  get(`${basePath}/dossier-recall`, viewWithRecallAndPerson('dossierRecallInformation'))
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
   post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-check'))
   get(`${basePath}/dossier-check`, viewWithRecallAndPerson('dossierCheck'))

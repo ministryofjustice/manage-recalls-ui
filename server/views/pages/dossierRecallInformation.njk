@@ -1,13 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - Check the details before booking this recall" %}
-
-{% block beforeContent %}
-    {{ govukBackLink({
-        text: "Back",
-        href: backLinkUrl("upload-documents", urlInfo)
-    }) }}
-{% endblock %}
+{% set pageTitle = applicationName + " - Create a dossier for " + person.firstName + " " + person.lastName + " recall" %}
 
 {% block content %}
 
@@ -22,8 +15,12 @@
                     }
                 }) }}
             {% endif %}
-            <h1 class="govuk-heading-l">
-                Check the details before booking this recall
+            <h1 class="govuk-heading-xl">
+                Create a dossier for {{ person.firstName }} {{ person.lastName }} recall
+
+                <div class="govuk-heading-l govuk-!-margin-top-8">
+                    Recall information
+                </div>
             </h1>
         </div>
     </div>
@@ -32,18 +29,15 @@
         <div class="govuk-grid-column-full">
             {% include '../partials/personDetails.njk' %}
             {% include '../partials/recallDetails.njk' %}
-            {% include '../partials/sentenceDetails.njk' %}
-            {% include '../partials/policeDetails.njk' %}
+            {% include '../partials/custodyDetails.njk' %}
             {% include '../partials/issuesDetails.njk' %}
+            {% include '../partials/sentenceDetails.njk' %}
             {% include '../partials/probationDetails.njk' %}
             {% include '../partials/uploadedDocuments.njk' %}
             <div class="govuk-form-group govuk-!-margin-top-9">
-                <form novalidate action="{{ formActionUrl('check-answers', urlInfo) }}" method="post">
-                    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                    <button class="govuk-button" data-qa='continueButton'>
-                        Complete booking
-                    </button>
-                </form>
+                <a class="govuk-button" data-qa='continueButton' href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-letter'>
+                    Create dossier
+                </a>
             </div>
 
         </div>

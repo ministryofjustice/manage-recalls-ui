@@ -1,0 +1,26 @@
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='custody'>Custody details</h2>
+<dl class="govuk-summary-list">
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Custody status
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='inCustody'>
+      In custody
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+    </dd>
+  </div>
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Prison held in
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='currentPrison'>
+      {{ getReferenceDataItemLabel('prisons',
+        recall.currentPrison
+      ) }}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('assess-prison', urlInfo, 'custody') }}' data-qa='currentPrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> current prison</span></a>
+    </dd>
+  </div>
+</dl>
