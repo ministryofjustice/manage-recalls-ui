@@ -288,7 +288,7 @@ workflows:
           env: preprod
           context:
             - hmpps-common-vars
-            - ppud-replacement-preprod
+            - manage-recalls-ui-preprod
           requires:
             - can_i_deploy_to_preprod
 
@@ -335,7 +335,7 @@ workflows:
           env: prod
           context:
             - hmpps-common-vars
-            - ppud-replacement-prod
+            - manage-recalls-ui-prod
           requires:
             - can_i_deploy_to_prod
           slack_notification: true
