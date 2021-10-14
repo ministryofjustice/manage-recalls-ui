@@ -59,9 +59,10 @@ jobs:
       - run:
           name: Run Pact can-i-deploy
           command: |
-            pact-broker can-i-deploy --pacticipant manage-recalls-ui --broker-base-url $PACT_BROKER_BASE_URL \
-                    --version $CIRCLE_SHA1 \
-                    --to deployed:<< parameters.env >>
+            npx --package='@pact-foundation/pact-node' \
+                pact-broker can-i-deploy --pacticipant manage-recalls-ui --broker-base-url $PACT_BROKER_BASE_URL \
+                --version $CIRCLE_SHA1 \
+                --to deployed:<< parameters.environment >>
 
   tag_pact_version:
     environment:
@@ -223,6 +224,12 @@ workflows:
 #          name: trivy_scan
 #          requires:
 #            - build_docker
+
+      - can_i_deploy:
+          name: "can_i_deploy_to_dev"
+          environment: "dev"
+          requires: [ integration_test, unit_test ]
+          context: [ hmpps-common-vars ]
 
       - hmpps/publish_docker:
           name: publish_docker
