@@ -81,7 +81,6 @@ context('Book a recall', () => {
     // personal details
     checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
-    checkAnswers.assertElementHasText({ qaAttr: 'gender', textToFind: 'Male' })
     checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })
     checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
     checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
@@ -102,10 +101,8 @@ context('Book a recall', () => {
     // local police force
     checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
     // issues or needs
-    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Yes' })
-    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversityDetail', textToFind: 'Various...' })
-    checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Yes' })
-    checkAnswers.assertElementHasText({ qaAttr: 'contrabandDetail', textToFind: 'Intention to smuggle drugs' })
+    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Various...' })
+    checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Intention to smuggle drugs' })
     checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
     // probation details
     checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })

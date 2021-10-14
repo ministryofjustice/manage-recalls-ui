@@ -19,51 +19,13 @@
                     Assess recall
                 </a>
             </p>
-
             {% include '../partials/personDetails.njk' %}
-
-            <h2 class='govuk-heading-m'>Recall</h2>
-            <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                    Length of fixed recall
-                </dt>
-                <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recallLength'>
-                   {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
-                </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key govuk-!-width-one-half">
-                        Booked by
-                    </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookedByUserName'>
-                        {{ recall.bookedByUserName }}
-                    </dd>
-                </div>
-            </dl>
-            {% include '../partials/recallRequestDetails.njk' %}
+            {% include '../partials/recallDetails.njk' %}
+            {% include '../partials/issuesDetails.njk' %}
             {% include '../partials/sentenceDetails.njk' %}
             {% include '../partials/policeDetails.njk' %}
-            {% include '../partials/issuesDetails.njk' %}
             {% include '../partials/probationDetails.njk' %}
-
-            {% include '../partials/assessDetails.njk' %}
-            {% include '../partials/dossierDetails.njk' %}
-
-            {% if recall.documents.length %}
-                <h2 class='govuk-heading-m'>Documents</h2>
-
-                {% for document in recall.documents %}
-                    <div class="govuk-form-group">
-                        {{ documentDownloadLink({
-                            linkText: document.fileName,
-                            url: document.url,
-                            dataQa: 'uploadedDocument-' + document.category
-                        })
-                        }}
-                    </div>
-                {% endfor %}
-            {% endif %}
+            {% include '../partials/uploadedDocuments.njk' %}
         </div>
     </div>
 

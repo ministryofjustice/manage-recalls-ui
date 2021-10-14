@@ -124,6 +124,7 @@ export type ViewName =
   | 'recallDocuments'
   | 'recallCheckAnswers'
   | 'recallConfirmation'
+  | 'dossierRecallInformation'
   | 'dossierLetter'
   | 'dossierCheck'
   | 'dossierEmail'

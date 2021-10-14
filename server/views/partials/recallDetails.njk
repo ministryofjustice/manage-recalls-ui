@@ -1,0 +1,115 @@
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='recallDetails'>Recall details</h2>
+<dl class="govuk-summary-list">
+
+    {% if recall.status %}
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Recall type
+        </dt>
+        <dd class=" govuk-summary-list__value" data-qa='recallLength'>
+            Fixed term
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+        </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Recall length
+        </dt>
+        <dd class=" govuk-summary-list__value" data-qa='recallLength'>
+            {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+        </dd>
+    </div>
+    {% endif %}
+    {% if recall.status != 'DOSSIER_ISSUED' %}
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Recall email received
+        </dt>
+        <dd class=" govuk-summary-list__value" data-qa='recallEmailReceivedDateTime'>
+            {{ recall.recallEmailReceivedDateTime | dateTime}}
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+            <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallRequest') }}' data-qa='recallEmailReceivedDateTimeChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> recall email received date</span></a>
+        </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Recall email uploaded
+        </dt>
+        <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
+            <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+            <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallRequest') }}' data-qa='recallRequestEmailFileNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> uploaded recall email</span></a>
+        </dd>
+    </div>
+    {% endif %}
+
+    {% if recall.status %}
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Recall booked by
+        </dt>
+        <dd class=" govuk-summary-list__value" data-qa='bookedByUserName'>
+            {{ recall.bookedByUserName }}
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+        </dd>
+    </div>
+    {% endif %}
+    {% if recall.status == 'RECALL_NOTIFICATION_ISSUED' %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall assessed by
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='assessedByUserName'>
+                {{ recall.assessedByUserName }}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Assessment notes
+            </dt>
+            <dd class=" govuk-summary-list__value">
+                <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Licence conditions breached
+            </dt>
+            <dd class=" govuk-summary-list__value">
+                <pre class='govuk-body' data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                <a href='{{ changeLinkUrl('assess-licence', urlInfo, 'recallDetails') }}' data-qa='licenceConditionsBreachedChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> licence conditions breached</span></a>
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Reasons for recall
+            </dt>
+            <dd class=" govuk-summary-list__value">
+                <ul class='govuk-list govuk-list--bullet'>
+                    {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
+                        <li data-qa='reasonsForRecall-{{ reason.value }}'>
+                            {{ reason.text }}{% if reason.text == 'Other' %} - {{ recall.reasonsForRecallOtherDetail }}{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                <a href='{{ changeLinkUrl('assess-licence', urlInfo, 'recallDetails') }}' data-qa='reasonsForRecallChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> reasons for recall</span></a>
+            </dd>
+        </div>
+    {% endif %}
+
+</dl>

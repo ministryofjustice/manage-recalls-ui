@@ -21,15 +21,6 @@
   </div>
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
-      Gender
-    </dt>
-    <dd class=" govuk-summary-list__value" data-qa='gender'>
-      {{ person.gender }}
-    </dd>
-    <dd class=" govuk-summary-list__actions"></dd>
-  </div>
-  <div class="govuk-summary-list__row">
-    <dt class=" govuk-summary-list__key">
       NOMIS
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='nomsNumber'>
@@ -46,6 +37,19 @@
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
   </div>
+  {% if recall.status %}
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key">
+        Booking number
+      </dt>
+      <dd class=" govuk-summary-list__value" data-qa='bookingNumber'>
+        {{ recall.bookingNumber }}
+      </dd>
+      <dd class=" govuk-summary-list__actions">
+        <a href='{{ changeLinkUrl('last-release', urlInfo, 'personalDetails', 'bookingNumberGroup') }}' data-qa='bookingNumberChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> booking number</span></a>
+      </dd>
+    </div>
+  {% endif %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Name on pre-cons
