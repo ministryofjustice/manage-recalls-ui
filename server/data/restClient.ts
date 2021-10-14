@@ -62,7 +62,7 @@ export default class RestClient {
   }
 
   async get<T>({ path = null, query = '', headers = {}, responseType = '', raw = false }: GetRequest): Promise<T> {
-    logger.info(`Get using user credentials: calling ${this.name}: ${path} ${query}`)
+    logger.info(`Get: calling ${this.name}: ${path} ${query}`)
     try {
       let result
       if (this.token) {

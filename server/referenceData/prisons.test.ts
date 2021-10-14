@@ -18,7 +18,8 @@ describe('prisons refdata', () => {
   ])
 
   it('fetches and formats a list of prisons', async () => {
-    await prisons.updateData()
+    const timeout = setTimeout(() => undefined, 1)
+    await prisons.pollForData(timeout)
     expect(prisons.data).toEqual([
       {
         value: 'ALI',

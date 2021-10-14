@@ -16,7 +16,8 @@ describe('Courts ref data', () => {
   ])
 
   it('fetches and formats a list of courts', async () => {
-    await courts.updateData()
+    const timeout = setTimeout(() => undefined, 1)
+    await courts.pollForData(timeout)
     expect(courts.data).toEqual([
       {
         value: 'ONE',

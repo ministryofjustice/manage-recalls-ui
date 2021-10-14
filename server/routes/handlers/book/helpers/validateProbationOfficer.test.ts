@@ -66,7 +66,7 @@ describe('validateProbationOfficer', () => {
       {
         href: '#authorisingAssistantChiefOfficer',
         name: 'authorisingAssistantChiefOfficer',
-        text: 'Enter the Assistant Chief Officer',
+        text: 'Enter the Assistant Chief Officer that signed-off the recall',
       },
     ])
   })

@@ -146,7 +146,7 @@ describe('validateRecallRequestReceived', () => {
       uploadFailed: false,
       invalidFileFormat: false,
     })
-    expect(errors[0].text).toEqual('The time you received the recall email must be in the past')
+    expect(errors[0].text).toEqual('The time you received the recall email must be today or in the past')
   })
 
   it('returns an error if the date is invalid', () => {
