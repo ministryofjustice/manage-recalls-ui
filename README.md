@@ -19,10 +19,10 @@ e.g. via a local Docker Desktop installation as per https://docs.docker.com/dock
 
 ### node and npm
 This project depends on `node` and `npm`.
-It is highly recommended that you use `nvm` to manage their versions. 
+It is highly recommended that you use `nvm` to manage their versions.
 `nvm` can be installed by commands such as:
 
-```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;```  
+```curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash;```
 
 Ideally check online for a latest version of the above command.
 
@@ -52,14 +52,14 @@ npm install
 ```
 
 ### Full local build
-At this point the full build, `./build.sh`, should pass.  
+At this point the full build, `./build.sh`, should pass.
 
-The intention of this is 
-a script (we use the same name across multiple repos) that builds and runs all tests so you have confidence 
-you haven't broken anything before pushing.  Obviously `circleCI` does that for you as 
+The intention of this is
+a script (we use the same name across multiple repos) that builds and runs all tests so you have confidence
+you haven't broken anything before pushing.  Obviously `circleCI` does that for you as
 well versus any branch but this is for earlier/pre-push feedback.
 
-So this checks all dependencies installed, builds everything, runs the unit tests, 
+So this checks all dependencies installed, builds everything, runs the unit tests,
 and integration tests including pact tests:
 
 `./build.sh`
@@ -68,28 +68,50 @@ and integration tests including pact tests:
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
 
 ## Running the app
-The easiest way to run the app is to use docker compose to create the service and all dependencies. This starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui. 
+In easiest way to run ui and api is to use
 
-`docker compose up`
+`./start-local-services.sh`
 
-OR use the following script to run in the background and ensure the fake-mange-recalls-api is up to date and all services start correctly:
-
-`scripts/start-local.sh` 
+script in manage-recall-e2e project.
 
 Either way check that this has succeeded e.g. via login locally (`http://localhost:3000/`)
 with `PPUD_USER` / `password123456`.  
 This user has the `MANAGE_RECALLS` role that allows access to the service.
 
-### Running the app for development
+### Running the app for the development
+For development run of the ui run
 
-To start the main services and the manage recalls ui app in dev mode (you can attach to the Node.js debugger): 
+` npm run start:e2e`
+
+In order to restart the ui during development changes, kill the ui by running
+
+`npm run kill`
+
+And rerun ui with
+
+` npm run start:e2e`
+
+### Old way to run the app
+The old way was to run the app using docker compose to create the service and all dependencies.
+This method is no longer the best due to limited functionality of fake api. Will keep it here till future changes.
+It starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui.
+
+`docker compose up`
+
+OR use the following script to run in the background and ensure the fake-mange-recalls-api is up to date and all services start correctly:
+
+`scripts/start-local.sh`
+
+#### Running the app for development
+
+To start the main services and the manage recalls ui app in dev mode (you can attach to the Node.js debugger):
 
 ```
 scripts/start-dev-local.sh
 npm run start:dev
 ```
 
-If you need to update the wiremock (fake-manage-recalls-api) mappings you can use the `scripts/restart-fake-manage-recalls-api.sh` 
+If you need to update the wiremock (fake-manage-recalls-api) mappings you can use the `scripts/restart-fake-manage-recalls-api.sh`
 to stop and start the wiremock server.  Or you can use the `manual-stub.test.ts` test to prime the running wiremock server
 with any additional expectation.
 
@@ -130,7 +152,7 @@ The integration tests use [Cypress](https://docs.cypress.io/).
 Then either, run tests in headless mode with:
 
 `npm run int-test`
- 
+
 Or run tests with the cypress UI:
 
 `npm run int-test-ui`
@@ -139,7 +161,7 @@ To get debug output when running cypress:
 
 `DEBUG=cypress:* npm run int-test-ui`
 
-For easy creation of IntelliJ run config for these Cypress tests 
+For easy creation of IntelliJ run config for these Cypress tests
 (the `integration/*.spec.js` tests) try installing the Cypress support plugin: https://plugins.jetbrains.com/plugin/13819-cypress-support
 That should yield a `Cy` cypress run option for all such tests).
 
