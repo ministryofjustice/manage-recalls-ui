@@ -78,11 +78,7 @@ Either way check that this has succeeded e.g. via login locally (`http://localho
 with `PPUD_USER` / `password123456`.  
 This user has the `MANAGE_RECALLS` role that allows access to the service.
 
-### Running the app for the development
-For development run of the ui run
-
-` npm run start:e2e`
-
+### Rerunning the ui 
 In order to restart the ui during development changes, kill the ui by running
 
 `npm run kill`
