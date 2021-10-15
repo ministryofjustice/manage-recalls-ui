@@ -68,7 +68,7 @@ and integration tests including pact tests:
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
 
 ## Running the app
-To run ui and api is to use
+The easiest way to run ui and api is to use
 
 `./start-local-services.sh`
 

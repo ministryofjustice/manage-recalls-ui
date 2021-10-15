@@ -44,6 +44,7 @@ context('Create a dossier', () => {
     })
     cy.login()
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
+    dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Dossier due on ' })
     dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
     dossierRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
     dossierRecall.assertElementHasText({ qaAttr: 'agreeWithRecallDetail', textToFind: 'Reasons...' })
