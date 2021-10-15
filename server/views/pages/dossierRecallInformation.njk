@@ -2,13 +2,6 @@
 
 {% set pageTitle = applicationName + " - Create a dossier for " + person.firstName + " " + person.lastName + " recall" %}
 
-{% block beforeContent %}
-    {{ govukBackLink({
-        text: "Back",
-        href: backLinkUrl("/find-person?nomsNumber=" + person.nomsNumber, urlInfo)
-    }) }}
-{% endblock %}
-
 {% block content %}
 
     <div class="govuk-grid-row">
@@ -33,11 +26,9 @@
         <div class="govuk-grid-column-full">
             {% include '../partials/personDetails.njk' %}
             {% include '../partials/recallDetails.njk' %}
-            {% include '../partials/recallRequestDetails.njk' %}
             {% include '../partials/custodyDetails.njk' %}
-            {% include '../partials/sentenceDetails.njk' %}
-            {% include '../partials/policeDetails.njk' %}
             {% include '../partials/issuesDetails.njk' %}
+            {% include '../partials/sentenceDetails.njk' %}
             {% include '../partials/probationDetails.njk' %}
             {% include '../partials/uploadedDocuments.njk' %}
             <div class="govuk-form-group govuk-!-margin-top-9">
