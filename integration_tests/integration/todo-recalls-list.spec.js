@@ -2,6 +2,7 @@ import { searchResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
+import recallInformationPage from '../pages/recallInformation'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 
@@ -72,7 +73,7 @@ context('To do (recalls) list', () => {
     dossierRecallInformationPage.verifyOnPage({ personName })
   })
 
-  it('User can move on to assessRecall if the recall has status DOSSIER_ISSUED', () => {
+  it('User can move on to view recall if the recall has status DOSSIER_ISSUED', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -86,6 +87,6 @@ context('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.viewRecall({ recallId })
-    assessRecallPage.verifyOnPage({ fullName: personName })
+    recallInformationPage.verifyOnPage({ personName })
   })
 })
