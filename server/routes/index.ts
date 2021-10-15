@@ -117,6 +117,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
   get(`${basePath}/documents/:documentId`, getUploadedDocument)
 
+  get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
+
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)
   post('/user-details', postUser)
