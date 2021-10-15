@@ -68,11 +68,11 @@ and integration tests including pact tests:
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.
 
 ## Running the app
-In easiest way to run ui and api is to use
+To run ui and api is to use
 
 `./start-local-services.sh`
 
-script in manage-recall-e2e project.
+script in manage-recall-e2e-tests project (https://github.com/ministryofjustice/manage-recalls-e2e-tests)
 
 Either way check that this has succeeded e.g. via login locally (`http://localhost:3000/`)
 with `PPUD_USER` / `password123456`.  
