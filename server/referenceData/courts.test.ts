@@ -16,17 +16,21 @@ describe('Courts ref data', () => {
   ])
 
   it('fetches and formats a list of courts', async () => {
-    const timeout = setTimeout(() => undefined, 1)
-    await courts.pollForData(timeout)
-    expect(courts.data).toEqual([
-      {
-        value: 'ONE',
-        text: 'First one',
-      },
-      {
-        value: 'TWO',
-        text: 'Second one',
-      },
-    ])
+    jest.useFakeTimers()
+    const promise = courts.updateData()
+    jest.advanceTimersByTime(5000)
+    await promise.then(() => {
+      expect(courts.data).toEqual([
+        {
+          value: 'ONE',
+          text: 'First one',
+        },
+        {
+          value: 'TWO',
+          text: 'Second one',
+        },
+      ])
+      jest.useRealTimers()
+    })
   })
 })
