@@ -1,4 +1,11 @@
-import { getRecallResponse, searchResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
+import {
+  getRecallResponse,
+  searchResponse,
+  getEmptyRecallResponse,
+  getLocalDeliveryUnitsResponse,
+  getPrisonsResponse,
+  getCourtsResponse,
+} from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
 
@@ -31,6 +38,9 @@ context('Create a dossier', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
+    cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
+    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
   })
 
   it('User can verify recall details before creating a dossier', () => {
