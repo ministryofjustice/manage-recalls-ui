@@ -75,26 +75,28 @@
             <dd class=" govuk-summary-list__actions">
             </dd>
         </div>
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Date/time that recall notification was sent by email
-                </dt>
-                <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
-                    {{ recall.recallNotificationEmailSentDateTime | dateTime }}
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Recall notification email uploaded
-                </dt>
-                <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
-                    <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
+        {% if recall.status == 'DOSSIER_ISSUED' %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Date/time that recall notification was sent by email
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
+                {{ recall.recallNotificationEmailSentDateTime | dateTime }}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall notification email uploaded
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
+                <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        {% endif %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
                 Assessment notes
