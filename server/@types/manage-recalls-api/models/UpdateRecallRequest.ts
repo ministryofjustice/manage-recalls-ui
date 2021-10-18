@@ -56,6 +56,7 @@ export type UpdateRecallRequest = {
   >
   reasonsForRecallOtherDetail?: string
   recallEmailReceivedDateTime?: string
+  recallAssessmentDueDateTime?: string
   recallNotificationEmailSentDateTime?: string
   sentenceDate?: string
   sentenceExpiryDate?: string

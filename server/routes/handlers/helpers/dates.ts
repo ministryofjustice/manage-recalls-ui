@@ -1,9 +1,9 @@
-import { DateTime, Settings } from 'luxon'
+import { DateTime, Duration, Settings } from 'luxon'
 import { DatePartNames, DatePartsParsed, DateTimePart, DateValidationError, ObjectMap } from '../../../@types'
 import logger from '../../../../logger'
 import { areStringArraysTheSame, isDefined } from './index'
 
-const timeZone = 'Europe/London'
+const europeLondon = 'Europe/London'
 Settings.throwOnInvalid = true
 
 interface Options {
@@ -70,7 +70,7 @@ export const convertGmtDatePartsToUtc = (
         month: m,
         day: d,
       },
-      { zone: timeZone }
+      { zone: europeLondon }
     )
   } catch (err) {
     return { error: 'invalidDate' }
@@ -82,7 +82,7 @@ export const convertGmtDatePartsToUtc = (
           hour: h,
           minute: min,
         },
-        { zone: timeZone }
+        { zone: europeLondon }
       )
     } catch (err) {
       return { error: 'invalidTime' }
@@ -96,7 +96,7 @@ export const convertGmtDatePartsToUtc = (
       hour: h,
       minute: min,
     },
-    { zone: timeZone }
+    { zone: europeLondon }
   )
   if (options) {
     const now = DateTime.now()
@@ -119,8 +119,8 @@ export const splitIsoDateToParts = (isoDate?: string): DatePartsParsed | undefin
   }
   try {
     const includeTime = isoDate.length > 10
-    const date = DateTime.fromISO(isoDate, { zone: 'utc' })
-    const { year, month, day, hour, minute } = date.setZone(timeZone).toObject()
+    const dateTime = getDateTimeInEuropeLondon(isoDate)
+    const { year, month, day, hour, minute } = dateTime.toObject()
     if (includeTime) {
       return { year, month, day, hour, minute }
     }
@@ -137,15 +137,62 @@ export const formatDateTimeFromIsoString = (isoDate: string) => {
   }
   try {
     const includeTime = isoDate.length > 10
-    const date = DateTime.fromISO(isoDate, { zone: 'utc' }).setZone(timeZone)
+    const dateTime = getDateTimeInEuropeLondon(isoDate)
 
     if (includeTime) {
-      return date.toFormat("d MMMM yyyy' at 'HH:mm")
+      return dateTime.toFormat("d MMMM yyyy' at 'HH:mm")
     }
-    return date.toFormat('d MMMM yyyy')
+    return dateTime.toFormat('d MMMM yyyy')
   } catch (err) {
     return ''
   }
 }
 
 export const dateHasError = (field: string | DateValidationError) => Boolean((field as DateValidationError).error)
+
+export const recallAssessmentDueText = (isoDate?: string): string | undefined => {
+  if (!isDefined(isoDate)) {
+    return undefined
+  }
+  try {
+    return recallAssessmentDueString(getDateTimeUTC(isoDate))
+  } catch (err) {
+    logger.error(err)
+    return undefined
+  }
+}
+
+export const recallAssessmentDueString = (dueDateTime: DateTime): string => {
+  const now = DateTime.now()
+  const overdue = now.diff(dueDateTime).toMillis() >= 0
+  const startOfToday = now.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+  const earlierToday = overdue && startOfToday.diff(dueDateTime).toMillis() < 0
+  const twentyFourHours = Duration.fromISO('PT24H')
+  const endOfToday = startOfToday.plus(twentyFourHours)
+  const afterTomorrow = endOfToday.plus(twentyFourHours).diff(dueDateTime).toMillis() < 0
+  const afterToday = afterTomorrow || endOfToday.diff(dueDateTime).toMillis() < 0
+  const dueForPresentation = dueDateTime.setZone(europeLondon)
+  const dueDate = dueForPresentation.toFormat('d MMMM yyyy')
+  const dueTimeOfDay = dueForPresentation.toFormat('HH:mm')
+  if (afterTomorrow) {
+    return `Recall assessment will be due on ${dueDate} by ${dueTimeOfDay}`
+  }
+  if (afterToday) {
+    return `Recall assessment due tomorrow by ${dueTimeOfDay}`
+  }
+  if (earlierToday) {
+    return `Overdue: recall assessment was due today by ${dueTimeOfDay}`
+  }
+  if (overdue) {
+    return `Overdue: recall assessment was due on ${dueDate} by ${dueTimeOfDay}`
+  }
+  return `Recall assessment due today by ${dueTimeOfDay}`
+}
+
+function getDateTimeUTC(isoDate: string) {
+  return DateTime.fromISO(isoDate, { zone: 'utc' })
+}
+
+function getDateTimeInEuropeLondon(isoDate: string) {
+  return getDateTimeUTC(isoDate).setZone(europeLondon)
+}

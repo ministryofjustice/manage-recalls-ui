@@ -5,6 +5,7 @@ import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
 import { getUserNames } from './getUserNames'
+import { recallAssessmentDueText } from './dates'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
@@ -42,6 +43,8 @@ export const viewWithRecallAndPerson =
 
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${res.locals.person.firstName} ${res.locals.person.lastName}`
+
+    res.locals.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
 
     if (requiresUser(viewName)) {
       const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
