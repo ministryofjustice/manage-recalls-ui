@@ -26,7 +26,7 @@
   {% if recall.status == 'DOSSIER_ISSUED' %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
-      Is {{ person.firstName }} {{ person.lastName }} being held under a different NOMIS number to the one on the licence?
+      Different NOMIS number
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='differentNomsNumber'>
       {% if recall.differentNomsNumber == true %}{{ recall.differentNomsNumberDetail }}{% else %}No{% endif %}

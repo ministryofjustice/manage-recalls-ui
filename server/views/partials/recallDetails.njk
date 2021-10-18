@@ -67,49 +67,6 @@
     {% if recall.status == 'RECALL_NOTIFICATION_ISSUED' or recall.status == 'DOSSIER_ISSUED' %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
-                Recall assessed by
-            </dt>
-            <dd class=" govuk-summary-list__value" data-qa='assessedByUserName'>
-                {{ recall.assessedByUserName }}
-            </dd>
-            <dd class=" govuk-summary-list__actions">
-            </dd>
-        </div>
-        {% if recall.status == 'DOSSIER_ISSUED' %}
-        <div class="govuk-summary-list__row">
-            <dt class=" govuk-summary-list__key">
-                Date/time that recall notification was sent by email
-            </dt>
-            <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
-                {{ recall.recallNotificationEmailSentDateTime | dateTime }}
-            </dd>
-            <dd class=" govuk-summary-list__actions">
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class=" govuk-summary-list__key">
-                Recall notification email uploaded
-            </dt>
-            <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
-                <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
-            </dd>
-            <dd class=" govuk-summary-list__actions">
-            </dd>
-        </div>
-        {% endif %}
-        <div class="govuk-summary-list__row">
-            <dt class=" govuk-summary-list__key">
-                Assessment notes
-            </dt>
-            <dd class=" govuk-summary-list__value">
-                <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
-            </dd>
-            <dd class=" govuk-summary-list__actions">
-            </dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class=" govuk-summary-list__key">
                 Licence conditions breached
             </dt>
             <dd class=" govuk-summary-list__value">
@@ -134,6 +91,49 @@
             <dd class=" govuk-summary-list__actions">
             </dd>
         </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall assessed by
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='assessedByUserName'>
+                {{ recall.assessedByUserName }}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Assessment notes
+            </dt>
+            <dd class=" govuk-summary-list__value">
+                <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        {% if recall.status == 'DOSSIER_ISSUED' %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall notification email sent
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
+                {{ recall.recallNotificationEmailSentDateTime | dateTime }}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall notification email uploaded
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
+                <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
+        {% endif %}
+
     {% endif %}
 
     {% if recall.status == 'DOSSIER_ISSUED' %}
@@ -149,7 +149,7 @@
         </div>
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
-                Date/time that dossier was sent by email
+                Dossier sent
             </dt>
             <dd class=" govuk-summary-list__value" data-qa='dossierEmailSentDate'>
                 {{ recall.dossierEmailSentDate | dateTime }}
