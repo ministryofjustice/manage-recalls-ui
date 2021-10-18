@@ -166,6 +166,31 @@ describe('uploadRecallDocumentsFormHandler', () => {
     }
     uploadRecallDocumentsFormHandler(req, res)
   })
+
+  it('should redirect to fromPage if one is supplied in res.locals', done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      cb()
+    })
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: {
+          basePath: `/persons/123/recalls/456/`,
+          fromPage: 'dossier-recall',
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(`/persons/123/recalls/456/dossier-recall`)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
 })
 
 describe('downloadDocument', () => {
