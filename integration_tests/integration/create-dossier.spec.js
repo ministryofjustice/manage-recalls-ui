@@ -68,6 +68,7 @@ context('Create a dossier', () => {
       textToFind: 'Other - other reason detail...',
     })
     dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
+    dossierRecall.assertElementNotPresent({ qaAttr: 'recallNotificationEmailSentDateTime' })
   })
 
   it('User can create a dossier', () => {

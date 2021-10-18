@@ -7,8 +7,12 @@ module.exports = (name, pageObject = {}) => {
       expect(text.trim()).to.equal(textToFind)
     })
   }
+  const assertElementNotPresent = ({ qaAttr }) => {
+    cy.get(`[data-qa="${qaAttr}"]`).should('not.exist')
+  }
+
   const assertErrorNotShown = ({ fieldName }) => {
-    cy.get(`[href="#${fieldName}"`).should('not.exist')
+    cy.get(`[href="#${fieldName}"]`).should('not.exist')
   }
   const assertErrorMessage = ({ fieldName, summaryError, fieldError }) => {
     cy.get(`[href="#${fieldName}"`).should($searchResults => {
@@ -51,6 +55,7 @@ module.exports = (name, pageObject = {}) => {
     logout,
     assertErrorNotShown,
     assertElementHasText,
+    assertElementNotPresent,
     assertErrorMessage,
     assertLinkHref,
     clickContinue,
