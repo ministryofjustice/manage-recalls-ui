@@ -16,6 +16,7 @@ generic-service:
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api-dev.prison.service.justice.gov.uk"
     MANAGE_RECALLS_API_URL: "https://manage-recalls-api-dev.hmpps.service.justice.gov.uk"
     SENTRY_ENVIRONMENT: "DEV"
+    ENVIRONMENT: "DEVELOPMENT"
 
 generic-prometheus-alerts:
   alertSeverity: ppud-replacement-alerts
