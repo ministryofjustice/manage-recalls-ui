@@ -8,7 +8,7 @@ import { uploadStorageFields } from '../helpers/uploadStorage'
 import { validateUploadDocuments } from './helpers/validateUploadDocuments'
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
-  const { nomsNumber, recallId } = req.params
+  const { recallId } = req.params
   uploadStorageFields(documentTypes)(req, res, async uploadError => {
     try {
       if (uploadError) {

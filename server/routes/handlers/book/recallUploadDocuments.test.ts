@@ -1,16 +1,10 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
 import { getUploadedDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
-import {
-  getStoredDocument,
-  addRecallDocument,
-  updateRecall,
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockGetRequest, mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
+import { getStoredDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
 import { uploadStorageFields } from '../helpers/uploadStorage'
-import { handleRecallFormPost } from '../helpers/handleRecallFormPost'
-import { validateDecision } from '../assess/helpers/validateDecision'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
