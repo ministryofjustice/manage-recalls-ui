@@ -8,14 +8,9 @@ import { initialiseAppInsights, buildAppInsightsClient } from './server/utils/az
 initialiseAppInsights()
 buildAppInsightsClient()
 
-import { fetchRemoteRefData } from './server/referenceData'
 import app from './server/index'
 import logger from './logger'
 
-fetchRemoteRefData()
-  .then(() => {
-    app.listen(app.get('port'), () => {
-      logger.info(`Server listening on port ${app.get('port')}`)
-    })
-  })
-  .catch(err => logger.error(err))
+app.listen(app.get('port'), () => {
+  logger.info(`Server listening on port ${app.get('port')}`)
+})

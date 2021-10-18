@@ -33,7 +33,7 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
     },
     setReleasingPrison: () => {
       cy.get('[id="lastReleasePrison"]').clear().type('Ack')
-      cy.contains('Acklington (HMP)').click()
+      cy.contains('Acklington (HMP)').click({ force: true })
     },
     setLastReleaseDate: () => {
       cy.get('[name="lastReleaseDateYear"]').clear().type('2020')
@@ -42,7 +42,7 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
     },
     setSentencingCourt: () => {
       cy.get('[id="sentencingCourt"]').clear().type('Aberdare')
-      cy.contains('Aberdare County Court').click()
+      cy.contains('Aberdare County Court').click({ force: true })
     },
     setIndexOffence: () => {
       cy.get('[name="indexOffence"]').type('Burglary')

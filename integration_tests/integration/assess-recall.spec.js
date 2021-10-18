@@ -1,5 +1,12 @@
 import path from 'path'
-import { getRecallResponse, searchResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
+import {
+  getRecallResponse,
+  searchResponse,
+  getEmptyRecallResponse,
+  getLocalDeliveryUnitsResponse,
+  getPrisonsResponse,
+  getCourtsResponse,
+} from '../mockApis/mockResponses'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
@@ -29,6 +36,9 @@ context('Assess a recall', () => {
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
+    cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
+    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
   })
 
   const nomsNumber = 'A1234AA'
