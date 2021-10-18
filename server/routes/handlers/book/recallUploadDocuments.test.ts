@@ -1,10 +1,16 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
 import { getUploadedDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
-import { getStoredDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockGetRequest } from '../../testutils/mockRequestUtils'
+import {
+  getStoredDocument,
+  addRecallDocument,
+  updateRecall,
+} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { mockGetRequest, mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
 import { uploadStorageFields } from '../helpers/uploadStorage'
+import { handleRecallFormPost } from '../helpers/handleRecallFormPost'
+import { validateDecision } from '../assess/helpers/validateDecision'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
@@ -161,6 +167,31 @@ describe('uploadRecallDocumentsFormHandler', () => {
             text: 'The licence must be a PDF',
           },
         ])
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('should redirect to fromPage if one is supplied in res.locals', done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      cb()
+    })
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: {
+          basePath: `/persons/123/recalls/456/`,
+          fromPage: 'dossier-recall',
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(`/persons/123/recalls/456/dossier-recall`)
         done()
       },
     }

@@ -15,7 +15,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
         throw uploadError
       }
       const { files, session, body } = req
-      const { user } = res.locals
+      const { user, urlInfo } = res.locals
       const fileData = makeFileData(files as UploadedFormFields)
       const { errors } = validateUploadDocuments({ fileData, requestBody: body })
       if (errors) {
@@ -40,7 +40,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       if (session.errors && session.errors.length) {
         return res.redirect(303, req.originalUrl)
       }
-      res.redirect(`/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
+      res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers'}`)
     } catch (e) {
       logger.error(e)
       req.session.errors = [
