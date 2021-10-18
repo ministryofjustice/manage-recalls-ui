@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express'
 import { mappaLevels } from './mappaLevels'
 import { recallLengths } from './recallLengths'
 import { reasonsForRecall } from './reasonsForRecall'
@@ -5,7 +6,6 @@ import { sensitiveInfo } from './sensitiveInfo'
 import { prisons } from './prisons'
 import { UiListItem } from '../@types'
 import { localDeliveryUnits } from './localDeliveryUnits'
-import logger from '../../logger'
 import { courts } from './courts'
 
 export const referenceData = () => ({
@@ -26,21 +26,13 @@ export type ReferenceDataCategories =
   | 'localDeliveryUnits'
   | 'courts'
 
-export const fetchRemoteRefData = async () => {
-  const [prisonsResult, localDeliveryUnitsResult, courtResult] = await Promise.allSettled([
-    prisons.updateData(),
-    localDeliveryUnits.updateData(),
-    courts.updateData(),
+export const fetchRemoteRefData = async (req: Request, res: Response, next: NextFunction) => {
+  await Promise.allSettled([
+    prisons.data ? undefined : prisons.updateData(),
+    localDeliveryUnits.data ? undefined : localDeliveryUnits.updateData(),
+    courts.data ? undefined : courts.updateData(),
   ])
-  if (prisonsResult.status === 'rejected') {
-    logger.error('Failed to fetch prisons')
-  }
-  if (localDeliveryUnitsResult.status === 'rejected') {
-    logger.error('Failed to fetch Local Delivery Units')
-  }
-  if (courtResult.status === 'rejected') {
-    logger.error('Failed to fetch Courts')
-  }
+  next()
 }
 
 export const getReferenceDataItemLabel = (refDataCategory: ReferenceDataCategories, itemId: string) => {
