@@ -61,6 +61,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         bookedByUserId: '00000000-1111-0000-0000-000000000000',
         dossierEmailSentDate: '2021-09-22',
         dossierCreatedByUserId: '00000000-2222-0000-0000-000000000000',
+        recallAssessmentDueDateTime: '2020-12-06T15:33:57.000Z',
       }
       await provider.addInteraction({
         state: 'a recall exists',

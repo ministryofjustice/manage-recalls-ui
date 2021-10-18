@@ -144,4 +144,14 @@ describe('viewWithRecallAndPerson', () => {
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Badger')
   })
+
+  it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recallAssessmentDueText).toEqual('Overdue: recall assessment was due on 6 August 2020 by 16:33')
+    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
+  })
 })

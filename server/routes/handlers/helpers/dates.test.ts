@@ -1,5 +1,11 @@
 import { DateTime } from 'luxon'
-import { convertGmtDatePartsToUtc, formatDateTimeFromIsoString, splitIsoDateToParts } from './dates'
+import {
+  convertGmtDatePartsToUtc,
+  formatDateTimeFromIsoString,
+  recallAssessmentDueString,
+  recallAssessmentDueText,
+  splitIsoDateToParts,
+} from './dates'
 
 describe('Date helpers', () => {
   describe('convertGmtDatePartsToUtc', () => {
@@ -246,4 +252,109 @@ describe('Date helpers', () => {
       expect(formatted).toEqual('22 December 2021 at 08:43')
     })
   })
+
+  describe('recallAssessmentDueText', () => {
+    it('from valid overdue UTC isoDate string returns correct overdue recall assessment text in BST', () => {
+      const formatted = recallAssessmentDueText('2021-06-22T08:43:00.000Z')
+      expect(formatted).toEqual('Overdue: recall assessment was due on 22 June 2021 by 09:43')
+    })
+
+    it('from valid overdue UTC isoDate string returns correct overdue recall assessment text outside of BST', () => {
+      const formatted = recallAssessmentDueText('2021-02-15T08:43:00.000Z')
+      expect(formatted).toEqual('Overdue: recall assessment was due on 15 February 2021 by 08:43')
+    })
+
+    it('of undefined returns undefined', () => {
+      const formatted = recallAssessmentDueText()
+      expect(formatted).toBeUndefined()
+    })
+
+    it('of invalid returns undefined', () => {
+      const formatted = recallAssessmentDueText('not an iso date string')
+      expect(formatted).toBeUndefined()
+    })
+  })
+
+  describe('recallAssessmentDueString all variants in BST one hour ahead of UTC', () => {
+    const fixedNow = asUtcDateTime('2020-07-15T15:10:00.000Z')
+    const laterToday = asUtcDateTime('2020-07-15T15:15:00.000Z')
+    const earlierToday = asUtcDateTime('2020-07-15T15:05:00.000Z')
+    const yesterday = asUtcDateTime('2020-07-14T16:10:00.000Z')
+    const tomorrow = asUtcDateTime('2020-07-16T11:10:00.000Z')
+    const afterTomorrow = asUtcDateTime('2020-07-17T10:10:00.000Z')
+
+    let dateNowSpy: jest.SpyInstance
+
+    beforeAll(() => {
+      // Lock Time
+      dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => fixedNow.toMillis())
+    })
+
+    afterAll(() => {
+      // Unlock Time
+      dateNowSpy.mockRestore()
+    })
+
+    it('due date later today shows today by time of day', () => {
+      const formatted = recallAssessmentDueString(laterToday)
+      expect(formatted).toEqual('Recall assessment due today by 16:15')
+    })
+
+    it('due date tomorrow shows tomorrow by time of day', () => {
+      const formatted = recallAssessmentDueString(tomorrow)
+      expect(formatted).toEqual('Recall assessment due tomorrow by 12:10')
+    })
+
+    it('due date yesterday shows overdue, date by time of day', () => {
+      const formatted = recallAssessmentDueString(yesterday)
+      expect(formatted).toEqual('Overdue: recall assessment was due on 14 July 2020 by 17:10')
+    })
+
+    it('due date earlier today shows overdue today by time of day', () => {
+      const formatted = recallAssessmentDueString(earlierToday)
+      expect(formatted).toEqual('Overdue: recall assessment was due today by 16:05')
+    })
+
+    it('due date precisely now shows overdue today by time of day', () => {
+      const formatted = recallAssessmentDueString(fixedNow)
+      expect(formatted).toEqual('Overdue: recall assessment was due today by 16:10')
+    })
+
+    it('due date after tomorrow shows due on date by time of day', () => {
+      const formatted = recallAssessmentDueString(afterTomorrow)
+      expect(formatted).toEqual('Recall assessment will be due on 17 July 2020 by 11:10')
+    })
+  })
+
+  describe('recallAssessmentDueString example outside of BST hence same as UTC', () => {
+    const fixedNow = asUtcDateTime('2020-03-15T15:10:00.000Z')
+    const laterToday = asUtcDateTime('2020-03-15T15:15:00.000Z')
+    const earlierToday = asUtcDateTime('2020-03-15T15:05:00.000Z')
+
+    let dateNowSpy: jest.SpyInstance
+
+    beforeAll(() => {
+      // Lock Time
+      dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => fixedNow.toMillis())
+    })
+
+    afterAll(() => {
+      // Unlock Time
+      dateNowSpy.mockRestore()
+    })
+
+    it('due date later today shows today by time of day', () => {
+      const formatted = recallAssessmentDueString(laterToday)
+      expect(formatted).toEqual('Recall assessment due today by 15:15')
+    })
+
+    it('due date earlier today shows overdue today by time of day', () => {
+      const formatted = recallAssessmentDueString(earlierToday)
+      expect(formatted).toEqual('Overdue: recall assessment was due today by 15:05')
+    })
+  })
+
+  function asUtcDateTime(isoDateTimeStr: string) {
+    return DateTime.fromISO(isoDateTimeStr, { zone: 'utc' })
+  }
 })

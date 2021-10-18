@@ -62,6 +62,10 @@ context('Assess a recall', () => {
   it('User can assess and issue a recall', () => {
     cy.login()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    assessRecall.assertElementHasText({
+      qaAttr: 'recallAssessmentDueText',
+      textToFind: 'Overdue: recall assessment was due on 6 August 2020 by 16:33',
+    })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeYesDecision()
