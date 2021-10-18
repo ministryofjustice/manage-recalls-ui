@@ -66,14 +66,6 @@ context('Create a dossier', () => {
         ...getRecallResponse,
         recallId,
         status,
-        documents: [
-          ...getRecallResponse.documents,
-          {
-            category: 'DOSSIER_EMAIL',
-            documentId: '234-3455-8542-c3ac-8c963f66afa6',
-            fileName: 'email.msg',
-          },
-        ],
       },
     })
     cy.task('expectAddRecallDocument', { statusCode: 201 })

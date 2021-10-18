@@ -23,4 +23,17 @@
       <a href='{{ changeLinkUrl('assess-prison', urlInfo, 'custody') }}' data-qa='currentPrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> current prison</span></a>
     </dd>
   </div>
+  {% if recall.status == 'DOSSIER_ISSUED' %}
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Is {{ person.firstName }} {{ person.lastName }} being held under a different NOMIS number to the one on the licence?
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='differentNomsNumber'>
+      {% if recall.differentNomsNumber == true %}{{ recall.differentNomsNumberDetail }}{% else %}No{% endif %}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('dossier-letter', urlInfo, 'custody') }}' data-qa='differentNomsNumberChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> the different NOMIS number</span></a>
+    </dd>
+  </div>
+  {% endif %}
 </dl>

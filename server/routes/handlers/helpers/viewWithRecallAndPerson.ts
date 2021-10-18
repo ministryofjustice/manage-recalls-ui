@@ -6,7 +6,8 @@ import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
 import { getUserNames } from './getUserNames'
 
-const requiresUser = (viewName: ViewName) => ['assessRecall', 'dossierRecallInformation'].includes(viewName)
+const requiresUser = (viewName: ViewName) =>
+  ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
