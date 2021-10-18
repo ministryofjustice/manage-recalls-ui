@@ -201,6 +201,7 @@ export default function createApp(userService: UserService): express.Application
 
   app.use((req, res, next) => {
     res.locals.user = req.user
+    res.locals.env = process.env.ENVIRONMENT // DEVELOPMENT/ PRE-PRODUCTION / PRODUCTION
     next()
   })
 
