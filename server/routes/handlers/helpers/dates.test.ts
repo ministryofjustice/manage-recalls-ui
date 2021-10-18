@@ -265,7 +265,7 @@ describe('Date helpers', () => {
     })
 
     it('of undefined returns undefined', () => {
-      const formatted = recallAssessmentDueText()
+      const formatted = recallAssessmentDueText(undefined)
       expect(formatted).toBeUndefined()
     })
 
