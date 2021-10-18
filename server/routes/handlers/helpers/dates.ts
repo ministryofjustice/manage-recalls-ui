@@ -3,8 +3,12 @@ import { DatePartNames, DatePartsParsed, DateTimePart, DateValidationError, Obje
 import logger from '../../../../logger'
 import { areStringArraysTheSame, isDefined } from './index'
 
-const europeLondon = 'Europe/London'
 Settings.throwOnInvalid = true
+
+const europeLondon = 'Europe/London'
+const datePresentationFormat = 'd MMMM yyyy'
+const timePresentationFormat = 'HH:mm'
+const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
 
 interface Options {
   includeTime?: boolean
@@ -140,9 +144,9 @@ export const formatDateTimeFromIsoString = (isoDate: string) => {
     const dateTime = getDateTimeInEuropeLondon(isoDate)
 
     if (includeTime) {
-      return dateTime.toFormat("d MMMM yyyy' at 'HH:mm")
+      return dateTime.toFormat(dateAndTimePresentationFormat)
     }
-    return dateTime.toFormat('d MMMM yyyy')
+    return dateTime.toFormat(datePresentationFormat)
   } catch (err) {
     return ''
   }
@@ -150,7 +154,7 @@ export const formatDateTimeFromIsoString = (isoDate: string) => {
 
 export const dateHasError = (field: string | DateValidationError) => Boolean((field as DateValidationError).error)
 
-export const recallAssessmentDueText = (isoDate?: string): string | undefined => {
+export const recallAssessmentDueText = (isoDate: string): string | undefined => {
   if (!isDefined(isoDate)) {
     return undefined
   }
@@ -172,8 +176,8 @@ export const recallAssessmentDueString = (dueDateTime: DateTime): string => {
   const afterTomorrow = endOfToday.plus(twentyFourHours).diff(dueDateTime).toMillis() < 0
   const afterToday = afterTomorrow || endOfToday.diff(dueDateTime).toMillis() < 0
   const dueForPresentation = dueDateTime.setZone(europeLondon)
-  const dueDate = dueForPresentation.toFormat('d MMMM yyyy')
-  const dueTimeOfDay = dueForPresentation.toFormat('HH:mm')
+  const dueDate = dueForPresentation.toFormat(datePresentationFormat)
+  const dueTimeOfDay = dueForPresentation.toFormat(timePresentationFormat)
   if (afterTomorrow) {
     return `Recall assessment will be due on ${dueDate} by ${dueTimeOfDay}`
   }
