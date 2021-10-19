@@ -70,6 +70,7 @@ export type RecallResponse = {
   status?: RecallResponse.status
   vulnerabilityDiversity?: boolean
   vulnerabilityDiversityDetail?: string
+  dossierTargetDate?: string
 }
 
 export namespace RecallResponse {

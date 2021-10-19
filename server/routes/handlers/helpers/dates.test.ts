@@ -1,6 +1,7 @@
-import { DateTime } from 'luxon'
+import { DateTime, Duration } from 'luxon'
 import {
   convertGmtDatePartsToUtc,
+  dossierDueDateString,
   formatDateTimeFromIsoString,
   recallAssessmentDueString,
   recallAssessmentDueText,
@@ -271,6 +272,31 @@ describe('Date helpers', () => {
 
     it('of invalid returns undefined', () => {
       const formatted = recallAssessmentDueText('not an iso date string')
+      expect(formatted).toBeUndefined()
+    })
+  })
+
+  describe('dossierDueText', () => {
+    it('from valid overdue due date returns correct overdue message', () => {
+      const formatted = dossierDueDateString('2021-06-22T08:43:00.000Z')
+      expect(formatted).toEqual('Overdue: Due on ')
+    })
+
+    it('from valid not overdue due date returns correct message', () => {
+      const date = DateTime.now()
+        .plus(Duration.fromObject({ days: 1 }))
+        .toString()
+      const formatted = dossierDueDateString(date)
+      expect(formatted).toEqual('Due on ')
+    })
+
+    it('of undefined returns undefined', () => {
+      const formatted = dossierDueDateString(undefined)
+      expect(formatted).toBeUndefined()
+    })
+
+    it('of invalid returns undefined', () => {
+      const formatted = dossierDueDateString('not an iso date string')
       expect(formatted).toBeUndefined()
     })
   })
