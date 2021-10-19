@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Recall is authorised" %}
+{% set pageTitle = applicationName + " - Recall assessed" %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -14,10 +14,10 @@
                 </h1>
                 <span class='govuk-!-display-none' data-qa='recallId'>{{recall.recallId}}</span>
             </div>
-            <p class='govuk-body'>
-                tbc...
+            <p class='govuk-body govuk-!-margin-top-8 govuk-!-margin-bottom-8'>
+                {{ person.firstName }} {{ person.lastName }} has been recalled and their licence revoked.
             </p>
-
+            <p class="govuk-body"><a href="/" class="govuk-button" role="button">Assess another recall</a> </p>
         </div>
     </div>
 {% endblock %}
