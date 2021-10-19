@@ -279,7 +279,7 @@ describe('Date helpers', () => {
   describe('dossierDueText', () => {
     it('from valid overdue due date returns correct overdue message', () => {
       const formatted = dossierDueDateString('2021-06-22T08:43:00.000Z')
-      expect(formatted).toEqual('Overdue: Due on ')
+      expect(formatted).toEqual('Overdue: Due on')
     })
 
     it('from valid not overdue due date returns correct message', () => {
@@ -287,7 +287,7 @@ describe('Date helpers', () => {
         .plus(Duration.fromObject({ days: 1 }))
         .toString()
       const formatted = dossierDueDateString(date)
-      expect(formatted).toEqual('Due on ')
+      expect(formatted).toEqual('Due on')
     })
 
     it('of undefined returns undefined', () => {

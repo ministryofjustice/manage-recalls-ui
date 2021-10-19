@@ -174,9 +174,9 @@ export const dossierDueDateString = (dueDateTime: string): string => {
   try {
     const overdue = now.diff(getDateTimeUTC(dueDateTime)).toMillis() >= 0
     if (overdue) {
-      return 'Overdue: Due on '
+      return 'Overdue: Due on'
     }
-    return 'Due on '
+    return 'Due on'
   } catch (err) {
     logger.error(err)
     return undefined

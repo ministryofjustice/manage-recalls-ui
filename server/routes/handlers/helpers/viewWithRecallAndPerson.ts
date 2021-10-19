@@ -46,6 +46,7 @@ export const viewWithRecallAndPerson =
 
     res.locals.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
     res.locals.dossierDueText = dossierDueDateString(recall.dossierTargetDate)
+
     if (requiresUser(viewName)) {
       const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
       res.locals.recall = { ...res.locals.recall, ...userNames }
