@@ -166,6 +166,23 @@ export const recallAssessmentDueText = (isoDate: string): string | undefined => 
   }
 }
 
+export const dossierDueDateString = (dueDateTime: string): string => {
+  if (!isDefined(dueDateTime)) {
+    return undefined
+  }
+  const now = DateTime.now()
+  try {
+    const overdue = now.diff(getDateTimeUTC(dueDateTime)).toMillis() >= 0
+    if (overdue) {
+      return 'Overdue: Due on'
+    }
+    return 'Due on'
+  } catch (err) {
+    logger.error(err)
+    return undefined
+  }
+}
+
 export const recallAssessmentDueString = (dueDateTime: DateTime): string => {
   const now = DateTime.now()
   const overdue = now.diff(dueDateTime).toMillis() >= 0

@@ -21,7 +21,7 @@
                     Recall information
                 </div>
             </h1>
-            <div class="govuk-body-l" data-qa="dossierTargetDate">Dossier due on {{ recall.dossierTargetDate | dateTime }} </div>
+            <div class="govuk-body-l" data-qa="dossierTargetDate">{{ dossierDueText }} {{ recall.dossierTargetDate | dateTime }} </div>
         </div>
     </div>
 
