@@ -104,6 +104,11 @@ export function getPrisons(): Promise<Prison[]> {
   return restClient().get<Prison[]>({ path: '/reference-data/prisons' })
 }
 
+export function assignAssessingUser(recallId: string, assignee: string, token: string): Promise<Recall> {
+  const request = { assignee }
+  return restClient(token).post<Recall>({ path: `/recalls/${recallId}/assignee`, data: request })
+}
+
 function restClient(token?: string): RestClient {
   return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }
