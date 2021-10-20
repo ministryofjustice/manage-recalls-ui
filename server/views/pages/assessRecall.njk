@@ -15,8 +15,12 @@
                     Recall information
                 </div>
             </h1>
-            <span class="govuk-caption-l"
-                  data-qa="recallAssessmentDueText">{{ recallAssessmentDueText }}</span>
+            <div class="govuk-body-l" data-qa="recallAssessmentDueText">{{ recallAssessmentDueText }}</div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
             {% include '../partials/personDetails.njk' %}
             {% include '../partials/recallDetails.njk' %}
             {% include '../partials/issuesDetails.njk' %}

@@ -4,7 +4,8 @@ import { isNomsNumberValid } from '../routes/handlers/helpers/validations'
 import logger from '../../logger'
 
 const isValidFromPage = (urlPathSegment: unknown) =>
-  isString(urlPathSegment) && ['check-answers', 'assess', 'dossier-recall'].includes(urlPathSegment as string)
+  isString(urlPathSegment) &&
+  ['check-answers', 'assess', 'dossier-recall', 'view-recall'].includes(urlPathSegment as string)
 
 export const parseUrlParams = (req: Request, res: Response, next: NextFunction) => {
   const { nomsNumber, recallId, pageSlug } = req.params
