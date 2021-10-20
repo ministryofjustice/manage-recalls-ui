@@ -27,6 +27,17 @@ export function pactPatchRequest(description: string, path: string, body: unknow
   return pactRequestWithBody(description, 'PATCH', path, body, token)
 }
 
+export function pactDeleteRequest(description: string, path: string, token: string) {
+  return {
+    uponReceiving: description,
+    withRequest: {
+      method: 'DELETE',
+      path,
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    },
+  }
+}
+
 function pactRequestWithBody(description: string, method: string, path: string, body: unknown, token: string) {
   return {
     uponReceiving: description,

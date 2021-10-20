@@ -109,6 +109,10 @@ export function assignAssessingUser(recallId: string, assignee: string, token: s
   return restClient(token).post<Recall>({ path: `/recalls/${recallId}/assignee`, data: request })
 }
 
+export function deleteAssessingUser(recallId: string, assignee: string, token: string): Promise<Recall> {
+  return restClient(token).delete<Recall>({ path: `/recalls/${recallId}/assignee/${assignee}` })
+}
+
 function restClient(token?: string): RestClient {
   return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }
