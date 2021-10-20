@@ -26,7 +26,7 @@ describe('parseUrlParams', () => {
     expect(res.sendStatus).toHaveBeenCalledWith(400)
   })
 
-  it('parses fromPage from URL', () => {
+  it('parses fromPage from URL for check answers page', () => {
     const req = mockGetRequest({
       params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },
       query: { fromPage: 'check-answers' },
@@ -35,6 +35,39 @@ describe('parseUrlParams', () => {
     const next = jest.fn()
     parseUrlParams(req, res, next)
     expect(res.locals.urlInfo.fromPage).toEqual('check-answers')
+  })
+
+  it('parses fromPage from URL for assess page', () => {
+    const req = mockGetRequest({
+      params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },
+      query: { fromPage: 'assess' },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('user_access_token')
+    const next = jest.fn()
+    parseUrlParams(req, res, next)
+    expect(res.locals.urlInfo.fromPage).toEqual('assess')
+  })
+
+  it('parses fromPage from URL for dossier recall page', () => {
+    const req = mockGetRequest({
+      params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },
+      query: { fromPage: 'dossier-recall' },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('user_access_token')
+    const next = jest.fn()
+    parseUrlParams(req, res, next)
+    expect(res.locals.urlInfo.fromPage).toEqual('dossier-recall')
+  })
+
+  it('parses fromPage from URL for view recall page', () => {
+    const req = mockGetRequest({
+      params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },
+      query: { fromPage: 'view-recall' },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('user_access_token')
+    const next = jest.fn()
+    parseUrlParams(req, res, next)
+    expect(res.locals.urlInfo.fromPage).toEqual('view-recall')
   })
 
   it('parses fromHash from URL', () => {
