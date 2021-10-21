@@ -1,10 +1,16 @@
 // @ts-nocheck
 import { emailUploadForm } from './emailUploadForm'
-import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import {
+  addRecallDocument,
+  unassignAssessingUser,
+  updateRecall,
+} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockPostRequest } from '../../testutils/mockRequestUtils'
 import { uploadStorageField } from './uploadStorage'
 import { validateRecallRequestReceived } from '../book/helpers/validateRecallRequestReceived'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { validateRecallNotificationEmail } from '../assess/helpers/validateRecallNotificationEmail'
+import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('./uploadStorage')
@@ -194,5 +200,44 @@ describe('emailUploadForm', () => {
       },
     }
     handler(req, res)
+  })
+
+  it('unassigns the user from the assessment', done => {
+    const handlerWithUnassign = emailUploadForm({
+      emailFieldName: 'recallNotificationEmailFileName',
+      validator: validateRecallNotificationEmail,
+      unassignAssessingUser,
+      documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
+      nextPageUrlSuffix: 'assess-confirmation',
+    })
+    req.body = {
+      confirmRecallNotificationEmailSent: 'YES',
+      recallNotificationEmailSentDateTimeYear: '2021',
+      recallNotificationEmailSentDateTimeMonth: '09',
+      recallNotificationEmailSentDateTimeDay: '4',
+      recallNotificationEmailSentDateTimeHour: '14',
+      recallNotificationEmailSentDateTimeMinute: '47',
+    }
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(unassignAssessingUser as jest.Mock).mockResolvedValue({
+      recallId: '789',
+    })
+    const res = {
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      redirect: () => {
+        expect(unassignAssessingUser).toHaveBeenCalledTimes(1)
+        done()
+      },
+    }
+    handlerWithUnassign(req, res)
   })
 })

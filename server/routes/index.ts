@@ -31,6 +31,7 @@ import { getUser, postUser } from './handlers/user/userDetails'
 import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignAssessment } from './handlers/assess/assignAssessment'
+import { unassignAssessingUser } from '../clients/manageRecallsApi/manageRecallsApiClient'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -89,6 +90,7 @@ export default function routes(router: Router): Router {
     emailUploadForm({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
+      unassignAssessingUser,
       documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
