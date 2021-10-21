@@ -1,4 +1,4 @@
-import { searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
@@ -49,10 +49,33 @@ context('To do (recalls) list', () => {
         },
       ],
     })
+    cy.task('expectAssignAssessment', { expectedResult: getRecallResponse })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `assess-recall-${recallId}`, text: 'Assess recall' })
     recallsList.assessRecall({ recallId })
+    assessRecallPage.verifyOnPage({ fullName: personName })
+  })
+
+  it('User can continue assessment if the recall has status IN_ASSESSMENT', () => {
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          recallId,
+          nomsNumber,
+          status: 'IN_ASSESSMENT',
+          recallAssessmentDueDateTime: '2021-10-12T14:30:52Z',
+          assignee: '122',
+          assigneeUserName: 'Jimmy Pud',
+        },
+      ],
+    })
+    cy.login()
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '12 October 2021 at 15:30' })
+    recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
+    recallsList.expectActionLinkText({ id: `continue-assess-${recallId}`, text: 'Continue assessment' })
+    recallsList.continueAssessment({ recallId })
     assessRecallPage.verifyOnPage({ fullName: personName })
   })
 

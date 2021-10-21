@@ -30,6 +30,7 @@ import { validateCheckAnswers } from './handlers/book/helpers/validateCheckAnswe
 import { getUser, postUser } from './handlers/user/userDetails'
 import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
+import { assignAssessment } from './handlers/assess/assignAssessment'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -72,6 +73,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
+  post(`${basePath}/assess-assign`, assignAssessment)
   get(`${basePath}/assess`, viewWithRecallAndPerson('assessRecall'))
   get(`${basePath}/assess-decision`, viewWithRecallAndPerson('assessDecision'))
   post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision, 'assess-licence'))

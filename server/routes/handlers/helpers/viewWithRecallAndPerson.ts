@@ -44,8 +44,8 @@ export const viewWithRecallAndPerson =
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${res.locals.person.firstName} ${res.locals.person.lastName}`
 
-    res.locals.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
-    res.locals.dossierDueText = dossierDueDateString(recall.dossierTargetDate)
+    res.locals.recall.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
+    res.locals.recall.dossierDueText = dossierDueDateString(recall.dossierTargetDate)
 
     if (requiresUser(viewName)) {
       const userNames = await getUserNames(res.locals.recall, res.locals.user.token)

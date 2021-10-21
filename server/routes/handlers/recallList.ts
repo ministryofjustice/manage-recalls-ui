@@ -14,9 +14,8 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         searchByNomsNumber(recall.nomsNumber, token).then(
           person =>
             <RecallResult>{
-              recallId: recall.recallId,
-              status: recall.status,
-              offender: person,
+              recall,
+              person,
             }
         )
       )
@@ -29,9 +28,14 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
       }
     })
   }
-  res.locals.recalls = successful
-  // TODO - report to user that some recalls couldn't be retrieved
-  res.locals.errors = failed
+  res.locals.results = successful
+  if (failed.length) {
+    res.locals.errors = res.locals.errors || []
+    res.locals.errors.push({
+      name: 'fetchError',
+      text: `${failed.length} recalls could not be retrieved`,
+    })
+  }
   res.locals.isTodoPage = true
   res.render('pages/recallList')
 }
