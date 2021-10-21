@@ -36,6 +36,7 @@ module.exports = (on, config) => {
     expectGetRecallDocument: manageRecallsApi.expectGetRecallDocument,
     expectGetUserDetails: manageRecallsApi.expectGetUserDetails,
     expectAssignAssessment: manageRecallsApi.expectAssignAssessment,
+    expectUnassignAssessment: manageRecallsApi.expectUnassignAssessment,
     expectRefData: manageRecallsApi.expectRefData,
     readPdf: readPdf.readPdf,
   })

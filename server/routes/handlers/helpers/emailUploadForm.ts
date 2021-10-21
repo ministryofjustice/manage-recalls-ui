@@ -7,16 +7,18 @@ import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/Ad
 import { ReqEmailUploadValidatorFn } from '../../../@types'
 import { makeErrorObject } from './index'
 import { allowedEmailFileExtensions } from './allowedUploadExtensions'
+import { RecallResponse } from '../../../@types/manage-recalls-api'
 
 interface Args {
   emailFieldName: string
   validator: ReqEmailUploadValidatorFn
   documentCategory: AddDocumentRequest.category
   nextPageUrlSuffix: string
+  unassignAssessingUser?: (recallId: string, userId: string, token: string) => Promise<RecallResponse>
 }
 
 export const emailUploadForm =
-  ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix }: Args) =>
+  ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix, unassignAssessingUser }: Args) =>
   async (req: Request, res: Response): Promise<void> => {
     const processUpload = uploadStorageField(emailFieldName)
     const { recallId } = req.params
@@ -27,6 +29,7 @@ export const emailUploadForm =
         text: 'The selected file could not be uploaded – try again',
       }),
     ]
+    let saveToApiSuccessful = false
     processUpload(req, res, async err => {
       try {
         const uploadFailed = Boolean(err)
@@ -41,9 +44,8 @@ export const emailUploadForm =
           emailFileSelected,
           uploadFailed,
           invalidFileFormat,
-          actionedByUserId: res.locals.user.uuid,
+          actionedByUserId: user.uuid,
         })
-        let saveToApiSuccessful = false
         const uploadHasErrors = errors && errors.find(uploadError => uploadError.name === emailFieldName)
         const shouldSaveToApi = !uploadHasErrors && emailFileSelected && !uploadFailed
         if (shouldSaveToApi) {
@@ -69,11 +71,24 @@ export const emailUploadForm =
           req.session.unsavedValues = unsavedValues
           return res.redirect(303, req.originalUrl)
         }
-        await updateRecall(recallId, valuesToSave, res.locals.user.token)
-        res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
+        const [updateResult, unassignResult] = await Promise.allSettled([
+          updateRecall(recallId, valuesToSave, user.token),
+          unassignAssessingUser ? unassignAssessingUser(recallId, user.uuid, user.token) : undefined,
+        ])
+        if (updateResult.status === 'fulfilled' && unassignResult.status === 'fulfilled') {
+          return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
+        }
+        throw new Error('Recall update or unassign failed')
       } catch (e) {
         logger.error(e)
-        req.session.errors = saveError
+        req.session.errors = !saveToApiSuccessful
+          ? saveError
+          : [
+              {
+                name: 'saveError',
+                text: 'An error occurred saving the completed assessment',
+              },
+            ]
         res.redirect(303, req.originalUrl)
       }
     })

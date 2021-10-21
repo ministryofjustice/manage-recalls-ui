@@ -190,6 +190,21 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectUnassignAssessment: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'DELETE',
+          urlPattern: `/recalls/(.*)/assignee/(.*)`,
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: expectation.expectedResult,
+        },
+      })
+    },
     stubPing: () => {
       return wiremock.stubFor({
         request: {
