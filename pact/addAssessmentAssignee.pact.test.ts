@@ -8,8 +8,8 @@ import { pactJsonResponse, pactPostRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
-  const userId = '00000000-0000-0000-0000-000000000000'
-  const recallId = '123-456'
+  const userId = '11111111-1111-1111-1111-111111111111'
+  const recallId = '00000000-0000-0000-0000-000000000000'
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
@@ -26,29 +26,6 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       const actual = await assignAssessingUser(recallId, userId, accessToken)
 
       expect(actual).toEqual(getRecallResponseJson)
-    })
-
-    test('returns 400 if blank userId provided', async () => {
-      const blankUserId = ''
-      const errorResponse = {
-        status: 'BAD_REQUEST',
-      }
-      await provider.addInteraction({
-        state: 'a missing user ID',
-        ...pactPostRequest(
-          'an assign user request with blank userId',
-          `/recalls/${recallId}/assignee/${blankUserId}`,
-          {},
-          accessToken
-        ),
-        willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
-      })
-
-      try {
-        await assignAssessingUser(recallId, blankUserId, accessToken)
-      } catch (exception) {
-        expect(exception.status).toEqual(400)
-      }
     })
 
     test('returns 401 if invalid user', async () => {

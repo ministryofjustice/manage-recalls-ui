@@ -7,14 +7,16 @@
   },
   "interactions": [
     {
-      "description": "an unassign user request",
-      "providerState": "a user can be unassigned",
+      "description": "an assign user request",
+      "providerState": "a user can be assigned",
       "request": {
-        "method": "DELETE",
-        "path": "/recalls/123-456/assignee/00000000-0000-0000-0000-000000000000",
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/assignee/11111111-1111-1111-1111-111111111111",
         "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {}
       },
       "response": {
         "status": 200,
@@ -22,6 +24,7 @@
           "Content-Type": "application/json"
         },
         "body": {
+          "assignee": "11111111-1111-1111-1111-111111111111",
           "assigneeUserName": "Jimmy Pud",
           "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
           "nomsNumber": "A1234AA",
@@ -109,41 +112,14 @@
       }
     },
     {
-      "description": "an unassign user request with blank userId",
-      "providerState": "a missing user ID",
-      "request": {
-        "method": "DELETE",
-        "path": "/recalls/123-456/assignee/",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
       "description": "an unauthorized user accessToken",
       "providerState": "an unauthorized user accessToken",
       "request": {
-        "method": "POST",
-        "path": "/recalls/123-456/assignee/00000000-0000-0000-0000-000000000000",
+        "method": "DELETE",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/assignee/11111111-1111-1111-1111-111111111111",
         "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {}
+          "Authorization": "Bearer accessToken-1"
+        }
       },
       "response": {
         "status": 401,
@@ -211,7 +187,7 @@
           "Content-Type": "application/json"
         },
         "body": {
-          "assignee": "c3b15c4b-adf5-493b-9424-dbcc65b3c4e3",
+          "assignee": "11111111-1111-1111-1111-111111111111",
           "assigneeUserName": "Jimmy Pud",
           "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
           "nomsNumber": "A1234AA",
@@ -428,229 +404,6 @@
       }
     },
     {
-      "description": "a search request by NOMS number",
-      "providerState": "a list of recalls exists for NOMS number",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/search",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "123",
-            "status": "BOOKED_ON"
-          },
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "123"
-          },
-          {
-            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-            "nomsNumber": "456",
-            "status": "RECALL_NOTIFICATION_ISSUED"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a search request with blank NOMS number",
-      "providerState": "a search by blank NOMS number",
-      "request": {
-        "method": "POST",
-        "path": "/search",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": ""
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "nomsNumber: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized search request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/search",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an assign user request",
-      "providerState": "a user can be assigned",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/123-456/assignee/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {}
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "assignee": "c3b15c4b-adf5-493b-9424-dbcc65b3c4e3",
-          "assigneeUserName": "Jimmy Pud",
-          "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-          "nomsNumber": "A1234AA",
-          "recallLength": "FOURTEEN_DAYS",
-          "agreeWithRecall": "YES",
-          "agreeWithRecallDetail": "Reasons...",
-          "hasOtherPreviousConvictionMainName": true,
-          "previousConvictionMainName": "Walter Holt",
-          "documents": [
-            {
-              "category": "LICENCE",
-              "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-            },
-            {
-              "category": "PART_A_RECALL_REPORT",
-              "documentId": "34bdf-5717-4562-b3fc-2c963f66afa6"
-            },
-            {
-              "category": "PREVIOUS_CONVICTIONS_SHEET",
-              "documentId": "1234-5717-4562-b3fc-2c963f66afa6"
-            },
-            {
-              "category": "PRE_SENTENCING_REPORT",
-              "documentId": "4563456-5717-4562-b3fc-2c963f66afa6"
-            },
-            {
-              "category": "RECALL_NOTIFICATION_EMAIL",
-              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
-              "fileName": "2021-07-03 Phil Jones recall.msg"
-            },
-            {
-              "category": "RECALL_REQUEST_EMAIL",
-              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
-              "fileName": "recall-request.eml"
-            }
-          ],
-          "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
-          "lastReleasePrison": "KTI",
-          "sentenceDate": "2019-08-03",
-          "sentenceExpiryDate": "2021-02-03",
-          "licenceExpiryDate": "2021-08-03",
-          "conditionalReleaseDate": "2021-12-03",
-          "lastReleaseDate": "2020-08-03",
-          "localPoliceForce": "Essex",
-          "sentencingCourt": "ABDRCT",
-          "indexOffence": "Burglary",
-          "contraband": true,
-          "contrabandDetail": "Intention to smuggle drugs",
-          "vulnerabilityDiversity": true,
-          "vulnerabilityDiversityDetail": "Various...",
-          "mappaLevel": "LEVEL_1",
-          "sentenceLength": {
-            "years": 2,
-            "months": 3,
-            "days": 0
-          },
-          "bookingNumber": "A123456",
-          "probationOfficerName": "Dave Angel",
-          "probationOfficerPhoneNumber": "07473739388",
-          "probationOfficerEmail": "probation.office@justice.com",
-          "localDeliveryUnit": "CENTRAL_AUDIT_TEAM",
-          "authorisingAssistantChiefOfficer": "Bob Monkfish",
-          "licenceConditionsBreached": "(i) one (ii) two",
-          "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
-          "reasonsForRecallOtherDetail": "other reason detail...",
-          "currentPrison": "KTI",
-          "additionalLicenceConditions": true,
-          "additionalLicenceConditionsDetail": "one, two",
-          "differentNomsNumber": true,
-          "differentNomsNumberDetail": "AC3408303",
-          "recallNotificationEmailSentDateTime": "2021-08-15T13:04:00.000Z",
-          "dossierEmailSentDate": "2021-09-08",
-          "hasDossierBeenChecked": true,
-          "assessedByUserId": "00000000-0000-0000-0000-000000000000",
-          "bookedByUserId": "00000000-1111-0000-0000-000000000000",
-          "dossierCreatedByUserId": "00000000-2222-0000-0000-000000000000",
-          "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z",
-          "dossierTargetDate": "2020-12-14"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an assign user request with blank userId",
-      "providerState": "a missing user ID",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/123-456/assignee/",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {}
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
       "description": "an add user details request",
       "providerState": "a user can store their details",
       "request": {
@@ -740,17 +493,114 @@
       }
     },
     {
-      "description": "a search request by NOMS number",
-      "providerState": "a prisoner exists for NOMS number",
+      "description": "an unassign user request",
+      "providerState": "a user can be unassigned",
       "request": {
-        "method": "POST",
-        "path": "/search",
+        "method": "DELETE",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/assignee/11111111-1111-1111-1111-111111111111",
         "headers": {
-          "Authorization": "Bearer accessToken-1",
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
           "Content-Type": "application/json"
         },
         "body": {
-          "nomsNumber": "A1234AA"
+          "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+          "nomsNumber": "A1234AA",
+          "recallLength": "FOURTEEN_DAYS",
+          "agreeWithRecall": "YES",
+          "agreeWithRecallDetail": "Reasons...",
+          "hasOtherPreviousConvictionMainName": true,
+          "previousConvictionMainName": "Walter Holt",
+          "documents": [
+            {
+              "category": "LICENCE",
+              "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            },
+            {
+              "category": "PART_A_RECALL_REPORT",
+              "documentId": "34bdf-5717-4562-b3fc-2c963f66afa6"
+            },
+            {
+              "category": "PREVIOUS_CONVICTIONS_SHEET",
+              "documentId": "1234-5717-4562-b3fc-2c963f66afa6"
+            },
+            {
+              "category": "PRE_SENTENCING_REPORT",
+              "documentId": "4563456-5717-4562-b3fc-2c963f66afa6"
+            },
+            {
+              "category": "RECALL_NOTIFICATION_EMAIL",
+              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
+              "fileName": "2021-07-03 Phil Jones recall.msg"
+            },
+            {
+              "category": "RECALL_REQUEST_EMAIL",
+              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
+              "fileName": "recall-request.eml"
+            }
+          ],
+          "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
+          "lastReleasePrison": "KTI",
+          "sentenceDate": "2019-08-03",
+          "sentenceExpiryDate": "2021-02-03",
+          "licenceExpiryDate": "2021-08-03",
+          "conditionalReleaseDate": "2021-12-03",
+          "lastReleaseDate": "2020-08-03",
+          "localPoliceForce": "Essex",
+          "sentencingCourt": "ABDRCT",
+          "indexOffence": "Burglary",
+          "contraband": true,
+          "contrabandDetail": "Intention to smuggle drugs",
+          "vulnerabilityDiversity": true,
+          "vulnerabilityDiversityDetail": "Various...",
+          "mappaLevel": "LEVEL_1",
+          "sentenceLength": {
+            "years": 2,
+            "months": 3,
+            "days": 0
+          },
+          "bookingNumber": "A123456",
+          "probationOfficerName": "Dave Angel",
+          "probationOfficerPhoneNumber": "07473739388",
+          "probationOfficerEmail": "probation.office@justice.com",
+          "localDeliveryUnit": "CENTRAL_AUDIT_TEAM",
+          "authorisingAssistantChiefOfficer": "Bob Monkfish",
+          "licenceConditionsBreached": "(i) one (ii) two",
+          "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
+          "reasonsForRecallOtherDetail": "other reason detail...",
+          "currentPrison": "KTI",
+          "additionalLicenceConditions": true,
+          "additionalLicenceConditionsDetail": "one, two",
+          "differentNomsNumber": true,
+          "differentNomsNumberDetail": "AC3408303",
+          "recallNotificationEmailSentDateTime": "2021-08-15T13:04:00.000Z",
+          "dossierEmailSentDate": "2021-09-08",
+          "hasDossierBeenChecked": true,
+          "assessedByUserId": "00000000-0000-0000-0000-000000000000",
+          "bookedByUserId": "00000000-1111-0000-0000-000000000000",
+          "dossierCreatedByUserId": "00000000-2222-0000-0000-000000000000",
+          "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z",
+          "dossierTargetDate": "2020-12-14"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a get recalls request",
+      "providerState": "a list of recalls exists",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
         }
       },
       "response": {
@@ -760,51 +610,20 @@
         },
         "body": [
           {
-            "firstName": "Bobby",
-            "middleNames": "John",
-            "lastName": "Badger",
-            "dateOfBirth": "1999-05-28",
-            "gender": "Male",
-            "nomsNumber": "A1234AA",
-            "croNumber": "1234/56A",
-            "pncNumber": "98/7654Z"
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "123",
+            "status": "BOOKED_ON"
           },
           {
-            "firstName": "Bertie",
-            "middleNames": "Barry",
-            "lastName": "Badger",
-            "dateOfBirth": "1990-10-30",
-            "gender": "Male",
-            "nomsNumber": "A1234AA",
-            "croNumber": "1234/56A",
-            "pncNumber": "98/7654Z"
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "123"
+          },
+          {
+            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+            "nomsNumber": "456",
+            "status": "RECALL_NOTIFICATION_ISSUED"
           }
-        ]
-      }
-    },
-    {
-      "description": "a create recall document request",
-      "providerState": "a document can be created",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "PART_A_RECALL_REPORT",
-          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8"
-        },
+        ],
         "matchingRules": {
           "$.body": {
             "match": "type"
@@ -813,18 +632,13 @@
       }
     },
     {
-      "description": "an unauthorized create recall document request",
+      "description": "an unauthorized get recalls request",
       "providerState": "an unauthorized user accessToken",
       "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
+        "method": "GET",
+        "path": "/recalls",
         "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "PART_A_RECALL_REPORT",
-          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
+          "Authorization": "Bearer accessToken-1"
         }
       },
       "response": {
@@ -833,27 +647,22 @@
       }
     },
     {
-      "description": "a create recall request",
-      "providerState": "a recall can be created",
+      "description": "a get dossier request",
+      "providerState": "a dossier can be downloaded",
       "request": {
-        "method": "POST",
-        "path": "/recalls",
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/dossier",
         "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
+          "Authorization": "Bearer accessToken-1"
         }
       },
       "response": {
-        "status": 201,
+        "status": 200,
         "headers": {
           "Content-Type": "application/json"
         },
         "body": {
-          "recallId": "6e3ab21c-5717-4562-b3fc-2c963f66afa6",
-          "nomsNumber": "A1234AA"
+          "content": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
         },
         "matchingRules": {
           "$.body": {
@@ -863,33 +672,18 @@
       }
     },
     {
-      "description": "a create recall request with blank nomsNumber",
-      "providerState": "a recall can be created",
+      "description": "an unauthorized get dossier request",
+      "providerState": "an unauthorized user accessToken",
       "request": {
-        "method": "POST",
-        "path": "/recalls",
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/dossier",
         "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": ""
+          "Authorization": "Bearer accessToken-1"
         }
       },
       "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "nomsNumber: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
+        "status": 401,
+        "headers": {}
       }
     },
     {
@@ -908,7 +702,7 @@
           "Content-Type": "application/json"
         },
         "body": {
-          "assignee": "c3b15c4b-adf5-493b-9424-dbcc65b3c4e3",
+          "assignee": "11111111-1111-1111-1111-111111111111",
           "assigneeUserName": "Jimmy Pud",
           "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
           "nomsNumber": "A1234AA",
@@ -1011,95 +805,483 @@
       }
     },
     {
-      "description": "a get recall notification request",
-      "providerState": "a recall notification can be downloaded",
+      "description": "a create recall request",
+      "providerState": "a recall can be created",
       "request": {
-        "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/recallNotification/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "content": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recall notification request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/recallNotification/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a get recall document request",
-      "providerState": "a document exists",
-      "request": {
-        "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8",
-          "category": "PART_A_RECALL_REPORT",
-          "content": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recall document request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a get recalls request",
-      "providerState": "a list of recalls exists",
-      "request": {
-        "method": "GET",
+        "method": "POST",
         "path": "/recalls",
         "headers": {
-          "Authorization": "Bearer accessToken-1"
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recallId": "6e3ab21c-5717-4562-b3fc-2c963f66afa6",
+          "nomsNumber": "A1234AA"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a create recall request with blank nomsNumber",
+      "providerState": "a recall can be created",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST",
+          "message": "nomsNumber: must not be blank"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a get courts request",
+      "providerState": "a list of courts exists",
+      "request": {
+        "method": "GET",
+        "path": "/reference-data/courts",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "courtId": "ABDRCT",
+            "courtName": "Aberdare County Court"
+          },
+          {
+            "courtId": "SUNDMC",
+            "courtName": "Sunderland Magistrates Court"
+          },
+          {
+            "courtId": "BRKNCT",
+            "courtName": "Birkenhead County Court"
+          },
+          {
+            "courtId": "BISHCT",
+            "courtName": "Bishop Auckland"
+          },
+          {
+            "courtId": "BLKBCT",
+            "courtName": "Blackburn County Court"
+          },
+          {
+            "courtId": "BLKPCT",
+            "courtName": "Blackpool County Court"
+          },
+          {
+            "courtId": "BLKWCT",
+            "courtName": "Blackwood County Court"
+          },
+          {
+            "courtId": "BODMCT",
+            "courtName": "Bodmin County Court"
+          },
+          {
+            "courtId": "BOLTCT",
+            "courtName": "Bolton County Court"
+          },
+          {
+            "courtId": "BOSTCT",
+            "courtName": "Boston County Court"
+          },
+          {
+            "courtId": "BRNMCT",
+            "courtName": "Bournemouth County Court"
+          },
+          {
+            "courtId": "BOWCT",
+            "courtName": "Bow County Court"
+          },
+          {
+            "courtId": "BRADCT",
+            "courtName": "Bradford County Court"
+          },
+          {
+            "courtId": "BRCKCT",
+            "courtName": "Brecknock County Court"
+          },
+          {
+            "courtId": "BRTFCT",
+            "courtName": "Brentford County Court"
+          },
+          {
+            "courtId": "BRIDCT",
+            "courtName": "Bridgend County Court"
+          },
+          {
+            "courtId": "BRGHCT",
+            "courtName": "Brighton County Court"
+          },
+          {
+            "courtId": "BRSTCT",
+            "courtName": "Bristol County Court"
+          },
+          {
+            "courtId": "BRMLCT",
+            "courtName": "Bromley County Court"
+          },
+          {
+            "courtId": "BURNCT",
+            "courtName": "Burnley County Court"
+          },
+          {
+            "courtId": "BRTNCT",
+            "courtName": "Burton-upon-Trent County Court"
+          },
+          {
+            "courtId": "BURYCT",
+            "courtName": "Bury County Court"
+          },
+          {
+            "courtId": "BRSECT",
+            "courtName": "Bury St. Edmunds County Court"
+          },
+          {
+            "courtId": "BUXTCT",
+            "courtName": "Buxton County Court"
+          },
+          {
+            "courtId": "CRNRCT",
+            "courtName": "Caernarfon County Court"
+          },
+          {
+            "courtId": "CAMBCT",
+            "courtName": "Cambridge County Court"
+          },
+          {
+            "courtId": "CANTCT",
+            "courtName": "Canterbury County Court"
+          },
+          {
+            "courtId": "CRDFCT",
+            "courtName": "Cardiff County Court"
+          },
+          {
+            "courtId": "CARLCT",
+            "courtName": "Carlisle County Court"
+          },
+          {
+            "courtId": "CARMCT",
+            "courtName": "Carmarthen County Court"
+          },
+          {
+            "courtId": "LONDCT",
+            "courtName": "Central London County Court"
+          },
+          {
+            "courtId": "CHLMCT",
+            "courtName": "Chelmsford County Court"
+          },
+          {
+            "courtId": "CHELCT",
+            "courtName": "Cheltenham County Court"
+          },
+          {
+            "courtId": "CHESCT",
+            "courtName": "Chester County Court"
+          },
+          {
+            "courtId": "CHSTCT",
+            "courtName": "Chesterfield County Court"
+          },
+          {
+            "courtId": "CHCHCT",
+            "courtName": "Chichester County Court"
+          },
+          {
+            "courtId": "CHRLCT",
+            "courtName": "Chorley County Court"
+          },
+          {
+            "courtId": "CLRKCT",
+            "courtName": "Clerkenwell County Court"
+          },
+          {
+            "courtId": "CLCHCT",
+            "courtName": "Colchester County Court"
+          },
+          {
+            "courtId": "CNSTCT",
+            "courtName": "Consett County Court"
+          },
+          {
+            "courtId": "CNWYCT",
+            "courtName": "Conwy and Colwyn County Court"
+          },
+          {
+            "courtId": "CVNTCT",
+            "courtName": "Coventry County Court"
+          },
+          {
+            "courtId": "CREWCT",
+            "courtName": "Crewe County Court"
+          },
+          {
+            "courtId": "CRYDCT",
+            "courtName": "Croydon County Court"
+          },
+          {
+            "courtId": "DARLCT",
+            "courtName": "Darlington County Court"
+          },
+          {
+            "courtId": "DRTFCT",
+            "courtName": "Dartford County Court"
+          },
+          {
+            "courtId": "DRBYCT",
+            "courtName": "Derby County Court"
+          },
+          {
+            "courtId": "DEWSCT",
+            "courtName": "Dewsbury County Court"
+          },
+          {
+            "courtId": "DONCCT",
+            "courtName": "Doncaster County Court"
+          },
+          {
+            "courtId": "DUDLCT",
+            "courtName": "Dudley County Court"
+          },
+          {
+            "courtId": "DURHCT",
+            "courtName": "Durham County Court"
+          },
+          {
+            "courtId": "EASBCT",
+            "courtName": "Eastbourne County Court"
+          },
+          {
+            "courtId": "EDMNCT",
+            "courtName": "Edmonton County Court"
+          },
+          {
+            "courtId": "EPSMCT",
+            "courtName": "Epsom County Court"
+          },
+          {
+            "courtId": "EVSHCT",
+            "courtName": "Evesham County Court"
+          },
+          {
+            "courtId": "EXETCT",
+            "courtName": "Exeter County Court"
+          },
+          {
+            "courtId": "GTSHCT",
+            "courtName": "Gateshead County Court"
+          },
+          {
+            "courtId": "GLOCCT",
+            "courtName": "Gloucester County Court"
+          },
+          {
+            "courtId": "GRNTCT",
+            "courtName": "Grantham County Court"
+          },
+          {
+            "courtId": "GRVSCT",
+            "courtName": "Gravesend County Court"
+          },
+          {
+            "courtId": "GRIMCT",
+            "courtName": "Great Grimsby County Court"
+          },
+          {
+            "courtId": "GLDFCT",
+            "courtName": "Guildford County Court"
+          },
+          {
+            "courtId": "HLFXCT",
+            "courtName": "Halifax County Court"
+          },
+          {
+            "courtId": "HRLWCT",
+            "courtName": "Harlow County Court"
+          },
+          {
+            "courtId": "HRRGCT",
+            "courtName": "Harrogate County Court"
+          },
+          {
+            "courtId": "HRTLCT",
+            "courtName": "Hartlepool County Court"
+          },
+          {
+            "courtId": "HSTNCT",
+            "courtName": "Hastings County Court"
+          },
+          {
+            "courtId": "HVRFCT",
+            "courtName": "Haverfordwest County Court"
+          },
+          {
+            "courtId": "HYWHCT",
+            "courtName": "Haywards Heath County Court"
+          },
+          {
+            "courtId": "HRFRCT",
+            "courtName": "Hereford County Court"
+          },
+          {
+            "courtId": "HERTCT",
+            "courtName": "Hertford County Court"
+          },
+          {
+            "courtId": "HWYCCT",
+            "courtName": "High Wycombe County Court"
+          },
+          {
+            "courtId": "HTCHCT",
+            "courtName": "Hitchin County Court"
+          },
+          {
+            "courtId": "HRSHCT",
+            "courtName": "Horsham County Court"
+          },
+          {
+            "courtId": "HUDRCT",
+            "courtName": "Huddersfield County Court"
+          },
+          {
+            "courtId": "HUNTCT",
+            "courtName": "Huntingdon County Court"
+          },
+          {
+            "courtId": "ILFDCT",
+            "courtName": "Ilford County Court"
+          },
+          {
+            "courtId": "IPSWCT",
+            "courtName": "Ipswich County Court"
+          },
+          {
+            "courtId": "KGHLCT",
+            "courtName": "Keighley County Court"
+          },
+          {
+            "courtId": "KENDCT",
+            "courtName": "Kendal County Court"
+          },
+          {
+            "courtId": "KTTRCT",
+            "courtName": "Kettering County Court"
+          },
+          {
+            "courtId": "KDDRCT",
+            "courtName": "Kidderminster County Court"
+          },
+          {
+            "courtId": "KNGSCT",
+            "courtName": "King's Lynn County Court"
+          },
+          {
+            "courtId": "KNGHCT",
+            "courtName": "Kingston-upon-Hull County Court"
+          },
+          {
+            "courtId": "KNGTCT",
+            "courtName": "Kingston-upon-Thames County Court"
+          },
+          {
+            "courtId": "LMBTCT",
+            "courtName": "Lambeth County Court"
+          },
+          {
+            "courtId": "LANCCT",
+            "courtName": "Lancaster County Court"
+          },
+          {
+            "courtId": "LEEDCT",
+            "courtName": "Leeds County Court"
+          },
+          {
+            "courtId": "LEICCT",
+            "courtName": "Leicester County Court"
+          },
+          {
+            "courtId": "LEIGCT",
+            "courtName": "Leigh County Court"
+          },
+          {
+            "courtId": "IOM",
+            "courtName": "Isle Of Man Courts"
+          },
+          {
+            "courtId": "ELONCT",
+            "courtName": "East London County Court"
+          },
+          {
+            "courtId": "PRCORC",
+            "courtName": "Preston Coroners Court"
+          },
+          {
+            "courtId": "BANBCT",
+            "courtName": "Banbury County Court"
+          },
+          {
+            "courtId": "LEAMCT",
+            "courtName": "Leamington Spa County Court"
+          },
+          {
+            "courtId": "SOUTCT",
+            "courtName": "Southport County Court"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a search request by NOMS number",
+      "providerState": "a list of recalls exists for NOMS number",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/search",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
         }
       },
       "response": {
@@ -1131,13 +1313,47 @@
       }
     },
     {
-      "description": "an unauthorized get recalls request",
+      "description": "a search request with blank NOMS number",
+      "providerState": "a search by blank NOMS number",
+      "request": {
+        "method": "POST",
+        "path": "/search",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST",
+          "message": "nomsNumber: must not be blank"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized search request",
       "providerState": "an unauthorized user accessToken",
       "request": {
-        "method": "GET",
-        "path": "/recalls",
+        "method": "POST",
+        "path": "/search",
         "headers": {
-          "Authorization": "Bearer accessToken-1"
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
         }
       },
       "response": {
@@ -1146,11 +1362,11 @@
       }
     },
     {
-      "description": "a get dossier request",
-      "providerState": "a dossier can be downloaded",
+      "description": "a get recall notification request",
+      "providerState": "a recall notification can be downloaded",
       "request": {
         "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/dossier",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/recallNotification/00000000-0000-0000-0000-000000000000",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         }
@@ -1171,11 +1387,11 @@
       }
     },
     {
-      "description": "an unauthorized get dossier request",
+      "description": "an unauthorized get recall notification request",
       "providerState": "an unauthorized user accessToken",
       "request": {
         "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/dossier",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/recallNotification/00000000-0000-0000-0000-000000000000",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         }
@@ -1223,6 +1439,99 @@
       "response": {
         "status": 401,
         "headers": {}
+      }
+    },
+    {
+      "description": "a create recall document request",
+      "providerState": "a document can be created",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "PART_A_RECALL_REPORT",
+          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized create recall document request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "PART_A_RECALL_REPORT",
+          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a search request by NOMS number",
+      "providerState": "a prisoner exists for NOMS number",
+      "request": {
+        "method": "POST",
+        "path": "/search",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "firstName": "Bobby",
+            "middleNames": "John",
+            "lastName": "Badger",
+            "dateOfBirth": "1999-05-28",
+            "gender": "Male",
+            "nomsNumber": "A1234AA",
+            "croNumber": "1234/56A",
+            "pncNumber": "98/7654Z"
+          },
+          {
+            "firstName": "Bertie",
+            "middleNames": "Barry",
+            "lastName": "Badger",
+            "dateOfBirth": "1990-10-30",
+            "gender": "Male",
+            "nomsNumber": "A1234AA",
+            "croNumber": "1234/56A",
+            "pncNumber": "98/7654Z"
+          }
+        ]
       }
     },
     {
@@ -2088,409 +2397,45 @@
       }
     },
     {
-      "description": "a get courts request",
-      "providerState": "a list of courts exists",
+      "description": "a get recall document request",
+      "providerState": "a document exists",
       "request": {
         "method": "GET",
-        "path": "/reference-data/courts",
-        "headers": {}
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
       },
       "response": {
         "status": 200,
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": [
-          {
-            "courtId": "ABDRCT",
-            "courtName": "Aberdare County Court"
-          },
-          {
-            "courtId": "SUNDMC",
-            "courtName": "Sunderland Magistrates Court"
-          },
-          {
-            "courtId": "BRKNCT",
-            "courtName": "Birkenhead County Court"
-          },
-          {
-            "courtId": "BISHCT",
-            "courtName": "Bishop Auckland"
-          },
-          {
-            "courtId": "BLKBCT",
-            "courtName": "Blackburn County Court"
-          },
-          {
-            "courtId": "BLKPCT",
-            "courtName": "Blackpool County Court"
-          },
-          {
-            "courtId": "BLKWCT",
-            "courtName": "Blackwood County Court"
-          },
-          {
-            "courtId": "BODMCT",
-            "courtName": "Bodmin County Court"
-          },
-          {
-            "courtId": "BOLTCT",
-            "courtName": "Bolton County Court"
-          },
-          {
-            "courtId": "BOSTCT",
-            "courtName": "Boston County Court"
-          },
-          {
-            "courtId": "BRNMCT",
-            "courtName": "Bournemouth County Court"
-          },
-          {
-            "courtId": "BOWCT",
-            "courtName": "Bow County Court"
-          },
-          {
-            "courtId": "BRADCT",
-            "courtName": "Bradford County Court"
-          },
-          {
-            "courtId": "BRCKCT",
-            "courtName": "Brecknock County Court"
-          },
-          {
-            "courtId": "BRTFCT",
-            "courtName": "Brentford County Court"
-          },
-          {
-            "courtId": "BRIDCT",
-            "courtName": "Bridgend County Court"
-          },
-          {
-            "courtId": "BRGHCT",
-            "courtName": "Brighton County Court"
-          },
-          {
-            "courtId": "BRSTCT",
-            "courtName": "Bristol County Court"
-          },
-          {
-            "courtId": "BRMLCT",
-            "courtName": "Bromley County Court"
-          },
-          {
-            "courtId": "BURNCT",
-            "courtName": "Burnley County Court"
-          },
-          {
-            "courtId": "BRTNCT",
-            "courtName": "Burton-upon-Trent County Court"
-          },
-          {
-            "courtId": "BURYCT",
-            "courtName": "Bury County Court"
-          },
-          {
-            "courtId": "BRSECT",
-            "courtName": "Bury St. Edmunds County Court"
-          },
-          {
-            "courtId": "BUXTCT",
-            "courtName": "Buxton County Court"
-          },
-          {
-            "courtId": "CRNRCT",
-            "courtName": "Caernarfon County Court"
-          },
-          {
-            "courtId": "CAMBCT",
-            "courtName": "Cambridge County Court"
-          },
-          {
-            "courtId": "CANTCT",
-            "courtName": "Canterbury County Court"
-          },
-          {
-            "courtId": "CRDFCT",
-            "courtName": "Cardiff County Court"
-          },
-          {
-            "courtId": "CARLCT",
-            "courtName": "Carlisle County Court"
-          },
-          {
-            "courtId": "CARMCT",
-            "courtName": "Carmarthen County Court"
-          },
-          {
-            "courtId": "LONDCT",
-            "courtName": "Central London County Court"
-          },
-          {
-            "courtId": "CHLMCT",
-            "courtName": "Chelmsford County Court"
-          },
-          {
-            "courtId": "CHELCT",
-            "courtName": "Cheltenham County Court"
-          },
-          {
-            "courtId": "CHESCT",
-            "courtName": "Chester County Court"
-          },
-          {
-            "courtId": "CHSTCT",
-            "courtName": "Chesterfield County Court"
-          },
-          {
-            "courtId": "CHCHCT",
-            "courtName": "Chichester County Court"
-          },
-          {
-            "courtId": "CHRLCT",
-            "courtName": "Chorley County Court"
-          },
-          {
-            "courtId": "CLRKCT",
-            "courtName": "Clerkenwell County Court"
-          },
-          {
-            "courtId": "CLCHCT",
-            "courtName": "Colchester County Court"
-          },
-          {
-            "courtId": "CNSTCT",
-            "courtName": "Consett County Court"
-          },
-          {
-            "courtId": "CNWYCT",
-            "courtName": "Conwy and Colwyn County Court"
-          },
-          {
-            "courtId": "CVNTCT",
-            "courtName": "Coventry County Court"
-          },
-          {
-            "courtId": "CREWCT",
-            "courtName": "Crewe County Court"
-          },
-          {
-            "courtId": "CRYDCT",
-            "courtName": "Croydon County Court"
-          },
-          {
-            "courtId": "DARLCT",
-            "courtName": "Darlington County Court"
-          },
-          {
-            "courtId": "DRTFCT",
-            "courtName": "Dartford County Court"
-          },
-          {
-            "courtId": "DRBYCT",
-            "courtName": "Derby County Court"
-          },
-          {
-            "courtId": "DEWSCT",
-            "courtName": "Dewsbury County Court"
-          },
-          {
-            "courtId": "DONCCT",
-            "courtName": "Doncaster County Court"
-          },
-          {
-            "courtId": "DUDLCT",
-            "courtName": "Dudley County Court"
-          },
-          {
-            "courtId": "DURHCT",
-            "courtName": "Durham County Court"
-          },
-          {
-            "courtId": "EASBCT",
-            "courtName": "Eastbourne County Court"
-          },
-          {
-            "courtId": "EDMNCT",
-            "courtName": "Edmonton County Court"
-          },
-          {
-            "courtId": "EPSMCT",
-            "courtName": "Epsom County Court"
-          },
-          {
-            "courtId": "EVSHCT",
-            "courtName": "Evesham County Court"
-          },
-          {
-            "courtId": "EXETCT",
-            "courtName": "Exeter County Court"
-          },
-          {
-            "courtId": "GTSHCT",
-            "courtName": "Gateshead County Court"
-          },
-          {
-            "courtId": "GLOCCT",
-            "courtName": "Gloucester County Court"
-          },
-          {
-            "courtId": "GRNTCT",
-            "courtName": "Grantham County Court"
-          },
-          {
-            "courtId": "GRVSCT",
-            "courtName": "Gravesend County Court"
-          },
-          {
-            "courtId": "GRIMCT",
-            "courtName": "Great Grimsby County Court"
-          },
-          {
-            "courtId": "GLDFCT",
-            "courtName": "Guildford County Court"
-          },
-          {
-            "courtId": "HLFXCT",
-            "courtName": "Halifax County Court"
-          },
-          {
-            "courtId": "HRLWCT",
-            "courtName": "Harlow County Court"
-          },
-          {
-            "courtId": "HRRGCT",
-            "courtName": "Harrogate County Court"
-          },
-          {
-            "courtId": "HRTLCT",
-            "courtName": "Hartlepool County Court"
-          },
-          {
-            "courtId": "HSTNCT",
-            "courtName": "Hastings County Court"
-          },
-          {
-            "courtId": "HVRFCT",
-            "courtName": "Haverfordwest County Court"
-          },
-          {
-            "courtId": "HYWHCT",
-            "courtName": "Haywards Heath County Court"
-          },
-          {
-            "courtId": "HRFRCT",
-            "courtName": "Hereford County Court"
-          },
-          {
-            "courtId": "HERTCT",
-            "courtName": "Hertford County Court"
-          },
-          {
-            "courtId": "HWYCCT",
-            "courtName": "High Wycombe County Court"
-          },
-          {
-            "courtId": "HTCHCT",
-            "courtName": "Hitchin County Court"
-          },
-          {
-            "courtId": "HRSHCT",
-            "courtName": "Horsham County Court"
-          },
-          {
-            "courtId": "HUDRCT",
-            "courtName": "Huddersfield County Court"
-          },
-          {
-            "courtId": "HUNTCT",
-            "courtName": "Huntingdon County Court"
-          },
-          {
-            "courtId": "ILFDCT",
-            "courtName": "Ilford County Court"
-          },
-          {
-            "courtId": "IPSWCT",
-            "courtName": "Ipswich County Court"
-          },
-          {
-            "courtId": "KGHLCT",
-            "courtName": "Keighley County Court"
-          },
-          {
-            "courtId": "KENDCT",
-            "courtName": "Kendal County Court"
-          },
-          {
-            "courtId": "KTTRCT",
-            "courtName": "Kettering County Court"
-          },
-          {
-            "courtId": "KDDRCT",
-            "courtName": "Kidderminster County Court"
-          },
-          {
-            "courtId": "KNGSCT",
-            "courtName": "King's Lynn County Court"
-          },
-          {
-            "courtId": "KNGHCT",
-            "courtName": "Kingston-upon-Hull County Court"
-          },
-          {
-            "courtId": "KNGTCT",
-            "courtName": "Kingston-upon-Thames County Court"
-          },
-          {
-            "courtId": "LMBTCT",
-            "courtName": "Lambeth County Court"
-          },
-          {
-            "courtId": "LANCCT",
-            "courtName": "Lancaster County Court"
-          },
-          {
-            "courtId": "LEEDCT",
-            "courtName": "Leeds County Court"
-          },
-          {
-            "courtId": "LEICCT",
-            "courtName": "Leicester County Court"
-          },
-          {
-            "courtId": "LEIGCT",
-            "courtName": "Leigh County Court"
-          },
-          {
-            "courtId": "IOM",
-            "courtName": "Isle Of Man Courts"
-          },
-          {
-            "courtId": "ELONCT",
-            "courtName": "East London County Court"
-          },
-          {
-            "courtId": "PRCORC",
-            "courtName": "Preston Coroners Court"
-          },
-          {
-            "courtId": "BANBCT",
-            "courtName": "Banbury County Court"
-          },
-          {
-            "courtId": "LEAMCT",
-            "courtName": "Leamington Spa County Court"
-          },
-          {
-            "courtId": "SOUTCT",
-            "courtName": "Southport County Court"
-          }
-        ],
+        "body": {
+          "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8",
+          "category": "PART_A_RECALL_REPORT",
+          "content": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0="
+        },
         "matchingRules": {
           "$.body": {
             "match": "type"
           }
         }
+      }
+    },
+    {
+      "description": "an unauthorized get recall document request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
       }
     },
     {
