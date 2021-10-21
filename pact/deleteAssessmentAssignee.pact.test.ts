@@ -17,15 +17,16 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
 
   describe('unassign user from recall assessment', () => {
     test('can assign a user', async () => {
+      const recallNoAssignee = { ...getRecallResponseJson, assignee: undefined }
       await provider.addInteraction({
         state: 'a user can be unassigned',
         ...pactDeleteRequest('an unassign user request', `/recalls/${recallId}/assignee/${userId}`, accessToken),
-        willRespondWith: pactJsonResponse(Matchers.like(getRecallResponseJson), 200),
+        willRespondWith: pactJsonResponse(Matchers.like(recallNoAssignee), 200),
       })
 
       const actual = await deleteAssessingUser(recallId, userId, accessToken)
 
-      expect(actual).toEqual(getRecallResponseJson)
+      expect(actual).toEqual(recallNoAssignee)
     })
 
     test('returns 400 if blank userId provided', async () => {

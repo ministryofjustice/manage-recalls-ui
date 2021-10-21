@@ -11,6 +11,8 @@ export type RecallResponse = {
   agreeWithRecall?: RecallResponse.agreeWithRecall
   agreeWithRecallDetail?: string
   assessedByUserId?: string
+  assignee?: string
+  assigneeUserName?: string
   authorisingAssistantChiefOfficer?: string
   bookedByUserId?: string
   bookingNumber?: string
@@ -23,6 +25,7 @@ export type RecallResponse = {
   documents: Array<ApiRecallDocument>
   dossierCreatedByUserId?: string
   dossierEmailSentDate?: string
+  dossierTargetDate?: string
   hasDossierBeenChecked?: boolean
   hasOtherPreviousConvictionMainName?: boolean
   indexOffence?: string
@@ -58,8 +61,8 @@ export type RecallResponse = {
     | 'TRAVELLING_OUTSIDE_UK'
   >
   reasonsForRecallOtherDetail?: string
-  recallEmailReceivedDateTime?: string
   recallAssessmentDueDateTime?: string
+  recallEmailReceivedDateTime?: string
   recallId: string
   recallLength?: RecallResponse.recallLength
   recallNotificationEmailSentDateTime?: string
@@ -70,7 +73,6 @@ export type RecallResponse = {
   status?: RecallResponse.status
   vulnerabilityDiversity?: boolean
   vulnerabilityDiversityDetail?: string
-  dossierTargetDate?: string
 }
 
 export namespace RecallResponse {
@@ -256,6 +258,7 @@ export namespace RecallResponse {
   export enum status {
     BOOKED_ON = 'BOOKED_ON',
     DOSSIER_ISSUED = 'DOSSIER_ISSUED',
+    IN_ASSESSMENT = 'IN_ASSESSMENT',
     RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
   }
 
