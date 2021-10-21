@@ -6,41 +6,51 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
             <h1 class="govuk-heading-l">
                 To do
             </h1>
-
-            {% if recalls %}
-                {% if recalls.length > 0 %}
-                    <table class="govuk-table">
-                        <caption class="govuk-table__caption govuk-table__caption--m" data-qa="recalls-list-heading">
-                            <span class='govuk-!-font-size-36 govuk-!-font-weight-bold'>{{ recalls.length }}</span> recall{% if recalls.length > 1 %}s{% endif %}
-                        </caption>
-                        <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header">Recall ID</th>
-                            <th scope="col" class="govuk-table__header">Name</th>
-                            <th scope="col" class="govuk-table__header">Recall date</th>
-                            <th scope="col" class="govuk-table__header">Due date</th>
-                            <th scope="col" class="govuk-table__header"><span class='govuk-visually-hidden'>View recall details</span></th>
+            {% if results and results.length > 0 %}
+                <table class="govuk-table">
+                    <caption class="govuk-table__caption govuk-table__caption--m" data-qa="recalls-list-heading">
+                        <span class='govuk-!-font-size-36 govuk-!-font-weight-bold'>{{ results.length }}</span>
+                        recall{% if results.length > 1 %}s{% endif %}
+                    </caption>
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header">Recall ID</th>
+                        <th scope="col" class="govuk-table__header">Name</th>
+                        <th scope="col" class="govuk-table__header">Due</th>
+                        <th scope="col" class="govuk-table__header">Assigned to</th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="govuk-table__body" data-qa="search-results">
+                    {% for result in results %}
+                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recall.recallId }}'>
+                            <td class="govuk-table__cell" data-qa="recallId">{{ result.recall.recallId }}</td>
+                            <td class="govuk-table__cell"
+                                data-qa="name">{{ result.person.firstName }} {{ result.person.lastName }}</td>
+                            <td class="govuk-table__cell"
+                                data-qa="dueDate">{{ result.recall.recallAssessmentDueDateTime | dateTime }}</td>
+                            <td class="govuk-table__cell" data-qa="assignedTo">{{ result.recall.assigneeUserName }}</td>
+                            <td class="govuk-table__cell">
+                                {% set person = result.person %}
+                                {% set recall = result.recall %}
+                                {% include "../partials/recallActionLink.njk" %}
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody class="govuk-table__body" data-qa="search-results">
-                        {% for recall in recalls %}
-                            <tr class="govuk-table__row" data-qa='recall-id-{{ recall.recallId }}'>
-                                <td class="govuk-table__cell" data-qa="recallId">{{ recall.recallId }}</td>
-                                <td class="govuk-table__cell" data-qa="name">{{ recall.offender.firstName }} {{ recall.offender.lastName }}</td>
-                                <td class="govuk-table__cell" data-qa="recallDate">{{ recall.offender.recallDate }}</td>
-                                <td class="govuk-table__cell" data-qa="dueDate">{{ recall.offender.dueDate }}</td>
-                                <td class="govuk-table__cell">
-                                    {% set person = recall.offender %}
-                                    {% include "../partials/recallActionLink.njk" %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
             {% endif %}
         </div>
     </div>

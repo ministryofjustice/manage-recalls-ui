@@ -152,9 +152,8 @@ export interface EmailUploadValidatorArgs {
 }
 
 export interface RecallResult {
-  recallId: string
-  status: string
-  offender: PersonSearchResult
+  recall: RecallResponse
+  person: PersonSearchResult
 }
 
 export type DateValidationErrorType =

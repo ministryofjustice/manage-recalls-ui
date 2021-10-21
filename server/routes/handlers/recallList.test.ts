@@ -14,6 +14,12 @@ describe('recallList', () => {
 
   beforeEach(() => {
     fakeManageRecallsApi.get('/recalls').reply(200, recalls)
+    req = mockGetRequest({})
+    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    resp = res
+  })
+
+  it('should make recalls with person details available to render', async () => {
     fakeManageRecallsApi
       .post('/search')
       .times(recalls.length)
@@ -23,36 +29,50 @@ describe('recallList', () => {
           lastName: 'Badger',
         },
       ])
-    req = mockGetRequest({})
-    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
-    resp = res
+    await recallList(req, resp)
+    expect(resp.locals.results).toEqual([
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          nomsNumber: '123',
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          status: 'BOOKED_ON',
+        },
+      },
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          nomsNumber: '123',
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        },
+      },
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          nomsNumber: '456',
+          recallId: '8ab377a6-4587-2598-abc4-98fc53737',
+          status: 'RECALL_NOTIFICATION_ISSUED',
+        },
+      },
+    ])
   })
 
-  it('should make recalls with person details available to render', async () => {
+  it('should make a list of failed recall requests available to render', async () => {
+    fakeManageRecallsApi.post('/search').times(recalls.length).reply(404)
     await recallList(req, resp)
-    expect(resp.locals.recalls).toEqual([
+    expect(resp.locals.errors).toEqual([
       {
-        offender: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        status: 'BOOKED_ON',
-      },
-      {
-        offender: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        offender: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recallId: '8ab377a6-4587-2598-abc4-98fc53737',
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        name: 'fetchError',
+        text: '3 recalls could not be retrieved',
       },
     ])
   })

@@ -14,6 +14,7 @@ const recallsListPage = () =>
     },
     continueBooking: ({ recallId }) => cy.get(`[data-qa=continue-booking-${recallId}]`).click(),
     assessRecall: ({ recallId }) => cy.get(`[data-qa=assess-recall-${recallId}]`).click(),
+    continueAssessment: ({ recallId }) => cy.get(`[data-qa=continue-assess-${recallId}]`).click(),
     createDossier: ({ recallId }) => cy.get(`[data-qa=create-dossier-${recallId}]`).click(),
     viewRecall: ({ recallId }) => cy.get(`[data-qa=view-recall-${recallId}]`).click(),
   })

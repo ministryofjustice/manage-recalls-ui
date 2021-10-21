@@ -151,7 +151,9 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recallAssessmentDueText).toEqual('Overdue: recall assessment was due on 6 August 2020 by 16:33')
+    expect(res.locals.recall.recallAssessmentDueText).toEqual(
+      'Overdue: recall assessment was due on 6 August 2020 by 16:33'
+    )
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 })
