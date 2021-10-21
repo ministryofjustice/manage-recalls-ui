@@ -105,8 +105,7 @@ export function getPrisons(): Promise<Prison[]> {
 }
 
 export function assignAssessingUser(recallId: string, assignee: string, token: string): Promise<Recall> {
-  const request = { assignee }
-  return restClient(token).post<Recall>({ path: `/recalls/${recallId}/assignee`, data: request })
+  return restClient(token).post<Recall>({ path: `/recalls/${recallId}/assignee/${assignee}`, data: {} })
 }
 
 export function deleteAssessingUser(recallId: string, assignee: string, token: string): Promise<Recall> {

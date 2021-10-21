@@ -19,12 +19,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can assign a user', async () => {
       await provider.addInteraction({
         state: 'a user can be assigned',
-        ...pactPostRequest(
-          'an assign user request',
-          `/recalls/${recallId}/assignee`,
-          { assignee: userId },
-          accessToken
-        ),
+        ...pactPostRequest('an assign user request', `/recalls/${recallId}/assignee/${userId}`, {}, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getRecallResponseJson), 200),
       })
 
@@ -42,8 +37,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         state: 'a missing user ID',
         ...pactPostRequest(
           'an assign user request with blank userId',
-          `/recalls/${recallId}/assignee`,
-          { assignee: blankUserId },
+          `/recalls/${recallId}/assignee/${blankUserId}`,
+          {},
           accessToken
         ),
         willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
@@ -61,8 +56,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         state: 'an unauthorized user accessToken',
         ...pactPostRequest(
           'an unauthorized user accessToken',
-          `/recalls/${recallId}/assignee`,
-          { assignee: userId },
+          `/recalls/${recallId}/assignee/${userId}`,
+          {},
           accessToken
         ),
         willRespondWith: { status: 401 },
