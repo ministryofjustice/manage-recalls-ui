@@ -61,10 +61,10 @@ describe('decorateDocs', () => {
   ]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
-  it('returns document types only in document list, with uploaded docs merged into documentTypes', () => {
+  it('returns document types only in document list, with uploaded docs merged into documentCategories', () => {
     const results = decorateDocs({ docs, nomsNumber, recallId })
     expect(results).toEqual({
-      documentTypes: [
+      documentCategories: [
         {
           fileName: 'Part A.pdf',
           label: 'Part A recall report',

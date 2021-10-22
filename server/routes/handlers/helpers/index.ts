@@ -1,7 +1,7 @@
 import nunjucks from 'nunjucks'
 import { DecoratedDocument, FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { documentTypes } from '../book/documentTypes'
+import { documentCategories } from '../book/documentCategories'
 
 export const makeErrorObject = ({
   id,
@@ -43,18 +43,18 @@ export const decorateDocs = ({
   dossierEmail?: DecoratedDocument
 } => {
   const decoratedUploadedDocs = [] as DecoratedDocument[]
-  documentTypes.forEach(documentType => {
+  documentCategories.forEach(documentCategory => {
     docs
-      .filter(d => documentType.name === d.category)
+      .filter(d => documentCategory.name === d.category)
       .forEach(d => {
         decoratedUploadedDocs.push({
           ...d,
-          ...documentType,
+          ...documentCategory,
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${d.documentId}`,
         })
       })
   })
-  const decoratedDocTypes = documentTypes
+  const decoratedDocTypes = documentCategories
     .filter(doc => doc.type === 'document')
     .map(docType => {
       const uploadedDocs = decoratedUploadedDocs.filter(d => d.name === docType.name)
@@ -81,7 +81,7 @@ export const decorateDocs = ({
     },
     {
       documents: [],
-      documentTypes: decoratedDocTypes,
+      documentCategories: decoratedDocTypes,
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,

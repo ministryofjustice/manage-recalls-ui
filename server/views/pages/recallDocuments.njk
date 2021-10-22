@@ -36,30 +36,30 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
-                    {% for documentType in recall.documentTypes %}
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">{{ documentType.label }}{% if documentType.required != true %} (optional){% endif %}</h2>
-                        {% if documentType.uploaded.length %}
-                            <input type='hidden' name='{{ documentType.name}}' value='existingUpload'>
+                    {% for documentCategory in recall.documentCategories %}
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">{{ documentCategory.label }}{% if documentCategory.required != true %} (optional){% endif %}</h2>
+                        {% if documentCategory.uploaded.length %}
+                            <input type='hidden' name='{{ documentCategory.name}}' value='existingUpload'>
                             <div class='govuk-body govuk-!-margin-bottom-4'>
                                 <ul class='govuk-list'>
-                                {% for uploaded in documentType.uploaded %}
-                                    <li><a href='{{ uploaded.url }}' target='_blank' class='govuk-link' data-qa='uploadedDocument-{{ documentType.name}}'>{{ uploaded.fileName }}</a></li>
+                                {% for uploaded in documentCategory.uploaded %}
+                                    <li><a href='{{ uploaded.url }}' target='_blank' class='govuk-link' data-qa='uploadedDocument-{{ documentCategory.name}}'>{{ uploaded.fileName }}</a></li>
                                 {%endfor %}
                                 </ul>
                             </div>
                         {% endif %}
                         {{ govukFileUpload({
-                            id: documentType.name,
-                            name: documentType.name,
+                            id: documentCategory.name,
+                            name: documentCategory.name,
                             label: {
-                                text: 'Upload a ' + documentType.label,
+                                text: 'Upload a ' + documentCategory.label,
                                 classes: 'govuk-visually-hidden'
                             },
                             attributes: removeUndefinedFromObject({
                                 accept: allowedDocumentFileExtensionList(),
-                                multiple: true if documentType.multiple == true else undefined
+                                multiple: true if documentCategory.multiple == true else undefined
                             }),
-                            errorMessage: errorMessage(errors[documentType.name])
+                            errorMessage: errorMessage(errors[documentCategory.name])
                         }) }}
                     {%  endfor %}
                 </div>
