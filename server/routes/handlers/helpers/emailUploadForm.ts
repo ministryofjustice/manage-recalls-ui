@@ -71,13 +71,11 @@ export const emailUploadForm =
           req.session.unsavedValues = unsavedValues
           return res.redirect(303, req.originalUrl)
         }
-        const [updateResult, unassignResult] = await Promise.allSettled([
-          updateRecall(recallId, valuesToSave, user.token),
-          unassignAssessingUser ? unassignAssessingUser(recallId, user.uuid, user.token) : undefined,
-        ])
-        if (updateResult.status === 'fulfilled' && unassignResult.status === 'fulfilled') {
-          return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
+        await updateRecall(recallId, valuesToSave, user.token)
+        if (unassignAssessingUser) {
+          await unassignAssessingUser(recallId, user.uuid, user.token)
         }
+        return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
         throw new Error('Recall update or unassign failed')
       } catch (e) {
         logger.error(e)
