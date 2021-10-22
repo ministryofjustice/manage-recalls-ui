@@ -34,6 +34,16 @@ describe('decorateDocs', () => {
       documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
     },
     {
+      category: ApiRecallDocument.category.OTHER,
+      documentId: '2345-65434-3455-23432',
+      fileName: 'other doc 1.pdf',
+    },
+    {
+      category: ApiRecallDocument.category.OTHER,
+      documentId: '1234-8766-2344-5342',
+      fileName: 'other doc 2.pdf',
+    },
+    {
       category: ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
       documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
       fileName: '2021-07-03 Phil Jones recall.msg',
@@ -62,10 +72,12 @@ describe('decorateDocs', () => {
           name: 'PART_A_RECALL_REPORT',
           required: true,
           type: 'document',
-          uploaded: {
-            fileName: 'Part A.pdf',
-            url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-          },
+          uploaded: [
+            {
+              fileName: 'Part A.pdf',
+              url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+            },
+          ],
         },
         {
           fileName: 'Licence.pdf',
@@ -73,10 +85,12 @@ describe('decorateDocs', () => {
           name: 'LICENCE',
           required: true,
           type: 'document',
-          uploaded: {
-            fileName: 'Licence.pdf',
-            url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          },
+          uploaded: [
+            {
+              fileName: 'Licence.pdf',
+              url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            },
+          ],
         },
         {
           fileName: 'Pre Cons.pdf',
@@ -98,6 +112,18 @@ describe('decorateDocs', () => {
           labelLowerCase: 'OASys risk assessment',
           name: 'OASYS_RISK_ASSESSMENT',
           type: 'document',
+        },
+        {
+          label: 'Other',
+          multiple: true,
+          name: 'OTHER',
+          type: 'document',
+          uploaded: [
+            {
+              fileName: 'other doc 1.pdf',
+              url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
+            },
+          ],
         },
       ],
       documents: [
@@ -121,6 +147,26 @@ describe('decorateDocs', () => {
           required: true,
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        },
+        {
+          category: 'OTHER',
+          documentId: '2345-65434-3455-23432',
+          fileName: 'other doc 1.pdf',
+          label: 'Other',
+          multiple: true,
+          name: 'OTHER',
+          type: 'document',
+          url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
+        },
+        {
+          category: 'OTHER',
+          documentId: '1234-8766-2344-5342',
+          fileName: 'other doc 2.pdf',
+          label: 'Other',
+          multiple: true,
+          name: 'OTHER',
+          type: 'document',
+          url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
         },
       ],
       dossierEmail: {

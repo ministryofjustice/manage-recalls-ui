@@ -3,6 +3,7 @@ import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
 } from '../routes/handlers/helpers/allowedUploadExtensions'
+import { isDefined } from '../routes/handlers/helpers'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -145,6 +146,7 @@ export const changeLinkUrl = (
   pageSlug: string,
   { currentPage, basePath }: UrlInfo,
   fromHash: string,
+
   toHash?: string
 ) => {
   const queryParam = currentPage ? `?fromPage=${currentPage}&fromHash=${fromHash}` : ''
@@ -152,3 +154,12 @@ export const changeLinkUrl = (
 }
 
 export const errorMessage = (field: FormError) => (field ? { text: field.text } : undefined)
+
+export const removeUndefinedFromObject = (attributes: ObjectMap<unknown>) => {
+  return Object.entries(attributes).reduce((acc, [key, val]) => {
+    if (isDefined(val)) {
+      acc[key] = val
+    }
+    return acc
+  }, {})
+}

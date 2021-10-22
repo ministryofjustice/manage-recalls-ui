@@ -16,6 +16,7 @@ import {
   formActionUrl,
   changeLinkUrl,
   errorMessage,
+  removeUndefinedFromObject,
 } from './nunjucksFunctions'
 import { isDefined } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
@@ -53,6 +54,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('errorMessage', errorMessage)
   njkEnv.addGlobal('getReferenceDataItemLabel', getReferenceDataItemLabel)
   njkEnv.addGlobal('filterActiveItems', filterActiveItems)
+  njkEnv.addGlobal('removeUndefinedFromObject', removeUndefinedFromObject)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)

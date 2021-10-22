@@ -30,6 +30,7 @@ export interface UploadDocumentMetadata {
   error?: string
   fileName?: string
   required?: boolean
+  multiple?: boolean
 }
 
 export interface UploadedFormFields {
