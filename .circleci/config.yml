@@ -33,6 +33,7 @@ jobs:
             npm run build
             DATE=$(date '+%Y-%m-%d')
             export BUILD_NUMBER=${DATE}.${CIRCLE_BUILD_NUM}
+            export BUILD_URL=${CIRCLE_BUILD_URL}
             export GIT_REF="$CIRCLE_SHA1"
             npm run record-build-info
       - run: # Run linter after build because the integration test code depend on compiled typescript...
@@ -213,6 +214,7 @@ workflows:
           name: build_docker
           publish: false
           persist_container_image: true
+          additional_docker_build_args: --build-arg BUILD_URL=${CIRCLE_BUILD_URL}
 
       - hmpps/trivy_pipeline_scan:
           name: trivy_scan_low_medium_cves

@@ -20,6 +20,7 @@ RUN apt-get update && \
 # Stage: build assets
 FROM base as build
 ARG BUILD_NUMBER
+ARG BUILD_URL
 ARG GIT_REF
 
 RUN apt-get install -y make python g++
@@ -31,8 +32,10 @@ COPY . .
 RUN npm run build
 
 ENV BUILD_NUMBER ${BUILD_NUMBER:-1_0_0}
+ENV BUILD_URL ${BUILD_URL:-not_defined}
 ENV GIT_REF ${GIT_REF:-dummy}
 RUN export BUILD_NUMBER=${BUILD_NUMBER} && \
+        export BUILD_URL=${BUILD_URL} && \
         export GIT_REF=${GIT_REF} && \
         npm run record-build-info
 
