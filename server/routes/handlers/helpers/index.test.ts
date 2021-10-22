@@ -98,6 +98,7 @@ describe('decorateDocs', () => {
           name: 'PREVIOUS_CONVICTIONS_SHEET',
           required: true,
           type: 'document',
+          uploaded: [],
         },
         {
           fileName: 'PSR.pdf',
@@ -105,6 +106,7 @@ describe('decorateDocs', () => {
           name: 'PRE_SENTENCING_REPORT',
           required: true,
           type: 'document',
+          uploaded: [],
         },
         {
           fileName: 'OASys.pdf',
@@ -112,6 +114,7 @@ describe('decorateDocs', () => {
           labelLowerCase: 'OASys risk assessment',
           name: 'OASYS_RISK_ASSESSMENT',
           type: 'document',
+          uploaded: [],
         },
         {
           label: 'Other',
@@ -122,6 +125,10 @@ describe('decorateDocs', () => {
             {
               fileName: 'other doc 1.pdf',
               url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
+            },
+            {
+              fileName: 'other doc 2.pdf',
+              url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
             },
           ],
         },

@@ -161,6 +161,16 @@ describe('uploadRecallDocumentsFormHandler', () => {
             name: 'PART_A_RECALL_REPORT',
             text: 'The part A recall report could not be uploaded - try again',
           },
+          {
+            name: 'OTHER',
+            text: 'The other could not be uploaded - try again',
+            href: '#OTHER',
+          },
+          {
+            name: 'OTHER',
+            text: 'The other could not be uploaded - try again',
+            href: '#OTHER',
+          },
         ])
         done()
       },
@@ -182,7 +192,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     const res = {
       locals: { user: {} },
       redirect: () => {
-        expect(addRecallDocument).toHaveBeenCalledTimes(2) // for the two valid files
+        expect(addRecallDocument).toHaveBeenCalledTimes(4) // for the 4 valid files
         expect(req.session.errors).toEqual([
           {
             href: '#PART_A_RECALL_REPORT',
