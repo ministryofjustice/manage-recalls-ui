@@ -39,6 +39,31 @@ export const documentCategories: UploadDocumentMetadata[] = [
     fileName: 'OASys.pdf',
   },
   {
+    label: 'Charge sheet',
+    name: ApiRecallDocument.category.CHARGE_SHEET,
+    type: 'document',
+    fileName: 'Charge sheet.pdf',
+  },
+  {
+    label: 'CPS papers',
+    labelLowerCase: 'CPS papers',
+    name: ApiRecallDocument.category.CPS_PAPERS,
+    type: 'document',
+    fileName: 'CPS papers.pdf',
+  },
+  {
+    label: 'Police report',
+    name: ApiRecallDocument.category.POLICE_REPORT,
+    type: 'document',
+    fileName: 'Police report.pdf',
+  },
+  {
+    label: 'Exclusion zone map',
+    name: ApiRecallDocument.category.EXCLUSION_ZONE_MAP,
+    type: 'document',
+    fileName: 'Exclusion zone map.pdf',
+  },
+  {
     label: 'Other',
     name: ApiRecallDocument.category.OTHER,
     type: 'document',
