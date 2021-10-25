@@ -1,7 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { FileDataBase64, NamedFormError, ObjectMap } from '../../../../@types'
 import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
-import { documentTypes } from '../documentTypes'
+import { documentCategories } from '../documentCategories'
 
 interface Args {
   fileData: FileDataBase64[]
@@ -15,7 +15,7 @@ const invalidFileFormat = (file: FileDataBase64) => {
 }
 
 export const validateUploadDocuments = ({ fileData, requestBody }: Args): { errors?: NamedFormError[] } => {
-  const validationErrors = documentTypes
+  const validationErrors = documentCategories
     .map(docType => {
       const uploadedFile = fileData.find(file => file.category === docType.name)
       const label = docType.labelLowerCase || docType.label.toLowerCase()

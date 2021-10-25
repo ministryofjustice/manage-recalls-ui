@@ -61,10 +61,10 @@ describe('decorateDocs', () => {
   ]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
-  it('returns document types only in document list, with uploaded docs merged into documentTypes', () => {
+  it('returns document types only in document list, with uploaded docs merged into documentCategories', () => {
     const results = decorateDocs({ docs, nomsNumber, recallId })
     expect(results).toEqual({
-      documentTypes: [
+      documentCategories: [
         {
           fileName: 'Part A.pdf',
           label: 'Part A recall report',
@@ -113,6 +113,35 @@ describe('decorateDocs', () => {
           label: 'OASys Risk Assessment',
           labelLowerCase: 'OASys risk assessment',
           name: 'OASYS_RISK_ASSESSMENT',
+          type: 'document',
+          uploaded: [],
+        },
+        {
+          fileName: 'Charge sheet.pdf',
+          label: 'Charge sheet',
+          name: 'CHARGE_SHEET',
+          type: 'document',
+          uploaded: [],
+        },
+        {
+          fileName: 'CPS papers.pdf',
+          label: 'CPS papers',
+          labelLowerCase: 'CPS papers',
+          name: 'CPS_PAPERS',
+          type: 'document',
+          uploaded: [],
+        },
+        {
+          fileName: 'Police report.pdf',
+          label: 'Police report',
+          name: 'POLICE_REPORT',
+          type: 'document',
+          uploaded: [],
+        },
+        {
+          fileName: 'Exclusion zone map.pdf',
+          label: 'Exclusion zone map',
+          name: 'EXCLUSION_ZONE_MAP',
           type: 'document',
           uploaded: [],
         },

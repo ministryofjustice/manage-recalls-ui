@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { addRecallDocument, getStoredDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { documentTypes } from './documentTypes'
+import { documentCategories } from './documentCategories'
 import { UploadedFormFields } from '../../../@types'
 import { makeMetaDataForFiles, listFailedUploads } from './helpers'
 import { uploadStorageFields } from '../helpers/uploadStorage'
@@ -9,7 +9,7 @@ import { validateUploadDocuments } from './helpers/validateUploadDocuments'
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
   const { recallId } = req.params
-  uploadStorageFields(documentTypes)(req, res, async uploadError => {
+  uploadStorageFields(documentCategories)(req, res, async uploadError => {
     try {
       if (uploadError) {
         throw uploadError
@@ -58,12 +58,12 @@ export const getUploadedDocument = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params
   const { user } = res.locals
   const response = await getStoredDocument(recallId, documentId, user.token)
-  const documentType = documentTypes.find(type => type.name === response.category)
-  if (documentType.type === 'document') {
+  const documentCategory = documentCategories.find(type => type.name === response.category)
+  if (documentCategory.type === 'document') {
     res.contentType('application/pdf')
-    res.header('Content-Disposition', `inline; filename="${documentType.fileName}"`)
+    res.header('Content-Disposition', `inline; filename="${documentCategory.fileName}"`)
   }
-  if (documentType.type === 'email') {
+  if (documentCategory.type === 'email') {
     res.contentType('application/octet-stream')
     res.header('Content-Disposition', `attachment; filename="${response.fileName}"`)
   }
