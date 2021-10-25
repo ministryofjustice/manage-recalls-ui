@@ -3,7 +3,10 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from './handlers/person/findPerson'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
-import { uploadRecallDocumentsFormHandler, getUploadedDocument } from './handlers/book/recallUploadDocuments'
+import {
+  uploadRecallDocumentsFormHandler,
+  downloadUploadedDocumentOrEmail,
+} from './handlers/book/recallUploadDocuments'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 import { emailUploadForm } from './handlers/helpers/emailUploadForm'
 import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
@@ -120,7 +123,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/documents/dossier`, downloadDossier)
   get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
-  get(`${basePath}/documents/:documentId`, getUploadedDocument)
+  get(`${basePath}/documents/:documentId`, downloadUploadedDocumentOrEmail)
 
   get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
 

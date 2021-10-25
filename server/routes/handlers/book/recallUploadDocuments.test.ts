@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
-import { getUploadedDocument, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
+import { downloadUploadedDocumentOrEmail, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
 import { getStoredDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
@@ -263,9 +263,20 @@ describe('downloadDocument', () => {
         category: GetDocumentResponse.category.LICENCE,
         content: 'abc',
       })
-      await getUploadedDocument(req, resp)
+      await downloadUploadedDocumentOrEmail(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/pdf')
       expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="Licence.pdf"')
+    })
+
+    it('uses original filename if no category filename available (eg Other docs)', async () => {
+      ;(getStoredDocument as jest.Mock).mockResolvedValue({
+        documentId: '123',
+        category: GetDocumentResponse.category.OTHER,
+        content: 'abc',
+        fileName: 'test.pdf',
+      })
+      await downloadUploadedDocumentOrEmail(req, resp)
+      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="test.pdf"')
     })
   })
 
@@ -277,7 +288,7 @@ describe('downloadDocument', () => {
         content: 'abc',
         fileName: 'email.msg',
       })
-      await getUploadedDocument(req, resp)
+      await downloadUploadedDocumentOrEmail(req, resp)
       expect(spies.contentType).toHaveBeenCalledWith('application/octet-stream')
       expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="email.msg"')
     })
