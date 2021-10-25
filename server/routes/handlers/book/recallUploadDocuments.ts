@@ -3,7 +3,7 @@ import { addRecallDocument, getStoredDocument } from '../../../clients/manageRec
 import logger from '../../../../logger'
 import { documentTypes } from './documentTypes'
 import { UploadedFormFields } from '../../../@types'
-import { makeFileData, listFailedUploads } from './helpers'
+import { makeMetaDataForFiles, listFailedUploads } from './helpers'
 import { uploadStorageFields } from '../helpers/uploadStorage'
 import { validateUploadDocuments } from './helpers/validateUploadDocuments'
 
@@ -16,7 +16,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
       const { files, session, body } = req
       const { user, urlInfo } = res.locals
-      const fileData = makeFileData(files as UploadedFormFields)
+      const fileData = makeMetaDataForFiles(files as UploadedFormFields)
       const { errors } = validateUploadDocuments({ fileData, requestBody: body })
       if (errors) {
         session.errors = errors
@@ -27,8 +27,8 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
             if (errors && errors.find(e => e.name === file.category)) {
               return undefined
             }
-            const { category, fileContent } = file
-            return addRecallDocument(recallId, { category, fileContent }, user.token)
+            const { category, fileContent, originalFileName } = file
+            return addRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, user.token)
           })
         )
         const failedUploads = listFailedUploads(fileData, responses.filter(Boolean))

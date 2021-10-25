@@ -8,6 +8,7 @@ import {
   filterSelectedItems,
   formActionUrl,
   personOrPeopleFilter,
+  removeUndefinedFromObject,
   selectItems,
   userNameFilter,
 } from './nunjucksFunctions'
@@ -342,5 +343,15 @@ describe('backLinkUrl', () => {
   it("doesn't use the basePath if the path has a leading /", () => {
     const url = backLinkUrl('/find-person', { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' })
     expect(url).toEqual('/find-person')
+  })
+})
+
+describe('removeUndefinedFromObject', () => {
+  it('removes properties with undefined values', () => {
+    const result = removeUndefinedFromObject({
+      multiple: undefined,
+      classNames: null,
+    })
+    expect(result).toEqual({ classNames: null })
   })
 })

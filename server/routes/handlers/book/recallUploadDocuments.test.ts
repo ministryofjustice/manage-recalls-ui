@@ -42,6 +42,18 @@ describe('uploadRecallDocumentsFormHandler', () => {
         mimetype: 'application/pdf',
       },
     ],
+    OTHER: [
+      {
+        originalname: 'test.pdf',
+        buffer: 'hgf',
+        mimetype: 'application/pdf',
+      },
+      {
+        originalname: 'test2.pdf',
+        buffer: 'hgf',
+        mimetype: 'application/pdf',
+      },
+    ],
   }
   beforeEach(() => {
     req = mockGetRequest({ params: { nomsNumber: '456', recallId: '789' } })
@@ -62,7 +74,29 @@ describe('uploadRecallDocumentsFormHandler', () => {
       cb()
     })
     await uploadRecallDocumentsFormHandler(req, resp)
-    expect(addRecallDocument).toHaveBeenCalledTimes(4)
+    expect(addRecallDocument).toHaveBeenCalledTimes(6)
+    expect(addRecallDocument.mock.calls[0][1]).toEqual({
+      category: 'LICENCE',
+      fileContent: 'abc',
+      fileName: 'licence.pdf',
+    })
+    expect(addRecallDocument.mock.calls[1][1]).toEqual({
+      category: 'PRE_SENTENCING_REPORT',
+      fileContent: 'def',
+      fileName: 'report.pdf',
+    })
+    expect(addRecallDocument.mock.calls[2][1]).toEqual({
+      category: 'PREVIOUS_CONVICTIONS_SHEET',
+      fileContent: 'def',
+      fileName: 'sheet.pdf',
+    })
+    expect(addRecallDocument.mock.calls[3][1]).toEqual({
+      category: 'PART_A_RECALL_REPORT',
+      fileContent: 'def',
+      fileName: 'report.pdf',
+    })
+    expect(addRecallDocument.mock.calls[4][1]).toEqual({ category: 'OTHER', fileContent: 'hgf', fileName: 'test.pdf' })
+    expect(addRecallDocument.mock.calls[5][1]).toEqual({ category: 'OTHER', fileContent: 'hgf', fileName: 'test2.pdf' })
     expect(req.session.errors).toBeUndefined()
   })
 
@@ -127,6 +161,16 @@ describe('uploadRecallDocumentsFormHandler', () => {
             name: 'PART_A_RECALL_REPORT',
             text: 'The part A recall report could not be uploaded - try again',
           },
+          {
+            name: 'OTHER',
+            text: 'The other could not be uploaded - try again',
+            href: '#OTHER',
+          },
+          {
+            name: 'OTHER',
+            text: 'The other could not be uploaded - try again',
+            href: '#OTHER',
+          },
         ])
         done()
       },
@@ -148,7 +192,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     const res = {
       locals: { user: {} },
       redirect: () => {
-        expect(addRecallDocument).toHaveBeenCalledTimes(2) // for the two valid files
+        expect(addRecallDocument).toHaveBeenCalledTimes(4) // for the 4 valid files
         expect(req.session.errors).toEqual([
           {
             href: '#PART_A_RECALL_REPORT',

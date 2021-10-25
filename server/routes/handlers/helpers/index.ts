@@ -42,26 +42,25 @@ export const decorateDocs = ({
   recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
 } => {
-  const decoratedUploadedDocs = documentTypes
-    .map(documentType => {
-      const doc = docs.find(d => documentType.name === d.category)
-      if (doc) {
-        return {
-          ...doc,
+  const decoratedUploadedDocs = [] as DecoratedDocument[]
+  documentTypes.forEach(documentType => {
+    docs
+      .filter(d => documentType.name === d.category)
+      .forEach(d => {
+        decoratedUploadedDocs.push({
+          ...d,
           ...documentType,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${doc.documentId}`,
-        }
-      }
-      return undefined
-    })
-    .filter(Boolean)
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${d.documentId}`,
+        })
+      })
+  })
   const decoratedDocTypes = documentTypes
     .filter(doc => doc.type === 'document')
     .map(docType => {
-      const uploadedDoc = decoratedUploadedDocs.find(d => d.category === docType.name)
+      const uploadedDocs = decoratedUploadedDocs.filter(d => d.name === docType.name)
       return {
         ...docType,
-        uploaded: uploadedDoc && { url: uploadedDoc.url, fileName: uploadedDoc.fileName },
+        uploaded: uploadedDocs.map(d => ({ url: d.url, fileName: d.fileName })),
       }
     })
   return decoratedUploadedDocs.reduce(
