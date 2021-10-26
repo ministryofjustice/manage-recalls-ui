@@ -8,7 +8,6 @@ import {
 } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
-import assessRecallEmailPage from '../pages/assessRecallEmail'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
