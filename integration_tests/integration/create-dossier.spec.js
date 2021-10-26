@@ -181,6 +181,24 @@ context('Create a dossier', () => {
     })
   })
 
+  it('User sees a previously saved dossier email', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            documentId: 'ea443809-4b29-445a-8c36-3ff259f48b03',
+            category: 'DOSSIER_EMAIL',
+            fileName: 'email.msg',
+          },
+        ],
+      },
+    })
+    cy.login()
+    const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
+    dossierEmail.assertElementHasText({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL', textToFind: 'email.msg' })
+  })
+
   it("User sees errors if they don't enter info on the letter page", () => {
     cy.task('expectGetRecall', {
       recallId,

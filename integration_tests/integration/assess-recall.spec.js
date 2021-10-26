@@ -219,4 +219,28 @@ context('Assess a recall', () => {
       summaryError: 'The selected file must be an MSG or EML',
     })
   })
+
+  it('User sees a previously saved notification email', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'BOOKED_ON',
+        documents: [
+          {
+            documentId: 'ea443809-4b29-445a-8c36-3ff259f48b03',
+            category: 'RECALL_NOTIFICATION_EMAIL',
+            fileName: 'email.msg',
+          },
+        ],
+      },
+    })
+    cy.login()
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallEmail.assertElementHasText({
+      qaAttr: 'uploadedDocument-RECALL_NOTIFICATION_EMAIL',
+      textToFind: 'email.msg',
+    })
+  })
 })

@@ -4,6 +4,7 @@ import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMa
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
 import { errorMsgUserActionDateTime } from '../../helpers/errorMessages'
+import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 
 export const validateDossierEmail = ({
   requestBody,
@@ -28,8 +29,9 @@ export const validateDossierEmail = ({
     day: requestBody.dossierEmailSentDateDay,
   }
   const dossierEmailSentDate = convertGmtDatePartsToUtc(dossierEmailSentDateParts, { dateMustBeInPast: true })
+  const existingUpload = requestBody[AddDocumentRequest.category.DOSSIER_EMAIL] === 'existingUpload'
   if (
-    !emailFileSelected ||
+    (!emailFileSelected && !existingUpload) ||
     uploadFailed ||
     invalidFileFormat ||
     !confirmDossierEmailSent ||
@@ -53,7 +55,7 @@ export const validateDossierEmail = ({
         })
       )
     }
-    if (confirmDossierEmailSent && !emailFileSelected) {
+    if (confirmDossierEmailSent && !emailFileSelected && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',

@@ -25,6 +25,21 @@ describe('validateEmail', () => {
     })
   })
 
+  it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {
+    const { errors, valuesToSave } = validateDossierEmail({
+      requestBody: { ...requestBody, DOSSIER_EMAIL: 'existingUpload' },
+      emailFileSelected: false,
+      uploadFailed: false,
+      invalidFileFormat: false,
+      actionedByUserId,
+    })
+    expect(valuesToSave).toEqual({
+      dossierEmailSentDate: '2021-09-04',
+      dossierCreatedByUserId: actionedByUserId,
+    })
+    expect(errors).toBeUndefined()
+  })
+
   it('returns an error for the confirm checkbox only, if no fields submitted', () => {
     const emptyBody = Object.entries(requestBody).reduce((acc, [key]) => {
       acc[key] = ''

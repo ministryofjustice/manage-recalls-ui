@@ -77,12 +77,15 @@
                                 cspNonce: cspNonce
                             }) }}
                         </div>
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                        {%  set emailField = recall.recallNotificationEmail %}
+                        {%  include '../partials/uploadedEmailLink.njk' %}
                         {{ govukFileUpload({
                             id: "recallNotificationEmailFileName",
                             name: "recallNotificationEmailFileName",
                             label: {
                                 text: "Upload the email",
-                                classes: 'govuk-label--m'
+                                classes: 'govuk-visually-hidden'
                             },
                             attributes: {
                                 accept: allowedEmailFileExtensionList()

@@ -145,7 +145,7 @@ export interface ReqValidatorReturn {
 
 export interface EmailUploadValidatorArgs {
   requestBody: ObjectMap<string>
-  fileName: string
+  fileName?: string
   emailFileSelected: boolean
   uploadFailed: boolean
   invalidFileFormat: boolean
