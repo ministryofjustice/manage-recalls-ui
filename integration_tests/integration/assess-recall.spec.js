@@ -68,6 +68,14 @@ context('Assess a recall', () => {
       qaAttr: 'recallAssessmentDueText',
       textToFind: 'Overdue: recall assessment was due on 6 August 2020 by 16:33',
     })
+    assessRecall.assertLinkHref({
+      qaAttr: 'recallEmailReceivedDateTimeChange',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/request-received`,
+    })
+    assessRecall.assertLinkHref({
+      qaAttr: 'recallRequestEmailFileNameChange',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/request-received`,
+    })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeYesDecision()
