@@ -184,6 +184,26 @@ context('Book a recall', () => {
     })
   })
 
+  it('User sees a previously saved recall request email', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            documentId: 'ea443809-4b29-445a-8c36-3ff259f48b03',
+            category: 'RECALL_REQUEST_EMAIL',
+            fileName: 'email.msg',
+          },
+        ],
+      },
+    })
+    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
+    recallRequestReceived.assertElementHasText({
+      qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL',
+      textToFind: 'email.msg',
+    })
+  })
+
   it('User sees errors if sentence, offence and release details are not entered', () => {
     const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
     recallLastRelease.clickContinue()

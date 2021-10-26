@@ -240,4 +240,41 @@ describe('emailUploadForm', () => {
     }
     handlerWithUnassign(req, res)
   })
+
+  it('redirects even if the user unassignment fails', done => {
+    const handlerWithUnassign = emailUploadForm({
+      emailFieldName: 'recallNotificationEmailFileName',
+      validator: validateRecallNotificationEmail,
+      unassignAssessingUser,
+      documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
+      nextPageUrlSuffix: 'assess-confirmation',
+    })
+    req.body = {
+      confirmRecallNotificationEmailSent: 'YES',
+      recallNotificationEmailSentDateTimeYear: '2021',
+      recallNotificationEmailSentDateTimeMonth: '09',
+      recallNotificationEmailSentDateTimeDay: '4',
+      recallNotificationEmailSentDateTimeHour: '14',
+      recallNotificationEmailSentDateTimeMinute: '47',
+    }
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(unassignAssessingUser as jest.Mock).mockRejectedValue(new Error('test'))
+    const res = {
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      redirect: (httpStatus, path) => {
+        expect(path).toEqual('/persons/456/recalls/789/assess-confirmation')
+        done()
+      },
+    }
+    handlerWithUnassign(req, res)
+  })
 })

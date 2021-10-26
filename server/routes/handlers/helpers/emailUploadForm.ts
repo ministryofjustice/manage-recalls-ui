@@ -73,10 +73,13 @@ export const emailUploadForm =
         }
         await updateRecall(recallId, valuesToSave, user.token)
         if (unassignAssessingUser) {
-          await unassignAssessingUser(recallId, user.uuid, user.token)
+          try {
+            await unassignAssessingUser(recallId, user.uuid, user.token)
+          } catch (e) {
+            logger.error(`User ${user.uuid} could not be unassigned from recall ${recallId}`)
+          }
         }
         return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
-        throw new Error('Recall update or unassign failed')
       } catch (e) {
         logger.error(e)
         req.session.errors = !saveToApiSuccessful

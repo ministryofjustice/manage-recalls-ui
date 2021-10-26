@@ -3,6 +3,7 @@ import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/model
 import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
+import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 
 export const validateRecallNotificationEmail = ({
   requestBody,
@@ -32,9 +33,9 @@ export const validateRecallNotificationEmail = ({
     dateMustBeInPast: true,
     includeTime: true,
   })
-
+  const existingUpload = requestBody[AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL] === 'existingUpload'
   if (
-    !emailFileSelected ||
+    (!emailFileSelected && !existingUpload) ||
     uploadFailed ||
     invalidFileFormat ||
     !confirmRecallNotificationEmailSent ||
@@ -61,7 +62,7 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !emailFileSelected) {
+    if (confirmRecallNotificationEmailSent && !emailFileSelected && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
