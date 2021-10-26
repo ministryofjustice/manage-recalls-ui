@@ -6,8 +6,8 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
     checkChangeLinks: () => {
       const checkLink = (qaAttr, href) => cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
       checkLink('previousConvictionMainNameChange', '/pre-cons-name?fromPage=check-answers&fromHash=personalDetails')
-      checkLink('recallEmailReceivedDateTimeChange', '/request-received?fromPage=check-answers&fromHash=recallRequest')
-      checkLink('recallRequestEmailFileNameChange', '/request-received?fromPage=check-answers&fromHash=recallRequest')
+      checkLink('recallEmailReceivedDateTimeChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
+      checkLink('recallRequestEmailFileNameChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
       checkLink('sentenceDateChange', '/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceDateGroup')
       checkLink(
         'licenceExpiryDateChange',
