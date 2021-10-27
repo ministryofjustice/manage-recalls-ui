@@ -24,7 +24,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            {% if urlInfo.fromPage %}{% else %}<span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>{% endif %}
             <h1 class="govuk-heading-l">
                 Upload documents
             </h1>
@@ -32,6 +32,14 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+            <p class="govuk-body">Upload these documents:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>Licence</li>
+                <li>Part A recall report</li>
+                <li>Previous convictions sheet</li>
+                <li>OASys report</li>
+            </ul>
+            <p class="govuk-body govuk-!-margin-bottom-6">You can also upload any supporting documents the Probation Service have provided.</p>
             <div class="document-upload">
                 <div class="govuk-form-group">
                     <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post"

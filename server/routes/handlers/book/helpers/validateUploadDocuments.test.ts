@@ -22,14 +22,14 @@ describe('validateUploadedFileTypes', () => {
     const { errors } = validateUploadedFileTypes(fileData)
     expect(errors).toEqual([
       {
-        href: '#UNCATEGORISED',
-        name: 'UNCATEGORISED',
-        text: 'Wesley Holt part a.doc must be a PDF',
+        href: '#documents',
+        name: 'documents',
+        text: "The selected file 'Wesley Holt part a.doc' must be a PDF",
       },
       {
-        href: '#UNCATEGORISED',
-        name: 'UNCATEGORISED',
-        text: 'Wesley Holt psr.pdf must be a PDF',
+        href: '#documents',
+        name: 'documents',
+        text: "The selected file 'Wesley Holt psr.pdf' must be a PDF",
       },
     ])
   })

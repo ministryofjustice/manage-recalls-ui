@@ -89,7 +89,7 @@ context('Create a dossier', () => {
       href: `/persons/${nomsNumber}/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
     })
     // missing documents
-    dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Required to create dossier' })
+    dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
     dossierRecall.assertElementHasText({ qaAttr: 'missing-PRE_SENTENCING_REPORT', textToFind: 'Missing' })
     // disabled Create dossier button
     dossierRecall.assertElementHasText({ qaAttr: 'createDossierDisabled', textToFind: 'Create dossier' })

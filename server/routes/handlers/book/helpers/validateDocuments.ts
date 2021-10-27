@@ -20,8 +20,8 @@ export const validateUploadedFileTypes = (uploadedFileData: UploadedFileMetadata
       errors = errors || []
       errors.push(
         makeErrorObject({
-          id: file.category,
-          text: `${file.originalFileName} must be a ${allowedDocumentFileExtensions
+          id: 'documents',
+          text: `The selected file '${file.originalFileName}' must be a ${allowedDocumentFileExtensions
             .map(ext => ext.label)
             .join(' or ')}`,
         })

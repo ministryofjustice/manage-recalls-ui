@@ -37,7 +37,7 @@
             {% include '../partials/missingDocuments.njk' %}
             <div class="govuk-form-group govuk-!-margin-top-4" >
                 {% if recall.requiredDocsMissing.length %}
-                    <div class="govuk-inset-text govuk-!-margin-bottom-9">You cannot create a dossier without providing the
+                    <div class="govuk-inset-text govuk-!-margin-bottom-9">You cannot create a dossier without the
                         {{ listDocumentLabels(recall.requiredDocsMissing) }} document{% if recall.requiredDocsMissing.length > 1 %}s{% endif %}.
                     </div>
                     <button class="govuk-button govuk-button--disabled" disabled data-qa='createDossierDisabled'>

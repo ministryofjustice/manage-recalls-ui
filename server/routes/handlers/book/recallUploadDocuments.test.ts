@@ -109,34 +109,34 @@ describe('uploadRecallDocumentsFormHandler', () => {
       redirect: () => {
         expect(req.session.errors).toEqual([
           {
-            href: '#UNCATEGORISED',
-            name: 'UNCATEGORISED',
+            href: '#documents',
+            name: 'documents',
             text: 'licence.pdf could not be uploaded - try again',
           },
           {
-            href: '#UNCATEGORISED',
-            name: 'UNCATEGORISED',
+            href: '#documents',
+            name: 'documents',
             text: 'report.pdf could not be uploaded - try again',
           },
           {
-            href: '#UNCATEGORISED',
-            name: 'UNCATEGORISED',
+            href: '#documents',
+            name: 'documents',
             text: 'sheet.pdf could not be uploaded - try again',
           },
           {
-            href: '#UNCATEGORISED',
-            name: 'UNCATEGORISED',
+            href: '#documents',
+            name: 'documents',
             text: 'report.pdf could not be uploaded - try again',
           },
           {
-            name: 'UNCATEGORISED',
+            name: 'documents',
             text: 'test.pdf could not be uploaded - try again',
-            href: '#UNCATEGORISED',
+            href: '#documents',
           },
           {
-            name: 'UNCATEGORISED',
+            name: 'documents',
             text: 'test2.pdf could not be uploaded - try again',
-            href: '#UNCATEGORISED',
+            href: '#documents',
           },
         ])
         done()
@@ -162,14 +162,14 @@ describe('uploadRecallDocumentsFormHandler', () => {
         expect(addRecallDocument).toHaveBeenCalledTimes(4) // for the 4 valid files
         expect(req.session.errors).toEqual([
           {
-            href: '#UNCATEGORISED',
-            name: 'UNCATEGORISED',
-            text: 'licence.doc must be a PDF',
+            href: '#documents',
+            name: 'documents',
+            text: "The selected file 'licence.doc' must be a PDF",
           },
           {
-            href: '#UNCATEGORISED',
-            name: 'UNCATEGORISED',
-            text: 'report.pdf must be a PDF',
+            href: '#documents',
+            name: 'documents',
+            text: "The selected file 'report.pdf' must be a PDF",
           },
         ])
         done()

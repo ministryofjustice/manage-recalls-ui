@@ -7,7 +7,7 @@
                 {{ document.label }}
             </dt>
             <dd class=" govuk-summary-list__value" data-qa='required-{{ document.name }}'>
-                Required to create dossier
+                Missing: needed to create dossier
             </dd>
             <dd class=" govuk-summary-list__actions">
                 <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}' data-qa='uploadedDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden"> {{ document.label }}</span></a>
