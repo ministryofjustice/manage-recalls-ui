@@ -341,7 +341,7 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an uploaded document listed and can categorise it', () => {
+  it('User sees an uploaded document listed', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'
     cy.task('expectGetRecall', {
@@ -369,7 +369,6 @@ context('Book a recall', () => {
       fieldName: `category-${documentId}`,
       value: 'UNCATEGORISED',
     })
-    uploadDocuments.setDocumentCategory({ documentId, category: 'Licence' })
   })
 
   it('User sees previously saved documents', () => {
