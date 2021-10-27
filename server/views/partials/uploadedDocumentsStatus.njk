@@ -1,0 +1,32 @@
+{% if recall.documents.length %}
+<h2 class="govuk-heading-m">Uploaded files</h2>
+<dl class="govuk-summary-list govuk-summary-list--auto-widths">
+  {% for category in recall.documentCategories %}
+    {% for file in category.uploaded %}
+    <div class="govuk-summary-list__row" id='{{ file.documentId }}'>
+      <dt class=" govuk-summary-list__key">
+        <a href='{{ file.url }}' target='_blank' class='govuk-link{% if errors[file.documentId] %} govuk-link--error{% endif %}' data-qa='link-{{ file.documentId }}'>{{ file.fileName }}</a>
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <div class="flex flex--col">
+          <input type='hidden' name='fileName-{{ file.documentId }}' value='{{ file.fileName }}'>
+          <label class="govuk-label govuk-visually-hidden" for="category-{{ file.documentId }}">
+            Select the document category
+          </label>
+          <select class="govuk-select document-upload-select-type" id='category-{{ file.documentId }}' name="category-{{ file.documentId }}">
+            {% for docCategory in recall.documentCategories %}
+            <option value="{{ docCategory.name }}" {% if category.name == docCategory.name %}selected{% endif %}>
+              {{ docCategory.label }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </dd>
+{#      <dd class="govuk-summary-list__actions">#}
+{#        <button type="submit" class="reset-button link-button" name="delete" value="{{file.documentId}}">Delete</button>#}
+{#      </dd>#}
+    </div>
+    {% endfor %}
+  {% endfor %}
+</dl>
+{% endif %}

@@ -4,7 +4,7 @@ import { downloadUploadedDocumentOrEmail, uploadRecallDocumentsFormHandler } fro
 import { getStoredDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
-import { uploadStorageFields } from '../helpers/uploadStorage'
+import { uploadStorageArray } from '../helpers/uploadStorage'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
@@ -13,48 +13,38 @@ describe('uploadRecallDocumentsFormHandler', () => {
   let req
   let resp
 
-  const allFiles = {
-    LICENCE: [
-      {
-        originalname: 'licence.pdf',
-        buffer: 'abc',
-        mimetype: 'application/pdf',
-      },
-    ],
-    PRE_SENTENCING_REPORT: [
-      {
-        originalname: 'report.pdf',
-        buffer: 'def',
-        mimetype: 'application/pdf',
-      },
-    ],
-    PREVIOUS_CONVICTIONS_SHEET: [
-      {
-        originalname: 'sheet.pdf',
-        buffer: 'def',
-        mimetype: 'application/pdf',
-      },
-    ],
-    PART_A_RECALL_REPORT: [
-      {
-        originalname: 'report.pdf',
-        buffer: 'def',
-        mimetype: 'application/pdf',
-      },
-    ],
-    OTHER: [
-      {
-        originalname: 'test.pdf',
-        buffer: 'hgf',
-        mimetype: 'application/pdf',
-      },
-      {
-        originalname: 'test2.pdf',
-        buffer: 'hgf',
-        mimetype: 'application/pdf',
-      },
-    ],
-  }
+  const allFiles = [
+    {
+      originalname: 'licence.pdf',
+      buffer: 'abc',
+      mimetype: 'application/pdf',
+    },
+    {
+      originalname: 'report.pdf',
+      buffer: 'def',
+      mimetype: 'application/pdf',
+    },
+    {
+      originalname: 'sheet.pdf',
+      buffer: 'def',
+      mimetype: 'application/pdf',
+    },
+    {
+      originalname: 'report.pdf',
+      buffer: 'def',
+      mimetype: 'application/pdf',
+    },
+    {
+      originalname: 'test.pdf',
+      buffer: 'hgf',
+      mimetype: 'application/pdf',
+    },
+    {
+      originalname: 'test2.pdf',
+      buffer: 'hgf',
+      mimetype: 'application/pdf',
+    },
+  ]
   beforeEach(() => {
     req = mockGetRequest({ params: { nomsNumber: '456', recallId: '789' } })
     const { res } = getMockRes({
@@ -69,40 +59,48 @@ describe('uploadRecallDocumentsFormHandler', () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
-    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = allFiles
       cb()
     })
     await uploadRecallDocumentsFormHandler(req, resp)
     expect(addRecallDocument).toHaveBeenCalledTimes(6)
     expect(addRecallDocument.mock.calls[0][1]).toEqual({
-      category: 'LICENCE',
+      category: 'UNCATEGORISED',
       fileContent: 'abc',
       fileName: 'licence.pdf',
     })
     expect(addRecallDocument.mock.calls[1][1]).toEqual({
-      category: 'PRE_SENTENCING_REPORT',
+      category: 'UNCATEGORISED',
       fileContent: 'def',
       fileName: 'report.pdf',
     })
     expect(addRecallDocument.mock.calls[2][1]).toEqual({
-      category: 'PREVIOUS_CONVICTIONS_SHEET',
+      category: 'UNCATEGORISED',
       fileContent: 'def',
       fileName: 'sheet.pdf',
     })
     expect(addRecallDocument.mock.calls[3][1]).toEqual({
-      category: 'PART_A_RECALL_REPORT',
+      category: 'UNCATEGORISED',
       fileContent: 'def',
       fileName: 'report.pdf',
     })
-    expect(addRecallDocument.mock.calls[4][1]).toEqual({ category: 'OTHER', fileContent: 'hgf', fileName: 'test.pdf' })
-    expect(addRecallDocument.mock.calls[5][1]).toEqual({ category: 'OTHER', fileContent: 'hgf', fileName: 'test2.pdf' })
+    expect(addRecallDocument.mock.calls[4][1]).toEqual({
+      category: 'UNCATEGORISED',
+      fileContent: 'hgf',
+      fileName: 'test.pdf',
+    })
+    expect(addRecallDocument.mock.calls[5][1]).toEqual({
+      category: 'UNCATEGORISED',
+      fileContent: 'hgf',
+      fileName: 'test2.pdf',
+    })
     expect(req.session.errors).toBeUndefined()
   })
 
   it('creates errors for failed saves to the API', done => {
     ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
-    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = allFiles
       cb()
     })
@@ -111,34 +109,34 @@ describe('uploadRecallDocumentsFormHandler', () => {
       redirect: () => {
         expect(req.session.errors).toEqual([
           {
-            href: '#LICENCE',
-            name: 'LICENCE',
-            text: 'The licence could not be uploaded - try again',
+            href: '#UNCATEGORISED',
+            name: 'UNCATEGORISED',
+            text: 'licence.pdf could not be uploaded - try again',
           },
           {
-            href: '#PRE_SENTENCING_REPORT',
-            name: 'PRE_SENTENCING_REPORT',
-            text: 'The pre-sentencing report could not be uploaded - try again',
+            href: '#UNCATEGORISED',
+            name: 'UNCATEGORISED',
+            text: 'report.pdf could not be uploaded - try again',
           },
           {
-            href: '#PREVIOUS_CONVICTIONS_SHEET',
-            name: 'PREVIOUS_CONVICTIONS_SHEET',
-            text: 'The previous convictions sheet could not be uploaded - try again',
+            href: '#UNCATEGORISED',
+            name: 'UNCATEGORISED',
+            text: 'sheet.pdf could not be uploaded - try again',
           },
           {
-            href: '#PART_A_RECALL_REPORT',
-            name: 'PART_A_RECALL_REPORT',
-            text: 'The part A recall report could not be uploaded - try again',
+            href: '#UNCATEGORISED',
+            name: 'UNCATEGORISED',
+            text: 'report.pdf could not be uploaded - try again',
           },
           {
-            name: 'OTHER',
-            text: 'The other could not be uploaded - try again',
-            href: '#OTHER',
+            name: 'UNCATEGORISED',
+            text: 'test.pdf could not be uploaded - try again',
+            href: '#UNCATEGORISED',
           },
           {
-            name: 'OTHER',
-            text: 'The other could not be uploaded - try again',
-            href: '#OTHER',
+            name: 'UNCATEGORISED',
+            text: 'test2.pdf could not be uploaded - try again',
+            href: '#UNCATEGORISED',
           },
         ])
         done()
@@ -151,10 +149,10 @@ describe('uploadRecallDocumentsFormHandler', () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
-    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       const copyOfFiles = JSON.parse(JSON.stringify(allFiles))
-      copyOfFiles.LICENCE[0].originalname = 'licence.doc'
-      copyOfFiles.PART_A_RECALL_REPORT[0].mimetype = 'application/msword'
+      copyOfFiles[0].originalname = 'licence.doc'
+      copyOfFiles[1].mimetype = 'application/msword'
       req.files = copyOfFiles
       cb()
     })
@@ -164,14 +162,14 @@ describe('uploadRecallDocumentsFormHandler', () => {
         expect(addRecallDocument).toHaveBeenCalledTimes(4) // for the 4 valid files
         expect(req.session.errors).toEqual([
           {
-            href: '#PART_A_RECALL_REPORT',
-            name: 'PART_A_RECALL_REPORT',
-            text: 'The part A recall report must be a PDF',
+            href: '#UNCATEGORISED',
+            name: 'UNCATEGORISED',
+            text: 'licence.doc must be a PDF',
           },
           {
-            href: '#LICENCE',
-            name: 'LICENCE',
-            text: 'The licence must be a PDF',
+            href: '#UNCATEGORISED',
+            name: 'UNCATEGORISED',
+            text: 'report.pdf must be a PDF',
           },
         ])
         done()
@@ -184,7 +182,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
-    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = allFiles
       cb()
     })

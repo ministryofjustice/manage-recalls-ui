@@ -12,6 +12,7 @@ import {
   UpdateRecallRequest,
   UserDetailsResponse,
   Prison,
+  ApiRecallDocument,
 } from '../../@types/manage-recalls-api'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PersonSearchResult | null> {
@@ -70,6 +71,18 @@ export function addRecallDocument(
   token: string
 ): Promise<AddDocumentResponse> {
   return restClient(token).post({ path: `/recalls/${recallId}/documents`, data: document })
+}
+
+export function setDocumentCategory(
+  recallId: string,
+  documentId: string,
+  category: ApiRecallDocument.category,
+  token: string
+): Promise<AddDocumentResponse> {
+  return restClient(token).patch<ApiRecallDocument>({
+    path: `/recalls/${recallId}/documents/${documentId}`,
+    data: { category },
+  })
 }
 
 /*

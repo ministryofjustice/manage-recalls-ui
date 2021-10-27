@@ -23,3 +23,15 @@
 pre.govuk-body {
   white-space: pre-line;
 }
+
+.govuk-link--error {
+  border-left: 5px solid $govuk-error-colour;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: $govuk-error-colour !important;
+}
+
+.govuk-summary-list--auto-widths .govuk-summary-list__key,
+.govuk-summary-list--auto-widths .govuk-summary-list__value {
+  width: auto;
+}

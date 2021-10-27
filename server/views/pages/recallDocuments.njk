@@ -13,7 +13,6 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             {% if errors %}
@@ -31,43 +30,55 @@
             </h1>
         </div>
     </div>
-
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post" enctype="multipart/form-data">
+        <div class="govuk-grid-column-full">
+            <div class="document-upload">
                 <div class="govuk-form-group">
-                    {% for documentCategory in recall.documentCategories %}
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">{{ documentCategory.label }}{% if documentCategory.required != true %} (optional){% endif %}</h2>
-                        {% if documentCategory.uploaded.length %}
-                            <input type='hidden' name='{{ documentCategory.name}}' value='existingUpload'>
-                            <div class='govuk-body govuk-!-margin-bottom-4'>
-                                <ul class='govuk-list'>
-                                {% for uploaded in documentCategory.uploaded %}
-                                    <li><a href='{{ uploaded.url }}' target='_blank' class='govuk-link' data-qa='uploadedDocument-{{ documentCategory.name}}'>{{ uploaded.fileName }}</a></li>
-                                {%endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                        {{ govukFileUpload({
-                            id: documentCategory.name,
-                            name: documentCategory.name,
-                            label: {
-                                text: 'Upload a ' + documentCategory.label,
-                                classes: 'govuk-visually-hidden'
-                            },
-                            attributes: removeUndefinedFromObject({
-                                accept: allowedDocumentFileExtensionList(),
-                                multiple: true if documentCategory.multiple == true else undefined
-                            }),
-                            errorMessage: errorMessage(errors[documentCategory.name])
-                        }) }}
-                    {%  endfor %}
+                    <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post"
+                          enctype="multipart/form-data">
+                        <input type="submit" class="govuk-visually-hidden" name="continue" value="continue" />
+                        <div class="moj-multi-file__uploaded-files">
+                            {% include '../partials/uploadedDocumentsStatus.njk' %}
+                        </div>
+                        <div class="moj-multi-file-upload__upload">
+                            {{ govukFileUpload({
+                                id: 'documents',
+                                name: 'documents',
+                                classes: 'moj-multi-file-upload__input',
+                                label: {
+                                    text: 'Upload files',
+                                    classes: "govuk-visually-hidden"
+                                },
+                                attributes: {
+                                    multiple: true,
+                                    accept: allowedDocumentFileExtensionList()
+                                },
+                                errorMessage: errorMessage(errors[documentType.name])
+                            }) }}
+                        </div>
+                        <button class="govuk-button govuk-button--secondary moj-multi-file-upload__button" name="upload"
+                                value="upload">
+                            Upload files
+                        </button>
+                        <div class="govuk-!-margin-top-8">
+                            <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
+                        </div>
+                    </form>
                 </div>
-                <button class="govuk-button" data-qa='continueButton'>
-                    Continue
-                    </button>
-            </form>
+            </div>
         </div>
     </div>
+{% endblock %}
 
+{% block bodyEnd %}
+{{ super() }}
+<script type="text/javascript" src="/assets/js/document-upload.js"></script>
+<script nonce='{{ cspNonce }}'>
+  if (typeof DocumentUpload !== 'undefined') {
+    new DocumentUpload({
+      container: $('.document-upload'),
+      uploadUrl: '{{ formActionUrl('upload-documents', urlInfo, csrfToken) | safe }}'
+    })
+  }
+</script>
 {% endblock %}
