@@ -339,20 +339,7 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees errors if no documents are uploaded', () => {
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.clickContinue()
-    uploadDocuments.assertErrorMessage({
-      fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Select a part A recall report',
-    })
-    uploadDocuments.assertErrorMessage({
-      fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
-      summaryError: 'Select a previous convictions sheet',
-    })
-  })
-
-  it("User doesn't see errors for previously saved documents", () => {
+  it('User sees previously saved documents', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -365,12 +352,6 @@ context('Book a recall', () => {
       },
     })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.clickContinue()
-    uploadDocuments.assertErrorMessage({
-      fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'Select a part A recall report',
-    })
-    uploadDocuments.assertErrorNotShown({ fieldName: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET })
     uploadDocuments.assertElementHasText({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
       textToFind: 'Pre Cons.pdf',

@@ -18,7 +18,7 @@ import {
   errorMessage,
   removeUndefinedFromObject,
 } from './nunjucksFunctions'
-import { isDefined } from '../routes/handlers/helpers'
+import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString } from '../routes/handlers/helpers/dates'
 import { getReferenceDataItemLabel } from '../referenceData'
 
@@ -55,6 +55,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('getReferenceDataItemLabel', getReferenceDataItemLabel)
   njkEnv.addGlobal('filterActiveItems', filterActiveItems)
   njkEnv.addGlobal('removeUndefinedFromObject', removeUndefinedFromObject)
+  njkEnv.addGlobal('listDocumentLabels', listDocumentLabels)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)

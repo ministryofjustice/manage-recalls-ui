@@ -34,10 +34,20 @@
             {% include '../partials/sentenceDetails.njk' %}
             {% include '../partials/probationDetails.njk' %}
             {% include '../partials/uploadedDocuments.njk' %}
-            <div class="govuk-form-group govuk-!-margin-top-9">
+            {% include '../partials/missingDocuments.njk' %}
+            <div class="govuk-form-group govuk-!-margin-top-4" >
+                {% if recall.requiredDocsMissing.length %}
+                    <div class="govuk-inset-text govuk-!-margin-bottom-9">You cannot create a dossier without providing the
+                        {{ listDocumentLabels(recall.requiredDocsMissing) }} document{% if recall.requiredDocsMissing.length > 1 %}s{% endif %}.
+                    </div>
+                    <button class="govuk-button govuk-button--disabled" disabled data-qa='createDossierDisabled'>
+                        Create dossier
+                    </button>
+                {% else %}
                 <a class="govuk-button" data-qa='continueButton' href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-letter'>
                     Create dossier
                 </a>
+                {% endif %}
             </div>
 
         </div>

@@ -1,4 +1,4 @@
-import { decorateDocs, makeErrorObject, renderErrorMessages, transformErrorMessages } from './index'
+import { decorateDocs, listToString, makeErrorObject, renderErrorMessages, transformErrorMessages } from './index'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 
 describe('makeErrorObject', () => {
@@ -28,10 +28,6 @@ describe('decorateDocs', () => {
     {
       category: ApiRecallDocument.category.LICENCE,
       documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    },
-    {
-      category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
     },
     {
       category: ApiRecallDocument.category.OTHER,
@@ -72,12 +68,7 @@ describe('decorateDocs', () => {
           name: 'PART_A_RECALL_REPORT',
           required: true,
           type: 'document',
-          uploaded: [
-            {
-              fileName: 'Part A.pdf',
-              url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-            },
-          ],
+          uploaded: [],
         },
         {
           fileName: 'Licence.pdf',
@@ -96,7 +87,7 @@ describe('decorateDocs', () => {
           fileName: 'Pre Cons.pdf',
           label: 'Previous convictions sheet',
           name: 'PREVIOUS_CONVICTIONS_SHEET',
-          required: true,
+          hintIfMissing: true,
           type: 'document',
           uploaded: [],
         },
@@ -104,7 +95,7 @@ describe('decorateDocs', () => {
           fileName: 'PSR.pdf',
           label: 'Pre-sentencing report',
           name: 'PRE_SENTENCING_REPORT',
-          required: true,
+          hintIfMissing: true,
           type: 'document',
           uploaded: [],
         },
@@ -164,17 +155,6 @@ describe('decorateDocs', () => {
       ],
       documents: [
         {
-          category: 'PART_A_RECALL_REPORT',
-          documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'Part A.pdf',
-          label: 'Part A recall report',
-          labelLowerCase: 'part A recall report',
-          name: 'PART_A_RECALL_REPORT',
-          required: true,
-          type: 'document',
-          url: '/persons/A123/recalls/abc-456/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-        },
-        {
           category: 'LICENCE',
           documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
           fileName: 'Licence.pdf',
@@ -203,6 +183,32 @@ describe('decorateDocs', () => {
           name: 'OTHER',
           type: 'document',
           url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
+        },
+      ],
+      requiredDocsMissing: [
+        {
+          fileName: 'Part A.pdf',
+          label: 'Part A recall report',
+          labelLowerCase: 'part A recall report',
+          name: 'PART_A_RECALL_REPORT',
+          required: true,
+          type: 'document',
+        },
+      ],
+      missingNotRequiredDocs: [
+        {
+          fileName: 'Pre Cons.pdf',
+          hintIfMissing: true,
+          label: 'Previous convictions sheet',
+          name: 'PREVIOUS_CONVICTIONS_SHEET',
+          type: 'document',
+        },
+        {
+          fileName: 'PSR.pdf',
+          hintIfMissing: true,
+          label: 'Pre-sentencing report',
+          name: 'PRE_SENTENCING_REPORT',
+          type: 'document',
         },
       ],
       dossierEmail: {
@@ -273,5 +279,23 @@ describe('renderErrorMessages', () => {
         },
       ],
     })
+  })
+})
+
+describe('listToString', () => {
+  it('returns a list for 1 item', () => {
+    expect(listToString(['day'])).toEqual('day')
+  })
+
+  it('returns a list for 2 items', () => {
+    expect(listToString(['year', 'day'])).toEqual('year and day')
+  })
+
+  it('returns a list for 3 items', () => {
+    expect(listToString(['year', 'month', 'day'])).toEqual('year, month and day')
+  })
+
+  it('returns a list for 4 items', () => {
+    expect(listToString(['year', 'month', 'day', 'minute'])).toEqual('year, month, day and minute')
   })
 })

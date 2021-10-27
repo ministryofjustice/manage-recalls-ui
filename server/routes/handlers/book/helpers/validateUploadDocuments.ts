@@ -1,11 +1,10 @@
 import { makeErrorObject } from '../../helpers'
-import { FileDataBase64, NamedFormError, ObjectMap } from '../../../../@types'
+import { FileDataBase64, NamedFormError } from '../../../../@types'
 import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
 import { documentCategories } from '../documentCategories'
 
 interface Args {
   fileData: FileDataBase64[]
-  requestBody: ObjectMap<string>
 }
 
 const invalidFileFormat = (file: FileDataBase64) => {
@@ -14,17 +13,11 @@ const invalidFileFormat = (file: FileDataBase64) => {
   )
 }
 
-export const validateUploadDocuments = ({ fileData, requestBody }: Args): { errors?: NamedFormError[] } => {
+export const validateUploadDocuments = ({ fileData }: Args): { errors?: NamedFormError[] } => {
   const validationErrors = documentCategories
     .map(docType => {
       const uploadedFile = fileData.find(file => file.category === docType.name)
       const label = docType.labelLowerCase || docType.label.toLowerCase()
-      if (docType.required && !uploadedFile && !requestBody[docType.name]) {
-        return makeErrorObject({
-          id: docType.name,
-          text: `Select a ${label}`,
-        })
-      }
       if (uploadedFile && invalidFileFormat(uploadedFile)) {
         return makeErrorObject({
           id: uploadedFile.category,

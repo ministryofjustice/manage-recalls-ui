@@ -1,4 +1,4 @@
-import { FileDataBase64, NamedFormError, UploadDocumentMetadata, UploadedFormFields } from '../../../../@types'
+import { FileDataBase64, NamedFormError, UploadedFormFields } from '../../../../@types'
 import { documentCategories } from '../documentCategories'
 import { AddDocumentResponse } from '../../../../@types/manage-recalls-api'
 import { makeErrorObject } from '../../helpers'
@@ -24,9 +24,6 @@ export const makeMetaDataForFiles = (uploadedFormFields: UploadedFormFields): Fi
   })
   return fileData
 }
-
-export const mandatoryDocs = (): UploadDocumentMetadata[] =>
-  documentCategories.filter(doc => doc.type === 'document' && doc.required)
 
 export const listFailedUploads = (
   fileData: FileDataBase64[],
