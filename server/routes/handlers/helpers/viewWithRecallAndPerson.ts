@@ -1,11 +1,12 @@
 import { Request, Response } from 'express'
 import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { decorateDocs, renderErrorMessages } from './index'
+import { renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
 import { getUserNames } from './getUserNames'
 import { dossierDueDateString, recallAssessmentDueText } from './dates'
+import { decorateDocs } from './documents'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
@@ -44,6 +45,7 @@ export const viewWithRecallAndPerson =
     res.locals.recall.previousConvictionMainName =
       recall.previousConvictionMainName || `${res.locals.person.firstName} ${res.locals.person.lastName}`
 
+    // TODO - use nunjucks filters to format these from the views
     res.locals.recall.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
     res.locals.recall.dossierDueText = dossierDueDateString(recall.dossierTargetDate)
 

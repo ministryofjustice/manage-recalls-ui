@@ -1,0 +1,52 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Missing documents" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("upload-documents", urlInfo),
+        attributes: {
+            'data-qa': 'backLinkUploadDocuments'
+        }
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <h1 class="govuk-heading-l">
+                Missing documents
+            </h1>
+            <p class="govuk-body">You have not uploaded these core documents:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>Previous convictions sheet</li>
+                <li>Pre-sentencing report</li>
+            </ul>
+            <p class="govuk-body">You must:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>explain why they are missing</li>
+                <li>email probation asking for the missing files</li>
+                <li>upload the email to probation</li>
+            </ul>
+            <div class="govuk-form-group">
+                <form novalidate action="{{ formActionUrl('missing-documents', urlInfo, csrfToken) }}" method="post"
+                      enctype="multipart/form-data">
+                    <div class="govuk-!-margin-top-4">
+                        <button class="govuk-button" name="continue" value="continue">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

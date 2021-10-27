@@ -2,8 +2,8 @@ import { getFormValues } from './getFormValues'
 import { RecallResponseWithDocuments, FormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
-import { decorateDocs } from './index'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { decorateDocs } from './documents'
 
 describe('getFormValues', () => {
   const errors = {

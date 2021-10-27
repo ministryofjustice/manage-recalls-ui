@@ -1,4 +1,5 @@
-import { ApiRecallDocument, RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
+import { RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
+import { DecoratedDocument } from './documents'
 
 export interface FormError {
   text: string
@@ -22,31 +23,6 @@ export interface KeyedFormErrors extends ObjectMap<FormError> {
   list: NamedFormError[]
 }
 
-export interface UploadDocumentMetadata {
-  label: string
-  labelLowerCase?: string
-  name: ApiRecallDocument.category
-  type: 'document' | 'email'
-  error?: string
-  fileName?: string
-  required?: boolean
-  hintIfMissing?: boolean
-  multiple?: boolean
-}
-
-export interface UploadedFormFields {
-  [fieldname: string]: Express.Multer.File[]
-}
-
-export interface FileDataBase64 {
-  originalFileName: string
-  mimeType: string
-  label: string
-  labelLowerCase?: string
-  category: ApiRecallDocument.category
-  fileContent: string
-}
-
 export interface PersonSearchResult {
   firstName: string
   lastName: string
@@ -63,6 +39,7 @@ export interface DatePartsParsed {
   minute?: number
 }
 
+// TODO - needs updating with all fields
 export interface RecallFormValues {
   recallEmailReceivedDateTimeParts?: DatePartsParsed
   lastReleaseDateParts?: DatePartsParsed
@@ -88,11 +65,6 @@ export interface RecallResponseWithDocuments extends RecallResponse {
   dossierEmail?: DecoratedDocument
   recallNotificationEmail?: DecoratedDocument
   documents: DecoratedDocument[]
-}
-
-export interface DecoratedDocument extends UploadDocumentMetadata {
-  fileName?: string
-  url: string
 }
 
 export interface Prison {
@@ -124,6 +96,7 @@ export type ViewName =
   | 'recallIssuesNeeds'
   | 'recallProbationOfficer'
   | 'recallDocuments'
+  | 'recallMissingDocuments'
   | 'recallCheckAnswers'
   | 'recallConfirmation'
   | 'dossierRecallInformation'

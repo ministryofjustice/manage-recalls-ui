@@ -8,7 +8,6 @@ import {
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
-import { ApiRecallDocument } from '../../server/@types/manage-recalls-api/models/ApiRecallDocument'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
@@ -31,6 +30,7 @@ context('Book a recall', () => {
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectSetDocumentCategory')
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
@@ -83,10 +83,10 @@ context('Book a recall', () => {
     recallProbationOfficer.setAssistantChiefOfficer()
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.upload()
-    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     uploadDocuments.clickContinue()
+    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     const checkAnswers = checkAnswersPage.verifyOnPage()
+    cy.reload()
     // personal details
     checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
@@ -328,33 +328,72 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees errors if upload fails', () => {
+  it('User sees an error if an upload fails', () => {
     cy.task('expectAddRecallDocument', { statusCode: 400 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.upload()
-    uploadDocuments.clickContinue()
-    uploadDocuments.assertErrorMessage({
-      fieldName: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-      summaryError: 'The part A recall report could not be uploaded - try again',
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100)
+    uploadDocuments.assertSummaryErrorMessage({
+      fieldName: 'documents',
+      summaryError: 'test.pdf could not be uploaded - try again',
+    })
+  })
+
+  it('User sees an uploaded document listed', () => {
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            fileName: 'test.pdf',
+            documentId,
+          },
+        ],
+      },
+    })
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertElementHasText({
+      qaAttr: `link-${documentId}`,
+      textToFind: 'test.pdf',
+    })
+    uploadDocuments.assertSelectValue({
+      fieldName: `category-${documentId}`,
+      value: 'UNCATEGORISED',
     })
   })
 
   it('User sees previously saved documents', () => {
+    const documentId = '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
         documents: [
           {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
-            documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            documentId,
           },
         ],
       },
     })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.assertElementHasText({
-      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
+      qaAttr: `link-${documentId}`,
       textToFind: 'Pre Cons.pdf',
+    })
+    uploadDocuments.assertSelectValue({
+      fieldName: `category-${documentId}`,
+      value: 'PREVIOUS_CONVICTIONS_SHEET',
     })
   })
 

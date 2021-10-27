@@ -1,7 +1,7 @@
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { UploadDocumentMetadata } from '../../../@types'
+import { DocumentCategoryMetadata } from '../../../@types/documents'
 
-export const documentCategories: UploadDocumentMetadata[] = [
+export const documentCategories: DocumentCategoryMetadata[] = [
   {
     label: 'Part A recall report',
     labelLowerCase: 'part A recall report',
@@ -66,6 +66,12 @@ export const documentCategories: UploadDocumentMetadata[] = [
   {
     label: 'Other',
     name: ApiRecallDocument.category.OTHER,
+    type: 'document',
+    multiple: true,
+  },
+  {
+    label: 'Choose a type',
+    name: ApiRecallDocument.category.UNCATEGORISED,
     type: 'document',
     multiple: true,
   },

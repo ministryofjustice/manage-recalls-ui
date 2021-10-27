@@ -15,19 +15,23 @@ module.exports = (name, pageObject = {}) => {
     cy.get(`[href="#${fieldName}"]`).should('not.exist')
   }
   const assertErrorMessage = ({ fieldName, summaryError, fieldError }) => {
-    cy.get(`[href="#${fieldName}"`).should($searchResults => {
-      const text = $searchResults.text()
-      expect(text.trim()).to.equal(summaryError)
-    })
+    assertSummaryErrorMessage({ fieldName, summaryError })
     cy.get(`#${fieldName}-error`).should($searchResults => {
       const text = $searchResults.text()
       expect(text.trim()).to.contain(fieldError || summaryError)
     })
   }
+  const assertSummaryErrorMessage = ({ fieldName, summaryError }) => {
+    cy.get(`[href="#${fieldName}"]`).should('have.text', summaryError)
+  }
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
   const clickElement = ({ qaAttr }) => cy.get(`[data-qa="${qaAttr}"]`).click()
   const assertLinkHref = ({ qaAttr, href }) => {
     cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
+  }
+
+  const assertSelectValue = ({ fieldName, value }) => {
+    cy.get(`[name=${fieldName}]`).should('have.value', value)
   }
 
   const enterDateTime = ({ prefix, values }) => {
@@ -57,7 +61,9 @@ module.exports = (name, pageObject = {}) => {
     assertElementHasText,
     assertElementNotPresent,
     assertErrorMessage,
+    assertSummaryErrorMessage,
     assertLinkHref,
+    assertSelectValue,
     clickContinue,
     clickElement,
     enterDateTime,

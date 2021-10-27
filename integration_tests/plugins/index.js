@@ -33,6 +33,7 @@ module.exports = (on, config) => {
     expectSearchRecalls: manageRecallsApi.expectSearchRecalls,
     expectAddRecallDocument: manageRecallsApi.expectAddRecallDocument,
     expectUpdateRecall: manageRecallsApi.expectUpdateRecall,
+    expectSetDocumentCategory: manageRecallsApi.expectSetDocumentCategory,
     expectGetRecallDocument: manageRecallsApi.expectGetRecallDocument,
     expectGetUserDetails: manageRecallsApi.expectGetUserDetails,
     expectAssignAssessment: manageRecallsApi.expectAssignAssessment,
