@@ -22,10 +22,7 @@ module.exports = (name, pageObject = {}) => {
     })
   }
   const assertSummaryErrorMessage = ({ fieldName, summaryError }) => {
-    cy.get(`[href="#${fieldName}"]`).should($searchResults => {
-      const text = $searchResults.text()
-      expect(text.trim()).to.equal(summaryError)
-    })
+    cy.get(`[href="#${fieldName}"]`).should('have.text', summaryError)
   }
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
   const clickElement = ({ qaAttr }) => cy.get(`[data-qa="${qaAttr}"]`).click()
