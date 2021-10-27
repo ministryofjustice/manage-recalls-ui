@@ -30,6 +30,7 @@ context('Book a recall', () => {
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectSetDocumentCategory')
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
@@ -82,7 +83,6 @@ context('Book a recall', () => {
     recallProbationOfficer.setAssistantChiefOfficer()
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.upload()
     uploadDocuments.clickContinue()
     cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     const checkAnswers = checkAnswersPage.verifyOnPage()
@@ -331,11 +331,45 @@ context('Book a recall', () => {
   it('User sees an error if an upload fails', () => {
     cy.task('expectAddRecallDocument', { statusCode: 400 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.upload()
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: 'documents',
       summaryError: 'test.pdf could not be uploaded - try again',
     })
+  })
+
+  it('User sees an uploaded document listed and can categorise it', () => {
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            fileName: 'test.pdf',
+            documentId,
+          },
+        ],
+      },
+    })
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertElementHasText({
+      qaAttr: `link-${documentId}`,
+      textToFind: 'test.pdf',
+    })
+    uploadDocuments.assertSelectValue({
+      fieldName: `category-${documentId}`,
+      value: 'UNCATEGORISED',
+    })
+    uploadDocuments.setDocumentCategory({ documentId, category: 'Licence' })
   })
 
   it('User sees previously saved documents', () => {
