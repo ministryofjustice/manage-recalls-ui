@@ -83,9 +83,10 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.upload()
-    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     uploadDocuments.clickContinue()
+    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     const checkAnswers = checkAnswersPage.verifyOnPage()
+    cy.reload()
     // personal details
     checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
