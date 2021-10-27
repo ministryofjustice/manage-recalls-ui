@@ -335,6 +335,8 @@ context('Book a recall', () => {
       filePath: '../test.pdf',
       mimeType: 'application/pdf',
     })
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(100)
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: 'documents',
       summaryError: 'test.pdf could not be uploaded - try again',
