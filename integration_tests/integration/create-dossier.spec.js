@@ -50,6 +50,16 @@ context('Create a dossier', () => {
         ...getRecallResponse,
         recallId,
         status,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          },
+        ],
       },
     })
     cy.login()
@@ -69,6 +79,20 @@ context('Create a dossier', () => {
     })
     dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
     dossierRecall.assertElementNotPresent({ qaAttr: 'recallNotificationEmailSentDateTime' })
+    // uploaded documents
+    dossierRecall.assertLinkHref({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/34bdf-5717-4562-b3fc-2c963f66afa6`,
+    })
+    dossierRecall.assertLinkHref({
+      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
+    })
+    // missing documents
+    dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Required to create dossier' })
+    dossierRecall.assertElementHasText({ qaAttr: 'missing-PRE_SENTENCING_REPORT', textToFind: 'Missing' })
+    // disabled Create dossier button
+    dossierRecall.assertElementHasText({ qaAttr: 'createDossierDisabled', textToFind: 'Create dossier' })
   })
 
   it('User can create a dossier', () => {

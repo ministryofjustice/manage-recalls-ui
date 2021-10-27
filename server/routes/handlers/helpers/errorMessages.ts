@@ -1,14 +1,6 @@
 import { DateValidationError } from '../../../@types'
 import { allowedEmailFileExtensions } from './allowedUploadExtensions'
-
-export const listItems = (list: string[]) => {
-  if (list.length === 1) {
-    return list[0]
-  }
-  const copy = [...list]
-  const lastItem = copy.pop()
-  return `${copy.join(', ')} and ${lastItem}`
-}
+import { listToString } from './index'
 
 export const errorMsgUserActionDateTime = (
   validationError: DateValidationError,
@@ -30,7 +22,7 @@ export const errorMsgUserActionDateTime = (
     case 'invalidTime':
       return `The time you ${userAction} must be a real time`
     case 'missingDateParts':
-      return `The ${noun} you ${userAction} must include a ${listItems(validationError.invalidParts)}`
+      return `The ${noun} you ${userAction} must include a ${listToString(validationError.invalidParts)}`
     default:
       return `Error with the ${noun} ${userAction}`
   }
@@ -47,7 +39,7 @@ export const errorMsgDate = (validationError: DateValidationError, fieldLabel: s
     case 'invalidDate':
       return `The ${fieldLabel} must be a real date`
     case 'missingDateParts':
-      return `The ${fieldLabel} must include a ${listItems(validationError.invalidParts)}`
+      return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts)}`
     default:
       return `Error - ${fieldLabel}`
   }

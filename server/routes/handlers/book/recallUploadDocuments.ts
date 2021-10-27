@@ -14,10 +14,10 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       if (uploadError) {
         throw uploadError
       }
-      const { files, session, body } = req
+      const { files, session } = req
       const { user, urlInfo } = res.locals
       const fileData = makeMetaDataForFiles(files as UploadedFormFields)
-      const { errors } = validateUploadDocuments({ fileData, requestBody: body })
+      const { errors } = validateUploadDocuments({ fileData })
       if (errors) {
         session.errors = errors
       }

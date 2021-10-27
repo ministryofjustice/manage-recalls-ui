@@ -30,6 +30,7 @@ export interface UploadDocumentMetadata {
   error?: string
   fileName?: string
   required?: boolean
+  hintIfMissing?: boolean
   multiple?: boolean
 }
 

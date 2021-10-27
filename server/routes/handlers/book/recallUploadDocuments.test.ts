@@ -100,37 +100,6 @@ describe('uploadRecallDocumentsFormHandler', () => {
     expect(req.session.errors).toBeUndefined()
   })
 
-  it('creates errors if no documents are uploaded', async () => {
-    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.files = {}
-      cb()
-    })
-    await uploadRecallDocumentsFormHandler(req, resp)
-    expect(addRecallDocument).not.toHaveBeenCalled()
-    expect(req.session.errors).toEqual([
-      {
-        href: '#PART_A_RECALL_REPORT',
-        name: 'PART_A_RECALL_REPORT',
-        text: 'Select a part A recall report',
-      },
-      {
-        href: '#LICENCE',
-        name: 'LICENCE',
-        text: 'Select a licence',
-      },
-      {
-        href: '#PREVIOUS_CONVICTIONS_SHEET',
-        name: 'PREVIOUS_CONVICTIONS_SHEET',
-        text: 'Select a previous convictions sheet',
-      },
-      {
-        href: '#PRE_SENTENCING_REPORT',
-        name: 'PRE_SENTENCING_REPORT',
-        text: 'Select a pre-sentencing report',
-      },
-    ])
-  })
-
   it('creates errors for failed saves to the API', done => {
     ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {

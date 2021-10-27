@@ -1,0 +1,31 @@
+{% if recall.requiredDocsMissing.length or recall.missingNotRequiredDocs.length %}
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='documents'>Missing documents</h2>
+<dl class="govuk-summary-list">
+    {% for document in recall.requiredDocsMissing %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                {{ document.label }}
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='required-{{ document.name }}'>
+                Required to create dossier
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}' data-qa='uploadedDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden"> {{ document.label }}</span></a>
+            </dd>
+        </div>
+    {% endfor %}
+    {% for document in recall.missingNotRequiredDocs %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                {{ document.label }}
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='missing-{{ document.name }}'>
+                Missing
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}' data-qa='uploadedDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden"> {{ document.label }}</span></a>
+            </dd>
+        </div>
+    {% endfor %}
+</dl>
+{% endif %}

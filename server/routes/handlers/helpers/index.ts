@@ -1,5 +1,12 @@
 import nunjucks from 'nunjucks'
-import { DecoratedDocument, FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
+import {
+  DecoratedDocument,
+  FormError,
+  KeyedFormErrors,
+  NamedFormError,
+  ObjectMap,
+  UploadDocumentMetadata,
+} from '../../../@types'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { documentCategories } from '../book/documentCategories'
 
@@ -27,6 +34,12 @@ export const isDefined = (val: unknown) => typeof val !== 'undefined'
 export const isString = (val: unknown) => typeof val === 'string'
 
 export const areStringArraysTheSame = (arr1: unknown[], arr2: unknown[]) => arr1.join('') === arr2.join('')
+
+export const requiredDocsList = (): UploadDocumentMetadata[] =>
+  documentCategories.filter(doc => doc.type === 'document' && doc.required)
+
+export const missingNotRequiredDocsList = (): UploadDocumentMetadata[] =>
+  documentCategories.filter(doc => doc.type === 'document' && doc.hintIfMissing)
 
 export const decorateDocs = ({
   docs,
@@ -82,6 +95,12 @@ export const decorateDocs = ({
     {
       documents: [],
       documentCategories: decoratedDocTypes,
+      requiredDocsMissing: requiredDocsList().filter(
+        requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
+      ),
+      missingNotRequiredDocs: missingNotRequiredDocsList().filter(
+        requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
+      ),
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,
@@ -125,3 +144,14 @@ export const renderErrorMessages = (
     { list: [] }
   ) as KeyedFormErrors
 }
+
+export const listToString = (list: string[]) => {
+  if (list.length === 1) {
+    return list[0]
+  }
+  const copy = [...list]
+  const lastItem = copy.pop()
+  return `${copy.join(', ')} and ${lastItem}`
+}
+
+export const listDocumentLabels = (docs: UploadDocumentMetadata[]) => listToString(docs.map(doc => doc.label))

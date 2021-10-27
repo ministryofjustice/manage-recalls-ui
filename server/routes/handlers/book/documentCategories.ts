@@ -21,14 +21,14 @@ export const documentCategories: UploadDocumentMetadata[] = [
     label: 'Previous convictions sheet',
     name: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
     type: 'document',
-    required: true,
+    hintIfMissing: true,
     fileName: 'Pre Cons.pdf',
   },
   {
     label: 'Pre-sentencing report',
     name: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
     type: 'document',
-    required: true,
+    hintIfMissing: true,
     fileName: 'PSR.pdf',
   },
   {
