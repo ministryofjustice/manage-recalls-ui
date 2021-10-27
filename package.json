@@ -146,7 +146,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "concurrently": "^6.3.0",
-    "cypress": "^8.5.0",
+    "cypress": "^8.7.0",
     "cypress-file-upload": "^5.0.8",
     "cypress-multi-reporters": "^1.5.0",
     "eslint": "^7.2.0",
