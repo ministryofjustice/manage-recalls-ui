@@ -328,21 +328,6 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an error if an upload fails', () => {
-    cy.task('expectAddRecallDocument', { statusCode: 400 })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.upload({
-      filePath: '../test.pdf',
-      mimeType: 'application/pdf',
-    })
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(100)
-    uploadDocuments.assertSummaryErrorMessage({
-      fieldName: 'documents',
-      summaryError: 'test.pdf could not be uploaded - try again',
-    })
-  })
-
   it('User sees an uploaded document listed', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'
