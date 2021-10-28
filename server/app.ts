@@ -16,6 +16,7 @@ import session from 'express-session'
 import connectRedis from 'connect-redis'
 import { randomBytes } from 'crypto'
 
+import promBundle = require('express-prom-bundle')
 import auth from './authentication/auth'
 import indexRoutes from './routes'
 import healthcheck from './services/healthCheck'
@@ -34,6 +35,10 @@ const RedisStore = connectRedis(session)
 
 export default function createApp(userService: UserService): express.Application {
   const app = express()
+
+  // Setup prometheus metrics
+  const metricsMiddleware = promBundle({ includeMethod: true })
+  app.use(metricsMiddleware)
 
   Sentry.init({
     integrations: [
