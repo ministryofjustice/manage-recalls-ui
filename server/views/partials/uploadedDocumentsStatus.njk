@@ -1,6 +1,6 @@
 {% if recall.documents.length %}
 <h2 class="govuk-heading-m">Uploaded documents</h2>
-<dl class="govuk-summary-list govuk-summary-list--auto-widths">
+<dl class="govuk-summary-list govuk-summary-list--auto-widths" data-qa="document-count-{{ recall.documents.length }}">
   {% for category in recall.documentCategories %}
     {% for file in category.uploaded %}
     <div class="govuk-summary-list__row" id='{{ file.documentId }}'>
@@ -13,7 +13,7 @@
           <label class="govuk-label govuk-visually-hidden" for="category-{{ file.documentId }}">
             Select the document category
           </label>
-          <select class="govuk-select document-upload-select-type" id='category-{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-{{ category.name }}'>
+          <select class="govuk-select document-upload-select-type" id='category-{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ category.name }}-{{loop.index}}'>
             {% for docCategory in recall.documentCategories %}
             <option value="{{ docCategory.name }}" {% if category.name == docCategory.name %}selected{% endif %}>
               {{ docCategory.label }}
