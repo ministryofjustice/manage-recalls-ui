@@ -10,7 +10,7 @@ import { ApiRecallDocument } from '../server/@types/manage-recalls-api/models/Ap
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const documentId = '123'
+  const documentId = '11111111-0000-0000-0000-000000000000'
   const category = ApiRecallDocument.category.OASYS_RISK_ASSESSMENT
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('change the category of a document', () => {
     test('can successfully change a category', async () => {
       await provider.addInteraction({
-        state: 'the document exists',
+        state: 'a document exists to be updated',
         ...pactPatchRequest(
           'an update category request',
           `/recalls/${recallId}/documents/${documentId}`,
