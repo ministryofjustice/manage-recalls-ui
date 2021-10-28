@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type Court = {
-  courtId: string
-  courtName: string
+    courtId: string;
+    courtName: string;
 }

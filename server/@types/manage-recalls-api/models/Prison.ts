@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type Prison = {
-  active: boolean
-  prisonId: string
-  prisonName: string
+    active: boolean;
+    prisonId: string;
+    prisonName: string;
 }

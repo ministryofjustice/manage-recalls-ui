@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type LocalDeliveryUnitResponse = {
-  label: string
-  name: string
+    label: string;
+    name: string;
 }
