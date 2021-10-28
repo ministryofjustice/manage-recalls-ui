@@ -328,6 +328,20 @@ context('Book a recall', () => {
     })
   })
 
+  it('User sees an error if an upload fails', () => {
+    cy.task('expectAddRecallDocument', { statusCode: 400 })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertElementPresent({ qaAttr: 'document-count-1' })
+    uploadDocuments.assertSummaryErrorMessage({
+      fieldName: 'documents',
+      summaryError: 'test.pdf could not be uploaded - try again',
+    })
+  })
+
   it('User sees an uploaded document listed', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'

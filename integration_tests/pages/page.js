@@ -7,6 +7,9 @@ module.exports = (name, pageObject = {}) => {
       expect(text.trim()).to.equal(textToFind)
     })
   }
+  const assertElementPresent = ({ qaAttr }) => {
+    cy.get(`[data-qa="${qaAttr}"]`).should('exist')
+  }
   const assertElementNotPresent = ({ qaAttr }) => {
     cy.get(`[data-qa="${qaAttr}"]`).should('not.exist')
   }
@@ -59,6 +62,7 @@ module.exports = (name, pageObject = {}) => {
     logout,
     assertErrorNotShown,
     assertElementHasText,
+    assertElementPresent,
     assertElementNotPresent,
     assertErrorMessage,
     assertSummaryErrorMessage,
