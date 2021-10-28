@@ -2,13 +2,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ApiRecallDocument = {
-    category: ApiRecallDocument.category;
+export type UpdateDocumentResponse = {
+    category: UpdateDocumentResponse.category;
     documentId: string;
-    fileName?: string;
+    fileName: string;
+    recallId: string;
 }
 
-export namespace ApiRecallDocument {
+export namespace UpdateDocumentResponse {
 
     export enum category {
         CHARGE_SHEET = 'CHARGE_SHEET',

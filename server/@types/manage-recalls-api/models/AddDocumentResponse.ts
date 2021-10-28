@@ -3,5 +3,5 @@
 /* eslint-disable */
 
 export type AddDocumentResponse = {
-  documentId: string
+    documentId: string;
 }
