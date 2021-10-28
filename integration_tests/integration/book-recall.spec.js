@@ -335,7 +335,6 @@ context('Book a recall', () => {
       filePath: '../test.pdf',
       mimeType: 'application/pdf',
     })
-    uploadDocuments.assertElementPresent({ qaAttr: 'document-count-1' })
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: 'documents',
       summaryError: 'test.pdf could not be uploaded - try again',
