@@ -3,10 +3,10 @@ import prometheusClient from 'prom-client'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
 
-const timerRecallList = new prometheusClient.Gauge({ name: 'getRecallList_seconds', help: 'getRecallList' })
-const timerSearchByNomsNumber = new prometheusClient.Gauge({
-  name: 'searchByNomsNumber_seconds_total',
-  help: 'searchByNomsNumber',
+const timerRecallList = new prometheusClient.Summary({ name: 'recall_list_seconds', help: 'recall_list_seconds' })
+const timerSearchByNomsNumber = new prometheusClient.Summary({
+  name: 'search_person_seconds_total',
+  help: 'search_person_seconds_total',
   labelNames: ['requests_total'],
 })
 
