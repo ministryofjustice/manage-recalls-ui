@@ -1,14 +1,26 @@
 import { Request, Response } from 'express'
+import prometheusClient from 'prom-client'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
 
+const timerRecallList = new prometheusClient.Gauge({ name: 'getRecallList_seconds', help: 'getRecallList' })
+const timerSearchByNomsNumber = new prometheusClient.Gauge({
+  name: 'searchByNomsNumber_seconds_total',
+  help: 'searchByNomsNumber',
+  labelNames: ['requests_total'],
+})
+
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   const { token } = res.locals.user
+  const timerRecallListEnd = timerRecallList.startTimer()
   const recalls = await getRecallList(token)
+  timerRecallListEnd()
   const recallsWithNomsNumbers = recalls.filter(recall => Boolean(recall.nomsNumber))
   const successful = [] as RecallResult[]
   const failed = [] as string[]
   if (recallsWithNomsNumbers.length) {
+    timerSearchByNomsNumber.labels({ requests_total: recallsWithNomsNumbers.length })
+    const timerSearchByNomsNumberEnd = timerSearchByNomsNumber.startTimer()
     const results = await Promise.allSettled(
       recallsWithNomsNumbers.map(recall =>
         searchByNomsNumber(recall.nomsNumber, token).then(
@@ -20,6 +32,7 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         )
       )
     )
+    timerSearchByNomsNumberEnd()
     results.forEach((result, idx) => {
       if (result.status === 'fulfilled') {
         successful.push(result.value)
