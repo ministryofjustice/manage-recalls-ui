@@ -59,12 +59,12 @@ describe('validateCategories', () => {
       {
         href: '#45',
         name: '45',
-        text: "You can't upload more than one previous convictions sheet",
+        text: 'You can only upload one previous convictions sheet',
       },
       {
         href: '#67',
         name: '67',
-        text: "You can't upload more than one previous convictions sheet",
+        text: 'You can only upload one previous convictions sheet',
       },
     ])
     expect(valuesToSave).toEqual([{ category: 'PREVIOUS_CONVICTIONS_SHEET', documentId: '23', fileName: 'report.pdf' }])
