@@ -45,7 +45,7 @@ export const validateCategories = (categorisedFileData: CategorisedFileMetadata[
       errors.push(
         makeErrorObject({
           id: file.documentId,
-          text: `You can't upload more than one ${formatDocLabel(file.category)}`,
+          text: `You can only upload one ${formatDocLabel(file.category)}`,
         })
       )
       hasError = true
