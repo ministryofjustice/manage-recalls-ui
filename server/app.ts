@@ -37,7 +37,11 @@ export default function createApp(userService: UserService): express.Application
   const app = express()
 
   // Setup prometheus metrics
-  const metricsMiddleware = promBundle({ includeMethod: true })
+  const metricsMiddleware = promBundle({
+    includeMethod: true,
+    includePath: true,
+    normalizePath: [['^/assets/.+$', '/assets/#assetPath']],
+  })
   app.use(metricsMiddleware)
 
   Sentry.init({
