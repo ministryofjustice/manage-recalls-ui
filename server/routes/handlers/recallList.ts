@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
