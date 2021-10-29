@@ -1,13 +1,14 @@
 import { Request, Response } from 'express'
-import { defaultClient } from 'applicationinsights'
+import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
+  const appInsightsClient = buildAppInsightsClient()
   const { token } = res.locals.user
   const start = performance.now()
   const recalls = await getRecallList(token)
-  defaultClient.trackMetric({ name: 'getRecallList', value: Math.round(performance.now() - start) })
+  appInsightsClient?.trackMetric({ name: 'getRecallList', value: Math.round(performance.now() - start) })
   const recallsWithNomsNumbers = recalls.filter(recall => Boolean(recall.nomsNumber))
   const successful = [] as RecallResult[]
   const failed = [] as string[]
@@ -24,8 +25,8 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         )
       )
     )
-    defaultClient.trackMetric({ name: 'searchByNomsNumber_total', value: Math.round(performance.now() - start2) })
-    defaultClient.trackMetric({ name: 'searchByNomsNumber_call_count', value: recallsWithNomsNumbers.length })
+    appInsightsClient?.trackMetric({ name: 'searchByNomsNumber_total', value: Math.round(performance.now() - start2) })
+    appInsightsClient?.trackMetric({ name: 'searchByNomsNumber_call_count', value: recallsWithNomsNumbers.length })
     results.forEach((result, idx) => {
       if (result.status === 'fulfilled') {
         successful.push(result.value)
