@@ -1,26 +1,18 @@
 import { Request, Response } from 'express'
-import prometheusClient from 'prom-client'
+import { defaultClient } from 'applicationinsights'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
 
-const timerRecallList = new prometheusClient.Summary({ name: 'recall_list_seconds', help: 'recall_list_seconds' })
-const timerSearchByNomsNumber = new prometheusClient.Summary({
-  name: 'search_person_seconds_total',
-  help: 'search_person_seconds_total',
-  labelNames: ['requests_total'],
-})
-
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   const { token } = res.locals.user
-  const timerRecallListEnd = timerRecallList.startTimer()
+  const start = performance.now()
   const recalls = await getRecallList(token)
-  timerRecallListEnd()
+  defaultClient.trackMetric({ name: 'getRecallList', value: Math.round(performance.now() - start) })
   const recallsWithNomsNumbers = recalls.filter(recall => Boolean(recall.nomsNumber))
   const successful = [] as RecallResult[]
   const failed = [] as string[]
   if (recallsWithNomsNumbers.length) {
-    timerSearchByNomsNumber.labels({ requests_total: recallsWithNomsNumbers.length })
-    const timerSearchByNomsNumberEnd = timerSearchByNomsNumber.startTimer()
+    const start2 = performance.now()
     const results = await Promise.allSettled(
       recallsWithNomsNumbers.map(recall =>
         searchByNomsNumber(recall.nomsNumber, token).then(
@@ -32,7 +24,8 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         )
       )
     )
-    timerSearchByNomsNumberEnd()
+    defaultClient.trackMetric({ name: 'searchByNomsNumber_total', value: Math.round(performance.now() - start2) })
+    defaultClient.trackMetric({ name: 'searchByNomsNumber_call_count', value: recallsWithNomsNumbers.length })
     results.forEach((result, idx) => {
       if (result.status === 'fulfilled') {
         successful.push(result.value)
