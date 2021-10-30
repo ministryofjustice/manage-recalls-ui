@@ -1,9 +1,9 @@
-{% if env == 'PRODUCTION' %}
+{% if env == 'PRODUCTION' or env == 'PRE-PRODUCTION' %}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-J8PD0LLKCZ"></script>
 <script nonce='{{ cspNonce }}'>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-J8PD0LLKCZ');
+  gtag('config', 'G-J8PD0LLKCZ'{% if recall %}, { recallId: "{{ recall.recallId }}" }{% endif %});
 </script>
 {% endif %}
