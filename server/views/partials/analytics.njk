@@ -4,6 +4,9 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-J8PD0LLKCZ'{% if recall %}, { recallId: "{{ recall.recallId }}" }{% endif %});
+  gtag('config', 'G-J8PD0LLKCZ', {
+    page_location: document.location.href.replace(/\/persons\/[^\/]+\//, '/persons/[nomsNumber]/'),
+    {% if recall %}recallId: "{{ recall.recallId }}"{% endif %}
+  });
 </script>
 {% endif %}
