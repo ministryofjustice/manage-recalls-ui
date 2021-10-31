@@ -12,7 +12,7 @@ import {
   selectItems,
   userNameFilter,
 } from './nunjucksFunctions'
-import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
+import { reasonForRecall } from '../referenceData'
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {
@@ -106,26 +106,23 @@ describe('checkboxItems function', () => {
   it('marks the selected items as checked', () => {
     const items = [
       {
-        value: RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE,
+        value: reasonForRecall.BREACH_EXCLUSION_ZONE,
         text: 'Breach of exclusion zone',
       },
       {
-        value: RecallResponse.reasonForRecall.ELM_BREACH_EXCLUSION_ZONE,
+        value: reasonForRecall.ELM_BREACH_EXCLUSION_ZONE,
         text: 'Electronic locking and monitoring (ELM) - Breach of exclusion zone - detected by ELM',
       },
       {
-        value: RecallResponse.reasonForRecall.ELM_BREACH_NON_CURFEW_CONDITION,
+        value: reasonForRecall.ELM_BREACH_NON_CURFEW_CONDITION,
         text: 'Electronic locking and monitoring (ELM) - Breach of non-curfew related condition',
       },
       {
-        value: RecallResponse.reasonForRecall.OTHER,
+        value: reasonForRecall.OTHER,
         text: 'Other',
       },
     ]
-    const result = checkboxItems(items, [
-      RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE,
-      RecallResponse.reasonForRecall.ELM_EQUIPMENT_TAMPER,
-    ])
+    const result = checkboxItems(items, [reasonForRecall.BREACH_EXCLUSION_ZONE, reasonForRecall.ELM_EQUIPMENT_TAMPER])
     expect(result).toEqual([
       {
         checked: true,
@@ -150,15 +147,13 @@ describe('checkboxItems function', () => {
   it('includes any provided conditional content', () => {
     const items = [
       {
-        value: RecallResponse.reasonForRecall.OTHER,
+        value: reasonForRecall.OTHER,
         text: 'Other',
       },
     ]
-    const result = checkboxItems(
-      items,
-      [RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE, RecallResponse.reasonForRecall.ELM_EQUIPMENT_TAMPER],
-      { OTHER: '<div>test</div>' }
-    )
+    const result = checkboxItems(items, [reasonForRecall.BREACH_EXCLUSION_ZONE, reasonForRecall.ELM_EQUIPMENT_TAMPER], {
+      OTHER: '<div>test</div>',
+    })
     expect(result).toEqual([
       {
         text: 'Other',
@@ -175,15 +170,15 @@ describe('filterSelectedItems', () => {
   it('returns a filtered list of only selected items', () => {
     const items = [
       {
-        value: RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE,
+        value: reasonForRecall.BREACH_EXCLUSION_ZONE,
         text: 'Electronic locking and monitoring (ELM) - Breach of non-curfew related condition',
       },
       {
-        value: RecallResponse.reasonForRecall.OTHER,
+        value: reasonForRecall.OTHER,
         text: 'Other',
       },
     ]
-    const result = filterSelectedItems(items, [RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE])
+    const result = filterSelectedItems(items, [reasonForRecall.BREACH_EXCLUSION_ZONE])
     expect(result).toEqual([
       {
         text: 'Electronic locking and monitoring (ELM) - Breach of non-curfew related condition',
