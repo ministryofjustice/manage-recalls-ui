@@ -90,7 +90,7 @@ context('Create a dossier', () => {
     })
     // missing documents
     dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
-    dossierRecall.assertElementHasText({ qaAttr: 'missing-PRE_SENTENCING_REPORT', textToFind: 'Missing' })
+    dossierRecall.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
     // disabled Create dossier button
     dossierRecall.assertElementHasText({ qaAttr: 'createDossierDisabled', textToFind: 'Create dossier' })
   })

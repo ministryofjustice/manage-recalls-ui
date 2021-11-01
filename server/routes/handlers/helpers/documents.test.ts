@@ -75,7 +75,6 @@ describe('decorateDocs', () => {
           label: 'Pre-sentencing report',
           name: 'PRE_SENTENCING_REPORT',
           type: 'document',
-          hintIfMissing: true,
           uploaded: [],
         },
         {
@@ -84,6 +83,7 @@ describe('decorateDocs', () => {
           labelLowerCase: 'OASys risk assessment',
           name: 'OASYS_RISK_ASSESSMENT',
           type: 'document',
+          hintIfMissing: true,
           uploaded: [],
         },
         {
@@ -192,10 +192,11 @@ describe('decorateDocs', () => {
           type: 'document',
         },
         {
-          fileName: 'PSR.pdf',
+          fileName: 'OASys.pdf',
           hintIfMissing: true,
-          label: 'Pre-sentencing report',
-          name: 'PRE_SENTENCING_REPORT',
+          label: 'OASys Risk Assessment',
+          labelLowerCase: 'OASys risk assessment',
+          name: 'OASYS_RISK_ASSESSMENT',
           type: 'document',
         },
       ],

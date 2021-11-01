@@ -28,7 +28,6 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     label: 'Pre-sentencing report',
     name: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
     type: 'document',
-    hintIfMissing: true,
     fileName: 'PSR.pdf',
   },
   {
@@ -36,6 +35,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     labelLowerCase: 'OASys risk assessment',
     name: ApiRecallDocument.category.OASYS_RISK_ASSESSMENT,
     type: 'document',
+    hintIfMissing: true,
     fileName: 'OASys.pdf',
   },
   {
