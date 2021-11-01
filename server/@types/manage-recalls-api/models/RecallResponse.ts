@@ -19,6 +19,7 @@ export type RecallResponse = {
     conditionalReleaseDate?: string;
     contraband?: boolean;
     contrabandDetail?: string;
+    createdByUserId?: string;
     createdDateTime: string;
     currentPrison?: string;
     differentNomsNumber?: boolean;

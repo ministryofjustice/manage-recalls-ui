@@ -8,8 +8,9 @@ export const createRecall = async (req: Request, res: Response): Promise<void> =
     res.sendStatus(400)
     return
   }
+  const { user } = res.locals
   try {
-    const recall = await createRecallApi(nomsNumber, res.locals.user.token)
+    const recall = await createRecallApi(nomsNumber, user.uuid, user.token)
     if (!recall.recallId) {
       throw new Error("Created recall didn't return a recallId")
     }
