@@ -10,6 +10,9 @@ const uploadDocumentsPage = ({ nomsNumber, recallId } = {}) =>
         cy.get(`[name="documents"]`).attachFile(file)
       })
     },
+    uploadSingleFile: file => {
+      cy.get(`[name="documents"]`).attachFile(file)
+    },
     setDocumentCategory: ({ documentId, category }) => cy.get(`[id="category-${documentId}"]`).select(category),
   })
 

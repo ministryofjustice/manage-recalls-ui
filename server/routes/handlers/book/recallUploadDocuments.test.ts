@@ -99,7 +99,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
   })
 
   it('creates errors for failed saves to the API', done => {
-    ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
+    ;(addRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
     ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = allFiles
       cb()
@@ -137,6 +137,34 @@ describe('uploadRecallDocumentsFormHandler', () => {
             name: 'documents',
             text: 'test2.pdf could not be uploaded - try again',
             href: '#documents',
+          },
+        ])
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('creates an error for a failed save to the API due to a virus', done => {
+    ;(addRecallDocument as jest.Mock).mockRejectedValue({ data: 'VirusFoundException' })
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = [
+        {
+          originalname: 'licence.pdf',
+          buffer: 'abc',
+          mimetype: 'application/pdf',
+        },
+      ]
+      cb()
+    })
+    const res = {
+      locals: { user: {} },
+      redirect: () => {
+        expect(req.session.errors).toEqual([
+          {
+            href: '#documents',
+            name: 'documents',
+            text: 'licence.pdf contains a virus',
           },
         ])
         done()
