@@ -1,4 +1,9 @@
-import { getReferenceDataItemLabel, isStringValidReferenceData, ReferenceDataCategories } from './index'
+import {
+  getReferenceDataItemLabel,
+  isStringValidReferenceData,
+  ReferenceDataCategories,
+  reasonForRecall,
+} from './index'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 
 describe('Reference data helpers', () => {
@@ -14,7 +19,7 @@ describe('Reference data helpers', () => {
     })
 
     it('returns a label for recall reasons', () => {
-      const label = getReferenceDataItemLabel('reasonsForRecall', RecallResponse.reasonForRecall.BREACH_EXCLUSION_ZONE)
+      const label = getReferenceDataItemLabel('reasonsForRecall', reasonForRecall.BREACH_EXCLUSION_ZONE)
       expect(label).toEqual('Breach of exclusion zone')
     })
 

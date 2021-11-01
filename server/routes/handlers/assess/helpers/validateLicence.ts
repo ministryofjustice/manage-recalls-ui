@@ -1,8 +1,8 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
-import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { errorMsgProvideDetail } from '../../helpers/errorMessages'
+import { reasonForRecall } from '../../../../referenceData'
 
 export const validateLicence = (
   requestBody: ObjectMap<unknown>
@@ -18,7 +18,7 @@ export const validateLicence = (
   }
   const noOtherDetail =
     Array.isArray(reasonsForRecallList) &&
-    reasonsForRecallList?.includes(RecallResponse.reasonForRecall.OTHER) &&
+    reasonsForRecallList?.includes(reasonForRecall.OTHER) &&
     !reasonsForRecallOtherDetail
   if (!licenceConditionsBreached || !reasonsForRecall || noOtherDetail) {
     errors = []
@@ -55,7 +55,7 @@ export const validateLicence = (
   if (!errors) {
     valuesToSave = {
       licenceConditionsBreached: licenceConditionsBreached as string,
-      reasonsForRecall: reasonsForRecallList as RecallResponse.reasonForRecall[],
+      reasonsForRecall: reasonsForRecallList as reasonForRecall[],
       reasonsForRecallOtherDetail: reasonsForRecallOtherDetail as string,
     }
   }
