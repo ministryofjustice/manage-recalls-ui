@@ -159,3 +159,9 @@ export interface UrlInfo {
   currentPage: string
   basePath: string
 }
+
+export interface AllowedUploadFileType {
+  extension: string
+  label: string
+  mimeType?: string
+}

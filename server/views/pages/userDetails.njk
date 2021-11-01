@@ -65,12 +65,23 @@
                     {{ govukFileUpload({
                         id: 'signature',
                         name: 'signature',
+                        hint: {
+                            text: 'The file must be a ' + allowedImageFileTypeLabelList()
+                        },
+                        attributes: {
+                            accept: allowedEmailFileExtensionList()
+                        },
                         label: {
-                            text: 'Upload a signature'
+                            text: 'Upload a signature',
+                            classes: "govuk-label--m"
                         }
                     }) }}
+                    {%  if user.signature %}
+                        <div class='govuk-!-margin-top-4'>
                     <input name='signatureEncoded' type='hidden' value='{{ user.signature }}'>
-                    <img src="data:image/jpeg;base64,{{ user.signature }}"/>
+                    <img height='100' src="data:image/jpeg;base64,{{ user.signature }}"/>
+                        </div>
+                    {% endif %}
                 </div>
                 <div>
                     <button class="govuk-button" data-qa='updateButton'>

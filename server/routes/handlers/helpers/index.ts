@@ -64,13 +64,20 @@ export const renderErrorMessages = (
   ) as KeyedFormErrors
 }
 
-export const listToString = (list: string[]) => {
+export const listToString = (list: string[], conjunction: string) => {
   if (list.length === 1) {
     return list[0]
   }
   const copy = [...list]
-  const lastItem = copy.pop()
-  return `${copy.join(', ')} and ${lastItem}`
+  if (conjunction) {
+    const lastItem = copy.pop()
+    return `${copy.join(', ')} ${conjunction} ${lastItem}`
+  }
+  copy.join(', ')
 }
 
-export const listDocumentLabels = (docs: UploadedFileMetadata[]) => listToString(docs.map(doc => doc.label))
+export const listDocumentLabels = (docs: UploadedFileMetadata[]) =>
+  listToString(
+    docs.map(doc => doc.label),
+    'and'
+  )
