@@ -382,6 +382,32 @@ context('Book a recall', () => {
     })
   })
 
+  it('User sees an error if an upload fails', () => {
+    cy.task('expectAddRecallDocument', { statusCode: 400 })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertSummaryErrorMessage({
+      fieldName: 'documents',
+      summaryError: 'test.pdf could not be uploaded - try again',
+    })
+  })
+
+  it('User sees an error if an upload has a virus', () => {
+    cy.task('expectAddRecallDocument', { statusCode: 400, responseBody: 'VirusFoundException' })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.upload({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertSummaryErrorMessage({
+      fieldName: 'documents',
+      summaryError: 'test.pdf contains a virus',
+    })
+  })
+
   it('user can check and change their answers then navigate back to the check answers page', () => {
     cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
