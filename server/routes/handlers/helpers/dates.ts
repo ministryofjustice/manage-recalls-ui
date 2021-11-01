@@ -7,6 +7,7 @@ Settings.throwOnInvalid = true
 
 const europeLondon = 'Europe/London'
 const datePresentationFormat = 'd MMMM yyyy'
+const datePresentationNoYearFormat = 'd MMMM'
 const timePresentationFormat = 'HH:mm'
 const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
 
@@ -159,7 +160,12 @@ export const recallAssessmentDueText = (isoDate: string): string | undefined => 
     return undefined
   }
   try {
-    return recallAssessmentDueString(getDateTimeUTC(isoDate))
+    return dueDateLabel({
+      dueItemLabel: 'Recall assessment',
+      dueIsoDateTime: isoDate,
+      includeTime: true,
+      shortFormat: false,
+    })
   } catch (err) {
     logger.error(err)
     return undefined
@@ -172,7 +178,7 @@ export const dossierDueDateString = (dueDateTime: string): string => {
   }
   const now = DateTime.now()
   try {
-    const overdue = now.diff(getDateTimeUTC(dueDateTime)).toMillis() >= 0
+    const overdue = now.diff(getDateTimeUTC(dueDateTime), 'days').days >= 1
     if (overdue) {
       return 'Overdue: Due on'
     }
@@ -183,31 +189,68 @@ export const dossierDueDateString = (dueDateTime: string): string => {
   }
 }
 
-export const recallAssessmentDueString = (dueDateTime: DateTime): string => {
+export const dueDateLabel = ({
+  dueItemLabel,
+  dueIsoDateTime,
+  includeTime = true,
+  shortFormat = false,
+}: {
+  dueItemLabel?: string
+  dueIsoDateTime: string
+  includeTime?: boolean
+  shortFormat?: boolean
+}): string => {
+  if (!dueIsoDateTime) {
+    return ''
+  }
+  const dueDateTime = getDateTimeUTC(dueIsoDateTime)
   const now = DateTime.now()
-  const overdue = now.diff(dueDateTime).toMillis() >= 0
+  const overdue = includeTime ? now.diff(dueDateTime).toMillis() >= 0 : now.diff(dueDateTime, 'days').days >= 1
   const startOfToday = now.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
   const earlierToday = overdue && startOfToday.diff(dueDateTime).toMillis() < 0
   const twentyFourHours = Duration.fromISO('PT24H')
-  const endOfToday = startOfToday.plus(twentyFourHours)
+  const endOfToday = startOfToday.plus(twentyFourHours).minus(1)
+  const startOfYesterday = startOfToday.minus(twentyFourHours)
   const afterTomorrow = endOfToday.plus(twentyFourHours).diff(dueDateTime).toMillis() < 0
   const afterToday = afterTomorrow || endOfToday.diff(dueDateTime).toMillis() < 0
+  const afterYesterday = overdue && startOfYesterday.diff(dueDateTime).toMillis() <= 0
   const dueForPresentation = dueDateTime.setZone(europeLondon)
   const dueDate = dueForPresentation.toFormat(datePresentationFormat)
-  const dueTimeOfDay = dueForPresentation.toFormat(timePresentationFormat)
+  const dueDateNoYear = dueForPresentation.toFormat(datePresentationNoYearFormat)
+  const dueTimeOfDay = includeTime
+    ? `${shortFormat ? ' at ' : ' by '}${dueForPresentation.toFormat(timePresentationFormat)}`
+    : ''
   if (afterTomorrow) {
-    return `Recall assessment will be due on ${dueDate} by ${dueTimeOfDay}`
+    if (shortFormat) {
+      return `${dueDateNoYear}${dueTimeOfDay}`
+    }
+    return `${dueItemLabel} will be due on ${dueDate}${dueTimeOfDay}`
   }
   if (afterToday) {
-    return `Recall assessment due tomorrow by ${dueTimeOfDay}`
+    if (shortFormat) {
+      return `Tomorrow${dueTimeOfDay}`
+    }
+    return `${dueItemLabel} due tomorrow${dueTimeOfDay}`
   }
   if (earlierToday) {
-    return `Overdue: recall assessment was due today by ${dueTimeOfDay}`
+    if (shortFormat) {
+      return `Today${dueTimeOfDay}`
+    }
+    return `Overdue: ${dueItemLabel.toLowerCase()} was due today${dueTimeOfDay}`
   }
   if (overdue) {
-    return `Overdue: recall assessment was due on ${dueDate} by ${dueTimeOfDay}`
+    if (shortFormat) {
+      if (afterYesterday) {
+        return `Yesterday${dueTimeOfDay}`
+      }
+      return `${dueDateNoYear}${dueTimeOfDay}`
+    }
+    return `Overdue: ${dueItemLabel.toLowerCase()} was due on ${dueDate}${dueTimeOfDay}`
   }
-  return `Recall assessment due today by ${dueTimeOfDay}`
+  if (shortFormat) {
+    return `Today${dueTimeOfDay}`
+  }
+  return `${dueItemLabel} due today${dueTimeOfDay}`
 }
 
 function getDateTimeUTC(isoDate: string) {

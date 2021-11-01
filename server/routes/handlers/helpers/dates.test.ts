@@ -3,7 +3,7 @@ import {
   convertGmtDatePartsToUtc,
   dossierDueDateString,
   formatDateTimeFromIsoString,
-  recallAssessmentDueString,
+  dueDateLabel,
   recallAssessmentDueText,
   splitIsoDateToParts,
 } from './dates'
@@ -282,6 +282,12 @@ describe('Date helpers', () => {
       expect(formatted).toEqual('Overdue: Due on')
     })
 
+    it("doesn't show a due date of today as overdue", () => {
+      const date = DateTime.now().toString()
+      const formatted = dossierDueDateString(date)
+      expect(formatted).toEqual('Due on')
+    })
+
     it('from valid not overdue due date returns correct message', () => {
       const date = DateTime.now()
         .plus(Duration.fromObject({ days: 1 }))
@@ -301,86 +307,206 @@ describe('Date helpers', () => {
     })
   })
 
-  describe('recallAssessmentDueString all variants in BST one hour ahead of UTC', () => {
-    const fixedNow = asUtcDateTime('2020-07-15T15:10:00.000Z')
-    const laterToday = asUtcDateTime('2020-07-15T15:15:00.000Z')
-    const earlierToday = asUtcDateTime('2020-07-15T15:05:00.000Z')
-    const yesterday = asUtcDateTime('2020-07-14T16:10:00.000Z')
-    const tomorrow = asUtcDateTime('2020-07-16T11:10:00.000Z')
-    const afterTomorrow = asUtcDateTime('2020-07-17T10:10:00.000Z')
-
+  describe('dueDateLabel', () => {
     let dateNowSpy: jest.SpyInstance
-
-    beforeAll(() => {
-      // Lock Time
-      dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => fixedNow.toMillis())
-    })
 
     afterAll(() => {
       // Unlock Time
       dateNowSpy.mockRestore()
     })
 
-    it('due date later today shows today by time of day', () => {
-      const formatted = recallAssessmentDueString(laterToday)
-      expect(formatted).toEqual('Recall assessment due today by 16:15')
+    describe('dueDateLabel all variants in BST one hour ahead of UTC', () => {
+      const dueItemLabel = 'Recall assessment'
+      const fixedNow = '2020-07-15T15:10:00.000Z'
+      const laterToday = '2020-07-15T15:15:00.000Z'
+      const earlierToday = '2020-07-15T15:05:00.000Z'
+      const yesterday = '2020-07-14T16:10:00.000Z'
+      const tomorrow = '2020-07-16T11:10:00.000Z'
+      const afterTomorrow = '2020-07-17T10:10:00.000Z'
+
+      beforeAll(() => {
+        // Lock Time
+        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+      })
+
+      it('due date later today shows today by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: laterToday })
+        expect(formatted).toEqual('Recall assessment due today by 16:15')
+      })
+
+      it('due date later today shows today by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: laterToday, shortFormat: true })
+        expect(formatted).toEqual('Today at 16:15')
+      })
+
+      it('due date tomorrow shows tomorrow by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: tomorrow })
+        expect(formatted).toEqual('Recall assessment due tomorrow by 12:10')
+      })
+
+      it('due date tomorrow shows tomorrow by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: tomorrow, shortFormat: true })
+        expect(formatted).toEqual('Tomorrow at 12:10')
+      })
+
+      it('due date yesterday shows overdue, date by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: yesterday })
+        expect(formatted).toEqual('Overdue: recall assessment was due on 14 July 2020 by 17:10')
+      })
+
+      it('due date yesterday shows overdue, date by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: yesterday, shortFormat: true })
+        expect(formatted).toEqual('Yesterday at 17:10')
+      })
+
+      it('due date earlier today shows overdue today by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: earlierToday })
+        expect(formatted).toEqual('Overdue: recall assessment was due today by 16:05')
+      })
+
+      it('due date earlier today shows overdue today by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: earlierToday, shortFormat: true })
+        expect(formatted).toEqual('Today at 16:05')
+      })
+
+      it('due date precisely now shows overdue today by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: fixedNow })
+        expect(formatted).toEqual('Overdue: recall assessment was due today by 16:10')
+      })
+
+      it('due date precisely now shows overdue today by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: fixedNow, shortFormat: true })
+        expect(formatted).toEqual('Today at 16:10')
+      })
+
+      it('due date after tomorrow shows due on date by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: afterTomorrow })
+        expect(formatted).toEqual('Recall assessment will be due on 17 July 2020 by 11:10')
+      })
+
+      it('due date after tomorrow shows due on date by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: afterTomorrow, shortFormat: true })
+        expect(formatted).toEqual('17 July at 11:10')
+      })
     })
 
-    it('due date tomorrow shows tomorrow by time of day', () => {
-      const formatted = recallAssessmentDueString(tomorrow)
-      expect(formatted).toEqual('Recall assessment due tomorrow by 12:10')
+    describe('dueDateLabel example outside of BST hence same as UTC', () => {
+      const dueItemLabel = 'Recall assessment'
+      const fixedNow = '2020-03-15T15:10:00.000Z'
+      const laterToday = '2020-03-15T15:15:00.000Z'
+      const earlierToday = '2020-03-15T15:05:00.000Z'
+
+      beforeAll(() => {
+        // Lock Time
+        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+      })
+
+      it('due date later today shows today by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: laterToday })
+        expect(formatted).toEqual('Recall assessment due today by 15:15')
+      })
+
+      it('due date later today shows today by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: laterToday, shortFormat: true })
+        expect(formatted).toEqual('Today at 15:15')
+      })
+
+      it('due date earlier today shows overdue today by time of day', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: earlierToday })
+        expect(formatted).toEqual('Overdue: recall assessment was due today by 15:05')
+      })
+
+      it('due date earlier today shows overdue today by time of day - short format', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: earlierToday, shortFormat: true })
+        expect(formatted).toEqual('Today at 15:05')
+      })
     })
 
-    it('due date yesterday shows overdue, date by time of day', () => {
-      const formatted = recallAssessmentDueString(yesterday)
-      expect(formatted).toEqual('Overdue: recall assessment was due on 14 July 2020 by 17:10')
-    })
+    describe('dueDateLabel for date only, no time', () => {
+      const dueItemLabel = 'Dossier'
+      const fixedNow = '2020-03-15'
+      const yesterday = '2020-03-14'
+      const dayBeforeYesterday = '2020-03-13'
+      const tomorrow = '2020-03-16'
+      const dayAfterTomorrow = '2020-03-17'
 
-    it('due date earlier today shows overdue today by time of day', () => {
-      const formatted = recallAssessmentDueString(earlierToday)
-      expect(formatted).toEqual('Overdue: recall assessment was due today by 16:05')
-    })
+      beforeAll(() => {
+        // Lock Time
+        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+      })
 
-    it('due date precisely now shows overdue today by time of day', () => {
-      const formatted = recallAssessmentDueString(fixedNow)
-      expect(formatted).toEqual('Overdue: recall assessment was due today by 16:10')
-    })
+      it('due date today shows today', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: fixedNow, includeTime: false })
+        expect(formatted).toEqual('Dossier due today')
+      })
 
-    it('due date after tomorrow shows due on date by time of day', () => {
-      const formatted = recallAssessmentDueString(afterTomorrow)
-      expect(formatted).toEqual('Recall assessment will be due on 17 July 2020 by 11:10')
+      it('due date today shows today - short format', () => {
+        const formatted = dueDateLabel({
+          dueItemLabel,
+          dueIsoDateTime: fixedNow,
+          shortFormat: true,
+          includeTime: false,
+        })
+        expect(formatted).toEqual('Today')
+      })
+
+      it('due date yesterday shows overdue', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: yesterday, includeTime: false })
+        expect(formatted).toEqual('Overdue: dossier was due on 14 March 2020')
+      })
+
+      it('due date yesterday - short format', () => {
+        const formatted = dueDateLabel({
+          dueItemLabel,
+          dueIsoDateTime: yesterday,
+          shortFormat: true,
+          includeTime: false,
+        })
+        expect(formatted).toEqual('Yesterday')
+      })
+
+      it('due date before yesterday - short format', () => {
+        const formatted = dueDateLabel({
+          dueItemLabel,
+          dueIsoDateTime: dayBeforeYesterday,
+          shortFormat: true,
+          includeTime: false,
+        })
+        expect(formatted).toEqual('13 March')
+      })
+
+      it('due date tomorrow shows tomorrow', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: tomorrow, includeTime: false })
+        expect(formatted).toEqual('Dossier due tomorrow')
+      })
+
+      it('due date tomorrow shows tomorrow - short format', () => {
+        const formatted = dueDateLabel({
+          dueItemLabel,
+          dueIsoDateTime: tomorrow,
+          includeTime: false,
+          shortFormat: true,
+        })
+        expect(formatted).toEqual('Tomorrow')
+      })
+
+      it('due date after tomorrow shows date', () => {
+        const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: dayAfterTomorrow, includeTime: false })
+        expect(formatted).toEqual('Dossier will be due on 17 March 2020')
+      })
+
+      it('due date after tomorrow shows date - short format', () => {
+        const formatted = dueDateLabel({
+          dueItemLabel,
+          dueIsoDateTime: dayAfterTomorrow,
+          includeTime: false,
+          shortFormat: true,
+        })
+        expect(formatted).toEqual('17 March')
+      })
     })
+    function asUtcDateTime(isoDateTimeStr: string) {
+      return DateTime.fromISO(isoDateTimeStr, { zone: 'utc' })
+    }
   })
-
-  describe('recallAssessmentDueString example outside of BST hence same as UTC', () => {
-    const fixedNow = asUtcDateTime('2020-03-15T15:10:00.000Z')
-    const laterToday = asUtcDateTime('2020-03-15T15:15:00.000Z')
-    const earlierToday = asUtcDateTime('2020-03-15T15:05:00.000Z')
-
-    let dateNowSpy: jest.SpyInstance
-
-    beforeAll(() => {
-      // Lock Time
-      dateNowSpy = jest.spyOn(Date, 'now').mockImplementation(() => fixedNow.toMillis())
-    })
-
-    afterAll(() => {
-      // Unlock Time
-      dateNowSpy.mockRestore()
-    })
-
-    it('due date later today shows today by time of day', () => {
-      const formatted = recallAssessmentDueString(laterToday)
-      expect(formatted).toEqual('Recall assessment due today by 15:15')
-    })
-
-    it('due date earlier today shows overdue today by time of day', () => {
-      const formatted = recallAssessmentDueString(earlierToday)
-      expect(formatted).toEqual('Overdue: recall assessment was due today by 15:05')
-    })
-  })
-
-  function asUtcDateTime(isoDateTimeStr: string) {
-    return DateTime.fromISO(isoDateTimeStr, { zone: 'utc' })
-  }
 })
