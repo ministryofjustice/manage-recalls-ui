@@ -12,7 +12,7 @@
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
     "start:dev": "concurrently -k -p \"[{name}]\" -n \"Node,Styles\" -c \"yellow.bold,cyan.bold\" \"node -r ts-node/register/transpile-only --inspect=0.0.0.0 server.ts\" \"npm run compile-sass -- --watch\"",
     "start:e2e": "export $(cat e2e.env) && npm run start:dev",
-    "start:feature": "export $(cat feature.env) && npm run start:dev",
+    "start:feature": "export $(cat feature.env) && npm run build && npm run start",
     "kill": "npx kill-port 3000,9229",
     "record-build-info": "node ./bin/record-build-info",
     "swagger-to-ts": "node ./scripts/swagger-to-ts.js",
