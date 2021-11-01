@@ -2,8 +2,9 @@ import { DatePartsParsed, FormError, ObjectMap, UiListItem, UrlInfo } from '../@
 import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
+  allowedImageFileExtensions,
 } from '../routes/handlers/helpers/allowedUploadExtensions'
-import { isDefined } from '../routes/handlers/helpers'
+import { isDefined, listToString } from '../routes/handlers/helpers'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -124,6 +125,12 @@ export const filterActiveItems = (items?: UiListItem[]) =>
 
 export const allowedEmailFileExtensionList = () => allowedEmailFileExtensions.map(ext => ext.extension).join(',')
 export const allowedDocumentFileExtensionList = () => allowedDocumentFileExtensions.map(ext => ext.extension).join(',')
+export const allowedImageFileExtensionList = () => allowedImageFileExtensions.map(ext => ext.extension).join(',')
+export const allowedImageFileTypeLabelList = () =>
+  listToString(
+    allowedImageFileExtensions.map(ext => ext.label),
+    'or'
+  )
 
 export const backLinkUrl = (path: string, { fromPage, fromHash, basePath }: UrlInfo) => {
   if (fromPage) {

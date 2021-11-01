@@ -1,29 +1,28 @@
-import { makeErrorObject } from '../../helpers'
+import { listToString, makeErrorObject } from '../../helpers'
 import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
 import { documentCategories } from '../documentCategories'
 import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { NamedFormError } from '../../../../@types'
+import { AllowedUploadFileType, NamedFormError } from '../../../../@types'
 import { formatDocLabel } from '../../helpers/documents'
 
-const invalidFileFormat = (file: UploadedFileMetadata) => {
-  return !allowedDocumentFileExtensions.some(
-    ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType
-  )
+export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions: AllowedUploadFileType[]) => {
+  return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)
 }
 
 export const validateUploadedFileTypes = (uploadedFileData: UploadedFileMetadata[]) => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
   uploadedFileData.forEach(file => {
-    if (invalidFileFormat(file)) {
+    if (isInvalidFileType(file, allowedDocumentFileExtensions)) {
       errors = errors || []
       errors.push(
         makeErrorObject({
           id: 'documents',
-          text: `The selected file '${file.originalFileName}' must be a ${allowedDocumentFileExtensions
-            .map(ext => ext.label)
-            .join(' or ')}`,
+          text: `The selected file '${file.originalFileName}' must be a ${listToString(
+            allowedDocumentFileExtensions.map(ext => ext.label),
+            'or'
+          )}`,
         })
       )
     } else {

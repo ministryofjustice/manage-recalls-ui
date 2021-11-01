@@ -64,18 +64,22 @@ describe('renderErrorMessages', () => {
 
 describe('listToString', () => {
   it('returns a list for 1 item', () => {
-    expect(listToString(['day'])).toEqual('day')
+    expect(listToString(['day'], 'and')).toEqual('day')
+  })
+
+  it('uses the supplied conjunction', () => {
+    expect(listToString(['JPG', 'JPEG'], 'or')).toEqual('JPG or JPEG')
   })
 
   it('returns a list for 2 items', () => {
-    expect(listToString(['year', 'day'])).toEqual('year and day')
+    expect(listToString(['year', 'day'], 'and')).toEqual('year and day')
   })
 
   it('returns a list for 3 items', () => {
-    expect(listToString(['year', 'month', 'day'])).toEqual('year, month and day')
+    expect(listToString(['year', 'month', 'day'], 'and')).toEqual('year, month and day')
   })
 
   it('returns a list for 4 items', () => {
-    expect(listToString(['year', 'month', 'day', 'minute'])).toEqual('year, month, day and minute')
+    expect(listToString(['year', 'month', 'day', 'minute'], 'and')).toEqual('year, month, day and minute')
   })
 })

@@ -22,7 +22,7 @@ export const errorMsgUserActionDateTime = (
     case 'invalidTime':
       return `The time you ${userAction} must be a real time`
     case 'missingDateParts':
-      return `The ${noun} you ${userAction} must include a ${listToString(validationError.invalidParts)}`
+      return `The ${noun} you ${userAction} must include a ${listToString(validationError.invalidParts, 'and')}`
     default:
       return `Error with the ${noun} ${userAction}`
   }
@@ -39,7 +39,7 @@ export const errorMsgDate = (validationError: DateValidationError, fieldLabel: s
     case 'invalidDate':
       return `The ${fieldLabel} must be a real date`
     case 'missingDateParts':
-      return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts)}`
+      return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts, 'and')}`
     default:
       return `Error - ${fieldLabel}`
   }

@@ -12,11 +12,13 @@ import {
   filterActiveItems,
   allowedEmailFileExtensionList,
   allowedDocumentFileExtensionList,
+  allowedImageFileExtensionList,
   backLinkUrl,
   formActionUrl,
   changeLinkUrl,
   errorMessage,
   removeUndefinedFromObject,
+  allowedImageFileTypeLabelList,
 } from './nunjucksFunctions'
 import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates'
@@ -48,6 +50,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('isDefined', isDefined)
   njkEnv.addGlobal('allowedEmailFileExtensionList', allowedEmailFileExtensionList)
   njkEnv.addGlobal('allowedDocumentFileExtensionList', allowedDocumentFileExtensionList)
+  njkEnv.addGlobal('allowedImageFileExtensionList', allowedImageFileExtensionList)
+  njkEnv.addGlobal('allowedImageFileTypeLabelList', allowedImageFileTypeLabelList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
   njkEnv.addGlobal('formActionUrl', formActionUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
