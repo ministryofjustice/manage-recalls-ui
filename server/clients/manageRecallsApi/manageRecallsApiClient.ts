@@ -56,8 +56,8 @@ export function getRecall(recallId: string, token: string): Promise<Recall> {
   return restClient(token).get<Recall>({ path: `/recalls/${recallId}` })
 }
 
-export function createRecall(nomsNumber: string, token: string): Promise<Recall> {
-  const request = { nomsNumber }
+export function createRecall(nomsNumber: string, createdByUserId: string, token: string): Promise<Recall> {
+  const request = { nomsNumber, createdByUserId }
   return restClient(token).post<Recall>({ path: '/recalls', data: request })
 }
 
