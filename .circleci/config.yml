@@ -158,6 +158,7 @@ jobs:
     executor: integration-tests
     steps:
       - checkout
+      - node/install-packages
       - attach_workspace:
           at: ~/app
       - run:
@@ -177,7 +178,6 @@ jobs:
       - run:
           name: Wait for node app to start
           command: sleep 5
-      - node/install-packages
       - run:
           name: integration tests
           command: npm run int-test
