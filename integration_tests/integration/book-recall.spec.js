@@ -396,7 +396,10 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if an upload has a virus', () => {
-    cy.task('expectAddRecallDocument', { statusCode: 400, responseBody: 'VirusFoundException' })
+    cy.task('expectAddRecallDocument', {
+      statusCode: 400,
+      responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
+    })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.uploadSingleFile({
       filePath: '../test.pdf',
