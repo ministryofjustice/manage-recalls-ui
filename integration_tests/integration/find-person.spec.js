@@ -10,6 +10,7 @@ context('Find a person', () => {
     cy.task('reset')
     cy.task('stubLogin')
     cy.task('stubAuthUser')
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
   })
 
   const nomsNumber = 'A1234AA'
@@ -47,7 +48,6 @@ context('Find a person', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
-    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage(nomsNumber)
     const firstResult = homePage.searchResults().first()
