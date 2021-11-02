@@ -64,12 +64,14 @@ export const emailUploadForm =
             }
           } catch (e) {
             saveToApiSuccessful = false
-            saveError = [
-              makeErrorObject({
-                id: emailFieldName,
-                text: `${file.originalname} contains a virus`,
-              }),
-            ]
+            if (e.data?.message === 'VirusFoundException') {
+              saveError = [
+                makeErrorObject({
+                  id: emailFieldName,
+                  text: `${file.originalname} contains a virus`,
+                }),
+              ]
+            }
           }
         }
         if (errors || (shouldSaveToApi && !saveToApiSuccessful)) {

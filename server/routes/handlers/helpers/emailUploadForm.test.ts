@@ -118,6 +118,34 @@ describe('emailUploadForm', () => {
     handler(req, res)
   })
 
+  it('creates an error if the email has a virus', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'report.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(addRecallDocument as jest.Mock).mockRejectedValue({
+      data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
+    })
+    const res = {
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      redirect: () => {
+        expect(updateRecall).not.toHaveBeenCalled()
+        expect(req.session.errors).toEqual([
+          {
+            href: '#recallRequestEmailFileName',
+            name: 'recallRequestEmailFileName',
+            text: 'report.msg contains a virus',
+          },
+        ])
+        done()
+      },
+    }
+    handler(req, res)
+  })
+
   it("doesn't save the email to the API if the file extension is invalid", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
