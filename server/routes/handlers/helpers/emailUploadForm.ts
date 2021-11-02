@@ -14,11 +14,11 @@ interface Args {
   validator: ReqEmailUploadValidatorFn
   documentCategory: AddDocumentRequest.category
   nextPageUrlSuffix: string
-  unassignAssessingUser?: (recallId: string, userId: string, token: string) => Promise<RecallResponse>
+  unassignUserFromRecall?: (recallId: string, userId: string, token: string) => Promise<RecallResponse>
 }
 
 export const emailUploadForm =
-  ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix, unassignAssessingUser }: Args) =>
+  ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix, unassignUserFromRecall }: Args) =>
   async (req: Request, res: Response): Promise<void> => {
     const processUpload = uploadStorageField(emailFieldName)
     const { recallId } = req.params
@@ -72,9 +72,9 @@ export const emailUploadForm =
           return res.redirect(303, req.originalUrl)
         }
         await updateRecall(recallId, valuesToSave, user.token)
-        if (unassignAssessingUser) {
+        if (unassignUserFromRecall) {
           try {
-            await unassignAssessingUser(recallId, user.uuid, user.token)
+            await unassignUserFromRecall(recallId, user.uuid, user.token)
           } catch (e) {
             logger.error(`User ${user.uuid} could not be unassigned from recall ${recallId}`)
           }

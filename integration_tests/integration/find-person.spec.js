@@ -47,7 +47,7 @@ context('Find a person', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
-    cy.task('expectAssignAssessment', { expectedResult: getRecallResponse })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage(nomsNumber)
     const firstResult = homePage.searchResults().first()

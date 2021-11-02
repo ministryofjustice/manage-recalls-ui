@@ -190,7 +190,7 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectAssignAssessment: expectation => {
+    expectAssignUserToRecall: expectation => {
       return wiremock.stubFor({
         request: {
           method: 'POST',

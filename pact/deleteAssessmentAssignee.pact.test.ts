@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { unassignAssessingUser } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { unassignUserFromRecall } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getRecallResponseJson from '../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { pactJsonResponse, pactDeleteRequest } from './pactTestUtils'
@@ -24,7 +24,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(recallNoAssignee), 200),
       })
 
-      const actual = await unassignAssessingUser(recallId, userId, accessToken)
+      const actual = await unassignUserFromRecall(recallId, userId, accessToken)
 
       expect(actual).toEqual(recallNoAssignee)
     })
@@ -41,7 +41,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await unassignAssessingUser(recallId, userId, accessToken)
+        await unassignUserFromRecall(recallId, userId, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

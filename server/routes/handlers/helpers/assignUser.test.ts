@@ -1,7 +1,7 @@
 import nock from 'nock'
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import * as config from '../../../config'
-import { assignAssessment } from './assignAssessment'
+import { assignUser } from './assignUser'
 import { ApiConfig } from '../../../config'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
@@ -34,7 +34,7 @@ describe('assignAssessment', () => {
       basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
     }
 
-    await assignAssessment(req, res)
+    await assignUser({ nextPageUrlSuffix: 'assess' })(req, res)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess`)
   })
@@ -56,7 +56,7 @@ describe('assignAssessment', () => {
       basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
     }
 
-    await assignAssessment(req, res)
+    await assignUser({ nextPageUrlSuffix: 'assess' })(req, res)
 
     expect(res.redirect).toHaveBeenCalledWith(303, '/')
   })

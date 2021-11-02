@@ -117,11 +117,11 @@ export function getPrisons(): Promise<Prison[]> {
   return restClient().get<Prison[]>({ path: '/reference-data/prisons' })
 }
 
-export function assignAssessingUser(recallId: string, assignee: string, token: string): Promise<Recall> {
+export function assignUserToRecall(recallId: string, assignee: string, token: string): Promise<Recall> {
   return restClient(token).post<Recall>({ path: `/recalls/${recallId}/assignee/${assignee}`, data: {} })
 }
 
-export function unassignAssessingUser(recallId: string, assignee: string, token: string): Promise<Recall> {
+export function unassignUserFromRecall(recallId: string, assignee: string, token: string): Promise<Recall> {
   return restClient(token).delete<Recall>({ path: `/recalls/${recallId}/assignee/${assignee}` })
 }
 

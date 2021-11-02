@@ -2,7 +2,7 @@
 import { emailUploadForm } from './emailUploadForm'
 import {
   addRecallDocument,
-  unassignAssessingUser,
+  unassignUserFromRecall,
   updateRecall,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockPostRequest } from '../../testutils/mockRequestUtils'
@@ -202,11 +202,11 @@ describe('emailUploadForm', () => {
     handler(req, res)
   })
 
-  it('unassigns the user from the assessment', done => {
+  it('unassigns the user from the recall', done => {
     const handlerWithUnassign = emailUploadForm({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      unassignAssessingUser,
+      unassignUserFromRecall,
       documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
@@ -228,13 +228,13 @@ describe('emailUploadForm', () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
-    ;(unassignAssessingUser as jest.Mock).mockResolvedValue({
+    ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
       recallId: '789',
     })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(unassignAssessingUser).toHaveBeenCalledTimes(1)
+        expect(unassignUserFromRecall).toHaveBeenCalledTimes(1)
         done()
       },
     }
@@ -245,7 +245,7 @@ describe('emailUploadForm', () => {
     const handlerWithUnassign = emailUploadForm({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      unassignAssessingUser,
+      unassignUserFromRecall,
       documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
@@ -267,7 +267,7 @@ describe('emailUploadForm', () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
-    ;(unassignAssessingUser as jest.Mock).mockRejectedValue(new Error('test'))
+    ;(unassignUserFromRecall as jest.Mock).mockRejectedValue(new Error('test'))
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: (httpStatus, path) => {
