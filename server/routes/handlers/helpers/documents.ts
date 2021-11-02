@@ -133,7 +133,7 @@ export const listFailedUploads = (
   responses
     .map((result, idx) => {
       if (result.status === 'rejected') {
-        if (result.reason.data === 'VirusFoundException') {
+        if (result.reason.data?.message === 'VirusFoundException') {
           return makeErrorObject({
             id: 'documents',
             text: `${fileData[idx].originalFileName} contains a virus`,

@@ -146,7 +146,9 @@ describe('uploadRecallDocumentsFormHandler', () => {
   })
 
   it('creates an error for a failed save to the API due to a virus', done => {
-    ;(addRecallDocument as jest.Mock).mockRejectedValue({ data: 'VirusFoundException' })
+    ;(addRecallDocument as jest.Mock).mockRejectedValue({
+      data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
+    })
     ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.files = [
         {
