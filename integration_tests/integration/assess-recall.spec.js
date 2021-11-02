@@ -7,7 +7,6 @@ import {
   getPrisonsResponse,
   getCourtsResponse,
 } from '../mockApis/mockResponses'
-import uploadDocumentsPage from '../pages/uploadDocuments'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
