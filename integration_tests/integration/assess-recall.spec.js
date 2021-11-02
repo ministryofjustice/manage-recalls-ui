@@ -7,6 +7,7 @@ import {
   getPrisonsResponse,
   getCourtsResponse,
 } from '../mockApis/mockResponses'
+import uploadDocumentsPage from '../pages/uploadDocuments'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
@@ -217,6 +218,36 @@ context('Assess a recall', () => {
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
       summaryError: 'The selected file must be an MSG or EML',
+    })
+  })
+
+  it('User sees an error if an upload has a virus', () => {
+    cy.task('expectAddRecallDocument', {
+      statusCode: 400,
+      responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
+    })
+    cy.login()
+
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    assessRecallEmail.confirmEmailSent()
+    assessRecallEmail.enterDateTime({
+      prefix: 'recallNotificationEmailSentDateTime',
+      values: {
+        Day: '15',
+        Month: '08',
+        Year: '2021',
+        Hour: '14',
+        Minute: '04',
+      },
+    })
+    assessRecallEmail.uploadEmail({
+      fieldName: 'recallNotificationEmailFileName',
+      fileName: 'email.msg',
+    })
+    assessRecallEmail.clickContinue()
+    assessRecallEmail.assertErrorMessage({
+      fieldName: 'recallNotificationEmailFileName',
+      summaryError: 'email.msg contains a virus',
     })
   })
 

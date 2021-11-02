@@ -23,7 +23,7 @@ export const emailUploadForm =
     const processUpload = uploadStorageField(emailFieldName)
     const { recallId } = req.params
     const { user, urlInfo } = res.locals
-    const saveError = [
+    let saveError = [
       makeErrorObject({
         id: emailFieldName,
         text: 'The selected file could not be uploaded – try again',
@@ -64,6 +64,12 @@ export const emailUploadForm =
             }
           } catch (e) {
             saveToApiSuccessful = false
+            saveError = [
+              makeErrorObject({
+                id: emailFieldName,
+                text: `${file.originalname} contains a virus`,
+              }),
+            ]
           }
         }
         if (errors || (shouldSaveToApi && !saveToApiSuccessful)) {
