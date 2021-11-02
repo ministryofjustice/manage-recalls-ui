@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { assignAssessingUser } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { assignUserToRecall } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getRecallResponseJson from '../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { pactJsonResponse, pactPostRequest } from './pactTestUtils'
@@ -23,7 +23,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(getRecallResponseJson), 200),
       })
 
-      const actual = await assignAssessingUser(recallId, userId, accessToken)
+      const actual = await assignUserToRecall(recallId, userId, accessToken)
 
       expect(actual).toEqual(getRecallResponseJson)
     })
@@ -41,7 +41,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await assignAssessingUser(recallId, userId, accessToken)
+        await assignUserToRecall(recallId, userId, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

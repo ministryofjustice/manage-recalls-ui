@@ -41,6 +41,7 @@ context('Create a dossier', () => {
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
   })
 
   it('User can verify recall details before creating a dossier', () => {

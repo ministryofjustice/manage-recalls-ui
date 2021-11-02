@@ -33,8 +33,8 @@ import { validateCheckAnswers } from './handlers/book/helpers/validateCheckAnswe
 import { getUser, postUser } from './handlers/user/userDetails'
 import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
-import { assignAssessment } from './handlers/assess/assignAssessment'
-import { unassignAssessingUser } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { assignUser } from './handlers/helpers/assignUser'
+import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecallsApiClient'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -78,7 +78,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
-  post(`${basePath}/assess-assign`, assignAssessment)
+  post(`${basePath}/assess-assign`, assignUser({ nextPageUrlSuffix: 'assess' }))
   get(`${basePath}/assess`, viewWithRecallAndPerson('assessRecall'))
   get(`${basePath}/assess-decision`, viewWithRecallAndPerson('assessDecision'))
   post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision, 'assess-licence'))
@@ -94,7 +94,7 @@ export default function routes(router: Router): Router {
     emailUploadForm({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      unassignAssessingUser,
+      unassignUserFromRecall,
       documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
@@ -102,6 +102,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
 
   // CREATE DOSSIER
+  post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
   get(`${basePath}/dossier-recall`, viewWithRecallAndPerson('dossierRecallInformation'))
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
   post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-check'))
@@ -114,6 +115,7 @@ export default function routes(router: Router): Router {
     emailUploadForm({
       emailFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
+      unassignUserFromRecall,
       documentCategory: AddDocumentRequest.category.DOSSIER_EMAIL,
       nextPageUrlSuffix: 'dossier-confirmation',
     })

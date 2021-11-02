@@ -19,6 +19,7 @@ context('To do (recalls) list', () => {
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectGetRecall', { recallId, expectedResult: { recallId, documents: [] } })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
   })
 
   const nomsNumber = 'A1234AA'
@@ -51,7 +52,6 @@ context('To do (recalls) list', () => {
         },
       ],
     })
-    cy.task('expectAssignAssessment', { expectedResult: getRecallResponse })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `assess-recall-${recallId}`, text: 'Assess recall' })
@@ -99,6 +99,28 @@ context('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 October' })
     recallsList.createDossier({ recallId })
+    dossierRecallInformationPage.verifyOnPage({ personName })
+  })
+
+  it('User can continue dossier creation if the recall has status DOSSIER_IN_PROGRESS', () => {
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          recallId,
+          nomsNumber,
+          status: 'DOSSIER_IN_PROGRESS',
+          dossierTargetDate: '2021-10-13',
+          assignee: '122',
+          assigneeUserName: 'Jimmy Pud',
+        },
+      ],
+    })
+    cy.login()
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.expectActionLinkText({ id: `continue-dossier-${recallId}`, text: 'Continue dossier creation' })
+    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 October' })
+    recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
+    recallsList.continueDossier({ recallId })
     dossierRecallInformationPage.verifyOnPage({ personName })
   })
 
