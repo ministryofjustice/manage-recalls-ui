@@ -4,6 +4,7 @@ import { downloadUploadedDocumentOrEmail, uploadRecallDocumentsFormHandler } fro
 import {
   getRecall,
   addRecallDocument,
+  getStoredDocument,
   deleteRecallDocument,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
