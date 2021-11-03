@@ -248,6 +248,7 @@ export namespace RecallResponse {
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
+        STOPPED = 'STOPPED'
     }
 
 

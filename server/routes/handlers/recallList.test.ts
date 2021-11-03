@@ -4,6 +4,7 @@ import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/
 import { recallList } from './recallList'
 import config from '../../config'
 import recalls from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
+import { RecallResponse } from '../../@types/manage-recalls-api'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
@@ -11,9 +12,17 @@ describe('recallList', () => {
   const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
   let req: Request
   let resp: Response
+  const listOfRecalls = [
+    ...(recalls as RecallResponse[]),
+    {
+      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      nomsNumber: '123',
+      status: 'DOSSIER_ISSUED',
+    },
+  ]
 
   beforeEach(() => {
-    fakeManageRecallsApi.get('/recalls').reply(200, recalls)
+    fakeManageRecallsApi.get('/recalls').reply(200, listOfRecalls)
     req = mockGetRequest({})
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
     resp = res
@@ -22,7 +31,7 @@ describe('recallList', () => {
   it('should make recalls with person details available to render', async () => {
     fakeManageRecallsApi
       .post('/search')
-      .times(recalls.length)
+      .times(listOfRecalls.length)
       .reply(200, [
         {
           firstName: 'Bobby',
@@ -30,7 +39,7 @@ describe('recallList', () => {
         },
       ])
     await recallList(req, resp)
-    expect(resp.locals.results).toEqual([
+    expect(resp.locals.results.toDo).toEqual([
       {
         person: {
           firstName: 'Bobby',
@@ -50,6 +59,7 @@ describe('recallList', () => {
         recall: {
           nomsNumber: '123',
           recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          status: 'BEING_BOOKED_ON',
         },
       },
       {
@@ -64,6 +74,19 @@ describe('recallList', () => {
         },
       },
     ])
+    expect(resp.locals.results.completed).toEqual([
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          nomsNumber: '123',
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          status: 'DOSSIER_ISSUED',
+        },
+      },
+    ])
   })
 
   it('should make a list of failed recall requests available to render', async () => {
@@ -72,7 +95,7 @@ describe('recallList', () => {
     expect(resp.locals.errors).toEqual([
       {
         name: 'fetchError',
-        text: '3 recalls could not be retrieved',
+        text: '4 recalls could not be retrieved',
       },
     ])
   })

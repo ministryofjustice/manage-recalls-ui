@@ -24,19 +24,19 @@ context('To do (recalls) list', () => {
 
   const nomsNumber = 'A1234AA'
 
-  it('User can continue a previous booking if recall status is null', () => {
+  it('User can continue a previous booking if recall status is BEING_BOOKED_ON', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
           recallId,
           nomsNumber,
+          status: 'BEING_BOOKED_ON',
         },
       ],
     })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueBooking({ recallId })
     recallPreConsNamePage.verifyOnPage({ personName })
   })
@@ -56,7 +56,6 @@ context('To do (recalls) list', () => {
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `assess-recall-${recallId}`, text: 'Assess recall' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '5 November at 13:12' })
     recallsList.assessRecall({ recallId })
     assessRecallPage.verifyOnPage({ fullName: personName })
@@ -81,7 +80,6 @@ context('To do (recalls) list', () => {
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '12 October at 15:30' })
     recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
     recallsList.expectActionLinkText({ id: `continue-assess-${recallId}`, text: 'Continue assessment' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueAssessment({ recallId })
     assessRecallPage.verifyOnPage({ fullName: personName })
   })
@@ -100,7 +98,6 @@ context('To do (recalls) list', () => {
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 October' })
     recallsList.createDossier({ recallId })
     dossierRecallInformationPage.verifyOnPage({ personName })
@@ -122,7 +119,6 @@ context('To do (recalls) list', () => {
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-dossier-${recallId}`, text: 'Continue dossier creation' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 October' })
     recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
     recallsList.continueDossier({ recallId })
@@ -141,6 +137,7 @@ context('To do (recalls) list', () => {
     })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
+    recallsList.clickCompletedTab()
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '' })
     recallsList.viewRecall({ recallId })
