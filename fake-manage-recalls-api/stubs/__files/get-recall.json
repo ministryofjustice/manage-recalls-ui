@@ -80,5 +80,6 @@
   "bookedByUserId": "00000000-1111-0000-0000-000000000000",
   "dossierCreatedByUserId": "00000000-2222-0000-0000-000000000000",
   "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z",
-  "dossierTargetDate": "2020-12-14"
+  "dossierTargetDate": "2020-12-14",
+  "status": "RECALL_NOTIFICATION_ISSUED"
 }

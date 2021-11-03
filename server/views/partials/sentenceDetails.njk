@@ -91,7 +91,7 @@
       <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'lastReleasePrisonGroup') }}' data-qa='lastReleasePrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> releasing prison</span></a>
     </dd>
   </div>
-  {% if recall.status == null or recall.status == 'BEING_BOOKED_ON' %}
+  {% if recall.status == 'BEING_BOOKED_ON' %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Booking number

@@ -215,8 +215,5 @@ export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlIn
   if (recallStatus !== RecallResponse.status.BEING_BOOKED_ON) {
     return false
   }
-  if (urlInfo.fromPage && urlInfo.fromPage !== 'check-answers') {
-    return false
-  }
-  return true
+  return !(urlInfo.fromPage && urlInfo.fromPage !== 'check-answers')
 }

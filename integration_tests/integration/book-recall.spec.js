@@ -86,7 +86,9 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickContinue()
-    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
+    cy.task('expectGetRecall', {
+      expectedResult: { recallId, ...getRecallResponse, status: RecallResponse.status.BEING_BOOKED_ON },
+    })
     const checkAnswers = checkAnswersPage.verifyOnPage()
     cy.reload()
     // personal details
@@ -460,7 +462,9 @@ context('Book a recall', () => {
   })
 
   it('user can check and change their answers then navigate back to the check answers page', () => {
-    cy.task('expectGetRecall', { expectedResult: { recallId, ...getRecallResponse } })
+    cy.task('expectGetRecall', {
+      expectedResult: { recallId, ...getRecallResponse, status: RecallResponse.status.BEING_BOOKED_ON },
+    })
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
     checkAnswers.checkChangeLinks()
     checkAnswers.clickElement({ qaAttr: 'previousConvictionMainNameChange' })

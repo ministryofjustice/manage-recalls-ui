@@ -55,7 +55,7 @@ export type RecallResponse = {
     sentenceExpiryDate?: string;
     sentenceLength?: SentenceLengthRes;
     sentencingCourt?: string;
-    status?: RecallResponse.status;
+    status: RecallResponse.status;
     vulnerabilityDiversity?: boolean;
     vulnerabilityDiversityDetail?: string;
 }
