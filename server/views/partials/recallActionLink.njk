@@ -20,8 +20,6 @@
 </div>
 {% elif recall.status == 'DOSSIER_IN_PROGRESS' %}
 <div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/dossier-recall' data-qa='continue-dossier-{{ recall.recallId }}'>Continue dossier creation</a></div>
-{% elif recall.status == 'DOSSIER_ISSUED' %}
-<div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/view-recall' data-qa='view-recall-{{ recall.recallId }}'>View recall</a></div>
-{% else %}
+{% elif recall.status != 'DOSSIER_ISSUED' %}
 <div><a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/pre-cons-name' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
 {% endif %}
