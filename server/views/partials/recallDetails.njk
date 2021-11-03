@@ -1,7 +1,7 @@
 <h2 class='govuk-heading-m govuk-!-margin-top-9' id='recallDetails'>Recall details</h2>
 <dl class="govuk-summary-list">
 
-    {% if recall.status %}
+    {% if recall.status != null and recall.status != 'BEING_BOOKED_ON' %}
     <div class="govuk-summary-list__row">
         <dt class=" govuk-summary-list__key">
             Recall type
@@ -32,7 +32,7 @@
             {{ recall.recallEmailReceivedDateTime | dateTime}}
         </dd>
         <dd class=" govuk-summary-list__actions">
-            {% if recall.status == null or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
+            {% if recall.status == null or recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
             <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}' data-qa='recallEmailReceivedDateTimeChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> recall email received date</span></a>
             {% endif %}
         </dd>
@@ -45,14 +45,14 @@
             <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
         </dd>
         <dd class=" govuk-summary-list__actions">
-            {% if recall.status == null or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
+            {% if recall.status == null or recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
             <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}' data-qa='recallRequestEmailFileNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> uploaded recall email</span></a>
             {% endif %}
         </dd>
     </div>
     {% endif %}
 
-    {% if recall.status %}
+    {% if recall.status != null and recall.status != 'BEING_BOOKED_ON' %}
     <div class="govuk-summary-list__row">
         <dt class=" govuk-summary-list__key">
             Recall booked by
