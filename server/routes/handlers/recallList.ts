@@ -3,6 +3,7 @@ import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
+import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   const appInsightsClient = buildAppInsightsClient()
@@ -36,7 +37,10 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
       }
     })
   }
-  res.locals.results = successful
+  res.locals.results = {
+    toDo: successful.filter(recallResult => recallResult.recall.status !== RecallResponse.status.DOSSIER_ISSUED),
+    completed: successful.filter(recallResult => recallResult.recall.status === RecallResponse.status.DOSSIER_ISSUED),
+  }
   if (failed.length) {
     res.locals.errors = res.locals.errors || []
     res.locals.errors.push({

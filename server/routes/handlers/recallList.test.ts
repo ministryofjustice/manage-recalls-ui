@@ -30,7 +30,7 @@ describe('recallList', () => {
         },
       ])
     await recallList(req, resp)
-    expect(resp.locals.results).toEqual([
+    expect(resp.locals.results.toDo).toEqual([
       {
         person: {
           firstName: 'Bobby',
@@ -48,19 +48,22 @@ describe('recallList', () => {
           lastName: 'Badger',
         },
         recall: {
-          nomsNumber: '123',
-          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          nomsNumber: '456',
+          recallId: '8ab377a6-4587-2598-abc4-98fc53737',
+          status: 'RECALL_NOTIFICATION_ISSUED',
         },
       },
+    ])
+    expect(resp.locals.results.completed).toEqual([
       {
         person: {
           firstName: 'Bobby',
           lastName: 'Badger',
         },
         recall: {
-          nomsNumber: '456',
-          recallId: '8ab377a6-4587-2598-abc4-98fc53737',
-          status: 'RECALL_NOTIFICATION_ISSUED',
+          nomsNumber: '123',
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          status: 'DOSSIER_ISSUED',
         },
       },
     ])

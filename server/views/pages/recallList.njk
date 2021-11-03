@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - To do" %}
+{% set pageTitle = applicationName + " - Recalls" %}
 
 {% block content %}
 
@@ -15,14 +15,15 @@
                     }
                 }) }}
             {% endif %}
-            <h1 class="govuk-heading-l">
-                To do
+            <h1 class="govuk-heading-xl">
+                Recalls
             </h1>
-            {% if results and results.length > 0 %}
+
+            {% set toDoHtml %}
+            {% if results and results.toDo.length > 0 %}
                 <table class="govuk-table">
-                    <caption class="govuk-table__caption govuk-table__caption--m" data-qa="recalls-list-heading">
-                        <span class='govuk-!-font-size-36 govuk-!-font-weight-bold'>{{ results.length }}</span>
-                        recall{% if results.length > 1 %}s{% endif %}
+                    <caption class="govuk-table__caption govuk-table__caption--l" data-qa="toDo-list-heading">
+                        To do
                     </caption>
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
@@ -30,11 +31,10 @@
                         <th scope="col" class="govuk-table__header">Due</th>
                         <th scope="col" class="govuk-table__header">Assigned to</th>
                         <th scope="col" class="govuk-table__header">Action</th>
-                        <th scope="col" class="govuk-table__header"><span class='govuk-visually-hidden'>View recall</span></th>
                     </tr>
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
-                    {% for result in results %}
+                    {% for result in results.toDo %}
                         <tr class="govuk-table__row" data-qa='recall-id-{{ result.recall.recallId }}'>
                             <td class="govuk-table__cell"
                                 data-qa="name">{{ result.person.firstName }} {{ result.person.lastName }}</td>
@@ -52,14 +52,67 @@
                                 {% set recall = result.recall %}
                                 {% include "../partials/recallActionLink.njk" %}
                             </td>
-                            <td class="govuk-table__cell">
-                                <a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/view-recall' data-qa='view-recall-{{ recall.recallId }}'>View recall</a>
-                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+            {% else %}
+                No recalls
             {% endif %}
+            {% endset -%}
+
+            {% set completedHtml %}
+                {% if results and results.completed.length > 0 %}
+                    <table class="govuk-table">
+                        <caption class="govuk-table__caption govuk-table__caption--l" data-qa="completed-list-heading">
+                            Completed
+                        </caption>
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header">Date</th>
+                            <th scope="col" class="govuk-table__header">Status</th>
+                            <th scope="col" class="govuk-table__header">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="govuk-table__body" data-qa="search-results">
+                        {% for result in results.completed %}
+                            <tr class="govuk-table__row" data-qa='recall-id-{{ result.recall.recallId }}'>
+                                <td class="govuk-table__cell"
+                                    data-qa="name">{{ result.person.firstName }} {{ result.person.lastName }}</td>
+                                <td class="govuk-table__cell" data-qa="completedDate">
+                                    {{ result.recall.lastUpdatedDateTime | date }}
+                                </td>
+                                <td class="govuk-table__cell" data-qa="assignedTo">{% if result.recall.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.recall.status == 'STOPPED'%}Stopped{% endif %}</td>
+                                <td class="govuk-table__cell">
+                                    <a href='/persons/{{result.person.nomsNumber}}/recalls/{{result.recall.recallId}}/view-recall' data-qa='view-recall-{{ result.recall.recallId }}'>View recall</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    No recalls
+                {% endif %}
+            {% endset -%}
+            {{ govukTabs({
+                items: [
+                    {
+                        label: "To do (" + results.toDo.length + ")",
+                        id: "to-do",
+                        panel: {
+                        html: toDoHtml
+                    }
+                    },
+                    {
+                        label: "Completed (" + results.completed.length + ")",
+                        id: "completed",
+                        panel: {
+                        html: completedHtml
+                    }
+                    }
+                ]
+            }) }}
         </div>
     </div>
 
