@@ -142,11 +142,11 @@ export const backLinkUrl = (path: string, { fromPage, fromHash, basePath }: UrlI
   return `${basePath}${path}`
 }
 
-export const formActionUrl = (pageSlug: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
+export const formActionUrl = (routeSuffix: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
   const fromPageQueryParam = fromPage ? `fromPage=${fromPage}` : undefined
   const csrfQueryParam = csrfToken ? `_csrf=${csrfToken}` : undefined
   const queryParams = [fromPageQueryParam, csrfQueryParam].filter(Boolean).join('&')
-  return `${basePath}${pageSlug}${queryParams ? `?${queryParams}` : ''}${fromHash ? `#${fromHash}` : ''}`
+  return `${basePath}${routeSuffix}${queryParams ? `?${queryParams}` : ''}${fromHash ? `#${fromHash}` : ''}`
 }
 
 export const changeLinkUrl = (
