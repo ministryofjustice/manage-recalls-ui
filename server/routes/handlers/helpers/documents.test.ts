@@ -1,5 +1,7 @@
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { decorateDocs } from './documents'
+import { decorateDocs, enableDeleteDocuments } from './documents'
+import { UrlInfo } from '../../../@types'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 describe('decorateDocs', () => {
   const docs = [
@@ -228,5 +230,27 @@ describe('decorateDocs', () => {
         url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
       },
     })
+  })
+})
+
+describe('enableDeleteDocuments', () => {
+  it('should return true if recall is being booked on and fromPage is valid', () => {
+    expect(enableDeleteDocuments(RecallResponse.status.BEING_BOOKED_ON, { fromPage: 'check-answers' } as UrlInfo)).toBe(
+      true
+    )
+  })
+
+  it('should return true if recall is being booked on and fromPage is not set', () => {
+    expect(enableDeleteDocuments(RecallResponse.status.BEING_BOOKED_ON, {} as UrlInfo)).toBe(true)
+  })
+
+  it('should return false if recall is being booked on and fromPage is invalid', () => {
+    expect(enableDeleteDocuments(RecallResponse.status.BEING_BOOKED_ON, { fromPage: 'view-recall' } as UrlInfo)).toBe(
+      false
+    )
+  })
+
+  it('should return false if recall is not being booked on and fromPage is valid', () => {
+    expect(enableDeleteDocuments(RecallResponse.status.BOOKED_ON, {} as UrlInfo)).toBe(false)
   })
 })

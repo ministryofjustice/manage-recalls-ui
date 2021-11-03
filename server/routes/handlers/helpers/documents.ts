@@ -1,7 +1,8 @@
-import { NamedFormError, ObjectMap } from '../../../@types'
+import { NamedFormError, ObjectMap, UrlInfo } from '../../../@types'
 import { documentCategories } from '../book/documentCategories'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { AddDocumentResponse } from '../../../@types/manage-recalls-api/models/AddDocumentResponse'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { makeErrorObject } from './index'
 import {
   CategorisedFileMetadata,
@@ -109,7 +110,6 @@ export const decorateDocs = ({
       missingNotRequiredDocs: missingNotRequiredDocsList().filter(
         requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
       ),
-
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,
@@ -209,4 +209,14 @@ export const saveCategories = async ({
 export const formatDocLabel = (category: ApiRecallDocument.category) => {
   const docCategory = documentCategories.find(d => d.name === category)
   return docCategory ? docCategory.labelLowerCase || docCategory.label.toLowerCase() : ''
+}
+
+export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlInfo: UrlInfo) => {
+  if (recallStatus !== RecallResponse.status.BEING_BOOKED_ON) {
+    return false
+  }
+  if (urlInfo.fromPage && urlInfo.fromPage !== 'check-answers') {
+    return false
+  }
+  return true
 }

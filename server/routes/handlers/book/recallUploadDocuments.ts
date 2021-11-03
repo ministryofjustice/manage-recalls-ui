@@ -1,9 +1,14 @@
 import { Request, Response } from 'express'
-import { getRecall, getStoredDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import {
+  deleteRecallDocument,
+  getRecall,
+  getStoredDocument,
+} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { documentCategories } from './documentCategories'
 import {
   decorateDocs,
+  enableDeleteDocuments,
   getMetadataForCategorisedFiles,
   getMetadataForUploadedFiles,
   saveCategories,
@@ -11,16 +16,19 @@ import {
 } from '../helpers/documents'
 import { uploadStorageArray } from '../helpers/uploadStorage'
 import { validateCategories, validateUploadedFileTypes } from './helpers/validateDocuments'
+import { UrlInfo } from '../../../@types'
 
 const renderXhrResponse = async ({
   res,
   recallId,
   nomsNumber,
+  urlInfo,
   token,
 }: {
   res: Response
   recallId: string
   nomsNumber: string
+  urlInfo: UrlInfo
   token: string
 }) => {
   const recall = await getRecall(recallId, token)
@@ -31,6 +39,7 @@ const renderXhrResponse = async ({
       recall: {
         ...recall,
         ...decoratedDocs,
+        enableDeleteDocuments: enableDeleteDocuments(recall.status, urlInfo),
       },
     },
     (err, html) => {
@@ -45,6 +54,27 @@ const renderXhrResponse = async ({
   )
 }
 
+const deleteDocument = async (
+  documentId: string,
+  recallId: string,
+  urlInfo: UrlInfo,
+  token: string,
+  req: Request,
+  res: Response
+) => {
+  const recall = await getRecall(recallId, token)
+  const document = recall.documents.find(doc => doc.documentId === documentId)
+  if (!enableDeleteDocuments(recall.status, urlInfo)) {
+    throw new Error(`Attempted to delete a document when fromPage was set to: ${urlInfo.fromPage}`)
+  }
+  await deleteRecallDocument(recallId, documentId, token)
+  req.session.confirmationMessage = {
+    text: `${document.fileName} has been deleted`,
+    type: 'success',
+  }
+  return res.redirect(303, req.originalUrl)
+}
+
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
   const reload = () => {
     if (req.xhr) {
@@ -52,19 +82,25 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
     }
     return res.redirect(303, req.originalUrl)
   }
-  const { recallId, nomsNumber } = req.params
+
   uploadStorageArray('documents')(req, res, async uploadError => {
     try {
       if (uploadError) {
         throw uploadError
       }
+      const { recallId, nomsNumber } = req.params
       const { files, session, body } = req
       const {
         user: { token },
         urlInfo,
       } = res.locals
+
+      const deleteWasClicked = Boolean(body.delete)
+      if (deleteWasClicked) {
+        return await deleteDocument(body.delete, recallId, urlInfo, token, req, res)
+      }
       const continueWasClicked = body.continue === 'continue'
-      const uploadWasClicked = req.body.upload === 'upload'
+      const uploadWasClicked = body.upload === 'upload'
       // add metadata for uploaded / recategorised files
       const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[])
       let categorisedFileData
@@ -93,7 +129,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
       // only render a response for XHR if there were no errors
       if (req.xhr) {
-        return renderXhrResponse({ res, recallId, nomsNumber, token })
+        return renderXhrResponse({ res, recallId, nomsNumber, urlInfo, token })
       }
       // if (
       //   continueWasClicked &&

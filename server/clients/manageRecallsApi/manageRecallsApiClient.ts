@@ -73,6 +73,14 @@ export function addRecallDocument(
   return restClient(token).post({ path: `/recalls/${recallId}/documents`, data: document })
 }
 
+export function deleteRecallDocument(
+  recallId: string,
+  documentId: string,
+  token: string
+): Promise<AddDocumentResponse> {
+  return restClient(token).delete({ path: `/recalls/${recallId}/documents/${documentId}` })
+}
+
 export function setDocumentCategory(
   recallId: string,
   documentId: string,

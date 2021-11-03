@@ -1,5 +1,5 @@
 import { SessionData } from 'express-session'
-import { sessionErrors } from './sessionErrors'
+import { getStoredSessionData } from './getStoredSessionData'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../routes/testutils/mockRequestUtils'
 
 describe('store flash errors on request session (middleware)', () => {
@@ -7,7 +7,7 @@ describe('store flash errors on request session (middleware)', () => {
     const req = mockGetRequest({})
     const { res } = mockResponseWithAuthenticatedUser('user_access_token')
     const next = jest.fn()
-    sessionErrors(req, res, next)
+    getStoredSessionData(req, res, next)
     expect(res.locals.errors).toBeUndefined()
   })
 
@@ -19,7 +19,8 @@ describe('store flash errors on request session (middleware)', () => {
     const req = mockGetRequest({ session: { errors } as SessionData })
     const { res } = mockResponseWithAuthenticatedUser('user_access_token')
     const next = jest.fn()
-    sessionErrors(req, res, next)
+    getStoredSessionData(req, res, next)
+    expect(req.session).toEqual({})
     expect(res.locals.errors).toEqual({
       field: { href: '#field', text: 'Boom' },
       field2: { href: '#field2', text: 'Boom2' },
@@ -31,6 +32,22 @@ describe('store flash errors on request session (middleware)', () => {
           text: 'Boom2',
         },
       ],
+    })
+  })
+
+  it('sets a confirmation message if supplied', () => {
+    const confirmationMessage = {
+      text: 'Document was deleted',
+      type: 'success',
+    }
+    const req = mockGetRequest({ session: { confirmationMessage } as SessionData })
+    const { res } = mockResponseWithAuthenticatedUser('user_access_token')
+    const next = jest.fn()
+    getStoredSessionData(req, res, next)
+    expect(req.session).toEqual({})
+    expect(res.locals.confirmationMessage).toEqual({
+      text: 'Document was deleted',
+      type: 'success',
     })
   })
 })

@@ -1,4 +1,4 @@
-import { NamedFormError, ObjectMap } from '../index'
+import { ConfirmationMessage, NamedFormError, ObjectMap } from '../index'
 
 export default {}
 
@@ -9,6 +9,7 @@ declare module 'express-session' {
     nowInMinutes: number
     errors?: NamedFormError[]
     unsavedValues?: ObjectMap<unknown>
+    confirmationMessage: ConfirmationMessage
   }
 }
 

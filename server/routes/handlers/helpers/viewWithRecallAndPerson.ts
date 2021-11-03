@@ -6,7 +6,7 @@ import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
 import { getUserNames } from './getUserNames'
 import { dossierDueDateString, recallAssessmentDueText } from './dates'
-import { decorateDocs } from './documents'
+import { decorateDocs, enableDeleteDocuments } from './documents'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
@@ -31,6 +31,7 @@ export const viewWithRecallAndPerson =
     res.locals.recall = {
       ...recall,
       ...decoratedDocs,
+      enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
     }
     // get values to preload into form inputs
     res.locals.formValues = getFormValues({

@@ -165,3 +165,8 @@ export interface AllowedUploadFileType {
   label: string
   mimeType?: string
 }
+
+export interface ConfirmationMessage {
+  text: string
+  type: 'success'
+}

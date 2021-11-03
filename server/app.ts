@@ -26,7 +26,7 @@ import errorHandler from './errorHandler'
 import standardRouter from './routes/standardRouter'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import type UserService from './services/userService'
-import { sessionErrors } from './middleware/sessionErrors'
+import { getStoredSessionData } from './middleware/getStoredSessionData'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
@@ -156,7 +156,7 @@ export default function createApp(userService: UserService): express.Application
   // Resource Delivery Configuration
   app.use(compression())
 
-  app.use(sessionErrors)
+  app.use(getStoredSessionData)
 
   // Cachebusting version string
   if (production) {

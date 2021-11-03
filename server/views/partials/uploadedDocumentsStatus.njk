@@ -22,9 +22,11 @@
           </select>
         </div>
       </dd>
-{#      <dd class="govuk-summary-list__actions">#}
-{#        <button type="submit" class="reset-button link-button" name="delete" value="{{file.documentId}}">Delete</button>#}
-{#      </dd>#}
+      {% if recall.enableDeleteDocuments == true %}
+      <dd class="govuk-summary-list__actions">
+        <button type="submit" class="reset-button link-button" name="delete" value="{{file.documentId}}" data-qa='delete-{{ file.documentId }}'>Delete</button>
+      </dd>
+      {% endif %}
     </div>
     {% endfor %}
   {% endfor %}

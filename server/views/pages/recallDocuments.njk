@@ -24,6 +24,13 @@
                     }
                 }) }}
             {% endif %}
+            {% if confirmationMessage %}
+                {{ mojBanner({
+                    type: confirmationMessage.type,
+                    text: confirmationMessage.text,
+                    iconFallbackText: confirmationMessage.type
+                }) }}
+            {% endif %}
             {% if urlInfo.fromPage %}{% else %}<span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>{% endif %}
             <h1 class="govuk-heading-l">
                 Upload documents
