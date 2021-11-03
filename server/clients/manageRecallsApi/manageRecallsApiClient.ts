@@ -1,3 +1,4 @@
+import superagent from 'superagent'
 import { manageRecallsApiConfig } from '../../config'
 import RestClient from '../../data/restClient'
 import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models/RecallResponse'
@@ -77,8 +78,8 @@ export function deleteRecallDocument(
   recallId: string,
   documentId: string,
   token: string
-): Promise<AddDocumentResponse> {
-  return restClient(token).delete({ path: `/recalls/${recallId}/documents/${documentId}` })
+): Promise<superagent.Response> {
+  return restClient(token).delete({ path: `/recalls/${recallId}/documents/${documentId}`, raw: true })
 }
 
 export function setDocumentCategory(
