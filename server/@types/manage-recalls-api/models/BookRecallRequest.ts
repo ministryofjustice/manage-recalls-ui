@@ -3,5 +3,6 @@
 /* eslint-disable */
 
 export type BookRecallRequest = {
+    createdByUserId: string;
     nomsNumber: string;
 }

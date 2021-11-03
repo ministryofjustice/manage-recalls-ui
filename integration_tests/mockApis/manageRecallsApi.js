@@ -122,6 +122,20 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectDeleteRecallDocument: () => {
+      return wiremock.stubFor({
+        request: {
+          method: 'DELETE',
+          urlPattern: `/recalls/(.*)/documents/(.*)`,
+        },
+        response: {
+          status: 204,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+        },
+      })
+    },
     expectGetRecallDocument: expectation => {
       return wiremock.stubFor({
         request: {

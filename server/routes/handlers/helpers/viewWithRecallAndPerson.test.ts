@@ -2,8 +2,10 @@
 import nock from 'nock'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { viewWithRecallAndPerson } from './viewWithRecallAndPerson'
+import * as documentsExports from './documents'
 import config from '../../../config'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
@@ -146,7 +148,6 @@ describe('viewWithRecallAndPerson', () => {
 
   it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
     fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -154,5 +155,18 @@ describe('viewWithRecallAndPerson', () => {
       'Overdue: recall assessment was due on 6 August 2020 by 16:33'
     )
     expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
+  })
+
+  it('should make document data available to render', async () => {
+    fakeManageRecallsApi
+      .get(`/recalls/${recallId}`)
+      .reply(200, { ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
+    jest.spyOn(documentsExports, 'decorateDocs')
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    res.locals.urlInfo = {}
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
+    expect(documentsExports.decorateDocs).toHaveBeenCalledWith({ docs: recall.documents, nomsNumber, recallId })
   })
 })

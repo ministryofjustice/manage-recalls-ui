@@ -1,9 +1,14 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
 import { downloadUploadedDocumentOrEmail, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
-import { getStoredDocument, addRecallDocument } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import {
+  getRecall,
+  addRecallDocument,
+  deleteRecallDocument,
+} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { uploadStorageArray } from '../helpers/uploadStorage'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
@@ -45,8 +50,11 @@ describe('uploadRecallDocumentsFormHandler', () => {
       mimetype: 'application/pdf',
     },
   ]
+  const nomsNumber = '456'
+  const recallId = '789'
+
   beforeEach(() => {
-    req = mockGetRequest({ params: { nomsNumber: '456', recallId: '789' } })
+    req = mockGetRequest({ params: { nomsNumber, recallId } })
     const { res } = getMockRes({
       locals: { user: {} },
     })
@@ -227,6 +235,156 @@ describe('uploadRecallDocumentsFormHandler', () => {
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
         expect(path).toEqual(`/persons/123/recalls/456/dossier-recall`)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('deletes a document', done => {
+    const documentId = '123'
+    const fromPage = 'check-answers'
+    const userToken = '000'
+    const fileName = 'licence.pdf'
+    const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      status: RecallResponse.status.BEING_BOOKED_ON,
+      documents: [
+        {
+          documentId,
+          category: GetDocumentResponse.category.LICENCE,
+          fileName,
+          content: 'abc',
+        },
+      ],
+    })
+    req.body = {
+      delete: documentId,
+    }
+    req.originalUrl = `${basePath}upload-documents`
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+        },
+        urlInfo: {
+          basePath,
+          fromPage,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(req.session.confirmationMessage).toEqual({
+          text: `${fileName} has been deleted`,
+          type: 'success',
+        })
+        expect(deleteRecallDocument).toHaveBeenCalledWith(recallId, documentId, userToken)
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(req.originalUrl)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('errors if document deletion fails', done => {
+    const documentId = '123'
+    const fromPage = 'check-answers'
+    const userToken = '000'
+    const fileName = 'licence.pdf'
+    const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      status: RecallResponse.status.BEING_BOOKED_ON,
+      documents: [
+        {
+          documentId,
+          category: GetDocumentResponse.category.LICENCE,
+          fileName,
+          content: 'abc',
+        },
+      ],
+    })
+    ;(deleteRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
+    req.body = {
+      delete: documentId,
+    }
+    req.originalUrl = `${basePath}upload-documents`
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+        },
+        urlInfo: {
+          basePath,
+          fromPage,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(req.session.confirmationMessage).toBeUndefined()
+        expect(req.session.errors).toEqual([
+          {
+            name: 'saveError',
+            text: 'An error occurred saving your changes',
+          },
+        ])
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(req.originalUrl)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('errors if deletion is attempted when fromPage is invalid', done => {
+    const documentId = '123'
+    const fromPage = 'view-recall'
+    const userToken = '000'
+    const fileName = 'licence.pdf'
+    const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      status: RecallResponse.status.BEING_BOOKED_ON,
+      documents: [
+        {
+          documentId,
+          category: GetDocumentResponse.category.LICENCE,
+          fileName,
+          content: 'abc',
+        },
+      ],
+    })
+    req.body = {
+      delete: documentId,
+    }
+    req.originalUrl = `${basePath}upload-documents`
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+        },
+        urlInfo: {
+          basePath,
+          fromPage,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(req.session.confirmationMessage).toBeUndefined()
+        expect(req.session.errors).toEqual([
+          {
+            name: 'saveError',
+            text: 'An error occurred saving your changes',
+          },
+        ])
+        expect(deleteRecallDocument).not.toHaveBeenCalled()
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(req.originalUrl)
         done()
       },
     }

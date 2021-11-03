@@ -242,10 +242,13 @@ export namespace RecallResponse {
     }
 
     export enum status {
+        BEING_BOOKED_ON = 'BEING_BOOKED_ON',
         BOOKED_ON = 'BOOKED_ON',
+        DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
     }
+
 
 }

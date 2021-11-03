@@ -9,6 +9,8 @@ import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 import checkAnswersPage from '../pages/recallCheckAnswers'
+import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
+import recallInformationPage from '../pages/recallInformation'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
@@ -409,6 +411,52 @@ context('Book a recall', () => {
       fieldName: 'documents',
       summaryError: 'test.pdf contains a virus',
     })
+  })
+
+  it('user can go back to delete documents from the check your answers page', () => {
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.BEING_BOOKED_ON,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId,
+          },
+        ],
+      },
+    })
+    cy.task('expectDeleteRecallDocument')
+    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
+    checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
+    uploadDocuments.clickElement({ qaAttr: `delete-${documentId}` })
+    uploadDocuments.clickContinue()
+    checkAnswersPage.verifyOnPage()
+  })
+
+  it("user can't go back to delete documents from the view recall page", () => {
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.BEING_BOOKED_ON,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId,
+          },
+        ],
+      },
+    })
+    cy.task('expectDeleteRecallDocument')
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
+    uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
   })
 
   it('user can check and change their answers then navigate back to the check answers page', () => {
