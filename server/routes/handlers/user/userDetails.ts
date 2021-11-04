@@ -50,7 +50,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       }
       const { firstName, lastName, signatureEncoded, email, phoneNumber } = req.body
       const { file } = req
-      if (isInvalidFileType(file, allowedImageFileExtensions)) {
+      if (file && isInvalidFileType(file, allowedImageFileExtensions)) {
         req.session.errors = [
           makeErrorObject({
             id: 'signature',
