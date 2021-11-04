@@ -1,14 +1,27 @@
-import redis from 'redis'
-import { promisify } from 'util'
+import redis, { RedisClient } from 'redis'
 import config from '../config'
+import logger from '../../logger'
 
-export const redisClient = redis.createClient({
-  port: config.redis.port,
-  password: config.redis.password,
-  host: config.redis.host,
-  tls: config.redis.tls_enabled === 'true' ? {} : false,
-})
+let redisClient: RedisClient
 
-export const getRedisClient = () => redisClient
+export const getRedisClient = () => {
+  if (!redisClient) {
+    redisClient = redis.createClient({
+      port: config.redis.port,
+      password: config.redis.password,
+      host: config.redis.host,
+      tls: config.redis.tls_enabled === 'true' ? {} : false,
+    })
+    return redisClient
+  }
+}
 
-export const getRedisAsync = promisify(redisClient.get).bind(redisClient)
+export const getRedisAsync = (key: string): Promise<string | null> =>
+  new Promise(resolve => {
+    redisClient.get(key, (err, value) => {
+      if (err) {
+        logger.error(err)
+      }
+      resolve(err ? null : value)
+    })
+  })

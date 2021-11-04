@@ -1,3 +1,4 @@
+import { RedisClient } from 'redis'
 import * as redisExports from '../../../clients/redis'
 import { searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getPerson } from './personCache'
@@ -6,8 +7,10 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
 describe('Get person data from cache', () => {
   const token = 'token'
+  const redisSet = jest.fn()
+
   beforeEach(() => {
-    jest.spyOn(redisExports.redisClient, 'set').mockImplementation(() => true)
+    jest.spyOn(redisExports, 'getRedisClient').mockReturnValue({ set: redisSet } as unknown as RedisClient)
   })
 
   afterEach(() => jest.resetAllMocks())
@@ -56,7 +59,7 @@ describe('Get person data from cache', () => {
       nomsNumber: '1',
     })
     await getPerson('1', token, true)
-    expect(redisExports.redisClient.set).toHaveBeenCalledWith(
+    expect(redisSet).toHaveBeenCalledWith(
       'person:1',
       JSON.stringify({
         firstName: 'Bobbie',
