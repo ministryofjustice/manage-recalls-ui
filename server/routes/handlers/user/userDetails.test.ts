@@ -97,4 +97,44 @@ describe('postUser', () => {
 
     postUser(req, res)
   })
+
+  it('saves if an existing signature is present', done => {
+    const userId = '123'
+    const firstName = 'Barry'
+    const lastName = 'Badger'
+    const email = 'barry@badger.com'
+    const phoneNumber = '0739378378'
+    const userToken = 'token-1'
+    const signatureEncoded = '123'
+
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+
+    const req = mockPostRequest({ body: { firstName, lastName, email, phoneNumber, signatureEncoded } })
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+          uuid: userId,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(addUserDetails).toHaveBeenCalledWith(
+          userId,
+          firstName,
+          lastName,
+          signatureEncoded,
+          email,
+          phoneNumber,
+          userToken
+        )
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/user-details')
+        done()
+      },
+    }
+
+    postUser(req, res)
+  })
 })
