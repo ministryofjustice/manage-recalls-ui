@@ -4,6 +4,8 @@ import { getRedisAsync, getRedisClient } from '../../../clients/redis'
 import logger from '../../../../logger'
 import config from '../../../config'
 
+const getKey = (nomsNumber: string) => `person:${nomsNumber}`
+
 const fetchPersonFromApiAndCache = async (
   nomsNumber: string,
   token: string,
@@ -13,8 +15,8 @@ const fetchPersonFromApiAndCache = async (
     if (person && !isProduction) {
       try {
         const redisClient = getRedisClient()
-        redisClient.set(nomsNumber, JSON.stringify(person))
-        redisClient.expire(nomsNumber, config.personCache.ttl)
+        redisClient.set(getKey(nomsNumber), JSON.stringify(person))
+        redisClient.expire(getKey(nomsNumber), config.personCache.ttl)
       } catch (err) {
         logger.error(err)
       }
@@ -28,7 +30,7 @@ export const getPerson = async (
   isProduction?: boolean
 ): Promise<PersonSearchResult | null> => {
   if (!isProduction) {
-    const stored = await getRedisAsync(nomsNumber)
+    const stored = await getRedisAsync(getKey(nomsNumber))
     if (stored) {
       fetchPersonFromApiAndCache(nomsNumber, token, isProduction)
       logger.info(`Redis cache hit for ${nomsNumber}`)

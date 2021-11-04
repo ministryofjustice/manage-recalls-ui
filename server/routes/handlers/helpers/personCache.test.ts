@@ -57,7 +57,7 @@ describe('Get person data from cache', () => {
     })
     await getPerson('1', token)
     expect(redisExports.redisClient.set).toHaveBeenCalledWith(
-      '1',
+      'person:1',
       JSON.stringify({
         firstName: 'Bobbie',
         lastName: 'Badgers',
