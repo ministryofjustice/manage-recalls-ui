@@ -86,8 +86,10 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickContinue()
+
+    const [licence, ...documents] = [...getRecallResponse.documents]
     cy.task('expectGetRecall', {
-      expectedResult: { recallId, ...getRecallResponse, status: RecallResponse.status.BEING_BOOKED_ON },
+      expectedResult: { recallId, ...getRecallResponse, documents, status: RecallResponse.status.BEING_BOOKED_ON },
     })
     const checkAnswers = checkAnswersPage.verifyOnPage()
     cy.reload()
@@ -126,10 +128,6 @@ context('Book a recall', () => {
 
     // uploaded documents
     checkAnswers.assertElementHasText({
-      qaAttr: 'uploadedDocument-LICENCE',
-      textToFind: 'Licence.pdf',
-    })
-    checkAnswers.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
       textToFind: 'Part A.pdf',
     })
@@ -141,6 +139,9 @@ context('Book a recall', () => {
       qaAttr: 'uploadedDocument-PRE_SENTENCING_REPORT',
       textToFind: 'PSR.pdf',
     })
+
+    // missing documents
+    checkAnswers.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
   })
 
   it('User sees an error if pre-cons main name question is not answered', () => {
