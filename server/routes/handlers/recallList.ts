@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
-import { getRecallList, searchByNomsNumber } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
+import { getPerson } from './helpers/personCache'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   const appInsightsClient = buildAppInsightsClient()
@@ -18,13 +19,12 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     const start2 = performance.now()
     const results = await Promise.allSettled(
       recallsWithNomsNumbers.map(recall =>
-        searchByNomsNumber(recall.nomsNumber, token).then(
-          person =>
-            <RecallResult>{
-              recall,
-              person,
-            }
-        )
+        getPerson(recall.nomsNumber, token, process.env.ENVIRONMENT === 'PRODUCTION').then(person => {
+          return <RecallResult>{
+            recall,
+            person,
+          }
+        })
       )
     )
     appInsightsClient?.trackMetric({ name: 'searchByNomsNumber_total', value: Math.round(performance.now() - start2) })
