@@ -64,7 +64,7 @@
         </dd>
     </div>
     {% endif %}
-    {% if recall.status == 'RECALL_NOTIFICATION_ISSUED' or recall.status == 'DOSSIER_ISSUED' %}
+    {% if recall.status == 'RECALL_NOTIFICATION_ISSUED' or recall.status == 'DOSSIER_IN_PROGRESS' or recall.status == 'DOSSIER_ISSUED' %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
                 Licence conditions breached
