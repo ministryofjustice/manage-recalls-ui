@@ -87,6 +87,7 @@ context('Book a recall', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickContinue()
 
+    // eslint-disable-next-line no-unused-vars
     const [licence, ...documents] = [...getRecallResponse.documents]
     cy.task('expectGetRecall', {
       expectedResult: { recallId, ...getRecallResponse, documents, status: RecallResponse.status.BEING_BOOKED_ON },
