@@ -26,7 +26,7 @@ import standardRouter from './routes/standardRouter'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import type UserService from './services/userService'
 import { getStoredSessionData } from './middleware/getStoredSessionData'
-import { redisClient } from './clients/redis'
+import { getRedisClient } from './clients/redis'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
@@ -128,7 +128,7 @@ export default function createApp(userService: UserService): express.Application
 
   app.use(
     session({
-      store: new RedisStore({ client: redisClient }),
+      store: new RedisStore({ client: getRedisClient() }),
       cookie: { secure: config.https, sameSite: 'lax', maxAge: config.session.expiryMinutes * 60 * 1000 },
       secret: config.session.secret,
       resave: false, // redis implements touch so shouldn't need this

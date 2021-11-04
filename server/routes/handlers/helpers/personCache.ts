@@ -1,14 +1,23 @@
 import { PersonSearchResult } from '../../../@types'
 import { searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { getRedisAsync, redisClient } from '../../../clients/redis'
+import { getRedisAsync, getRedisClient } from '../../../clients/redis'
 import logger from '../../../../logger'
 import config from '../../../config'
 
-const fetchPersonFromApiAndCache = async (nomsNumber: string, token: string): Promise<PersonSearchResult | null> =>
+const fetchPersonFromApiAndCache = async (
+  nomsNumber: string,
+  token: string,
+  isProduction?: boolean
+): Promise<PersonSearchResult | null> =>
   searchByNomsNumber(nomsNumber, token).then(person => {
-    if (person) {
-      redisClient.set(nomsNumber, JSON.stringify(person))
-      redisClient.expire(nomsNumber, config.personCache.ttl)
+    if (person && !isProduction) {
+      try {
+        const redisClient = getRedisClient()
+        redisClient.set(nomsNumber, JSON.stringify(person))
+        redisClient.expire(nomsNumber, config.personCache.ttl)
+      } catch (err) {
+        logger.error(err)
+      }
     }
     return person
   })
@@ -21,11 +30,11 @@ export const getPerson = async (
   if (!isProduction) {
     const stored = await getRedisAsync(nomsNumber)
     if (stored) {
-      fetchPersonFromApiAndCache(nomsNumber, token)
+      fetchPersonFromApiAndCache(nomsNumber, token, isProduction)
       logger.info(`Redis cache hit for ${nomsNumber}`)
       return JSON.parse(stored)
     }
     logger.info(`Redis cache miss for ${nomsNumber}`)
   }
-  return fetchPersonFromApiAndCache(nomsNumber, token)
+  return fetchPersonFromApiAndCache(nomsNumber, token, isProduction)
 }

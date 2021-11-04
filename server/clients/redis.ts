@@ -9,4 +9,6 @@ export const redisClient = redis.createClient({
   tls: config.redis.tls_enabled === 'true' ? {} : false,
 })
 
+export const getRedisClient = () => redisClient
+
 export const getRedisAsync = promisify(redisClient.get).bind(redisClient)
