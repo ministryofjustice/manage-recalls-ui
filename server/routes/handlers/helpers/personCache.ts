@@ -9,10 +9,10 @@ const getKey = (nomsNumber: string) => `person:${nomsNumber}`
 const fetchPersonFromApiAndCache = async (
   nomsNumber: string,
   token: string,
-  isProduction?: boolean
+  useCache?: boolean
 ): Promise<PersonSearchResult | null> =>
   searchByNomsNumber(nomsNumber, token).then(person => {
-    if (person && !isProduction) {
+    if (person && useCache) {
       try {
         const redisClient = getRedisClient()
         redisClient.set(getKey(nomsNumber), JSON.stringify(person))
@@ -27,16 +27,17 @@ const fetchPersonFromApiAndCache = async (
 export const getPerson = async (
   nomsNumber: string,
   token: string,
-  isProduction?: boolean
+  enableCache?: boolean
 ): Promise<PersonSearchResult | null> => {
-  if (!isProduction) {
+  const useCache = enableCache || (process.env.ENVIRONMENT !== 'PRODUCTION' && process.env.NODE_ENV !== 'test')
+  if (useCache) {
     const stored = await getRedisAsync(getKey(nomsNumber))
     if (stored) {
-      fetchPersonFromApiAndCache(nomsNumber, token, isProduction)
+      fetchPersonFromApiAndCache(nomsNumber, token, useCache)
       logger.info(`Redis cache hit for ${nomsNumber}`)
       return JSON.parse(stored)
     }
     logger.info(`Redis cache miss for ${nomsNumber}`)
   }
-  return fetchPersonFromApiAndCache(nomsNumber, token, isProduction)
+  return fetchPersonFromApiAndCache(nomsNumber, token, useCache)
 }

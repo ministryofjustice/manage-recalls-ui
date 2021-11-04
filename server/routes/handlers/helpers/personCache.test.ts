@@ -25,7 +25,7 @@ describe('Get person data from cache', () => {
       lastName: 'Badgers',
       nomsNumber: '1',
     })
-    const person = await getPerson('1', token)
+    const person = await getPerson('1', token, true)
     expect(person).toEqual({
       firstName: 'Bobby',
       lastName: 'Badger',
@@ -40,7 +40,7 @@ describe('Get person data from cache', () => {
       lastName: 'Badgers',
       nomsNumber: '1',
     })
-    const person = await getPerson('1', token)
+    const person = await getPerson('1', token, true)
     expect(person).toEqual({
       firstName: 'Bobbie',
       lastName: 'Badgers',
@@ -55,7 +55,7 @@ describe('Get person data from cache', () => {
       lastName: 'Badgers',
       nomsNumber: '1',
     })
-    await getPerson('1', token)
+    await getPerson('1', token, true)
     expect(redisExports.redisClient.set).toHaveBeenCalledWith(
       'person:1',
       JSON.stringify({
@@ -66,14 +66,14 @@ describe('Get person data from cache', () => {
     )
   })
 
-  it('should not check the cache for production', async () => {
+  it('should not check the cache if param not supplied', async () => {
     jest.spyOn(redisExports, 'getRedisAsync')
     ;(searchByNomsNumber as jest.Mock).mockResolvedValue({
       firstName: 'Bobbie',
       lastName: 'Badgers',
       nomsNumber: '1',
     })
-    await getPerson('1', token, true)
+    await getPerson('1', token)
     expect(redisExports.getRedisAsync).not.toHaveBeenCalled()
   })
 })
