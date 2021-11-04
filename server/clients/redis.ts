@@ -12,8 +12,8 @@ export const getRedisClient = () => {
       host: config.redis.host,
       tls: config.redis.tls_enabled === 'true' ? {} : false,
     })
-    return redisClient
   }
+  return redisClient
 }
 
 export const getRedisAsync = (key: string): Promise<string | null> =>
