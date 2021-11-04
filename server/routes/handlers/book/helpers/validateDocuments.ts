@@ -1,6 +1,6 @@
 import { listToString, makeErrorObject } from '../../helpers'
 import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
-import { documentCategories } from '../documentCategories'
+import { documentCategories } from '../../helpers/documents/documentCategories'
 import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { AllowedUploadFileType, NamedFormError } from '../../../../@types'

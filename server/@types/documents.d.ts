@@ -10,6 +10,7 @@ export interface DocumentCategoryMetadata {
   required?: boolean
   hintIfMissing?: boolean
   multiple?: boolean
+  fileNamePatterns?: string[]
 }
 
 export interface DecoratedDocument extends DocumentCategoryMetadata {

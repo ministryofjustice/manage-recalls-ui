@@ -6,6 +6,7 @@ import * as documentsExports from './documents'
 import config from '../../../config'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { decorateDocs } from './documents/decorateDocs'
 
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
@@ -167,6 +168,6 @@ describe('viewWithRecallAndPerson', () => {
     res.locals.urlInfo = {}
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
-    expect(documentsExports.decorateDocs).toHaveBeenCalledWith({ docs: recall.documents, nomsNumber, recallId })
+    expect(decorateDocs).toHaveBeenCalledWith({ docs: recall.documents, nomsNumber, recallId })
   })
 })
