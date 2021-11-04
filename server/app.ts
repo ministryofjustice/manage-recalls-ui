@@ -11,7 +11,6 @@ import compression from 'compression'
 import createError from 'http-errors'
 import flash from 'connect-flash'
 import passport from 'passport'
-import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
 import { randomBytes } from 'crypto'
@@ -27,6 +26,7 @@ import standardRouter from './routes/standardRouter'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import type UserService from './services/userService'
 import { getStoredSessionData } from './middleware/getStoredSessionData'
+import { getRedisClient } from './clients/redis'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
@@ -126,16 +126,9 @@ export default function createApp(userService: UserService): express.Application
 
   app.use(addRequestId())
 
-  const client = redis.createClient({
-    port: config.redis.port,
-    password: config.redis.password,
-    host: config.redis.host,
-    tls: config.redis.tls_enabled === 'true' ? {} : false,
-  })
-
   app.use(
     session({
-      store: new RedisStore({ client }),
+      store: new RedisStore({ client: getRedisClient() }),
       cookie: { secure: config.https, sameSite: 'lax', maxAge: config.session.expiryMinutes * 60 * 1000 },
       secret: config.session.secret,
       resave: false, // redis implements touch so shouldn't need this

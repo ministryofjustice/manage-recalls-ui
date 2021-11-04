@@ -6,6 +6,8 @@ import config from '../../config'
 import recalls from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
 import { RecallResponse } from '../../@types/manage-recalls-api'
 
+jest.mock('../../clients/redis')
+
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
 describe('recallList', () => {

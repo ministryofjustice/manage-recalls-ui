@@ -83,6 +83,9 @@ const config = {
       phone: get('MANAGER_PHONE', '[phone]'),
     },
   },
+  personCache: {
+    ttl: Number(get('PERSON_CACHE_TTL', 60 * 60)),
+  },
 }
 export default config
 
