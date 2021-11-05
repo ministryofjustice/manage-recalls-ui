@@ -141,21 +141,30 @@ context('To do (recalls) list', () => {
   })
 
   it('User can move on to view recall if the recall has status DOSSIER_ISSUED', () => {
+    const recalls = [
+      {
+        recallId: '123445-5717-4562-b3fc-2c963f66afa6',
+        nomsNumber,
+        status: 'DOSSIER_ISSUED',
+        dossierEmailSentDate: '2020-10-22',
+      },
+      {
+        recallId,
+        nomsNumber,
+        status: 'DOSSIER_ISSUED',
+        dossierEmailSentDate: '2021-05-04',
+      },
+    ]
     cy.task('expectListRecalls', {
-      expectedResults: [
-        {
-          recallId,
-          nomsNumber,
-          status: 'DOSSIER_ISSUED',
-        },
-      ],
+      expectedResults: recalls,
     })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.clickCompletedTab()
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '' })
+    cy.get(`[data-qa="completedDate"]`).eq(0).should('contain.text', '04 May 2021')
+    cy.get(`[data-qa="completedDate"]`).eq(1).should('contain.text', '22 Oct 2020')
     recallsList.viewRecall({ recallId })
     recallInformationPage.verifyOnPage({ personName })
   })
