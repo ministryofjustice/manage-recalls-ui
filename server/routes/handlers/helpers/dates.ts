@@ -7,9 +7,8 @@ Settings.throwOnInvalid = true
 
 const europeLondon = 'Europe/London'
 const datePresentationFormat = 'd MMMM yyyy'
-const datePresentationNoYearFormat = 'd MMMM'
+const datePresentationNoYearFormat = 'd MMM'
 const timePresentationFormat = 'HH:mm'
-const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
 
 interface Options {
   includeTime?: boolean
@@ -137,6 +136,7 @@ export const splitIsoDateToParts = (isoDate?: string): DatePartsParsed | undefin
 }
 
 export const formatDateTimeFromIsoString = (isoDate: string) => {
+  const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
   if (!isDefined(isoDate)) {
     return undefined
   }

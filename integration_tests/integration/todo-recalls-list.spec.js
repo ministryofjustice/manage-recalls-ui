@@ -59,7 +59,7 @@ context('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `assess-recall-${recallId}`, text: 'Assess recall' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '5 November at 13:12' })
+    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '5 Nov at 13:12' })
     recallsList.assessRecall({ recallId })
     assessRecallPage.verifyOnPage({ fullName: personName })
   })
@@ -81,7 +81,7 @@ context('To do (recalls) list', () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'IN_ASSESSMENT' } })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '12 October at 15:30' })
+    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '12 Oct at 15:30' })
     recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
     recallsList.expectActionLinkText({ id: `continue-assess-${recallId}`, text: 'Continue assessment' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -108,7 +108,7 @@ context('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 October' })
+    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 Oct' })
     recallsList.createDossier({ recallId })
     dossierRecallInformationPage.verifyOnPage({ personName })
   })
@@ -131,7 +131,7 @@ context('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-dossier-${recallId}`, text: 'Continue dossier creation' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 October' })
+    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 Oct' })
     recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
     recallsList.continueDossier({ recallId })
     const dossierRecallInfo = dossierRecallInformationPage.verifyOnPage({ personName })
@@ -141,21 +141,34 @@ context('To do (recalls) list', () => {
   })
 
   it('User can move on to view recall if the recall has status DOSSIER_ISSUED', () => {
+    const recalls = [
+      {
+        recallId: '123445-5717-4562-b3fc-2c963f66afa6',
+        nomsNumber,
+        status: 'DOSSIER_ISSUED',
+        dossierEmailSentDate: '2020-10-22',
+      },
+      {
+        recallId,
+        nomsNumber,
+        status: 'DOSSIER_ISSUED',
+        dossierEmailSentDate: '2021-05-04',
+      },
+    ]
     cy.task('expectListRecalls', {
-      expectedResults: [
-        {
-          recallId,
-          nomsNumber,
-          status: 'DOSSIER_ISSUED',
-        },
-      ],
+      expectedResults: recalls,
     })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
     cy.login()
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.clickCompletedTab()
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '' })
+    cy.get(`[data-qa="completedDate"]`)
+      .eq(0)
+      .should($results => expect($results.text().trim()).to.equal('4 May 2021'))
+    cy.get(`[data-qa="completedDate"]`)
+      .eq(1)
+      .should($results => expect($results.text().trim()).to.equal('22 October 2020'))
     recallsList.viewRecall({ recallId })
     recallInformationPage.verifyOnPage({ personName })
   })

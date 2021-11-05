@@ -20,6 +20,13 @@ describe('recallList', () => {
       recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       nomsNumber: '123',
       status: 'DOSSIER_ISSUED',
+      dossierEmailSentDate: '2021-05-04',
+    },
+    {
+      recallId: '123445-5717-4562-b3fc-2c963f66afa6',
+      nomsNumber: '456',
+      status: 'DOSSIER_ISSUED',
+      dossierEmailSentDate: '2020-10-22',
     },
   ]
 
@@ -83,8 +90,21 @@ describe('recallList', () => {
           lastName: 'Badger',
         },
         recall: {
+          dossierEmailSentDate: '2021-05-04',
           nomsNumber: '123',
           recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          status: 'DOSSIER_ISSUED',
+        },
+      },
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          dossierEmailSentDate: '2020-10-22',
+          nomsNumber: '456',
+          recallId: '123445-5717-4562-b3fc-2c963f66afa6',
           status: 'DOSSIER_ISSUED',
         },
       },
@@ -97,7 +117,7 @@ describe('recallList', () => {
     expect(resp.locals.errors).toEqual([
       {
         name: 'fetchError',
-        text: '4 recalls could not be retrieved',
+        text: '5 recalls could not be retrieved',
       },
     ])
   })

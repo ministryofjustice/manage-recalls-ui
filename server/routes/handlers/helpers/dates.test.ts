@@ -7,6 +7,7 @@ import {
   recallAssessmentDueText,
   splitIsoDateToParts,
 } from './dates'
+import { sortListByDateField } from './date'
 
 describe('Date helpers', () => {
   describe('convertGmtDatePartsToUtc', () => {
@@ -386,7 +387,7 @@ describe('Date helpers', () => {
 
       it('due date after tomorrow shows due on date by time of day - short format', () => {
         const formatted = dueDateLabel({ dueItemLabel, dueIsoDateTime: afterTomorrow, shortFormat: true })
-        expect(formatted).toEqual('17 July at 11:10')
+        expect(formatted).toEqual('17 Jul at 11:10')
       })
     })
 
@@ -472,7 +473,7 @@ describe('Date helpers', () => {
           shortFormat: true,
           includeTime: false,
         })
-        expect(formatted).toEqual('13 March')
+        expect(formatted).toEqual('13 Mar')
       })
 
       it('due date tomorrow shows tomorrow', () => {
@@ -502,11 +503,33 @@ describe('Date helpers', () => {
           includeTime: false,
           shortFormat: true,
         })
-        expect(formatted).toEqual('17 March')
+        expect(formatted).toEqual('17 Mar')
       })
     })
     function asUtcDateTime(isoDateTimeStr: string) {
       return DateTime.fromISO(isoDateTimeStr, { zone: 'utc' })
     }
+  })
+
+  describe('sortListByDateField', () => {
+    it('sorts by a deeply nested key, oldest first', () => {
+      const list = [{ a: { b: { c: '2021-10-03' } } }, { a: { b: { c: '2021-10-02' } } }]
+      const sorted = sortListByDateField({ list, dateKey: 'a.b.c', newestFirst: false })
+      expect(sorted).toEqual([{ a: { b: { c: '2021-10-02' } } }, { a: { b: { c: '2021-10-03' } } }])
+    })
+
+    it('sorts by a deeply nested key, newest first', () => {
+      const list = [
+        { a: { b: { c: '2021-02-13' } } },
+        { a: { b: { c: '2021-08-22' } } },
+        { a: { b: { c: '2022-02-11' } } },
+      ]
+      const sorted = sortListByDateField({ list, dateKey: 'a.b.c', newestFirst: true })
+      expect(sorted).toEqual([
+        { a: { b: { c: '2022-02-11' } } },
+        { a: { b: { c: '2021-08-22' } } },
+        { a: { b: { c: '2021-02-13' } } },
+      ])
+    })
   })
 })
