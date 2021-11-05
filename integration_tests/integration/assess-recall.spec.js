@@ -32,7 +32,29 @@ context('Assess a recall', () => {
       ],
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, recallId, status: 'BOOKED_ON' } })
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'BOOKED_ON',
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'RECALL_REQUEST_EMAIL',
+            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+            fileName: 'recall-request.eml',
+          },
+        ],
+      },
+    })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
@@ -104,11 +126,17 @@ context('Assess a recall', () => {
     assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
-    assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    const recallInformation = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     const fileName = 'recall-request.eml'
     mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
     cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
     checkDownload(fileName)
+    // missing documents
+    recallInformation.assertElementHasText({
+      qaAttr: 'required-LICENCE',
+      textToFind: 'Missing: needed to create dossier',
+    })
+    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
   })
 
   it("User sees an error if they don't make a decision", () => {
