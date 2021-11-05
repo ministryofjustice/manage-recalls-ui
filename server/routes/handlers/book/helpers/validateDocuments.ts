@@ -1,6 +1,6 @@
 import { listToString, makeErrorObject } from '../../helpers'
 import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
-import { documentCategories } from '../documentCategories'
+import { documentCategories } from '../../helpers/documents/documentCategories'
 import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { AllowedUploadFileType, NamedFormError } from '../../../../@types'
@@ -13,7 +13,9 @@ export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions:
 export const validateUploadedFileTypes = (uploadedFileData: UploadedFileMetadata[]) => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
+  const usedCategories = [] as string[]
   uploadedFileData.forEach(file => {
+    let hasError = false
     if (isInvalidFileType(file, allowedDocumentFileExtensions)) {
       errors = errors || []
       errors.push(
@@ -25,7 +27,23 @@ export const validateUploadedFileTypes = (uploadedFileData: UploadedFileMetadata
           )}`,
         })
       )
-    } else {
+      hasError = true
+    }
+    if (usedCategories.includes(file.category)) {
+      errors = errors || []
+      errors.push(
+        makeErrorObject({
+          id: 'documents',
+          text: `You can only upload one ${formatDocLabel(file.category)}`,
+        })
+      )
+      hasError = true
+    }
+    const docCategory = documentCategories.find(cat => cat.name === file.category)
+    if (!docCategory.multiple) {
+      usedCategories.push(file.category)
+    }
+    if (!hasError) {
       valuesToSave = valuesToSave || []
       valuesToSave.push(file)
     }

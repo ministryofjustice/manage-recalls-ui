@@ -1,5 +1,5 @@
-import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { DocumentCategoryMetadata } from '../../../@types/documents'
+import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { DocumentCategoryMetadata } from '../../../../@types/documents'
 
 export const documentCategories: DocumentCategoryMetadata[] = [
   {
@@ -9,6 +9,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     required: true,
     fileName: 'Part A.pdf',
+    fileNamePatterns: ['part a'],
   },
   {
     label: 'Licence',
@@ -16,6 +17,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     required: true,
     fileName: 'Licence.pdf',
+    fileNamePatterns: ['licence'],
   },
   {
     label: 'Previous convictions sheet',
@@ -23,12 +25,14 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     hintIfMissing: true,
     fileName: 'Pre Cons.pdf',
+    fileNamePatterns: ['pre cons', 'previous convictions'],
   },
   {
     label: 'Pre-sentencing report',
     name: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
     type: 'document',
     fileName: 'PSR.pdf',
+    fileNamePatterns: ['psr', 'pre sentencing'],
   },
   {
     label: 'OASys Risk Assessment',
@@ -37,12 +41,14 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     hintIfMissing: true,
     fileName: 'OASys.pdf',
+    fileNamePatterns: ['oasys'],
   },
   {
     label: 'Charge sheet',
     name: ApiRecallDocument.category.CHARGE_SHEET,
     type: 'document',
     fileName: 'Charge sheet.pdf',
+    fileNamePatterns: ['charge sheet'],
   },
   {
     label: 'CPS papers',
@@ -50,18 +56,21 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     name: ApiRecallDocument.category.CPS_PAPERS,
     type: 'document',
     fileName: 'CPS papers.pdf',
+    fileNamePatterns: ['cps papers'],
   },
   {
     label: 'Police report',
     name: ApiRecallDocument.category.POLICE_REPORT,
     type: 'document',
     fileName: 'Police report.pdf',
+    fileNamePatterns: ['police report'],
   },
   {
     label: 'Exclusion zone map',
     name: ApiRecallDocument.category.EXCLUSION_ZONE_MAP,
     type: 'document',
     fileName: 'Exclusion zone map.pdf',
+    fileNamePatterns: ['exclusion map', 'exclusion zone'],
   },
   {
     label: 'Other',

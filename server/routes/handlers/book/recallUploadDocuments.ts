@@ -5,9 +5,8 @@ import {
   getStoredDocument,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { documentCategories } from './documentCategories'
+import { documentCategories } from '../helpers/documents/documentCategories'
 import {
-  decorateDocs,
   enableDeleteDocuments,
   getMetadataForCategorisedFiles,
   getMetadataForUploadedFiles,
@@ -17,6 +16,7 @@ import {
 import { uploadStorageArray } from '../helpers/uploadStorage'
 import { validateCategories, validateUploadedFileTypes } from './helpers/validateDocuments'
 import { UrlInfo } from '../../../@types'
+import { decorateDocs } from '../helpers/documents/decorateDocs'
 
 const renderXhrResponse = async ({
   res,

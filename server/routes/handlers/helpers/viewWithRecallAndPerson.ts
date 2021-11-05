@@ -6,7 +6,8 @@ import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
 import { getUserNames } from './getUserNames'
 import { dossierDueDateString, recallAssessmentDueText } from './dates'
-import { decorateDocs, enableDeleteDocuments } from './documents'
+import { enableDeleteDocuments } from './documents'
+import { decorateDocs } from './documents/decorateDocs'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)

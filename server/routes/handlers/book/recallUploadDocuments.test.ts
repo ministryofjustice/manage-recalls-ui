@@ -31,22 +31,22 @@ describe('uploadRecallDocumentsFormHandler', () => {
       mimetype: 'application/pdf',
     },
     {
-      originalname: 'sheet.pdf',
+      originalname: 'PreCons Wesley Holt.pdf',
       buffer: 'def',
       mimetype: 'application/pdf',
     },
     {
-      originalname: 'report.pdf',
+      originalname: 'Barry Badger PART_A_REPORT.pdf',
       buffer: 'def',
       mimetype: 'application/pdf',
     },
     {
-      originalname: 'test.pdf',
+      originalname: '2021-10-09charge-Sheet-Maria Badger.pdf',
       buffer: 'hgf',
       mimetype: 'application/pdf',
     },
     {
-      originalname: 'test2.pdf',
+      originalname: 'other.pdf',
       buffer: 'hgf',
       mimetype: 'application/pdf',
     },
@@ -64,7 +64,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
 
   afterEach(() => jest.resetAllMocks())
 
-  it('sends uploaded documents to the API', async () => {
+  it('autocategorises uploaded documents then sends them to the API', async () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
@@ -75,7 +75,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     await uploadRecallDocumentsFormHandler(req, resp)
     expect(addRecallDocument).toHaveBeenCalledTimes(6)
     expect(addRecallDocument.mock.calls[0][1]).toEqual({
-      category: 'UNCATEGORISED',
+      category: 'LICENCE',
       fileContent: 'abc',
       fileName: 'licence.pdf',
     })
@@ -85,24 +85,24 @@ describe('uploadRecallDocumentsFormHandler', () => {
       fileName: 'report.pdf',
     })
     expect(addRecallDocument.mock.calls[2][1]).toEqual({
-      category: 'UNCATEGORISED',
+      category: 'PREVIOUS_CONVICTIONS_SHEET',
       fileContent: 'def',
-      fileName: 'sheet.pdf',
+      fileName: 'PreCons Wesley Holt.pdf',
     })
     expect(addRecallDocument.mock.calls[3][1]).toEqual({
-      category: 'UNCATEGORISED',
+      category: 'PART_A_RECALL_REPORT',
       fileContent: 'def',
-      fileName: 'report.pdf',
+      fileName: 'Barry Badger PART_A_REPORT.pdf',
     })
     expect(addRecallDocument.mock.calls[4][1]).toEqual({
-      category: 'UNCATEGORISED',
+      category: 'CHARGE_SHEET',
       fileContent: 'hgf',
-      fileName: 'test.pdf',
+      fileName: '2021-10-09charge-Sheet-Maria Badger.pdf',
     })
     expect(addRecallDocument.mock.calls[5][1]).toEqual({
       category: 'UNCATEGORISED',
       fileContent: 'hgf',
-      fileName: 'test2.pdf',
+      fileName: 'other.pdf',
     })
     expect(req.session.errors).toBeUndefined()
   })
@@ -130,21 +130,21 @@ describe('uploadRecallDocumentsFormHandler', () => {
           {
             href: '#documents',
             name: 'documents',
-            text: 'sheet.pdf could not be uploaded - try again',
+            text: 'PreCons Wesley Holt.pdf could not be uploaded - try again',
           },
           {
             href: '#documents',
             name: 'documents',
-            text: 'report.pdf could not be uploaded - try again',
+            text: 'Barry Badger PART_A_REPORT.pdf could not be uploaded - try again',
           },
           {
             name: 'documents',
-            text: 'test.pdf could not be uploaded - try again',
+            text: '2021-10-09charge-Sheet-Maria Badger.pdf could not be uploaded - try again',
             href: '#documents',
           },
           {
             name: 'documents',
-            text: 'test2.pdf could not be uploaded - try again',
+            text: 'other.pdf could not be uploaded - try again',
             href: '#documents',
           },
         ])

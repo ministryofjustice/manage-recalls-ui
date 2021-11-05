@@ -27,6 +27,8 @@ export const isString = (val: unknown) => typeof val === 'string'
 
 export const areStringArraysTheSame = (arr1: unknown[], arr2: unknown[]) => arr1.join('') === arr2.join('')
 
+export const replaceSpaces = (str: string, replacement: string) => str.replace(/ /g, replacement)
+
 export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormErrors => {
   const errorMap = errors.filter(Boolean).reduce((acc: ObjectMap<FormError>, curr: NamedFormError) => {
     const { name, ...rest } = curr

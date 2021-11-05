@@ -2,10 +2,12 @@
 import nock from 'nock'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { viewWithRecallAndPerson } from './viewWithRecallAndPerson'
-import * as documentsExports from './documents'
 import config from '../../../config'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import * as decorateDocsExports from './documents/decorateDocs'
+import { findDocCategory } from './documents'
+import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
@@ -57,43 +59,27 @@ describe('viewWithRecallAndPerson', () => {
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.documents).toEqual([
       {
-        category: 'PART_A_RECALL_REPORT',
+        ...findDocCategory(ApiRecallDocument.category.PART_A_RECALL_REPORT),
+        category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
-        label: 'Part A recall report',
-        labelLowerCase: 'part A recall report',
-        name: 'PART_A_RECALL_REPORT',
-        type: 'document',
-        fileName: 'Part A.pdf',
-        required: true,
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
       },
       {
+        ...findDocCategory(ApiRecallDocument.category.LICENCE),
         category: 'LICENCE',
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        label: 'Licence',
-        name: 'LICENCE',
-        type: 'document',
-        fileName: 'Licence.pdf',
-        required: true,
         url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
       },
       {
+        ...findDocCategory(ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
         category: 'PREVIOUS_CONVICTIONS_SHEET',
         documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-        fileName: 'Pre Cons.pdf',
-        label: 'Previous convictions sheet',
-        name: 'PREVIOUS_CONVICTIONS_SHEET',
-        type: 'document',
-        hintIfMissing: true,
         url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
       },
       {
-        category: 'PRE_SENTENCING_REPORT',
+        ...findDocCategory(ApiRecallDocument.category.PRE_SENTENCING_REPORT),
         documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
-        fileName: 'PSR.pdf',
-        label: 'Pre-sentencing report',
-        name: 'PRE_SENTENCING_REPORT',
-        type: 'document',
+        category: 'PRE_SENTENCING_REPORT',
         url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
       },
     ])
@@ -161,12 +147,12 @@ describe('viewWithRecallAndPerson', () => {
     fakeManageRecallsApi
       .get(`/recalls/${recallId}`)
       .reply(200, { ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
-    jest.spyOn(documentsExports, 'decorateDocs')
+    jest.spyOn(decorateDocsExports, 'decorateDocs')
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.locals.urlInfo = {}
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
-    expect(documentsExports.decorateDocs).toHaveBeenCalledWith({ docs: recall.documents, nomsNumber, recallId })
+    expect(decorateDocsExports.decorateDocs).toHaveBeenCalledWith({ docs: recall.documents, nomsNumber, recallId })
   })
 })
