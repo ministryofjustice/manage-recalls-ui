@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { performance } from 'perf_hooks'
-import { DateTime } from 'luxon'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResult } from '../../@types'
