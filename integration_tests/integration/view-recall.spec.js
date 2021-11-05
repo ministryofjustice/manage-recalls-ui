@@ -24,7 +24,24 @@ context('View recall', () => {
         recallId,
         status: 'DOSSIER_ISSUED',
         documents: [
-          ...getRecallResponse.documents,
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'RECALL_REQUEST_EMAIL',
+            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+            fileName: 'recall-request.eml',
+          },
+          {
+            category: 'RECALL_NOTIFICATION_EMAIL',
+            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+            fileName: '2021-07-03 Phil Jones recall.msg',
+          },
           {
             category: 'DOSSIER_EMAIL',
             documentId: '234-3455-8542-c3ac-8c963f66afa6',
@@ -82,5 +99,11 @@ context('View recall', () => {
     cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
+    // missing documents
+    recallInformation.assertElementHasText({
+      qaAttr: 'required-LICENCE',
+      textToFind: 'Missing: needed to create dossier',
+    })
+    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
   })
 })
