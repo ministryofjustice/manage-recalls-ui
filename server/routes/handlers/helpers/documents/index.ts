@@ -6,9 +6,10 @@ import { RecallResponse } from '../../../../@types/manage-recalls-api/models/Rec
 import { makeErrorObject } from '../index'
 import { CategorisedFileMetadata, DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { addRecallDocument, setDocumentCategory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { autocategoriseDocFileName } from './autocategorise'
 
-export const makeMetaDataForFile = (category: string, file: Express.Multer.File): UploadedFileMetadata => {
-  const documentCategory = documentCategories.find(doc => doc.name === category)
+export const makeMetaDataForFile = (file: Express.Multer.File): UploadedFileMetadata => {
+  const documentCategory = autocategoriseDocFileName(file.originalname)
   return {
     originalFileName: file.originalname,
     fileName: documentCategory.fileName,
@@ -21,7 +22,7 @@ export const makeMetaDataForFile = (category: string, file: Express.Multer.File)
 }
 
 export const getMetadataForUploadedFiles = (files: Express.Multer.File[]): UploadedFileMetadata[] => {
-  return files ? files.map(file => makeMetaDataForFile(ApiRecallDocument.category.UNCATEGORISED, file)) : []
+  return files ? files.map(file => makeMetaDataForFile(file)) : []
 }
 
 export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {
@@ -145,3 +146,6 @@ export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlIn
   }
   return true
 }
+
+export const findDocCategory = (category: ApiRecallDocument.category) =>
+  documentCategories.find(cat => cat.name === category)

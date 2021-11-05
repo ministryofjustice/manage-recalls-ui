@@ -1,4 +1,4 @@
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api'
+import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { DecoratedDocument, DocumentCategoryMetadata } from '../../../../@types/documents'
 import { documentCategories } from './documentCategories'
 import { missingNotRequiredDocsList, requiredDocsList } from './index'
