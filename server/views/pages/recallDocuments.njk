@@ -52,7 +52,7 @@
                     <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post"
                           enctype="multipart/form-data">
                         <input type="submit" class="govuk-visually-hidden" name="continue" value="continue" />
-                        <div class="moj-multi-file__uploaded-files">
+                        <div class="moj-multi-file__uploaded-files" data-qa="document-count-{{ recall.documents.length }}">
                             {% include '../partials/uploadedDocumentsStatus.njk' %}
                         </div>
                         <div id='uploads-progress'></div>
