@@ -16,6 +16,7 @@ export interface DocumentCategoryMetadata {
 export interface DecoratedDocument extends DocumentCategoryMetadata {
   url: string
   documentId: string
+  index?: number
 }
 
 export interface UploadedFileMetadata {

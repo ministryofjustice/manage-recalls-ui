@@ -1,10 +1,9 @@
 // @ts-nocheck
 import { getMockRes } from '@jest-mock/express'
-import { downloadUploadedDocumentOrEmail, uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
+import { uploadRecallDocumentsFormHandler } from './recallUploadDocuments'
 import {
   getRecall,
   addRecallDocument,
-  getStoredDocument,
   deleteRecallDocument,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
@@ -63,6 +62,75 @@ describe('uploadRecallDocumentsFormHandler', () => {
   })
 
   afterEach(() => jest.resetAllMocks())
+
+  it('renders newly uploaded documents only, to insert (XHR request)', done => {
+    const files = [
+      {
+        originalname: 'PreCons Wesley Holt.pdf',
+        buffer: 'def',
+        mimetype: 'application/pdf',
+      },
+    ]
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.xhr = true
+      req.files = files
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      documents: [
+        {
+          category: 'LICENCE',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence Wesley Holt.pdf',
+        },
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'PreCons Wesley Holt.pdf',
+        },
+      ],
+    })
+    resp.render = (partial, data) => {
+      expect(data.recall.documents).toHaveLength(1)
+      expect(data.recall.documents[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
+      expect(data.recall.documents[0]).toHaveProperty('documentId', '1234-5717-4562-b3fc-2c963f66afa6')
+      expect(data.recall.addToExistingUploads).toEqual(true)
+      done()
+    }
+    uploadRecallDocumentsFormHandler(req, resp)
+  })
+
+  it('renders all uploaded documents, to replace (XHR request)', done => {
+    const files = [
+      {
+        originalname: 'PreCons Wesley Holt.pdf',
+        buffer: 'def',
+        mimetype: 'application/pdf',
+      },
+    ]
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.xhr = true
+      req.files = files
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      documents: [
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'PreCons Wesley Holt.pdf',
+        },
+      ],
+    })
+    resp.render = (partial, data) => {
+      expect(data.recall.documents).toHaveLength(1)
+      expect(data.recall.documents[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
+      expect(data.recall.documents[0]).toHaveProperty('documentId', '1234-5717-4562-b3fc-2c963f66afa6')
+      expect(data.recall.addToExistingUploads).toEqual(false)
+      done()
+    }
+    uploadRecallDocumentsFormHandler(req, resp)
+  })
 
   it('autocategorises uploaded documents then sends them to the API', async () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
@@ -390,63 +458,5 @@ describe('uploadRecallDocumentsFormHandler', () => {
       },
     }
     uploadRecallDocumentsFormHandler(req, res)
-  })
-})
-
-describe('downloadDocument', () => {
-  let spies
-  let req
-  let resp
-
-  beforeEach(() => {
-    spies = {
-      contentType: jest.fn(),
-      header: jest.fn(),
-      send: jest.fn(),
-    }
-    req = mockGetRequest({ params: { nomsNumber: '456', recallId: '789' } })
-    const { res } = getMockRes({
-      ...spies,
-      locals: { user: {} },
-    })
-    resp = res
-  })
-
-  describe('PDF', () => {
-    it('sets headers so the document is opened not downloaded', async () => {
-      ;(getStoredDocument as jest.Mock).mockResolvedValue({
-        documentId: '123',
-        category: GetDocumentResponse.category.LICENCE,
-        content: 'abc',
-      })
-      await downloadUploadedDocumentOrEmail(req, resp)
-      expect(spies.contentType).toHaveBeenCalledWith('application/pdf')
-      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="Licence.pdf"')
-    })
-
-    it('uses original filename if no category filename available (eg Other docs)', async () => {
-      ;(getStoredDocument as jest.Mock).mockResolvedValue({
-        documentId: '123',
-        category: GetDocumentResponse.category.OTHER,
-        content: 'abc',
-        fileName: 'test.pdf',
-      })
-      await downloadUploadedDocumentOrEmail(req, resp)
-      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'inline; filename="test.pdf"')
-    })
-  })
-
-  describe('Email', () => {
-    it('sets headers so the email is downloaded not opened', async () => {
-      ;(getStoredDocument as jest.Mock).mockResolvedValue({
-        documentId: '123',
-        category: GetDocumentResponse.category.RECALL_NOTIFICATION_EMAIL,
-        content: 'abc',
-        fileName: 'email.msg',
-      })
-      await downloadUploadedDocumentOrEmail(req, resp)
-      expect(spies.contentType).toHaveBeenCalledWith('application/octet-stream')
-      expect(spies.header).toHaveBeenCalledWith('Content-Disposition', 'attachment; filename="email.msg"')
-    })
   })
 })

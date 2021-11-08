@@ -1,38 +1,49 @@
 import { Request, Response } from 'express'
-import {
-  deleteRecallDocument,
-  getRecall,
-  getStoredDocument,
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { deleteRecallDocument, getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { documentCategories } from '../helpers/documents/documentCategories'
 import {
   enableDeleteDocuments,
   getMetadataForCategorisedFiles,
   getMetadataForUploadedFiles,
   saveCategories,
   saveUploadedFiles,
+  uploadedDocCategoriesList,
 } from '../helpers/documents'
 import { uploadStorageArray } from '../helpers/uploadStorage'
 import { validateCategories, validateUploadedFileTypes } from './helpers/validateDocuments'
 import { UrlInfo } from '../../../@types'
 import { decorateDocs } from '../helpers/documents/decorateDocs'
+import { UploadedFileMetadata } from '../../../@types/documents'
 
 const renderXhrResponse = async ({
   res,
+  uploadsToSave,
   recallId,
   nomsNumber,
   urlInfo,
   token,
 }: {
   res: Response
+  uploadsToSave: UploadedFileMetadata[]
   recallId: string
   nomsNumber: string
   urlInfo: UrlInfo
   token: string
 }) => {
   const recall = await getRecall(recallId, token)
-  const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
+  const allUploadedDocs = recall.documents
+    .filter(doc => uploadedDocCategoriesList().find(item => item.name === doc.category))
+    .map((doc, index) => ({ ...doc, index }))
+  const lastUploadedDocs = uploadsToSave.map(uploadToSave =>
+    allUploadedDocs
+      .reverse()
+      .find(
+        uploadedDoc =>
+          uploadToSave.category === uploadedDoc.category && uploadToSave.originalFileName === uploadedDoc.fileName
+      )
+  )
+  const addToExistingUploads = allUploadedDocs.length > lastUploadedDocs.length
+  const decoratedDocs = decorateDocs({ docs: lastUploadedDocs, nomsNumber, recallId })
   res.render(
     'partials/uploadedDocumentsStatus',
     {
@@ -40,6 +51,7 @@ const renderXhrResponse = async ({
         ...recall,
         ...decoratedDocs,
         enableDeleteDocuments: enableDeleteDocuments(recall.status, urlInfo),
+        addToExistingUploads,
       },
     },
     (err, html) => {
@@ -49,6 +61,7 @@ const renderXhrResponse = async ({
       }
       return res.json({
         success: html,
+        addToExistingUploads,
       })
     }
   )
@@ -129,7 +142,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
       // only render a response for XHR if there were no errors
       if (req.xhr) {
-        return renderXhrResponse({ res, recallId, nomsNumber, urlInfo, token })
+        return renderXhrResponse({ res, uploadsToSave, recallId, nomsNumber, urlInfo, token })
       }
       // if (
       //   continueWasClicked &&
@@ -149,20 +162,4 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       reload()
     }
   })
-}
-
-export const downloadUploadedDocumentOrEmail = async (req: Request, res: Response) => {
-  const { recallId, documentId } = req.params
-  const { user } = res.locals
-  const response = await getStoredDocument(recallId, documentId, user.token)
-  const documentCategory = documentCategories.find(type => type.name === response.category)
-  if (documentCategory.type === 'document') {
-    res.contentType('application/pdf')
-    res.header('Content-Disposition', `inline; filename="${documentCategory.fileName || response.fileName}"`)
-  }
-  if (documentCategory.type === 'email') {
-    res.contentType('application/octet-stream')
-    res.header('Content-Disposition', `attachment; filename="${response.fileName}"`)
-  }
-  res.send(Buffer.from(response.content, 'base64'))
 }
