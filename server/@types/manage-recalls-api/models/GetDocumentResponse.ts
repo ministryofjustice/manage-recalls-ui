@@ -5,8 +5,10 @@
 export type GetDocumentResponse = {
     category: GetDocumentResponse.category;
     content: string;
+    createdDateTime: string;
     documentId: string;
     fileName: string;
+    version?: number;
 }
 
 export namespace GetDocumentResponse {

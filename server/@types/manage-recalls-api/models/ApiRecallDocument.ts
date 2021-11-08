@@ -4,8 +4,10 @@
 
 export type ApiRecallDocument = {
     category: ApiRecallDocument.category;
+    createdDateTime: string;
     documentId: string;
-    fileName?: string;
+    fileName: string;
+    version?: number;
 }
 
 export namespace ApiRecallDocument {

@@ -55,6 +55,7 @@
                         <div class="moj-multi-file__uploaded-files">
                             {% include '../partials/uploadedDocumentsStatus.njk' %}
                         </div>
+                        <div id='uploads-progress'></div>
                         <div class="moj-multi-file-upload__upload">
                             {{ govukFileUpload({
                                 id: 'documents',

@@ -37,6 +37,9 @@ export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): 
   })
 }
 
+export const uploadedDocCategoriesList = (): DocumentCategoryMetadata[] =>
+  documentCategories.filter(doc => doc.type === 'document')
+
 export const requiredDocsList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document' && doc.required)
 

@@ -1,7 +1,7 @@
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { DecoratedDocument, DocumentCategoryMetadata } from '../../../../@types/documents'
 import { documentCategories } from './documentCategories'
-import { missingNotRequiredDocsList, requiredDocsList } from './index'
+import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from './index'
 
 export const decorateDocs = ({
   docs,
@@ -32,15 +32,13 @@ export const decorateDocs = ({
         })
       })
   })
-  const decoratedDocTypes = documentCategories
-    .filter(doc => doc.type === 'document')
-    .map(docType => {
-      const uploadedDocs = decoratedUploadedDocs.filter(d => d.name === docType.name)
-      return {
-        ...docType,
-        uploaded: uploadedDocs.map(d => ({ url: d.url, fileName: d.fileName, documentId: d.documentId })),
-      }
-    })
+  const decoratedDocTypes = uploadedDocCategoriesList().map(docType => {
+    const uploadedDocs = decoratedUploadedDocs.filter(d => d.name === docType.name)
+    return {
+      ...docType,
+      uploaded: uploadedDocs.map(d => ({ url: d.url, fileName: d.fileName, documentId: d.documentId, index: d.index })),
+    }
+  })
   return decoratedUploadedDocs.reduce(
     (acc, curr) => {
       if (curr.type === 'document') {

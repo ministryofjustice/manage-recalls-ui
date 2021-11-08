@@ -3,10 +3,7 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from './handlers/person/findPerson'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
-import {
-  uploadRecallDocumentsFormHandler,
-  downloadUploadedDocumentOrEmail,
-} from './handlers/book/recallUploadDocuments'
+import { uploadRecallDocumentsFormHandler } from './handlers/book/recallUploadDocuments'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
 import { emailUploadForm } from './handlers/helpers/emailUploadForm'
 import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
@@ -35,6 +32,7 @@ import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from './handlers/helpers/assignUser'
 import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { downloadUploadedDocumentOrEmail } from './handlers/helpers/documents/downloadUploadedDocumentOrEmail'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))

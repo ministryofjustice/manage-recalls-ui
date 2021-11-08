@@ -33,9 +33,10 @@ describe('decorateDocs', () => {
       documentId: '37423-2389347-234',
       fileName: 'dossier.msg',
     },
-  ]
+  ] as ApiRecallDocument[]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
+
   it('returns document types only in document list, with uploaded docs merged into documentCategories', () => {
     const results = decorateDocs({ docs, nomsNumber, recallId })
     expect(results).toEqual({

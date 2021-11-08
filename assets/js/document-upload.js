@@ -103,6 +103,7 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
       formData.append('documents', files[i])
     }
     const feedback = this.feedbackContainer
+    const progress = this.params.container.find('#uploads-progress')
     $.ajax({
       url: this.params.uploadUrl,
       type: 'post',
@@ -113,7 +114,12 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
         if (response.reload === true) {
           return window.location.reload()
         }
-        feedback.html(response.success)
+        progress.html('')
+        if (response.addToExistingUploads) {
+          this.params.container.find('#uploads-list').append(response.success)
+        } else {
+          feedback.html(response.success)
+        }
       }, this),
       xhr: function () {
         var xhr = new XMLHttpRequest()
@@ -123,7 +129,7 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
             if (e.lengthComputable) {
               var percentComplete = e.loaded / e.total
               percentComplete = parseInt(percentComplete * 100, 10)
-              feedback.html(
+              progress.html(
                 '<div class="govuk-body-m govuk-!-margin-bottom-4">Your files are uploading: ' +
                   percentComplete +
                   '%</div>'
