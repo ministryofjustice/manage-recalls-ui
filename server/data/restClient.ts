@@ -69,7 +69,6 @@ export default class RestClient {
   }
 
   async get<T>({ path = null, query = '', headers = {}, responseType = '', raw = false }: GetRequest): Promise<T> {
-    logger.info(`Get: calling ${this.name}: ${path} ${query}`)
     try {
       let result
       if (this.token) {
@@ -108,7 +107,6 @@ export default class RestClient {
     data = {},
     raw = false,
   }: PostRequest = {}): Promise<T> {
-    logger.info(`Post using user credentials: calling ${this.name}: ${path}`)
     try {
       const result = await superagent
         .post(`${this.apiUrl()}${path}`)
@@ -138,7 +136,6 @@ export default class RestClient {
     data = {},
     raw = false,
   }: PatchRequest = {}): Promise<T> {
-    logger.info(`Patch using user credentials: calling ${this.name}: ${path}`)
     try {
       const result = await superagent
         .patch(`${this.apiUrl()}${path}`)
@@ -162,7 +159,6 @@ export default class RestClient {
   }
 
   async delete<T>({ path = null, headers = {}, responseType = '', raw = false }: DeleteRequest = {}): Promise<T> {
-    logger.info(`Delete using user credentials: calling ${this.name}: ${path}`)
     try {
       const result = await superagent
         .delete(`${this.apiUrl()}${path}`)
@@ -189,7 +185,6 @@ export default class RestClient {
     headers = {},
     errorLogger = this.defaultErrorLogger,
   }: StreamRequest = {}): Promise<unknown> {
-    logger.info(`Get using user credentials: calling ${this.name}: ${path}`)
     return new Promise((resolve, reject) => {
       superagent
         .get(`${this.apiUrl()}${path}`)
