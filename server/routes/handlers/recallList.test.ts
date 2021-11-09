@@ -46,13 +46,9 @@ describe('recallList', () => {
   ]
 
   beforeEach(() => {
-    fakeManageRecallsApi.get('/recalls').reply(200, listOfRecalls)
     req = mockGetRequest({})
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
     resp = res
-  })
-
-  it('should make recalls with person details available to render', async () => {
     fakeManageRecallsApi
       .post('/search')
       .times(listOfRecalls.length)
@@ -62,6 +58,10 @@ describe('recallList', () => {
           lastName: 'Badger',
         },
       ])
+  })
+
+  it('should make recalls with person details available to render', async () => {
+    fakeManageRecallsApi.get('/recalls').reply(200, listOfRecalls)
     await recallList(req, resp)
     expect(resp.locals.results.toDo).toEqual([
       {
@@ -129,12 +129,12 @@ describe('recallList', () => {
   })
 
   it('should make a list of failed recall requests available to render', async () => {
-    fakeManageRecallsApi.post('/search').times(recalls.length).reply(404)
+    fakeManageRecallsApi.get('/recalls').times(recalls.length).reply(404)
     await recallList(req, resp)
     expect(resp.locals.errors).toEqual([
       {
         name: 'fetchError',
-        text: '5 recalls could not be retrieved',
+        text: 'Recalls could not be retrieved',
       },
     ])
   })
