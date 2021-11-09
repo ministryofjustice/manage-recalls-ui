@@ -5,7 +5,7 @@ import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiCl
 import { RecallResult } from '../../@types'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { getPerson } from './helpers/personCache'
-import { sortListByDateField } from './helpers/date'
+import { sortListByDateField, sortToDoList } from './helpers/dates'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   const appInsightsClient = buildAppInsightsClient()
@@ -38,11 +38,14 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
       }
     })
   }
+  const toDoList = successful.filter(
+    recallResult => recallResult.recall.status !== RecallResponse.status.DOSSIER_ISSUED
+  )
   const completed = successful.filter(
     recallResult => recallResult.recall.status === RecallResponse.status.DOSSIER_ISSUED
   )
   res.locals.results = {
-    toDo: successful.filter(recallResult => recallResult.recall.status !== RecallResponse.status.DOSSIER_ISSUED),
+    toDo: sortToDoList(toDoList),
     completed: sortListByDateField({ list: completed, dateKey: 'recall.dossierEmailSentDate', newestFirst: true }),
   }
   if (failed.length) {
