@@ -15,7 +15,7 @@
           <label class="govuk-label govuk-visually-hidden" for="category-{{ file.documentId }}">
             Select the document category
           </label>
-          <select class="govuk-select document-upload-select-type" id='category-{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ category.name }}-{{file.index}}'>
+          <select class="govuk-select document-upload-select-type" id='{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ category.name }}-{{file.index}}'>
             {% for docCategory in recall.documentCategories %}
             <option value="{{ docCategory.name }}" {% if category.name == docCategory.name %}selected{% endif %}>
               {{ docCategory.label }}

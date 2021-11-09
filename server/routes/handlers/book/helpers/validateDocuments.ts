@@ -10,7 +10,12 @@ export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions:
   return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)
 }
 
-export const validateUploadedFileTypes = (uploadedFileData: UploadedFileMetadata[]) => {
+export const validateUploadedFileTypes = (
+  uploadedFileData: UploadedFileMetadata[]
+): {
+  errors?: NamedFormError[]
+  valuesToSave: UploadedFileMetadata[]
+} => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
   const usedCategories = [] as string[]
@@ -51,7 +56,12 @@ export const validateUploadedFileTypes = (uploadedFileData: UploadedFileMetadata
   return { errors, valuesToSave }
 }
 
-export const validateCategories = (categorisedFileData: CategorisedFileMetadata[]) => {
+export const validateCategories = (
+  categorisedFileData: CategorisedFileMetadata[]
+): {
+  errors?: NamedFormError[]
+  valuesToSave: CategorisedFileMetadata[]
+} => {
   let errors: NamedFormError[]
   let valuesToSave: CategorisedFileMetadata[]
   const usedCategories = [] as string[]

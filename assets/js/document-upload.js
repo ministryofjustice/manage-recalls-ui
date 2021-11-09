@@ -99,6 +99,11 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
   DocumentUpload.prototype.uploadFiles = function (files) {
     this.params.uploadFileEntryHook(this, files)
     var formData = new FormData()
+    const existingDocIds = []
+    this.feedbackContainer.find('select').each((index, value) => {
+      existingDocIds.push($(value).attr('id'))
+    })
+    formData.append('existingDocIds', JSON.stringify(existingDocIds))
     for (var i = 0; i < files.length; i++) {
       formData.append('documents', files[i])
     }
