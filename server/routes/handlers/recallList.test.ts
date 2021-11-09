@@ -15,7 +15,23 @@ describe('recallList', () => {
   let req: Request
   let resp: Response
   const listOfRecalls = [
-    ...(recalls as RecallResponse[]),
+    {
+      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      nomsNumber: '123',
+      status: 'BOOKED_ON',
+      recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
+    },
+    {
+      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      nomsNumber: '123',
+      status: 'BEING_BOOKED_ON',
+    },
+    {
+      recallId: '8ab377a6-4587-2598-abc4-98fc53737',
+      nomsNumber: '456',
+      status: 'RECALL_NOTIFICATION_ISSUED',
+      dossierTargetDate: '2021-08-13',
+    },
     {
       recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       nomsNumber: '123',
@@ -57,17 +73,6 @@ describe('recallList', () => {
         recall: {
           nomsNumber: '123',
           recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          status: 'BOOKED_ON',
-        },
-      },
-      {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          nomsNumber: '123',
-          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
           status: 'BEING_BOOKED_ON',
         },
       },
@@ -80,6 +85,19 @@ describe('recallList', () => {
           nomsNumber: '456',
           recallId: '8ab377a6-4587-2598-abc4-98fc53737',
           status: 'RECALL_NOTIFICATION_ISSUED',
+          dossierTargetDate: '2021-08-13',
+        },
+      },
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          nomsNumber: '123',
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          status: 'BOOKED_ON',
+          recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
         },
       },
     ])
