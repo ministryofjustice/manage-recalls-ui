@@ -34,7 +34,6 @@ export const getPerson = async (
     const stored = await getRedisAsync(getKey(nomsNumber))
     if (stored) {
       fetchPersonFromApiAndCache(nomsNumber, token, useCache)
-      logger.info(`Redis cache hit for ${nomsNumber}`)
       try {
         const person = JSON.parse(stored)
         return person
