@@ -4,7 +4,6 @@ import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/
 import { recallList } from './recallList'
 import config from '../../config'
 import recalls from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
-import { RecallResponse } from '../../@types/manage-recalls-api'
 
 jest.mock('../../clients/redis')
 
