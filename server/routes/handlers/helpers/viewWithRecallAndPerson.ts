@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRecall, searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'
@@ -8,6 +8,8 @@ import { getUserNames } from './getUserNames'
 import { dossierDueDateString, recallAssessmentDueText } from './dates'
 import { enableDeleteDocuments } from './documents'
 import { decorateDocs } from './documents/decorateDocs'
+import logger from '../../../../logger'
+import { getPerson } from './personCache'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
@@ -17,13 +19,13 @@ export const viewWithRecallAndPerson =
   async (req: Request, res: Response): Promise<void> => {
     const { nomsNumber, recallId } = req.params
     const [personResult, recallResult] = await Promise.allSettled([
-      searchByNomsNumber(nomsNumber as string, res.locals.user.token),
+      getPerson(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),
     ])
     if (personResult.status === 'rejected') {
-      throw new Error(`searchByNomsNumber failed for NOMS`)
+      logger.error(`searchByNomsNumber failed for NOMS`)
     }
-    res.locals.person = personResult.value
+    res.locals.person = personResult.status === 'fulfilled' ? personResult.value : { nomsNumber }
     if (recallResult.status === 'rejected') {
       throw new Error(`getRecall failed for ID ${recallId}`)
     }
