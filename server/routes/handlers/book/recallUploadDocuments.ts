@@ -13,36 +13,32 @@ import { uploadStorageArray } from '../helpers/uploadStorage'
 import { validateCategories, validateUploadedFileTypes } from './helpers/validateDocuments'
 import { UrlInfo } from '../../../@types'
 import { decorateDocs } from '../helpers/documents/decorateDocs'
-import { UploadedFileMetadata } from '../../../@types/documents'
 
 const renderXhrResponse = async ({
   res,
-  uploadsToSave,
+  existingDocIds,
   recallId,
   nomsNumber,
   urlInfo,
   token,
 }: {
   res: Response
-  uploadsToSave: UploadedFileMetadata[]
+  existingDocIds: string[]
   recallId: string
   nomsNumber: string
   urlInfo: UrlInfo
   token: string
 }) => {
   const recall = await getRecall(recallId, token)
+  let addToExistingUploads = false
   const allUploadedDocs = recall.documents
     .filter(doc => uploadedDocCategoriesList().find(item => item.name === doc.category))
     .map((doc, index) => ({ ...doc, index }))
-  const lastUploadedDocs = uploadsToSave.map(uploadToSave =>
-    allUploadedDocs
-      .reverse()
-      .find(
-        uploadedDoc =>
-          uploadToSave.category === uploadedDoc.category && uploadToSave.originalFileName === uploadedDoc.fileName
-      )
-  )
-  const addToExistingUploads = allUploadedDocs.length > lastUploadedDocs.length
+  let lastUploadedDocs = allUploadedDocs
+  if (existingDocIds) {
+    lastUploadedDocs = allUploadedDocs.filter(uploadedDoc => !existingDocIds.includes(uploadedDoc.documentId))
+    addToExistingUploads = allUploadedDocs.length > lastUploadedDocs.length
+  }
   const decoratedDocs = decorateDocs({ docs: lastUploadedDocs, nomsNumber, recallId })
   res.render(
     'partials/uploadedDocumentsStatus',
@@ -112,44 +108,46 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       if (deleteWasClicked) {
         return await deleteDocument(body.delete, recallId, urlInfo, token, req, res)
       }
-      const continueWasClicked = body.continue === 'continue'
+
+      // new uploads
       const uploadWasClicked = body.upload === 'upload'
-      // add metadata for uploaded / recategorised files
-      const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[])
-      let categorisedFileData
-      if (continueWasClicked) {
-        categorisedFileData = getMetadataForCategorisedFiles(body)
+      if (req.files) {
+        const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[])
+        const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } =
+          validateUploadedFileTypes(uploadedFileData)
+        session.errors = invalidFileTypeErrors
+        const failedUploads = await saveUploadedFiles({ uploadsToSave, recallId, token })
+        if (failedUploads.length) {
+          session.errors = [...(session.errors || []), ...failedUploads]
+        }
       }
-      // validate
-      const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFileTypes(uploadedFileData)
-      const { errors: uncategorisedFileErrors, valuesToSave: categorisedToSave } =
-        validateCategories(categorisedFileData)
-      if (invalidFileTypeErrors?.length || uncategorisedFileErrors?.length) {
-        session.errors = [...(invalidFileTypeErrors || []), ...(uncategorisedFileErrors || [])]
+
+      // category changes - will result in a full page reload
+      const saveCategoryChanges = body.continue === 'continue'
+      if (saveCategoryChanges) {
+        const categorisedFileData = getMetadataForCategorisedFiles(body)
+        const { errors: uncategorisedFileErrors, valuesToSave: categorisedToSave } =
+          validateCategories(categorisedFileData)
+        if (uncategorisedFileErrors?.length) {
+          session.errors = [...(session.errors || []), ...uncategorisedFileErrors]
+        }
+        const failedSaves = await saveCategories({ recallId, categorisedToSave, token })
+        if (failedSaves.length) {
+          session.errors = [...(session.errors || []), ...failedSaves]
+        }
       }
-      // save to API
-      const failedUploads = await saveUploadedFiles({ uploadsToSave, recallId, token })
-      if (failedUploads.length) {
-        session.errors = [...(session.errors || []), ...failedUploads]
-      }
-      const failedSaves = await saveCategories({ recallId, categorisedToSave, token })
-      if (failedSaves.length) {
-        session.errors = [...(session.errors || []), ...failedSaves]
-      }
+
       // redirect / reload
       if (uploadWasClicked || (session.errors && session.errors.length)) {
         return reload()
       }
       // only render a response for XHR if there were no errors
       if (req.xhr) {
-        return renderXhrResponse({ res, uploadsToSave, recallId, nomsNumber, urlInfo, token })
+        const { existingDocIds } = body
+        const parsed = JSON.parse(existingDocIds)
+        return renderXhrResponse({ res, existingDocIds: parsed, recallId, nomsNumber, urlInfo, token })
       }
-      // if (
-      //   continueWasClicked &&
-      //   listMissingRequiredDocs([...uploadedFileData, ...categorisedFileData].map(f => f.category)).length
-      // ) {
-      //   return res.redirect(303, `${urlInfo.basePath}missing-documents`)
-      // }
+
       res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers'}`)
     } catch (e) {
       logger.error(e)

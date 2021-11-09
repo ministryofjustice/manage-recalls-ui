@@ -5,6 +5,7 @@ import {
   getRecall,
   addRecallDocument,
   deleteRecallDocument,
+  setDocumentCategory,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
@@ -73,6 +74,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     ]
     ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.xhr = true
+      req.body.existingDocIds = '["3fa85f64-5717-4562-b3fc-2c963f66afa6"]'
       req.files = files
       cb()
     })
@@ -111,6 +113,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
     ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
       req.xhr = true
       req.files = files
+      req.body.existingDocIds = '[]'
       cb()
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
@@ -173,6 +176,23 @@ describe('uploadRecallDocumentsFormHandler', () => {
       fileName: 'other.pdf',
     })
     expect(req.session.errors).toBeUndefined()
+  })
+
+  it('saves category changes for existing uploads', async () => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+    ;(setDocumentCategory as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    req.body = {
+      'category-a0388485-315b-4630-b230-33f808047633': 'PREVIOUS_CONVICTIONS_SHEET',
+      'category-8f13251d-26f0-4e5b-8fbb-259ca97e8669': 'PRE_SENTENCING_REPORT',
+      continue: 'continue',
+    }
+    await uploadRecallDocumentsFormHandler(req, resp)
+    expect(setDocumentCategory).toHaveBeenCalledTimes(2)
+    expect(addRecallDocument).not.toHaveBeenCalled()
   })
 
   it('creates errors for failed saves to the API', done => {
