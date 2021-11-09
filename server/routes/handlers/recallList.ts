@@ -20,12 +20,13 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     const start2 = performance.now()
     const results = await Promise.allSettled(
       recallsWithNomsNumbers.map(recall =>
-        getPerson(recall.nomsNumber, token).then(person => {
-          return <RecallResult>{
-            recall,
-            person,
-          }
-        })
+        getPerson(recall.nomsNumber, token).then(
+          person =>
+            <RecallResult>{
+              recall,
+              person,
+            }
+        )
       )
     )
     appInsightsClient?.trackMetric({ name: 'searchByNomsNumber_total', value: Math.round(performance.now() - start2) })

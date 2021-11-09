@@ -79,4 +79,15 @@ describe('Get person data from cache', () => {
     await getPerson('1', token)
     expect(redisExports.getRedisAsync).not.toHaveBeenCalled()
   })
+
+  it('should return basic person details if cache is empty and API errors', async () => {
+    jest.spyOn(redisExports, 'getRedisAsync').mockResolvedValue(null)
+    ;(searchByNomsNumber as jest.Mock).mockRejectedValue(new Error('Timeout'))
+    const person = await getPerson('1', token, true)
+    expect(person).toEqual({
+      firstName: '<first name>',
+      lastName: '<last name>',
+      nomsNumber: '1',
+    })
+  })
 })

@@ -1,13 +1,14 @@
 // @ts-nocheck
-import nock from 'nock'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { viewWithRecallAndPerson } from './viewWithRecallAndPerson'
-import config from '../../../config'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { searchByNomsNumber, getRecall, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import * as decorateDocsExports from './documents/decorateDocs'
 import { findDocCategory } from './documents'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+
+jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
@@ -17,8 +18,6 @@ const bookedByUserId = '00000000-1111-0000-0000-000000000000'
 const dossierCreatedByUserId = '00000000-2222-0000-0000-000000000000'
 
 describe('viewWithRecallAndPerson', () => {
-  const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
-
   const person = {
     firstName: 'Bobby',
     lastName: 'Badger',
@@ -41,19 +40,34 @@ describe('viewWithRecallAndPerson', () => {
     lastName: 'Badger',
   }
 
-  beforeEach(() => {
-    fakeManageRecallsApi.post('/search').reply(200, [person])
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
 
+  it('receives basic person details if person search errors', async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
+    ;(searchByNomsNumber as jest.Mock).mockRejectedValue(new Error('timeout'))
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.person).toEqual({ firstName: '<first name>', lastName: '<last name>', nomsNumber })
+  })
+
   it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.get(`/users/${assessedByUserId}`).reply(200, assessedByUserDetails)
-    fakeManageRecallsApi.get(`/users/${bookedByUserId}`).reply(200, bookedByUserDetails)
-    fakeManageRecallsApi.get(`/users/${dossierCreatedByUserId}`).reply(200, dossierCreatedByUserDetails)
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
+    ;(getUserDetails as jest.Mock).mockImplementation(userId => {
+      if (userId === assessedByUserId) {
+        return Promise.resolve(assessedByUserDetails)
+      }
+      if (userId === bookedByUserId) {
+        return Promise.resolve(bookedByUserDetails)
+      }
+      if (userId === dossierCreatedByUserId) {
+        return Promise.resolve(dossierCreatedByUserDetails)
+      }
+      return null
+    })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -90,9 +104,9 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should add user ids to res.locals if the user details can not be found ', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
-    fakeManageRecallsApi.get(`/users/*`).reply(404)
-
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
+    ;(getUserDetails as jest.Mock).mockRejectedValue(new Error('timeout'))
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -103,7 +117,8 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should make reference data available to render', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -115,9 +130,8 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should previousConvictionMainName if one was specified', async () => {
-    fakeManageRecallsApi
-      .get(`/recalls/${recallId}`)
-      .reply(200, { ...recall, previousConvictionMainName: 'Barry Badger' })
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, previousConvictionMainName: 'Barry Badger' })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -125,7 +139,8 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should fall back to default name if a different previousConvictionMainName is not saved', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, { ...recall, previousConvictionMainName: '' })
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, previousConvictionMainName: '' })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -133,7 +148,8 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
-    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
@@ -144,9 +160,8 @@ describe('viewWithRecallAndPerson', () => {
   })
 
   it('should make document data available to render', async () => {
-    fakeManageRecallsApi
-      .get(`/recalls/${recallId}`)
-      .reply(200, { ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
