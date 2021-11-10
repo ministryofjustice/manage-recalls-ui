@@ -24,9 +24,9 @@ export const errorMsgUserActionDateTime = (
     case 'missingDateParts':
       return `The ${noun} you ${userAction} must include a ${listToString(validationError.invalidParts, 'and')}`
     case 'minLengthDateTimeParts':
-      return `Enter a date and time in the correct format, like 06 05 2021 09:03`
+      return `The date and time you ${userAction} must be in the correct format, like 06 05 2021 09:03`
     case 'minLengthDateParts':
-      return `Enter a date in the correct format, like 06 05 2021`
+      return `The date you ${userAction} must be in the correct format, like 06 05 2021`
     default:
       return `Error with the ${noun} ${userAction}`
   }
@@ -37,13 +37,17 @@ export const errorMsgDate = (validationError: DateValidationError, fieldLabel: s
     case 'blankDateTime':
       return `Enter the ${fieldLabel}`
     case 'dateMustBeInPast':
-      return `The  ${fieldLabel} must be today or in the past`
+      return `The ${fieldLabel} must be today or in the past`
     case 'dateMustBeInFuture':
-      return `The  ${fieldLabel} must be in the future`
+      return `The ${fieldLabel} must be in the future`
     case 'invalidDate':
       return `The ${fieldLabel} must be a real date`
     case 'missingDateParts':
       return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts, 'and')}`
+    case 'minLengthDateTimeParts':
+      return `The ${fieldLabel} must be in the correct format, like 06 05 2021 09:03`
+    case 'minLengthDateParts':
+      return `The ${fieldLabel} must be in the correct format, like 06 05 2021`
     default:
       return `Error - ${fieldLabel}`
   }
