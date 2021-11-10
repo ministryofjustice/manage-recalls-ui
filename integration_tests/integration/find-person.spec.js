@@ -85,12 +85,13 @@ context('Find a person', () => {
   })
 
   it('person search returns no results', () => {
+    const nomsNumber2 = 'B1234CD'
     cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
-    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber2, expectedSearchResults: [] })
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber2, expectedResults: getRecallsResponse })
     cy.login()
     const homePage = findOffenderPage.verifyOnPage()
-    homePage.searchFor(nomsNumber)
+    homePage.searchFor(nomsNumber2)
     homePage.expectSearchResultsCountText('0 people found')
   })
 
