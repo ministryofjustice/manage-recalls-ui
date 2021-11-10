@@ -1,6 +1,7 @@
 import { DateTime, Settings } from 'luxon'
 import { DatePartNames, DatePartsParsed, DateTimePart, DateValidationError, ObjectMap } from '../../../../@types'
 import { areStringArraysTheSame, isDefined } from '../index'
+import { padWithZeroes } from './format'
 import logger from '../../../../../logger'
 
 Settings.throwOnInvalid = true
@@ -140,10 +141,11 @@ export const splitIsoDateToParts = (isoDate?: string): DatePartsParsed | undefin
     const includeTime = isoDate.length > 10
     const dateTime = getDateTimeInEuropeLondon(isoDate)
     const { year, month, day, hour, minute } = dateTime.toObject()
+    const paddedDate = { year: year.toString(), month: padWithZeroes(month), day: padWithZeroes(day) }
     if (includeTime) {
-      return { year, month, day, hour, minute }
+      return { ...paddedDate, hour: padWithZeroes(hour), minute: padWithZeroes(minute) }
     }
-    return { year, month, day }
+    return paddedDate
   } catch (err) {
     logger.error(err)
     return undefined
