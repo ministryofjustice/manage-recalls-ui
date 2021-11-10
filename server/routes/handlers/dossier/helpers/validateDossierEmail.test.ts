@@ -5,7 +5,7 @@ describe('validateEmail', () => {
     confirmDossierEmailSent: 'YES',
     dossierEmailSentDateYear: '2021',
     dossierEmailSentDateMonth: '09',
-    dossierEmailSentDateDay: '4',
+    dossierEmailSentDateDay: '04',
   }
   const actionedByUserId = '00000000-0000-0000-0000-000000000000'
 

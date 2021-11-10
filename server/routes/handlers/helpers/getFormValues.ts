@@ -1,7 +1,7 @@
 import { FormError, ObjectMap, RecallFormValues, RecallResponseWithDocuments } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { isDefined } from './index'
-import { splitIsoDateToParts } from './dates'
+import { splitIsoDateToParts } from './dates/convert'
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 interface Args {
