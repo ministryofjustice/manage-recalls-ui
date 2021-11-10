@@ -8,7 +8,7 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeMonth: '05',
       recallEmailReceivedDateTimeYear: '2021',
       recallEmailReceivedDateTimeHour: '05',
-      recallEmailReceivedDateTimeMinute: '3',
+      recallEmailReceivedDateTimeMinute: '03',
     }
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
@@ -28,7 +28,7 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeDay: '23',
       recallEmailReceivedDateTimeMonth: '12',
       recallEmailReceivedDateTimeYear: '2019',
-      recallEmailReceivedDateTimeHour: '4',
+      recallEmailReceivedDateTimeHour: '04',
       recallEmailReceivedDateTimeMinute: '23',
     }
     const { errors, valuesToSave } = validateRecallRequestReceived({
@@ -47,7 +47,7 @@ describe('validateRecallRequestReceived', () => {
   it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '12',
-      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeMonth: '09',
       recallEmailReceivedDateTimeYear: '2021',
       recallEmailReceivedDateTimeHour: '22',
       recallEmailReceivedDateTimeMinute: '14',
@@ -170,7 +170,7 @@ describe('validateRecallRequestReceived', () => {
   it('returns an error if the time is invalid', () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '12',
-      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeMonth: '09',
       recallEmailReceivedDateTimeYear: '2021',
       recallEmailReceivedDateTimeHour: '24',
       recallEmailReceivedDateTimeMinute: '14',
@@ -188,7 +188,7 @@ describe('validateRecallRequestReceived', () => {
   it("returns an error if an email wasn't uploaded", () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '12',
-      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeMonth: '09',
       recallEmailReceivedDateTimeYear: '2021',
       recallEmailReceivedDateTimeHour: '22',
       recallEmailReceivedDateTimeMinute: '14',
@@ -213,7 +213,7 @@ describe('validateRecallRequestReceived', () => {
   it('returns an error if the email upload failed', () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '12',
-      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeMonth: '09',
       recallEmailReceivedDateTimeYear: '2021',
       recallEmailReceivedDateTimeHour: '22',
       recallEmailReceivedDateTimeMinute: '14',
@@ -238,7 +238,7 @@ describe('validateRecallRequestReceived', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '12',
-      recallEmailReceivedDateTimeMonth: '9',
+      recallEmailReceivedDateTimeMonth: '09',
       recallEmailReceivedDateTimeYear: '2021',
       recallEmailReceivedDateTimeHour: '22',
       recallEmailReceivedDateTimeMinute: '14',

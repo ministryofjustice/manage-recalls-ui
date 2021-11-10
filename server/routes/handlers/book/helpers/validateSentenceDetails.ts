@@ -1,10 +1,10 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { DateValidationError, NamedFormError, ObjectMap } from '../../../../@types'
-import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { isBookingNumberValid } from '../../helpers/validations'
 import { errorMsgDate } from '../../helpers/errorMessages'
 import { isStringValidReferenceData } from '../../../../referenceData'
+import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
 export const validateSentenceDetails = (
   requestBody: ObjectMap<string>

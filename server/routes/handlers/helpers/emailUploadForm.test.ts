@@ -29,9 +29,9 @@ describe('emailUploadForm', () => {
       params: { nomsNumber: '456', recallId: '789' },
       body: {
         recallEmailReceivedDateTimeYear: '2021',
-        recallEmailReceivedDateTimeMonth: '5',
+        recallEmailReceivedDateTimeMonth: '05',
         recallEmailReceivedDateTimeDay: '20',
-        recallEmailReceivedDateTimeHour: '0',
+        recallEmailReceivedDateTimeHour: '00',
         recallEmailReceivedDateTimeMinute: '30',
       },
     })
@@ -217,9 +217,9 @@ describe('emailUploadForm', () => {
             text: 'The date and time you received the recall email must include a year',
             values: {
               year: '',
-              month: '5',
+              month: '05',
               day: '20',
-              hour: '0',
+              hour: '00',
               minute: '30',
             },
           },
@@ -242,7 +242,7 @@ describe('emailUploadForm', () => {
       confirmRecallNotificationEmailSent: 'YES',
       recallNotificationEmailSentDateTimeYear: '2021',
       recallNotificationEmailSentDateTimeMonth: '09',
-      recallNotificationEmailSentDateTimeDay: '4',
+      recallNotificationEmailSentDateTimeDay: '04',
       recallNotificationEmailSentDateTimeHour: '14',
       recallNotificationEmailSentDateTimeMinute: '47',
     }
@@ -281,7 +281,7 @@ describe('emailUploadForm', () => {
       confirmRecallNotificationEmailSent: 'YES',
       recallNotificationEmailSentDateTimeYear: '2021',
       recallNotificationEmailSentDateTimeMonth: '09',
-      recallNotificationEmailSentDateTimeDay: '4',
+      recallNotificationEmailSentDateTimeDay: '04',
       recallNotificationEmailSentDateTimeHour: '14',
       recallNotificationEmailSentDateTimeMinute: '47',
     }

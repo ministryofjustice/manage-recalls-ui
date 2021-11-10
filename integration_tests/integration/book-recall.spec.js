@@ -52,7 +52,7 @@ context('Book a recall', () => {
       prefix: 'recallEmailReceivedDateTime',
       values: {
         Hour: '00',
-        Minute: '0',
+        Minute: '00',
       },
     })
     recallRequestReceived.uploadEmail({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })

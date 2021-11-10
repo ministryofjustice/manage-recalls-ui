@@ -2,8 +2,8 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
-import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates'
 import { errorMsgUserActionDateTime, errorMsgEmailUpload } from '../../helpers/errorMessages'
+import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
 export const validateRecallRequestReceived = ({
   requestBody,
