@@ -21,7 +21,7 @@ import {
   allowedImageFileTypeLabelList,
 } from './nunjucksFunctions'
 import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
-import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates'
+import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { getReferenceDataItemLabel } from '../referenceData'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {

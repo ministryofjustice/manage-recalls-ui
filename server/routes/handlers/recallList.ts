@@ -6,7 +6,7 @@ import { RecallResult } from '../../@types'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { getPerson } from './helpers/personCache'
 import logger from '../../../logger'
-import { sortListByDateField, sortToDoList } from './helpers/dates'
+import { sortListByDateField, sortToDoList } from './helpers/dates/sort'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   try {

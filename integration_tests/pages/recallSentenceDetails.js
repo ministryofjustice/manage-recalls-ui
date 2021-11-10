@@ -25,7 +25,7 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
     setConditionalReleaseExpiryDate: () => {
       cy.get('[name="conditionalReleaseDateYear"]').clear().type('2021')
       cy.get('[name="conditionalReleaseDateMonth"]').clear().type('09')
-      cy.get('[name="conditionalReleaseDateDay"]').clear().type('3')
+      cy.get('[name="conditionalReleaseDateDay"]').clear().type('03')
     },
     setSentenceLength: () => {
       cy.get('[name="sentenceLengthYears"]').clear().type('3')

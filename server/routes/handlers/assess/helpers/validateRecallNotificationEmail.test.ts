@@ -5,7 +5,7 @@ describe('validateEmail', () => {
     confirmRecallNotificationEmailSent: 'YES',
     recallNotificationEmailSentDateTimeYear: '2021',
     recallNotificationEmailSentDateTimeMonth: '09',
-    recallNotificationEmailSentDateTimeDay: '4',
+    recallNotificationEmailSentDateTimeDay: '04',
     recallNotificationEmailSentDateTimeHour: '14',
     recallNotificationEmailSentDateTimeMinute: '47',
   }

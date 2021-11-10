@@ -28,5 +28,15 @@ describe('Error messages', () => {
       )
       expect(error).toEqual('The date and time you sent the email must include a day and year')
     })
+
+    it('renders "minLengthDateParts" error for date only', () => {
+      const error = errorMsgUserActionDateTime({ error: 'minLengthDateParts' }, '', true)
+      expect(error).toEqual('Enter a date in the correct format, like 06 05 2021')
+    })
+
+    it('renders "minLengthDateTimeParts" error for date and time', () => {
+      const error = errorMsgUserActionDateTime({ error: 'minLengthDateTimeParts' }, '', true)
+      expect(error).toEqual('Enter a date and time in the correct format, like 06 05 2021 09:03')
+    })
   })
 })

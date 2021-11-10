@@ -119,8 +119,8 @@ context('Assess a recall', () => {
     assessRecallEmail.enterDateTime({
       prefix: 'recallNotificationEmailSentDateTime',
       values: {
-        Hour: '0',
-        Minute: '0',
+        Hour: '00',
+        Minute: '00',
       },
     })
     assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
