@@ -1,10 +1,10 @@
-{% if env == 'PRODUCTION' or env == 'PRE-PRODUCTION' %}
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-J8PD0LLKCZ"></script>
+{% if googleAnalyticsId %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ googleAnalyticsId }}"></script>
 <script nonce='{{ cspNonce }}'>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-J8PD0LLKCZ', {
+  gtag('config', '{{ googleAnalyticsId }}', {
     page_location: document.location.href.replace(/\/persons\/[^\/]+\//, '/persons/[nomsNumber]/'),
     {% if recall %}recallId: "{{ recall.recallId }}"{% endif %}
   });

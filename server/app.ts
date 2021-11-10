@@ -206,6 +206,12 @@ export default function createApp(userService: UserService): express.Application
   app.use((req, res, next) => {
     res.locals.user = req.user
     res.locals.env = process.env.ENVIRONMENT // DEVELOPMENT/ PRE-PRODUCTION / PRODUCTION
+    if (res.locals.env === 'PRODUCTION') {
+      res.locals.googleAnalyticsId = 'G-KYJBQWRHPB'
+    }
+    if (res.locals.env === 'PRE-PRODUCTION') {
+      res.locals.googleAnalyticsId = 'G-5XW3BP9ZE7'
+    }
     next()
   })
 
