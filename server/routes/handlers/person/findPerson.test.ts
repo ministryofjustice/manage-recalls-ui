@@ -1,6 +1,6 @@
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { findPerson } from './findPerson'
-import { searchByNomsNumber, searchRecalls } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { searchRecalls } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getPerson } from '../helpers/personCache'
 import getRecallsResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
 
