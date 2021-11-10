@@ -213,31 +213,31 @@ describe('splitIsoDateToParts', () => {
   it('returns date parts for a given ISO date-time string, with hours corrected if inside DST', () => {
     const result = splitIsoDateToParts('2021-05-30T13:12:00.000Z')
     expect(result).toEqual({
-      year: 2021,
-      month: 5,
-      day: 30,
-      hour: 14,
-      minute: 12,
+      day: '30',
+      hour: '14',
+      minute: '12',
+      month: '05',
+      year: '2021',
     })
   })
 
   it('returns date parts for a given ISO date-time string, with hours not corrected if outside DST', () => {
     const result = splitIsoDateToParts('2021-11-12T08:43:00.000Z')
     expect(result).toEqual({
-      year: 2021,
-      month: 11,
-      day: 12,
-      hour: 8,
-      minute: 43,
+      day: '12',
+      hour: '08',
+      minute: '43',
+      month: '11',
+      year: '2021',
     })
   })
 
   it('returns date parts for a given ISO date string', () => {
     const result = splitIsoDateToParts('2021-05-30')
     expect(result).toEqual({
-      year: 2021,
-      month: 5,
-      day: 30,
+      day: '30',
+      month: '05',
+      year: '2021',
     })
   })
 
