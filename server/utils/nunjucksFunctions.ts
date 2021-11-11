@@ -5,6 +5,7 @@ import {
   allowedImageFileExtensions,
 } from '../routes/handlers/helpers/allowedUploadExtensions'
 import { isDefined, listToString } from '../routes/handlers/helpers'
+import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -169,4 +170,56 @@ export const removeUndefinedFromObject = (attributes: ObjectMap<unknown>) => {
     }
     return acc
   }, {})
+}
+
+export const recallStatusTagProperties = (status: RecallResponse.status) => {
+  const defaults = {
+    classes: `govuk-tag--orange`,
+    attributes: {
+      'data-qa': 'recallStatus',
+    },
+  }
+  switch (status) {
+    case RecallResponse.status.DOSSIER_ISSUED:
+      return {
+        ...defaults,
+        text: 'Dossier issued',
+        classes: `govuk-tag--green`,
+      }
+    case RecallResponse.status.BEING_BOOKED_ON:
+      return {
+        ...defaults,
+        text: 'Being booked on',
+      }
+    case RecallResponse.status.BOOKED_ON:
+      return {
+        ...defaults,
+        text: 'Booked on',
+      }
+    case RecallResponse.status.IN_ASSESSMENT:
+      return {
+        ...defaults,
+        text: 'In assessment',
+      }
+    case RecallResponse.status.RECALL_NOTIFICATION_ISSUED:
+      return {
+        ...defaults,
+        text: 'Recall notification issued',
+      }
+    case RecallResponse.status.DOSSIER_IN_PROGRESS:
+      return {
+        ...defaults,
+        text: 'Dossier in progress',
+      }
+    case RecallResponse.status.STOPPED:
+      return {
+        ...defaults,
+        text: 'Stopped',
+        classes: `govuk-tag--red`,
+      }
+    default:
+      return {
+        text: 'Unknown status',
+      }
+  }
 }

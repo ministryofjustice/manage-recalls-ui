@@ -11,9 +11,7 @@
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
                 Assess a recall for {{ person.firstName }} {{ person.lastName }}
-                <div class="govuk-heading-l govuk-!-margin-top-8">
-                    Recall information
-                </div>
+                {% include '../partials/recallInformationHeading.njk' %}
             </h1>
             <div class="govuk-body-l" data-qa="recallAssessmentDueText">{{ recall.recallAssessmentDueText }}</div>
         </div>

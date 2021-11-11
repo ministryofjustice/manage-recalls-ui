@@ -19,6 +19,7 @@ import {
   errorMessage,
   removeUndefinedFromObject,
   allowedImageFileTypeLabelList,
+  recallStatusTagProperties,
 } from './nunjucksFunctions'
 import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
@@ -61,6 +62,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('removeUndefinedFromObject', removeUndefinedFromObject)
   njkEnv.addGlobal('listDocumentLabels', listDocumentLabels)
   njkEnv.addGlobal('dueDateLabel', dueDateLabel)
+  njkEnv.addGlobal('recallStatusTagProperties', recallStatusTagProperties)
 
   nunjucksDate.setDefaultFormat('DD MMM YYYY')
   nunjucksDate.install(njkEnv)
