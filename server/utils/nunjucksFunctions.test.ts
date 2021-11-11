@@ -8,11 +8,13 @@ import {
   filterSelectedItems,
   formActionUrl,
   personOrPeopleFilter,
+  recallStatusTagProperties,
   removeUndefinedFromObject,
   selectItems,
   userNameFilter,
 } from './nunjucksFunctions'
 import { reasonForRecall } from '../referenceData'
+import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {
@@ -348,5 +350,66 @@ describe('removeUndefinedFromObject', () => {
       classNames: null,
     })
     expect(result).toEqual({ classNames: null })
+  })
+})
+
+describe('recallStatusTagProperties', () => {
+  it('returns the correct properties for a given status', () => {
+    expect(recallStatusTagProperties(RecallResponse.status.DOSSIER_ISSUED)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Dossier issued',
+      classes: `govuk-tag--green`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.RECALL_NOTIFICATION_ISSUED)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Recall notification issued',
+      classes: `govuk-tag--orange`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.RECALL_NOTIFICATION_ISSUED)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Recall notification issued',
+      classes: `govuk-tag--orange`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.DOSSIER_IN_PROGRESS)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Dossier in progress',
+      classes: `govuk-tag--orange`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.BEING_BOOKED_ON)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Being booked on',
+      classes: `govuk-tag--orange`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.BOOKED_ON)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Booked on',
+      classes: `govuk-tag--orange`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.IN_ASSESSMENT)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'In assessment',
+      classes: `govuk-tag--orange`,
+    })
+    expect(recallStatusTagProperties(RecallResponse.status.STOPPED)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Stopped',
+      classes: `govuk-tag--red`,
+    })
   })
 })
