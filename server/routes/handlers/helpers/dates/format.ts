@@ -122,3 +122,11 @@ export const dueDateLabel = ({
   }
   return `${dueItemLabel} due today${dueTimeOfDay}`
 }
+
+export const padWithZeroes = (value?: number): string => {
+  if (!isDefined(value)) {
+    return ''
+  }
+  const padded = value.toString()
+  return padded.length < 2 ? `0${padded}` : padded
+}

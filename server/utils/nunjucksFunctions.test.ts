@@ -190,7 +190,7 @@ describe('filterSelectedItems', () => {
 
 describe('dateTimeItems', () => {
   it('generates a list of items for input values', () => {
-    const items = dateTimeItems('testField', { year: 2021, month: 8, day: 20, hour: 0, minute: 5 }, true)
+    const items = dateTimeItems('testField', { year: '2021', month: '8', day: '20', hour: '0', minute: '5' }, true)
     expect(items).toEqual([
       {
         attributes: {

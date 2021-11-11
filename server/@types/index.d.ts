@@ -32,11 +32,11 @@ export interface PersonSearchResult {
 }
 
 export interface DatePartsParsed {
-  year: number
-  month: number
-  day: number
-  hour?: number
-  minute?: number
+  year: string
+  month: string
+  day: string
+  hour?: string
+  minute?: string
 }
 
 // TODO - needs updating with all fields
