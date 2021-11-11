@@ -1,5 +1,6 @@
 {% if googleAnalyticsId %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ googleAnalyticsId }}"></script>
+<script src="/assets/web-vitals.umd.js"></script>
 <script nonce='{{ cspNonce }}'>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -8,5 +9,17 @@
     page_location: document.location.href.replace(/\/persons\/[^\/]+\//, '/persons/[nomsNumber]/'),
     {% if recall %}recallId: "{{ recall.recallId }}"{% endif %}
   });
+  function sendToGoogleAnalytics({name, delta, id}) {
+    gtag('event', name, {
+      event_category: 'Web Vitals',
+      event_label: id,
+      value: Math.round(name === 'CLS' ? delta * 1000 : delta),
+      non_interaction: true,
+    });
+  }
+
+  window.webVitals.getCLS(sendToGoogleAnalytics);
+  window.webVitals.getFID(sendToGoogleAnalytics);
+  window.webVitals.getLCP(sendToGoogleAnalytics);
 </script>
 {% endif %}
