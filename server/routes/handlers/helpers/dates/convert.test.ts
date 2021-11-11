@@ -64,6 +64,11 @@ describe('convertGmtDatePartsToUtc', () => {
     expect(result).toEqual({ error: 'invalidDate' })
   })
 
+  it('returns an error for a date with the year below the minimum value', () => {
+    const result = convertGmtDatePartsToUtc({ year: '1899', month: '10', day: '12' })
+    expect(result).toEqual({ error: 'minValueDateParts', invalidParts: ['year'] })
+  })
+
   it('returns undefined for a 29 Feb date not in a leap year', () => {
     const result = convertGmtDatePartsToUtc({ year: '2021', month: '02', day: '29' })
     expect(result).toEqual({ error: 'invalidDate' })

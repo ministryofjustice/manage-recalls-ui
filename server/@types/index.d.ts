@@ -141,7 +141,9 @@ export type DateValidationErrorType =
   | 'missingTime'
   | 'missingDateParts'
   | 'minLengthDateParts'
+  | 'minValueDateParts'
   | 'minLengthDateTimeParts'
+  | 'minValueDateTimeParts'
 
 export type DatePartNames = 'year' | 'month' | 'day' | 'hour' | 'minute'
 

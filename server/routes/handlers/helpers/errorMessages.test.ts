@@ -40,6 +40,18 @@ describe('Error messages', () => {
         'The date and time you received the recall email must be in the correct format, like 06 05 2021 09:03'
       )
     })
+
+    it('renders "minValueDateParts" error for date only', () => {
+      const error = errorMsgUserActionDateTime({ error: 'minValueDateParts' }, 'sent the dossier', true)
+      expect(error).toEqual('The date you sent the dossier must be in the correct format, like 06 05 2021')
+    })
+
+    it('renders "minValueDateTimeParts" error for date and time', () => {
+      const error = errorMsgUserActionDateTime({ error: 'minValueDateTimeParts' }, 'sent the dossier')
+      expect(error).toEqual(
+        'The date and time you sent the dossier must be in the correct format, like 06 05 2021 09:03'
+      )
+    })
   })
 
   describe('errorMsgDate', () => {
