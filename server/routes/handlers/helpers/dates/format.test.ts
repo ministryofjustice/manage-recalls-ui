@@ -17,6 +17,11 @@ describe('Date helpers', () => {
       const formatted = formatDateTimeFromIsoString('2021-12-22T08:43:00.000Z')
       expect(formatted).toEqual('22 December 2021 at 08:43')
     })
+
+    it('formats a date-time as a date if dateOnly param is true', () => {
+      const formatted = formatDateTimeFromIsoString('2021-12-22T08:43:00.000Z', true)
+      expect(formatted).toEqual('22 December 2021')
+    })
   })
 
   describe('recallAssessmentDueText', () => {

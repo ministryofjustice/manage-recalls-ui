@@ -6,7 +6,7 @@ import { RecallResult } from '../../@types'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { getPerson } from './helpers/personCache'
 import logger from '../../../logger'
-import { sortListByDateField, sortToDoList } from './helpers/dates/sort'
+import { sortCompletedList, sortToDoList } from './helpers/dates/sort'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   try {
@@ -44,15 +44,18 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         }
       })
     }
-    const toDoList = successful.filter(
-      recallResult => recallResult.recall.status !== RecallResponse.status.DOSSIER_ISSUED
-    )
-    const completed = successful.filter(
-      recallResult => recallResult.recall.status === RecallResponse.status.DOSSIER_ISSUED
-    )
+    const toDoList = [] as RecallResult[]
+    const completed = [] as RecallResult[]
+    successful.forEach(recallResult => {
+      if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recallResult.recall.status)) {
+        completed.push(recallResult)
+      } else {
+        toDoList.push(recallResult)
+      }
+    })
     res.locals.results = {
       toDo: sortToDoList(toDoList),
-      completed: sortListByDateField({ list: completed, dateKey: 'recall.dossierEmailSentDate', newestFirst: true }),
+      completed: sortCompletedList(completed),
     }
     if (failed.length) {
       res.locals.errors = res.locals.errors || []

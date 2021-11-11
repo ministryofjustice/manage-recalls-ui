@@ -145,8 +145,8 @@ context('To do (recalls) list', () => {
       {
         recallId: '123445-5717-4562-b3fc-2c963f66afa6',
         nomsNumber,
-        status: 'DOSSIER_ISSUED',
-        dossierEmailSentDate: '2020-10-22',
+        status: 'STOPPED',
+        lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
       },
       {
         recallId,

@@ -85,7 +85,7 @@
                                 <td class="govuk-table__cell"
                                     data-qa="name">{{ result.person.firstName }} {{ result.person.lastName }}</td>
                                 <td class="govuk-table__cell" data-qa="completedDate">
-                                    {{ result.recall.dossierEmailSentDate | dateTime }}
+                                    {% if result.recall.status == 'DOSSIER_ISSUED'%}{{ result.recall.dossierEmailSentDate | dateTime }}{% elif result.recall.status == 'STOPPED'%}{{ result.recall.lastUpdatedDateTime | dateOnly }}{% endif %}
                                 </td>
                                 <td class="govuk-table__cell" data-qa="assignedTo">{% if result.recall.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.recall.status == 'STOPPED'%}Stopped{% endif %}</td>
                                 <td class="govuk-table__cell">

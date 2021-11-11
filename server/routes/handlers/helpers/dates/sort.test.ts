@@ -38,7 +38,7 @@ describe('sortToDoList', () => {
     ])
   })
 
-  it('compares dossierTargetDate against recallAssessmentDueDateTime', () => {
+  it('sorts dossierTargetDate against recallAssessmentDueDateTime, newest date first', () => {
     const recalls = [
       { recall: { dossierTargetDate: '2021-08-15T15:33:57.000Z' } },
       { recall: { recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' } },
@@ -60,6 +60,44 @@ describe('sortToDoList', () => {
     const recalls = [{ recall: { recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' } }, { recall: {} }]
     const sorted = sortToDoList(recalls as RecallResult[])
     expect(sorted).toEqual([{ recall: {} }, { recall: { recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' } }])
+  })
+})
+
+describe('sortCompletedList', () => {
+  it('sorts recalls that have dossierEmailSentDate set', () => {
+    const recalls = [
+      { recall: { dossierEmailSentDate: '2021-08-14', lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' } },
+      { recall: { dossierEmailSentDate: '2021-08-13', lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' } },
+    ]
+    const sorted = sortToDoList(recalls as RecallResult[])
+    expect(sorted).toEqual([
+      { recall: { dossierEmailSentDate: '2021-08-14', lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' } },
+      { recall: { dossierEmailSentDate: '2021-08-13', lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' } },
+    ])
+  })
+
+  it('sorts recalls that have lastUpdatedDateTime set', () => {
+    const recalls = [
+      { recall: { lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' } },
+      { recall: { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' } },
+    ]
+    const sorted = sortToDoList(recalls as RecallResult[])
+    expect(sorted).toEqual([
+      { recall: { lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' } },
+      { recall: { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' } },
+    ])
+  })
+
+  it('sorts dossierEmailSentDate against lastUpdatedDateTime, newest date first', () => {
+    const recalls = [
+      { recall: { dossierEmailSentDate: '2021-08-15T15:33:57.000Z' } },
+      { recall: { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' } },
+    ]
+    const sorted = sortToDoList(recalls as RecallResult[])
+    expect(sorted).toEqual([
+      { recall: { dossierEmailSentDate: '2021-08-15T15:33:57.000Z' } },
+      { recall: { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' } },
+    ])
   })
 })
 

@@ -38,6 +38,12 @@ describe('recallList', () => {
       dossierEmailSentDate: '2021-05-04',
     },
     {
+      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      nomsNumber: '123',
+      status: 'STOPPED',
+      dossierEmailSentDate: '2021-03-22',
+    },
+    {
       recallId: '123445-5717-4562-b3fc-2c963f66afa6',
       nomsNumber: '456',
       status: 'DOSSIER_ISSUED',
@@ -111,6 +117,18 @@ describe('recallList', () => {
           nomsNumber: '123',
           recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
           status: 'DOSSIER_ISSUED',
+        },
+      },
+      {
+        person: {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+        recall: {
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          nomsNumber: '123',
+          status: 'STOPPED',
+          dossierEmailSentDate: '2021-03-22',
         },
       },
       {
