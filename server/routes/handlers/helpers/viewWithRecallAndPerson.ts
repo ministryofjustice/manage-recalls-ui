@@ -23,9 +23,9 @@ export const viewWithRecallAndPerson =
       getRecall(recallId, res.locals.user.token),
     ])
     if (personResult.status === 'rejected') {
-      logger.error(`searchByNomsNumber failed for NOMS`)
+      throw new Error('getPerson failed for NOMS')
     }
-    res.locals.person = personResult.status === 'fulfilled' ? personResult.value : { nomsNumber }
+    res.locals.person = personResult.value
     if (recallResult.status === 'rejected') {
       throw new Error(`getRecall failed for ID ${recallId}`)
     }

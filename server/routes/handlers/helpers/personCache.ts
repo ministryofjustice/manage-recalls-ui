@@ -10,7 +10,7 @@ const fetchPersonFromApiAndCache = async (
   nomsNumber: string,
   token: string,
   useCache?: boolean
-): Promise<PersonSearchResult | null> =>
+): Promise<PersonSearchResult | undefined> =>
   searchByNomsNumber(nomsNumber, token)
     .then(person => {
       if (person && useCache) {
@@ -26,11 +26,7 @@ const fetchPersonFromApiAndCache = async (
     })
     .catch(err => {
       logger.error(err)
-      return {
-        nomsNumber,
-        firstName: '<first name>',
-        lastName: '<last name>',
-      } as PersonSearchResult
+      return undefined
     })
 
 export const getPerson = async (
