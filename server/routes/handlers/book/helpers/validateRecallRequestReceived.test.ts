@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { validateRecallRequestReceived } from './validateRecallRequestReceived'
+import { padWithZeroes } from '../../helpers/dates/format'
 
 describe('validateRecallRequestReceived', () => {
   it('returns valuesToSave with a corrected time if in daylight-saving period, and no errors if all fields are submitted', () => {
@@ -133,11 +134,11 @@ describe('validateRecallRequestReceived', () => {
   it('returns an error if the date-time is not in the past', () => {
     const { year, month, day, hour, minute } = DateTime.now().plus({ hours: 2 })
     const requestBody = {
-      recallEmailReceivedDateTimeDay: day.toString(),
-      recallEmailReceivedDateTimeMonth: month.toString(),
+      recallEmailReceivedDateTimeDay: padWithZeroes(day),
+      recallEmailReceivedDateTimeMonth: padWithZeroes(month),
       recallEmailReceivedDateTimeYear: year.toString(),
-      recallEmailReceivedDateTimeHour: hour.toString(),
-      recallEmailReceivedDateTimeMinute: minute.toString(),
+      recallEmailReceivedDateTimeHour: padWithZeroes(hour),
+      recallEmailReceivedDateTimeMinute: padWithZeroes(minute),
     }
     const { errors } = validateRecallRequestReceived({
       requestBody,

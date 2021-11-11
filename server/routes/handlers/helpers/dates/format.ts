@@ -7,13 +7,13 @@ const datePresentationFormat = 'd MMMM yyyy'
 const datePresentationNoYearFormat = 'd MMM'
 const timePresentationFormat = 'HH:mm'
 
-export const formatDateTimeFromIsoString = (isoDate: string) => {
+export const formatDateTimeFromIsoString = (isoDate: string, dateOnly = false) => {
   const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
   if (!isDefined(isoDate)) {
     return undefined
   }
   try {
-    const includeTime = isoDate.length > 10
+    const includeTime = isoDate.length > 10 && !dateOnly
     const dateTime = getDateTimeInEuropeLondon(isoDate)
 
     if (includeTime) {

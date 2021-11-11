@@ -42,8 +42,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
 
   njkEnv.addFilter('personOrPeople', personOrPeopleFilter)
   njkEnv.addFilter('userName', userNameFilter)
+  njkEnv.addFilter('dateOnly', val => formatDateTimeFromIsoString(val, true))
   njkEnv.addFilter('dateTime', formatDateTimeFromIsoString)
-
   njkEnv.addGlobal('dateTimeItems', dateTimeItems)
   njkEnv.addGlobal('selectItems', selectItems)
   njkEnv.addGlobal('checkboxItems', checkboxItems)
@@ -64,6 +64,6 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('dueDateLabel', dueDateLabel)
   njkEnv.addGlobal('recallStatusTagProperties', recallStatusTagProperties)
 
-  nunjucksDate.setDefaultFormat('DD MMM YYYY')
+  nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)
 }
