@@ -31,7 +31,7 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
     errors = [
       makeErrorObject({
         id: 'nomsNumber',
-        text: `An error occurred searching for the NOMIS number"`,
+        text: `An error occurred searching for the NOMIS number`,
       }),
     ]
   } finally {

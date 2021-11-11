@@ -57,12 +57,12 @@ describe('findPerson', () => {
         {
           href: '#nomsNumber',
           name: 'nomsNumber',
-          text: 'An error occurred searching for the NOMIS number"',
+          text: 'An error occurred searching for the NOMIS number',
         },
       ],
       nomsNumber: {
         href: '#nomsNumber',
-        text: 'An error occurred searching for the NOMIS number"',
+        text: 'An error occurred searching for the NOMIS number',
       },
     })
   })
