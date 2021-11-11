@@ -44,13 +44,16 @@ describe('viewWithRecallAndPerson', () => {
     jest.clearAllMocks()
   })
 
-  it('receives basic person details if person search errors', async () => {
+  it('throws if person search errors', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
     ;(searchByNomsNumber as jest.Mock).mockRejectedValue(new Error('timeout'))
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.person).toEqual({ firstName: '<first name>', lastName: '<last name>', nomsNumber })
+    try {
+      await viewWithRecallAndPerson('assessRecall')(req, res)
+    } catch (err) {
+      expect(err.message).toEqual('getPerson failed for NOMS')
+    }
   })
 
   it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', async () => {
