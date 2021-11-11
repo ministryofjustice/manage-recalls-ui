@@ -11,23 +11,18 @@ const fetchPersonFromApiAndCache = async (
   token: string,
   useCache?: boolean
 ): Promise<PersonSearchResult | undefined> =>
-  searchByNomsNumber(nomsNumber, token)
-    .then(person => {
-      if (person && useCache) {
-        try {
-          const redisClient = getRedisClient()
-          redisClient.set(getKey(nomsNumber), JSON.stringify(person))
-          redisClient.expire(getKey(nomsNumber), config.personCache.ttl)
-        } catch (err) {
-          logger.error(err)
-        }
+  searchByNomsNumber(nomsNumber, token).then(person => {
+    if (person && useCache) {
+      try {
+        const redisClient = getRedisClient()
+        redisClient.set(getKey(nomsNumber), JSON.stringify(person))
+        redisClient.expire(getKey(nomsNumber), config.personCache.ttl)
+      } catch (err) {
+        logger.error(err)
       }
-      return person
-    })
-    .catch(err => {
-      logger.error(err)
-      return undefined
-    })
+    }
+    return person
+  })
 
 export const getPerson = async (
   nomsNumber: string,

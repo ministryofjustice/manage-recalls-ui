@@ -8,7 +8,6 @@ import { getUserNames } from './getUserNames'
 import { dossierDueDateString, recallAssessmentDueText } from './dates/format'
 import { enableDeleteDocuments } from './documents'
 import { decorateDocs } from './documents/decorateDocs'
-import logger from '../../../../logger'
 import { getPerson } from './personCache'
 
 const requiresUser = (viewName: ViewName) =>
