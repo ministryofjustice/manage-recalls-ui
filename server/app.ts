@@ -118,7 +118,7 @@ export default function createApp(userService: UserService): express.Application
           connectSrc: ["'self'", 'www.google-analytics.com'],
           styleSrc: ["'self'", 'code.jquery.com'],
           fontSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:'],
+          imgSrc: ["'self'", 'data:', 'www.google-analytics.com'],
         },
       },
     })
@@ -174,6 +174,7 @@ export default function createApp(userService: UserService): express.Application
     '/node_modules/@ministryofjustice/frontend/moj/assets',
     '/node_modules/@ministryofjustice/frontend',
     '/node_modules/jquery/dist',
+    '/node_modules/web-vitals/dist',
   ].forEach(dir => {
     app.use('/assets', express.static(path.join(process.cwd(), dir), cacheControl))
   })
@@ -207,10 +208,10 @@ export default function createApp(userService: UserService): express.Application
     res.locals.user = req.user
     res.locals.env = process.env.ENVIRONMENT // DEVELOPMENT/ PRE-PRODUCTION / PRODUCTION
     if (res.locals.env === 'PRODUCTION') {
-      res.locals.googleAnalyticsId = 'G-KYJBQWRHPB'
+      res.locals.googleAnalyticsId = 'UA-106741063-23'
     }
     if (res.locals.env === 'PRE-PRODUCTION') {
-      res.locals.googleAnalyticsId = 'G-5XW3BP9ZE7'
+      res.locals.googleAnalyticsId = 'UA-106741063-22'
     }
     next()
   })
