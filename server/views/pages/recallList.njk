@@ -42,8 +42,8 @@
                             <td class="govuk-table__cell" data-qa="dueDate">
                                 {% if result.recall.status == 'RECALL_NOTIFICATION_ISSUED' or result.recall.status == 'DOSSIER_IN_PROGRESS' %}
                                 {{ dueDateLabel({ dueIsoDateTime: result.recall.dossierTargetDate, includeTime: false, shortFormat: true }) }}
-                                {% elseif result.recall.status == 'DOSSIER_ISSUED' %}
-                                {% elseif result.recall.recallEmailReceivedDateTime %}
+
+                                {% elseif result.recall.recallAssessmentDueDateTime %}
                                 {{ dueDateLabel({ dueIsoDateTime: result.recall.recallAssessmentDueDateTime, includeTime: true, shortFormat: true }) }}
                                 {% endif %}
                             </td>

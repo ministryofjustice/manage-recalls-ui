@@ -172,4 +172,80 @@ context('To do (recalls) list', () => {
     recallsList.viewRecall({ recallId })
     recallInformationPage.verifyOnPage({ personName })
   })
+
+  it('User can see recalls are ordered by due date on the todo list', () => {
+    const recalls = [
+      {
+        recallId: '1',
+        nomsNumber,
+        status: 'BOOKED_ON',
+        createdDateTime: '2020-09-01T16:33:57.000Z',
+        lastUpdatedDateTime: '2020-09-22T18:33:57.000Z',
+      },
+      {
+        recallId: '2',
+        nomsNumber,
+        status: 'BEING_BOOKED_ON',
+        createdDateTime: '2020-12-05T16:33:57.000Z',
+      },
+      {
+        recallId: '3',
+        nomsNumber,
+        status: 'BEING_BOOKED_ON',
+        createdDateTime: '2020-12-01T16:33:57.000Z',
+        lastUpdatedDateTime: '2020-12-03T18:33:57.000Z',
+        recallAssessmentDueDateTime: '2020-12-10T15:33:57.000Z',
+      },
+      {
+        recallId: '4',
+        nomsNumber,
+        status: 'IN_ASSESSMENT',
+        createdDateTime: '2020-05-05T16:33:57.000Z',
+        lastUpdatedDateTime: '2020-05-07T18:33:57.000Z',
+        recallAssessmentDueDateTime: '2021-05-06T15:33:57.000Z',
+      },
+      {
+        recallId: '5',
+        nomsNumber,
+        status: 'DOSSIER_IN_PROGRESS',
+        createdDateTime: '2020-08-05T16:33:57.000Z',
+        lastUpdatedDateTime: '2020-08-16T18:33:57.000Z',
+        recallAssessmentDueDateTime: '2020-08-14T15:33:57.000Z',
+        dossierTargetDate: '2021-08-15T17:33:57.000Z',
+      },
+      {
+        recallId: '6',
+        nomsNumber,
+        status: 'RECALL_NOTIFICATION_ISSUED',
+        createdDateTime: '2021-08-05T16:33:57.000Z',
+        lastUpdatedDateTime: '2021-08-16T18:33:57.000Z',
+        recallAssessmentDueDateTime: '2021-08-14T15:33:57.000Z',
+        dossierTargetDate: '2021-08-15T15:33:57.000Z',
+      },
+      {
+        recallId: '7',
+        nomsNumber,
+        status: 'STOPPED',
+        createdDateTime: '2020-10-05T16:33:57.000Z',
+        lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
+        recallAssessmentDueDateTime: '2020-10-23T15:33:57.000Z',
+      },
+      {
+        recallId: '8',
+        nomsNumber,
+        status: 'DOSSIER_ISSUED',
+        createdDateTime: '2020-12-05T16:33:57.000Z',
+        lastUpdatedDateTime: '2020-12-22T18:33:57.000Z',
+        recallAssessmentDueDateTime: '2020-12-15T15:33:57.000Z',
+        dossierTargetDate: '2020-12-16T15:33:57.000Z',
+        dossierEmailSentDate: '2020-12-17T15:33:57.000Z',
+      },
+    ]
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.login()
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.expectRecallsSortOrder(['', '', '10 Dec at 15:33', '6 May at 16:33', '15 Aug', '15 Aug'])
+  })
 })
