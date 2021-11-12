@@ -38,8 +38,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       expect(actual).toEqual(addUserResponseJson)
     })
 
-    test('returns 400 if blank userId provided', async () => {
-      const blankUserId = ''
+    test('returns 400 if blank email provided', async () => {
+      const blankEmail = ''
       const errorResponse = {
         status: 'BAD_REQUEST',
       }
@@ -48,14 +48,14 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...pactPostRequest(
           'an add user details request with blank userId',
           '/users',
-          { userId: blankUserId, firstName, lastName, signature, email, phoneNumber },
+          { userId, firstName, lastName, signature, email: blankEmail, phoneNumber },
           accessToken
         ),
         willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
-        await addUserDetails(blankUserId, firstName, lastName, signature, email, phoneNumber, accessToken)
+        await addUserDetails(userId, firstName, lastName, signature, blankEmail, phoneNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(400)
       }
