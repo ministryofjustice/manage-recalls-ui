@@ -1,9 +1,9 @@
 import nock from 'nock'
 import { Request, Response } from 'express'
-import { mockGetRequest, mockResponseWithAuthenticatedUserAndUserId } from '../../testutils/mockRequestUtils'
+import { mockGetRequest, mockResponseWithAuthenticatedUserAndUserId } from '../../../testutils/mockRequestUtils'
 import { downloadDossier, downloadLetterToPrison, downloadRecallNotification } from './downloadNamedPdfHandler'
-import config from '../../../config'
-import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import config from '../../../../config'
+import recall from '../../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 const nomsNumber = 'AA123AA'
 const recallId = '123'

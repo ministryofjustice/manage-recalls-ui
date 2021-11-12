@@ -4,7 +4,7 @@ export interface DocumentCategoryMetadata {
   label: string
   labelLowerCase?: string
   name: ApiRecallDocument.category
-  type: 'document' | 'email'
+  type: 'document' | 'email' | 'generated'
   error?: string
   fileName?: string
   required?: boolean

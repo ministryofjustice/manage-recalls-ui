@@ -2,21 +2,29 @@ import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/
 import { DecoratedDocument, DocumentCategoryMetadata } from '../../../../@types/documents'
 import { documentCategories } from './documentCategories'
 import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from './index'
+import { formatBookingNumber, formatPersonName } from './downloadNamedPdfHandler'
 
 export const decorateDocs = ({
   docs,
   nomsNumber,
   recallId,
+  firstName,
+  lastName,
+  bookingNumber,
 }: {
   docs: ApiRecallDocument[]
   nomsNumber: string
   recallId: string
+  firstName: string
+  lastName: string
+  bookingNumber: string
 }): {
   documents: DecoratedDocument[]
   documentCategories: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   recallNotificationEmail?: DecoratedDocument
+  revocationOrder?: DecoratedDocument
   recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
 } => {
@@ -39,10 +47,19 @@ export const decorateDocs = ({
       uploaded: uploadedDocs.map(d => ({ url: d.url, fileName: d.fileName, documentId: d.documentId, index: d.index })),
     }
   })
+  const personName = formatPersonName({ firstName, lastName })
+  const formattedBookingNumber = formatBookingNumber(bookingNumber)
   return decoratedUploadedDocs.reduce(
     (acc, curr) => {
       if (curr.type === 'document') {
         acc.documents.push(curr)
+      }
+      if (curr.name === ApiRecallDocument.category.REVOCATION_ORDER) {
+        acc.revocationOrder = {
+          ...curr,
+          label: `${personName}${formattedBookingNumber} REVOCATION ORDER.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/${curr.documentId}`,
+        }
       }
       if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
         acc.recallNotificationEmail = curr
@@ -67,6 +84,7 @@ export const decorateDocs = ({
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,
+      revocationOrder: undefined,
     }
   )
 }

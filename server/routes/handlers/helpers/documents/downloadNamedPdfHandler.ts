@@ -2,39 +2,43 @@ import type { Request, Response } from 'express'
 import {
   getRecall,
   getGeneratedDocument,
-  searchByNomsNumber,
   getRecallNotification,
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { isInvalid } from './index'
-import { Pdf } from '../../../@types/manage-recalls-api'
+  getStoredDocument,
+} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPerson } from '../personCache'
+import { isInvalid } from '../index'
+import { Pdf } from '../../../../@types/manage-recalls-api'
+import { ObjectMap } from '../../../../@types'
 
 type FormatFn = (args: { personName: string; bookingNumber: string }) => string
 
-type DownloadFn = (recallId: string, token: string, uuid?: string) => Promise<Pdf>
+type DownloadFn = (params: ObjectMap<string>, token: string, uuid?: string) => Promise<Pdf>
+
+export const formatPersonName = ({ firstName, lastName }: { firstName: string; lastName: string }) =>
+  `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
+
+export const formatBookingNumber = (bookingNumber: string) => (bookingNumber ? ` ${bookingNumber.toUpperCase()}` : '')
 
 const downloadNamedPdfHandler =
   (downloadFn: DownloadFn, formatNameFn: FormatFn) => async (req: Request, res: Response) => {
-    const { nomsNumber, recallId } = req.params
+    const { nomsNumber, recallId, documentId } = req.params
     const { token, uuid } = res.locals.user
     if (isInvalid(nomsNumber) || isInvalid(recallId)) {
       res.sendStatus(400)
       return
     }
     const [person, recall, pdf] = await Promise.allSettled([
-      searchByNomsNumber(nomsNumber as string, token),
+      getPerson(nomsNumber as string, token),
       getRecall(recallId, token),
-      downloadFn(recallId as string, token, uuid),
+      downloadFn({ recallId, documentId }, token, uuid),
     ])
     // if there's no PDF, we can't continue
     if (pdf.status === 'rejected') {
       return res.sendStatus(500)
     }
     // if the other two calls fail to get metadata, we could still serve the PDF with a generic filename
-    const personName =
-      person.status === 'fulfilled'
-        ? `${person.value?.lastName?.toUpperCase()} ${person.value?.firstName?.toUpperCase()}`
-        : ''
-    const bookingNumber = recall.status === 'fulfilled' ? ` ${recall.value?.bookingNumber?.toUpperCase()}` : ''
+    const personName = person.status === 'fulfilled' ? formatPersonName(person.value) : ''
+    const bookingNumber = recall.status === 'fulfilled' ? formatBookingNumber(recall.value.bookingNumber) : ''
     const fileName = formatNameFn({ personName, bookingNumber })
     const pdfContentsByteArray = Buffer.from(pdf.value.content, 'base64')
 
@@ -58,4 +62,9 @@ export const downloadDossier = downloadNamedPdfHandler(
 export const downloadLetterToPrison = downloadNamedPdfHandler(
   getGeneratedDocument('letter-to-prison'),
   ({ personName, bookingNumber }) => `${personName}${bookingNumber} LETTER TO PRISON.pdf`
+)
+
+export const downloadRevocationOrder = downloadNamedPdfHandler(
+  getStoredDocument,
+  ({ personName, bookingNumber }) => `${personName}${bookingNumber} REVOCATION ORDER.pdf`
 )

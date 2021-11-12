@@ -13,6 +13,7 @@ import { uploadStorageArray } from '../helpers/uploadStorage'
 import { validateCategories, validateUploadedFileTypes } from './helpers/validateDocuments'
 import { UrlInfo } from '../../../@types'
 import { decorateDocs } from '../helpers/documents/decorateDocs'
+import { getPerson } from '../helpers/personCache'
 
 const renderXhrResponse = async ({
   res,
@@ -29,7 +30,19 @@ const renderXhrResponse = async ({
   urlInfo: UrlInfo
   token: string
 }) => {
-  const recall = await getRecall(recallId, token)
+  const [personResult, recallResult] = await Promise.allSettled([
+    getPerson(nomsNumber as string, token),
+    getRecall(recallId, token),
+  ])
+  if (personResult.status === 'rejected') {
+    throw new Error('getPerson failed for NOMS')
+  }
+  const person = personResult.value
+  if (recallResult.status === 'rejected') {
+    throw new Error(`getRecall failed for ID ${recallId}`)
+  }
+  const recall = recallResult.value
+
   let addToExistingUploads = false
   const allUploadedDocs = recall.documents
     .filter(doc => uploadedDocCategoriesList().find(item => item.name === doc.category))
@@ -39,7 +52,13 @@ const renderXhrResponse = async ({
     lastUploadedDocs = allUploadedDocs.filter(uploadedDoc => !existingDocIds.includes(uploadedDoc.documentId))
     addToExistingUploads = allUploadedDocs.length > lastUploadedDocs.length
   }
-  const decoratedDocs = decorateDocs({ docs: lastUploadedDocs, nomsNumber, recallId })
+  const decoratedDocs = decorateDocs({
+    docs: lastUploadedDocs,
+    nomsNumber,
+    recallId,
+    bookingNumber: recall.bookingNumber,
+    ...person,
+  })
   res.render(
     'partials/uploadedDocumentsStatus',
     {

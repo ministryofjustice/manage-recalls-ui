@@ -20,7 +20,8 @@ import {
   downloadDossier,
   downloadLetterToPrison,
   downloadRecallNotification,
-} from './handlers/helpers/downloadNamedPdfHandler'
+  downloadRevocationOrder,
+} from './handlers/helpers/documents/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { AddDocumentRequest } from '../@types/manage-recalls-api/models/AddDocumentRequest'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
@@ -124,6 +125,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/documents/dossier`, downloadDossier)
   get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
+  get(`${basePath}/documents/revocation-order/:documentId`, downloadRevocationOrder)
   get(`${basePath}/documents/:documentId`, downloadUploadedDocumentOrEmail)
 
   get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
