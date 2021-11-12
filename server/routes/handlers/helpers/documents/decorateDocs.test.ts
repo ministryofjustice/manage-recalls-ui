@@ -38,7 +38,14 @@ describe('decorateDocs', () => {
   const recallId = 'abc-456'
 
   it('returns document types only in document list, with uploaded docs merged into documentCategories', () => {
-    const results = decorateDocs({ docs, nomsNumber, recallId })
+    const results = decorateDocs({
+      docs,
+      nomsNumber,
+      recallId,
+      firstName: 'Bobby',
+      lastName: 'Badger',
+      bookingNumber: '123',
+    })
     expect(results).toEqual({
       documentCategories: [
         {

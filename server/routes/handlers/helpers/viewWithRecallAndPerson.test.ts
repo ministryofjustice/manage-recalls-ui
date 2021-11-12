@@ -23,7 +23,7 @@ describe('viewWithRecallAndPerson', () => {
     lastName: 'Badger',
     dateOfBirth: '1999-05-28',
     gender: 'Male',
-    nomsNumber: 'A1234AA',
+    nomsNumber,
     croNumber: '1234/56A',
     pncNumber: '98/7654Z',
   }
@@ -171,6 +171,12 @@ describe('viewWithRecallAndPerson', () => {
     res.locals.urlInfo = {}
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
-    expect(decorateDocsExports.decorateDocs).toHaveBeenCalledWith({ docs: recall.documents, nomsNumber, recallId })
+    expect(decorateDocsExports.decorateDocs).toHaveBeenCalledWith({
+      docs: recall.documents,
+      nomsNumber,
+      recallId,
+      bookingNumber: recall.bookingNumber,
+      ...person,
+    })
   })
 })

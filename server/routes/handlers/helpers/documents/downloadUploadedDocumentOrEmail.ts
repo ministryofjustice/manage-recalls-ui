@@ -5,7 +5,7 @@ import { documentCategories } from './documentCategories'
 export const downloadUploadedDocumentOrEmail = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params
   const { user } = res.locals
-  const response = await getStoredDocument(recallId, documentId, user.token)
+  const response = await getStoredDocument({ recallId, documentId }, user.token)
   const documentCategory = documentCategories.find(type => type.name === response.category)
   if (documentCategory.type === 'document') {
     res.contentType('application/pdf')

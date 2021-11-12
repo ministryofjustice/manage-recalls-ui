@@ -152,6 +152,9 @@ describe('getFormValues', () => {
       docs: updateRecallResponse.documents as ApiRecallDocument[],
       nomsNumber: '123',
       recallId: '456',
+      bookingNumber: updateRecallResponse.bookingNumber,
+      firstName: 'Bobby',
+      lastName: 'Badger',
     }),
   }
   it('uses errors if no unsaved or API values', () => {

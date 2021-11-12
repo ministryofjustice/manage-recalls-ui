@@ -60,6 +60,10 @@ context('Create a dossier', () => {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
             documentId: '1234-5717-4562-b3fc-2c963f66afa6',
           },
+          {
+            category: 'REVOCATION_ORDER',
+            documentId: '9876',
+          },
         ],
       },
     })
@@ -90,6 +94,10 @@ context('Create a dossier', () => {
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
       href: `/persons/${nomsNumber}/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
+    })
+    dossierRecall.assertLinkHref({
+      qaAttr: 'generatedDocument-REVOCATION_ORDER',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/9876`,
     })
     // missing documents
     dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })

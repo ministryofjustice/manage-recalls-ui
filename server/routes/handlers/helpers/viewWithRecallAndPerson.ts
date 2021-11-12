@@ -29,7 +29,13 @@ export const viewWithRecallAndPerson =
       throw new Error(`getRecall failed for ID ${recallId}`)
     }
     const recall = recallResult.value
-    const decoratedDocs = decorateDocs({ docs: recall.documents, nomsNumber, recallId })
+    const decoratedDocs = decorateDocs({
+      docs: recall.documents,
+      nomsNumber,
+      recallId,
+      bookingNumber: recall.bookingNumber,
+      ...res.locals.person,
+    })
     res.locals.recall = {
       ...recall,
       ...decoratedDocs,

@@ -7,6 +7,7 @@ import {
   deleteRecallDocument,
   setDocumentCategory,
 } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPerson } from '../helpers/personCache'
 import { mockGetRequest } from '../../testutils/mockRequestUtils'
 import { GetDocumentResponse } from '../../../@types/manage-recalls-api/models/GetDocumentResponse'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
@@ -14,6 +15,7 @@ import { uploadStorageArray } from '../helpers/uploadStorage'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
+jest.mock('../helpers/personCache')
 
 describe('uploadRecallDocumentsFormHandler', () => {
   let req
@@ -53,6 +55,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
   ]
   const nomsNumber = '456'
   const recallId = '789'
+  const person = { firstName: 'Bobby', lastName: 'Badger' }
 
   beforeEach(() => {
     req = mockGetRequest({ params: { nomsNumber, recallId } })
@@ -79,6 +82,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
       cb()
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
       documents: [
         {
           category: 'LICENCE',
@@ -92,6 +96,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
         },
       ],
     })
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
     resp.render = (partial, data) => {
       expect(data.recall.documents).toHaveLength(1)
       expect(data.recall.documents[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
@@ -117,6 +122,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
       cb()
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
       documents: [
         {
           category: 'PREVIOUS_CONVICTIONS_SHEET',
@@ -125,6 +131,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
         },
       ],
     })
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
     resp.render = (partial, data) => {
       expect(data.recall.documents).toHaveLength(1)
       expect(data.recall.documents[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')

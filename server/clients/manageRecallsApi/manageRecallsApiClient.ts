@@ -39,17 +39,20 @@ export async function searchRecalls(searchParams: ObjectMap<string>, token: stri
 
 export const getRecallNotification =
   () =>
-  (recallId: string, token: string, uuid?: string): Promise<Pdf> => {
+  ({ recallId }: { recallId: string }, token: string, uuid?: string): Promise<Pdf> => {
     return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/recallNotification/${uuid}` })
   }
 
 export const getGeneratedDocument =
   (pathSuffix: string) =>
-  (recallId: string, token: string): Promise<Pdf> => {
+  ({ recallId }: { recallId: string }, token: string): Promise<Pdf> => {
     return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/${pathSuffix}` })
   }
 
-export function getStoredDocument(recallId: string, documentId: string, token: string): Promise<GetDocumentResponse> {
+export function getStoredDocument(
+  { recallId, documentId }: { recallId: string; documentId: string },
+  token: string
+): Promise<GetDocumentResponse> {
   return restClient(token).get<GetDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
 }
 

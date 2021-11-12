@@ -99,4 +99,9 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     name: ApiRecallDocument.category.DOSSIER_EMAIL,
     type: 'email',
   },
+  {
+    label: 'Revocation order',
+    name: ApiRecallDocument.category.REVOCATION_ORDER,
+    type: 'generated',
+  },
 ]
