@@ -10,7 +10,7 @@ export const createRecall = async (req: Request, res: Response): Promise<void> =
   }
   const { user } = res.locals
   try {
-    const recall = await createRecallApi(nomsNumber, user.uuid, user.token)
+    const recall = await createRecallApi(nomsNumber, user.token)
     if (!recall.recallId) {
       throw new Error("Created recall didn't return a recallId")
     }

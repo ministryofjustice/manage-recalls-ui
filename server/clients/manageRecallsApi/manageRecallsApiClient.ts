@@ -57,8 +57,8 @@ export function getRecall(recallId: string, token: string): Promise<Recall> {
   return restClient(token).get<Recall>({ path: `/recalls/${recallId}` })
 }
 
-export function createRecall(nomsNumber: string, createdByUserId: string, token: string): Promise<Recall> {
-  const request = { nomsNumber, createdByUserId }
+export function createRecall(nomsNumber: string, token: string): Promise<Recall> {
+  const request = { nomsNumber }
   return restClient(token).post<Recall>({ path: '/recalls', data: request })
 }
 
@@ -94,11 +94,7 @@ export function setDocumentCategory(
   })
 }
 
-/*
-Temporarily send the userId in the request body until it is added to the JWT token and can be retrieved by the API
- */
 export function addUserDetails(
-  userId: string,
   firstName: string,
   lastName: string,
   signature: string,
@@ -106,12 +102,16 @@ export function addUserDetails(
   phoneNumber: string,
   token: string
 ): Promise<UserDetailsResponse> {
-  const request = { userId, firstName, lastName, signature, email, phoneNumber }
+  const request = { firstName, lastName, signature, email, phoneNumber }
   return restClient(token).post<UserDetailsResponse>({ path: '/users', data: request })
 }
 
 export function getUserDetails(userId: string, token: string): Promise<UserDetailsResponse> {
   return restClient(token).get<UserDetailsResponse>({ path: `/users/${userId}` })
+}
+
+export function getCurrentUserDetails(token: string): Promise<UserDetailsResponse> {
+  return restClient(token).get<UserDetailsResponse>({ path: `/users/current` })
 }
 
 export function getLocalDeliveryUnits(): Promise<LocalDeliveryUnitResponse[]> {

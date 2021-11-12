@@ -3,12 +3,11 @@ import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
 import { addUserDetails } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
-import addUserResponseJson from '../fake-manage-recalls-api/stubs/__files/add-user.json'
+import addUserResponseJson from '../fake-manage-recalls-api/stubs/__files/user.json'
 import { pactJsonResponse, pactPostRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
-  const userId = '00000000-0000-0000-0000-000000000000'
   const firstName = 'Jimmy'
   const lastName = 'Ppud'
   const signature =
@@ -27,13 +26,13 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...pactPostRequest(
           'an add user details request',
           '/users',
-          { userId, firstName, lastName, signature, email, phoneNumber },
+          { firstName, lastName, signature, email, phoneNumber },
           accessToken
         ),
         willRespondWith: pactJsonResponse(Matchers.like(addUserResponseJson), 201),
       })
 
-      const actual = await addUserDetails(userId, firstName, lastName, signature, email, phoneNumber, accessToken)
+      const actual = await addUserDetails(firstName, lastName, signature, email, phoneNumber, accessToken)
 
       expect(actual).toEqual(addUserResponseJson)
     })
@@ -48,14 +47,14 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...pactPostRequest(
           'an add user details request with blank userId',
           '/users',
-          { userId, firstName, lastName, signature, email: blankEmail, phoneNumber },
+          { firstName, lastName, signature, email: blankEmail, phoneNumber },
           accessToken
         ),
         willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
       })
 
       try {
-        await addUserDetails(userId, firstName, lastName, signature, blankEmail, phoneNumber, accessToken)
+        await addUserDetails(firstName, lastName, signature, blankEmail, phoneNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(400)
       }
@@ -67,14 +66,14 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         ...pactPostRequest(
           'an unauthorized create recall request',
           '/users',
-          { userId, firstName, lastName, signature, email, phoneNumber },
+          { firstName, lastName, signature, email, phoneNumber },
           accessToken
         ),
         willRespondWith: { status: 401 },
       })
 
       try {
-        await addUserDetails(userId, firstName, lastName, signature, email, phoneNumber, accessToken)
+        await addUserDetails(firstName, lastName, signature, email, phoneNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }
