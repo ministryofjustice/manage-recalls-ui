@@ -27,7 +27,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(getRecallNotificationResponseJson), 200),
       })
 
-      const actual = await getRecallNotification()(recallId, accessToken, userId)
+      const actual = await getRecallNotification()({ recallId }, accessToken, userId)
 
       expect(actual).toEqual(getRecallNotificationResponseJson)
     })
@@ -45,7 +45,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     })
 
     try {
-      await getRecallNotification()(recallId, accessToken, userId)
+      await getRecallNotification()({ recallId }, accessToken, userId)
     } catch (exception) {
       expect(exception.status).toEqual(401)
     }
