@@ -12,6 +12,9 @@ const recallsListPage = () =>
     createDossier: ({ recallId }) => cy.get(`[data-qa=create-dossier-${recallId}]`).click(),
     continueDossier: ({ recallId }) => cy.get(`[data-qa=continue-dossier-${recallId}]`).click(),
     viewRecall: ({ recallId }) => cy.get(`[data-qa=view-recall-${recallId}]`).click(),
+    expectRecallsSortOrder: listOfDates => {
+      cy.get(`[data-qa="dueDate"]`).each(($result, index) => expect($result).to.contain(listOfDates[index]))
+    },
   })
 
 module.exports = { verifyOnPage: recallsListPage }
