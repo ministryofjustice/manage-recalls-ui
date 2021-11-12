@@ -114,9 +114,6 @@ context('View recall', () => {
       expectedResult: {
         ...getEmptyRecallResponse,
         recallId,
-        // additionalLicenceConditions: null,
-        // vulnerabilityDiversity: null,
-        // contraband: null
       },
     })
     cy.login()
