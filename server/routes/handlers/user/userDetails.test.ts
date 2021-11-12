@@ -36,12 +36,10 @@ describe('postUser', () => {
       locals: {
         user: {
           token: userToken,
-          uuid: userId,
         },
       },
       redirect: (httpStatus, path) => {
         expect(addUserDetails).toHaveBeenCalledWith(
-          userId,
           firstName,
           lastName,
           signatureEncoded,
@@ -60,7 +58,6 @@ describe('postUser', () => {
   })
 
   it('errors if the signature is the wrong file type', done => {
-    const userId = '123'
     const firstName = 'Barry'
     const lastName = 'Badger'
     const email = 'barry@badger.com'
@@ -81,7 +78,6 @@ describe('postUser', () => {
       locals: {
         user: {
           token: userToken,
-          uuid: userId,
         },
       },
       redirect: (httpStatus, path) => {
@@ -99,7 +95,6 @@ describe('postUser', () => {
   })
 
   it('saves if an existing signature is present', done => {
-    const userId = '123'
     const firstName = 'Barry'
     const lastName = 'Badger'
     const email = 'barry@badger.com'
@@ -116,12 +111,10 @@ describe('postUser', () => {
       locals: {
         user: {
           token: userToken,
-          uuid: userId,
         },
       },
       redirect: (httpStatus, path) => {
         expect(addUserDetails).toHaveBeenCalledWith(
-          userId,
           firstName,
           lastName,
           signatureEncoded,

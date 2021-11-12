@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCurrentUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { uploadStorageField } from '../helpers/uploadStorage'
 import { allowedImageFileExtensions } from '../helpers/allowedUploadExtensions'
@@ -8,8 +8,8 @@ import { AllowedUploadFileType } from '../../../@types'
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { uuid, token } = res.locals.user
-    const user = await getUserDetails(uuid, token)
+    const { token } = res.locals.user
+    const user = await getCurrentUserDetails(token)
     res.locals.user = { ...res.locals.user, ...user }
   } catch (err) {
     if (err.status !== 404) {
@@ -41,7 +41,7 @@ export const isInvalidFileType = (file: Express.Multer.File, allowedExtensions: 
   return !allowedExtensions.some(ext => file.originalname.endsWith(ext.extension) && file.mimetype === ext.mimeType)
 }
 export const postUser = async (req: Request, res: Response): Promise<void> => {
-  const { uuid, token } = res.locals.user
+  const { token } = res.locals.user
   const processUpload = uploadStorageField('signature')
   processUpload(req, res, async error => {
     try {
@@ -68,7 +68,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
         } else {
           signatureBase64 = signatureEncoded
         }
-        await addUserDetails(uuid, firstName, lastName, signatureBase64, email, phoneNumber, token)
+        await addUserDetails(firstName, lastName, signatureBase64, email, phoneNumber, token)
       }
     } catch (err) {
       logger.error(err)
