@@ -6,7 +6,7 @@
         Additional licence conditions
       </dt>
       <dd class=" govuk-summary-list__value" data-qa='additionalLicenceConditions'>
-        {% if recall.additionalLicenceConditions == true %}{{ recall.additionalLicenceConditionsDetail }}{% else %}None{% endif %}
+          {% if recall.additionalLicenceConditions == true %}{{ recall.additionalLicenceConditionsDetail }}{% elif recall.additionalLicenceConditions == false %}None{% else %}Not available{% endif %}
       </dd>
       <dd class=" govuk-summary-list__actions">
         <a href='{{ changeLinkUrl('dossier-letter', urlInfo, 'additionalLicenceConditionsGroup') }}' data-qa='additionalLicenceConditionsChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> additional licence conditions</span></a>

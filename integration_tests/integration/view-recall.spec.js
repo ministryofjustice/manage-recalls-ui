@@ -1,5 +1,5 @@
 import path from 'path'
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getEmptyRecallResponse, getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 
 const recallInformationPage = require('../pages/recallInformation')
 
@@ -106,5 +106,38 @@ context('View recall', () => {
       textToFind: 'Missing: needed to create dossier',
     })
     recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
+  })
+
+  it('User can view not available for additionalLicenceConditions,vulnerabilityDiversity and contraband when information is not provided', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    cy.login()
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Not available' })
+    recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Not available' })
+    recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Not available' })
+  })
+
+  it('User can view No, No and None respectively for additionalLicenceConditions,vulnerabilityDiversity and contraband when selected No', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        additionalLicenceConditions: false,
+        vulnerabilityDiversity: false,
+        contraband: false,
+      },
+    })
+    cy.login()
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'None' })
+    recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'No' })
+    recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'No' })
   })
 })

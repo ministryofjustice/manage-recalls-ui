@@ -6,7 +6,7 @@
     </dt>
     <dd class="govuk-summary-list__value">
       <pre class='govuk-body' data-qa='vulnerabilityDiversity'>
-        {% if recall.vulnerabilityDiversity == true %}{{ recall.vulnerabilityDiversityDetail }}{% else %}No{% endif %}
+        {% if recall.vulnerabilityDiversity == true %}{{ recall.vulnerabilityDiversityDetail }}{% elif recall.vulnerabilityDiversity == false %}No{% else %}Not available{% endif %}
       </pre>
     </dd>
     <dd class=" govuk-summary-list__actions">
@@ -19,7 +19,7 @@
     </dt>
     <dd class=" govuk-summary-list__value">
       <pre class='govuk-body' data-qa='contraband'>
-        {% if recall.contraband == true %}{{ recall.contrabandDetail }}{% else %}No{% endif %}
+        {% if recall.contraband == true %}{{ recall.contrabandDetail }}{% elif recall.contraband == false %}No{% else %}Not available{% endif %}
       </pre>
     </dd>
     <dd class="govuk-summary-list__actions">
