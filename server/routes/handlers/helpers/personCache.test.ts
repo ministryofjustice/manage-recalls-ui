@@ -15,7 +15,7 @@ describe('Get person data from cache', () => {
 
   afterEach(() => jest.resetAllMocks())
 
-  it('should return the cached person, if present', async () => {
+  it('should return the cached person, if present, and not refresh immediately from the API', async () => {
     jest.spyOn(redisExports, 'getRedisAsync').mockResolvedValue(
       JSON.stringify({
         firstName: 'Bobby',
@@ -23,12 +23,8 @@ describe('Get person data from cache', () => {
         nomsNumber: '1',
       })
     )
-    ;(searchByNomsNumber as jest.Mock).mockResolvedValue({
-      firstName: 'Bobbie',
-      lastName: 'Badgers',
-      nomsNumber: '1',
-    })
     const person = await getPerson('1', token, true)
+    expect(searchByNomsNumber).not.toHaveBeenCalled()
     expect(person).toEqual({
       firstName: 'Bobby',
       lastName: 'Badger',
@@ -44,6 +40,7 @@ describe('Get person data from cache', () => {
       nomsNumber: '1',
     })
     const person = await getPerson('1', token, true)
+    expect(searchByNomsNumber).toHaveBeenCalledTimes(1)
     expect(person).toEqual({
       firstName: 'Bobbie',
       lastName: 'Badgers',

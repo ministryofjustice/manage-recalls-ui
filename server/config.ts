@@ -84,7 +84,7 @@ const config = {
     },
   },
   personCache: {
-    ttl: Number(get('PERSON_CACHE_TTL', 60 * 60)),
+    ttl: Number(get('PERSON_CACHE_TTL', 60 * 60 * 4)),
   },
 }
 export default config
