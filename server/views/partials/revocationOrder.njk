@@ -9,7 +9,7 @@
           {% if recall.revocationOrder %}
           <a class='govuk-link' href='{{ recall.revocationOrder.url }}' target='_blank' data-qa='generatedDocument-{{ recall.revocationOrder.category }}'>{{ recall.revocationOrder.label }}</a>
           {% else %}
-            <span  data='revocationOrderNotAvailable'>Not available</span>
+            <span data-qa='revocationOrderNotAvailable'>Not available</span>
           {% endif %}
         </dd>
         <dd class=" govuk-summary-list__actions">
