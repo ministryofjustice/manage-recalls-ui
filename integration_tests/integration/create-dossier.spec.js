@@ -113,6 +113,16 @@ context('Create a dossier', () => {
         ...getRecallResponse,
         recallId,
         status,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'LICENCE',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+        ],
       },
     })
     cy.task('expectAddRecallDocument', { statusCode: 201 })
@@ -127,6 +137,10 @@ context('Create a dossier', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
     const dossierRecall = dossierRecallPage.verifyOnPage({ personName })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'revocationOrderNotAvailable',
+      textToFind: 'Not available',
+    })
     dossierRecall.clickContinue()
     const dossierLetter = dossierLetterPage.verifyOnPage()
     dossierLetter.additionalLicenceConditions()
