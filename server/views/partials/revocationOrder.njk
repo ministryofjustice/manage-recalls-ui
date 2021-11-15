@@ -1,4 +1,4 @@
-{% if recall.revocationOrder %}
+
   <h2 class='govuk-heading-m govuk-!-margin-top-9' id='documents'>Revocation order</h2>
   <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
@@ -6,10 +6,13 @@
           Revocation order
         </dt>
         <dd class=" govuk-summary-list__value">
+          {% if recall.revocationOrder %}
           <a class='govuk-link' href='{{ recall.revocationOrder.url }}' target='_blank' data-qa='generatedDocument-{{ recall.revocationOrder.category }}'>{{ recall.revocationOrder.label }}</a>
+          {% else %}
+            <span  data='revocationOrderNotAvailable'>Not available</span>
+          {% endif %}
         </dd>
         <dd class=" govuk-summary-list__actions">
         </dd>
       </div>
   </dl>
-{% endif %}

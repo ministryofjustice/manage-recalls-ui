@@ -113,6 +113,7 @@ context('Create a dossier', () => {
         ...getRecallResponse,
         recallId,
         status,
+        documents: [],
       },
     })
     cy.task('expectAddRecallDocument', { statusCode: 201 })
@@ -127,6 +128,10 @@ context('Create a dossier', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
     const dossierRecall = dossierRecallPage.verifyOnPage({ personName })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'revocationOrderNotAvailable',
+      textToFind: 'Not available',
+    })
     dossierRecall.clickContinue()
     const dossierLetter = dossierLetterPage.verifyOnPage()
     dossierLetter.additionalLicenceConditions()
