@@ -70,6 +70,18 @@ describe('parseUrlParams', () => {
     expect(res.locals.urlInfo.fromPage).toEqual('view-recall')
   })
 
+  it('parses fromPage from URL when it starts with /', () => {
+    const req = mockGetRequest({
+      params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },
+      query: { fromPage: '/' },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('user_access_token')
+    const next = jest.fn()
+    parseUrlParams(req, res, next)
+    expect(res.locals.urlInfo.fromPage).toEqual('/')
+    expect(res.locals.urlInfo.basePath).toEqual('')
+  })
+
   it('parses fromHash from URL', () => {
     const req = mockGetRequest({
       params: { nomsNumber: 'A1234BC', recallId: '123-456', pageSlug: 'last-release' },

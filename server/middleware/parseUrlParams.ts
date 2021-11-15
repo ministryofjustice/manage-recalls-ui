@@ -5,7 +5,7 @@ import logger from '../../logger'
 
 const isValidFromPage = (urlPathSegment: unknown) =>
   isString(urlPathSegment) &&
-  ['check-answers', 'assess', 'dossier-recall', 'view-recall'].includes(urlPathSegment as string)
+  ['check-answers', 'assess', 'dossier-recall', 'view-recall', '/'].includes(urlPathSegment as string)
 
 export const parseUrlParams = (req: Request, res: Response, next: NextFunction) => {
   const { nomsNumber, recallId, pageSlug } = req.params
@@ -26,7 +26,8 @@ export const parseUrlParams = (req: Request, res: Response, next: NextFunction) 
     fromPage,
     fromHash,
     currentPage: pageSlug,
-    basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+    basePath:
+      isString(fromPage) && (fromPage as string).startsWith('/') ? '' : `/persons/${nomsNumber}/recalls/${recallId}/`,
   }
   next()
 }

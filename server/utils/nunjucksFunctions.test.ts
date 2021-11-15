@@ -338,8 +338,18 @@ describe('backLinkUrl', () => {
   })
 
   it("doesn't use the basePath if the path has a leading /", () => {
-    const url = backLinkUrl('/find-person', { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' })
-    expect(url).toEqual('/find-person')
+    const url = backLinkUrl('/', { basePath: '', fromPage: '/', currentPage: 'view-recall' })
+    expect(url).toEqual('/')
+  })
+
+  it('uses the fromHash param if the path has a leading /', () => {
+    const url = backLinkUrl('/', {
+      fromPage: '/',
+      fromHash: 'completed',
+      currentPage: 'view-recall',
+      basePath: '',
+    })
+    expect(url).toEqual('/#completed')
   })
 })
 
