@@ -169,7 +169,7 @@ context('Book a recall', () => {
     recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
-      fieldName: 'hasOtherPreviousConvictionMainName',
+      fieldName: 'previousConvictionMainNameCategory',
       summaryError: "Is Bobby Badger's name different on the previous convictions report (pre-cons)?",
     })
   })
