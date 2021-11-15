@@ -113,7 +113,16 @@ context('Create a dossier', () => {
         ...getRecallResponse,
         recallId,
         status,
-        documents: [],
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+          {
+            category: 'LICENCE',
+            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+          },
+        ],
       },
     })
     cy.task('expectAddRecallDocument', { statusCode: 201 })
