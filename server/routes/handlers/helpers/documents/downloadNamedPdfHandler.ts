@@ -14,7 +14,7 @@ type FormatFn = (args: { personName: string; bookingNumber: string }) => string
 
 type DownloadFn = (params: ObjectMap<string>, token: string, uuid?: string) => Promise<Pdf>
 
-export const formatPersonName = ({ firstName, lastName }: { firstName: string; lastName: string }) =>
+export const formatPersonName = ({ firstName, lastName }: { firstName?: string; lastName?: string }) =>
   `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
 
 export const formatBookingNumber = (bookingNumber: string) => (bookingNumber ? ` ${bookingNumber.toUpperCase()}` : '')

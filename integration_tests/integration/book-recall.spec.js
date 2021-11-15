@@ -43,6 +43,7 @@ context('Book a recall', () => {
 
   it('User can book a recall', () => {
     recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallPreConsName.showPreConsOptions(['Bobby Badger', 'Bobby John Badger', 'Other name'])
     recallPreConsName.selectOtherName()
     recallPreConsName.enterOtherName('Wayne Holt')
     recallPreConsName.clickContinue()
@@ -143,6 +144,25 @@ context('Book a recall', () => {
 
     // missing documents
     checkAnswers.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
+  })
+
+  it("User doesn't see a middle name option for pre-cons name if the person doesn't have one", () => {
+    cy.task('expectSearchResults', {
+      expectedSearchTerm: nomsNumber,
+      expectedSearchResults: [
+        {
+          firstName: 'Bobby',
+          lastName: 'Badger',
+          dateOfBirth: '1999-05-28',
+          gender: 'Male',
+          nomsNumber: 'A1234AA',
+          croNumber: '1234/56A',
+          pncNumber: '98/7654Z',
+        },
+      ],
+    })
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallPreConsName.showPreConsOptions(['Bobby Badger', 'Other name'])
   })
 
   it('User sees an error if pre-cons main name question is not answered', () => {

@@ -20,6 +20,7 @@ const dossierCreatedByUserId = '00000000-2222-0000-0000-000000000000'
 describe('viewWithRecallAndPerson', () => {
   const person = {
     firstName: 'Bobby',
+    middleNames: 'Barnaby',
     lastName: 'Badger',
     dateOfBirth: '1999-05-28',
     gender: 'Male',
@@ -132,7 +133,7 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.referenceData).toHaveProperty('prisons')
   })
 
-  it('should previousConvictionMainName if one was specified', async () => {
+  it('should set previousConvictionMainName to Other value if specified', async () => {
     ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, previousConvictionMainName: 'Barry Badger' })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
@@ -141,13 +142,30 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.recall.previousConvictionMainName).toEqual('Barry Badger')
   })
 
-  it('should fall back to default name if a different previousConvictionMainName is not saved', async () => {
+  it('should set previousConvictionMainName to first + last name if specified', async () => {
     ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
-    ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, previousConvictionMainName: '' })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      previousConvictionMainNameCategory: 'FIRST_LAST',
+      previousConvictionMainName: '',
+    })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Badger')
+  })
+
+  it('should set previousConvictionMainName to first + middle + last name if specified', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
+      previousConvictionMainName: '',
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Barnaby Badger')
   })
 
   it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {

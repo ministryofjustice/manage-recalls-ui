@@ -11,6 +11,7 @@
   "agreeWithRecallDetail": "Reasons...",
   "hasOtherPreviousConvictionMainName": true,
   "previousConvictionMainName": "Walter Holt",
+  "previousConvictionMainNameCategory": "OTHER",
   "documents": [
     {
       "category": "LICENCE",

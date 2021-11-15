@@ -41,6 +41,7 @@ export type RecallResponse = {
     mappaLevel?: RecallResponse.mappaLevel;
     nomsNumber: string;
     previousConvictionMainName?: string;
+    previousConvictionMainNameCategory?: RecallResponse.previousConvictionMainNameCategory;
     probationOfficerEmail?: string;
     probationOfficerName?: string;
     probationOfficerPhoneNumber?: string;
@@ -65,6 +66,12 @@ export namespace RecallResponse {
     export enum agreeWithRecall {
         NO_STOP = 'NO_STOP',
         YES = 'YES',
+    }
+
+    export enum previousConvictionMainNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER'
     }
 
     export enum localDeliveryUnit {

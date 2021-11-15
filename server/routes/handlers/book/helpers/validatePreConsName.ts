@@ -9,19 +9,19 @@ export const validatePreConsName = (
   let unsavedValues
   let valuesToSave
 
-  const { hasOtherPreviousConvictionMainName, previousConvictionMainName } = requestBody
-  const isYes = hasOtherPreviousConvictionMainName === 'YES'
-  if (!hasOtherPreviousConvictionMainName || (isYes && !previousConvictionMainName)) {
+  const { previousConvictionMainNameCategory, previousConvictionMainName } = requestBody
+  const isYesOther = previousConvictionMainNameCategory === 'OTHER'
+  if (!previousConvictionMainNameCategory || (isYesOther && !previousConvictionMainName)) {
     errors = []
-    if (!hasOtherPreviousConvictionMainName) {
+    if (!previousConvictionMainNameCategory) {
       errors.push(
         makeErrorObject({
-          id: 'hasOtherPreviousConvictionMainName',
+          id: 'previousConvictionMainNameCategory',
           text: "Is {{person.firstName}} {{person.lastName}}'s name different on the previous convictions report (pre-cons)?",
         })
       )
     }
-    if (isYes && !previousConvictionMainName) {
+    if (isYesOther && !previousConvictionMainName) {
       errors.push(
         makeErrorObject({
           id: 'previousConvictionMainName',
@@ -30,16 +30,20 @@ export const validatePreConsName = (
       )
     }
     unsavedValues = {
-      hasOtherPreviousConvictionMainName,
+      previousConvictionMainNameCategory,
       previousConvictionMainName,
     }
   }
   if (!errors) {
     // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
     // Using blanks as server cannot handle nulls and will just not overwrite existing value
-    const previousConvictionMainNameCleaned = isYes ? previousConvictionMainName : ''
+    let previousConvictionMainNameCleaned = ''
+    if (isYesOther) {
+      previousConvictionMainNameCleaned = previousConvictionMainName
+    }
     valuesToSave = {
-      hasOtherPreviousConvictionMainName: isYes,
+      previousConvictionMainNameCategory:
+        previousConvictionMainNameCategory as UpdateRecallRequest.previousConvictionMainNameCategory,
       previousConvictionMainName: previousConvictionMainNameCleaned,
     }
   }

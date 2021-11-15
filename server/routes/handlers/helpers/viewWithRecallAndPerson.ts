@@ -9,10 +9,31 @@ import { dossierDueDateString, recallAssessmentDueText } from './dates/format'
 import { enableDeleteDocuments } from './documents'
 import { decorateDocs } from './documents/decorateDocs'
 import { getPerson } from './personCache'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
 
+export const preConsMainName = ({
+  category,
+  otherName,
+  person,
+}: {
+  category: RecallResponse.previousConvictionMainNameCategory
+  otherName: string
+  person: SearchResult
+}) => {
+  if (otherName) {
+    return otherName
+  }
+  if (category === RecallResponse.previousConvictionMainNameCategory.FIRST_LAST) {
+    return `${person.firstName} ${person.lastName}`
+  }
+  if (category === RecallResponse.previousConvictionMainNameCategory.FIRST_MIDDLE_LAST) {
+    return `${person.firstName} ${person.middleNames} ${person.lastName}`
+  }
+}
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
@@ -51,8 +72,11 @@ export const viewWithRecallAndPerson =
 
     res.locals.referenceData = referenceData()
 
-    res.locals.recall.previousConvictionMainName =
-      recall.previousConvictionMainName || `${res.locals.person.firstName} ${res.locals.person.lastName}`
+    res.locals.recall.previousConvictionMainName = preConsMainName({
+      category: recall.previousConvictionMainNameCategory,
+      otherName: recall.previousConvictionMainName,
+      person: res.locals.person,
+    })
 
     // TODO - use nunjucks filters to format these from the views
     res.locals.recall.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)

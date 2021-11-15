@@ -19,11 +19,12 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
       if (personResult.status === 'rejected') {
         throw new Error(`getPerson failed`)
       }
+      res.locals.persons = []
       const person = personResult.value
       if (person) {
-        person.recalls = recallsResult.status === 'fulfilled' ? recallsResult.value : []
+        res.locals.persons = [person]
+        res.locals.persons[0].recalls = recallsResult.status === 'fulfilled' ? recallsResult.value : []
       }
-      res.locals.persons = person ? [person] : []
     }
     res.locals.isFindPersonPage = true
   } catch (err) {

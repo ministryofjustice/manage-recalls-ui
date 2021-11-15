@@ -1,4 +1,4 @@
-import { PersonSearchResult } from '../../../@types'
+import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
 import { searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getRedisAsync, getRedisClient } from '../../../clients/redis'
 import logger from '../../../../logger'
@@ -10,7 +10,7 @@ const fetchPersonFromApiAndCache = async (
   nomsNumber: string,
   token: string,
   useCache?: boolean
-): Promise<PersonSearchResult | undefined> =>
+): Promise<SearchResult | undefined> =>
   searchByNomsNumber(nomsNumber, token).then(person => {
     if (person && useCache) {
       try {
@@ -28,7 +28,7 @@ export const getPerson = async (
   nomsNumber: string,
   token: string,
   enableCache?: boolean
-): Promise<PersonSearchResult | null> => {
+): Promise<SearchResult | null> => {
   const useCache = enableCache || (process.env.ENVIRONMENT !== 'PRODUCTION' && process.env.NODE_ENV !== 'test')
   if (useCache) {
     const stored = await getRedisAsync(getKey(nomsNumber))
