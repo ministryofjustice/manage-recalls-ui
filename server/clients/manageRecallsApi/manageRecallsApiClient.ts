@@ -6,7 +6,8 @@ import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddD
 import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { LocalDeliveryUnitResponse } from '../../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
-import { ObjectMap, PersonSearchResult } from '../../@types'
+import { SearchResult } from '../../@types/manage-recalls-api/models/SearchResult'
+import { ObjectMap } from '../../@types'
 import {
   Court,
   GetDocumentResponse,
@@ -16,9 +17,9 @@ import {
   ApiRecallDocument,
 } from '../../@types/manage-recalls-api'
 
-export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<PersonSearchResult | null> {
+export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   const request = { nomsNumber }
-  const results = await restClient(token).post<PersonSearchResult[]>({
+  const results = await restClient(token).post<SearchResult[]>({
     path: '/search',
     headers: { Accept: 'application/json' },
     data: request,

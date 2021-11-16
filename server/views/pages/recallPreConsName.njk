@@ -41,8 +41,8 @@
                         }) }}
                     {% endset -%}
                     {{ govukRadios({
-                        idPrefix: "hasOtherPreviousConvictionMainName",
-                        name: "hasOtherPreviousConvictionMainName",
+                        idPrefix: "previousConvictionMainNameCategory",
+                        name: "previousConvictionMainNameCategory",
                         fieldset: {
                             legend: {
                                 text: "What is the main name on " + person.firstName + " " + person.lastName + "'s pre-cons?",
@@ -52,20 +52,25 @@
                         },
                         items: [
                             {
-                                value: "NO",
+                                value: "FIRST_LAST",
                                 text: person.firstName + " " + person.lastName,
-                                checked: formValues.hasOtherPreviousConvictionMainName == 'NO'
+                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST'
                             },
                             {
-                                value: "YES",
+                                value: "FIRST_LAST_MIDDLE",
+                                text: person.firstName + " " + person.middleNames + " " + person.lastName,
+                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST_MIDDLE'
+                            } if person.middleNames else undefined,
+                            {
+                                value: "OTHER",
                                 text: "Other name",
-                                checked: formValues.hasOtherPreviousConvictionMainName == 'YES',
+                                checked: formValues.previousConvictionMainNameCategory == 'OTHER',
                                 conditional: {
                                     html: yesDetailHtml
                                 }
                             }
                         ],
-                        errorMessage: errorMessage(errors.hasOtherPreviousConvictionMainName)
+                        errorMessage: errorMessage(errors.previousConvictionMainNameCategory)
                     }) }}
                 </div>
                 <div>

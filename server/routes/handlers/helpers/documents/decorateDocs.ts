@@ -15,8 +15,8 @@ export const decorateDocs = ({
   docs: ApiRecallDocument[]
   nomsNumber: string
   recallId: string
-  firstName: string
-  lastName: string
+  firstName?: string
+  lastName?: string
   bookingNumber: string
 }): {
   documents: DecoratedDocument[]

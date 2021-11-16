@@ -32,6 +32,7 @@ export type UpdateRecallRequest = {
     localPoliceForce?: string;
     mappaLevel?: UpdateRecallRequest.mappaLevel;
     previousConvictionMainName?: string;
+    previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
     probationOfficerEmail?: string;
     probationOfficerName?: string;
     probationOfficerPhoneNumber?: string;
@@ -52,6 +53,12 @@ export namespace UpdateRecallRequest {
     export enum agreeWithRecall {
         NO_STOP = 'NO_STOP',
         YES = 'YES',
+    }
+
+    export enum previousConvictionMainNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER'
     }
 
     export enum localDeliveryUnit {

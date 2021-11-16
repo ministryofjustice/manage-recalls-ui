@@ -97,7 +97,7 @@ describe('getFormValues', () => {
     dossierEmailSentDate: { values: { year: '2016', month: '', day: '13' } },
     confirmRecallNotificationEmailSent: { text: 'Recall notification email sent' },
     confirmDossierEmailSent: { text: 'Dossier email sent' },
-    hasOtherPreviousConvictionMainName: { text: 'What is the main name on the pre-cons?' },
+    previousConvictionMainNameCategory: { text: 'What is the main name on the pre-cons?' },
     previousConvictionMainName: { text: 'What is the other main name used?' },
     hasDossierBeenChecked: { text: 'Has the dossier been checked for accuracy?' },
   } as unknown as ObjectMap<FormError>
@@ -141,7 +141,7 @@ describe('getFormValues', () => {
     dossierEmailSentDateParts: { year: '2020', month: '11', day: '17' },
     confirmRecallNotificationEmailSent: 'YES',
     confirmDossierEmailSent: 'YES',
-    hasOtherPreviousConvictionMainName: 'YES',
+    previousConvictionMainNameCategory: 'FIRST_LAST',
     previousConvictionMainName: 'Wayne Holt',
     hasDossierBeenChecked: 'YES',
   }
@@ -180,7 +180,7 @@ describe('getFormValues', () => {
         year: '2016',
       },
       hasDossierBeenChecked: '',
-      hasOtherPreviousConvictionMainName: '',
+      previousConvictionMainNameCategory: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -266,7 +266,6 @@ describe('getFormValues', () => {
         year: '2020',
       },
       hasDossierBeenChecked: 'YES',
-      hasOtherPreviousConvictionMainName: 'YES',
       indexOffence: 'Assault',
       lastReleaseDateParts: {
         day: 'ee',
@@ -283,6 +282,7 @@ describe('getFormValues', () => {
       localPoliceForce: 'Dorset',
       mappaLevel: 'LEVEL_2',
       previousConvictionMainName: 'Wayne Holt',
+      previousConvictionMainNameCategory: 'FIRST_LAST',
       localDeliveryUnit: 'ISLE_OF_MAN',
       probationOfficerEmail: 'andy@probation.gov.uk',
       probationOfficerName: 'Andy Fleming',
@@ -346,7 +346,7 @@ describe('getFormValues', () => {
         year: '2016',
       },
       hasDossierBeenChecked: '',
-      hasOtherPreviousConvictionMainName: '',
+      previousConvictionMainNameCategory: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -434,7 +434,7 @@ describe('getFormValues', () => {
         year: '2021',
       },
       hasDossierBeenChecked: 'YES',
-      hasOtherPreviousConvictionMainName: 'YES',
+      previousConvictionMainNameCategory: 'OTHER',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: 'ee',
@@ -526,7 +526,7 @@ describe('getFormValues', () => {
         year: '2021',
       },
       hasDossierBeenChecked: 'YES',
-      hasOtherPreviousConvictionMainName: 'YES',
+      previousConvictionMainNameCategory: 'OTHER',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: '03',

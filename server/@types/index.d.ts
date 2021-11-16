@@ -1,5 +1,6 @@
 import { RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
 import { DecoratedDocument } from './documents'
+import { SearchResult } from './manage-recalls-api/models/SearchResult'
 
 export interface FormError {
   text: string
@@ -21,14 +22,6 @@ export interface NamedFormError extends FormError {
 
 export interface KeyedFormErrors extends ObjectMap<FormError> {
   list: NamedFormError[]
-}
-
-export interface PersonSearchResult {
-  firstName: string
-  lastName: string
-  nomsNumber?: string
-  dateOfBirth?: string
-  recalls?: RecallResponse[]
 }
 
 export interface DatePartsParsed {
@@ -128,7 +121,7 @@ export interface EmailUploadValidatorArgs {
 
 export interface RecallResult {
   recall: RecallResponse
-  person: PersonSearchResult
+  person: SearchResult
 }
 
 export type DateValidationErrorType =
