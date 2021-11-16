@@ -57,9 +57,9 @@
                                 checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST'
                             },
                             {
-                                value: "FIRST_LAST_MIDDLE",
+                                value: "FIRST_MIDDLE_LAST",
                                 text: person.firstName + " " + person.middleNames + " " + person.lastName,
-                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST_MIDDLE'
+                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_MIDDLE_LAST'
                             } if person.middleNames else undefined,
                             {
                                 value: "OTHER",

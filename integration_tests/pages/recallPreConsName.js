@@ -9,9 +9,12 @@ const recallPreConsNamePage = ({ nomsNumber, recallId, personName } = {}) =>
     enterOtherName: name => {
       cy.get('[name="previousConvictionMainName"]').clear().type(name)
     },
-    showPreConsOptions: optionLabels => {
+    showPreConsOptions: options => {
       cy.get(`[for=previousConvictionMainNameCategory]`).each(($result, index) =>
-        expect($result).to.contain(optionLabels[index])
+        expect($result).to.contain(options[index].label)
+      )
+      cy.get(`[name=previousConvictionMainNameCategory]`).each(($result, index) =>
+        expect($result.val()).to.equal(options[index].value)
       )
     },
   })
