@@ -29,7 +29,6 @@ export type RecallResponse = {
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
     hasDossierBeenChecked?: boolean;
-    hasOtherPreviousConvictionMainName?: boolean;
     indexOffence?: string;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
