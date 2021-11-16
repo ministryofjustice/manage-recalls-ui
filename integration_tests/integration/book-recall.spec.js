@@ -43,7 +43,11 @@ context('Book a recall', () => {
 
   it('User can book a recall', () => {
     recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallPreConsName.showPreConsOptions(['Bobby Badger', 'Bobby John Badger', 'Other name'])
+    recallPreConsName.showPreConsOptions([
+      { label: 'Bobby Badger', value: 'FIRST_LAST' },
+      { label: 'Bobby John Badger', value: 'FIRST_MIDDLE_LAST' },
+      { label: 'Other name', value: 'OTHER' },
+    ])
     recallPreConsName.selectOtherName()
     recallPreConsName.enterOtherName('Wayne Holt')
     recallPreConsName.clickContinue()
@@ -147,22 +151,26 @@ context('Book a recall', () => {
   })
 
   it("User doesn't see a middle name option for pre-cons name if the person doesn't have one", () => {
+    const nomsNumber2 = 'A1234AB'
     cy.task('expectSearchResults', {
-      expectedSearchTerm: nomsNumber,
+      expectedSearchTerm: nomsNumber2,
       expectedSearchResults: [
         {
           firstName: 'Bobby',
           lastName: 'Badger',
           dateOfBirth: '1999-05-28',
           gender: 'Male',
-          nomsNumber: 'A1234AA',
+          nomsNumber: nomsNumber2,
           croNumber: '1234/56A',
           pncNumber: '98/7654Z',
         },
       ],
     })
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallPreConsName.showPreConsOptions(['Bobby Badger', 'Other name'])
+    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber: nomsNumber2, recallId, personName })
+    recallPreConsName.showPreConsOptions([
+      { label: 'Bobby Badger', value: 'FIRST_LAST' },
+      { label: 'Other name', value: 'OTHER' },
+    ])
   })
 
   it('User sees an error if pre-cons main name question is not answered', () => {
