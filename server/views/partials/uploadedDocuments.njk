@@ -1,7 +1,7 @@
-{% if recall.uploadedDocuments.length %}
+{% if recall.documents.length %}
 <h2 class='govuk-heading-m govuk-!-margin-top-9' id='documents'>Uploaded documents</h2>
 <dl class="govuk-summary-list">
-    {% for document in recall.uploadedDocuments %}
+    {% for document in recall.documents %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
                 {{ document.label }}

@@ -19,7 +19,7 @@ export const decorateDocs = ({
   lastName?: string
   bookingNumber: string
 }): {
-  uploadedDocuments: DecoratedDocument[]
+  documents: DecoratedDocument[]
   appGeneratedDocuments: DecoratedDocument[]
   documentCategories: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
@@ -53,7 +53,7 @@ export const decorateDocs = ({
   return decoratedUploadedDocs.reduce(
     (acc, curr) => {
       if (curr.type === 'document') {
-        acc.uploadedDocuments.push(curr)
+        acc.documents.push(curr)
       } else if (curr.type === 'generated' && curr.showOnFullView === true) {
         acc.appGeneratedDocuments.push(curr)
       }
@@ -76,7 +76,7 @@ export const decorateDocs = ({
       return acc
     },
     {
-      uploadedDocuments: [],
+      documents: [],
       appGeneratedDocuments: [],
       documentCategories: decoratedDocTypes,
       requiredDocsMissing: requiredDocsList().filter(
