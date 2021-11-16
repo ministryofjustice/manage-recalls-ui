@@ -19,7 +19,8 @@ export const decorateDocs = ({
   lastName?: string
   bookingNumber: string
 }): {
-  documents: DecoratedDocument[]
+  uploadedDocuments: DecoratedDocument[]
+  appGeneratedDocuments: DecoratedDocument[]
   documentCategories: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
@@ -52,7 +53,9 @@ export const decorateDocs = ({
   return decoratedUploadedDocs.reduce(
     (acc, curr) => {
       if (curr.type === 'document') {
-        acc.documents.push(curr)
+        acc.uploadedDocuments.push(curr)
+      } else if (curr.type === 'generated' && curr.showOnFullView === true) {
+        acc.appGeneratedDocuments.push(curr)
       }
       if (curr.name === ApiRecallDocument.category.REVOCATION_ORDER) {
         acc.revocationOrder = {
@@ -73,7 +76,8 @@ export const decorateDocs = ({
       return acc
     },
     {
-      documents: [],
+      uploadedDocuments: [],
+      appGeneratedDocuments: [],
       documentCategories: decoratedDocTypes,
       requiredDocsMissing: requiredDocsList().filter(
         requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)

@@ -28,6 +28,8 @@ export namespace AddDocumentRequest {
         RECALL_REQUEST_EMAIL = 'RECALL_REQUEST_EMAIL',
         REVOCATION_ORDER = 'REVOCATION_ORDER',
         UNCATEGORISED = 'UNCATEGORISED',
+        DOSSIER = 'DOSSIER',
+        REASONS_FOR_RECALL = 'REASONS_FOR_RECALL'
     }
 
 
