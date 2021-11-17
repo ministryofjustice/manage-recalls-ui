@@ -7,7 +7,8 @@
   gtag('js', new Date());
   gtag('config', '{{ googleAnalyticsId }}', {
     page_location: document.location.href.replace(/\/persons\/[^\/]+\//, '/persons/[nomsNumber]/'),
-    {% if recall %}recallId: "{{ recall.recallId }}"{% endif %}
+    site_speed_sample_rate : 100,
+  {% if recall %}recallId: "{{ recall.recallId }}"{% endif %}
   });
   function sendToGoogleAnalytics({name, delta, id}) {
     gtag('event', name, {
