@@ -57,6 +57,7 @@ context('Create a dossier', () => {
           {
             category: 'PART_A_RECALL_REPORT',
             documentId: '123',
+            version: 2,
           },
           {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
@@ -309,6 +310,7 @@ context('Create a dossier', () => {
           {
             category: 'PART_A_RECALL_REPORT',
             documentId,
+            version: 2,
           },
         ],
       },
