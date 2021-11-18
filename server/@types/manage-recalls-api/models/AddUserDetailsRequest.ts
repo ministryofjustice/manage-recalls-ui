@@ -8,5 +8,4 @@ export type AddUserDetailsRequest = {
     lastName: string;
     phoneNumber: string;
     signature: string;
-    userId: string;
 }

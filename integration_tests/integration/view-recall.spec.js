@@ -26,7 +26,7 @@ context('View recall', () => {
         documents: [
           {
             category: 'PART_A_RECALL_REPORT',
-            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+            documentId: '123',
           },
           {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
@@ -100,6 +100,11 @@ context('View recall', () => {
     cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
+    // change link for an uploaded document goes to the 'add new document version' page
+    recallInformation.assertLinkHref({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
+      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
+    })
     // missing documents
     recallInformation.assertElementHasText({
       qaAttr: 'required-LICENCE',

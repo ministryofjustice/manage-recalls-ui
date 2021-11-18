@@ -8,8 +8,11 @@ import { CategorisedFileMetadata, DocumentCategoryMetadata, UploadedFileMetadata
 import { addRecallDocument, setDocumentCategory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { autocategoriseDocFileName } from './autocategorise'
 
-export const makeMetaDataForFile = (file: Express.Multer.File): UploadedFileMetadata => {
-  const documentCategory = autocategoriseDocFileName(file.originalname)
+export const makeMetaDataForFile = (
+  file: Express.Multer.File,
+  forceCategory?: ApiRecallDocument.category
+): UploadedFileMetadata => {
+  const documentCategory = forceCategory ? findDocCategory(forceCategory) : autocategoriseDocFileName(file.originalname)
   return {
     originalFileName: file.originalname,
     fileName: documentCategory.fileName,
@@ -21,8 +24,11 @@ export const makeMetaDataForFile = (file: Express.Multer.File): UploadedFileMeta
   }
 }
 
-export const getMetadataForUploadedFiles = (files: Express.Multer.File[]): UploadedFileMetadata[] => {
-  return files ? files.map(file => makeMetaDataForFile(file)) : []
+export const getMetadataForUploadedFiles = (
+  files: Express.Multer.File[],
+  forceCategory?: ApiRecallDocument.category
+): UploadedFileMetadata[] => {
+  return files ? files.map(file => makeMetaDataForFile(file, forceCategory)) : []
 }
 
 export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {
