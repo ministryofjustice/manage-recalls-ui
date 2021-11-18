@@ -154,10 +154,12 @@ export const changeLinkUrl = (
   pageSlug: string,
   { currentPage, basePath }: UrlInfo,
   fromHash: string,
-
-  toHash?: string
+  toHash?: string,
+  queryString?: string
 ) => {
-  const queryParam = currentPage ? `?fromPage=${currentPage}&fromHash=${fromHash}` : ''
+  const queryParam = currentPage
+    ? `?fromPage=${currentPage}&fromHash=${fromHash}${queryString ? `&${queryString}` : ''}`
+    : ''
   return `${basePath}${pageSlug}${queryParam}${toHash ? `#${toHash}` : ''}`
 }
 

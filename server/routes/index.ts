@@ -72,6 +72,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/missing-documents`, viewWithRecallAndPerson('recallMissingDocuments'))
+  get(`${basePath}/upload-document-version`, viewWithRecallAndPerson('recallUploadDocumentVersion'))
+  post(`${basePath}/upload-document-version`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
   post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers, 'confirmation'))
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
@@ -121,7 +123,7 @@ export default function routes(router: Router): Router {
   )
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
 
-  // DOCUMENTS
+  // DOCUMENT DOWNLOADS
   get(`${basePath}/documents/dossier`, downloadDossier)
   get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)

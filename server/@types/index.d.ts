@@ -90,6 +90,7 @@ export type ViewName =
   | 'recallProbationOfficer'
   | 'recallDocuments'
   | 'recallMissingDocuments'
+  | 'recallUploadDocumentVersion'
   | 'recallCheckAnswers'
   | 'recallConfirmation'
   | 'dossierRecallInformation'

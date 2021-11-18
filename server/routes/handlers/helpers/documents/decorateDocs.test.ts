@@ -45,6 +45,7 @@ describe('decorateDocs', () => {
       firstName: 'Bobby',
       lastName: 'Badger',
       bookingNumber: '123',
+      versionedCategoryName: 'LICENCE',
     })
     expect(results).toEqual({
       documentCategories: [
@@ -56,8 +57,9 @@ describe('decorateDocs', () => {
           ...findDocCategory(ApiRecallDocument.category.LICENCE),
           uploaded: [
             {
-              fileName: 'Licence.pdf',
+              category: 'LICENCE',
               documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+              fileName: 'Licence.pdf',
               url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
             },
           ],
@@ -94,13 +96,15 @@ describe('decorateDocs', () => {
           ...findDocCategory(ApiRecallDocument.category.OTHER),
           uploaded: [
             {
-              fileName: 'other doc 1.pdf',
+              category: 'OTHER',
               documentId: '2345-65434-3455-23432',
+              fileName: 'other doc 1.pdf',
               url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
             },
             {
-              fileName: 'other doc 2.pdf',
+              category: 'OTHER',
               documentId: '1234-8766-2344-5342',
+              fileName: 'other doc 2.pdf',
               url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
             },
           ],
@@ -110,6 +114,14 @@ describe('decorateDocs', () => {
           uploaded: [],
         },
       ],
+      versionedCategory: {
+        category: 'LICENCE',
+        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        label: 'Licence',
+        name: 'LICENCE',
+        type: 'document',
+        url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      },
       documents: [
         {
           ...findDocCategory(ApiRecallDocument.category.LICENCE),

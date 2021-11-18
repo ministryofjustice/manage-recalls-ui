@@ -54,12 +54,6 @@ export namespace UpdateRecallRequest {
         YES = 'YES',
     }
 
-    export enum previousConvictionMainNameCategory {
-        FIRST_LAST = 'FIRST_LAST',
-        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
-        OTHER = 'OTHER'
-    }
-
     export enum localDeliveryUnit {
         CENTRAL_AUDIT_TEAM = 'CENTRAL_AUDIT_TEAM',
         CHANNEL_ISLANDS = 'CHANNEL_ISLANDS',
@@ -227,6 +221,12 @@ export namespace UpdateRecallRequest {
         LEVEL_3 = 'LEVEL_3',
         NA = 'NA',
         NOT_KNOWN = 'NOT_KNOWN',
+    }
+
+    export enum previousConvictionMainNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER',
     }
 
 

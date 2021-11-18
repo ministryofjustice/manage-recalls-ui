@@ -41,7 +41,8 @@ context('Assess a recall', () => {
         documents: [
           {
             category: 'PART_A_RECALL_REPORT',
-            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+            documentId: '123',
+            version: 1,
           },
           {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
@@ -98,6 +99,12 @@ context('Assess a recall', () => {
     assessRecall.assertLinkHref({
       qaAttr: 'recallRequestEmailFileNameChange',
       href: `/persons/${nomsNumber}/recalls/${recallId}/request-received`,
+    })
+
+    // change link for an uploaded document goes to the 'add new document version' page
+    assessRecall.assertLinkHref({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
+      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=assess&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()

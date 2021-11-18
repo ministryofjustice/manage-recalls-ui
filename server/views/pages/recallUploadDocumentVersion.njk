@@ -1,0 +1,71 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Upload a new document" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("check-answers", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-quarters-from-desktop">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <h1 class="govuk-heading-l">
+                Upload a new {{ formatDocLabel(recall.versionedCategory.category) }}
+            </h1>
+            <p class="govuk-body">You can upload a new version of this document and the old version will be saved. You must explain why the document was changed.</p>
+            {% if recall.versionedCategory.documentId %}
+            <div class="govuk-inset-text">
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Current {{ formatDocLabel(recall.versionedCategory.category) }}</h2>
+                <p><a href="{{ recall.versionedCategory.url }}" class="govuk-link" target="_blank">{{ recall.versionedCategory.fileName }}</a></p>
+                <p class="govuk-body-s">Uploaded on {{ recall.versionedCategory.createdDateTime | dateTime }}</p>
+            </div>
+            {% endif %}
+            <div class="govuk-form-group">
+                <form novalidate action="{{ formActionUrl('upload-document-version', urlInfo, csrfToken) }}" method="post"
+                      enctype="multipart/form-data">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload new document</h2>
+                        <input type='hidden' name='forceCategory' value='{{ recall.versionedCategory.category }}'>
+                        {{ govukFileUpload({
+                            id: "documents",
+                            name: "documents",
+                            label: {
+                                text: "Upload new document",
+                                classes: 'govuk-visually-hidden'
+                            },
+                            attributes: {
+                                accept: allowedDocumentFileExtensionList()
+                            },
+                            errorMessage: errorMessage(errors.documents)
+                        }) }}
+{#                        <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>#}
+{#                        {{ govukTextarea({#}
+{#                            name: "missingDocumentsDetail",#}
+{#                            id: "missingDocumentsDetail",#}
+{#                            label: {#}
+{#                                text: "Provide more detail",#}
+{#                                classes: "govuk-label--m"#}
+{#                            },#}
+{#                            value: formValues.missingDocumentsDetail,#}
+{#                            errorMessage: errorMessage(errors.missingDocumentsDetail)#}
+{#                        }) }}#}
+{#                    </div>#}
+                    <div class="govuk-!-margin-top-4">
+                        <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

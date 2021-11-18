@@ -310,6 +310,19 @@ describe('changeLinkUrl', () => {
       '/person/123/recalls/456/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceExpiryDateFieldset'
     )
   })
+
+  it('appends an extra query string if supplied', () => {
+    const url = changeLinkUrl(
+      'last-release',
+      { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
+      'sentenceDetails',
+      'sentenceExpiryDateFieldset',
+      'key=val'
+    )
+    expect(url).toEqual(
+      '/person/123/recalls/456/last-release?fromPage=check-answers&fromHash=sentenceDetails&key=val#sentenceExpiryDateFieldset'
+    )
+  })
 })
 
 describe('backLinkUrl', () => {

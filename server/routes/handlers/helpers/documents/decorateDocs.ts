@@ -11,6 +11,7 @@ export const decorateDocs = ({
   firstName,
   lastName,
   bookingNumber,
+  versionedCategoryName,
 }: {
   docs: ApiRecallDocument[]
   nomsNumber: string
@@ -18,6 +19,7 @@ export const decorateDocs = ({
   firstName?: string
   lastName?: string
   bookingNumber: string
+  versionedCategoryName?: string
 }): {
   documents: DecoratedDocument[]
   documentCategories: DocumentCategoryMetadata[]
@@ -27,6 +29,7 @@ export const decorateDocs = ({
   revocationOrder?: DecoratedDocument
   recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
+  versionedCategory?: DecoratedDocument
 } => {
   const decoratedUploadedDocs = [] as DecoratedDocument[]
   documentCategories.forEach(documentCategory => {
@@ -44,9 +47,26 @@ export const decorateDocs = ({
     const uploadedDocs = decoratedUploadedDocs.filter(d => d.name === docType.name)
     return {
       ...docType,
-      uploaded: uploadedDocs.map(d => ({ url: d.url, fileName: d.fileName, documentId: d.documentId, index: d.index })),
+      uploaded: uploadedDocs.map(d => ({
+        url: d.url,
+        fileName: d.fileName,
+        documentId: d.documentId,
+        index: d.index,
+        version: d.version,
+        createdDateTime: d.createdDateTime,
+        category: d.category,
+      })),
     }
   })
+  let versionedCategory: DecoratedDocument
+  if (versionedCategoryName) {
+    const categoryData = decoratedDocTypes.find(type => type.name === versionedCategoryName && type.versioned)
+    if (categoryData && categoryData.uploaded.length) {
+      const { label, name, type } = categoryData
+      const { version, url, documentId, category, createdDateTime } = categoryData.uploaded[0]
+      versionedCategory = { label, name, type, version, url, documentId, category, createdDateTime }
+    }
+  }
   const personName = formatPersonName({ firstName, lastName })
   const formattedBookingNumber = formatBookingNumber(bookingNumber)
   return decoratedUploadedDocs.reduce(
@@ -85,6 +105,7 @@ export const decorateDocs = ({
       recallRequestEmail: undefined,
       dossierEmail: undefined,
       revocationOrder: undefined,
+      versionedCategory,
     }
   )
 }

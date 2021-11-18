@@ -67,12 +67,6 @@ export namespace RecallResponse {
         YES = 'YES',
     }
 
-    export enum previousConvictionMainNameCategory {
-        FIRST_LAST = 'FIRST_LAST',
-        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
-        OTHER = 'OTHER'
-    }
-
     export enum localDeliveryUnit {
         CENTRAL_AUDIT_TEAM = 'CENTRAL_AUDIT_TEAM',
         CHANNEL_ISLANDS = 'CHANNEL_ISLANDS',
@@ -242,6 +236,12 @@ export namespace RecallResponse {
         NOT_KNOWN = 'NOT_KNOWN',
     }
 
+    export enum previousConvictionMainNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER',
+    }
+
     export enum recallLength {
         FOURTEEN_DAYS = 'FOURTEEN_DAYS',
         TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
@@ -254,7 +254,7 @@ export namespace RecallResponse {
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
-        STOPPED = 'STOPPED'
+        STOPPED = 'STOPPED',
     }
 
 

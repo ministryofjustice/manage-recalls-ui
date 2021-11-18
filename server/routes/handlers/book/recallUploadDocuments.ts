@@ -131,7 +131,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       // new uploads
       const uploadWasClicked = body.upload === 'upload'
       if (req.files) {
-        const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[])
+        const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[], body.forceCategory)
         const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } =
           validateUploadedFileTypes(uploadedFileData)
         session.errors = invalidFileTypeErrors
@@ -142,7 +142,8 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
 
       // category changes - will result in a full page reload
-      const saveCategoryChanges = body.continue === 'continue'
+      // no need to do this if the category was forced ('upload a new document version')
+      const saveCategoryChanges = body.continue === 'continue' && !body.forceCategory
       if (saveCategoryChanges) {
         const categorisedFileData = getMetadataForCategorisedFiles(body)
         const { errors: uncategorisedFileErrors, valuesToSave: categorisedToSave } =

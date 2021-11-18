@@ -8,6 +8,8 @@ import {
 } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
+import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
+import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -54,7 +56,8 @@ context('Create a dossier', () => {
         documents: [
           {
             category: 'PART_A_RECALL_REPORT',
-            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+            documentId: '123',
+            version: 2,
           },
           {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
@@ -89,7 +92,7 @@ context('Create a dossier', () => {
     // uploaded documents
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/34bdf-5717-4562-b3fc-2c963f66afa6`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/123`,
     })
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
@@ -98,6 +101,12 @@ context('Create a dossier', () => {
     dossierRecall.assertLinkHref({
       qaAttr: 'generatedDocument-REVOCATION_ORDER',
       href: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/9876`,
+    })
+
+    // change link for an uploaded document goes to the 'add new document version' page
+    dossierRecall.assertLinkHref({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
+      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=dossier-recall&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
     // missing documents
     dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
@@ -116,11 +125,11 @@ context('Create a dossier', () => {
         documents: [
           {
             category: 'PART_A_RECALL_REPORT',
-            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+            documentId: '123',
           },
           {
             category: 'LICENCE',
-            documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+            documentId: '123',
           },
         ],
       },
@@ -287,6 +296,55 @@ context('Create a dossier', () => {
     dossierLetter.assertErrorMessage({
       fieldName: 'differentNomsNumberDetail',
       summaryError: 'Enter a NOMIS number in the correct format',
+    })
+  })
+
+  it('user can go back from the dossier recall info page to add a new document version', () => {
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId,
+            version: 2,
+          },
+        ],
+      },
+    })
+    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.login()
+    let dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
+    dossierRecall.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
+    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
+      documentCategoryLabel: 'part A recall report',
+    })
+    uploadDocumentVersion.uploadSingleFile({
+      filePath: '../test.pdf',
+      mimeType: 'application/pdf',
+    })
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '34589',
+            version: 2,
+          },
+        ],
+      },
+    })
+    uploadDocumentVersion.clickContinue()
+    dossierRecall = dossierRecallPage.verifyOnPage({ personName })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
+      textToFind: 'version 2',
     })
   })
 })

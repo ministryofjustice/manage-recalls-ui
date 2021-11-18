@@ -202,6 +202,26 @@ describe('uploadRecallDocumentsFormHandler', () => {
     expect(addRecallDocument).not.toHaveBeenCalled()
   })
 
+  it("doesn't process category changes if category is forced", async () => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = [
+        {
+          originalname: 'PreCons Wesley Holt.pdf',
+          buffer: 'def',
+          mimetype: 'application/pdf',
+        },
+      ]
+      cb()
+    })
+    req.body = {
+      forceCategory: 'PREVIOUS_CONVICTIONS_SHEET',
+      continue: 'continue',
+    }
+    await uploadRecallDocumentsFormHandler(req, resp)
+    expect(setDocumentCategory).not.toHaveBeenCalled()
+    expect(addRecallDocument).toHaveBeenCalledTimes(1)
+  })
+
   it('creates errors for failed saves to the API', done => {
     ;(addRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
     ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
