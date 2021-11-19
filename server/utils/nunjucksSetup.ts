@@ -24,6 +24,7 @@ import {
 import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { getReferenceDataItemLabel } from '../referenceData'
+import { formatDocLabel } from '../routes/handlers/helpers/documents'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -63,6 +64,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('listDocumentLabels', listDocumentLabels)
   njkEnv.addGlobal('dueDateLabel', dueDateLabel)
   njkEnv.addGlobal('recallStatusTagProperties', recallStatusTagProperties)
+  njkEnv.addGlobal('formatDocLabel', formatDocLabel)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)

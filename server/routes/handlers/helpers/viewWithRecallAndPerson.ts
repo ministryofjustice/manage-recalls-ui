@@ -34,6 +34,7 @@ export const preConsMainName = ({
     return `${person.firstName} ${person.middleNames} ${person.lastName}`
   }
 }
+
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
@@ -56,6 +57,7 @@ export const viewWithRecallAndPerson =
       recallId,
       bookingNumber: recall.bookingNumber,
       ...res.locals.person,
+      versionedCategoryName: req.query.versionedCategoryName,
     })
     res.locals.recall = {
       ...recall,

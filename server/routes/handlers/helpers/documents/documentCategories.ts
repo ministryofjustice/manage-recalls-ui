@@ -10,6 +10,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     required: true,
     fileName: 'Part A.pdf',
     fileNamePatterns: ['part a'],
+    versioned: true,
   },
   {
     label: 'Licence',
@@ -18,6 +19,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     required: true,
     fileName: 'Licence.pdf',
     fileNamePatterns: ['licence'],
+    versioned: true,
   },
   {
     label: 'Previous convictions sheet',
@@ -26,6 +28,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     hintIfMissing: true,
     fileName: 'Pre Cons.pdf',
     fileNamePatterns: ['pre cons', 'previous convictions'],
+    versioned: true,
   },
   {
     label: 'Pre-sentencing report',
@@ -33,6 +36,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     fileName: 'PSR.pdf',
     fileNamePatterns: ['psr', 'pre sentencing'],
+    versioned: true,
   },
   {
     label: 'OASys Risk Assessment',
@@ -42,6 +46,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     hintIfMissing: true,
     fileName: 'OASys.pdf',
     fileNamePatterns: ['oasys'],
+    versioned: true,
   },
   {
     label: 'Charge sheet',
@@ -49,6 +54,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     fileName: 'Charge sheet.pdf',
     fileNamePatterns: ['charge sheet'],
+    versioned: true,
   },
   {
     label: 'CPS papers',
@@ -57,6 +63,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     fileName: 'CPS papers.pdf',
     fileNamePatterns: ['cps papers'],
+    versioned: true,
   },
   {
     label: 'Police report',
@@ -64,6 +71,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     fileName: 'Police report.pdf',
     fileNamePatterns: ['police report'],
+    versioned: true,
   },
   {
     label: 'Exclusion zone map',
@@ -71,6 +79,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     fileName: 'Exclusion zone map.pdf',
     fileNamePatterns: ['exclusion map', 'exclusion zone'],
+    versioned: true,
   },
   {
     label: 'Other',

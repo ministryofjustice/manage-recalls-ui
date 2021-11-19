@@ -197,4 +197,22 @@ describe('viewWithRecallAndPerson', () => {
       ...person,
     })
   })
+
+  it('should pass document category query string to decorateDocs', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
+    jest.spyOn(decorateDocsExports, 'decorateDocs')
+    const req = mockGetRequest({ params: { recallId, nomsNumber }, query: { versionedCategoryName: 'LICENCE' } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    res.locals.urlInfo = {}
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(decorateDocsExports.decorateDocs).toHaveBeenCalledWith({
+      docs: recall.documents,
+      nomsNumber,
+      recallId,
+      bookingNumber: recall.bookingNumber,
+      ...person,
+      versionedCategoryName: 'LICENCE',
+    })
+  })
 })

@@ -10,13 +10,13 @@ export interface DocumentCategoryMetadata {
   required?: boolean
   hintIfMissing?: boolean
   multiple?: boolean
+  versioned?: boolean
   fileNamePatterns?: string[]
   showOnFullView?: boolean
 }
 
-export interface DecoratedDocument extends DocumentCategoryMetadata {
+export interface DecoratedDocument extends DocumentCategoryMetadata, ApiRecallDocument {
   url: string
-  documentId: string
   index?: number
 }
 
