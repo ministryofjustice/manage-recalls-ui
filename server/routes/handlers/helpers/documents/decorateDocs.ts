@@ -80,6 +80,14 @@ export const decorateDocs = ({
         acc.documents.push(curr)
       }
 
+      if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION) {
+        acc.recallNotification = {
+          ...curr,
+          label: `${personName}_${curr.name}.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+        }
+      }
+
       if (curr.name === ApiRecallDocument.category.REVOCATION_ORDER) {
         acc.revocationOrder = {
           ...curr,
@@ -92,7 +100,7 @@ export const decorateDocs = ({
         acc.letterToPrison = {
           ...curr,
           label: `${personName}_${curr.name}.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/letter-to-prison`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
         }
       }
 
