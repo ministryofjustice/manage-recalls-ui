@@ -27,7 +27,11 @@ export const decorateDocs = ({
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   recallNotificationEmail?: DecoratedDocument
+  recallNotification?: DecoratedDocument
   revocationOrder?: DecoratedDocument
+  dossier?: DecoratedDocument
+  letterToPrison?: DecoratedDocument
+  reasonsForRecallDoc?: string
   recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
   versionedCategory?: DecoratedDocument
@@ -74,9 +78,8 @@ export const decorateDocs = ({
     (acc, curr) => {
       if (curr.type === 'document') {
         acc.documents.push(curr)
-      } else if (curr.type === 'generated' && curr.showOnFullView === true) {
-        acc.appGeneratedDocuments.push(curr)
       }
+
       if (curr.name === ApiRecallDocument.category.REVOCATION_ORDER) {
         acc.revocationOrder = {
           ...curr,
@@ -84,6 +87,31 @@ export const decorateDocs = ({
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/${curr.documentId}`,
         }
       }
+
+      if (curr.name === ApiRecallDocument.category.LETTER_TO_PRISON) {
+        acc.letterToPrison = {
+          ...curr,
+          label: `${personName}_${curr.name}.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/letter-to-prison`,
+        }
+      }
+
+      if (curr.name === ApiRecallDocument.category.DOSSIER) {
+        acc.dossier = {
+          ...curr,
+          label: `${personName}_${curr.name}.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+        }
+      }
+
+      if (curr.name === ApiRecallDocument.category.REASONS_FOR_RECALL) {
+        acc.reasonsForRecallDoc = {
+          ...curr,
+          label: `${personName}_${curr.name}.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+        }
+      }
+
       if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
         acc.recallNotificationEmail = curr
       }
@@ -108,8 +136,12 @@ export const decorateDocs = ({
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,
+      recallNotification: undefined,
       revocationOrder: undefined,
       versionedCategory,
+      letterToPrison: undefined,
+      dossier: undefined,
+      reasonsForRecallDoc: undefined,
     }
   )
 }

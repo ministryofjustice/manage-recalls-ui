@@ -109,32 +109,28 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'email',
   },
   {
+    label: 'Recall notification',
+    name: ApiRecallDocument.category.RECALL_NOTIFICATION,
+    type: 'generated',
+  },
+  {
     label: 'Revocation order',
     name: ApiRecallDocument.category.REVOCATION_ORDER,
+    type: 'generated',
+  },
+  {
+    label: 'Letter to prison',
+    name: ApiRecallDocument.category.LETTER_TO_PRISON,
     type: 'generated',
   },
   {
     label: 'Dossier',
     name: ApiRecallDocument.category.DOSSIER,
     type: 'generated',
-    showOnFullView: true,
   },
   {
     label: 'Reasons for recall',
     name: ApiRecallDocument.category.REASONS_FOR_RECALL,
     type: 'generated',
-    showOnFullView: true,
-  },
-  {
-    label: 'Recall notification',
-    name: ApiRecallDocument.category.RECALL_NOTIFICATION,
-    type: 'generated',
-    showOnFullView: true,
-  },
-  {
-    label: 'Letter to prison',
-    name: ApiRecallDocument.category.LETTER_TO_PRISON,
-    type: 'generated',
-    showOnFullView: true,
   },
 ]
