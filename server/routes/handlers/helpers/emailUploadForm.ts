@@ -8,6 +8,7 @@ import { ReqEmailUploadValidatorFn } from '../../../@types'
 import { makeErrorObject } from './index'
 import { allowedEmailFileExtensions } from './allowedUploadExtensions'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
+import { errorMsgEmailUpload } from './errorMessages'
 
 interface Args {
   emailFieldName: string
@@ -26,7 +27,7 @@ export const emailUploadForm =
     let saveError = [
       makeErrorObject({
         id: emailFieldName,
-        text: 'The selected file could not be uploaded – try again',
+        text: errorMsgEmailUpload.uploadFailed,
       }),
     ]
     let saveToApiSuccessful = false

@@ -37,6 +37,23 @@
       "category": "RECALL_REQUEST_EMAIL",
       "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
       "fileName": "recall-request.eml"
+    },
+    {
+      "category": "MISSING_DOCUMENTS_EMAIL",
+      "documentId": "845",
+      "fileName": "missing-documents.msg"
+    }
+  ],
+  "missingDocumentsRecords": [
+    {
+      "missingDocumentsRecordId": "0120412-410124",
+      "emailId": "845",
+      "emailFileName": "missing-documents.msg",
+      "categories": ["OASYS_RISK_ASSESSMENT"],
+      "detail": "Documents were requested by email on 10/12/2020",
+      "version": 2,
+      "createdByUserId": "098-130913-1-1210",
+      "createdDateTime": "2021-03-12T12:24:03.000Z"
     }
   ],
   "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",

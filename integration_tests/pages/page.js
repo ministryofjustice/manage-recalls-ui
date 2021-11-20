@@ -33,6 +33,10 @@ module.exports = (name, pageObject = {}) => {
     cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
   }
 
+  const enterTextInInput = ({ name: nameAttr, text }) => {
+    cy.get(`[name="${nameAttr}"]`).clear().type(text)
+  }
+
   const assertSelectValue = ({ fieldName, value }) => {
     cy.get(`[name=${fieldName}]`).should('have.value', value)
   }
@@ -73,5 +77,6 @@ module.exports = (name, pageObject = {}) => {
     enterDateTime,
     clickTodayLink,
     uploadEmail,
+    enterTextInInput,
   }
 }

@@ -1,11 +1,17 @@
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import { DecoratedDocument, DocumentCategoryMetadata } from '../../../../@types/documents'
+import {
+  DecoratedDocument,
+  DecoratedMissingDocumentRecord,
+  DocumentCategoryMetadata,
+} from '../../../../@types/documents'
 import { documentCategories } from './documentCategories'
 import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from './index'
 import { formatBookingNumber, formatPersonName } from './downloadNamedPdfHandler'
+import { MissingDocumentsRecordResponse } from '../../../../@types/manage-recalls-api/models/MissingDocumentsRecordResponse'
 
 export const decorateDocs = ({
   docs,
+  missingDocumentsRecords,
   nomsNumber,
   recallId,
   firstName,
@@ -14,6 +20,7 @@ export const decorateDocs = ({
   versionedCategoryName,
 }: {
   docs: ApiRecallDocument[]
+  missingDocumentsRecords?: MissingDocumentsRecordResponse[]
   nomsNumber: string
   recallId: string
   firstName?: string
@@ -25,6 +32,7 @@ export const decorateDocs = ({
   documentCategories: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
+  missingDocumentsRecord: DecoratedMissingDocumentRecord
   recallNotificationEmail?: DecoratedDocument
   revocationOrder?: DecoratedDocument
   recallRequestEmail?: DecoratedDocument
@@ -90,10 +98,17 @@ export const decorateDocs = ({
       if (curr.name === ApiRecallDocument.category.DOSSIER_EMAIL) {
         acc.dossierEmail = curr
       }
+      if (curr.name === ApiRecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
+        acc.missingDocumentsRecord = {
+          ...(missingDocumentsRecords ? missingDocumentsRecords[0] : {}),
+          ...curr,
+        }
+      }
       return acc
     },
     {
       documents: [],
+      missingDocumentsRecord: undefined,
       documentCategories: decoratedDocTypes,
       requiredDocsMissing: requiredDocsList().filter(
         requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)

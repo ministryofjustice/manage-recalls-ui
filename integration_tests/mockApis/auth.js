@@ -33,10 +33,15 @@ const createToken = () => {
 
 const getLoginUrl = wiremock =>
   wiremock.getRequests().then(data => {
-    const { requests } = data.body
-    const stateParam = requests[0].request.queryParams.state
-    const stateValue = stateParam ? stateParam.values[0] : requests[1].request.queryParams.state.values[0]
-    return `/login/callback?code=codexxxx&state=${stateValue}`
+    try {
+      const { requests } = data.body
+      const stateParam = requests[0].request.queryParams.state
+      const stateValue = stateParam ? stateParam.values[0] : requests[1].request.queryParams.state.values[0]
+      return `/login/callback?code=codexxxx&state=${stateValue}`
+    } catch (e) {
+      cy.log('Error thrown in getLoginUrl', e)
+      return null
+    }
   })
 
 const favicon = wiremock =>

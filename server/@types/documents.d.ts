@@ -1,4 +1,5 @@
 import { ApiRecallDocument } from './manage-recalls-api'
+import { MissingDocumentsRecordResponse } from './manage-recalls-api/models/MissingDocumentsRecordResponse'
 
 export interface DocumentCategoryMetadata {
   label: string
@@ -33,4 +34,8 @@ export interface CategorisedFileMetadata {
   documentId: string
   category: ApiRecallDocument.category
   fileName: string
+}
+
+export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecordResponse {
+  url: string
 }

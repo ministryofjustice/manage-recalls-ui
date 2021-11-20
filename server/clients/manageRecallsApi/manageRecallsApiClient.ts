@@ -16,6 +16,7 @@ import {
   Prison,
   ApiRecallDocument,
 } from '../../@types/manage-recalls-api'
+import { AddMissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/AddMissingDocumentsRecordRequest'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   const request = { nomsNumber }
@@ -96,6 +97,13 @@ export function setDocumentCategory(
     path: `/recalls/${recallId}/documents/${documentId}`,
     data: { category },
   })
+}
+
+export function addMissingDocumentRecord(
+  data: AddMissingDocumentsRecordRequest,
+  token: string
+): Promise<superagent.Response> {
+  return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
 }
 
 export function addUserDetails(
