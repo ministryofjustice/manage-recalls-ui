@@ -84,7 +84,7 @@ export const decorateDocs = ({
         acc.recallNotification = {
           ...curr,
           label: `${personName}_${curr.name}.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/recall-notification`,
         }
       }
 
@@ -100,7 +100,7 @@ export const decorateDocs = ({
         acc.letterToPrison = {
           ...curr,
           label: `${personName}_${curr.name}.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
         }
       }
 
@@ -108,7 +108,7 @@ export const decorateDocs = ({
         acc.dossier = {
           ...curr,
           label: `${personName}_${curr.name}.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/dossier`,
         }
       }
 
@@ -116,7 +116,7 @@ export const decorateDocs = ({
         acc.reasonsForRecallDoc = {
           ...curr,
           label: `${personName}_${curr.name}.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${curr.documentId}`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/reasons-for-recall/${curr.documentId}`,
         }
       }
 

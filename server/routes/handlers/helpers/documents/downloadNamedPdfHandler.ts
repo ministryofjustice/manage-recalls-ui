@@ -68,3 +68,8 @@ export const downloadRevocationOrder = downloadNamedPdfHandler(
   getStoredDocument,
   ({ personName, bookingNumber }) => `${personName}${bookingNumber} REVOCATION ORDER.pdf`
 )
+
+export const downloadReasonsForRecallOrder = downloadNamedPdfHandler(
+  getStoredDocument,
+  ({ personName, bookingNumber }) => `${personName}${bookingNumber} REASONS FOR RECALL.pdf`
+)
