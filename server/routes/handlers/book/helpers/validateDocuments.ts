@@ -79,6 +79,9 @@ export const validateCategories = (
       hasError = true
     }
     const docCategory = documentCategories.find(cat => cat.name === file.category)
+    if (!docCategory) {
+      throw new Error(`Invalid document category: ${file.category} for file "${file.fileName}"`)
+    }
     if (!docCategory.multiple) {
       usedCategories.push(file.category)
     }
