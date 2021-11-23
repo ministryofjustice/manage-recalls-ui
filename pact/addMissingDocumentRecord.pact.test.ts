@@ -28,7 +28,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('add a record of missing documents', () => {
     test('can successfully add a record', async () => {
       await provider.addInteraction({
-        state: 'a record can be created',
+        state: 'a recall exists',
         ...pactPostRequest('an add record request', '/missing-documents-records', requestBody, accessToken),
         willRespondWith: { status: 201 },
       })
