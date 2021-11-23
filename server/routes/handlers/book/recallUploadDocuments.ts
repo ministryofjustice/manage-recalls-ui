@@ -38,12 +38,15 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
         return await deleteDocument(body.delete, recallId, urlInfo, token, req, res)
       }
 
+      const categorisedFileData = getMetadataForCategorisedFiles(body)
       // new uploads
       const uploadWasClicked = body.upload === 'upload'
       if (req.files.length) {
         const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[], body.forceCategory)
-        const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } =
-          validateUploadedFileTypes(uploadedFileData)
+        const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFileTypes(
+          uploadedFileData,
+          categorisedFileData
+        )
         session.errors = invalidFileTypeErrors
         const failedUploads = await saveUploadedFiles({ uploadsToSave, recallId, token })
         if (failedUploads.length) {
@@ -55,7 +58,6 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       // no need to do this if the category was forced ('upload a new document version')
       const continueWasClicked = body.continue === 'continue' && !body.forceCategory
       if (continueWasClicked) {
-        const categorisedFileData = getMetadataForCategorisedFiles(body)
         const { errors: uncategorisedFileErrors, valuesToSave: categorisedToSave } =
           validateCategories(categorisedFileData)
         if (uncategorisedFileErrors?.length) {

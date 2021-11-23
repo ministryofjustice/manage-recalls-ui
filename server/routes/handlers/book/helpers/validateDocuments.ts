@@ -11,14 +11,15 @@ export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions:
 }
 
 export const validateUploadedFileTypes = (
-  uploadedFileData: UploadedFileMetadata[]
+  uploadedFileData: UploadedFileMetadata[],
+  categorisedFileData: CategorisedFileMetadata[]
 ): {
   errors?: NamedFormError[]
   valuesToSave: UploadedFileMetadata[]
 } => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
-  const usedCategories = [] as string[]
+  const usedCategories = categorisedFileData.map(item => item.category) as string[]
   uploadedFileData.forEach(file => {
     let hasError = false
     if (isInvalidFileType(file, allowedDocumentFileExtensions)) {

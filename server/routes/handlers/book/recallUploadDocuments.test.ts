@@ -342,6 +342,31 @@ describe('uploadRecallDocumentsFormHandler', () => {
     uploadRecallDocumentsFormHandler(req, res)
   })
 
+  it('creates an error if a second copy of a document category is uploaded', done => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      req.body = {
+        'category-123': 'LICENCE',
+      }
+      cb()
+    })
+    const res = {
+      locals: { user: {} },
+      redirect: () => {
+        expect(addRecallDocument).toHaveBeenCalledTimes(5) // for the 5 valid files
+        expect(req.session.errors).toEqual([
+          {
+            href: '#documents',
+            name: 'documents',
+            text: 'You can only upload one licence',
+          },
+        ])
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
   it("redirects to Check your answers if a fromPage isn't supplied", done => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
