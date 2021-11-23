@@ -2,14 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UpdateDocumentResponse = {
-    category: UpdateDocumentResponse.category;
-    documentId: string;
-    fileName: string;
-    recallId: string;
+export type AddMissingDocumentsRecordRequest = {
+    categories: AddMissingDocumentsRecordRequest.category[];
+    emailFileContent: string;
+    emailFileName: string;
+    recallId: string,
+    detail: string
 }
 
-export namespace UpdateDocumentResponse {
+export namespace AddMissingDocumentsRecordRequest {
 
     export enum category {
         CHARGE_SHEET = 'CHARGE_SHEET',

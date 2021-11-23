@@ -18,7 +18,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get recall notification document', () => {
     test('can successfully get a recall notification', async () => {
       await provider.addInteraction({
-        state: 'a recall notification can be downloaded',
+        state: 'a recall notification and recall exists',
         ...pactGetRequest(
           'a get recall notification request',
           `/recalls/${recallId}/recallNotification/${userId}`,

@@ -17,7 +17,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get dossier', () => {
     test('can successfully get a dossier', async () => {
       await provider.addInteraction({
-        state: 'a dossier can be downloaded',
+        state: 'a dossier and recall exists',
         ...pactGetRequest('a get dossier request', `/recalls/${recallId}/dossier`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getDossierResponseJson), 200),
       })

@@ -34,7 +34,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         message: 'nomsNumber: must not be blank',
       }
       await provider.addInteraction({
-        state: 'a search by blank NOMS number',
+        state: 'no state required',
         ...pactPostRequest(
           'a search request with blank NOMS number',
           '/search',

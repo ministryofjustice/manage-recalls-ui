@@ -35,6 +35,7 @@ import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from './handlers/helpers/assignUser'
 import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { downloadUploadedDocumentOrEmail } from './handlers/helpers/documents/downloadUploadedDocumentOrEmail'
+import { addMissingDocumentRecordForm } from './handlers/helpers/addMissingDocumentRecordForm'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -73,6 +74,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/missing-documents`, viewWithRecallAndPerson('recallMissingDocuments'))
+  post(`${basePath}/missing-documents`, addMissingDocumentRecordForm)
   get(`${basePath}/upload-document-version`, viewWithRecallAndPerson('recallUploadDocumentVersion'))
   post(`${basePath}/upload-document-version`, uploadRecallDocumentsFormHandler)
   get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))

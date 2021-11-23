@@ -14,7 +14,7 @@
 
 {% block content %}
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-full">
+        <div class="govuk-grid-column-three-quarters-from-desktop">
             {% if errors %}
                 {{ govukErrorSummary({
                     titleText: "There is a problem",
@@ -28,10 +28,14 @@
             <h1 class="govuk-heading-l">
                 Missing documents
             </h1>
-            <p class="govuk-body">You have not uploaded these core documents:</p>
+            <p class="govuk-body">You have not uploaded:</p>
             <ul class="govuk-list govuk-list--bullet">
-                <li>Previous convictions sheet</li>
-                <li>Pre-sentencing report</li>
+                {% for doc in recall.requiredDocsMissing %}
+                    <li>{{ doc.label }}</li>
+                {% endfor %}
+                {% for doc in recall.missingNotRequiredDocs %}
+                    <li>{{ doc.label }}</li>
+                {% endfor %}
             </ul>
             <p class="govuk-body">You must:</p>
             <ul class="govuk-list govuk-list--bullet">
@@ -42,8 +46,33 @@
             <div class="govuk-form-group">
                 <form novalidate action="{{ formActionUrl('missing-documents', urlInfo, csrfToken) }}" method="post"
                       enctype="multipart/form-data">
+                    {{ govukTextarea({
+                        name: "missingDocumentsDetail",
+                        id: "missingDocumentsDetail",
+                        label: {
+                            text: "Provide more detail",
+                            classes: "govuk-label--m"
+                        },
+                        value: formValues.missingDocumentsDetail,
+                        errorMessage: errorMessage(errors.missingDocumentsDetail)
+                    }) }}
+                    <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                        {{ govukFileUpload({
+                            id: "missingDocumentsEmailFileName",
+                            name: "missingDocumentsEmailFileName",
+                            label: {
+                                text: "Upload the email",
+                                classes: 'govuk-visually-hidden'
+                            },
+                            attributes: {
+                                accept: allowedEmailFileExtensionList()
+                            },
+                            errorMessage: errorMessage(errors.missingDocumentsEmailFileName)
+                        }) }}
+                    </div>
                     <div class="govuk-!-margin-top-4">
-                        <button class="govuk-button" name="continue" value="continue">Continue</button>
+                        <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
                     </div>
                 </form>
             </div>

@@ -14,7 +14,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get prisons', () => {
     test('can successfully retrieve a list of prisons', async () => {
       await provider.addInteraction({
-        state: 'a list of prisons exists',
+        state: 'no state required',
         ...pactGetRequest('a get prisons request', '/reference-data/prisons'),
         willRespondWith: pactJsonResponse(Matchers.like(getPrisonsJson), 200),
       })

@@ -5,7 +5,9 @@ import logger from '../../logger'
 
 const isValidFromPage = (urlPathSegment: unknown) =>
   isString(urlPathSegment) &&
-  ['check-answers', 'assess', 'dossier-recall', 'view-recall', '/'].includes(urlPathSegment as string)
+  ['missing-documents', 'check-answers', 'assess', 'dossier-recall', 'view-recall', '/'].includes(
+    urlPathSegment as string
+  )
 
 export const parseUrlParams = (req: Request, res: Response, next: NextFunction) => {
   const { nomsNumber, recallId, pageSlug } = req.params

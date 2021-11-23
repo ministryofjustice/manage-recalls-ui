@@ -11,14 +11,15 @@ export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions:
 }
 
 export const validateUploadedFileTypes = (
-  uploadedFileData: UploadedFileMetadata[]
+  uploadedFileData: UploadedFileMetadata[],
+  categorisedFileData: CategorisedFileMetadata[]
 ): {
   errors?: NamedFormError[]
   valuesToSave: UploadedFileMetadata[]
 } => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
-  const usedCategories = [] as string[]
+  const usedCategories = categorisedFileData.map(item => item.category) as string[]
   uploadedFileData.forEach(file => {
     let hasError = false
     if (isInvalidFileType(file, allowedDocumentFileExtensions)) {
@@ -78,6 +79,9 @@ export const validateCategories = (
       hasError = true
     }
     const docCategory = documentCategories.find(cat => cat.name === file.category)
+    if (!docCategory) {
+      throw new Error(`Invalid document category: ${file.category} for file "${file.fileName}"`)
+    }
     if (!docCategory.multiple) {
       usedCategories.push(file.category)
     }

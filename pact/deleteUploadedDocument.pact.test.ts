@@ -16,7 +16,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('delete document from recall', () => {
     test('can delete a document', async () => {
       await provider.addInteraction({
-        state: 'a document can be deleted',
+        state: 'a recall in being booked on state with a document exists',
         ...pactDeleteRequest('a delete document request', `/recalls/${recallId}/documents/${documentId}`, accessToken),
         willRespondWith: { status: 204 },
       })

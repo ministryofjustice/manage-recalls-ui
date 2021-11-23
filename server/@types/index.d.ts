@@ -1,5 +1,5 @@
 import { RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
-import { DecoratedDocument } from './documents'
+import { DecoratedDocument, DecoratedMissingDocumentRecord, DocumentCategoryMetadata } from './documents'
 import { SearchResult } from './manage-recalls-api/models/SearchResult'
 
 export interface FormError {
@@ -52,6 +52,7 @@ export interface RecallFormValues {
   agreeWithRecall?: RecallResponse.agreeWithRecall
   agreeWithRecallDetailYes?: string
   agreeWithRecallDetailNo?: string
+  missingDocumentsDetail?: string
 }
 
 export interface RecallResponseWithDocuments extends RecallResponse {
@@ -167,4 +168,18 @@ export interface AllowedUploadFileType {
 export interface ConfirmationMessage {
   text: string
   type: 'success'
+}
+
+export interface DecoratedRecall extends RecallResponseWithDocuments {
+  documents: DecoratedDocument[]
+  documentCategories: DocumentCategoryMetadata[]
+  requiredDocsMissing: DocumentCategoryMetadata[]
+  missingNotRequiredDocs: DocumentCategoryMetadata[]
+  missingDocumentsRecord: DecoratedMissingDocumentRecord
+  recallNotificationEmail?: DecoratedDocument
+  revocationOrder?: DecoratedDocument
+  recallRequestEmail?: DecoratedDocument
+  dossierEmail?: DecoratedDocument
+  versionedCategory?: DecoratedDocument
+  enableDeleteDocuments: boolean
 }

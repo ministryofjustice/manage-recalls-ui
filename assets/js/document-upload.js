@@ -102,6 +102,7 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
     const existingDocIds = []
     this.feedbackContainer.find('select').each((index, value) => {
       existingDocIds.push($(value).attr('id'))
+      formData.append($(value).attr('name'), $(value).val())
     })
     formData.append('existingDocIds', JSON.stringify(existingDocIds))
     for (var i = 0; i < files.length; i++) {

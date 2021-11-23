@@ -17,7 +17,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get user details', () => {
     test('can successfully get a users details by userId', async () => {
       await provider.addInteraction({
-        state: 'a user can retrieve their details',
+        state: 'a user exists',
         ...pactGetRequest('a get user details request', `/users/${userId}`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getUserResponseJson), 200),
       })
@@ -29,7 +29,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
 
     test('can successfully get current users details', async () => {
       await provider.addInteraction({
-        state: 'a user can retrieve their details',
+        state: 'a user exists',
         ...pactGetRequest('a get current user details request', `/users/current`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getUserResponseJson), 200),
       })
@@ -42,7 +42,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 404 if invalid user', async () => {
       const invalidUserId = '00000000-1111-0000-1111-000000000000'
       await provider.addInteraction({
-        state: 'a missing user ID',
+        state: 'no state required',
         ...pactGetRequest('get users for missing user ID', `/users/${invalidUserId}`, accessToken),
         willRespondWith: { status: 404 },
       })

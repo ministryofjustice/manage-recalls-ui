@@ -142,6 +142,15 @@ describe('uploadRecallDocumentsFormHandler', () => {
     uploadRecallDocumentsFormHandler(req, resp)
   })
 
+  it("doesn't try to save to the API if there are no uploaded files", async () => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = []
+      cb()
+    })
+    await uploadRecallDocumentsFormHandler(req, resp)
+    expect(addRecallDocument).not.toHaveBeenCalled()
+  })
+
   it('autocategorises uploaded documents then sends them to the API', async () => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
@@ -187,6 +196,7 @@ describe('uploadRecallDocumentsFormHandler', () => {
 
   it('saves category changes for existing uploads', async () => {
     ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = []
       cb()
     })
     ;(setDocumentCategory as jest.Mock).mockResolvedValue({
@@ -332,7 +342,85 @@ describe('uploadRecallDocumentsFormHandler', () => {
     uploadRecallDocumentsFormHandler(req, res)
   })
 
-  it('should redirect to fromPage if one is supplied in res.locals', done => {
+  it('creates an error if a second copy of a document category is uploaded', done => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      req.body = {
+        'category-123': 'LICENCE',
+      }
+      cb()
+    })
+    const res = {
+      locals: { user: {} },
+      redirect: () => {
+        expect(addRecallDocument).toHaveBeenCalledTimes(5) // for the 5 valid files
+        expect(req.session.errors).toEqual([
+          {
+            href: '#documents',
+            name: 'documents',
+            text: 'You can only upload one licence',
+          },
+        ])
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it("redirects to Check your answers if a fromPage isn't supplied", done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      req.body = {
+        continue: 'continue',
+      }
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
+      documents: [
+        {
+          category: 'LICENCE',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence Wesley Holt.pdf',
+        },
+        {
+          category: 'PART_A_RECALL_REPORT',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Part A Wesley Holt.pdf',
+        },
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Pre Cons Wesley Holt.pdf',
+        },
+        {
+          category: 'OASYS_RISK_ASSESSMENT',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'OAsys Wesley Holt.pdf',
+        },
+      ],
+    })
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: {
+          basePath: `/persons/123/recalls/456/`,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(`/persons/123/recalls/456/check-answers`)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it('redirects to fromPage if one is supplied in res.locals', done => {
     ;(addRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
@@ -351,6 +439,102 @@ describe('uploadRecallDocumentsFormHandler', () => {
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
         expect(path).toEqual(`/persons/123/recalls/456/dossier-recall`)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it("redirects to Missing documents if a required doc isn't supplied", done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      req.body = {
+        continue: 'continue',
+      }
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
+      documents: [
+        {
+          category: 'LICENCE',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence Wesley Holt.pdf',
+        },
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Pre Cons Wesley Holt.pdf',
+        },
+        {
+          category: 'OASYS_RISK_ASSESSMENT',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'OAsys Wesley Holt.pdf',
+        },
+      ],
+    })
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: {
+          basePath: `/persons/123/recalls/456/`,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(`/persons/123/recalls/456/missing-documents`)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
+  it("redirects to Missing documents if a required doc isn't supplied", done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      req.body = {
+        continue: 'continue',
+      }
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
+      documents: [
+        {
+          category: 'LICENCE',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence Wesley Holt.pdf',
+        },
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Pre Cons Wesley Holt.pdf',
+        },
+        {
+          category: 'OASYS_RISK_ASSESSMENT',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'OAsys Wesley Holt.pdf',
+        },
+      ],
+    })
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: {
+          basePath: `/persons/123/recalls/456/`,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(`/persons/123/recalls/456/missing-documents`)
         done()
       },
     }

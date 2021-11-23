@@ -52,10 +52,11 @@ export const requiredDocsList = (): DocumentCategoryMetadata[] =>
 export const missingNotRequiredDocsList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document' && doc.hintIfMissing)
 
-export const listMissingRequiredDocs = (fileCategories: ApiRecallDocument.category[]): string[] => {
-  return requiredDocsList()
+export const listMissingRequiredDocs = (docs: ApiRecallDocument[]): string[] => {
+  const listOfRequiredAndDesired = [...requiredDocsList(), ...missingNotRequiredDocsList()]
+  return listOfRequiredAndDesired
     .map(requiredDocCategory => {
-      const uploadedFile = fileCategories.find(fileCategory => fileCategory === requiredDocCategory.name)
+      const uploadedFile = docs.find(doc => doc.category === requiredDocCategory.name)
       return uploadedFile ? undefined : formatDocLabel(requiredDocCategory.name)
     })
     .filter(Boolean)

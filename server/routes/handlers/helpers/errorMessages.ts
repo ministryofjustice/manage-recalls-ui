@@ -62,6 +62,7 @@ export const errorMsgEmailUpload = {
   uploadFailed: 'The selected file could not be uploaded – try again',
   invalidFileFormat: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
   confirmSent: "Confirm you've sent the email to all recipients",
+  containsVirus: (fileName: string) => `${fileName} contains a virus`,
 }
 
 export const errorMsgProvideDetail = 'Provide more detail'
