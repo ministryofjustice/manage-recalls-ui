@@ -17,7 +17,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get letter', () => {
     test('can successfully get a letter', async () => {
       await provider.addInteraction({
-        state: 'a letter can be downloaded',
+        state: 'a letter to prison and recall exists',
         ...pactGetRequest('a get letter request', `/recalls/${recallId}/letter-to-prison`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getLetterResponseJson), 200),
       })

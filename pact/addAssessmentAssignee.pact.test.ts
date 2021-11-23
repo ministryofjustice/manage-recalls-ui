@@ -18,7 +18,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('assign user to recall assessment', () => {
     test('can assign a user', async () => {
       await provider.addInteraction({
-        state: 'a user can be assigned',
+        state: 'a user and an unassigned fully populated recall exists without documents',
         ...pactPostRequest('an assign user request', `/recalls/${recallId}/assignee/${userId}`, {}, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getRecallResponseJson), 200),
       })

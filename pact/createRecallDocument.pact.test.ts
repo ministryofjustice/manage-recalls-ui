@@ -21,7 +21,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('create recall documents', () => {
     test('can successfully create a document', async () => {
       await provider.addInteraction({
-        state: 'a document can be created',
+        state: 'a user and a fully populated recall without documents exists',
         ...pactPostRequest(
           'a create recall document request',
           `/recalls/${recallId}/documents`,

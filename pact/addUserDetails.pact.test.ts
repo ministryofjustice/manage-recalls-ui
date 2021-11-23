@@ -22,7 +22,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('add user details', () => {
     test('can successfully add a users details', async () => {
       await provider.addInteraction({
-        state: 'a user can store their details',
+        state: 'no state required',
         ...pactPostRequest(
           'an add user details request',
           '/users',
@@ -43,7 +43,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         status: 'BAD_REQUEST',
       }
       await provider.addInteraction({
-        state: 'a user can store their details',
+        state: 'no state required',
         ...pactPostRequest(
           'an add user details request with blank userId',
           '/users',
