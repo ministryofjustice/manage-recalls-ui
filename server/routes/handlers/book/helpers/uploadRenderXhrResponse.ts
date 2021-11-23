@@ -23,9 +23,9 @@ export const renderXhrResponse = async ({
   recall: RecallResponse
 }) => {
   let addToExistingUploads = false
-  const allUploadedDocs = recall.documents
-    .filter(doc => uploadedDocCategoriesList().find(item => item.name === doc.category))
-    .map((doc, index) => ({ ...doc, index }))
+  const allUploadedDocs = recall.documents.filter(doc =>
+    uploadedDocCategoriesList().find(item => item.name === doc.category)
+  )
   let lastUploadedDocs = allUploadedDocs
   if (existingDocIds) {
     lastUploadedDocs = allUploadedDocs.filter(uploadedDoc => !existingDocIds.includes(uploadedDoc.documentId))
