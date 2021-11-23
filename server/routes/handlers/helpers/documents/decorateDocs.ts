@@ -29,7 +29,6 @@ export const decorateDocs = ({
   versionedCategoryName?: string
 }): {
   documents: DecoratedDocument[]
-  appGeneratedDocuments: DecoratedDocument[]
   documentCategories: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
@@ -148,7 +147,6 @@ export const decorateDocs = ({
     {
       documents: [],
       missingDocumentsRecord: undefined,
-      appGeneratedDocuments: [],
       documentCategories: decoratedDocTypes,
       requiredDocsMissing: requiredDocsList().filter(
         requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
