@@ -4,6 +4,7 @@
 
 import type { ApiRecallDocument } from './ApiRecallDocument';
 import type { SentenceLengthRes } from './SentenceLengthRes';
+import { MissingDocumentsRecordResponse } from './MissingDocumentsRecordResponse'
 
 export type RecallResponse = {
     additionalLicenceConditions?: boolean;
@@ -25,6 +26,7 @@ export type RecallResponse = {
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     documents: Array<ApiRecallDocument>;
+    missingDocumentsRecords: Array<MissingDocumentsRecordResponse>
     dossierCreatedByUserId?: string;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;

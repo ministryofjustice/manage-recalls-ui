@@ -1,9 +1,10 @@
 import { getFormValues } from './getFormValues'
-import { RecallResponseWithDocuments, FormError, ObjectMap } from '../../../@types'
+import { FormError, ObjectMap, DecoratedRecall } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { decorateDocs } from './documents/decorateDocs'
+import { MissingDocumentsRecordResponse } from '../../../@types/manage-recalls-api/models/MissingDocumentsRecordResponse'
 
 describe('getFormValues', () => {
   const errors = {
@@ -155,10 +156,12 @@ describe('getFormValues', () => {
       bookingNumber: updateRecallResponse.bookingNumber,
       firstName: 'Bobby',
       lastName: 'Badger',
+      missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecordResponse[],
     }),
+    enableDeleteDocuments: false,
   }
   it('uses errors if no unsaved or API values', () => {
-    const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as RecallResponseWithDocuments })
+    const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({
       agreeWithRecall: '',
       authorisingAssistantChiefOfficer: '',
@@ -243,7 +246,7 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: { lastReleaseDate: errors.lastReleaseDate },
       unsavedValues,
-      apiValues: {} as RecallResponseWithDocuments,
+      apiValues: {} as DecoratedRecall,
     })
     expect(formValues).toEqual({
       agreeWithRecall: 'NO',
@@ -324,7 +327,7 @@ describe('getFormValues', () => {
   })
 
   it('uses all error values over unsaved values', () => {
-    const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as RecallResponseWithDocuments })
+    const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({
       agreeWithRecall: '',
       authorisingAssistantChiefOfficer: '',
@@ -409,7 +412,7 @@ describe('getFormValues', () => {
     const formValues = getFormValues({
       errors: { lastReleaseDate: errors.lastReleaseDate },
       unsavedValues: {},
-      apiValues: apiValues as RecallResponseWithDocuments,
+      apiValues: apiValues as DecoratedRecall,
     })
     expect(formValues).toEqual({
       additionalLicenceConditions: 'YES',
@@ -450,6 +453,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: 'Essex',
       mappaLevel: 'LEVEL_1',
+      missingDocumentsDetail: 'Documents were requested by email on 10/12/2020',
       previousConvictionMainName: 'Walter Holt',
       localDeliveryUnit: 'CENTRAL_AUDIT_TEAM',
       probationOfficerEmail: 'probation.office@justice.com',
@@ -498,7 +502,7 @@ describe('getFormValues', () => {
       errors: {},
       unsavedValues: {},
       apiValues: {
-        ...(apiValues as RecallResponseWithDocuments),
+        ...(apiValues as DecoratedRecall),
         agreeWithRecall: RecallResponse.agreeWithRecall.NO_STOP,
         agreeWithRecallDetail: 'Reasons for no...',
       },
@@ -542,6 +546,7 @@ describe('getFormValues', () => {
       },
       localPoliceForce: 'Essex',
       mappaLevel: 'LEVEL_1',
+      missingDocumentsDetail: 'Documents were requested by email on 10/12/2020',
       previousConvictionMainName: 'Walter Holt',
       localDeliveryUnit: 'CENTRAL_AUDIT_TEAM',
       probationOfficerEmail: 'probation.office@justice.com',
@@ -586,7 +591,7 @@ describe('getFormValues', () => {
   })
 
   it('sets values to undefined if none supplied', () => {
-    const formValues = getFormValues({ errors: {}, unsavedValues: {}, apiValues: {} as RecallResponseWithDocuments })
+    const formValues = getFormValues({ errors: {}, unsavedValues: {}, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({})
   })
 })

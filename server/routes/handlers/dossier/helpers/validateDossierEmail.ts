@@ -2,7 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
-import { errorMsgUserActionDateTime } from '../../helpers/errorMessages'
+import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
@@ -42,7 +42,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'confirmDossierEmailSent',
-          text: "Confirm you've sent the email to all recipients",
+          text: errorMsgEmailUpload.confirmSent,
         })
       )
     }
@@ -59,7 +59,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: 'Select an email',
+          text: errorMsgEmailUpload.noFile,
         })
       )
     }
@@ -67,7 +67,7 @@ export const validateDossierEmail = ({
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
-          text: 'The selected file could not be uploaded – try again',
+          text: errorMsgEmailUpload.uploadFailed,
         })
       )
     }

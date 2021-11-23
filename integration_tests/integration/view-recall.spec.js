@@ -48,6 +48,11 @@ context('View recall', () => {
             documentId: '234-3455-8542-c3ac-8c963f66afa6',
             fileName: 'email.msg',
           },
+          {
+            category: 'MISSING_DOCUMENTS_EMAIL',
+            documentId: '123',
+            fileName: 'chase-documents.msg',
+          },
         ],
       },
     })
@@ -112,6 +117,17 @@ context('View recall', () => {
       textToFind: 'Missing: needed to create dossier',
     })
     recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
+    recallInformation.assertElementHasText({
+      qaAttr: 'required-LICENCE',
+      textToFind: 'Missing: needed to create dossier',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'missingDocumentsDetail',
+      textToFind: 'Documents were requested by email on 10/12/2020',
+    })
+    fileName = 'chase-documents.msg'
+    mockFileDownload({ fileName, docCategory: 'MISSING_DOCUMENTS_EMAIL' })
+    cy.get(`[data-qa="uploadedDocument-MISSING_DOCUMENTS_EMAIL"]`).click()
   })
 
   it('User can view not available for additionalLicenceConditions,vulnerabilityDiversity and contraband when information is not provided', () => {

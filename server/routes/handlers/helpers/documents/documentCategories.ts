@@ -109,6 +109,11 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'email',
   },
   {
+    label: 'Missing documents email',
+    name: ApiRecallDocument.category.MISSING_DOCUMENTS_EMAIL,
+    type: 'email',
+  },
+  {
     label: 'Revocation order',
     name: ApiRecallDocument.category.REVOCATION_ORDER,
     type: 'generated',

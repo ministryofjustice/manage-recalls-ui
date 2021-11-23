@@ -195,6 +195,7 @@ describe('viewWithRecallAndPerson', () => {
       recallId,
       bookingNumber: recall.bookingNumber,
       ...person,
+      missingDocumentsRecords: recall.missingDocumentsRecords,
     })
   })
 
@@ -213,6 +214,7 @@ describe('viewWithRecallAndPerson', () => {
       bookingNumber: recall.bookingNumber,
       ...person,
       versionedCategoryName: 'LICENCE',
+      missingDocumentsRecords: recall.missingDocumentsRecords,
     })
   })
 })

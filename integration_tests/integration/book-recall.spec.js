@@ -1,5 +1,6 @@
 import {
   getCourtsResponse,
+  getEmptyRecallResponse,
   getLocalDeliveryUnitsResponse,
   getPrisonsResponse,
   getRecallResponse,
@@ -16,6 +17,7 @@ const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
 const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
+const recallMissingDocumentsPage = require('../pages/recallMissingDocuments')
 
 context('Book a recall', () => {
   const recallId = '123'
@@ -32,6 +34,7 @@ context('Book a recall', () => {
     cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
     cy.task('expectSetDocumentCategory')
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
@@ -91,7 +94,10 @@ context('Book a recall', () => {
     recallProbationOfficer.clickContinue()
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickContinue()
-
+    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage()
+    recallMissingDocuments.enterTextInInput({ name: 'missingDocumentsDetail', text: 'I sent an email' })
+    recallMissingDocuments.uploadEmail({ fieldName: 'missingDocumentsEmailFileName', fileName: 'email.msg' })
+    recallMissingDocuments.clickContinue()
     // eslint-disable-next-line no-unused-vars
     const [licence, ...documents] = [...getRecallResponse.documents]
     cy.task('expectGetRecall', {
@@ -466,7 +472,7 @@ context('Book a recall', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickElement({ qaAttr: `delete-${documentId}` })
     uploadDocuments.clickContinue()
-    checkAnswersPage.verifyOnPage()
+    recallMissingDocumentsPage.verifyOnPage()
   })
 
   it("user can't go back to delete documents from the view recall page", () => {
@@ -489,6 +495,20 @@ context('Book a recall', () => {
     recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
+  })
+
+  it("User sees an error if they don't upload the missing documents email or provide detail", () => {
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
+    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    recallMissingDocuments.clickContinue()
+    recallMissingDocuments.assertErrorMessage({
+      fieldName: 'missingDocumentsEmailFileName',
+      summaryError: 'Select an email',
+    })
+    recallMissingDocuments.assertErrorMessage({
+      fieldName: 'missingDocumentsDetail',
+      summaryError: 'Provide more detail',
+    })
   })
 
   it('user can check and change their answers then navigate back to the check answers page', () => {

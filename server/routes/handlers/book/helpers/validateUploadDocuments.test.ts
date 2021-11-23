@@ -19,7 +19,7 @@ describe('validateUploadedFileTypes', () => {
         mimeType: 'application/msword',
       },
     ]
-    const { errors } = validateUploadedFileTypes(fileData)
+    const { errors } = validateUploadedFileTypes(fileData, [])
     expect(errors).toEqual([
       {
         href: '#documents',
@@ -32,6 +32,34 @@ describe('validateUploadedFileTypes', () => {
         text: "The selected file 'Wesley Holt psr.pdf' must be a PDF",
       },
     ])
+  })
+
+  it("returns errors and no valuesToSave if there are more than one of a category that doesn't allow multiples", () => {
+    const fileData = [
+      {
+        category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+        originalFileName: 'Wesley Holt part a.pdf',
+        label: 'Part A recall report',
+        fileContent: 'abc',
+        mimeType: 'application/pdf',
+      },
+    ]
+    const categoryData = [
+      {
+        category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+        documentId: '123',
+        fileName: 'Part A.pdf',
+      },
+    ]
+    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, categoryData)
+    expect(errors).toEqual([
+      {
+        href: '#documents',
+        name: 'documents',
+        text: 'You can only upload one part A recall report',
+      },
+    ])
+    expect(valuesToSave).toBeUndefined()
   })
 })
 

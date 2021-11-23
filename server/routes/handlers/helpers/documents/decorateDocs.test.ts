@@ -33,7 +33,24 @@ describe('decorateDocs', () => {
       documentId: '37423-2389347-234',
       fileName: 'dossier.msg',
     },
+    {
+      category: ApiRecallDocument.category.MISSING_DOCUMENTS_EMAIL,
+      documentId: '845',
+      fileName: 'missing-docs.msg',
+    },
   ] as ApiRecallDocument[]
+  const missingDocumentsRecords = [
+    {
+      missingDocumentsRecordId: '1234',
+      emailId: '845',
+      emailFileName: 'email.msg',
+      categories: [ApiRecallDocument.category.PART_A_RECALL_REPORT],
+      detail: 'Email sent 12/10/2021',
+      version: 1,
+      createdByUserId: '6544',
+      createdDateTime: '2021-10-12T13:43:00.000Z',
+    },
+  ]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
 
@@ -46,6 +63,7 @@ describe('decorateDocs', () => {
       lastName: 'Badger',
       bookingNumber: '123',
       versionedCategoryName: 'LICENCE',
+      missingDocumentsRecords,
     })
     expect(results).toEqual({
       documentCategories: [
@@ -175,6 +193,23 @@ describe('decorateDocs', () => {
         name: 'RECALL_NOTIFICATION_EMAIL',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
+      },
+      missingDocumentsRecord: {
+        category: 'MISSING_DOCUMENTS_EMAIL',
+        createdByUserId: '6544',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+        detail: 'Email sent 12/10/2021',
+        categories: ['PART_A_RECALL_REPORT'],
+        documentId: '845',
+        emailFileName: 'email.msg',
+        emailId: '845',
+        fileName: 'missing-docs.msg',
+        label: 'Missing documents email',
+        missingDocumentsRecordId: '1234',
+        name: 'MISSING_DOCUMENTS_EMAIL',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/845',
+        version: 1,
       },
     })
   })

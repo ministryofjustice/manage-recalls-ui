@@ -53,6 +53,7 @@ export const viewWithRecallAndPerson =
     const recall = recallResult.value
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
+      missingDocumentsRecords: recall.missingDocumentsRecords,
       nomsNumber,
       recallId,
       bookingNumber: recall.bookingNumber,

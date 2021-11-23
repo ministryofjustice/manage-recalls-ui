@@ -20,7 +20,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('change the category of a document', () => {
     test('can successfully change a category', async () => {
       await provider.addInteraction({
-        state: 'a document exists to be updated',
+        state: 'a recall and document exist',
         ...pactPatchRequest(
           'an update category request',
           `/recalls/${recallId}/documents/${documentId}`,
@@ -36,7 +36,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 404 if document not found', async () => {
       const unknownDocumentId = '11100000-0000-0000-0000-000000000000'
       await provider.addInteraction({
-        state: 'a document does not exist',
+        state: 'no state required',
         ...pactPatchRequest(
           'an update document request for a document that does not exist',
           `/recalls/${recallId}/documents/${unknownDocumentId}`,

@@ -1,4 +1,4 @@
-import { FormError, ObjectMap, RecallFormValues, RecallResponseWithDocuments } from '../../../@types'
+import { DecoratedRecall, FormError, ObjectMap, RecallFormValues } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { isDefined } from './index'
 import { splitIsoDateToParts } from './dates/convert'
@@ -8,7 +8,7 @@ interface Args {
   agreeWithRecall?: RecallResponse.agreeWithRecall
   errors: ObjectMap<FormError>
   unsavedValues: ObjectMap<any>
-  apiValues: RecallResponseWithDocuments
+  apiValues: DecoratedRecall
 }
 
 const booleanToYesNo = (val: boolean) => {
@@ -102,5 +102,11 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     ...values,
     ...recallRecommendation({ agreeWithRecall: values.agreeWithRecall, errors, unsavedValues, apiValues }),
   }
+
+  // missing documents detail
+  values.missingDocumentsDetail = isDefined(errors.missingDocumentsDetail)
+    ? ''
+    : unsavedValues.missingDocumentsDetail || apiValues.missingDocumentsRecord?.detail
+
   return values
 }

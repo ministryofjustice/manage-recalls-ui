@@ -14,7 +14,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get local delivery units', () => {
     test('can successfully retrieve a list of local delivery units', async () => {
       await provider.addInteraction({
-        state: 'a list of local delivery units exists',
+        state: 'no state required',
         ...pactGetRequest('a get local delivery units request', '/reference-data/local-delivery-units'),
         willRespondWith: pactJsonResponse(Matchers.like(getLocalDeliveryUnitsJson), 200),
       })

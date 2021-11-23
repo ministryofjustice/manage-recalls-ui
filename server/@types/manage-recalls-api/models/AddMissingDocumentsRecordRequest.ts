@@ -2,15 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ApiRecallDocument = {
-    category: ApiRecallDocument.category;
-    createdDateTime: string;
-    documentId: string;
-    fileName: string;
-    version?: number;
+export type AddMissingDocumentsRecordRequest = {
+    categories: AddMissingDocumentsRecordRequest.category[];
+    emailFileContent: string;
+    emailFileName: string;
+    recallId: string,
+    detail: string
 }
 
-export namespace ApiRecallDocument {
+export namespace AddMissingDocumentsRecordRequest {
 
     export enum category {
         CHARGE_SHEET = 'CHARGE_SHEET',

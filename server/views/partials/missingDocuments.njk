@@ -27,5 +27,33 @@
             </dd>
         </div>
     {% endfor %}
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Details
+        </dt>
+        <dd class=" govuk-summary-list__value">
+      <pre class='govuk-body' data-qa='missingDocumentsDetail'>
+            {{ recall.missingDocumentsRecord.detail }}
+      </pre>
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+            {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
+            <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'documents') }}' data-qa='missingDocumentsDetailChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> missing documents detail</span></a>
+            {% endif %}
+        </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+        <dt class=" govuk-summary-list__key">
+            Email uploaded
+        </dt>
+        <dd class=" govuk-summary-list__value" data-qa='missingDocumentsEmailFileName'>
+            <a href='{{ recall.missingDocumentsRecord.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.missingDocumentsRecord.category}}' download>{{ recall.missingDocumentsRecord.fileName }}</a>
+        </dd>
+        <dd class=" govuk-summary-list__actions">
+            {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
+                <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'documents') }}' data-qa='missingDocumentsEmailFileNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> uploaded email</span></a>
+            {% endif %}
+        </dd>
+    </div>
 </dl>
 {% endif %}

@@ -17,7 +17,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('search recalls', () => {
     test('can get recalls by NOMS number', async () => {
       await provider.addInteraction({
-        state: `a list of recalls exists for NOMS number`,
+        state: `a list of recalls exists`,
         ...pactPostRequest('a search request by NOMS number', '/recalls/search', { nomsNumber }, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getRecallsJson), 200),
       })
@@ -34,7 +34,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         message: 'nomsNumber: must not be blank',
       }
       await provider.addInteraction({
-        state: 'a search by blank NOMS number',
+        state: 'no state required',
         ...pactPostRequest(
           'a search request with blank NOMS number',
           '/recalls/search',
