@@ -64,7 +64,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         recallAssessmentDueDateTime: '2020-12-06T15:33:57.000Z',
       }
       await provider.addInteraction({
-        state: 'a recall exists',
+        state: 'a user and a fully populated recall without documents exists',
         ...pactPatchRequest(
           'an update recall request with all fields populated',
           `/recalls/${recallId}`,
@@ -92,7 +92,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         },
       }
       await provider.addInteraction({
-        state: 'a recall exists',
+        state: 'a user and a fully populated recall without documents exists',
         ...pactPatchRequest(
           'an update recall request with sentencing info',
           `/recalls/${recallId}`,
@@ -119,7 +119,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         },
       }
       await provider.addInteraction({
-        state: 'a recall exists',
+        state: 'a user and a fully populated recall without documents exists',
         ...pactPatchRequest(
           'an update recall request with sentence info and no sentenceDate',
           `/recalls/${recallId}`,
@@ -135,7 +135,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 404 if recall not found', async () => {
       const unknownRecallId = '11100000-0000-0000-0000-000000000000'
       await provider.addInteraction({
-        state: 'a recall does not exist',
+        state: 'no state required',
         ...pactPatchRequest(
           'an update recall request for a recall that does not exist',
           `/recalls/${unknownRecallId}`,

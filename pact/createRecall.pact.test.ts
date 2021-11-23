@@ -17,7 +17,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('create a recall', () => {
     test('can successfully create a recall', async () => {
       await provider.addInteraction({
-        state: 'a recall can be created',
+        state: 'no state required',
         ...pactPostRequest('a create recall request', '/recalls', { nomsNumber }, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(createRecallResponseJson), 201),
       })
@@ -34,7 +34,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         message: 'nomsNumber: must not be blank',
       }
       await provider.addInteraction({
-        state: 'a recall can be created',
+        state: 'no state required',
         ...pactPostRequest(
           'a create recall request with blank nomsNumber',
           '/recalls',

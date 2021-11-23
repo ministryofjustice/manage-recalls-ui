@@ -18,7 +18,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get uploaded recall documents', () => {
     test('can successfully retrieve a document', async () => {
       await provider.addInteraction({
-        state: 'a document exists',
+        state: 'a recall and document exist',
         ...pactGetRequest('a get recall document request', `/recalls/${recallId}/documents/${documentId}`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getRecallDocumentResponseJson), 200),
       })
