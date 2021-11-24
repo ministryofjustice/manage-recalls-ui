@@ -4,10 +4,21 @@
 
 {% block content %}
 
-  <main class="app-container">
-    <h1>{{ message }}</h1>
-    <h2>{{ status }}</h2>
-    <pre>{{ stack }}</pre>
-  </main>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-l">Sorry, there is a problem with the service</h1>
+            <p class="govuk-body">Try again later.</p>
+            <p class="govuk-body">We have saved your answers. When the service is available, you should be able to
+                continue from the page before the problem happened.</p>
+            <p class="govuk-body"><a class="govuk-link" href="mailto:PPUD-Replacement-team@digital.justice.gov.uk">Contact
+                    us</a> for a service update.</p>
+            {% if not production %}
+                <hr />
+                <p class='govuk-body'>{{ message }}</p>
+                <p class='govuk-body'>{{ status }}</p>
+                <pre class='govuk-body'>{{ stack }}</pre>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}

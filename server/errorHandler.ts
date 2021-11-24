@@ -11,11 +11,15 @@ export default function createErrorHandler(production: boolean) {
       return res.redirect('/logout')
     }
 
-    res.locals.message = production
-      ? 'Something went wrong. The error has been logged. Please try again'
-      : error.message
-    res.locals.status = error.status
-    res.locals.stack = production ? null : error.stack
+    if (error.status === 404) {
+      return res.status(404).render('pages/error-404')
+    }
+    res.locals.production = production
+    if (!production) {
+      res.locals.message = error.message
+      res.locals.status = error.status
+      res.locals.stack = error.stack
+    }
 
     res.status(error.status || 500)
 
