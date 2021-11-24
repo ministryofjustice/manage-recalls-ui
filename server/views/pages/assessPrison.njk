@@ -57,6 +57,7 @@
     {{ super() }}
     {{ autocomplete({
         name: 'currentPrison',
+        defaultValue: formValues.currentPrison,
         cspNonce: cspNonce
     })
     }}

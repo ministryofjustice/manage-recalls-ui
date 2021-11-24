@@ -135,6 +135,7 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'sentencingCourt',
           text: 'Select a sentencing court',
+          values: sentencingCourtInput || undefined,
         })
       )
     }
@@ -151,6 +152,7 @@ export const validateSentenceDetails = (
         makeErrorObject({
           id: 'lastReleasePrison',
           text: 'Select a releasing prison',
+          values: lastReleasePrisonInput || undefined,
         })
       )
     }

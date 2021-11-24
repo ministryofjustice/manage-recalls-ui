@@ -107,6 +107,7 @@
     {{ super() }}
     {{ autocomplete({
         name: 'localDeliveryUnit',
+        defaultValue: formValues.localDeliveryUnit,
         cspNonce: cspNonce
     })
     }}

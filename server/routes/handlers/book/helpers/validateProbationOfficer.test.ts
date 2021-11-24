@@ -26,6 +26,7 @@ describe('validateProbationOfficer', () => {
       ],
     })
   })
+
   it('returns valuesToSave and no errors if all fields are submitted', () => {
     const { errors, valuesToSave } = validateProbationOfficer(requestBody)
     expect(errors).toBeUndefined()
@@ -102,6 +103,7 @@ describe('validateProbationOfficer', () => {
         href: '#localDeliveryUnit',
         name: 'localDeliveryUnit',
         text: 'Select a Local Delivery Unit',
+        values: '123',
       },
     ])
   })

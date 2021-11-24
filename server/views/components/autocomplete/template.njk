@@ -1,7 +1,7 @@
 <script type="text/javascript" src="/assets/js/accessible-autocomplete.min.js"></script>
 <script nonce='{{ params.cspNonce }}'>
   accessibleAutocomplete.enhanceSelectElement({
-    defaultValue: '',
+    defaultValue: '{{ params.defaultValue }}',
     selectElement: document.querySelector('#{{params.name}}'),
     showAllValues: true,
     autoselect: true,

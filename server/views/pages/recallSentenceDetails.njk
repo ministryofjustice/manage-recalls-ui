@@ -210,11 +210,13 @@
     {{ super() }}
     {{ autocomplete({
             name: 'lastReleasePrison',
+            defaultValue: formValues.lastReleasePrison,
             cspNonce: cspNonce
         })
     }}
     {{ autocomplete({
             name: 'sentencingCourt',
+            defaultValue: formValues.sentencingCourt,
             cspNonce: cspNonce
         })
     }}
