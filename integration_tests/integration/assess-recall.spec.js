@@ -213,6 +213,8 @@ context('Assess a recall', () => {
   })
 
   it('User sees an invalid input for current prison', () => {
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
+    cy.login()
     const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName })
     cy.get('[id="currentPrison"]').clear().type('blah blah blah')
     assessRecallPrison.clickContinue()
