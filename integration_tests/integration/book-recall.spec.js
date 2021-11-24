@@ -287,6 +287,15 @@ context('Book a recall', () => {
     })
   })
 
+  it('User sees invalid inputs for sentencing court or releasing prison', () => {
+    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
+    cy.get('[id="sentencingCourt"]').clear().type('blah blah blah')
+    cy.get('[id="lastReleasePrison"]').clear().type('piffle')
+    recallLastRelease.clickContinue()
+    recallLastRelease.assertSelectValue({ fieldName: 'sentencingCourtInput', value: 'blah blah blah' })
+    recallLastRelease.assertSelectValue({ fieldName: 'lastReleasePrisonInput', value: 'piffle' })
+  })
+
   it('User sees an error if Local police force not entered', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()
@@ -366,6 +375,13 @@ context('Book a recall', () => {
       fieldName: 'probationOfficerPhoneNumber',
       summaryError: 'Enter a phone number in the correct format, like 01277 960901',
     })
+  })
+
+  it('User sees an invalid input for local delivery unit', () => {
+    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ nomsNumber, recallId, personName })
+    cy.get('[id="localDeliveryUnit"]').clear().type('blah blah blah')
+    recallProbationOfficer.clickContinue()
+    recallProbationOfficer.assertSelectValue({ fieldName: 'localDeliveryUnitInput', value: 'blah blah blah' })
   })
 
   it('User sees an uploaded document listed', () => {

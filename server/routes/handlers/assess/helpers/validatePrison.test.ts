@@ -52,6 +52,7 @@ describe('validatePrison', () => {
         href: '#currentPrison',
         name: 'currentPrison',
         text: 'Select a prison',
+        values: '1235',
       },
     ])
   })

@@ -83,6 +83,7 @@ export const validateProbationOfficer = (
         makeErrorObject({
           id: 'localDeliveryUnit',
           text: 'Select a Local Delivery Unit',
+          values: localDeliveryUnitInput,
         })
       )
     }

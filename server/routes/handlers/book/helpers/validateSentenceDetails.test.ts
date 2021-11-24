@@ -173,6 +173,7 @@ describe('validateSentenceDetails', () => {
         href: '#sentencingCourt',
         name: 'sentencingCourt',
         text: 'Select a sentencing court',
+        values: '123',
       },
     ])
   })
@@ -185,6 +186,7 @@ describe('validateSentenceDetails', () => {
         href: '#lastReleasePrison',
         name: 'lastReleasePrison',
         text: 'Select a releasing prison',
+        values: '123',
       },
     ])
   })

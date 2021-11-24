@@ -19,6 +19,7 @@ export const validatePrison = (
       makeErrorObject({
         id: 'currentPrison',
         text: 'Select a prison',
+        values: currentPrisonInput,
       }),
     ]
   }

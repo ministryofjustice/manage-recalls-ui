@@ -212,6 +212,15 @@ context('Assess a recall', () => {
     })
   })
 
+  it('User sees an invalid input for current prison', () => {
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
+    cy.login()
+    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName })
+    cy.get('[id="currentPrison"]').clear().type('blah blah blah')
+    assessRecallPrison.clickContinue()
+    assessRecallPrison.assertSelectValue({ fieldName: 'currentPrisonInput', value: 'blah blah blah' })
+  })
+
   it("User sees an error if they don't upload the recall notification email or enter a sent date", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     cy.login()
