@@ -4,7 +4,7 @@ import { documentCategories } from '../../helpers/documents/documentCategories'
 import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
 import { AllowedUploadFileType, NamedFormError } from '../../../../@types'
-import { formatDocLabel } from '../../helpers/documents'
+import { findDocCategory, formatDocLabel } from '../../helpers/documents'
 
 export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions: AllowedUploadFileType[]) => {
   return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)
@@ -19,7 +19,9 @@ export const validateUploadedFileTypes = (
 } => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
-  const usedCategories = categorisedFileData.map(item => item.category) as string[]
+  const usedCategories = categorisedFileData
+    .map(item => item.category)
+    .filter(category => !findDocCategory(category).multiple) as string[]
   uploadedFileData.forEach(file => {
     let hasError = false
     if (isInvalidFileType(file, allowedDocumentFileExtensions)) {
