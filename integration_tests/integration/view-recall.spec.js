@@ -122,6 +122,26 @@ context('View recall', () => {
       textToFind: 'Missing: needed to create dossier',
     })
     recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
+      textToFind: 'BOBBY_BADGER_REASONS_FOR_RECALL.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
+      textToFind: 'BOBBY_BADGER_REVOCATION_ORDER.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON',
+      textToFind: 'BOBBY_BADGER_LETTER_TO_PRISON.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-DOSSIER',
+      textToFind: 'BOBBY_BADGER_DOSSIER.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
+      textToFind: 'BOBBY_BADGER_REASONS_FOR_RECALL.pdf',
+    })
+    recallInformation.assertElementHasText({
       qaAttr: 'missingDocumentsDetail',
       textToFind: 'Documents were requested by email on 10/12/2020',
     })
