@@ -90,7 +90,7 @@ export const decorateDocs = ({
       if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION) {
         acc.recallNotification = {
           ...curr,
-          label: `${personName}_${curr.name}.pdf`,
+          label: `${personName}${formattedBookingNumber} ${curr.name}.pdf`,
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/recall-notification`,
         }
       }
@@ -106,7 +106,7 @@ export const decorateDocs = ({
       if (curr.name === ApiRecallDocument.category.LETTER_TO_PRISON) {
         acc.letterToPrison = {
           ...curr,
-          label: `${personName}_${curr.name}.pdf`,
+          label: `${personName}${formattedBookingNumber} ${curr.name}.pdf`,
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
         }
       }
@@ -114,7 +114,7 @@ export const decorateDocs = ({
       if (curr.name === ApiRecallDocument.category.DOSSIER) {
         acc.dossier = {
           ...curr,
-          label: `${personName}_${curr.name}.pdf`,
+          label: `${personName}${formattedBookingNumber} ${curr.name}.pdf`,
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/dossier`,
         }
       }
@@ -122,7 +122,7 @@ export const decorateDocs = ({
       if (curr.name === ApiRecallDocument.category.REASONS_FOR_RECALL) {
         acc.reasonsForRecallDoc = {
           ...curr,
-          label: `${personName}_${curr.name}.pdf`,
+          label: `${personName}${formattedBookingNumber} ${curr.name}.pdf`,
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/reasons-for-recall/${curr.documentId}`,
         }
       }
