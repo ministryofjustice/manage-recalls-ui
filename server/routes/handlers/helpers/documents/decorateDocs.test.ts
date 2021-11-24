@@ -40,7 +40,7 @@ describe('decorateDocs', () => {
     },
     {
       category: ApiRecallDocument.category.RECALL_NOTIFICATION,
-      documentId: '818',
+      documentId: '828',
     },
     {
       category: ApiRecallDocument.category.LETTER_TO_PRISON,
