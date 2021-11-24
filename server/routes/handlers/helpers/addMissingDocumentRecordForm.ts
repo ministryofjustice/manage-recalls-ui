@@ -69,7 +69,7 @@ export const addMissingDocumentRecordForm = async (req: Request, res: Response):
         req.session.unsavedValues = unsavedValues
         return res.redirect(303, req.originalUrl)
       }
-      return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers?fromPage=missing-documents'}`)
+      return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers'}`)
     } catch (e) {
       logger.error(e)
       req.session.errors = !saveToApiSuccessful
