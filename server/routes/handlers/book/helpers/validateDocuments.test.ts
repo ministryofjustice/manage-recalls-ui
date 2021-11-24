@@ -61,6 +61,36 @@ describe('validateUploadedFileTypes', () => {
     ])
     expect(valuesToSave).toBeUndefined()
   })
+
+  it('returns valuesToSave and no errors if there are more than one of a category that does allow multiples', () => {
+    const fileData = [
+      {
+        category: ApiRecallDocument.category.UNCATEGORISED,
+        originalFileName: 'test.pdf',
+        label: 'Choose a type',
+        fileContent: 'abc',
+        mimeType: 'application/pdf',
+      },
+    ]
+    const categoryData = [
+      {
+        category: ApiRecallDocument.category.UNCATEGORISED,
+        documentId: '123',
+        fileName: 'test.pdf',
+      },
+    ]
+    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, categoryData)
+    expect(errors).toBeUndefined()
+    expect(valuesToSave).toEqual([
+      {
+        category: 'UNCATEGORISED',
+        fileContent: 'abc',
+        label: 'Choose a type',
+        mimeType: 'application/pdf',
+        originalFileName: 'test.pdf',
+      },
+    ])
+  })
 })
 
 describe('validateCategories', () => {
