@@ -38,6 +38,22 @@ describe('decorateDocs', () => {
       documentId: '845',
       fileName: 'missing-docs.msg',
     },
+    {
+      category: ApiRecallDocument.category.RECALL_NOTIFICATION,
+      documentId: '828',
+    },
+    {
+      category: ApiRecallDocument.category.LETTER_TO_PRISON,
+      documentId: '838',
+    },
+    {
+      category: ApiRecallDocument.category.DOSSIER,
+      documentId: '848',
+    },
+    {
+      category: ApiRecallDocument.category.REASONS_FOR_RECALL,
+      documentId: '858',
+    },
   ] as ApiRecallDocument[]
   const missingDocumentsRecords = [
     {
@@ -167,6 +183,14 @@ describe('decorateDocs', () => {
         findDocCategory(ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
         findDocCategory(ApiRecallDocument.category.OASYS_RISK_ASSESSMENT),
       ],
+      dossier: {
+        category: 'DOSSIER',
+        documentId: '848',
+        label: 'BADGER BOBBY 123 DOSSIER.pdf',
+        name: 'DOSSIER',
+        type: 'generated',
+        url: '/persons/A123/recalls/abc-456/documents/dossier',
+      },
       dossierEmail: {
         category: 'DOSSIER_EMAIL',
         label: 'Dossier email',
@@ -176,6 +200,14 @@ describe('decorateDocs', () => {
         documentId: '37423-2389347-234',
         url: '/persons/A123/recalls/abc-456/documents/37423-2389347-234',
       },
+      letterToPrison: {
+        category: 'LETTER_TO_PRISON',
+        documentId: '838',
+        label: 'BADGER BOBBY 123 LETTER TO PRISON.pdf',
+        name: 'LETTER_TO_PRISON',
+        type: 'generated',
+        url: '/persons/A123/recalls/abc-456/documents/letter-to-prison',
+      },
       recallRequestEmail: {
         category: 'RECALL_REQUEST_EMAIL',
         documentId: '1234-3455-8542-c3ac-8c963f66afa6',
@@ -184,6 +216,22 @@ describe('decorateDocs', () => {
         name: 'RECALL_REQUEST_EMAIL',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/1234-3455-8542-c3ac-8c963f66afa6',
+      },
+      reasonsForRecallDoc: {
+        category: 'REASONS_FOR_RECALL',
+        documentId: '858',
+        label: 'BADGER BOBBY 123 REASONS FOR RECALL.pdf',
+        name: 'REASONS_FOR_RECALL',
+        type: 'generated',
+        url: '/persons/A123/recalls/abc-456/documents/reasons-for-recall/858',
+      },
+      recallNotification: {
+        category: 'RECALL_NOTIFICATION',
+        documentId: '828',
+        label: 'BADGER BOBBY 123 RECALL NOTIFICATION.pdf',
+        name: 'RECALL_NOTIFICATION',
+        type: 'generated',
+        url: '/persons/A123/recalls/abc-456/documents/recall-notification',
       },
       recallNotificationEmail: {
         category: 'RECALL_NOTIFICATION_EMAIL',

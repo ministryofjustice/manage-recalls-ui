@@ -34,7 +34,11 @@ export const decorateDocs = ({
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   missingDocumentsRecord: DecoratedMissingDocumentRecord
   recallNotificationEmail?: DecoratedDocument
+  recallNotification?: DecoratedDocument
   revocationOrder?: DecoratedDocument
+  dossier?: DecoratedDocument
+  letterToPrison?: DecoratedDocument
+  reasonsForRecallDoc?: string
   recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
   versionedCategory?: DecoratedDocument
@@ -82,6 +86,15 @@ export const decorateDocs = ({
       if (curr.type === 'document') {
         acc.documents.push(curr)
       }
+
+      if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION) {
+        acc.recallNotification = {
+          ...curr,
+          label: `${personName}${formattedBookingNumber} RECALL NOTIFICATION.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/recall-notification`,
+        }
+      }
+
       if (curr.name === ApiRecallDocument.category.REVOCATION_ORDER) {
         acc.revocationOrder = {
           ...curr,
@@ -89,6 +102,31 @@ export const decorateDocs = ({
           url: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/${curr.documentId}`,
         }
       }
+
+      if (curr.name === ApiRecallDocument.category.LETTER_TO_PRISON) {
+        acc.letterToPrison = {
+          ...curr,
+          label: `${personName}${formattedBookingNumber} LETTER TO PRISON.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
+        }
+      }
+
+      if (curr.name === ApiRecallDocument.category.DOSSIER) {
+        acc.dossier = {
+          ...curr,
+          label: `${personName}${formattedBookingNumber} DOSSIER.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/dossier`,
+        }
+      }
+
+      if (curr.name === ApiRecallDocument.category.REASONS_FOR_RECALL) {
+        acc.reasonsForRecallDoc = {
+          ...curr,
+          label: `${personName}${formattedBookingNumber} REASONS FOR RECALL.pdf`,
+          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/reasons-for-recall/${curr.documentId}`,
+        }
+      }
+
       if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
         acc.recallNotificationEmail = curr
       }
@@ -119,8 +157,12 @@ export const decorateDocs = ({
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,
+      recallNotification: undefined,
       revocationOrder: undefined,
       versionedCategory,
+      letterToPrison: undefined,
+      dossier: undefined,
+      reasonsForRecallDoc: undefined,
     }
   )
 }

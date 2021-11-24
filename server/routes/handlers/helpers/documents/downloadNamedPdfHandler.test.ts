@@ -1,13 +1,19 @@
 import nock from 'nock'
 import { Request, Response } from 'express'
 import { mockGetRequest, mockResponseWithAuthenticatedUserAndUserId } from '../../../testutils/mockRequestUtils'
-import { downloadDossier, downloadLetterToPrison, downloadRecallNotification } from './downloadNamedPdfHandler'
+import {
+  downloadDossier,
+  downloadLetterToPrison,
+  downloadReasonsForRecallOrder,
+  downloadRecallNotification,
+} from './downloadNamedPdfHandler'
 import config from '../../../../config'
 import recall from '../../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 const nomsNumber = 'AA123AA'
 const recallId = '123'
 const userId = '321'
+const documentId = '88'
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
@@ -22,7 +28,7 @@ describe('downloadNamedPdfHandler', () => {
   }
 
   beforeEach(() => {
-    req = mockGetRequest({ params: { nomsNumber, recallId } })
+    req = mockGetRequest({ params: { nomsNumber, recallId, documentId } })
     const { res: resp } = mockResponseWithAuthenticatedUserAndUserId(userToken.access_token, userId)
     res = resp
   })
@@ -66,6 +72,20 @@ describe('downloadNamedPdfHandler', () => {
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `inline; filename="BADGER BOBBY A123456 RECALL DOSSIER.pdf"`,
+    })
+    expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+  })
+
+  it('should return reasons for recall from manage recalls api', async () => {
+    fakeManageRecallsApi.get(`/recalls/${recallId}`).reply(200, recall)
+    fakeManageRecallsApi.post('/search').reply(200, [person])
+    fakeManageRecallsApi
+      .get(`/recalls/${recallId}/documents/${documentId}`)
+      .reply(200, { content: expectedPdfContents })
+    await downloadReasonsForRecallOrder(req, res)
+    expect(res.writeHead).toHaveBeenCalledWith(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `inline; filename="BADGER BOBBY A123456 REASONS FOR RECALL.pdf"`,
     })
     expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })

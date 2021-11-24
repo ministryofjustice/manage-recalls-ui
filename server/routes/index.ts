@@ -19,6 +19,7 @@ import { validateProbationOfficer } from './handlers/book/helpers/validateProbat
 import {
   downloadDossier,
   downloadLetterToPrison,
+  downloadReasonsForRecallOrder,
   downloadRecallNotification,
   downloadRevocationOrder,
 } from './handlers/helpers/documents/downloadNamedPdfHandler'
@@ -130,6 +131,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
   get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
   get(`${basePath}/documents/revocation-order/:documentId`, downloadRevocationOrder)
+  get(`${basePath}/documents/reasons-for-recall/:documentId`, downloadReasonsForRecallOrder)
   get(`${basePath}/documents/:documentId`, downloadUploadedDocumentOrEmail)
 
   get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))

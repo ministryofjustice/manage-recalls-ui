@@ -53,6 +53,26 @@ context('View recall', () => {
             documentId: '123',
             fileName: 'chase-documents.msg',
           },
+          {
+            category: 'RECALL_NOTIFICATION',
+            documentId: '1123',
+          },
+          {
+            category: 'REVOCATION_ORDER',
+            documentId: '2123',
+          },
+          {
+            category: 'LETTER_TO_PRISON',
+            documentId: '3123',
+          },
+          {
+            category: 'DOSSIER',
+            documentId: '4123',
+          },
+          {
+            category: 'REASONS_FOR_RECALL',
+            documentId: '5123',
+          },
         ],
       },
     })
@@ -120,6 +140,26 @@ context('View recall', () => {
     recallInformation.assertElementHasText({
       qaAttr: 'required-LICENCE',
       textToFind: 'Missing: needed to create dossier',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
+      textToFind: 'BADGER BOBBY A123456 RECALL NOTIFICATION.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
+      textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON',
+      textToFind: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-DOSSIER',
+      textToFind: 'BADGER BOBBY A123456 DOSSIER.pdf',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
+      textToFind: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
     })
     recallInformation.assertElementHasText({
       qaAttr: 'missingDocumentsDetail',
