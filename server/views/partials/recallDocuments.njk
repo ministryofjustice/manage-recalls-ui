@@ -9,7 +9,7 @@
                 {%  if recall.recallNotification.name %}
                 <a class='govuk-link' href='{{ recall.recallNotification.url }}' target='_blank' data-qa='appGeneratedDocuments-{{ recall.recallNotification.category }}'>{{ recall.recallNotification.label }}</a>
                  {% else %}
-                     Not available
+                     <span data-qa='{{ recall.recallNotification.category }}NotAvailable'>Not available</span>
                 {% endif %}
             </dd>
         </div>
@@ -23,7 +23,7 @@
             {%  if recall.revocationOrder.name %}
                 <a class='govuk-link' href='{{ recall.revocationOrder.url }}' target='_blank' data-qa='appGeneratedDocuments-{{ recall.revocationOrder.category }}'>{{ recall.revocationOrder.label }}</a>
             {% else %}
-                Not available
+                <span data-qa='{{ recall.revocationOrder.category }}NotAvailable'>Not available</span>
             {% endif %}
         </dd>
     </div>
@@ -37,7 +37,7 @@
             {%  if recall.letterToPrison.name %}
                 <a class='govuk-link' href='{{ recall.letterToPrison.url }}' target='_blank' data-qa='appGeneratedDocuments-{{ recall.letterToPrison.category }}'>{{ recall.letterToPrison.label }}</a>
             {% else %}
-                Not available
+                <span data-qa='{{ recall.letterToPrison.category }}NotAvailable'>Not available</span>
             {% endif %}
         </dd>
     </div>
@@ -51,7 +51,7 @@
             {%  if recall.dossier.name %}
                 <a class='govuk-link' href='{{ recall.dossier.url }}' target='_blank' data-qa='appGeneratedDocuments-{{ recall.dossier.category }}'>{{ recall.dossier.label }}</a>
             {% else %}
-                Not available
+                <span data-qa='{{ recall.dossier.category }}NotAvailable'>Not available</span>
             {% endif %}
         </dd>
     </div>
@@ -65,7 +65,7 @@
             {%  if recall.reasonsForRecallDoc.name %}
                 <a class='govuk-link' href='{{ recall.reasonsForRecallDoc.url }}' target='_blank' data-qa='appGeneratedDocuments-{{ recall.reasonsForRecallDoc.category }}'>{{ recall.reasonsForRecallDoc.label }}</a>
             {% else %}
-                Not available
+                <span data-qa='{{ recall.reasonsForRecallDoc.category }}NotAvailable'>Not available</span>
             {% endif %}
         </dd>
     </div>

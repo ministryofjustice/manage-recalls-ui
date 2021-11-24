@@ -207,7 +207,7 @@ describe('decorateDocs', () => {
       letterToPrison: {
         category: 'LETTER_TO_PRISON',
         documentId: '838',
-        label: 'BADGER BOBBY 123 LETTER_TO_PRISON.pdf',
+        label: 'BADGER BOBBY 123 LETTER TO PRISON.pdf',
         name: 'LETTER_TO_PRISON',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/letter-to-prison',
@@ -224,7 +224,7 @@ describe('decorateDocs', () => {
       reasonsForRecallDoc: {
         category: 'REASONS_FOR_RECALL',
         documentId: '858',
-        label: 'BADGER BOBBY 123 REASONS_FOR_RECALL.pdf',
+        label: 'BADGER BOBBY 123 REASONS FOR RECALL.pdf',
         name: 'REASONS_FOR_RECALL',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/reasons-for-recall/858',
@@ -232,7 +232,7 @@ describe('decorateDocs', () => {
       recallNotification: {
         category: 'RECALL_NOTIFICATION',
         documentId: '828',
-        label: 'BADGER BOBBY 123 RECALL_NOTIFICATION.pdf',
+        label: 'BADGER BOBBY 123 RECALL NOTIFICATION.pdf',
         name: 'RECALL_NOTIFICATION',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/recall-notification',

@@ -53,6 +53,26 @@ context('View recall', () => {
             documentId: '123',
             fileName: 'chase-documents.msg',
           },
+          {
+            category: 'RECALL_NOTIFICATION',
+            documentId: '1123',
+          },
+          {
+            category: 'REVOCATION_ORDER',
+            documentId: '2123',
+          },
+          {
+            category: 'LETTER_TO_PRISON',
+            documentId: '3123',
+          },
+          {
+            category: 'DOSSIER',
+            documentId: '4123',
+          },
+          {
+            category: 'REASONS_FOR_RECALL',
+            documentId: '5123',
+          },
         ],
       },
     })
@@ -123,7 +143,7 @@ context('View recall', () => {
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
-      textToFind: 'BOBBY BADGER REASONS FOR RECALL.pdf',
+      textToFind: 'BOBBY BADGER RECALL NOTIFICATION.pdf',
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
