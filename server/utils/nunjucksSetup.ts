@@ -24,7 +24,12 @@ import {
 import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { getReferenceDataItemLabel } from '../referenceData'
-import { formatDocLabel } from '../routes/handlers/helpers/documents'
+import {
+  formatDocLabel,
+  generatedDocCategoriesList,
+  getGeneratedDocFileName,
+  getGeneratedDocUrlPath,
+} from '../routes/handlers/helpers/documents'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -65,6 +70,9 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('dueDateLabel', dueDateLabel)
   njkEnv.addGlobal('recallStatusTagProperties', recallStatusTagProperties)
   njkEnv.addGlobal('formatDocLabel', formatDocLabel)
+  njkEnv.addGlobal('getGeneratedDocFileName', getGeneratedDocFileName)
+  njkEnv.addGlobal('getGeneratedDocUrlPath', getGeneratedDocUrlPath)
+  njkEnv.addGlobal('generatedDocCategoriesList', generatedDocCategoriesList)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)

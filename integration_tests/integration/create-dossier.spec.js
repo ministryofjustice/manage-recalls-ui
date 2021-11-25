@@ -169,9 +169,17 @@ context('Create a dossier', () => {
       qaAttr: 'getDossierLink',
       href: `/persons/${nomsNumber}/recalls/${recallId}/documents/dossier`,
     })
+    dossierDownload.assertElementHasText({
+      qaAttr: 'getDossierFileName',
+      textToFind: 'Filename: BADGER BOBBY A123456 RECALL DOSSIER.pdf',
+    })
     dossierDownload.assertLinkHref({
       qaAttr: 'getLetterLink',
       href: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
+    })
+    dossierDownload.assertElementHasText({
+      qaAttr: 'getLetterFileName',
+      textToFind: 'Filename: BADGER BOBBY A123456 LETTER TO PRISON.pdf',
     })
     dossierDownload.confirmDossierChecked()
     dossierDownload.clickContinue()

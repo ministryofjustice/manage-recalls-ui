@@ -75,7 +75,7 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.documents).toEqual([
+    expect(res.locals.recall.documentsUploaded).toEqual([
       {
         ...findDocCategory(ApiRecallDocument.category.PART_A_RECALL_REPORT),
         category: ApiRecallDocument.category.PART_A_RECALL_REPORT,

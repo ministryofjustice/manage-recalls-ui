@@ -170,16 +170,25 @@ export interface ConfirmationMessage {
   type: 'success'
 }
 
-export interface DecoratedRecall extends RecallResponseWithDocuments {
-  documents: DecoratedDocument[]
+export interface DecoratedRecall extends RecallResponseWithDocuments, DocumentDecorations {
+  enableDeleteDocuments: boolean
+}
+
+export interface DocumentDecorations {
+  documentsUploaded: DecoratedDocument[]
   documentCategories: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   missingDocumentsRecord: DecoratedMissingDocumentRecord
   recallNotificationEmail?: DecoratedDocument
-  revocationOrder?: DecoratedDocument
   recallRequestEmail?: DecoratedDocument
   dossierEmail?: DecoratedDocument
   versionedCategory?: DecoratedDocument
-  enableDeleteDocuments: boolean
+  documentsGenerated: {
+    RECALL_NOTIFICATION?: DecoratedDocument
+    REVOCATION_ORDER?: DecoratedDocument
+    LETTER_TO_PRISON?: DecoratedDocument
+    DOSSIER?: DecoratedDocument
+    REASONS_FOR_RECALL?: DecoratedDocument
+  }
 }

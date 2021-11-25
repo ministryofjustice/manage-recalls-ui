@@ -98,9 +98,9 @@ describe('uploadRecallDocumentsFormHandler', () => {
     })
     ;(getPerson as jest.Mock).mockResolvedValue(person)
     resp.render = (partial, data) => {
-      expect(data.recall.documents).toHaveLength(1)
-      expect(data.recall.documents[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
-      expect(data.recall.documents[0]).toHaveProperty('documentId', '1234-5717-4562-b3fc-2c963f66afa6')
+      expect(data.recall.documentsUploaded).toHaveLength(1)
+      expect(data.recall.documentsUploaded[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
+      expect(data.recall.documentsUploaded[0]).toHaveProperty('documentId', '1234-5717-4562-b3fc-2c963f66afa6')
       expect(data.recall.addToExistingUploads).toEqual(true)
       done()
     }

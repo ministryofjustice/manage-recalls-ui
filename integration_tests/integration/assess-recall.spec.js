@@ -71,14 +71,6 @@ context('Assess a recall', () => {
   const personName = 'Bobby Badger'
   const status = 'BOOKED_ON'
 
-  const mockFileDownload = ({ fileName, docCategory }) => {
-    cy.task('expectGetRecallDocument', {
-      category: docCategory,
-      file: 'abc',
-      fileName,
-      documentId: '123',
-    })
-  }
   const checkDownload = fileName => {
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
@@ -120,6 +112,10 @@ context('Assess a recall', () => {
     assessRecallPrison.clickContinue()
     const assessRecallDownload = assessRecallDownloadPage.verifyOnPage()
     assessRecallDownload.checkRecallNotificationLink({ noms: nomsNumber, recall: recallId })
+    assessRecallDownload.assertElementHasText({
+      qaAttr: 'getRecallNotificationFileName',
+      textToFind: 'Filename: IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
+    })
     assessRecallDownload.clickContinue()
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage()
     assessRecallEmail.confirmEmailSent()
@@ -136,7 +132,12 @@ context('Assess a recall', () => {
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     const recallInformation = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     const fileName = 'recall-request.eml'
-    mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
+    cy.task('expectGetRecallDocument', {
+      category: 'RECALL_REQUEST_EMAIL',
+      file: 'abc',
+      fileName,
+      documentId: '123',
+    })
     cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
     checkDownload(fileName)
     // missing documents

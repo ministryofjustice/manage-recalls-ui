@@ -109,7 +109,7 @@ describe('downloadNamedPdfHandler', () => {
     await downloadDossier(req, res)
     expect(res.writeHead).toHaveBeenCalledWith(200, {
       'Content-Type': 'application/pdf',
-      'Content-Disposition': `inline; filename=" A123456 RECALL DOSSIER.pdf"`,
+      'Content-Disposition': `inline; filename="  A123456 RECALL DOSSIER.pdf"`,
     })
     expect(res.end).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })

@@ -6,8 +6,8 @@
           Revocation order
         </dt>
         <dd class=" govuk-summary-list__value">
-          {% if recall.revocationOrder %}
-          <a class='govuk-link' href='{{ recall.revocationOrder.url }}' target='_blank' data-qa='generatedDocument-{{ recall.revocationOrder.category }}'>{{ recall.revocationOrder.label }}</a>
+          {% if recall.documentsGenerated.REVOCATION_ORDER %}
+          <a class='govuk-link' href='{{ recall.documentsGenerated.REVOCATION_ORDER.url }}' target='_blank' data-qa='generatedDocument-{{ recall.documentsGenerated.REVOCATION_ORDER.category }}'>{{ recall.documentsGenerated.REVOCATION_ORDER.fileName }}</a>
           {% else %}
             <span data-qa='revocationOrderNotAvailable'>Not available</span>
           {% endif %}
