@@ -256,34 +256,34 @@ describe('decorateDocs', () => {
   })
 
   it('returns data on uploaded emails', () => {
-    expect(results.dossierEmail).toEqual({
-      category: 'DOSSIER_EMAIL',
-      label: 'Dossier email',
-      name: 'DOSSIER_EMAIL',
-      type: 'email',
-      fileName: 'dossier.msg',
-      documentId: '37423-2389347-234',
-      url: '/persons/A123/recalls/abc-456/documents/37423-2389347-234',
-    })
-
-    expect(results.recallRequestEmail).toEqual({
-      category: 'RECALL_REQUEST_EMAIL',
-      documentId: '1234-3455-8542-c3ac-8c963f66afa6',
-      fileName: 'recall-request.eml',
-      label: 'Recall request email',
-      name: 'RECALL_REQUEST_EMAIL',
-      type: 'email',
-      url: '/persons/A123/recalls/abc-456/documents/1234-3455-8542-c3ac-8c963f66afa6',
-    })
-
-    expect(results.recallNotificationEmail).toEqual({
-      category: 'RECALL_NOTIFICATION_EMAIL',
-      documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
-      fileName: '2021-07-03 Phil Jones recall.msg',
-      label: 'Recall notification email',
-      name: 'RECALL_NOTIFICATION_EMAIL',
-      type: 'email',
-      url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
+    expect(results.emailsUploaded).toEqual({
+      DOSSIER_EMAIL: {
+        category: 'DOSSIER_EMAIL',
+        label: 'Dossier email',
+        name: 'DOSSIER_EMAIL',
+        type: 'email',
+        fileName: 'dossier.msg',
+        documentId: '37423-2389347-234',
+        url: '/persons/A123/recalls/abc-456/documents/37423-2389347-234',
+      },
+      RECALL_REQUEST_EMAIL: {
+        category: 'RECALL_REQUEST_EMAIL',
+        documentId: '1234-3455-8542-c3ac-8c963f66afa6',
+        fileName: 'recall-request.eml',
+        label: 'Recall request email',
+        name: 'RECALL_REQUEST_EMAIL',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/1234-3455-8542-c3ac-8c963f66afa6',
+      },
+      RECALL_NOTIFICATION_EMAIL: {
+        category: 'RECALL_NOTIFICATION_EMAIL',
+        documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+        fileName: '2021-07-03 Phil Jones recall.msg',
+        label: 'Recall notification email',
+        name: 'RECALL_NOTIFICATION_EMAIL',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
+      },
     })
 
     expect(results.missingDocumentsRecord).toEqual({

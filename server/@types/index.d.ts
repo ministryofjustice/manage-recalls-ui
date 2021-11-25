@@ -55,12 +55,6 @@ export interface RecallFormValues {
   missingDocumentsDetail?: string
 }
 
-export interface RecallResponseWithDocuments extends RecallResponse {
-  dossierEmail?: DecoratedDocument
-  recallNotificationEmail?: DecoratedDocument
-  documents: DecoratedDocument[]
-}
-
 export interface Prison {
   prisonId: string
   prisonName: string
@@ -170,7 +164,7 @@ export interface ConfirmationMessage {
   type: 'success'
 }
 
-export interface DecoratedRecall extends RecallResponseWithDocuments, DocumentDecorations {
+export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
   enableDeleteDocuments: boolean
 }
 
@@ -180,10 +174,12 @@ export interface DocumentDecorations {
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   missingDocumentsRecord: DecoratedMissingDocumentRecord
-  recallNotificationEmail?: DecoratedDocument
-  recallRequestEmail?: DecoratedDocument
-  dossierEmail?: DecoratedDocument
   versionedCategory?: DecoratedDocument
+  emailsUploaded: {
+    RECALL_NOTIFICATION_EMAIL?: DecoratedDocument
+    RECALL_REQUEST_EMAIL?: DecoratedDocument
+    DOSSIER_EMAIL?: DecoratedDocument
+  }
   documentsGenerated: {
     RECALL_NOTIFICATION?: DecoratedDocument
     REVOCATION_ORDER?: DecoratedDocument

@@ -70,7 +70,7 @@
                                 }) }}
                             </div>
                             <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
-                            {%  set emailField = recall.dossierEmail %}
+                            {%  set emailField = recall.emailsUploaded.DOSSIER_EMAIL %}
                             {%  include '../partials/uploadedEmailLink.njk' %}
                             {{ govukFileUpload({
                                 id: "dossierEmailFileName",

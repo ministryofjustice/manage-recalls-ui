@@ -59,7 +59,7 @@
                     }) }}
                     </div>
                     <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the recall email</h2>
-                    {%  set emailField = recall.recallRequestEmail %}
+                    {%  set emailField = recall.emailsUploaded.RECALL_REQUEST_EMAIL %}
                     {%  include '../partials/uploadedEmailLink.njk' %}
 
                     {{ govukFileUpload({

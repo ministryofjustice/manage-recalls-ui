@@ -42,7 +42,7 @@
             Recall email uploaded
         </dt>
         <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
-            <a href='{{ recall.recallRequestEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallRequestEmail.category}}' download>{{ recall.recallRequestEmail.fileName }}</a>
+            <a href='{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.category}}' download>{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.fileName }}</a>
         </dd>
         <dd class=" govuk-summary-list__actions">
             {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
@@ -127,7 +127,7 @@
                 Recall notification email uploaded
             </dt>
             <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
-                <a href='{{ recall.recallNotificationEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.recallNotificationEmail.category}}' download>{{ recall.recallNotificationEmail.fileName }}</a>
+                <a href='{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.category}}' download>{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.fileName }}</a>
             </dd>
             <dd class=" govuk-summary-list__actions">
             </dd>
@@ -162,7 +162,7 @@
                 Dossier email uploaded
             </dt>
             <dd class=" govuk-summary-list__value" data-qa='dossierEmailFileName'>
-                <a href='{{ recall.dossierEmail.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.dossierEmail.category}}' download>{{ recall.dossierEmail.fileName }}</a>
+                <a href='{{ recall.emailsUploaded.DOSSIER_EMAIL.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.emailsUploaded.DOSSIER_EMAIL.category}}' download>{{ recall.emailsUploaded.DOSSIER_EMAIL.fileName }}</a>
             </dd>
             <dd class=" govuk-summary-list__actions">
             </dd>
