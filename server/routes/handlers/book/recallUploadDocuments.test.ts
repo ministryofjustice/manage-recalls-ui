@@ -541,6 +541,56 @@ describe('uploadRecallDocumentsFormHandler', () => {
     uploadRecallDocumentsFormHandler(req, res)
   })
 
+  it('adds a fromPage querystring to Missing documents URL if one is present', done => {
+    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = allFiles
+      req.body = {
+        continue: 'continue',
+      }
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
+      documents: [
+        {
+          category: 'LICENCE',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Licence Wesley Holt.pdf',
+        },
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'Pre Cons Wesley Holt.pdf',
+        },
+        {
+          category: 'OASYS_RISK_ASSESSMENT',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'OAsys Wesley Holt.pdf',
+        },
+      ],
+    })
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: {
+          basePath: `/persons/123/recalls/456/`,
+          fromPage: 'assess',
+          fromHash: 'documents',
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual(`/persons/123/recalls/456/missing-documents?fromPage=assess#documents`)
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
+
   it('deletes a document', done => {
     const documentId = '123'
     const fromPage = 'check-answers'
