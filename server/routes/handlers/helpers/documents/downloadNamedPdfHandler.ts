@@ -1,26 +1,21 @@
 import type { Request, Response } from 'express'
 import {
-  getRecall,
   getGeneratedDocument,
+  getRecall,
   getRecallNotification,
   getStoredDocument,
 } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getPerson } from '../personCache'
 import { isInvalid } from '../index'
-import { Pdf } from '../../../../@types/manage-recalls-api'
+import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { Pdf } from '../../../../@types/manage-recalls-api/models/Pdf'
 import { ObjectMap } from '../../../../@types'
-
-type FormatFn = (args: { personName: string; bookingNumber: string }) => string
+import { getGeneratedDocFileName } from './index'
 
 type DownloadFn = (params: ObjectMap<string>, token: string, uuid?: string) => Promise<Pdf>
 
-export const formatPersonName = ({ firstName, lastName }: { firstName?: string; lastName?: string }) =>
-  `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
-
-export const formatBookingNumber = (bookingNumber: string) => (bookingNumber ? ` ${bookingNumber.toUpperCase()}` : '')
-
 const downloadNamedPdfHandler =
-  (downloadFn: DownloadFn, formatNameFn: FormatFn) => async (req: Request, res: Response) => {
+  (downloadFn: DownloadFn, docCategory: ApiRecallDocument.category) => async (req: Request, res: Response) => {
     const { nomsNumber, recallId, documentId } = req.params
     const { token, uuid } = res.locals.user
     if (isInvalid(nomsNumber) || isInvalid(recallId)) {
@@ -37,9 +32,14 @@ const downloadNamedPdfHandler =
       return res.sendStatus(500)
     }
     // if the other two calls fail to get metadata, we could still serve the PDF with a generic filename
-    const personName = person.status === 'fulfilled' ? formatPersonName(person.value) : ''
-    const bookingNumber = recall.status === 'fulfilled' ? formatBookingNumber(recall.value.bookingNumber) : ''
-    const fileName = formatNameFn({ personName, bookingNumber })
+    const personDetails = person.status === 'fulfilled' ? person.value : {}
+    const bookingNumber = recall.status === 'fulfilled' ? recall.value.bookingNumber : ''
+    const fileName = getGeneratedDocFileName({
+      firstName: personDetails.firstName,
+      lastName: personDetails.lastName,
+      bookingNumber,
+      docCategory,
+    })
     const pdfContentsByteArray = Buffer.from(pdf.value.content, 'base64')
 
     res.writeHead(200, {
@@ -51,25 +51,25 @@ const downloadNamedPdfHandler =
 
 export const downloadRecallNotification = downloadNamedPdfHandler(
   getRecallNotification(),
-  ({ personName, bookingNumber }) => `IN CUSTODY RECALL ${personName}${bookingNumber}.pdf`
+  ApiRecallDocument.category.RECALL_NOTIFICATION
 )
 
 export const downloadDossier = downloadNamedPdfHandler(
   getGeneratedDocument('dossier'),
-  ({ personName, bookingNumber }) => `${personName}${bookingNumber} RECALL DOSSIER.pdf`
+  ApiRecallDocument.category.DOSSIER
 )
 
 export const downloadLetterToPrison = downloadNamedPdfHandler(
   getGeneratedDocument('letter-to-prison'),
-  ({ personName, bookingNumber }) => `${personName}${bookingNumber} LETTER TO PRISON.pdf`
+  ApiRecallDocument.category.LETTER_TO_PRISON
 )
 
 export const downloadRevocationOrder = downloadNamedPdfHandler(
   getStoredDocument,
-  ({ personName, bookingNumber }) => `${personName}${bookingNumber} REVOCATION ORDER.pdf`
+  ApiRecallDocument.category.REVOCATION_ORDER
 )
 
 export const downloadReasonsForRecallOrder = downloadNamedPdfHandler(
   getStoredDocument,
-  ({ personName, bookingNumber }) => `${personName}${bookingNumber} REASONS FOR RECALL.pdf`
+  ApiRecallDocument.category.REASONS_FOR_RECALL
 )

@@ -1,0 +1,17 @@
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='recall-documents'>Recall documents</h2>
+<dl class="govuk-summary-list">
+    {% for category in generatedDocCategoriesList() %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                {{ category.label }}
+            </dt>
+            <dd class=" govuk-summary-list__value">
+                {%  if recall.documentsGenerated[category.name] %}
+                <a class='govuk-link' href='{{ recall.documentsGenerated[category.name].url }}' target='_blank' data-qa='appGeneratedDocuments-{{ category.name }}'>{{ recall.documentsGenerated[category.name].fileName }}</a>
+                 {% else %}
+                     <span data-qa='{{ category.name }}NotAvailable'>Not available</span>
+                {% endif %}
+            </dd>
+        </div>
+    {% endfor %}
+</dl>

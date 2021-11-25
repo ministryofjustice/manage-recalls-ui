@@ -1,13 +1,15 @@
 import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
-import {
-  DecoratedDocument,
-  DecoratedMissingDocumentRecord,
-  DocumentCategoryMetadata,
-} from '../../../../@types/documents'
+import { DecoratedDocument } from '../../../../@types/documents'
 import { documentCategories } from './documentCategories'
-import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from './index'
-import { formatBookingNumber, formatPersonName } from './downloadNamedPdfHandler'
+import {
+  getGeneratedDocFileName,
+  getGeneratedDocUrlPath,
+  missingNotRequiredDocsList,
+  requiredDocsList,
+  uploadedDocCategoriesList,
+} from './index'
 import { MissingDocumentsRecordResponse } from '../../../../@types/manage-recalls-api/models/MissingDocumentsRecordResponse'
+import { DocumentDecorations } from '../../../../@types'
 
 export const decorateDocs = ({
   docs,
@@ -27,22 +29,7 @@ export const decorateDocs = ({
   lastName?: string
   bookingNumber: string
   versionedCategoryName?: string
-}): {
-  documents: DecoratedDocument[]
-  documentCategories: DocumentCategoryMetadata[]
-  requiredDocsMissing: DocumentCategoryMetadata[]
-  missingNotRequiredDocs: DocumentCategoryMetadata[]
-  missingDocumentsRecord: DecoratedMissingDocumentRecord
-  recallNotificationEmail?: DecoratedDocument
-  recallNotification?: DecoratedDocument
-  revocationOrder?: DecoratedDocument
-  dossier?: DecoratedDocument
-  letterToPrison?: DecoratedDocument
-  reasonsForRecallDoc?: string
-  recallRequestEmail?: DecoratedDocument
-  dossierEmail?: DecoratedDocument
-  versionedCategory?: DecoratedDocument
-} => {
+}): DocumentDecorations => {
   const decoratedUploadedDocs = [] as DecoratedDocument[]
   documentCategories.forEach(documentCategory => {
     docs
@@ -79,51 +66,34 @@ export const decorateDocs = ({
       versionedCategory = { label, name, type, version, url, documentId, category, createdDateTime }
     }
   }
-  const personName = formatPersonName({ firstName, lastName })
-  const formattedBookingNumber = formatBookingNumber(bookingNumber)
   return decoratedUploadedDocs.reduce(
     (acc, curr) => {
       if (curr.type === 'document') {
-        acc.documents.push(curr)
+        acc.documentsUploaded.push(curr)
       }
-
-      if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION) {
-        acc.recallNotification = {
+      if (
+        [
+          ApiRecallDocument.category.RECALL_NOTIFICATION,
+          ApiRecallDocument.category.REVOCATION_ORDER,
+          ApiRecallDocument.category.LETTER_TO_PRISON,
+          ApiRecallDocument.category.DOSSIER,
+          ApiRecallDocument.category.REASONS_FOR_RECALL,
+        ].includes(curr.name)
+      ) {
+        acc.documentsGenerated[curr.name] = {
           ...curr,
-          label: `${personName}${formattedBookingNumber} RECALL NOTIFICATION.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/recall-notification`,
-        }
-      }
-
-      if (curr.name === ApiRecallDocument.category.REVOCATION_ORDER) {
-        acc.revocationOrder = {
-          ...curr,
-          label: `${personName}${formattedBookingNumber} REVOCATION ORDER.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/${curr.documentId}`,
-        }
-      }
-
-      if (curr.name === ApiRecallDocument.category.LETTER_TO_PRISON) {
-        acc.letterToPrison = {
-          ...curr,
-          label: `${personName}${formattedBookingNumber} LETTER TO PRISON.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
-        }
-      }
-
-      if (curr.name === ApiRecallDocument.category.DOSSIER) {
-        acc.dossier = {
-          ...curr,
-          label: `${personName}${formattedBookingNumber} DOSSIER.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/dossier`,
-        }
-      }
-
-      if (curr.name === ApiRecallDocument.category.REASONS_FOR_RECALL) {
-        acc.reasonsForRecallDoc = {
-          ...curr,
-          label: `${personName}${formattedBookingNumber} REASONS FOR RECALL.pdf`,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/reasons-for-recall/${curr.documentId}`,
+          fileName: getGeneratedDocFileName({
+            firstName,
+            lastName,
+            bookingNumber,
+            docCategory: curr.name,
+          }),
+          url: getGeneratedDocUrlPath({
+            recallId,
+            nomsNumber,
+            documentId: curr.documentId,
+            docCategory: curr.name,
+          }),
         }
       }
 
@@ -145,7 +115,7 @@ export const decorateDocs = ({
       return acc
     },
     {
-      documents: [],
+      documentsUploaded: [],
       missingDocumentsRecord: undefined,
       documentCategories: decoratedDocTypes,
       requiredDocsMissing: requiredDocsList().filter(
@@ -157,12 +127,8 @@ export const decorateDocs = ({
       recallNotificationEmail: undefined,
       recallRequestEmail: undefined,
       dossierEmail: undefined,
-      recallNotification: undefined,
-      revocationOrder: undefined,
       versionedCategory,
-      letterToPrison: undefined,
-      dossier: undefined,
-      reasonsForRecallDoc: undefined,
+      documentsGenerated: {},
     }
   )
 }

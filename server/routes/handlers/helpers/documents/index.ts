@@ -52,6 +52,9 @@ export const requiredDocsList = (): DocumentCategoryMetadata[] =>
 export const missingNotRequiredDocsList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document' && doc.hintIfMissing)
 
+export const generatedDocCategoriesList = (): DocumentCategoryMetadata[] =>
+  documentCategories.filter(doc => doc.type === 'generated')
+
 export const listMissingRequiredDocs = (docs: ApiRecallDocument[]): string[] => {
   const listOfRequiredAndDesired = [...requiredDocsList(), ...missingNotRequiredDocsList()]
   return listOfRequiredAndDesired
@@ -159,3 +162,64 @@ export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlIn
 
 export const findDocCategory = (category: ApiRecallDocument.category) =>
   documentCategories.find(cat => cat.name === category)
+
+export const getGeneratedDocFileName = ({
+  firstName,
+  lastName,
+  bookingNumber,
+  docCategory,
+}: {
+  firstName: string
+  lastName: string
+  bookingNumber: string
+  docCategory: ApiRecallDocument.category
+}) => {
+  const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
+  switch (docCategory) {
+    case ApiRecallDocument.category.RECALL_NOTIFICATION:
+      return `IN CUSTODY RECALL ${details}.pdf`
+    case ApiRecallDocument.category.DOSSIER:
+      return `${details} RECALL DOSSIER.pdf`
+    case ApiRecallDocument.category.LETTER_TO_PRISON:
+      return `${details} LETTER TO PRISON.pdf`
+    case ApiRecallDocument.category.REVOCATION_ORDER:
+      return `${details} REVOCATION ORDER.pdf`
+    case ApiRecallDocument.category.REASONS_FOR_RECALL:
+      return `${details} REASONS FOR RECALL.pdf`
+    default:
+      return 'document.pdf'
+  }
+}
+
+export const getGeneratedDocUrlPath = ({
+  recallId,
+  nomsNumber,
+  documentId,
+  docCategory,
+}: {
+  recallId: string
+  nomsNumber: string
+  documentId?: string
+  docCategory: ApiRecallDocument.category
+}): string | undefined => {
+  const basePath = `/persons/${nomsNumber}/recalls/${recallId}/documents/`
+  switch (docCategory) {
+    case ApiRecallDocument.category.RECALL_NOTIFICATION:
+      return `${basePath}recall-notification`
+    case ApiRecallDocument.category.DOSSIER:
+      return `${basePath}dossier`
+    case ApiRecallDocument.category.LETTER_TO_PRISON:
+      return `${basePath}letter-to-prison`
+    case ApiRecallDocument.category.REVOCATION_ORDER:
+      return `${basePath}revocation-order/${documentId}`
+    case ApiRecallDocument.category.REASONS_FOR_RECALL:
+      return `${basePath}reasons-for-recall/${documentId}`
+    default:
+      return undefined
+  }
+}
+
+export const formatPersonName = ({ firstName = '', lastName = '' }: { firstName?: string; lastName?: string }) =>
+  `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
+
+export const formatBookingNumber = (bookingNumber: string) => (bookingNumber ? ` ${bookingNumber.toUpperCase()}` : '')

@@ -1,8 +1,8 @@
 import { getFormValues } from './getFormValues'
 import { FormError, ObjectMap, DecoratedRecall } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
-import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { decorateDocs } from './documents/decorateDocs'
 import { MissingDocumentsRecordResponse } from '../../../@types/manage-recalls-api/models/MissingDocumentsRecordResponse'
 
