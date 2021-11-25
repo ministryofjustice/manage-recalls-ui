@@ -177,9 +177,9 @@ export const getGeneratedDocFileName = ({
   const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
   switch (docCategory) {
     case ApiRecallDocument.category.RECALL_NOTIFICATION:
-      return `IN CUSTODY RECALL ${details}.pdf`
+      return `${details} IN CUSTODY RECALL.pdf`
     case ApiRecallDocument.category.DOSSIER:
-      return `${details} RECALL DOSSIER.pdf`
+      return `${details} DOSSIER.pdf`
     case ApiRecallDocument.category.LETTER_TO_PRISON:
       return `${details} LETTER TO PRISON.pdf`
     case ApiRecallDocument.category.REVOCATION_ORDER:
