@@ -27,7 +27,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'document',
     hintIfMissing: true,
     fileName: 'Pre Cons.pdf',
-    fileNamePatterns: ['pre cons', 'previous convictions'],
+    fileNamePatterns: ['pre cons', 'previous convictions', 'mg16'],
     versioned: true,
   },
   {
