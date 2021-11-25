@@ -39,9 +39,11 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     recallNotificationEmailFileName:
       errors.recallNotificationEmailFileName?.values ||
       unsavedValues.recallNotificationEmailFileName ||
-      apiValues.recallNotificationEmail?.fileName,
+      apiValues.emailsUploaded?.RECALL_NOTIFICATION_EMAIL?.fileName,
     dossierEmailFileName:
-      errors.dossierEmailFileName?.values || unsavedValues.dossierEmailFileName || apiValues.dossierEmail?.fileName,
+      errors.dossierEmailFileName?.values ||
+      unsavedValues.dossierEmailFileName ||
+      apiValues.emailsUploaded?.DOSSIER_EMAIL?.fileName,
   } as RecallFormValues
 
   // dates / times

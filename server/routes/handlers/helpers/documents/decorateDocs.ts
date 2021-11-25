@@ -96,15 +96,14 @@ export const decorateDocs = ({
           }),
         }
       }
-
-      if (curr.name === ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL) {
-        acc.recallNotificationEmail = curr
-      }
-      if (curr.name === ApiRecallDocument.category.RECALL_REQUEST_EMAIL) {
-        acc.recallRequestEmail = curr
-      }
-      if (curr.name === ApiRecallDocument.category.DOSSIER_EMAIL) {
-        acc.dossierEmail = curr
+      if (
+        [
+          ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+          ApiRecallDocument.category.RECALL_REQUEST_EMAIL,
+          ApiRecallDocument.category.DOSSIER_EMAIL,
+        ].includes(curr.name)
+      ) {
+        acc.emailsUploaded[curr.name] = curr
       }
       if (curr.name === ApiRecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
         acc.missingDocumentsRecord = {
@@ -124,11 +123,9 @@ export const decorateDocs = ({
       missingNotRequiredDocs: missingNotRequiredDocsList().filter(
         requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
       ),
-      recallNotificationEmail: undefined,
-      recallRequestEmail: undefined,
-      dossierEmail: undefined,
       versionedCategory,
       documentsGenerated: {},
+      emailsUploaded: {},
     }
   )
 }
