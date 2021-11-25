@@ -114,7 +114,7 @@ context('Assess a recall', () => {
     assessRecallDownload.checkRecallNotificationLink({ noms: nomsNumber, recall: recallId })
     assessRecallDownload.assertElementHasText({
       qaAttr: 'getRecallNotificationFileName',
-      textToFind: 'Filename: BADGER BOBBY A123456 IN CUSTODY RECALL.pdf',
+      textToFind: 'Filename: IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
     })
     assessRecallDownload.clickContinue()
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage()

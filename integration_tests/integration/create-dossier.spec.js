@@ -171,7 +171,7 @@ context('Create a dossier', () => {
     })
     dossierDownload.assertElementHasText({
       qaAttr: 'getDossierFileName',
-      textToFind: 'Filename: BADGER BOBBY A123456 DOSSIER.pdf',
+      textToFind: 'Filename: BADGER BOBBY A123456 RECALL DOSSIER.pdf',
     })
     dossierDownload.assertLinkHref({
       qaAttr: 'getLetterLink',

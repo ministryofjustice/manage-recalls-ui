@@ -60,12 +60,12 @@ describe('getGeneratedDocFileName', () => {
 
   it('returns a filename for recall notification', () => {
     const fileName = getGeneratedDocFileName({ ...args, docCategory: ApiRecallDocument.category.RECALL_NOTIFICATION })
-    expect(fileName).toEqual('BADGER BOBBY A1234BC IN CUSTODY RECALL.pdf')
+    expect(fileName).toEqual('IN CUSTODY RECALL BADGER BOBBY A1234BC.pdf')
   })
 
   it('returns a filename for dossier', () => {
     const fileName = getGeneratedDocFileName({ ...args, docCategory: ApiRecallDocument.category.DOSSIER })
-    expect(fileName).toEqual('BADGER BOBBY A1234BC DOSSIER.pdf')
+    expect(fileName).toEqual('BADGER BOBBY A1234BC RECALL DOSSIER.pdf')
   })
 
   it('returns a filename for letter to prison', () => {

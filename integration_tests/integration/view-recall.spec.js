@@ -143,7 +143,7 @@ context('View recall', () => {
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
-      textToFind: 'BADGER BOBBY A123456 IN CUSTODY RECALL.pdf',
+      textToFind: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
@@ -155,7 +155,7 @@ context('View recall', () => {
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-DOSSIER',
-      textToFind: 'BADGER BOBBY A123456 DOSSIER.pdf',
+      textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
