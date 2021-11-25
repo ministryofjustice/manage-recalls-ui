@@ -11,6 +11,7 @@ import { decorateDocs } from './documents/decorateDocs'
 import { getPerson } from './personCache'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
+import logger from '../../../../logger'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
@@ -43,13 +44,14 @@ export const viewWithRecallAndPerson =
       getPerson(nomsNumber as string, res.locals.user.token),
       getRecall(recallId, res.locals.user.token),
     ])
-    if (personResult.status === 'rejected') {
-      throw new Error('getPerson failed for NOMS')
+    if (personResult.status === 'rejected' || recallResult.status === 'rejected') {
+      logger.info('Error getting person or recall', {
+        personResult: (personResult as PromiseRejectedResult).reason,
+        recallResult: (recallResult as PromiseRejectedResult).reason,
+      })
+      return res.render('pages/error')
     }
     res.locals.person = personResult.value
-    if (recallResult.status === 'rejected') {
-      throw new Error(`getRecall failed for ID ${recallId}`)
-    }
     const recall = recallResult.value
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
