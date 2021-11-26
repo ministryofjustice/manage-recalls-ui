@@ -8,7 +8,7 @@ generic-service:
     host: manage-recalls-dev.hmpps.service.justice.gov.uk
     tlsSecretName: ppud-replacement-dev-cert
     annotations:
-      nginx.ingress.kubernetes.io/custom-http-errors: "500,501,502,503,504"
+      nginx.ingress.kubernetes.io/custom-http-errors: "501,502,503,504"
       nginx.ingress.kubernetes.io/default-backend: manage-recalls-error-pages
 
   env:
