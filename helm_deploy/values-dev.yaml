@@ -9,6 +9,9 @@ generic-service:
     tlsSecretName: ppud-replacement-dev-cert
     # which cluster are we on: live-1 is blue, live is green
     contextColour: blue
+    annotations:
+      nginx.ingress.kubernetes.io/custom-http-errors: "500,501,502,503,504"
+      nginx.ingress.kubernetes.io/default-backend: manage-recalls-error-pages
 
   env:
     INGRESS_URL: "https://manage-recalls-dev.hmpps.service.justice.gov.uk"
