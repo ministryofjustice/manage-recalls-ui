@@ -26,7 +26,7 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l"
-                  data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
+                  data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
             <form novalidate action="{{ formActionUrl('assess-prison', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class="govuk-grid-row">
@@ -35,7 +35,7 @@
                                 id: "currentPrison",
                                 name: "currentPrison",
                                 label: {
-                                    text: "Which prison is " + person.firstName + " " + person.lastName + " in?",
+                                    text: "Which prison is " + recall.fullName + " in?",
                                     classes: "govuk-label--l",
                                     isPageHeading: true
                                 },

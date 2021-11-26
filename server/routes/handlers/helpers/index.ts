@@ -1,6 +1,7 @@
 import nunjucks from 'nunjucks'
 import { FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
 import { UploadedFileMetadata } from '../../../@types/documents'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 export const makeErrorObject = ({
   id,
@@ -91,4 +92,22 @@ export const getProperty = <T, U>(obj: T, accessor: string): U => {
     traversed = traversed[key]
   })
   return traversed as unknown as U
+}
+
+export const formatName = ({
+  category,
+  otherName,
+  recall,
+}: {
+  category: string
+  otherName?: string
+  recall: RecallResponse
+}) => {
+  if (otherName) {
+    return otherName
+  }
+  if (category === 'FIRST_MIDDLE_LAST') {
+    return `${recall.firstName} ${recall.middleNames} ${recall.lastName}`
+  }
+  return `${recall.firstName} ${recall.lastName}`
 }

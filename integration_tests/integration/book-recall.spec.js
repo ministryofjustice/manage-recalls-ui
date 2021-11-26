@@ -12,6 +12,7 @@ import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import recallInformationPage from '../pages/recallInformation'
+import recallLicenceNamePage from '../pages/recallLicenceName'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
@@ -21,8 +22,8 @@ const recallMissingDocumentsPage = require('../pages/recallMissingDocuments')
 
 context('Book a recall', () => {
   const recallId = '123'
-  const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
-  let recallPreConsName
+  const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
+  const newRecall = { ...getEmptyRecallResponse, recallId }
 
   beforeEach(() => {
     cy.task('reset')
@@ -31,7 +32,7 @@ context('Book a recall', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
-    cy.task('expectGetRecall', { expectedResult: { recallId, documents: [] } })
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
@@ -45,10 +46,13 @@ context('Book a recall', () => {
   const nomsNumber = 'A1234AA'
 
   it('User can book a recall', () => {
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallLicenceName = recallLicenceNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallLicenceName.selectMiddleName()
+    recallLicenceName.clickContinue()
+    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
     recallPreConsName.showPreConsOptions([
       { label: 'Bobby Badger', value: 'FIRST_LAST' },
-      { label: 'Bobby John Badger', value: 'FIRST_MIDDLE_LAST' },
+      { label: 'Bobby Dave Badger', value: 'FIRST_MIDDLE_LAST' },
       { label: 'Other name', value: 'OTHER' },
     ])
     recallPreConsName.selectOtherName()
@@ -157,22 +161,10 @@ context('Book a recall', () => {
   })
 
   it("User doesn't see a middle name option for pre-cons name if the person doesn't have one", () => {
-    const nomsNumber2 = 'A1234AB'
-    cy.task('expectSearchResults', {
-      expectedSearchTerm: nomsNumber2,
-      expectedSearchResults: [
-        {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-          dateOfBirth: '1999-05-28',
-          gender: 'Male',
-          nomsNumber: nomsNumber2,
-          croNumber: '1234/56A',
-          pncNumber: '98/7654Z',
-        },
-      ],
+    cy.task('expectGetRecall', {
+      expectedResult: { recallId, ...getRecallResponse, middleNames: '' },
     })
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber: nomsNumber2, recallId, personName })
+    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.showPreConsOptions([
       { label: 'Bobby Badger', value: 'FIRST_LAST' },
       { label: 'Other name', value: 'OTHER' },
@@ -180,7 +172,7 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if pre-cons main name question is not answered', () => {
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'previousConvictionMainNameCategory',
@@ -189,7 +181,7 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if pre-cons other main name is not supplied', () => {
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.selectOtherName()
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
@@ -534,7 +526,7 @@ context('Book a recall', () => {
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
     checkAnswers.checkChangeLinks()
     checkAnswers.clickElement({ qaAttr: 'previousConvictionMainNameChange' })
-    recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
+    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
     recallPreConsName.selectOtherName()
     recallPreConsName.enterOtherName('Walter Holt')
     recallPreConsName.clickContinue()

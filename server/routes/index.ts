@@ -36,6 +36,7 @@ import { assignUser } from './handlers/helpers/assignUser'
 import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecallsApiClient'
 import { downloadUploadedDocumentOrEmail } from './handlers/helpers/documents/downloadUploadedDocumentOrEmail'
 import { addMissingDocumentRecordForm } from './handlers/helpers/addMissingDocumentRecordForm'
+import { validateLicenceName } from './handlers/book/helpers/validateLicenceName'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -51,6 +52,8 @@ export default function routes(router: Router): Router {
   router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
 
   // BOOK A RECALL
+  get(`${basePath}/licence-name`, viewWithRecallAndPerson('recallLicenceName'))
+  post(`${basePath}/licence-name`, handleRecallFormPost(validateLicenceName, 'pre-cons-name'))
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
   post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'request-received'))
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))

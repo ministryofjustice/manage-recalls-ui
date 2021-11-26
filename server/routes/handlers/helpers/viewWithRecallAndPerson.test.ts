@@ -63,24 +63,12 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.render).toHaveBeenCalledWith('pages/error')
   })
 
-  it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', async () => {
+  it('should attach uploaded documents to res locals', async () => {
     ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    ;(getUserDetails as jest.Mock).mockImplementation(userId => {
-      if (userId === assessedByUserId) {
-        return Promise.resolve(assessedByUserDetails)
-      }
-      if (userId === bookedByUserId) {
-        return Promise.resolve(bookedByUserDetails)
-      }
-      if (userId === dossierCreatedByUserId) {
-        return Promise.resolve(dossierCreatedByUserDetails)
-      }
-      return null
-    })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    await viewWithRecallAndPerson('assessRecall')(req, res)
+    await viewWithRecallAndPerson('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.documentsUploaded).toEqual([
       {
         ...findDocCategory(ApiRecallDocument.category.PART_A_RECALL_REPORT),
@@ -107,10 +95,34 @@ describe('viewWithRecallAndPerson', () => {
         url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
       },
     ])
-    expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
-    expect(res.locals.recall.bookedByUserName).toEqual('Brenda Badger')
-    expect(res.locals.recall.dossierCreatedByUserName).toEqual('Bobby Badger')
-    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
+    expect(res.render).toHaveBeenCalledWith('pages/recallIssuesNeeds')
+  })
+
+  it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', done => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
+    ;(getUserDetails as jest.Mock).mockImplementation(userId => {
+      if (userId === assessedByUserId) {
+        return Promise.resolve(assessedByUserDetails)
+      }
+      if (userId === bookedByUserId) {
+        return Promise.resolve(bookedByUserDetails)
+      }
+      if (userId === dossierCreatedByUserId) {
+        return Promise.resolve(dossierCreatedByUserDetails)
+      }
+      return null
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    res.render = view => {
+      expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
+      expect(res.locals.recall.bookedByUserName).toEqual('Brenda Badger')
+      expect(res.locals.recall.dossierCreatedByUserName).toEqual('Bobby Badger')
+      expect(view).toEqual('pages/assessRecall')
+      done()
+    }
+    viewWithRecallAndPerson('assessRecall')(req, res)
   })
 
   it('should add user ids to res.locals if the user details can not be found ', async () => {
@@ -171,7 +183,31 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Barnaby Badger')
+    expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby John Badger')
+  })
+
+  it('should set fullName to first + last name if specified', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      licenceNameCategory: 'FIRST_LAST',
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.fullName).toEqual('Bobby Badger')
+  })
+
+  it('should set fullName to first + middle + last name if specified', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      licenceNameCategory: 'FIRST_MIDDLE_LAST',
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.fullName).toEqual('Bobby John Badger')
   })
 
   it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
@@ -200,7 +236,8 @@ describe('viewWithRecallAndPerson', () => {
       nomsNumber,
       recallId,
       bookingNumber: recall.bookingNumber,
-      ...person,
+      firstName: recall.firstName,
+      lastName: recall.lastName,
       missingDocumentsRecords: recall.missingDocumentsRecords,
     })
   })
@@ -218,7 +255,8 @@ describe('viewWithRecallAndPerson', () => {
       nomsNumber,
       recallId,
       bookingNumber: recall.bookingNumber,
-      ...person,
+      firstName: recall.firstName,
+      lastName: recall.lastName,
       versionedCategoryName: 'LICENCE',
       missingDocumentsRecords: recall.missingDocumentsRecords,
     })

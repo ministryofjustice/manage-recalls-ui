@@ -3,12 +3,20 @@ import recallsListPage from '../pages/recallsList'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
+import recallLicenceNamePage from '../pages/recallLicenceName'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 
-context('To do (recalls) list', () => {
+describe('To do (recalls) list', () => {
   const recallId = '123'
-  const personName = `${searchResponse[0].firstName} ${searchResponse[0].lastName}`
+  const nomsNumber = 'A1234AA'
+  const basicRecall = {
+    recallId,
+    nomsNumber,
+    firstName: getRecallResponse.firstName,
+    lastName: getRecallResponse.lastName,
+  }
+  const personName = `${basicRecall.firstName} ${basicRecall.lastName}`
 
   beforeEach(() => {
     cy.task('reset')
@@ -21,14 +29,11 @@ context('To do (recalls) list', () => {
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
   })
 
-  const nomsNumber = 'A1234AA'
-
   it('User can continue a previous booking if recall status is BEING_BOOKED_ON', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
-          recallId,
-          nomsNumber,
+          ...basicRecall,
           status: 'BEING_BOOKED_ON',
         },
       ],
@@ -39,15 +44,14 @@ context('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueBooking({ recallId })
-    recallPreConsNamePage.verifyOnPage({ personName })
+    recallLicenceNamePage.verifyOnPage({ personName })
   })
 
   it('User can move on to assessRecall if the recall has status BOOKED_ON', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
-          recallId,
-          nomsNumber,
+          ...basicRecall,
           status: 'BOOKED_ON',
           recallAssessmentDueDateTime: '2020-11-05T13:12:10.000Z',
           recallEmailReceivedDateTime: '2020-11-04T13:12:10.000Z',
@@ -68,8 +72,7 @@ context('To do (recalls) list', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
-          recallId,
-          nomsNumber,
+          ...basicRecall,
           status: 'IN_ASSESSMENT',
           recallAssessmentDueDateTime: '2021-10-12T14:30:52.000Z',
           recallEmailReceivedDateTime: '2021-10-13T14:30:52.000Z',
@@ -93,8 +96,7 @@ context('To do (recalls) list', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
-          recallId,
-          nomsNumber,
+          ...basicRecall,
           status: 'RECALL_NOTIFICATION_ISSUED',
           dossierTargetDate: '2021-10-13',
         },
@@ -117,8 +119,7 @@ context('To do (recalls) list', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
-          recallId,
-          nomsNumber,
+          ...basicRecall,
           status: 'DOSSIER_IN_PROGRESS',
           dossierTargetDate: '2021-10-13',
           assignee: '122',
@@ -143,8 +144,8 @@ context('To do (recalls) list', () => {
   it('User can move on to view recall if the recall has status DOSSIER_ISSUED', () => {
     const recalls = [
       {
+        ...basicRecall,
         recallId: '123445-5717-4562-b3fc-2c963f66afa6',
-        nomsNumber,
         status: 'STOPPED',
         lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
       },
@@ -176,37 +177,37 @@ context('To do (recalls) list', () => {
   it('User can see recalls are ordered by due date on the todo list', () => {
     const recalls = [
       {
+        ...basicRecall,
         recallId: '1',
-        nomsNumber,
         status: 'BOOKED_ON',
         createdDateTime: '2020-09-01T16:33:57.000Z',
         lastUpdatedDateTime: '2020-09-22T18:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '2',
-        nomsNumber,
         status: 'BEING_BOOKED_ON',
         createdDateTime: '2020-12-05T16:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '3',
-        nomsNumber,
         status: 'BEING_BOOKED_ON',
         createdDateTime: '2020-12-01T16:33:57.000Z',
         lastUpdatedDateTime: '2020-12-03T18:33:57.000Z',
         recallAssessmentDueDateTime: '2020-12-10T15:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '4',
-        nomsNumber,
         status: 'IN_ASSESSMENT',
         createdDateTime: '2020-05-05T16:33:57.000Z',
         lastUpdatedDateTime: '2020-05-07T18:33:57.000Z',
         recallAssessmentDueDateTime: '2021-05-06T15:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '5',
-        nomsNumber,
         status: 'DOSSIER_IN_PROGRESS',
         createdDateTime: '2020-08-05T16:33:57.000Z',
         lastUpdatedDateTime: '2020-08-16T18:33:57.000Z',
@@ -214,8 +215,8 @@ context('To do (recalls) list', () => {
         dossierTargetDate: '2021-08-15T17:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '6',
-        nomsNumber,
         status: 'RECALL_NOTIFICATION_ISSUED',
         createdDateTime: '2021-08-05T16:33:57.000Z',
         lastUpdatedDateTime: '2021-08-16T18:33:57.000Z',
@@ -223,16 +224,16 @@ context('To do (recalls) list', () => {
         dossierTargetDate: '2021-08-15T15:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '7',
-        nomsNumber,
         status: 'STOPPED',
         createdDateTime: '2020-10-05T16:33:57.000Z',
         lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
         recallAssessmentDueDateTime: '2020-10-23T15:33:57.000Z',
       },
       {
+        ...basicRecall,
         recallId: '8',
-        nomsNumber,
         status: 'DOSSIER_ISSUED',
         createdDateTime: '2020-12-05T16:33:57.000Z',
         lastUpdatedDateTime: '2020-12-22T18:33:57.000Z',

@@ -149,8 +149,6 @@ context('Assess a recall', () => {
   })
 
   it("User sees an error if they don't make a decision", () => {
-    cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: { ...getEmptyRecallResponse, recallLength: 'FOURTEEN_DAYS', recallId },
@@ -162,6 +160,15 @@ context('Assess a recall', () => {
       fieldName: 'agreeWithRecall',
       summaryError: 'Do you agree with the recall recommendation?',
     })
+  })
+
+  it("User sees an error if they don't add detail on their decision", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: { ...getEmptyRecallResponse, recallLength: 'FOURTEEN_DAYS', recallId },
+    })
+    cy.login()
+    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallDecision.makeYesDecision()
     assessRecallDecision.clickContinue()
     assessRecallDecision.assertErrorMessage({

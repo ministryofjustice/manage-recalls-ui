@@ -16,7 +16,7 @@
                 }) }}
             {% endif %}
             <h1 class="govuk-heading-xl">
-                Create a dossier for {{ person.firstName }} {{ person.lastName }} recall
+                Create a dossier for {{ recall.fullName }} recall
                 {% include '../partials/recallInformationHeading.njk' %}
             </h1>
             <div class="govuk-body-l" data-qa="dossierTargetDate">{{ recall.dossierDueText }} {{ recall.dossierTargetDate | dateTime }} </div>
@@ -43,7 +43,7 @@
                         Create dossier
                     </button>
                 {% else %}
-                <a class="govuk-button" data-qa='continueButton' href='/persons/{{ person.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-letter'>
+                <a class="govuk-button" data-qa='continueButton' href='/persons/{{ recall.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-letter'>
                     Create dossier
                 </a>
                 {% endif %}

@@ -36,25 +36,24 @@
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for result in results.toDo %}
-                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recall.recallId }}'>
+                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                             <td class="govuk-table__cell"
-                                data-qa="name">{{ result.person.firstName }} {{ result.person.lastName }}</td>
+                                data-qa="name">{{ result.fullName }}</td>
                             <td class="govuk-table__cell" data-qa="dueDate">
-                                {% if result.recall.status == 'RECALL_NOTIFICATION_ISSUED' or result.recall.status == 'DOSSIER_IN_PROGRESS' %}
-                                {{ dueDateLabel({ dueIsoDateTime: result.recall.dossierTargetDate, includeTime: false, shortFormat: true }) }}
+                                {% if result.status == 'RECALL_NOTIFICATION_ISSUED' or result.status == 'DOSSIER_IN_PROGRESS' %}
+                                {{ dueDateLabel({ dueIsoDateTime: result.dossierTargetDate, includeTime: false, shortFormat: true }) }}
 
-                                {% elseif result.recall.recallAssessmentDueDateTime %}
-                                {{ dueDateLabel({ dueIsoDateTime: result.recall.recallAssessmentDueDateTime, includeTime: true, shortFormat: true }) }}
+                                {% elseif result.recallAssessmentDueDateTime %}
+                                {{ dueDateLabel({ dueIsoDateTime: result.recallAssessmentDueDateTime, includeTime: true, shortFormat: true }) }}
                                 {% endif %}
                             </td>
-                            <td class="govuk-table__cell" data-qa="assignedTo">{{ result.recall.assigneeUserName }}</td>
+                            <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
                             <td class="govuk-table__cell">
-                                {% set person = result.person %}
-                                {% set recall = result.recall %}
+                                {% set recall = result %}
                                 {% include "../partials/recallActionLink.njk" %}
                             </td>
                             <td class="govuk-table__cell">
-                                <a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/view-recall' data-qa='view-recall-{{ recall.recallId }}'>View recall</a>
+                                <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -81,15 +80,15 @@
                         </thead>
                         <tbody class="govuk-table__body" data-qa="search-results">
                         {% for result in results.completed %}
-                            <tr class="govuk-table__row" data-qa='recall-id-{{ result.recall.recallId }}'>
+                            <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                                 <td class="govuk-table__cell"
-                                    data-qa="name">{{ result.person.firstName }} {{ result.person.lastName }}</td>
+                                    data-qa="name">{{ result.fullName }}</td>
                                 <td class="govuk-table__cell" data-qa="completedDate">
-                                    {% if result.recall.status == 'DOSSIER_ISSUED'%}{{ result.recall.dossierEmailSentDate | dateTime }}{% elif result.recall.status == 'STOPPED'%}{{ result.recall.lastUpdatedDateTime | dateOnly }}{% endif %}
+                                    {% if result.status == 'DOSSIER_ISSUED'%}{{ result.dossierEmailSentDate | dateTime }}{% elif result.status == 'STOPPED'%}{{ result.lastUpdatedDateTime | dateOnly }}{% endif %}
                                 </td>
-                                <td class="govuk-table__cell" data-qa="assignedTo">{% if result.recall.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.recall.status == 'STOPPED'%}Stopped{% endif %}</td>
+                                <td class="govuk-table__cell" data-qa="assignedTo">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
                                 <td class="govuk-table__cell">
-                                    <a href='/persons/{{result.person.nomsNumber}}/recalls/{{result.recall.recallId}}/view-recall?fromPage=/&fromHash=completed' data-qa='view-recall-{{ result.recall.recallId }}'>View recall</a>
+                                    <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=completed' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                 </td>
                             </tr>
                         {% endfor %}

@@ -6,7 +6,7 @@
       Name
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='name'>
-      {{ person.firstName }} {{ person.lastName }}
+      {{ recall.fullName }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
   </div>
@@ -15,7 +15,7 @@
       Date of birth
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='dateOfBirth'>
-      {{ person.dateOfBirth | dateTime }}
+      {{ recall.dateOfBirth | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
   </div>
@@ -24,7 +24,7 @@
       NOMIS
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='nomsNumber'>
-      {{ person.nomsNumber }}
+      {{ recall.nomsNumber }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
   </div>
@@ -33,7 +33,7 @@
       CRO
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='croNumber'>
-      {{ person.croNumber }}
+      {{ recall.croNumber }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
   </div>

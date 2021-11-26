@@ -85,19 +85,6 @@ context('View recall', () => {
   const recallId = '123'
   const personName = 'Bobby Badger'
 
-  const mockFileDownload = ({ fileName, docCategory }) => {
-    cy.task('expectGetRecallDocument', {
-      category: docCategory,
-      file: 'abc',
-      fileName,
-      documentId: '123',
-    })
-  }
-  const checkDownload = fileName => {
-    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
-    cy.readFile(downloadedFilename, 'binary')
-  }
-
   it('User can view all recall information', () => {
     cy.login()
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
@@ -106,16 +93,6 @@ context('View recall', () => {
       textToFind: '15 August 2021 at 14:04',
     })
 
-    let fileName = 'recall-request.eml'
-    mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
-    cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
-    checkDownload(fileName)
-
-    fileName = '2021-07-03 Phil Jones recall.msg'
-    mockFileDownload({ fileName, docCategory: 'RECALL_NOTIFICATION_EMAIL' })
-    cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
-
-    checkDownload(fileName)
     recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'one, two' })
     recallInformation.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'AC3408303' })
     recallInformation.assertElementHasText({
@@ -125,9 +102,6 @@ context('View recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'dossierEmailSentDate', textToFind: '8 September 2021' })
     recallInformation.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bobby Badger' })
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier issued' })
-    cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
-    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
-    cy.readFile(downloadedFilename, 'binary')
     // change link for an uploaded document goes to the 'add new document version' page
     recallInformation.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
@@ -167,9 +141,6 @@ context('View recall', () => {
       qaAttr: 'missingDocumentsDetail',
       textToFind: 'Documents were requested by email on 10/12/2020',
     })
-    fileName = 'chase-documents.msg'
-    mockFileDownload({ fileName, docCategory: 'MISSING_DOCUMENTS_EMAIL' })
-    cy.get(`[data-qa="uploadedDocument-MISSING_DOCUMENTS_EMAIL"]`).click()
   })
 
   it('User can view not available for additionalLicenceConditions,vulnerabilityDiversity and contraband when information is not provided', () => {
@@ -292,5 +263,38 @@ context('View recall', () => {
       fieldName: 'documents',
       summaryError: 'Select a file',
     })
+  })
+
+  it('user can download all files', () => {
+    cy.login()
+    recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const mockFileDownload = ({ fileName, docCategory }) => {
+      cy.task('expectGetRecallDocument', {
+        category: docCategory,
+        file: 'abc',
+        fileName,
+        documentId: '123',
+      })
+    }
+    const checkDownload = fileName => {
+      const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
+      cy.readFile(downloadedFilename, 'binary')
+    }
+    let fileName = 'recall-request.eml'
+    mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
+    cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
+    checkDownload(fileName)
+
+    fileName = '2021-07-03 Phil Jones recall.msg'
+    mockFileDownload({ fileName, docCategory: 'RECALL_NOTIFICATION_EMAIL' })
+    cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
+
+    checkDownload(fileName)
+    cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
+    cy.readFile(path.join(Cypress.config('downloadsFolder'), fileName), 'binary')
+    fileName = 'chase-documents.msg'
+    mockFileDownload({ fileName, docCategory: 'MISSING_DOCUMENTS_EMAIL' })
+    cy.readFile(path.join(Cypress.config('downloadsFolder'), fileName), 'binary')
+    cy.get(`[data-qa="uploadedDocument-MISSING_DOCUMENTS_EMAIL"]`).click()
   })
 })

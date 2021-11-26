@@ -34,8 +34,7 @@ export const addMissingDocumentRecordForm = async (req: Request, res: Response):
         uploadFailed,
         invalidFileFormat,
       })
-      const uploadHasErrors = errors && errors.find(uploadError => uploadError.name === emailFieldName)
-      const shouldSaveToApi = !uploadHasErrors && emailFileSelected && !uploadFailed
+      const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
       if (shouldSaveToApi) {
         try {
           const missingDocumentCategories = [] as ApiRecallDocument.category[]

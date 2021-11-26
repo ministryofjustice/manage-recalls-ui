@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { renderErrorMessages } from './index'
+import { formatName, renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
@@ -9,49 +9,29 @@ import { dossierDueDateString, recallAssessmentDueText } from './dates/format'
 import { enableDeleteDocuments } from './documents'
 import { decorateDocs } from './documents/decorateDocs'
 import { getPerson } from './personCache'
-import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
-import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
 import logger from '../../../../logger'
 
 const requiresUser = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
 
-export const preConsMainName = ({
-  category,
-  otherName,
-  person,
-}: {
-  category: RecallResponse.previousConvictionMainNameCategory
-  otherName: string
-  person: SearchResult
-}) => {
-  if (otherName) {
-    return otherName
-  }
-  if (category === RecallResponse.previousConvictionMainNameCategory.FIRST_LAST) {
-    return `${person.firstName} ${person.lastName}`
-  }
-  if (category === RecallResponse.previousConvictionMainNameCategory.FIRST_MIDDLE_LAST) {
-    return `${person.firstName} ${person.middleNames} ${person.lastName}`
-  }
-}
+const requiresPerson = (viewName: ViewName) =>
+  ['assessRecall', 'dossierRecallInformation', 'viewFullRecall', 'recallCheckAnswers'].includes(viewName)
 
 export const viewWithRecallAndPerson =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
     const { nomsNumber, recallId } = req.params
-    const [personResult, recallResult] = await Promise.allSettled([
-      getPerson(nomsNumber as string, res.locals.user.token),
+    const [recallResult, personResult] = await Promise.allSettled([
       getRecall(recallId, res.locals.user.token),
+      requiresPerson(viewName) ? getPerson(nomsNumber as string, res.locals.user.token) : undefined,
     ])
-    if (personResult.status === 'rejected' || recallResult.status === 'rejected') {
-      logger.info('Error getting person or recall', {
+    if (recallResult.status === 'rejected' || personResult.status === 'rejected') {
+      logger.info('Error getting recall or person', {
         personResult: (personResult as PromiseRejectedResult).reason,
         recallResult: (recallResult as PromiseRejectedResult).reason,
       })
       return res.render('pages/error')
     }
-    res.locals.person = personResult.value
     const recall = recallResult.value
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
@@ -59,13 +39,22 @@ export const viewWithRecallAndPerson =
       nomsNumber,
       recallId,
       bookingNumber: recall.bookingNumber,
-      ...res.locals.person,
-      versionedCategoryName: req.query.versionedCategoryName,
+      firstName: recall.firstName,
+      lastName: recall.lastName,
+      versionedCategoryName: req.query.versionedCategoryName as string,
     })
     res.locals.recall = {
       ...recall,
       ...decoratedDocs,
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
+    }
+    if (requiresUser(viewName)) {
+      const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
+      res.locals.recall = { ...res.locals.recall, ...userNames }
+    }
+    if (personResult.value) {
+      const { croNumber, dateOfBirth } = personResult.value
+      res.locals.recall = { ...res.locals.recall, ...{ nomsNumber, croNumber, dateOfBirth } }
     }
     // get values to preload into form inputs
     res.locals.formValues = getFormValues({
@@ -73,23 +62,27 @@ export const viewWithRecallAndPerson =
       unsavedValues: res.locals.unsavedValues,
       apiValues: res.locals.recall,
     })
-    res.locals.errors = renderErrorMessages(res.locals.errors, res.locals)
 
     res.locals.referenceData = referenceData()
 
-    res.locals.recall.previousConvictionMainName = preConsMainName({
+    // person name
+    res.locals.recall.fullName = formatName({
+      category: recall.licenceNameCategory,
+      recall,
+    })
+
+    res.locals.recall.previousConvictionMainName = formatName({
       category: recall.previousConvictionMainNameCategory,
       otherName: recall.previousConvictionMainName,
-      person: res.locals.person,
+      recall,
     })
 
     // TODO - use nunjucks filters to format these from the views
     res.locals.recall.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
     res.locals.recall.dossierDueText = dossierDueDateString(recall.dossierTargetDate)
 
-    if (requiresUser(viewName)) {
-      const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
-      res.locals.recall = { ...res.locals.recall, ...userNames }
-    }
+    // render errors after all data is available on res.locals
+    res.locals.errors = renderErrorMessages(res.locals.errors, res.locals)
+
     res.render(`pages/${viewName}`)
   }

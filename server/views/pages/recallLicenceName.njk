@@ -1,11 +1,11 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - What is the main name on the pre-cons?" %}
+{% set pageTitle = applicationName + " - Book a recall - How does the name appear on the licence?" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("licence-name", urlInfo)
+        href: backLinkUrl("/find-person?nomsNumber=" + recall.nomsNumber, urlInfo)
     }) }}
 {% endblock %}
 
@@ -24,28 +24,28 @@
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
 
-            <form novalidate action="{{ formActionUrl('pre-cons-name', urlInfo) }}" method="post">
+            <form novalidate action="{{ formActionUrl('licence-name', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
 
                     {% set yesDetailHtml %}
                         {{ govukInput({
-                            name: "previousConvictionMainName",
-                            id: "previousConvictionMainName",
+                            name: "licenceName",
+                            id: "licenceName",
                             label: {
                                 text: "What is the main name?"
                             },
-                            value: formValues.previousConvictionMainName,
+                            value: formValues.licenceName,
                             classes: "govuk-input--width-30",
-                            errorMessage: errorMessage(errors.previousConvictionMainName)
+                            errorMessage: errorMessage(errors.licenceName)
                         }) }}
                     {% endset -%}
                     {{ govukRadios({
-                        idPrefix: "previousConvictionMainNameCategory",
-                        name: "previousConvictionMainNameCategory",
+                        idPrefix: "licenceNameCategory",
+                        name: "licenceNameCategory",
                         fieldset: {
                             legend: {
-                                text: "What is the main name on " + recall.fullName + "'s pre-cons?",
+                                text: "How does " + recall.fullName + "'s name appear on the licence?",
                                 classes: "govuk-fieldset__legend--l",
                                 isPageHeading: true
                             }
@@ -54,23 +54,15 @@
                             {
                                 value: "FIRST_LAST",
                                 text: recall.firstName + " " + recall.lastName,
-                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST'
+                                checked: formValues.licenceNameCategory == 'FIRST_LAST'
                             },
                             {
                                 value: "FIRST_MIDDLE_LAST",
                                 text: recall.firstName + " " + recall.middleNames + " " + recall.lastName,
-                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_MIDDLE_LAST'
-                            } if recall.middleNames else undefined,
-                            {
-                                value: "OTHER",
-                                text: "Other name",
-                                checked: formValues.previousConvictionMainNameCategory == 'OTHER',
-                                conditional: {
-                                    html: yesDetailHtml
-                                }
+                                checked: formValues.licenceNameCategory == 'FIRST_MIDDLE_LAST'
                             }
                         ],
-                        errorMessage: errorMessage(errors.previousConvictionMainNameCategory)
+                        errorMessage: errorMessage(errors.licenceNameCategory)
                     }) }}
                 </div>
                 <div>
