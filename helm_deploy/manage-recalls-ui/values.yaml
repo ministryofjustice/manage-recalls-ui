@@ -13,6 +13,8 @@ generic-service:
     enabled: true
     host: app-hostname.local    # override per environment
     tlsSecretName: manage-recalls-ui-cert
+    # which cluster are we on: live-1 is blue, live is green
+    contextColour: blue
 
   livenessProbe:
     httpGet:
