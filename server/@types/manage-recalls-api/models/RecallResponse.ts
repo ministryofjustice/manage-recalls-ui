@@ -30,16 +30,20 @@ export type RecallResponse = {
     dossierCreatedByUserId?: string;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
+    firstName?: string;
     hasDossierBeenChecked?: boolean;
     indexOffence?: string;
+    lastName?: string;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
     lastUpdatedDateTime: string;
     licenceConditionsBreached?: string;
     licenceExpiryDate?: string;
+    licenceNameCategory?: RecallResponse.licenceNameCategory;
     localDeliveryUnit?: RecallResponse.localDeliveryUnit;
     localPoliceForce?: string;
     mappaLevel?: RecallResponse.mappaLevel;
+    middleNames?: string;
     nomsNumber: string;
     previousConvictionMainName?: string;
     previousConvictionMainNameCategory?: RecallResponse.previousConvictionMainNameCategory;
@@ -236,6 +240,11 @@ export namespace RecallResponse {
         LEVEL_3 = 'LEVEL_3',
         NA = 'NA',
         NOT_KNOWN = 'NOT_KNOWN',
+    }
+
+    export enum licenceNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
     }
 
     export enum previousConvictionMainNameCategory {
