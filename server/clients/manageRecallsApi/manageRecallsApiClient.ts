@@ -15,6 +15,7 @@ import {
   UserDetailsResponse,
   Prison,
   ApiRecallDocument,
+  BookRecallRequest,
 } from '../../@types/manage-recalls-api'
 import { AddMissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/AddMissingDocumentsRecordRequest'
 
@@ -62,9 +63,8 @@ export function getRecall(recallId: string, token: string): Promise<Recall> {
   return restClient(token).get<Recall>({ path: `/recalls/${recallId}` })
 }
 
-export function createRecall(nomsNumber: string, token: string): Promise<Recall> {
-  const request = { nomsNumber }
-  return restClient(token).post<Recall>({ path: '/recalls', data: request })
+export function createRecall(data: BookRecallRequest, token: string): Promise<Recall> {
+  return restClient(token).post<Recall>({ path: '/recalls', data })
 }
 
 export function updateRecall(recallId: string, updatedFields: UpdateRecallRequest, token: string): Promise<Recall> {
