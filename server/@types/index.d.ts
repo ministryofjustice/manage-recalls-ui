@@ -77,6 +77,7 @@ export type ViewName =
   | 'assessLicence'
   | 'assessDownload'
   | 'assessEmail'
+  | 'recallLicenceName'
   | 'recallPreConsName'
   | 'recallSentenceDetails'
   | 'recallRequestReceived'

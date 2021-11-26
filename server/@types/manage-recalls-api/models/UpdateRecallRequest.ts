@@ -27,6 +27,7 @@ export type UpdateRecallRequest = {
     lastReleasePrison?: string;
     licenceConditionsBreached?: string;
     licenceExpiryDate?: string;
+    licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
     localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit;
     localPoliceForce?: string;
     mappaLevel?: UpdateRecallRequest.mappaLevel;
@@ -221,6 +222,11 @@ export namespace UpdateRecallRequest {
         LEVEL_3 = 'LEVEL_3',
         NA = 'NA',
         NOT_KNOWN = 'NOT_KNOWN',
+    }
+
+    export enum licenceNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
     }
 
     export enum previousConvictionMainNameCategory {
