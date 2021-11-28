@@ -8,6 +8,8 @@ describe('decorateDocs', () => {
     {
       category: ApiRecallDocument.category.LICENCE,
       documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      version: '1',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
     },
     {
       category: ApiRecallDocument.category.OTHER,
@@ -103,6 +105,8 @@ describe('decorateDocs', () => {
             documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
             fileName: 'Licence.pdf',
             url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            version: '1',
+            createdDateTime: '2020-04-01T12:00:00.000Z',
           },
         ],
       },
@@ -165,6 +169,8 @@ describe('decorateDocs', () => {
         category: ApiRecallDocument.category.LICENCE,
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        version: '1',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
       },
       {
         ...findDocCategory(ApiRecallDocument.category.OTHER),
@@ -188,6 +194,9 @@ describe('decorateDocs', () => {
       category: 'LICENCE',
       documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       label: 'Licence',
+      fileName: 'Licence.pdf',
+      version: '1',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
       name: 'LICENCE',
       type: 'document',
       url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
