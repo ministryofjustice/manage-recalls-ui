@@ -505,6 +505,32 @@ context('Book a recall', () => {
     uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
   })
 
+  it("user can't change the category of a document that has more than one version", () => {
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.BEING_BOOKED_ON,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId,
+            version: 2,
+          },
+        ],
+      },
+    })
+    cy.task('expectDeleteRecallDocument')
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
+    uploadDocuments.assertElementHasText({
+      qaAttr: `category-label-PART_A_RECALL_REPORT`,
+      textToFind: 'Part A recall report',
+    })
+  })
+
   it("User sees an error if they don't upload the missing documents email or provide detail", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
