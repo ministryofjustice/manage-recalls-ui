@@ -6,7 +6,7 @@ The easiest way to run ui and api is to use
 
 `./start-local-services.sh`
 
-script in manage-recall-e2e-tests project (https://github.com/ministryofjustice/manage-recalls-e2e-tests)
+script in *manage-recall-e2e-tests* project (https://github.com/ministryofjustice/manage-recalls-e2e-tests)
 
 Either way check that this has succeeded e.g. via login locally (`http://localhost:3000/`)
 with `PPUD_USER` / `password123456`.  
@@ -40,6 +40,28 @@ To start the main services and the manage recalls ui app in dev mode (you can at
 scripts/start-dev-local.sh
 npm run start:dev
 ```
+
+#### Debugging in Chrome Developer Tools
+TBD
+
+#### Debugging in IntelliJ IDEA
+IDEA supports debugging of the typescript source via attaching to a running node process
+as long as e.g. the `--inspect` flag has been passed to node.
+This is the case for both `npm run start:dev` or `npm run start:e2e` - as the latter
+calls the former which includes it.
+
+With the app started locally as above you can attach the debugger by starting an 
+`Attach to Node.js/Chrome` run configuration in debug mode.  Breakpoints added in
+e.g. `*.ts` files should then become active and operate once code to execute them
+has been re-executed from the UI e.g. in Chrome.
+
+When the debugger has attached the node process will log:
+```
+[Node] Debugger attached.
+```
+
+
+#### Updating (fake-manage-recalls-api) wiremock responses
 
 If you need to update the wiremock (fake-manage-recalls-api) mappings you can use the `scripts/restart-fake-manage-recalls-api.sh`
 to stop and start the wiremock server.  Or you can use the `manual-stub.test.ts` test to prime the running wiremock server

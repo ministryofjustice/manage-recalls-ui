@@ -27,7 +27,7 @@
             <form novalidate action="{{ formActionUrl('prison-police', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
-                    {{ govukInput({
+                    {{ govukSelect({
                         label: {
                             text: "What is the name of the local police force?",
                             classes: "govuk-label--l",
@@ -35,8 +35,7 @@
                         },
                         id: "localPoliceForce",
                         name: "localPoliceForce",
-                        value: formValues.localPoliceForce,
-                        classes: "govuk-input--width-30",
+                        items: selectItems( referenceData.policeForces, formValues.localPoliceForceId, true),
                         errorMessage: errorMessage(errors.localPoliceForce)
                     }) }}
                 </div>
@@ -52,3 +51,11 @@
 
 {% endblock %}
 
+{% block bodyEnd %}
+    {{ super() }}
+    {{ autocomplete({
+            name: 'localPoliceForce',
+            cspNonce: cspNonce
+        })
+    }}
+{% endblock %}

@@ -35,14 +35,24 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[id="lastReleasePrison"]').clear().type('Ack')
       cy.contains('Acklington (HMP)').click({ force: true })
     },
+    enterReleasingPrison: nameSubString => {
+      cy.get('[id="lastReleasePrison"]')
+        .clear()
+        .type(nameSubString || 'Ack')
+    },
     setLastReleaseDate: () => {
       cy.get('[name="lastReleaseDateYear"]').clear().type('2020')
       cy.get('[name="lastReleaseDateMonth"]').clear().type('05')
       cy.get('[name="lastReleaseDateDay"]').clear().type('03')
     },
     setSentencingCourt: () => {
-      cy.get('[id="sentencingCourt"]').clear().type('Aberdare')
+      cy.get('[id="sentencingCourt"]').clear().type('Aberd')
       cy.contains('Aberdare County Court').click({ force: true })
+    },
+    enterSentencingCourt: nameSubString => {
+      cy.get('[id="sentencingCourt"]')
+        .clear()
+        .type(nameSubString || 'Aberd')
     },
     setIndexOffence: () => {
       cy.get('[name="indexOffence"]').type('Burglary')

@@ -4,16 +4,31 @@ import { handleRecallFormPost } from './handleRecallFormPost'
 import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { validatePolice } from '../book/helpers/validatePolice'
 import { validateDecision } from '../assess/helpers/validateDecision'
+import * as referenceDataExports from '../../../referenceData'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
 const handler = handleRecallFormPost(validatePolice, 'issues-needs')
 
+beforeEach(() => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  jest.spyOn(referenceDataExports, 'referenceData').mockReturnValue({
+    policeForces: [
+      {
+        value: 'metropolitan',
+        text: 'Metropolitan Police Service',
+      },
+    ],
+  })
+})
+
 describe('handleRecallFormPost', () => {
   const nomsNumber = 'A1234AB'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const requestBody = {
-    localPoliceForce: 'Kent',
+    localPoliceForce: 'metropolitan',
+    localPoliceForceInput: 'Metropolitan Police Service',
   }
 
   afterEach(() => {
