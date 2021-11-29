@@ -75,24 +75,28 @@ describe('viewWithRecallAndPerson', () => {
         category: RecallDocument.category.PART_A_RECALL_REPORT,
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
       },
       {
         ...findDocCategory(RecallDocument.category.LICENCE),
         category: 'LICENCE',
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
       },
       {
         ...findDocCategory(RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
         category: 'PREVIOUS_CONVICTIONS_SHEET',
         documentId: '1234-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
       },
       {
         ...findDocCategory(RecallDocument.category.PRE_SENTENCING_REPORT),
         documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
         category: 'PRE_SENTENCING_REPORT',
         url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
       },
     ])
     expect(res.render).toHaveBeenCalledWith('pages/recallIssuesNeeds')
