@@ -41,7 +41,9 @@
       "server/**/*.{ts,js,jsx,mjs}"
     ],
     "coveragePathIgnorePatterns": [
-      "@types"
+      "@types",
+      "<rootDir>/server/clients/manageRecallsApi/manageRecallsApiClient.ts",
+      "<rootDir>/server/data/restClient.ts"
     ],
     "maxWorkers": 1,
     "testMatch": [

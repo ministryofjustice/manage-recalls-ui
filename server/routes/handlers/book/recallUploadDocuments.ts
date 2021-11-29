@@ -13,13 +13,17 @@ import { deleteDocument } from './helpers/deleteDocument'
 import { renderXhrResponse } from './helpers/uploadRenderXhrResponse'
 import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
 import { formActionUrl } from '../../../utils/nunjucksFunctions'
+import { makeErrorObject } from '../helpers'
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
-  const reload = () => {
+  const reload = ({ versionedCategoryName }: { versionedCategoryName: string }) => {
     if (req.xhr) {
       return res.json({ reload: true })
     }
-    return res.redirect(303, req.originalUrl)
+    const url = versionedCategoryName
+      ? `${req.originalUrl}&versionedCategoryName=${versionedCategoryName}`
+      : req.originalUrl
+    return res.redirect(303, url)
   }
 
   uploadStorageArray('documents')(req, res, async uploadError => {
@@ -40,8 +44,18 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
 
       const categorisedFileData = getMetadataForCategorisedFiles(body)
+      const isAddNewVersionPage = body.forceCategory
       // new uploads
       const uploadWasClicked = body.upload === 'upload'
+      // ensure there's an upload if we're on the add new version page
+      if (isAddNewVersionPage && !req.files.length) {
+        session.errors = [
+          makeErrorObject({
+            id: 'documents',
+            text: 'Select a file',
+          }),
+        ]
+      }
       if (req.files.length) {
         const uploadedFileData = getMetadataForUploadedFiles(files as Express.Multer.File[], body.forceCategory)
         const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFileTypes(
@@ -56,8 +70,8 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
       }
 
       // category changes - will result in a full page reload
-      // no need to do this if the category was forced ('upload a new document version')
-      const continueWasClicked = body.continue === 'continue' && !body.forceCategory
+      // no need to do this if we're not on the add new version page
+      const continueWasClicked = body.continue === 'continue' && !isAddNewVersionPage
       if (continueWasClicked) {
         const { errors: uncategorisedFileErrors, valuesToSave: categorisedToSave } =
           validateCategories(categorisedFileData)
@@ -72,7 +86,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
 
       // redirect / reload
       if (uploadWasClicked || (session.errors && session.errors.length)) {
-        return reload()
+        return reload({ versionedCategoryName: body.forceCategory })
       }
       const { person, recall } = await getPersonAndRecall({ recallId, nomsNumber, token })
       // only render a response for XHR if there were no errors
@@ -95,7 +109,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
           text: 'An error occurred saving your changes',
         },
       ]
-      reload()
+      reload({ versionedCategoryName: req.body.forceCategory })
     }
   })
 }

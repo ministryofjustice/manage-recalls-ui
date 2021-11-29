@@ -8,8 +8,6 @@ import {
 } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
-import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -304,55 +302,6 @@ context('Create a dossier', () => {
     dossierLetter.assertErrorMessage({
       fieldName: 'differentNomsNumberDetail',
       summaryError: 'Enter a NOMIS number in the correct format',
-    })
-  })
-
-  it('user can go back from the dossier recall info page to add a new document version', () => {
-    const documentId = '123'
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId,
-            version: 2,
-          },
-        ],
-      },
-    })
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
-    cy.login()
-    let dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
-    dossierRecall.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
-      documentCategoryLabel: 'part A recall report',
-    })
-    uploadDocumentVersion.uploadSingleFile({
-      filePath: '../test.pdf',
-      mimeType: 'application/pdf',
-    })
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId: '34589',
-            version: 2,
-          },
-        ],
-      },
-    })
-    uploadDocumentVersion.clickContinue()
-    dossierRecall = dossierRecallPage.verifyOnPage({ personName })
-    dossierRecall.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
-      textToFind: 'version 2',
     })
   })
 })

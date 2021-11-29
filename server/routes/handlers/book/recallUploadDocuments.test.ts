@@ -740,4 +740,29 @@ describe('uploadRecallDocumentsFormHandler', () => {
     }
     uploadRecallDocumentsFormHandler(req, res)
   })
+
+  it('creates an error if on the add new version page, no file is uploaded', done => {
+    ;(uploadStorageArray as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = []
+      req.body = {
+        forceCategory: 'LICENCE',
+      }
+      cb()
+    })
+    const res = {
+      locals: { user: {} },
+      redirect: () => {
+        expect(addRecallDocument).not.toHaveBeenCalled()
+        expect(req.session.errors).toEqual([
+          {
+            href: '#documents',
+            name: 'documents',
+            text: 'Select a file',
+          },
+        ])
+        done()
+      },
+    }
+    uploadRecallDocumentsFormHandler(req, res)
+  })
 })

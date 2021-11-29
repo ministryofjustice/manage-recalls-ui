@@ -61,9 +61,9 @@ export const decorateDocs = ({
   if (versionedCategoryName) {
     const categoryData = decoratedDocTypes.find(type => type.name === versionedCategoryName && type.versioned)
     if (categoryData && categoryData.uploaded.length) {
-      const { label, name, type } = categoryData
+      const { label, name, type, fileName } = categoryData
       const { version, url, documentId, category, createdDateTime } = categoryData.uploaded[0]
-      versionedCategory = { label, name, type, version, url, documentId, category, createdDateTime }
+      versionedCategory = { label, name, fileName, type, version, url, documentId, category, createdDateTime }
     }
   }
   return decoratedUploadedDocs.reduce(
