@@ -1,18 +1,18 @@
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { validateCategories, validateUploadedFileTypes } from './validateDocuments'
 
 describe('validateUploadedFileTypes', () => {
   it('returns errors for any docs with invalid file extensions or MIME types', () => {
     const fileData = [
       {
-        category: ApiRecallDocument.category.UNCATEGORISED,
+        category: RecallDocument.category.UNCATEGORISED,
         originalFileName: 'Wesley Holt part a.doc',
         label: 'Part A recall report',
         fileContent: 'abc',
         mimeType: 'application/pdf',
       },
       {
-        category: ApiRecallDocument.category.UNCATEGORISED,
+        category: RecallDocument.category.UNCATEGORISED,
         originalFileName: 'Wesley Holt psr.pdf',
         label: 'Pre-sentencing report',
         fileContent: 'def',
@@ -37,7 +37,7 @@ describe('validateUploadedFileTypes', () => {
   it("returns errors and no valuesToSave if there are more than one of a category that doesn't allow multiples", () => {
     const fileData = [
       {
-        category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+        category: RecallDocument.category.PART_A_RECALL_REPORT,
         originalFileName: 'Wesley Holt part a.pdf',
         label: 'Part A recall report',
         fileContent: 'abc',
@@ -46,7 +46,7 @@ describe('validateUploadedFileTypes', () => {
     ]
     const categoryData = [
       {
-        category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+        category: RecallDocument.category.PART_A_RECALL_REPORT,
         documentId: '123',
         fileName: 'Part A.pdf',
       },
@@ -65,7 +65,7 @@ describe('validateUploadedFileTypes', () => {
   it('returns valuesToSave and no errors if there are more than one of a category that does allow multiples', () => {
     const fileData = [
       {
-        category: ApiRecallDocument.category.UNCATEGORISED,
+        category: RecallDocument.category.UNCATEGORISED,
         originalFileName: 'test.pdf',
         label: 'Choose a type',
         fileContent: 'abc',
@@ -74,7 +74,7 @@ describe('validateUploadedFileTypes', () => {
     ]
     const categoryData = [
       {
-        category: ApiRecallDocument.category.UNCATEGORISED,
+        category: RecallDocument.category.UNCATEGORISED,
         documentId: '123',
         fileName: 'test.pdf',
       },
@@ -98,17 +98,17 @@ describe('validateCategories', () => {
     const files = [
       {
         documentId: '23',
-        category: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+        category: RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
         fileName: 'report.pdf',
       },
       {
         documentId: '45',
-        category: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+        category: RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
         fileName: 'report2.pdf',
       },
       {
         documentId: '67',
-        category: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+        category: RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
         fileName: 'report3.pdf',
       },
     ]
@@ -132,12 +132,12 @@ describe('validateCategories', () => {
     const files = [
       {
         documentId: '23',
-        category: ApiRecallDocument.category.OTHER,
+        category: RecallDocument.category.OTHER,
         fileName: 'report.pdf',
       },
       {
         documentId: '45',
-        category: ApiRecallDocument.category.OTHER,
+        category: RecallDocument.category.OTHER,
         fileName: 'report2.pdf',
       },
     ]
@@ -153,12 +153,12 @@ describe('validateCategories', () => {
     const files = [
       {
         documentId: '23',
-        category: ApiRecallDocument.category.UNCATEGORISED,
+        category: RecallDocument.category.UNCATEGORISED,
         fileName: 'report.pdf',
       },
       {
         documentId: '45',
-        category: ApiRecallDocument.category.LICENCE,
+        category: RecallDocument.category.LICENCE,
         fileName: 'report2.pdf',
       },
     ]

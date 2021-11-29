@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type IndexOffenceResponse = {
-    group: string;
-    label: string;
+export type IndexOffence = {
+    id: string;
     name: string;
 }

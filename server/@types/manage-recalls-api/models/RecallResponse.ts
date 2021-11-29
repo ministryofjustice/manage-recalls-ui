@@ -2,9 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { ApiRecallDocument } from './ApiRecallDocument';
+import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
+import type { RecallDocument } from './RecallDocument';
 import type { SentenceLengthRes } from './SentenceLengthRes';
-import { MissingDocumentsRecordResponse } from './MissingDocumentsRecordResponse'
 
 export type RecallResponse = {
     additionalLicenceConditions?: boolean;
@@ -25,25 +25,26 @@ export type RecallResponse = {
     currentPrison?: string;
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
-    documents: Array<ApiRecallDocument>;
-    missingDocumentsRecords: Array<MissingDocumentsRecordResponse>
+    documents: Array<RecallDocument>;
     dossierCreatedByUserId?: string;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
-    firstName?: string;
+    firstName: string;
     hasDossierBeenChecked?: boolean;
     indexOffence?: string;
-    lastName?: string;
+    lastName: string;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
     lastUpdatedDateTime: string;
     licenceConditionsBreached?: string;
     licenceExpiryDate?: string;
-    licenceNameCategory?: RecallResponse.licenceNameCategory;
+    licenceNameCategory: RecallResponse.licenceNameCategory;
     localDeliveryUnit?: RecallResponse.localDeliveryUnit;
     localPoliceForce?: string;
+    localPoliceForceId?: string;
     mappaLevel?: RecallResponse.mappaLevel;
     middleNames?: string;
+    missingDocumentsRecords: Array<MissingDocumentsRecord>;
     nomsNumber: string;
     previousConvictionMainName?: string;
     previousConvictionMainNameCategory?: RecallResponse.previousConvictionMainNameCategory;
@@ -71,6 +72,12 @@ export namespace RecallResponse {
     export enum agreeWithRecall {
         NO_STOP = 'NO_STOP',
         YES = 'YES',
+    }
+
+    export enum licenceNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER',
     }
 
     export enum localDeliveryUnit {
@@ -240,11 +247,6 @@ export namespace RecallResponse {
         LEVEL_3 = 'LEVEL_3',
         NA = 'NA',
         NOT_KNOWN = 'NOT_KNOWN',
-    }
-
-    export enum licenceNameCategory {
-        FIRST_LAST = 'FIRST_LAST',
-        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
     }
 
     export enum previousConvictionMainNameCategory {

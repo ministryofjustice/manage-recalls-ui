@@ -1,10 +1,10 @@
 import { getFormValues } from './getFormValues'
 import { FormError, ObjectMap, DecoratedRecall } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
-import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { decorateDocs } from './documents/decorateDocs'
-import { MissingDocumentsRecordResponse } from '../../../@types/manage-recalls-api/models/MissingDocumentsRecordResponse'
+import { MissingDocumentsRecord } from '../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 
 describe('getFormValues', () => {
   const errors = {
@@ -150,13 +150,13 @@ describe('getFormValues', () => {
   const apiValues = {
     ...updateRecallResponse,
     ...decorateDocs({
-      docs: updateRecallResponse.documents as ApiRecallDocument[],
+      docs: updateRecallResponse.documents as RecallDocument[],
       nomsNumber: '123',
       recallId: '456',
       bookingNumber: updateRecallResponse.bookingNumber,
       firstName: 'Bobby',
       lastName: 'Badger',
-      missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecordResponse[],
+      missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecord[],
     }),
     enableDeleteDocuments: false,
   }

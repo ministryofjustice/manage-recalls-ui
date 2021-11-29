@@ -5,13 +5,13 @@ import { setDocumentCategory } from '../server/clients/manageRecallsApi/manageRe
 import * as configModule from '../server/config'
 import setDocumentCategoryJson from '../fake-manage-recalls-api/stubs/__files/set-document-category.json'
 import { pactJsonResponse, pactPatchRequest } from './pactTestUtils'
-import { ApiRecallDocument } from '../server/@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../server/@types/manage-recalls-api/models/RecallDocument'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const documentId = '11111111-0000-0000-0000-000000000000'
-  const category = ApiRecallDocument.category.OASYS_RISK_ASSESSMENT
+  const category = RecallDocument.category.OASYS_RISK_ASSESSMENT
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })

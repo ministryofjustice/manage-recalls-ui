@@ -6,7 +6,7 @@ import { validateMissingDocuments } from './validateMissingDocuments'
 import { makeErrorObject } from './index'
 import { allowedEmailFileExtensions } from './allowedUploadExtensions'
 import { errorMsgEmailUpload } from './errorMessages'
-import { ApiRecallDocument } from '../../../@types/manage-recalls-api'
+import { RecallDocument } from '../../../@types/manage-recalls-api'
 
 export const addMissingDocumentRecordForm = async (req: Request, res: Response): Promise<void> => {
   const emailFieldName = 'missingDocumentsEmailFileName'
@@ -37,7 +37,7 @@ export const addMissingDocumentRecordForm = async (req: Request, res: Response):
       const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
       if (shouldSaveToApi) {
         try {
-          const missingDocumentCategories = [] as ApiRecallDocument.category[]
+          const missingDocumentCategories = [] as RecallDocument.category[]
           const response = await addMissingDocumentRecord(
             {
               categories: missingDocumentCategories,

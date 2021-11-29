@@ -14,10 +14,10 @@ import {
   UpdateRecallRequest,
   UserDetailsResponse,
   Prison,
-  ApiRecallDocument,
+  RecallDocument,
   BookRecallRequest,
 } from '../../@types/manage-recalls-api'
-import { AddMissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/AddMissingDocumentsRecordRequest'
+import { MissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   const request = { nomsNumber }
@@ -90,17 +90,17 @@ export function deleteRecallDocument(
 export function setDocumentCategory(
   recallId: string,
   documentId: string,
-  category: ApiRecallDocument.category,
+  category: RecallDocument.category,
   token: string
 ): Promise<AddDocumentResponse> {
-  return restClient(token).patch<ApiRecallDocument>({
+  return restClient(token).patch<RecallDocument>({
     path: `/recalls/${recallId}/documents/${documentId}`,
     data: { category },
   })
 }
 
 export function addMissingDocumentRecord(
-  data: AddMissingDocumentsRecordRequest,
+  data: MissingDocumentsRecordRequest,
   token: string
 ): Promise<superagent.Response> {
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })

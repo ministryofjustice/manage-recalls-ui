@@ -1,11 +1,11 @@
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { DocumentCategoryMetadata } from '../../../../@types/documents'
 
 export const documentCategories: DocumentCategoryMetadata[] = [
   {
     label: 'Part A recall report',
     labelLowerCase: 'part A recall report',
-    name: ApiRecallDocument.category.PART_A_RECALL_REPORT,
+    name: RecallDocument.category.PART_A_RECALL_REPORT,
     type: 'document',
     required: true,
     fileName: 'Part A.pdf',
@@ -14,7 +14,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Licence',
-    name: ApiRecallDocument.category.LICENCE,
+    name: RecallDocument.category.LICENCE,
     type: 'document',
     required: true,
     fileName: 'Licence.pdf',
@@ -23,7 +23,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Previous convictions sheet',
-    name: ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+    name: RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
     type: 'document',
     hintIfMissing: true,
     fileName: 'Pre Cons.pdf',
@@ -32,7 +32,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Pre-sentencing report',
-    name: ApiRecallDocument.category.PRE_SENTENCING_REPORT,
+    name: RecallDocument.category.PRE_SENTENCING_REPORT,
     type: 'document',
     fileName: 'PSR.pdf',
     fileNamePatterns: ['psr', 'pre sentencing'],
@@ -41,7 +41,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   {
     label: 'OASys Risk Assessment',
     labelLowerCase: 'OASys risk assessment',
-    name: ApiRecallDocument.category.OASYS_RISK_ASSESSMENT,
+    name: RecallDocument.category.OASYS_RISK_ASSESSMENT,
     type: 'document',
     hintIfMissing: true,
     fileName: 'OASys.pdf',
@@ -50,7 +50,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Charge sheet',
-    name: ApiRecallDocument.category.CHARGE_SHEET,
+    name: RecallDocument.category.CHARGE_SHEET,
     type: 'document',
     fileName: 'Charge sheet.pdf',
     fileNamePatterns: ['charge sheet'],
@@ -59,7 +59,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   {
     label: 'CPS papers',
     labelLowerCase: 'CPS papers',
-    name: ApiRecallDocument.category.CPS_PAPERS,
+    name: RecallDocument.category.CPS_PAPERS,
     type: 'document',
     fileName: 'CPS papers.pdf',
     fileNamePatterns: ['cps papers'],
@@ -67,7 +67,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Police report',
-    name: ApiRecallDocument.category.POLICE_REPORT,
+    name: RecallDocument.category.POLICE_REPORT,
     type: 'document',
     fileName: 'Police report.pdf',
     fileNamePatterns: ['police report'],
@@ -75,7 +75,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Exclusion zone map',
-    name: ApiRecallDocument.category.EXCLUSION_ZONE_MAP,
+    name: RecallDocument.category.EXCLUSION_ZONE_MAP,
     type: 'document',
     fileName: 'Exclusion zone map.pdf',
     fileNamePatterns: ['exclusion map', 'exclusion zone'],
@@ -83,59 +83,59 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   },
   {
     label: 'Other',
-    name: ApiRecallDocument.category.OTHER,
+    name: RecallDocument.category.OTHER,
     type: 'document',
     multiple: true,
   },
   {
     label: 'Choose a type',
-    name: ApiRecallDocument.category.UNCATEGORISED,
+    name: RecallDocument.category.UNCATEGORISED,
     type: 'document',
     multiple: true,
   },
   {
     label: 'Recall request email',
-    name: ApiRecallDocument.category.RECALL_REQUEST_EMAIL,
+    name: RecallDocument.category.RECALL_REQUEST_EMAIL,
     type: 'email',
   },
   {
     label: 'Recall notification email',
-    name: ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+    name: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
     type: 'email',
   },
   {
     label: 'Dossier email',
-    name: ApiRecallDocument.category.DOSSIER_EMAIL,
+    name: RecallDocument.category.DOSSIER_EMAIL,
     type: 'email',
   },
   {
     label: 'Missing documents email',
-    name: ApiRecallDocument.category.MISSING_DOCUMENTS_EMAIL,
+    name: RecallDocument.category.MISSING_DOCUMENTS_EMAIL,
     type: 'email',
   },
   {
     label: 'Recall notification',
-    name: ApiRecallDocument.category.RECALL_NOTIFICATION,
+    name: RecallDocument.category.RECALL_NOTIFICATION,
     type: 'generated',
   },
   {
     label: 'Revocation order',
-    name: ApiRecallDocument.category.REVOCATION_ORDER,
+    name: RecallDocument.category.REVOCATION_ORDER,
     type: 'generated',
   },
   {
     label: 'Letter to prison',
-    name: ApiRecallDocument.category.LETTER_TO_PRISON,
+    name: RecallDocument.category.LETTER_TO_PRISON,
     type: 'generated',
   },
   {
     label: 'Dossier',
-    name: ApiRecallDocument.category.DOSSIER,
+    name: RecallDocument.category.DOSSIER,
     type: 'generated',
   },
   {
     label: 'Reasons for recall',
-    name: ApiRecallDocument.category.REASONS_FOR_RECALL,
+    name: RecallDocument.category.REASONS_FOR_RECALL,
     type: 'generated',
   },
 ]

@@ -2,7 +2,7 @@ import { listToString, makeErrorObject } from '../../helpers'
 import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
 import { documentCategories } from '../../helpers/documents/documentCategories'
 import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../@types/documents'
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { AllowedUploadFileType, NamedFormError } from '../../../../@types'
 import { findDocCategory, formatDocLabel } from '../../helpers/documents'
 
@@ -87,7 +87,7 @@ export const validateCategories = (
     if (!docCategory.multiple) {
       usedCategories.push(file.category)
     }
-    if (file.category === ApiRecallDocument.category.UNCATEGORISED) {
+    if (file.category === RecallDocument.category.UNCATEGORISED) {
       errors = errors || []
       errors.push(
         makeErrorObject({
