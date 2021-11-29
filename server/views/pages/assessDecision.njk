@@ -25,7 +25,8 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
+
             <form novalidate action="{{ formActionUrl('assess-decision', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {% set yesHtml %}

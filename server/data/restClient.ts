@@ -1,11 +1,9 @@
 import superagent from 'superagent'
 import Agent, { HttpsAgent } from 'agentkeepalive'
-import { Readable } from 'stream'
 
 import logger from '../../logger'
 import sanitiseError from '../sanitisedError'
 import { ApiConfig } from '../config'
-import type { UnsanitisedError } from '../sanitisedError'
 
 interface GetRequest {
   path?: string
@@ -38,12 +36,6 @@ interface DeleteRequest {
   raw?: boolean
 }
 
-interface StreamRequest {
-  path?: string
-  headers?: Record<string, string>
-  errorLogger?: (e: UnsanitisedError) => void
-}
-
 export default class RestClient {
   agent: Agent
 
@@ -57,10 +49,6 @@ export default class RestClient {
 
   private timeoutConfig() {
     return this.config.timeout
-  }
-
-  defaultErrorLogger(error: UnsanitisedError): void {
-    logger.warn(sanitiseError(error), `Error calling ${this.name}`)
   }
 
   retry(err?: { code: string; message: string }): void {
@@ -178,37 +166,5 @@ export default class RestClient {
       logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'DELETE'`)
       throw sanitisedError
     }
-  }
-
-  async stream({
-    path = null,
-    headers = {},
-    errorLogger = this.defaultErrorLogger,
-  }: StreamRequest = {}): Promise<unknown> {
-    return new Promise((resolve, reject) => {
-      superagent
-        .get(`${this.apiUrl()}${path}`)
-        .agent(this.agent)
-        .auth(this.token, { type: 'bearer' })
-        .retry(2, (err, res) => {
-          if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
-          return undefined // retry handler only for logging retries, not to influence retry logic
-        })
-        .timeout(this.timeoutConfig())
-        .set(headers)
-        .end((error, response) => {
-          if (error) {
-            errorLogger(error)
-            reject(error)
-          } else if (response) {
-            const s = new Readable()
-            // eslint-disable-next-line no-underscore-dangle,@typescript-eslint/no-empty-function
-            s._read = () => {}
-            s.push(response.body)
-            s.push(null)
-            resolve(s)
-          }
-        })
-    })
   }
 }

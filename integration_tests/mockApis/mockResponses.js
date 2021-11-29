@@ -6,6 +6,7 @@ import getRecallNotificationResponse from '../../fake-manage-recalls-api/stubs/_
 import getLocalDeliveryUnitsResponse from '../../fake-manage-recalls-api/stubs/__files/get-local-delivery-units.json'
 import getPrisonsResponse from '../../fake-manage-recalls-api/stubs/__files/get-prisons.json'
 import getCourtsResponse from '../../fake-manage-recalls-api/stubs/__files/get-courts.json'
+import getUserDetailsResponse from '../../fake-manage-recalls-api/stubs/__files/user.json'
 
 export {
   searchResponse,
@@ -16,4 +17,5 @@ export {
   getLocalDeliveryUnitsResponse,
   getPrisonsResponse,
   getCourtsResponse,
+  getUserDetailsResponse,
 }

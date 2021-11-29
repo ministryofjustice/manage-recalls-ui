@@ -15,36 +15,48 @@ describe('recallList', () => {
   let resp: Response
   const listOfRecalls = [
     {
-      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      firstName: 'Bobby',
+      lastName: 'Badger',
+      recallId: '1',
       nomsNumber: '123',
       status: 'BOOKED_ON',
       recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
     },
     {
-      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      firstName: 'Belinda',
+      lastName: 'Badger',
+      recallId: '2',
       nomsNumber: '123',
       status: 'BEING_BOOKED_ON',
     },
     {
-      recallId: '8ab377a6-4587-2598-abc4-98fc53737',
+      firstName: 'Barry',
+      lastName: 'Badger',
+      recallId: '3',
       nomsNumber: '456',
       status: 'RECALL_NOTIFICATION_ISSUED',
       dossierTargetDate: '2021-08-13',
     },
     {
-      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      firstName: 'Bartholomew',
+      lastName: 'Badger',
+      recallId: '4',
       nomsNumber: '123',
       status: 'DOSSIER_ISSUED',
       dossierEmailSentDate: '2021-05-04',
     },
     {
-      recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      firstName: 'Beyonce',
+      lastName: 'Badger',
+      recallId: '5',
       nomsNumber: '123',
       status: 'STOPPED',
       dossierEmailSentDate: '2021-03-22',
     },
     {
-      recallId: '123445-5717-4562-b3fc-2c963f66afa6',
+      firstName: 'Brenda',
+      lastName: 'Badger',
+      recallId: '6',
       nomsNumber: '456',
       status: 'DOSSIER_ISSUED',
       dossierEmailSentDate: '2020-10-22',
@@ -71,77 +83,59 @@ describe('recallList', () => {
     await recallList(req, resp)
     expect(resp.locals.results.toDo).toEqual([
       {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          nomsNumber: '123',
-          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          status: 'BEING_BOOKED_ON',
-        },
+        firstName: 'Belinda',
+        fullName: 'Belinda Badger',
+        lastName: 'Badger',
+        nomsNumber: '123',
+        recallId: '2',
+        status: 'BEING_BOOKED_ON',
       },
       {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          nomsNumber: '456',
-          recallId: '8ab377a6-4587-2598-abc4-98fc53737',
-          status: 'RECALL_NOTIFICATION_ISSUED',
-          dossierTargetDate: '2021-08-13',
-        },
+        dossierTargetDate: '2021-08-13',
+        firstName: 'Barry',
+        fullName: 'Barry Badger',
+        lastName: 'Badger',
+        nomsNumber: '456',
+        recallId: '3',
+        status: 'RECALL_NOTIFICATION_ISSUED',
       },
       {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          nomsNumber: '123',
-          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          status: 'BOOKED_ON',
-          recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
-        },
+        firstName: 'Bobby',
+        fullName: 'Bobby Badger',
+        lastName: 'Badger',
+        nomsNumber: '123',
+        recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
+        recallId: '1',
+        status: 'BOOKED_ON',
       },
     ])
     expect(resp.locals.results.completed).toEqual([
       {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          dossierEmailSentDate: '2021-05-04',
-          nomsNumber: '123',
-          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          status: 'DOSSIER_ISSUED',
-        },
+        dossierEmailSentDate: '2021-05-04',
+        firstName: 'Bartholomew',
+        fullName: 'Bartholomew Badger',
+        lastName: 'Badger',
+        nomsNumber: '123',
+        recallId: '4',
+        status: 'DOSSIER_ISSUED',
       },
       {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          nomsNumber: '123',
-          status: 'STOPPED',
-          dossierEmailSentDate: '2021-03-22',
-        },
+        dossierEmailSentDate: '2021-03-22',
+        firstName: 'Beyonce',
+        fullName: 'Beyonce Badger',
+        lastName: 'Badger',
+        nomsNumber: '123',
+        recallId: '5',
+        status: 'STOPPED',
       },
       {
-        person: {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-        recall: {
-          dossierEmailSentDate: '2020-10-22',
-          nomsNumber: '456',
-          recallId: '123445-5717-4562-b3fc-2c963f66afa6',
-          status: 'DOSSIER_ISSUED',
-        },
+        dossierEmailSentDate: '2020-10-22',
+        firstName: 'Brenda',
+        fullName: 'Brenda Badger',
+        lastName: 'Badger',
+        nomsNumber: '456',
+        recallId: '6',
+        status: 'DOSSIER_ISSUED',
       },
     ])
   })

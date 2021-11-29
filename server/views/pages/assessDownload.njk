@@ -16,21 +16,21 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
             <h1 class='govuk-heading-l'>Download recall notification</h1>
 
             <p class='govuk-body-l'>Review the document and check the information is correct.</p>
             {{ documentDownloadLink({
                 linkText: "Recall notification",
                 fileName: getGeneratedDocFileName({
-                    firstName: person.firstName,
-                    lastName: person.lastName,
+                    firstName: recall.firstName,
+                    lastName: recall.lastName,
                     bookingNumber: recall.bookingNumber,
                     docCategory: 'RECALL_NOTIFICATION'
                 }),
                 url: getGeneratedDocUrlPath({
                     recallId: recall.recallId,
-                    nomsNumber: person.nomsNumber,
+                    nomsNumber: recall.nomsNumber,
                     docCategory: 'RECALL_NOTIFICATION'
                 }),
                 dataQaLink: 'getRecallNotificationLink',
@@ -39,7 +39,7 @@
             }}
 
             <div class="govuk-!-margin-top-8">
-                <a class="govuk-button" data-qa="continueButton" href="/persons/{{person.nomsNumber}}/recalls/{{ recall.recallId}}/assess-email">Continue</a>
+                <a class="govuk-button" data-qa="continueButton" href="/persons/{{recall.nomsNumber}}/recalls/{{ recall.recallId}}/assess-email">Continue</a>
             </div>
         </div>
     </div>

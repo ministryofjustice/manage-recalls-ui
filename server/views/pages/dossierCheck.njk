@@ -17,7 +17,7 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
 
-            <span class="govuk-caption-l" data-qa="createDossierCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
+            <span class="govuk-caption-l" data-qa="createDossierCaption">Create a dossier for {{ recall.fullName }}</span>
             <h1 class='govuk-heading-l'>Check and create the reasons for recall document</h1>
 
             <dl class="govuk-summary-list">
@@ -26,7 +26,7 @@
                         Name
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='name'>
-                        {{ person.firstName }} {{ person.lastName }}
+                        {{ recall.fullName }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -34,7 +34,7 @@
                         NOMIS
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='nomsNumber'>
-                        {{ person.nomsNumber }}
+                        {{ recall.nomsNumber }}
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -72,7 +72,7 @@
             </dl>
 
             <div class="govuk-!-margin-top-4">
-                <a href='/persons/{{person.nomsNumber}}/recalls/{{recall.recallId}}/dossier-download' data-qa='continueButton' class="govuk-button">Continue</a>
+                <a href='/persons/{{recall.nomsNumber}}/recalls/{{recall.recallId}}/dossier-download' data-qa='continueButton' class="govuk-button">Continue</a>
             </div>
         </div>
     </div>

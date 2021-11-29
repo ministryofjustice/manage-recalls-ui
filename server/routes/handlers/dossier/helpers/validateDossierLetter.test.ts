@@ -60,7 +60,7 @@ describe('validateDossierLetter', () => {
       {
         href: '#differentNomsNumber',
         name: 'differentNomsNumber',
-        text: 'Is {{person.firstName}} {{person.lastName}} being held under a different NOMIS number to the one on the licence?',
+        text: 'Is {{ recall.fullName }} being held under a different NOMIS number to the one on the licence?',
       },
     ])
   })
@@ -98,7 +98,7 @@ describe('validateDossierLetter', () => {
         text: 'Provide more detail',
       },
       {
-        text: 'Enter the NOMIS number {{person.firstName}} {{person.lastName}} is being held under',
+        text: 'Enter the NOMIS number {{ recall.fullName }} is being held under',
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
       },

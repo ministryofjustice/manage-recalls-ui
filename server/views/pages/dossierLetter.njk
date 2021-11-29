@@ -25,7 +25,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Create a dossier for {{ person.firstName }} {{ person.lastName }}</span>
+            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Create a dossier for {{ recall.fullName }}</span>
             <h1 class='govuk-heading-l'>Add information to the prison letter</h1>
             <form novalidate action="{{ formActionUrl('dossier-letter', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -78,7 +78,7 @@
                         name: "differentNomsNumberDetail",
                         id: "differentNomsNumberDetail",
                         label: {
-                            text: "NOMIS number " + person.firstName + " " + person.lastName + " is being held under"
+                            text: "NOMIS number " + recall.fullName + " is being held under"
                         },
                         value: formValues.differentNomsNumberDetail,
                         classes: "govuk-input--width-10",
@@ -92,7 +92,7 @@
                     name: "differentNomsNumber",
                     fieldset: {
                         legend: {
-                            text: "Is " + person.firstName + " " + person.lastName + " being held under a different NOMIS number to the one on the licence?",
+                            text: "Is " + recall.fullName + " being held under a different NOMIS number to the one on the licence?",
                             classes: "govuk-fieldset__legend--m"
                         }
                     },

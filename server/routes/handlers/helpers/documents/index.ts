@@ -1,6 +1,6 @@
 import { NamedFormError, ObjectMap, UrlInfo } from '../../../../@types'
 import { documentCategories } from './documentCategories'
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { AddDocumentResponse } from '../../../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { makeErrorObject } from '../index'
@@ -10,7 +10,7 @@ import { autocategoriseDocFileName } from './autocategorise'
 
 export const makeMetaDataForFile = (
   file: Express.Multer.File,
-  forceCategory?: ApiRecallDocument.category
+  forceCategory?: RecallDocument.category
 ): UploadedFileMetadata => {
   const documentCategory = forceCategory ? findDocCategory(forceCategory) : autocategoriseDocFileName(file.originalname)
   return {
@@ -26,7 +26,7 @@ export const makeMetaDataForFile = (
 
 export const getMetadataForUploadedFiles = (
   files: Express.Multer.File[],
-  forceCategory?: ApiRecallDocument.category
+  forceCategory?: RecallDocument.category
 ): UploadedFileMetadata[] => {
   return files ? files.map(file => makeMetaDataForFile(file, forceCategory)) : []
 }
@@ -37,7 +37,7 @@ export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): 
     const documentId = key.replace('category-', '')
     return {
       documentId,
-      category: requestBody[key] as ApiRecallDocument.category,
+      category: requestBody[key] as RecallDocument.category,
       fileName: requestBody[`fileName-${documentId}`], // TODO - log if not found?
     }
   })
@@ -55,7 +55,7 @@ export const missingNotRequiredDocsList = (): DocumentCategoryMetadata[] =>
 export const generatedDocCategoriesList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'generated')
 
-export const listMissingRequiredDocs = (docs: ApiRecallDocument[]): string[] => {
+export const listMissingRequiredDocs = (docs: RecallDocument[]): string[] => {
   const listOfRequiredAndDesired = [...requiredDocsList(), ...missingNotRequiredDocsList()]
   return listOfRequiredAndDesired
     .map(requiredDocCategory => {
@@ -145,7 +145,7 @@ export const saveCategories = async ({
   return []
 }
 
-export const formatDocLabel = (category: ApiRecallDocument.category) => {
+export const formatDocLabel = (category: RecallDocument.category) => {
   const docCategory = documentCategories.find(d => d.name === category)
   return docCategory ? docCategory.labelLowerCase || docCategory.label.toLowerCase() : ''
 }
@@ -160,7 +160,7 @@ export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlIn
   return true
 }
 
-export const findDocCategory = (category: ApiRecallDocument.category) =>
+export const findDocCategory = (category: RecallDocument.category) =>
   documentCategories.find(cat => cat.name === category)
 
 export const getGeneratedDocFileName = ({
@@ -172,19 +172,19 @@ export const getGeneratedDocFileName = ({
   firstName: string
   lastName: string
   bookingNumber: string
-  docCategory: ApiRecallDocument.category
+  docCategory: RecallDocument.category
 }) => {
   const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
   switch (docCategory) {
-    case ApiRecallDocument.category.RECALL_NOTIFICATION:
+    case RecallDocument.category.RECALL_NOTIFICATION:
       return `IN CUSTODY RECALL ${details}.pdf`
-    case ApiRecallDocument.category.DOSSIER:
+    case RecallDocument.category.DOSSIER:
       return `${details} RECALL DOSSIER.pdf`
-    case ApiRecallDocument.category.LETTER_TO_PRISON:
+    case RecallDocument.category.LETTER_TO_PRISON:
       return `${details} LETTER TO PRISON.pdf`
-    case ApiRecallDocument.category.REVOCATION_ORDER:
+    case RecallDocument.category.REVOCATION_ORDER:
       return `${details} REVOCATION ORDER.pdf`
-    case ApiRecallDocument.category.REASONS_FOR_RECALL:
+    case RecallDocument.category.REASONS_FOR_RECALL:
       return `${details} REASONS FOR RECALL.pdf`
     default:
       return 'document.pdf'
@@ -200,19 +200,19 @@ export const getGeneratedDocUrlPath = ({
   recallId: string
   nomsNumber: string
   documentId?: string
-  docCategory: ApiRecallDocument.category
+  docCategory: RecallDocument.category
 }): string | undefined => {
   const basePath = `/persons/${nomsNumber}/recalls/${recallId}/documents/`
   switch (docCategory) {
-    case ApiRecallDocument.category.RECALL_NOTIFICATION:
+    case RecallDocument.category.RECALL_NOTIFICATION:
       return `${basePath}recall-notification`
-    case ApiRecallDocument.category.DOSSIER:
+    case RecallDocument.category.DOSSIER:
       return `${basePath}dossier`
-    case ApiRecallDocument.category.LETTER_TO_PRISON:
+    case RecallDocument.category.LETTER_TO_PRISON:
       return `${basePath}letter-to-prison`
-    case ApiRecallDocument.category.REVOCATION_ORDER:
+    case RecallDocument.category.REVOCATION_ORDER:
       return `${basePath}revocation-order/${documentId}`
-    case ApiRecallDocument.category.REASONS_FOR_RECALL:
+    case RecallDocument.category.REASONS_FOR_RECALL:
       return `${basePath}reasons-for-recall/${documentId}`
     default:
       return undefined

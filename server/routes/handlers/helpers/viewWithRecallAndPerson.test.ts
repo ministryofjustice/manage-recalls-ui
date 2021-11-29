@@ -6,7 +6,7 @@ import { RecallResponse } from '../../../@types/manage-recalls-api/models/Recall
 import { searchByNomsNumber, getRecall, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import * as decorateDocsExports from './documents/decorateDocs'
 import { findDocCategory } from './documents'
-import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
@@ -63,7 +63,46 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.render).toHaveBeenCalledWith('pages/error')
   })
 
-  it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', async () => {
+  it('should attach uploaded documents to res locals', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('recallIssuesNeeds')(req, res)
+    expect(res.locals.recall.documentsUploaded).toEqual([
+      {
+        ...findDocCategory(RecallDocument.category.PART_A_RECALL_REPORT),
+        category: RecallDocument.category.PART_A_RECALL_REPORT,
+        documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
+        url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+      },
+      {
+        ...findDocCategory(RecallDocument.category.LICENCE),
+        category: 'LICENCE',
+        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+      },
+      {
+        ...findDocCategory(RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
+        category: 'PREVIOUS_CONVICTIONS_SHEET',
+        documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+        url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+      },
+      {
+        ...findDocCategory(RecallDocument.category.PRE_SENTENCING_REPORT),
+        documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
+        category: 'PRE_SENTENCING_REPORT',
+        url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+      },
+    ])
+    expect(res.render).toHaveBeenCalledWith('pages/recallIssuesNeeds')
+  })
+
+  it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', done => {
     ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
     ;(getUserDetails as jest.Mock).mockImplementation(userId => {
@@ -80,37 +119,14 @@ describe('viewWithRecallAndPerson', () => {
     })
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.documentsUploaded).toEqual([
-      {
-        ...findDocCategory(ApiRecallDocument.category.PART_A_RECALL_REPORT),
-        category: ApiRecallDocument.category.PART_A_RECALL_REPORT,
-        documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        ...findDocCategory(ApiRecallDocument.category.LICENCE),
-        category: 'LICENCE',
-        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        ...findDocCategory(ApiRecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
-        category: 'PREVIOUS_CONVICTIONS_SHEET',
-        documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        ...findDocCategory(ApiRecallDocument.category.PRE_SENTENCING_REPORT),
-        documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
-        category: 'PRE_SENTENCING_REPORT',
-        url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
-      },
-    ])
-    expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
-    expect(res.locals.recall.bookedByUserName).toEqual('Brenda Badger')
-    expect(res.locals.recall.dossierCreatedByUserName).toEqual('Bobby Badger')
-    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
+    res.render = view => {
+      expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
+      expect(res.locals.recall.bookedByUserName).toEqual('Brenda Badger')
+      expect(res.locals.recall.dossierCreatedByUserName).toEqual('Bobby Badger')
+      expect(view).toEqual('pages/assessRecall')
+      done()
+    }
+    viewWithRecallAndPerson('assessRecall')(req, res)
   })
 
   it('should add user ids to res.locals if the user details can not be found ', async () => {
@@ -171,7 +187,31 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Barnaby Badger')
+    expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby John Badger')
+  })
+
+  it('should set fullName to first + last name if specified', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      licenceNameCategory: 'FIRST_LAST',
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.fullName).toEqual('Bobby Badger')
+  })
+
+  it('should set fullName to first + middle + last name if specified', async () => {
+    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      licenceNameCategory: 'FIRST_MIDDLE_LAST',
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.fullName).toEqual('Bobby John Badger')
   })
 
   it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
@@ -200,7 +240,8 @@ describe('viewWithRecallAndPerson', () => {
       nomsNumber,
       recallId,
       bookingNumber: recall.bookingNumber,
-      ...person,
+      firstName: recall.firstName,
+      lastName: recall.lastName,
       missingDocumentsRecords: recall.missingDocumentsRecords,
     })
   })
@@ -218,7 +259,8 @@ describe('viewWithRecallAndPerson', () => {
       nomsNumber,
       recallId,
       bookingNumber: recall.bookingNumber,
-      ...person,
+      firstName: recall.firstName,
+      lastName: recall.lastName,
       versionedCategoryName: 'LICENCE',
       missingDocumentsRecords: recall.missingDocumentsRecords,
     })

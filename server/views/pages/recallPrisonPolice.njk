@@ -22,7 +22,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ person.firstName }} {{ person.lastName }}</span>
+            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
 
             <form novalidate action="{{ formActionUrl('prison-police', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />

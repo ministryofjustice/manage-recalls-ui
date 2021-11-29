@@ -2,11 +2,11 @@ import { Request, Response } from 'express'
 import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiClient'
-import { RecallResult } from '../../@types'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { getPerson } from './helpers/personCache'
 import logger from '../../../logger'
 import { sortCompletedList, sortToDoList } from './helpers/dates/sort'
+import { formatName } from './helpers'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   try {
@@ -16,19 +16,20 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     const recalls = await getRecallList(token)
     appInsightsClient?.trackMetric({ name: 'getRecallList', value: Math.round(performance.now() - start) })
     const recallsWithNomsNumbers = recalls.filter(recall => Boolean(recall.nomsNumber))
-    const successful = [] as RecallResult[]
+    const successful = [] as RecallResponse[]
     const failed = [] as string[]
     if (recallsWithNomsNumbers.length) {
       const start2 = performance.now()
       const results = await Promise.allSettled(
         recallsWithNomsNumbers.map(recall =>
-          getPerson(recall.nomsNumber, token).then(
-            person =>
-              <RecallResult>{
-                recall,
-                person,
-              }
-          )
+          getPerson(recall.nomsNumber, token).then(person => ({
+            ...person,
+            ...recall,
+            fullName: formatName({
+              category: recall.licenceNameCategory,
+              recall,
+            }),
+          }))
         )
       )
       appInsightsClient?.trackMetric({
@@ -44,10 +45,10 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         }
       })
     }
-    const toDoList = [] as RecallResult[]
-    const completed = [] as RecallResult[]
+    const toDoList = [] as RecallResponse[]
+    const completed = [] as RecallResponse[]
     successful.forEach(recallResult => {
-      if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recallResult.recall.status)) {
+      if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recallResult.status)) {
         completed.push(recallResult)
       } else {
         toDoList.push(recallResult)

@@ -1,10 +1,10 @@
-import { ApiRecallDocument } from './manage-recalls-api'
-import { MissingDocumentsRecordResponse } from './manage-recalls-api/models/MissingDocumentsRecordResponse'
+import { RecallDocument } from './manage-recalls-api'
+import { MissingDocumentsRecord } from './manage-recalls-api/models/MissingDocumentsRecord'
 
 export interface DocumentCategoryMetadata {
   label: string
   labelLowerCase?: string
-  name: ApiRecallDocument.category
+  name: RecallDocument.category
   type: 'document' | 'email' | 'generated'
   error?: string
   fileName?: string
@@ -15,7 +15,7 @@ export interface DocumentCategoryMetadata {
   fileNamePatterns?: string[]
 }
 
-export interface DecoratedDocument extends DocumentCategoryMetadata, ApiRecallDocument {
+export interface DecoratedDocument extends DocumentCategoryMetadata, RecallDocument {
   url: string
   index?: number
 }
@@ -26,16 +26,16 @@ export interface UploadedFileMetadata {
   mimeType: string
   label: string
   labelLowerCase?: string
-  category: ApiRecallDocument.category
+  category: RecallDocument.category
   fileContent: string
 }
 
 export interface CategorisedFileMetadata {
   documentId: string
-  category: ApiRecallDocument.category
+  category: RecallDocument.category
   fileName: string
 }
 
-export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecordResponse {
+export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecord {
   url: string
 }

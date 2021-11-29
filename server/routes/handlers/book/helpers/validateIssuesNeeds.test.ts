@@ -49,7 +49,7 @@ describe('validateIssuesNeeds', () => {
       {
         href: '#contraband',
         name: 'contraband',
-        text: 'Do you think {{person.firstName}} {{person.lastName}} will bring contraband into prison?',
+        text: 'Do you think {{ recall.fullName }} will bring contraband into prison?',
       },
     ])
   })
@@ -88,7 +88,7 @@ describe('validateIssuesNeeds', () => {
       {
         href: '#contrabandDetail',
         name: 'contrabandDetail',
-        text: 'Provide more detail on why you think {{person.firstName}} {{person.lastName}} will bring contraband into prison',
+        text: 'Provide more detail on why you think {{ recall.fullName }} will bring contraband into prison',
       },
     ])
   })

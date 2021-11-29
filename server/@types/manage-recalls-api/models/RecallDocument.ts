@@ -2,15 +2,15 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type ApiRecallDocument = {
-    category: ApiRecallDocument.category;
+export type RecallDocument = {
+    category: RecallDocument.category;
     createdDateTime: string;
     documentId: string;
     fileName: string;
     version?: number;
 }
 
-export namespace ApiRecallDocument {
+export namespace RecallDocument {
 
     export enum category {
         CHARGE_SHEET = 'CHARGE_SHEET',
@@ -20,6 +20,7 @@ export namespace ApiRecallDocument {
         EXCLUSION_ZONE_MAP = 'EXCLUSION_ZONE_MAP',
         LETTER_TO_PRISON = 'LETTER_TO_PRISON',
         LICENCE = 'LICENCE',
+        MISSING_DOCUMENTS_EMAIL = 'MISSING_DOCUMENTS_EMAIL',
         OASYS_RISK_ASSESSMENT = 'OASYS_RISK_ASSESSMENT',
         OTHER = 'OTHER',
         PART_A_RECALL_REPORT = 'PART_A_RECALL_REPORT',
@@ -30,7 +31,6 @@ export namespace ApiRecallDocument {
         RECALL_NOTIFICATION = 'RECALL_NOTIFICATION',
         RECALL_NOTIFICATION_EMAIL = 'RECALL_NOTIFICATION_EMAIL',
         RECALL_REQUEST_EMAIL = 'RECALL_REQUEST_EMAIL',
-        MISSING_DOCUMENTS_EMAIL = 'MISSING_DOCUMENTS_EMAIL',
         REVOCATION_ORDER = 'REVOCATION_ORDER',
         UNCATEGORISED = 'UNCATEGORISED',
     }

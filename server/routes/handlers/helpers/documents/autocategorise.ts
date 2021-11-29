@@ -1,9 +1,9 @@
 import { documentCategories } from './documentCategories'
 import { replaceSpaces } from '../index'
 import { DocumentCategoryMetadata } from '../../../../@types/documents'
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 
-const uncategorised = documentCategories.find(doc => doc.name === ApiRecallDocument.category.UNCATEGORISED)
+const uncategorised = documentCategories.find(doc => doc.name === RecallDocument.category.UNCATEGORISED)
 
 export const autocategoriseDocFileName = (fileName: string): DocumentCategoryMetadata => {
   const fileNameLowerCase = fileName.toLowerCase()

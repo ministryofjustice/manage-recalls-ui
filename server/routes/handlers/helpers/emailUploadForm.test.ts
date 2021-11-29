@@ -8,7 +8,7 @@ import {
 import { mockPostRequest } from '../../testutils/mockRequestUtils'
 import { uploadStorageField } from './uploadStorage'
 import { validateRecallRequestReceived } from '../book/helpers/validateRecallRequestReceived'
-import { ApiRecallDocument } from '../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { validateRecallNotificationEmail } from '../assess/helpers/validateRecallNotificationEmail'
 import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
 
@@ -18,7 +18,7 @@ jest.mock('./uploadStorage')
 const handler = emailUploadForm({
   emailFieldName: 'recallRequestEmailFileName',
   validator: validateRecallRequestReceived,
-  documentCategory: ApiRecallDocument.category.RECALL_REQUEST_EMAIL,
+  documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
   nextPageUrlSuffix: 'last-release',
 })
 

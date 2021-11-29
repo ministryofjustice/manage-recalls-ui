@@ -1,4 +1,4 @@
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { DecoratedDocument } from '../../../../@types/documents'
 import { documentCategories } from './documentCategories'
 import {
@@ -8,7 +8,7 @@ import {
   requiredDocsList,
   uploadedDocCategoriesList,
 } from './index'
-import { MissingDocumentsRecordResponse } from '../../../../@types/manage-recalls-api/models/MissingDocumentsRecordResponse'
+import { MissingDocumentsRecord } from '../../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 import { DocumentDecorations } from '../../../../@types'
 
 export const decorateDocs = ({
@@ -21,8 +21,8 @@ export const decorateDocs = ({
   bookingNumber,
   versionedCategoryName,
 }: {
-  docs: ApiRecallDocument[]
-  missingDocumentsRecords?: MissingDocumentsRecordResponse[]
+  docs: RecallDocument[]
+  missingDocumentsRecords?: MissingDocumentsRecord[]
   nomsNumber: string
   recallId: string
   firstName?: string
@@ -73,11 +73,11 @@ export const decorateDocs = ({
       }
       if (
         [
-          ApiRecallDocument.category.RECALL_NOTIFICATION,
-          ApiRecallDocument.category.REVOCATION_ORDER,
-          ApiRecallDocument.category.LETTER_TO_PRISON,
-          ApiRecallDocument.category.DOSSIER,
-          ApiRecallDocument.category.REASONS_FOR_RECALL,
+          RecallDocument.category.RECALL_NOTIFICATION,
+          RecallDocument.category.REVOCATION_ORDER,
+          RecallDocument.category.LETTER_TO_PRISON,
+          RecallDocument.category.DOSSIER,
+          RecallDocument.category.REASONS_FOR_RECALL,
         ].includes(curr.name)
       ) {
         acc.documentsGenerated[curr.name] = {
@@ -98,14 +98,14 @@ export const decorateDocs = ({
       }
       if (
         [
-          ApiRecallDocument.category.RECALL_NOTIFICATION_EMAIL,
-          ApiRecallDocument.category.RECALL_REQUEST_EMAIL,
-          ApiRecallDocument.category.DOSSIER_EMAIL,
+          RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+          RecallDocument.category.RECALL_REQUEST_EMAIL,
+          RecallDocument.category.DOSSIER_EMAIL,
         ].includes(curr.name)
       ) {
         acc.emailsUploaded[curr.name] = curr
       }
-      if (curr.name === ApiRecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
+      if (curr.name === RecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
         acc.missingDocumentsRecord = {
           ...(missingDocumentsRecords ? missingDocumentsRecords[0] : {}),
           ...curr,

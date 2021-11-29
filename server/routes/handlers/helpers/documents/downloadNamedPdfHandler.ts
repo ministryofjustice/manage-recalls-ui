@@ -7,7 +7,7 @@ import {
 } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getPerson } from '../personCache'
 import { isInvalid } from '../index'
-import { ApiRecallDocument } from '../../../../@types/manage-recalls-api/models/ApiRecallDocument'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { Pdf } from '../../../../@types/manage-recalls-api/models/Pdf'
 import { ObjectMap } from '../../../../@types'
 import { getGeneratedDocFileName } from './index'
@@ -15,7 +15,7 @@ import { getGeneratedDocFileName } from './index'
 type DownloadFn = (params: ObjectMap<string>, token: string, uuid?: string) => Promise<Pdf>
 
 const downloadNamedPdfHandler =
-  (downloadFn: DownloadFn, docCategory: ApiRecallDocument.category) => async (req: Request, res: Response) => {
+  (downloadFn: DownloadFn, docCategory: RecallDocument.category) => async (req: Request, res: Response) => {
     const { nomsNumber, recallId, documentId } = req.params
     const { token, uuid } = res.locals.user
     if (isInvalid(nomsNumber) || isInvalid(recallId)) {
@@ -51,25 +51,22 @@ const downloadNamedPdfHandler =
 
 export const downloadRecallNotification = downloadNamedPdfHandler(
   getRecallNotification(),
-  ApiRecallDocument.category.RECALL_NOTIFICATION
+  RecallDocument.category.RECALL_NOTIFICATION
 )
 
-export const downloadDossier = downloadNamedPdfHandler(
-  getGeneratedDocument('dossier'),
-  ApiRecallDocument.category.DOSSIER
-)
+export const downloadDossier = downloadNamedPdfHandler(getGeneratedDocument('dossier'), RecallDocument.category.DOSSIER)
 
 export const downloadLetterToPrison = downloadNamedPdfHandler(
   getGeneratedDocument('letter-to-prison'),
-  ApiRecallDocument.category.LETTER_TO_PRISON
+  RecallDocument.category.LETTER_TO_PRISON
 )
 
 export const downloadRevocationOrder = downloadNamedPdfHandler(
   getStoredDocument,
-  ApiRecallDocument.category.REVOCATION_ORDER
+  RecallDocument.category.REVOCATION_ORDER
 )
 
 export const downloadReasonsForRecallOrder = downloadNamedPdfHandler(
   getStoredDocument,
-  ApiRecallDocument.category.REASONS_FOR_RECALL
+  RecallDocument.category.REASONS_FOR_RECALL
 )

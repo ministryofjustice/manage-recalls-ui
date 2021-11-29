@@ -31,13 +31,13 @@ describe('renderErrorMessages', () => {
         text: 'Provide detail on additional licence conditions',
       },
       {
-        text: 'Enter the NOMIS number {{person.firstName}} {{person.lastName}} is being held under',
+        text: 'Enter the NOMIS number {{ recall.fullName }} is being held under',
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
       },
     ]
     const result = renderErrorMessages(transformErrorMessages(errors), {
-      person: { firstName: 'Dave', lastName: 'Angel' },
+      recall: { fullName: 'Dave Angel' },
     })
     expect(result).toEqual({
       additionalLicenceConditionsDetail: {

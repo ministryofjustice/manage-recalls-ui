@@ -1,6 +1,5 @@
 import { RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
 import { DecoratedDocument, DecoratedMissingDocumentRecord, DocumentCategoryMetadata } from './documents'
-import { SearchResult } from './manage-recalls-api/models/SearchResult'
 
 export interface FormError {
   text: string
@@ -77,6 +76,7 @@ export type ViewName =
   | 'assessLicence'
   | 'assessDownload'
   | 'assessEmail'
+  | 'recallLicenceName'
   | 'recallPreConsName'
   | 'recallSentenceDetails'
   | 'recallRequestReceived'
@@ -113,11 +113,6 @@ export interface EmailUploadValidatorArgs {
   uploadFailed: boolean
   invalidFileFormat: boolean
   actionedByUserId?: string
-}
-
-export interface RecallResult {
-  recall: RecallResponse
-  person: SearchResult
 }
 
 export type DateValidationErrorType =
