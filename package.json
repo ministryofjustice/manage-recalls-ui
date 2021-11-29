@@ -26,7 +26,7 @@
     "int-test-ui": "rm -rf cypress/downloads && cypress open",
     "clean": "rm -rf dist build",
     "prepare": "npx husky install",
-    "pact-test": "rm -rf pact/pacts/* && jest --runInBand --forceExit --config=./pact/jest.pact.config.js"
+    "pact-test": "rm -rf pact/pacts/* && jest --runInBand --coverage --forceExit --config=./jest.pact.config.js"
   },
   "engines": {
     "node": "16.12.0",
