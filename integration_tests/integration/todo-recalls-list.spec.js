@@ -5,8 +5,6 @@ import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
 import recallLicenceNamePage from '../pages/recallLicenceName'
 
-const recallPreConsNamePage = require('../pages/recallPreConsName')
-
 describe('To do (recalls) list', () => {
   const recallId = '123'
   const nomsNumber = 'A1234AA'
