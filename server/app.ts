@@ -51,7 +51,7 @@ export default function createApp(userService: UserService): express.Application
       // enable Express.js middleware tracing
       new Tracing.Integrations.Express({ app }),
     ],
-
+    ignoreErrors: ['AbortError'],
     // Quarter of all requests will be used for performance sampling
     tracesSampler: samplingContext => {
       const transactionName =
