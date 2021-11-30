@@ -115,7 +115,7 @@ export interface EmailUploadValidatorArgs {
   actionedByUserId?: string
 }
 
-export type DateValidationErrorType =
+export type ValidationErrorType =
   | 'dateMustBeInPast'
   | 'dateMustBeInFuture'
   | 'blankDateTime'
@@ -128,6 +128,8 @@ export type DateValidationErrorType =
   | 'minValueDateParts'
   | 'minLengthDateTimeParts'
   | 'minValueDateTimeParts'
+  | 'noSelectionFromList'
+  | 'invalidSelectionFromList'
 
 export type DatePartNames = 'year' | 'month' | 'day' | 'hour' | 'minute'
 
@@ -136,8 +138,8 @@ export interface DateTimePart {
   value: string
 }
 
-export interface DateValidationError {
-  error: DateValidationErrorType
+export interface ValidationError {
+  errorId: ValidationErrorType
   invalidParts?: DatePartNames[]
 }
 

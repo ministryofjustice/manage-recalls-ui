@@ -227,6 +227,10 @@ context('Assess a recall', () => {
     cy.get('[id="currentPrison"]').clear().type('blah blah blah')
     assessRecallPrison.clickContinue()
     assessRecallPrison.assertSelectValue({ fieldName: 'currentPrisonInput', value: 'blah blah blah' })
+    assessRecallPrison.assertErrorMessage({
+      fieldName: 'currentPrison',
+      summaryError: 'Select a prison from the list',
+    })
   })
 
   it("User sees an error if they don't upload the recall notification email or enter a sent date", () => {

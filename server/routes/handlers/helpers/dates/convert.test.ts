@@ -38,17 +38,17 @@ describe('convertGmtDatePartsToUtc', () => {
 
   it('returns an error for a date with all parts missing', () => {
     const result = convertGmtDatePartsToUtc({ year: '', month: '', day: '' })
-    expect(result).toEqual({ error: 'blankDateTime' })
+    expect(result).toEqual({ errorId: 'blankDateTime' })
   })
 
   it('returns an error for a date-time with all parts missing', () => {
     const result = convertGmtDatePartsToUtc({ year: '', month: '', day: '', hour: '', minute: '' })
-    expect(result).toEqual({ error: 'blankDateTime' })
+    expect(result).toEqual({ errorId: 'blankDateTime' })
   })
 
   it('returns an error for a date with any part missing', () => {
     const result = convertGmtDatePartsToUtc({ year: '', month: '3', day: '20' })
-    expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['year'] })
+    expect(result).toEqual({ errorId: 'missingDateParts', invalidParts: ['year'] })
   })
 
   it('returns an error for a date-time with any part not being an integer', () => {
@@ -56,22 +56,22 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: 'ff21', month: '3.2', day: '-0.5', hour: 'ab1', minute: '-100' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'invalidDate' })
+    expect(result).toEqual({ errorId: 'invalidDate' })
   })
 
   it('returns an error for a date with any part over the max allowed value', () => {
     const result = convertGmtDatePartsToUtc({ year: '2020', month: '32', day: '45' })
-    expect(result).toEqual({ error: 'invalidDate' })
+    expect(result).toEqual({ errorId: 'invalidDate' })
   })
 
   it('returns an error for a date with the year below the minimum value', () => {
     const result = convertGmtDatePartsToUtc({ year: '1899', month: '10', day: '12' })
-    expect(result).toEqual({ error: 'minValueDateParts', invalidParts: ['year'] })
+    expect(result).toEqual({ errorId: 'minValueDateParts', invalidParts: ['year'] })
   })
 
   it('returns undefined for a 29 Feb date not in a leap year', () => {
     const result = convertGmtDatePartsToUtc({ year: '2021', month: '02', day: '29' })
-    expect(result).toEqual({ error: 'invalidDate' })
+    expect(result).toEqual({ errorId: 'invalidDate' })
   })
 
   it('returns an ISO formatted UTC date for a 29 Feb date in a leap year', () => {
@@ -81,7 +81,7 @@ describe('convertGmtDatePartsToUtc', () => {
 
   it('returns an error for a date with any date part having a negative value', () => {
     const result = convertGmtDatePartsToUtc({ year: '2020', month: '-5', day: '12' })
-    expect(result).toEqual({ error: 'invalidDate' })
+    expect(result).toEqual({ errorId: 'invalidDate' })
   })
 
   it('returns an error for a date-time with any hour part having a negative value', () => {
@@ -89,7 +89,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2020', month: '05', day: '12', hour: '-10', minute: '53' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'invalidTime' })
+    expect(result).toEqual({ errorId: 'invalidTime' })
   })
 
   it('returns an error for a date-time with any hour part over the max allowed value', () => {
@@ -97,7 +97,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2020', month: '05', day: '12', hour: '24', minute: '53' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'invalidTime' })
+    expect(result).toEqual({ errorId: 'invalidTime' })
   })
 
   it('returns an error for a date-time with any minute part having a negative value', () => {
@@ -105,7 +105,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2020', month: '05', day: '12', hour: '-10', minute: '53' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'invalidTime' })
+    expect(result).toEqual({ errorId: 'invalidTime' })
   })
 
   it('returns an error for a date-time with any minute part having a value out of bounds', () => {
@@ -113,7 +113,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2020', month: '05', day: '12', hour: '23', minute: '60' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'invalidTime' })
+    expect(result).toEqual({ errorId: 'invalidTime' })
   })
 
   it('returns an error for a date-time with parts missing from date and time', () => {
@@ -121,12 +121,12 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '', month: '03', day: '20', hour: '', minute: '05' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['year', 'hour'] })
+    expect(result).toEqual({ errorId: 'missingDateParts', invalidParts: ['year', 'hour'] })
   })
 
   it('returns an error for a date with any parts missing', () => {
     const result = convertGmtDatePartsToUtc({ year: '2021', month: '', day: '' })
-    expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['day', 'month'] })
+    expect(result).toEqual({ errorId: 'missingDateParts', invalidParts: ['day', 'month'] })
   })
 
   it('returns an error for a date-time with all date parts missing', () => {
@@ -134,7 +134,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '', month: '', day: '', hour: '03', minute: '04' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'missingDate' })
+    expect(result).toEqual({ errorId: 'missingDate' })
   })
 
   it('returns an error for a date-time with any time parts missing', () => {
@@ -142,7 +142,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2021', month: '03', day: '25', hour: '05', minute: '' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'missingDateParts', invalidParts: ['minute'] })
+    expect(result).toEqual({ errorId: 'missingDateParts', invalidParts: ['minute'] })
   })
 
   it('returns an error for a date-time with all time parts missing', () => {
@@ -150,7 +150,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2021', month: '03', day: '25', hour: '', minute: '' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'missingTime' })
+    expect(result).toEqual({ errorId: 'missingTime' })
   })
 
   it('returns an error if a date-time must be in the past but is in the future', () => {
@@ -158,7 +158,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2050', month: '12', day: '10', hour: '23', minute: '12' },
       { dateMustBeInPast: true, includeTime: true }
     )
-    expect(result).toEqual({ error: 'dateMustBeInPast' })
+    expect(result).toEqual({ errorId: 'dateMustBeInPast' })
   })
 
   it('returns an error if a date must be in the past but is in the future', () => {
@@ -166,7 +166,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2045', month: '03', day: '04' },
       { dateMustBeInPast: true, includeTime: false }
     )
-    expect(result).toEqual({ error: 'dateMustBeInPast' })
+    expect(result).toEqual({ errorId: 'dateMustBeInPast' })
   })
 
   it('returns valid date string if a date must be in the past and is today', () => {
@@ -184,7 +184,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2020', month: '12', day: '10', hour: '23', minute: '12' },
       { dateMustBeInFuture: true, includeTime: true }
     )
-    expect(result).toEqual({ error: 'dateMustBeInFuture' })
+    expect(result).toEqual({ errorId: 'dateMustBeInFuture' })
   })
 
   it('returns an error if a date must be in the future but is in the past', () => {
@@ -192,7 +192,7 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2020', month: '03', day: '04' },
       { dateMustBeInFuture: true, includeTime: false }
     )
-    expect(result).toEqual({ error: 'dateMustBeInFuture' })
+    expect(result).toEqual({ errorId: 'dateMustBeInFuture' })
   })
 
   it('returns an error for a date-time with any single-digit parts not padded with zeroes', () => {
@@ -200,17 +200,17 @@ describe('convertGmtDatePartsToUtc', () => {
       { year: '2021', month: '3', day: '5', hour: '5', minute: '1' },
       { includeTime: true }
     )
-    expect(result).toEqual({ error: 'minLengthDateTimeParts', invalidParts: ['day', 'month', 'hour', 'minute'] })
+    expect(result).toEqual({ errorId: 'minLengthDateTimeParts', invalidParts: ['day', 'month', 'hour', 'minute'] })
   })
 
   it('returns an error for a date with any single-digit parts not padded with zeroes', () => {
     const result = convertGmtDatePartsToUtc({ year: '2021', month: '3', day: '5' })
-    expect(result).toEqual({ error: 'minLengthDateParts', invalidParts: ['day', 'month'] })
+    expect(result).toEqual({ errorId: 'minLengthDateParts', invalidParts: ['day', 'month'] })
   })
 
   it('returns an error for a year of less than 4 digits', () => {
     const result = convertGmtDatePartsToUtc({ year: '21', month: '03', day: '05' })
-    expect(result).toEqual({ error: 'minLengthDateParts', invalidParts: ['year'] })
+    expect(result).toEqual({ errorId: 'minLengthDateParts', invalidParts: ['year'] })
   })
 })
 

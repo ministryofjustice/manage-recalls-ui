@@ -3,6 +3,7 @@ import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/model
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { isEmailValid, isPhoneValid } from '../../helpers/validations'
 import { isStringValidReferenceData } from '../../../../referenceData'
+import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 
 export const validateProbationOfficer = (
   requestBody: ObjectMap<string>
@@ -23,8 +24,9 @@ export const validateProbationOfficer = (
   const phoneValid = isPhoneValid(probationOfficerPhoneNumber)
   // localDeliveryUnit is the value of the hidden select dropdown that's populated by the autocomplete
   // localDeliveryUnitInput is what the user typed into the autocomplete input. It might be a random string and not a valid LDU, so needs validating
-  const localDeliveryUnitValid =
-    localDeliveryUnit && isStringValidReferenceData('localDeliveryUnits', localDeliveryUnitInput)
+  const localDeliveryUnitInvalidInput = Boolean(
+    localDeliveryUnitInput && !isStringValidReferenceData('localDeliveryUnits', localDeliveryUnitInput)
+  )
   if (
     !probationOfficerName ||
     !probationOfficerEmail ||
@@ -32,7 +34,7 @@ export const validateProbationOfficer = (
     !probationOfficerPhoneNumber ||
     !phoneValid ||
     !localDeliveryUnit ||
-    !localDeliveryUnitValid ||
+    localDeliveryUnitInvalidInput ||
     !authorisingAssistantChiefOfficer
   ) {
     errors = []
@@ -78,12 +80,19 @@ export const validateProbationOfficer = (
         })
       )
     }
-    if (!localDeliveryUnit || !localDeliveryUnitValid) {
+    if (localDeliveryUnitInvalidInput) {
       errors.push(
         makeErrorObject({
           id: 'localDeliveryUnit',
-          text: 'Select a Local Delivery Unit',
+          text: formatValidationErrorMessage({ errorId: 'invalidSelectionFromList' }, 'a Local Delivery Unit'),
           values: localDeliveryUnitInput,
+        })
+      )
+    } else if (!localDeliveryUnit) {
+      errors.push(
+        makeErrorObject({
+          id: 'localDeliveryUnit',
+          text: formatValidationErrorMessage({ errorId: 'noSelectionFromList' }, 'a Local Delivery Unit'),
         })
       )
     }

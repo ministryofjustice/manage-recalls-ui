@@ -1,6 +1,6 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { DateValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
+import { ValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
@@ -54,10 +54,7 @@ export const validateRecallNotificationEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailSentDateTime',
-          text: errorMsgUserActionDateTime(
-            recallNotificationEmailSentDateTime as DateValidationError,
-            'sent the email'
-          ),
+          text: errorMsgUserActionDateTime(recallNotificationEmailSentDateTime as ValidationError, 'sent the email'),
           values: recallNotificationEmailSentDateTimeParts,
         })
       )

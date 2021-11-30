@@ -40,7 +40,7 @@ describe('validatePrison', () => {
     expect(valuesToSave).toBeUndefined()
   })
 
-  it('returns an error for invalid prison, and no valuesToSave', () => {
+  it("returns an error for invalid prison when there's an existing selection, and no valuesToSave", () => {
     const requestBody = {
       currentPrison: 'BAI',
       currentPrisonInput: '1235',
@@ -51,7 +51,24 @@ describe('validatePrison', () => {
       {
         href: '#currentPrison',
         name: 'currentPrison',
-        text: 'Select a prison',
+        text: 'Select a prison from the list',
+        values: '1235',
+      },
+    ])
+  })
+
+  it("returns an error for invalid prison when there's no existing selection, and no valuesToSave", () => {
+    const requestBody = {
+      currentPrison: '',
+      currentPrisonInput: '1235',
+    }
+    const { errors, valuesToSave } = validatePrison(requestBody)
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#currentPrison',
+        name: 'currentPrison',
+        text: 'Select a prison from the list',
         values: '1235',
       },
     ])
