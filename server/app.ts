@@ -27,6 +27,7 @@ import authorisationMiddleware from './middleware/authorisationMiddleware'
 import type UserService from './services/userService'
 import { getStoredSessionData } from './middleware/getStoredSessionData'
 import { getRedisClient } from './clients/redis'
+import { appInsightsOperationId } from './middleware/appInsightsOperationId'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
@@ -51,7 +52,7 @@ export default function createApp(userService: UserService): express.Application
       // enable Express.js middleware tracing
       new Tracing.Integrations.Express({ app }),
     ],
-
+    ignoreErrors: ['AbortError'],
     // Quarter of all requests will be used for performance sampling
     tracesSampler: samplingContext => {
       const transactionName =
@@ -78,6 +79,8 @@ export default function createApp(userService: UserService): express.Application
 
   // TracingHandler creates a trace for every incoming request
   app.use(Sentry.Handlers.tracingHandler())
+
+  app.use(appInsightsOperationId)
 
   auth.init()
 
