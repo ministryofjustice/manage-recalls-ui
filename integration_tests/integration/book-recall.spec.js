@@ -507,19 +507,20 @@ context('Book a recall', () => {
 
   it("user can't change the category of a document that has more than one version", () => {
     const documentId = '123'
+    const recallResponse = {
+      recallId,
+      ...getRecallResponse,
+      status: RecallResponse.status.BEING_BOOKED_ON,
+      documents: [
+        {
+          category: 'PART_A_RECALL_REPORT',
+          documentId,
+          version: 2,
+        },
+      ],
+    }
     cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.BEING_BOOKED_ON,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId,
-            version: 2,
-          },
-        ],
-      },
+      expectedResult: recallResponse,
     })
     cy.task('expectDeleteRecallDocument')
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
@@ -529,6 +530,23 @@ context('Book a recall', () => {
       qaAttr: `category-label-PART_A_RECALL_REPORT`,
       textToFind: 'Part A recall report',
     })
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...recallResponse,
+        documents: [
+          ...recallResponse.documents,
+          {
+            category: 'PRE_SENTENCING_REPORT',
+            documentId: '456',
+          },
+        ],
+      },
+    })
+    uploadDocuments.uploadSingleFile({
+      filePath: '../uploads/presentencing_report.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertElementPresent({ qaAttr: 'category-index-PRE_SENTENCING_REPORT' })
   })
 
   it("User sees an error if they don't upload the missing documents email or provide detail", () => {

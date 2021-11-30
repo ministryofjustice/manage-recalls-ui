@@ -100,7 +100,7 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
     this.params.uploadFileEntryHook(this, files)
     var formData = new FormData()
     const existingDocIds = []
-    this.feedbackContainer.find('select').each((index, value) => {
+    this.feedbackContainer.find('.document-row').each((index, value) => {
       existingDocIds.push($(value).attr('id'))
       formData.append($(value).attr('name'), $(value).val())
     })

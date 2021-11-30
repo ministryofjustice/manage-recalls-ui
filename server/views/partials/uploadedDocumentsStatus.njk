@@ -5,7 +5,7 @@
   {% endif %}
   {% for category in recall.documentCategories %}
     {% for file in category.uploaded %}
-    <div class="govuk-summary-list__row" id='{{ file.documentId }}'>
+    <div class="govuk-summary-list__row document-row" id='{{ file.documentId }}'>
       <dt class=" govuk-summary-list__key">
         <a href='{{ file.url }}' target='_blank' class='govuk-link{% if errors[file.documentId] %} govuk-link--error{% endif %}' data-qa='link-{{ file.documentId }}'>{{ file.fileName }}</a>
       </dt>
@@ -15,7 +15,7 @@
             <span data-qa='category-label-{{ category.name }}'>{{ category.label }}</span>
           {% else %}
             <input type='hidden' name='fileName-{{ file.documentId }}' value='{{ file.fileName }}'>
-            <label class="govuk-label govuk-visually-hidden" for="category-{{ file.documentId }}">
+            <label class="govuk-label govuk-visually-hidden" for="{{ file.documentId }}">
               Select the document category
             </label>
             <select class="govuk-select document-upload-select-type" id='{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ category.name }}'>
