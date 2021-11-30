@@ -165,27 +165,61 @@ describe('validateSentenceDetails', () => {
     ])
   })
 
-  it('returns an error for invalid Sentencing Court, and no valuesToSave', () => {
+  it("returns an error for invalid Sentencing Court entry when there's an existing selection, and no valuesToSave", () => {
     const { errors, valuesToSave } = validateSentenceDetails({ ...requestBody, sentencingCourtInput: '123' })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#sentencingCourt',
         name: 'sentencingCourt',
-        text: 'Select a sentencing court',
+        text: 'Select a sentencing court from the list',
         values: '123',
       },
     ])
   })
 
-  it('returns an error for invalid releasing prison, and no valuesToSave', () => {
+  it("returns an error for invalid Sentencing Court entry when there's no existing selection, and no valuesToSave", () => {
+    const { errors, valuesToSave } = validateSentenceDetails({
+      ...requestBody,
+      sentencingCourt: '',
+      sentencingCourtInput: '123',
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#sentencingCourt',
+        name: 'sentencingCourt',
+        text: 'Select a sentencing court from the list',
+        values: '123',
+      },
+    ])
+  })
+
+  it("returns an error for invalid releasing prison when there's an existing selection, and no valuesToSave", () => {
     const { errors, valuesToSave } = validateSentenceDetails({ ...requestBody, lastReleasePrisonInput: '123' })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#lastReleasePrison',
         name: 'lastReleasePrison',
-        text: 'Select a releasing prison',
+        text: 'Select a releasing prison from the list',
+        values: '123',
+      },
+    ])
+  })
+
+  it("returns an error for invalid releasing prison when there's no existing selection, and no valuesToSave", () => {
+    const { errors, valuesToSave } = validateSentenceDetails({
+      ...requestBody,
+      lastReleasePrison: '',
+      lastReleasePrisonInput: '123',
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#lastReleasePrison',
+        name: 'lastReleasePrison',
+        text: 'Select a releasing prison from the list',
         values: '123',
       },
     ])

@@ -1,8 +1,8 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { DateValidationError, NamedFormError, ObjectMap } from '../../../../@types'
+import { ValidationError, NamedFormError, ObjectMap } from '../../../../@types'
 import { isBookingNumberValid } from '../../helpers/validations'
-import { errorMsgDate } from '../../helpers/errorMessages'
+import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
@@ -74,10 +74,14 @@ export const validateSentenceDetails = (
   const bookingNumberValid = isBookingNumberValid(bookingNumber)
   // sentencingCourt is the value of the hidden select dropdown that's populated by the autocomplete
   // sentencingCourtInput is what the user typed into the autocomplete input. It might be a random string and not a valid court name, so needs validating
-  const sentencingCourtValid = sentencingCourt && isStringValidReferenceData('courts', sentencingCourtInput)
+  const sentencingCourtInvalidInput = Boolean(
+    sentencingCourtInput && !isStringValidReferenceData('courts', sentencingCourtInput)
+  )
   // lastReleasePrison is the value of the hidden select dropdown that's populated by the autocomplete
   // lastReleasePrisonInput is what the user typed into the autocomplete input. It might be a random string and not a valid prison, so needs validating
-  const lastReleasePrisonValid = lastReleasePrison && isStringValidReferenceData('prisons', lastReleasePrisonInput)
+  const lastReleasePrisonInvalidInput = Boolean(
+    lastReleasePrisonInput && !isStringValidReferenceData('prisons', lastReleasePrisonInput)
+  )
 
   if (
     dateHasError(sentenceDate) ||
@@ -85,9 +89,9 @@ export const validateSentenceDetails = (
     dateHasError(sentenceExpiryDate) ||
     dateHasError(lastReleaseDate) ||
     !lastReleasePrison ||
-    !lastReleasePrisonValid ||
+    lastReleasePrisonInvalidInput ||
     !sentencingCourt ||
-    !sentencingCourtValid ||
+    sentencingCourtInvalidInput ||
     !indexOffence ||
     !bookingNumber ||
     !bookingNumberValid ||
@@ -98,7 +102,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceDate',
-          text: errorMsgDate(sentenceDate as DateValidationError, 'date of sentence'),
+          text: formatValidationErrorMessage(sentenceDate as ValidationError, 'date of sentence'),
           values: sentenceDateParts,
         })
       )
@@ -107,7 +111,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'licenceExpiryDate',
-          text: errorMsgDate(licenceExpiryDate as DateValidationError, 'licence expiry date'),
+          text: formatValidationErrorMessage(licenceExpiryDate as ValidationError, 'licence expiry date'),
           values: licenceExpiryDateParts,
         })
       )
@@ -116,7 +120,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'sentenceExpiryDate',
-          text: errorMsgDate(sentenceExpiryDate as DateValidationError, 'sentence expiry date'),
+          text: formatValidationErrorMessage(sentenceExpiryDate as ValidationError, 'sentence expiry date'),
           values: sentenceExpiryDateParts,
         })
       )
@@ -130,12 +134,19 @@ export const validateSentenceDetails = (
         })
       )
     }
-    if (!sentencingCourt || !sentencingCourtValid) {
+    if (sentencingCourtInvalidInput) {
       errors.push(
         makeErrorObject({
           id: 'sentencingCourt',
-          text: 'Select a sentencing court',
-          values: sentencingCourtInput || undefined,
+          text: formatValidationErrorMessage({ errorId: 'invalidSelectionFromList' }, 'a sentencing court'),
+          values: sentencingCourtInput,
+        })
+      )
+    } else if (!sentencingCourt) {
+      errors.push(
+        makeErrorObject({
+          id: 'sentencingCourt',
+          text: formatValidationErrorMessage({ errorId: 'noSelectionFromList' }, 'a sentencing court'),
         })
       )
     }
@@ -143,16 +154,23 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'indexOffence',
-          text: 'Select an index offence',
+          text: formatValidationErrorMessage({ errorId: 'noSelectionFromList' }, 'an index offence'),
         })
       )
     }
-    if (!lastReleasePrison || !lastReleasePrisonValid) {
+    if (lastReleasePrisonInvalidInput) {
       errors.push(
         makeErrorObject({
           id: 'lastReleasePrison',
-          text: 'Select a releasing prison',
-          values: lastReleasePrisonInput || undefined,
+          text: formatValidationErrorMessage({ errorId: 'invalidSelectionFromList' }, 'a releasing prison'),
+          values: lastReleasePrisonInput,
+        })
+      )
+    } else if (!lastReleasePrison) {
+      errors.push(
+        makeErrorObject({
+          id: 'lastReleasePrison',
+          text: formatValidationErrorMessage({ errorId: 'noSelectionFromList' }, 'a releasing prison'),
         })
       )
     }
@@ -177,7 +195,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'lastReleaseDate',
-          text: errorMsgDate(lastReleaseDate as DateValidationError, 'latest release date'),
+          text: formatValidationErrorMessage(lastReleaseDate as ValidationError, 'latest release date'),
           values: lastReleaseDateParts,
         })
       )
@@ -195,7 +213,7 @@ export const validateSentenceDetails = (
       errors.push(
         makeErrorObject({
           id: 'conditionalReleaseDate',
-          text: errorMsgDate(conditionalReleaseDate as DateValidationError, 'conditional release date'),
+          text: formatValidationErrorMessage(conditionalReleaseDate as ValidationError, 'conditional release date'),
           values: conditionalReleaseDateParts,
         })
       )

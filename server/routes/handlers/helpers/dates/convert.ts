@@ -1,5 +1,5 @@
 import { DateTime, Settings } from 'luxon'
-import { DatePartNames, DatePartsParsed, DateTimePart, DateValidationError, ObjectMap } from '../../../../@types'
+import { DatePartNames, DatePartsParsed, DateTimePart, ValidationError, ObjectMap } from '../../../../@types'
 import { areStringArraysTheSame, isDefined } from '../index'
 import { padWithZeroes } from './format'
 import logger from '../../../../../logger'
@@ -26,10 +26,10 @@ const filterPartsForMinimumValue = (parts: unknown[]): DatePartNames[] =>
 export const convertGmtDatePartsToUtc = (
   { year, month, day, hour, minute }: ObjectMap<string>,
   options: Options = {}
-): string | DateValidationError => {
+): string | ValidationError => {
   if ([year, month, day, hour, minute].every(part => !isDefined(part) || part === '')) {
     return {
-      error: 'blankDateTime',
+      errorId: 'blankDateTime',
     }
   }
   const dateParts = [
@@ -47,30 +47,30 @@ export const convertGmtDatePartsToUtc = (
     if (dateTimePartErrors.length) {
       if (areStringArraysTheSame(dateTimePartErrors, ['day', 'month', 'year'])) {
         return {
-          error: 'missingDate',
+          errorId: 'missingDate',
         }
       }
       if (areStringArraysTheSame(dateTimePartErrors, ['hour', 'minute'])) {
         return {
-          error: 'missingTime',
+          errorId: 'missingTime',
         }
       }
       return {
-        error: 'missingDateParts',
+        errorId: 'missingDateParts',
         invalidParts: dateTimePartErrors,
       }
     }
     dateTimePartErrors = filterPartsForMinimumLength([...dateParts, ...timeParts])
     if (dateTimePartErrors.length) {
       return {
-        error: 'minLengthDateTimeParts',
+        errorId: 'minLengthDateTimeParts',
         invalidParts: dateTimePartErrors,
       }
     }
     dateTimePartErrors = filterPartsForMinimumValue([...dateParts, ...timeParts])
     if (dateTimePartErrors.length) {
       return {
-        error: 'minValueDateTimeParts',
+        errorId: 'minValueDateTimeParts',
         invalidParts: dateTimePartErrors,
       }
     }
@@ -78,7 +78,7 @@ export const convertGmtDatePartsToUtc = (
   let datePartErrors = filterPartsForEmptyStrings(dateParts)
   if (datePartErrors.length) {
     return {
-      error: 'missingDateParts',
+      errorId: 'missingDateParts',
       invalidParts: datePartErrors,
     }
   }
@@ -86,7 +86,7 @@ export const convertGmtDatePartsToUtc = (
   datePartErrors = filterPartsForMinimumLength(dateParts)
   if (datePartErrors.length) {
     return {
-      error: 'minLengthDateParts',
+      errorId: 'minLengthDateParts',
       invalidParts: datePartErrors,
     }
   }
@@ -94,7 +94,7 @@ export const convertGmtDatePartsToUtc = (
   datePartErrors = filterPartsForMinimumValue(dateParts)
   if (datePartErrors.length) {
     return {
-      error: 'minValueDateParts',
+      errorId: 'minValueDateParts',
       invalidParts: datePartErrors,
     }
   }
@@ -111,7 +111,7 @@ export const convertGmtDatePartsToUtc = (
       { zone: europeLondon }
     )
   } catch (err) {
-    return { error: 'invalidDate' }
+    return { errorId: 'invalidDate' }
   }
   if (options.includeTime) {
     try {
@@ -123,7 +123,7 @@ export const convertGmtDatePartsToUtc = (
         { zone: europeLondon }
       )
     } catch (err) {
-      return { error: 'invalidTime' }
+      return { errorId: 'invalidTime' }
     }
   }
   const date = DateTime.fromObject(
@@ -139,10 +139,10 @@ export const convertGmtDatePartsToUtc = (
   if (options) {
     const now = DateTime.now()
     if (options.dateMustBeInPast === true && now < date) {
-      return { error: 'dateMustBeInPast' }
+      return { errorId: 'dateMustBeInPast' }
     }
     if (options.dateMustBeInFuture === true && now > date) {
-      return { error: 'dateMustBeInFuture' }
+      return { errorId: 'dateMustBeInFuture' }
     }
   }
   if (options.includeTime) {
@@ -178,4 +178,4 @@ export function getDateTimeInEuropeLondon(isoDate: string) {
   return getDateTimeUTC(isoDate).setZone(europeLondon)
 }
 
-export const dateHasError = (field: string | DateValidationError) => Boolean((field as DateValidationError).error)
+export const dateHasError = (field: string | ValidationError) => Boolean((field as ValidationError).errorId)

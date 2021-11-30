@@ -95,14 +95,31 @@ describe('validateProbationOfficer', () => {
     ])
   })
 
-  it('returns an error for invalid Local Delivery Unit, and no valuesToSave', () => {
+  it("returns an error for invalid Local Delivery Unit when there's an existing selection, and no valuesToSave", () => {
     const { errors, valuesToSave } = validateProbationOfficer({ ...requestBody, localDeliveryUnitInput: '123' })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#localDeliveryUnit',
         name: 'localDeliveryUnit',
-        text: 'Select a Local Delivery Unit',
+        text: 'Select a Local Delivery Unit from the list',
+        values: '123',
+      },
+    ])
+  })
+
+  it("returns an error for invalid Local Delivery Unit when there's no existing selection, and no valuesToSave", () => {
+    const { errors, valuesToSave } = validateProbationOfficer({
+      ...requestBody,
+      localDeliveryUnit: '',
+      localDeliveryUnitInput: '123',
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#localDeliveryUnit',
+        name: 'localDeliveryUnit',
+        text: 'Select a Local Delivery Unit from the list',
         values: '123',
       },
     ])

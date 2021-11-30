@@ -1,14 +1,14 @@
-import { DateValidationError } from '../../../@types'
+import { ValidationError } from '../../../@types'
 import { allowedEmailFileExtensions } from './allowedUploadExtensions'
 import { listToString } from './index'
 
 export const errorMsgUserActionDateTime = (
-  validationError: DateValidationError,
+  validationError: ValidationError,
   userAction: string,
   dateOnly?: boolean
 ): string => {
   const noun = dateOnly ? 'date' : 'date and time'
-  switch (validationError.error) {
+  switch (validationError.errorId) {
     case 'blankDateTime':
       return `Enter the ${noun} you ${userAction}`
     case 'dateMustBeInPast':
@@ -34,8 +34,9 @@ export const errorMsgUserActionDateTime = (
   }
 }
 
-export const errorMsgDate = (validationError: DateValidationError, fieldLabel: string): string => {
-  switch (validationError.error) {
+export const formatValidationErrorMessage = (validationError: ValidationError, fieldLabel: string): string => {
+  switch (validationError.errorId) {
+    // dates
     case 'blankDateTime':
       return `Enter the ${fieldLabel}`
     case 'dateMustBeInPast':
@@ -52,6 +53,12 @@ export const errorMsgDate = (validationError: DateValidationError, fieldLabel: s
     case 'minLengthDateParts':
     case 'minValueDateParts':
       return `The ${fieldLabel} must be in the correct format, like 06 05 2021`
+    // autocompletes and dropdowns
+    case 'noSelectionFromList':
+      return `Select ${fieldLabel}`
+    // invalid input was typed into an autocomplete
+    case 'invalidSelectionFromList':
+      return `Select ${fieldLabel} from the list`
     default:
       return `Error - ${fieldLabel}`
   }

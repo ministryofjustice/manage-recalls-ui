@@ -285,7 +285,15 @@ context('Book a recall', () => {
     cy.get('[id="lastReleasePrison"]').clear().type('piffle')
     recallLastRelease.clickContinue()
     recallLastRelease.assertSelectValue({ fieldName: 'sentencingCourtInput', value: 'blah blah blah' })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'sentencingCourt',
+      summaryError: 'Select a sentencing court from the list',
+    })
     recallLastRelease.assertSelectValue({ fieldName: 'lastReleasePrisonInput', value: 'piffle' })
+    recallLastRelease.assertErrorMessage({
+      fieldName: 'lastReleasePrison',
+      summaryError: 'Select a releasing prison from the list',
+    })
   })
 
   it('User sees an error if Local police force not entered', () => {
@@ -374,6 +382,10 @@ context('Book a recall', () => {
     cy.get('[id="localDeliveryUnit"]').clear().type('blah blah blah')
     recallProbationOfficer.clickContinue()
     recallProbationOfficer.assertSelectValue({ fieldName: 'localDeliveryUnitInput', value: 'blah blah blah' })
+    recallProbationOfficer.assertErrorMessage({
+      fieldName: 'localDeliveryUnit',
+      summaryError: 'Select a Local Delivery Unit from the list',
+    })
   })
 
   it('User sees an uploaded document listed', () => {
