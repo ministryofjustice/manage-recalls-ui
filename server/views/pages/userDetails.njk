@@ -2,12 +2,12 @@
 
 {% set pageTitle = applicationName + " - User details" %}
 
-
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
             {% if errors %}
                 {{ govukErrorSummary({
+                    titleText: "There is a problem",
                     errorList: errors.list,
                     attributes: {
                         'data-qa': 'error-list'
@@ -15,8 +15,9 @@
                 }) }}
             {% endif %}
             <h1 class="govuk-heading-l">
-                User details
+                {% if notFound %}Enter your user details{% else %}User details{% endif %}
             </h1>
+
             <form novalidate action="/user-details?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({
@@ -26,7 +27,8 @@
                         },
                         id: "firstName",
                         name: "firstName",
-                        value: user.firstName
+                        value: user.firstName,
+                        errorMessage: errorMessage(errors.firstName)
                     }) }}
 
                     {{ govukInput({
@@ -36,7 +38,8 @@
                         },
                         id: "lastName",
                         name: "lastName",
-                        value: user.lastName
+                        value: user.lastName,
+                        errorMessage: errorMessage(errors.lastName)
                     }) }}
 
                     {{ govukInput({
@@ -47,7 +50,8 @@
                         id: "email",
                         name: "email",
                         type: 'email',
-                        value: user.email
+                        value: user.email,
+                        errorMessage: errorMessage(errors.email)
                     }) }}
 
                     {{ govukInput({
@@ -59,9 +63,32 @@
                         name: "phoneNumber",
                         type: 'tel',
                         classes: "govuk-input--width-20",
-                        value: user.phoneNumber
+                        value: user.phoneNumber,
+                        errorMessage: errorMessage(errors.phoneNumber)
                     }) }}
 
+                    {{ govukRadios({
+                        classes: "govuk-radios--inline",
+                        idPrefix: "caseworkerBand",
+                        name: "caseworkerBand",
+                        fieldset: {
+                            legend: {
+                                text: "Caseworker band",
+                                classes: "govuk-fieldset__legend--m"
+                            }
+                        },
+                        items: checkboxItems([
+                            {
+                                value: "THREE",
+                                text: "Band 3"
+                            },
+                            {
+                                value: "FOUR_PLUS",
+                                text: "Band 4+"
+                            }
+                        ], user.caseworkerBand),
+                        errorMessage: errorMessage(errors.caseworkerBand)
+                    }) }}
                     {{ govukFileUpload({
                         id: 'signature',
                         name: 'signature',
@@ -72,13 +99,14 @@
                             accept: allowedImageFileExtensionList()
                         },
                         label: {
-                            text: 'Upload a signature',
+                            text: 'Signature',
                             classes: "govuk-label--m"
-                        }
+                        },
+                        errorMessage: errorMessage(errors.signature)
                     }) }}
                     {%  if user.signature %}
                         <div class='govuk-!-margin-top-4'>
-                    <input name='signatureEncoded' type='hidden' value='{{ user.signature }}'>
+                    <input data-qa='signature-image' name='signatureEncoded' type='hidden' value='{{ user.signature }}'>
                     <img height='100' src="data:image/jpeg;base64,{{ user.signature }}"/>
                         </div>
                     {% endif %}

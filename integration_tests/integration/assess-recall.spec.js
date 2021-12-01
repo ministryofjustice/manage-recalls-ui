@@ -127,7 +127,7 @@ context('Assess a recall', () => {
         Minute: '00',
       },
     })
-    assessRecallEmail.uploadEmail({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
+    assessRecallEmail.uploadFile({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
     const recallInformation = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
@@ -257,7 +257,7 @@ context('Assess a recall', () => {
         Minute: '04',
       },
     })
-    assessRecallEmail.uploadEmail({
+    assessRecallEmail.uploadFile({
       fieldName: 'recallNotificationEmailFileName',
       fileName: 'part_a_recall_report.pdf',
     })
@@ -287,7 +287,7 @@ context('Assess a recall', () => {
         Minute: '04',
       },
     })
-    assessRecallEmail.uploadEmail({
+    assessRecallEmail.uploadFile({
       fieldName: 'recallNotificationEmailFileName',
       fileName: 'email.msg',
     })

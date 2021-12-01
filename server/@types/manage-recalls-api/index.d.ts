@@ -3,7 +3,7 @@
 /* eslint-disable */
 export { AddDocumentRequest } from './models/AddDocumentRequest';
 export type { AddDocumentResponse } from './models/AddDocumentResponse';
-export type { AddUserDetailsRequest } from './models/AddUserDetailsRequest';
+export { AddUserDetailsRequest } from './models/AddUserDetailsRequest';
 export type { BookRecallRequest } from './models/BookRecallRequest';
 export type { Court } from './models/Court';
 export { ErrorResponse } from './models/ErrorResponse';
@@ -26,5 +26,5 @@ export type { SentenceLengthRes } from './models/SentenceLengthRes';
 export { UpdateDocumentRequest } from './models/UpdateDocumentRequest';
 export { UpdateDocumentResponse } from './models/UpdateDocumentResponse';
 export { UpdateRecallRequest } from './models/UpdateRecallRequest';
-export type { UserDetailsResponse } from './models/UserDetailsResponse';
+export { UserDetailsResponse } from './models/UserDetailsResponse';
 export type { View } from './models/View';

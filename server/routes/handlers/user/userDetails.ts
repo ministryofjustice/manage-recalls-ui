@@ -2,17 +2,36 @@ import { Request, Response } from 'express'
 import { getCurrentUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { uploadStorageField } from '../helpers/uploadStorage'
-import { allowedImageFileExtensions } from '../helpers/allowedUploadExtensions'
-import { listToString, makeErrorObject } from '../helpers'
-import { AllowedUploadFileType } from '../../../@types'
+import { FormError, ObjectMap } from '../../../@types'
+import { validateUserDetails } from './helpers/validateUserDetails'
+import { isDefined } from '../helpers'
+import { UserDetailsResponse } from '../../../@types/manage-recalls-api/models/UserDetailsResponse'
+
+const getFormValues = ({
+  errors = {},
+  unsavedValues = {},
+  apiValues = {} as UserDetailsResponse,
+}: {
+  errors?: ObjectMap<FormError>
+  apiValues: UserDetailsResponse
+  unsavedValues: ObjectMap<string>
+}) => {
+  const values = {}
+  ;['firstName', 'lastName', 'email', 'phoneNumber', 'caseworkerBand', 'signature'].forEach((key: string) => {
+    values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
+  })
+  return values
+}
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {
+  let user
   try {
     const { token } = res.locals.user
-    const user = await getCurrentUserDetails(token)
-    res.locals.user = { ...res.locals.user, ...user }
+    user = await getCurrentUserDetails(token)
   } catch (err) {
-    if (err.status !== 404) {
+    if (err.status === 404) {
+      res.locals.notFound = true
+    } else {
       logger.info(err.message)
       res.locals.errors = {
         list: [
@@ -22,24 +41,17 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
           },
         ],
       }
-    } else {
-      res.locals.errors = {
-        list: [
-          {
-            name: 'error',
-            text: 'User details not found',
-          },
-        ],
-      }
     }
   } finally {
+    res.locals.user = getFormValues({
+      apiValues: user,
+      unsavedValues: res.locals.unsavedValues,
+      errors: res.locals.errors,
+    })
     res.render(`pages/userDetails`)
   }
 }
 
-export const isInvalidFileType = (file: Express.Multer.File, allowedExtensions: AllowedUploadFileType[]) => {
-  return !allowedExtensions.some(ext => file.originalname.endsWith(ext.extension) && file.mimetype === ext.mimeType)
-}
 export const postUser = async (req: Request, res: Response): Promise<void> => {
   const { token } = res.locals.user
   const processUpload = uploadStorageField('signature')
@@ -48,27 +60,12 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       if (error) {
         throw error
       }
-      const { firstName, lastName, signatureEncoded, email, phoneNumber } = req.body
-      const { file } = req
-      if (file && isInvalidFileType(file, allowedImageFileExtensions)) {
-        req.session.errors = [
-          makeErrorObject({
-            id: 'signature',
-            text: `The selected signature image must be a ${listToString(
-              allowedImageFileExtensions.map(ext => ext.label),
-              'or'
-            )}`,
-          }),
-        ]
-      }
-      if (!req.session.errors) {
-        let signatureBase64
-        if (file) {
-          signatureBase64 = file.buffer.toString('base64')
-        } else {
-          signatureBase64 = signatureEncoded
-        }
-        await addUserDetails(firstName, lastName, signatureBase64, email, phoneNumber, token)
+      const { errors, valuesToSave, unsavedValues } = validateUserDetails(req.body, req.file)
+      if (errors) {
+        req.session.errors = errors
+        req.session.unsavedValues = unsavedValues
+      } else {
+        await addUserDetails(valuesToSave, token)
       }
     } catch (err) {
       logger.error(err)
@@ -79,7 +76,7 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
         },
       ]
     } finally {
-      res.redirect(303, '/user-details')
+      res.redirect(303, req.originalUrl)
     }
   })
 }

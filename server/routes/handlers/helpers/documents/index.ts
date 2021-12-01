@@ -7,6 +7,7 @@ import { makeErrorObject } from '../index'
 import { CategorisedFileMetadata, DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { addRecallDocument, setDocumentCategory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { autocategoriseDocFileName } from './autocategorise'
+import logger from '../../../../../logger'
 
 export const makeMetaDataForFile = (
   file: Express.Multer.File,
@@ -32,6 +33,7 @@ export const getMetadataForUploadedFiles = (
 }
 
 export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {
+  logger.info(`getMetadataForCategorisedFiles: ${JSON.stringify(requestBody)}`)
   const categoryKeys = Object.keys(requestBody).filter(key => key.startsWith('category-'))
   return categoryKeys.map(key => {
     const documentId = key.replace('category-', '')

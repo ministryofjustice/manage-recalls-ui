@@ -184,7 +184,7 @@ context('Create a dossier', () => {
     const dossierEmail = dossierEmailPage.verifyOnPage()
     dossierEmail.confirmEmailSent()
     dossierEmail.clickTodayLink()
-    dossierEmail.uploadEmail({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
+    dossierEmail.uploadFile({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
     dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()
   })
