@@ -1,28 +1,60 @@
 // @ts-nocheck
-import { mockPostRequest } from '../../testutils/mockRequestUtils'
-import { postUser } from './userDetails'
+import { mockGetRequest, mockPostRequest } from '../../testutils/mockRequestUtils'
+import { getUser, postUser } from './userDetails'
 import { uploadStorageField } from '../helpers/uploadStorage'
-import { addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addUserDetails, getCurrentUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/uploadStorage')
 
+const userToken = 'token-1'
+
+describe('getUser', () => {
+  const userDetails = {
+    firstName: 'Barry',
+    lastName: 'Badger',
+    email: 'barry@badger.com',
+    phoneNumber: '0739378378',
+    caseworkerBand: 'FOUR_PLUS',
+    signature: 'def',
+    userId: '123',
+  }
+  it('renders the user if found', done => {
+    ;(getCurrentUserDetails as jest.Mock).mockResolvedValue(userDetails)
+    const req = mockGetRequest({ originalUrl: '/user-details' })
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+        },
+      },
+      render: view => {
+        expect(view).toEqual(`pages/userDetails`)
+        done()
+      },
+    }
+    getUser(req, res)
+  })
+})
+
 describe('postUser', () => {
-  afterEach(() => jest.resetAllMocks())
+  const requestBody = {
+    firstName: 'Barry',
+    lastName: 'Badger',
+    email: 'barry@badger.com',
+    phoneNumber: '0739378378',
+    caseworkerBand: 'THREE',
+  }
+  const signature = 'def'
+  const userId = '123'
 
-  it('should save submitted values', done => {
-    const userId = '123'
-    const firstName = 'Barry'
-    const lastName = 'Badger'
-    const email = 'barry@badger.com'
-    const phoneNumber = '0739378378'
-    const userToken = 'token-1'
-    const signatureEncoded = 'def'
+  beforeEach(() => jest.resetAllMocks())
 
+  it('saves submitted values', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'signature.jpg',
-        buffer: signatureEncoded,
+        buffer: signature,
         mimetype: 'image/jpeg',
       }
       cb()
@@ -30,8 +62,7 @@ describe('postUser', () => {
     ;(addUserDetails as jest.Mock).mockResolvedValue({
       userId,
     })
-
-    const req = mockPostRequest({ body: { firstName, lastName, email, phoneNumber } })
+    const req = mockPostRequest({ body: requestBody, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -39,41 +70,27 @@ describe('postUser', () => {
         },
       },
       redirect: (httpStatus, path) => {
-        expect(addUserDetails).toHaveBeenCalledWith(
-          firstName,
-          lastName,
-          signatureEncoded,
-          email,
-          phoneNumber,
-          userToken
-        )
+        expect(addUserDetails).toHaveBeenCalledWith({ ...requestBody, signature }, userToken)
         expect(req.session.errors).toBeUndefined()
+        expect(req.session.unsavedValues).toBeUndefined()
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/user-details')
         done()
       },
     }
-
     postUser(req, res)
   })
 
   it('errors if the signature is the wrong file type', done => {
-    const firstName = 'Barry'
-    const lastName = 'Badger'
-    const email = 'barry@badger.com'
-    const phoneNumber = '0739378378'
-    const userToken = 'token-1'
-
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'signature.png',
-        buffer: 'def',
+        buffer: signature,
         mimetype: 'image/png',
       }
       cb()
     })
-
-    const req = mockPostRequest({ body: { firstName, lastName, email, phoneNumber } })
+    const req = mockPostRequest({ body: requestBody, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -85,28 +102,20 @@ describe('postUser', () => {
         expect(req.session.errors).toEqual([
           { href: '#signature', name: 'signature', text: 'The selected signature image must be a JPG or JPEG' },
         ])
+        expect(req.session.unsavedValues).toEqual(requestBody)
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/user-details')
         done()
       },
     }
-
     postUser(req, res)
   })
 
-  it('saves if an existing signature is present', done => {
-    const firstName = 'Barry'
-    const lastName = 'Badger'
-    const email = 'barry@badger.com'
-    const phoneNumber = '0739378378'
-    const userToken = 'token-1'
-    const signatureEncoded = '123'
-
+  it('creates error messages if inputs are empty but there is an existing signature', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       cb()
     })
-
-    const req = mockPostRequest({ body: { firstName, lastName, email, phoneNumber, signatureEncoded } })
+    const req = mockPostRequest({ body: { signatureEncoded: signature }, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -114,20 +123,98 @@ describe('postUser', () => {
         },
       },
       redirect: (httpStatus, path) => {
-        expect(addUserDetails).toHaveBeenCalledWith(
-          firstName,
-          lastName,
-          signatureEncoded,
-          email,
-          phoneNumber,
-          userToken
-        )
+        expect(addUserDetails).not.toHaveBeenCalled()
+        expect(req.session.errors).toEqual([
+          {
+            href: '#firstName',
+            name: 'firstName',
+            text: 'Enter a first name',
+          },
+          {
+            href: '#lastName',
+            name: 'lastName',
+            text: 'Enter a last name',
+          },
+          {
+            href: '#email',
+            name: 'email',
+            text: 'Enter an email address',
+          },
+          {
+            href: '#phoneNumber',
+            name: 'phoneNumber',
+            text: 'Enter a phone number',
+          },
+          {
+            href: '#caseworkerBand',
+            name: 'caseworkerBand',
+            text: 'Select a band',
+          },
+        ])
+        expect(req.session.unsavedValues).toEqual({
+          signatureEncoded: signature,
+        })
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/user-details')
         done()
       },
     }
+    postUser(req, res)
+  })
 
+  it('creates an error message if there is no signature uploaded and no existing signature', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+    const req = mockPostRequest({ body: requestBody, originalUrl: '/user-details' })
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(addUserDetails).not.toHaveBeenCalled()
+        expect(req.session.errors).toEqual([
+          {
+            href: '#signature',
+            name: 'signature',
+            text: 'Upload a signature',
+          },
+        ])
+        expect(req.session.unsavedValues).toEqual(requestBody)
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/user-details')
+        done()
+      },
+    }
+    postUser(req, res)
+  })
+
+  it('saves if no signature is uploaded but an existing signature is present', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb()
+    })
+    ;(addUserDetails as jest.Mock).mockResolvedValue({
+      userId,
+    })
+    const req = mockPostRequest({
+      body: { ...requestBody, signatureEncoded: signature },
+      originalUrl: '/user-details',
+    })
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+        },
+      },
+      redirect: (httpStatus, path) => {
+        expect(addUserDetails).toHaveBeenCalledWith({ ...requestBody, signature }, userToken)
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/user-details')
+        done()
+      },
+    }
     postUser(req, res)
   })
 })

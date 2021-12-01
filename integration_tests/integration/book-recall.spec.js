@@ -69,7 +69,7 @@ context('Book a recall', () => {
         Minute: '00',
       },
     })
-    recallRequestReceived.uploadEmail({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
+    recallRequestReceived.uploadFile({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
     recallRequestReceived.clickContinue()
     const recallLastRelease = recallLastReleasePage.verifyOnPage()
     recallLastRelease.setSentenceDate()
@@ -102,7 +102,7 @@ context('Book a recall', () => {
     uploadDocuments.clickContinue()
     const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage()
     recallMissingDocuments.enterTextInInput({ name: 'missingDocumentsDetail', text: 'I sent an email' })
-    recallMissingDocuments.uploadEmail({ fieldName: 'missingDocumentsEmailFileName', fileName: 'email.msg' })
+    recallMissingDocuments.uploadFile({ fieldName: 'missingDocumentsEmailFileName', fileName: 'email.msg' })
     recallMissingDocuments.clickContinue()
     // eslint-disable-next-line no-unused-vars
     const [licence, ...documents] = [...getRecallResponse.documents]

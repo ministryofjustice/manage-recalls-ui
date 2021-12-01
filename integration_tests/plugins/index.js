@@ -37,11 +37,14 @@ module.exports = (on, config) => {
     expectSetDocumentCategory: manageRecallsApi.expectSetDocumentCategory,
     expectGetRecallDocument: manageRecallsApi.expectGetRecallDocument,
     expectGetUserDetails: manageRecallsApi.expectGetUserDetails,
+    expectGetCurrentUserDetails: manageRecallsApi.expectGetCurrentUserDetails,
+    expectAddUserDetails: manageRecallsApi.expectAddUserDetails,
     expectAssignUserToRecall: manageRecallsApi.expectAssignUserToRecall,
     expectUnassignAssessment: manageRecallsApi.expectUnassignAssessment,
     expectAddMissingDocumentsRecord: manageRecallsApi.expectAddMissingDocumentsRecord,
     expectRefData: manageRecallsApi.expectRefData,
     readPdf: readPdf.readPdf,
+    findApiRequest: wiremockApi.findApiRequest,
   })
   return config
 }

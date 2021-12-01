@@ -16,6 +16,7 @@ import {
   Prison,
   RecallDocument,
   BookRecallRequest,
+  AddUserDetailsRequest,
 } from '../../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../../@types/manage-recalls-api/models/PoliceForce'
@@ -107,16 +108,8 @@ export function addMissingDocumentRecord(
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
 }
 
-export function addUserDetails(
-  firstName: string,
-  lastName: string,
-  signature: string,
-  email: string,
-  phoneNumber: string,
-  token: string
-): Promise<UserDetailsResponse> {
-  const request = { firstName, lastName, signature, email, phoneNumber }
-  return restClient(token).post<UserDetailsResponse>({ path: '/users', data: request })
+export function addUserDetails(data: AddUserDetailsRequest, token: string): Promise<UserDetailsResponse> {
+  return restClient(token).post<UserDetailsResponse>({ path: '/users', data })
 }
 
 export function getUserDetails(userId: string, token: string): Promise<UserDetailsResponse> {
