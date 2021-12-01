@@ -18,6 +18,7 @@ import {
   BookRecallRequest,
 } from '../../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
+import { PoliceForce } from '../../@types/manage-recalls-api/models/PoliceForce'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   const request = { nomsNumber }
@@ -136,6 +137,10 @@ export function getCourts(): Promise<Court[]> {
 
 export function getPrisons(): Promise<Prison[]> {
   return restClient().get<Prison[]>({ path: '/reference-data/prisons' })
+}
+
+export function getPoliceForces(): Promise<PoliceForce[]> {
+  return restClient().get<PoliceForce[]>({ path: '/reference-data/police-forces' })
 }
 
 export function assignUserToRecall(recallId: string, assignee: string, token: string): Promise<Recall> {

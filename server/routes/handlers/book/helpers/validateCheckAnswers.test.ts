@@ -2,7 +2,7 @@ import { validateCheckAnswers } from './validateCheckAnswers'
 import { UserDetails } from '../../../../services/userService'
 
 describe('validateCheckAnswers', () => {
-  it('returns valuesToSave and no errors if prison is submitted', () => {
+  it('returns valuesToSave and no errors if check answers is submitted', () => {
     const requestBody = {}
     const user = {
       uuid: '123',

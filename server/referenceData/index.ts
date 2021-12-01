@@ -4,6 +4,7 @@ import { recallLengths } from './recallLengths'
 import { reasonsForRecall } from './reasonsForRecall'
 import { sensitiveInfo } from './sensitiveInfo'
 import { prisons } from './prisons'
+import { policeForces } from './policeForces'
 import { UiListItem } from '../@types'
 import { localDeliveryUnits } from './localDeliveryUnits'
 import { courts } from './courts'
@@ -14,6 +15,7 @@ export const referenceData = () => ({
   reasonsForRecall,
   sensitiveInfo,
   prisons: prisons.data,
+  policeForces: policeForces.data,
   localDeliveryUnits: localDeliveryUnits.data,
   courts: courts.data,
 })
@@ -23,12 +25,14 @@ export type ReferenceDataCategories =
   | 'recallLengths'
   | 'reasonsForRecall'
   | 'prisons'
+  | 'policeForces'
   | 'localDeliveryUnits'
   | 'courts'
 
 export const fetchRemoteRefData = async (req: Request, res: Response, next: NextFunction) => {
   await Promise.allSettled([
     prisons.data ? undefined : prisons.updateData(),
+    policeForces.data ? undefined : policeForces.updateData(),
     localDeliveryUnits.data ? undefined : localDeliveryUnits.updateData(),
     courts.data ? undefined : courts.updateData(),
   ])

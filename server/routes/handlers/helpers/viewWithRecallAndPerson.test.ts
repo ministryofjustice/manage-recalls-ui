@@ -153,6 +153,7 @@ describe('viewWithRecallAndPerson', () => {
     expect(res.locals.referenceData).toHaveProperty('recallLengths')
     expect(res.locals.referenceData).toHaveProperty('localDeliveryUnits')
     expect(res.locals.referenceData).toHaveProperty('prisons')
+    expect(res.locals.referenceData).toHaveProperty('policeForces')
   })
 
   it('should set previousConvictionMainName to Other value if specified', async () => {

@@ -60,6 +60,11 @@ export interface Prison {
   active: boolean
 }
 
+export interface PoliceForce {
+  id: string
+  name: string
+}
+
 export interface UiListItem {
   value: string
   text: string

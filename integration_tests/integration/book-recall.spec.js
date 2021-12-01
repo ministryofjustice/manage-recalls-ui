@@ -2,6 +2,7 @@ import {
   getCourtsResponse,
   getEmptyRecallResponse,
   getLocalDeliveryUnitsResponse,
+  getPoliceForcesResponse,
   getPrisonsResponse,
   getRecallResponse,
   searchResponse,
@@ -39,6 +40,7 @@ context('Book a recall', () => {
     cy.task('expectSetDocumentCategory')
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    cy.task('expectRefData', { refDataPath: 'police-forces', expectedResult: getPoliceForcesResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
     cy.login()
   })
@@ -82,7 +84,7 @@ context('Book a recall', () => {
     recallLastRelease.setBookingNumber()
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
-    recallPrisonPolice.setlocalPoliceForce()
+    recallPrisonPolice.setLocalPoliceForce()
     recallPrisonPolice.clickContinue()
     const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
     recallIssuesNeeds.setVulnerabilityDiversityNo()
@@ -109,6 +111,7 @@ context('Book a recall', () => {
     })
     const checkAnswers = checkAnswersPage.verifyOnPage()
     cy.reload()
+    // Note: as this test runs against the dumb mock following details match the fixed expected RecallResponse _not_ the values entered above
     // personal details
     checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
@@ -130,7 +133,7 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 August 2020' })
     checkAnswers.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 December 2021' })
     // local police force
-    checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Essex' })
+    checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Devon & Cornwall Police' })
     // issues or needs
     checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Various...' })
     checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Intention to smuggle drugs' })
@@ -248,6 +251,10 @@ context('Book a recall', () => {
       summaryError: 'Select a releasing prison',
     })
     recallLastRelease.assertErrorMessage({
+      fieldName: 'sentencingCourt',
+      summaryError: 'Select a sentencing court',
+    })
+    recallLastRelease.assertErrorMessage({
       fieldName: 'sentenceDate',
       summaryError: 'Enter the date of sentence',
     })
@@ -296,12 +303,24 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an error if Local police force not entered', () => {
+  it('User sees an error if Local Police Force not entered', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()
     recallPrisonPolice.assertErrorMessage({
       fieldName: 'localPoliceForce',
       summaryError: 'Select a local police force',
+    })
+  })
+
+  it('User sees error and text as entered if invalid Local Police Force is entered', () => {
+    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
+    recallPrisonPolice.enterLocalPoliceForce('foobar')
+    recallPrisonPolice.clickContinue()
+    // TODO: PUD-453: invalid text is not echo'ed back to user: should get fixed when only ID is used on API
+    // recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceInput', value: 'foobar' })
+    recallPrisonPolice.assertErrorMessage({
+      fieldName: 'localPoliceForce',
+      summaryError: 'Select a local police force from the list',
     })
   })
 

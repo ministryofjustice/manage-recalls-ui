@@ -5,10 +5,13 @@
       Name
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='localPoliceForce'>
-      {{ recall.localPoliceForce }}
+      {{ getReferenceDataItemLabel('policeForces',
+        recall.localPoliceForceId
+      ) }}
     </dd>
     <dd class=" govuk-summary-list__actions">
-      <a href='{{ changeLinkUrl('prison-police', urlInfo, 'police') }}' data-qa='localPoliceForceChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> local police force</span></a>
+      <a href='{{ changeLinkUrl('prison-police', urlInfo, 'police') }}' data-qa='localPoliceForceChange' class='govuk-link'>
+      Change <span class="govuk-visually-hidden"> local police force</span></a>
     </dd>
   </div>
 </dl>
