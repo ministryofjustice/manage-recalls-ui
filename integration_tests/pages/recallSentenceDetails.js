@@ -14,8 +14,8 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
     },
     setLicenceExpiryDate: () => {
       cy.get('[name="licenceExpiryDateYear"]').clear().type(year)
-      cy.get('[name="licenceExpiryDateMonth"]').clear().type(month)
-      cy.get('[name="licenceExpiryDateDay"]').clear().type(day)
+      cy.get('[name="licenceExpiryDateMonth"]').clear().type(month.toString().padStart(2, '0'))
+      cy.get('[name="licenceExpiryDateDay"]').clear().type(day.toString().padStart(2, '0'))
     },
     setSentenceExpiryDate: () => {
       cy.get('[name="sentenceExpiryDateYear"]').clear().type('2030')

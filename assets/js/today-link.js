@@ -35,7 +35,7 @@ window.TodayLink = function (options = {}) {
 
 window.TodayLink.prototype.onButtonClick = function () {
   const today = new Date()
-  this.day.val(today.getDate())
-  this.month.val(today.getMonth() + 1)
+  this.day.val(today.getDate().toString().padStart(2, '0'))
+  this.month.val((today.getMonth() + 1).toString().padStart(2, '0'))
   this.year.val(today.getFullYear())
 }
