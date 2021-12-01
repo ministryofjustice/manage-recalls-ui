@@ -19,11 +19,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully get a recall notification', async () => {
       await provider.addInteraction({
         state: 'a recall notification and recall exists',
-        ...pactGetRequest(
-          'a get recall notification request',
-          `/recalls/${recallId}/recallNotification/${userId}`,
-          accessToken
-        ),
+        ...pactGetRequest('a get recall notification request', `/recalls/${recallId}/recallNotification`, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(getRecallNotificationResponseJson), 200),
       })
 
@@ -38,7 +34,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       state: 'an unauthorized user accessToken',
       ...pactGetRequest(
         'an unauthorized get recall notification request',
-        `/recalls/${recallId}/recallNotification/${userId}`,
+        `/recalls/${recallId}/recallNotification`,
         accessToken
       ),
       willRespondWith: { status: 401 },

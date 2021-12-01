@@ -43,8 +43,8 @@ export async function searchRecalls(searchParams: ObjectMap<string>, token: stri
 
 export const getRecallNotification =
   () =>
-  ({ recallId }: { recallId: string }, token: string, uuid?: string): Promise<Pdf> => {
-    return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/recallNotification/${uuid}` })
+  ({ recallId }: { recallId: string }, token: string): Promise<Pdf> => {
+    return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/recallNotification` })
   }
 
 export const getGeneratedDocument =

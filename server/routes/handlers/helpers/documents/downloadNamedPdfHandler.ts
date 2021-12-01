@@ -17,7 +17,7 @@ type DownloadFn = (params: ObjectMap<string>, token: string, uuid?: string) => P
 const downloadNamedPdfHandler =
   (downloadFn: DownloadFn, docCategory: RecallDocument.category) => async (req: Request, res: Response) => {
     const { nomsNumber, recallId, documentId } = req.params
-    const { token, uuid } = res.locals.user
+    const { token } = res.locals.user
     if (isInvalid(nomsNumber) || isInvalid(recallId)) {
       res.sendStatus(400)
       return
@@ -25,7 +25,7 @@ const downloadNamedPdfHandler =
     const [person, recall, pdf] = await Promise.allSettled([
       getPerson(nomsNumber as string, token),
       getRecall(recallId, token),
-      downloadFn({ recallId, documentId }, token, uuid),
+      downloadFn({ recallId, documentId }, token),
     ])
     // if there's no PDF, we can't continue
     if (pdf.status === 'rejected') {
