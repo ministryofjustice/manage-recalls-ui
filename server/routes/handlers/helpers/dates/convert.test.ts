@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import { convertGmtDatePartsToUtc, splitIsoDateToParts } from './convert'
+import { padWithZeroes } from './format'
 
 describe('convertGmtDatePartsToUtc', () => {
   it('returns an ISO formatted UTC date for valid date-time parts that fall within BST period', () => {
@@ -173,7 +174,7 @@ describe('convertGmtDatePartsToUtc', () => {
     const today = DateTime.now()
     const { year, month, day } = today
     const result = convertGmtDatePartsToUtc(
-      { year: year.toString(), month: month.toString(), day: day.toString() },
+      { year: year.toString(), month: padWithZeroes(month), day: padWithZeroes(day) },
       { dateMustBeInPast: true, includeTime: false }
     )
     expect(result).toEqual(today.toISODate())
