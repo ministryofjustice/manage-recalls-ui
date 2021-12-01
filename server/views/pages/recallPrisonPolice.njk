@@ -23,16 +23,17 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
-
+            <h1 class="govuk-heading-l">
+                What is the name of the local police force?
+            </h1>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
             <form novalidate action="{{ formActionUrl('prison-police', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukSelect({
-                        label: {
-                            text: "What is the name of the local police force?",
-                            classes: "govuk-label--l",
-                            isPageHeading: true
-                        },
                         id: "localPoliceForce",
                         name: "localPoliceForce",
                         items: selectItems( referenceData.policeForces, formValues.localPoliceForceId, true),

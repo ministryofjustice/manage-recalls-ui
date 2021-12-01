@@ -2,6 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { isStringValidReferenceData } from '../../../../referenceData'
+import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 
 export const validatePolice = (
   requestBody: ObjectMap<string>
@@ -12,15 +13,28 @@ export const validatePolice = (
   const { localPoliceForce, localPoliceForceInput } = requestBody
   // localPoliceForce is the value of the hidden select dropdown that's populated by the autocomplete
   // localPoliceForceInput is what the user typed into the autocomplete input. It might be a random string and not a valid policeForces name, so needs validating
-  const localPoliceForceValid = localPoliceForce && isStringValidReferenceData('policeForces', localPoliceForceInput)
+  const localPoliceForceInvalidInput = Boolean(
+    localPoliceForceInput && !isStringValidReferenceData('policeForces', localPoliceForceInput)
+  )
 
-  if (!localPoliceForce || !localPoliceForceValid) {
-    errors = [
-      makeErrorObject({
-        id: 'localPoliceForce',
-        text: 'Select a local police force',
-      }),
-    ]
+  if (!localPoliceForce || localPoliceForceInvalidInput) {
+    errors = []
+    if (localPoliceForceInvalidInput) {
+      errors.push(
+        makeErrorObject({
+          id: 'localPoliceForce',
+          text: formatValidationErrorMessage({ errorId: 'invalidSelectionFromList' }, 'a local police force'),
+          values: localPoliceForceInput,
+        })
+      )
+    } else if (!localPoliceForce) {
+      errors.push(
+        makeErrorObject({
+          id: 'localPoliceForce',
+          text: formatValidationErrorMessage({ errorId: 'noSelectionFromList' }, 'a local police force'),
+        })
+      )
+    }
   }
   if (!errors) {
     valuesToSave = {

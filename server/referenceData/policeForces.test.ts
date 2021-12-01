@@ -1,5 +1,6 @@
 import { policeForces } from './policeForces'
 import { getPoliceForces } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getReferenceDataItemLabel, isStringValidReferenceData } from './index'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 
@@ -18,9 +19,16 @@ describe('policeForces refdata', () => {
       name: 'Cambridgeshire Constabulary',
     },
   ])
+  beforeEach(() => {
+    jest.useFakeTimers()
+  })
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  const policeForcesRefDataCategory = 'policeForces'
 
   it('fetches and formats a list of policeForces', async () => {
-    jest.useFakeTimers()
     const promise = policeForces.updateData()
     jest.advanceTimersByTime(5000)
     await promise.then(() => {
@@ -38,7 +46,43 @@ describe('policeForces refdata', () => {
           text: 'Cambridgeshire Constabulary',
         },
       ])
-      jest.useRealTimers()
+    })
+  })
+
+  // TODO Equivalent tests to the following not present for courts, prisons and LDUs?
+  it('getReferenceDataItemLabel returns a label for a valid police force Id', async () => {
+    const promise = policeForces.updateData()
+    jest.advanceTimersByTime(5000)
+    await promise.then(() => {
+      const label = getReferenceDataItemLabel(policeForcesRefDataCategory, 'bedfordshire')
+      expect(label).toEqual('Bedfordshire Police')
+    })
+  })
+
+  it('getReferenceDataItemLabel returns undefined for an invalid police force Id', async () => {
+    const promise = policeForces.updateData()
+    jest.advanceTimersByTime(5000)
+    await promise.then(() => {
+      const label = getReferenceDataItemLabel(policeForcesRefDataCategory, 'no-such')
+      expect(label).toBeUndefined()
+    })
+  })
+
+  it('isStringValidReferenceData returns false for an invalid label', async () => {
+    const promise = policeForces.updateData()
+    jest.advanceTimersByTime(5000)
+    await promise.then(() => {
+      const isValid = isStringValidReferenceData(policeForcesRefDataCategory, 'zzz')
+      expect(isValid).toEqual(false)
+    })
+  })
+
+  it('isStringValidReferenceData returns true for a valid label', async () => {
+    const promise = policeForces.updateData()
+    jest.advanceTimersByTime(5000)
+    await promise.then(() => {
+      const isValid = isStringValidReferenceData(policeForcesRefDataCategory, 'Cambridgeshire Constabulary')
+      expect(isValid).toEqual(true)
     })
   })
 })

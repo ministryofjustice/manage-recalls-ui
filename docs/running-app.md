@@ -42,7 +42,7 @@ npm run start:dev
 ```
 
 #### Debugging in Chrome Developer Tools
-TBD
+See e.g. https://github.com/ministryofjustice/hmpps-manage-recalls-prototype#to-debug-the-nodejs-app
 
 #### Debugging in IntelliJ IDEA
 IDEA supports debugging of the typescript source via attaching to a running node process

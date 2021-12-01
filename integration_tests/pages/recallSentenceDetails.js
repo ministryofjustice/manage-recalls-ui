@@ -49,11 +49,6 @@ const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
       cy.get('[id="sentencingCourt"]').clear().type('Aberd')
       cy.contains('Aberdare County Court').click({ force: true })
     },
-    enterSentencingCourt: nameSubString => {
-      cy.get('[id="sentencingCourt"]')
-        .clear()
-        .type(nameSubString || 'Aberd')
-    },
     setIndexOffence: () => {
       cy.get('[name="indexOffence"]').type('Burglary')
     },

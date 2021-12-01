@@ -157,7 +157,24 @@ context('View recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Not available' })
   })
-  //  Test deleted for local only as failing - don't commit this deletion
+
+  it('User can view No, No and None respectively for additionalLicenceConditions,vulnerabilityDiversity and contraband when selected No', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        additionalLicenceConditions: false,
+        vulnerabilityDiversity: false,
+        contraband: false,
+      },
+    })
+    cy.login()
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'None' })
+    recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'No' })
+    recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'No' })
+  })
 
   it('user can go back from the view recall info page to add a new document version', () => {
     const documentId = '123'

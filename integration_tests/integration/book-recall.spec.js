@@ -276,26 +276,6 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an error if invalid Last Release Prison is entered', () => {
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
-    recallLastRelease.enterReleasingPrison('foo')
-    recallLastRelease.clickContinue()
-    recallLastRelease.assertErrorMessage({
-      fieldName: 'lastReleasePrison',
-      summaryError: 'Select a releasing prison',
-    })
-  })
-
-  it('User sees an error if invalid Sentencing Court is entered', () => {
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
-    recallLastRelease.enterSentencingCourt('foo')
-    recallLastRelease.clickContinue()
-    recallLastRelease.assertErrorMessage({
-      fieldName: 'sentencingCourt',
-      summaryError: 'Select a sentencing court',
-    })
-  })
-
   it('User sees an error if invalid booking number is entered', () => {
     const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
     recallLastRelease.setBookingNumber('12343')
@@ -332,13 +312,15 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees an error if invalid Local Police Force is entered', () => {
+  it('User sees error and text as entered if invalid Local Police Force is entered', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
-    recallPrisonPolice.enterLocalPoliceForce('foo')
+    recallPrisonPolice.enterLocalPoliceForce('foobar')
     recallPrisonPolice.clickContinue()
+    // TODO: PUD-453: invalid text is not echo'ed back to user: should get fixed when only ID is used on API
+    // recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceInput', value: 'foobar' })
     recallPrisonPolice.assertErrorMessage({
       fieldName: 'localPoliceForce',
-      summaryError: 'Select a local police force',
+      summaryError: 'Select a local police force from the list',
     })
   })
 
