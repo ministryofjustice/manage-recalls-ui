@@ -59,6 +59,11 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            <script>
+              new MOJFrontend.SortableTable({
+                table: $('#table-uploaded')[0]
+              });
+            </script>
             {% else %}
                 <p class='govuk-body'>No recalls</p>
             {% endif %}

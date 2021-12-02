@@ -1,6 +1,13 @@
-<div class="govuk-heading-l govuk-!-margin-top-8">
+<div class="govuk-heading-l govuk-!-margin-top-8 flex flex--space-between">
+    <div>
     <span class='govuk-!-padding-right-2'>
     Recall information
     </span>
     {{govukTag(recallStatusTagProperties(recall.status))}}
+    </div>
+    <div>
+        <a href="{{ makeUrl('change-history', urlInfo) }}" role='button' class="govuk-button govuk-button--secondary" data-module="govuk-button" data-qa='changeHistoryButton'>
+            View change history
+        </a>
+    </div>
 </div>

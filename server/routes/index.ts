@@ -139,6 +139,9 @@ export default function routes(router: Router): Router {
 
   get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
 
+  // AUDIT / CHANGE HISTORY
+  get(`${basePath}/change-history`, viewWithRecallAndPerson('changeHistory'))
+
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)
   post('/user-details', postUser)
