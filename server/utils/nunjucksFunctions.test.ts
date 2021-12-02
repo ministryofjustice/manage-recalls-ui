@@ -6,7 +6,7 @@ import {
   checkboxItems,
   dateTimeItems,
   filterSelectedItems,
-  formActionUrl,
+  makeUrl,
   personOrPeopleFilter,
   recallStatusTagProperties,
   removeUndefinedFromObject,
@@ -257,9 +257,9 @@ describe('allowedEmailFileExtensionList', () => {
   })
 })
 
-describe('formActionUrl', () => {
+describe('makeUrl', () => {
   it('uses fromPage and CSRF query strings if both are supplied', () => {
-    const url = formActionUrl(
+    const url = makeUrl(
       'request-received',
       { fromPage: 'check-answers', currentPage: 'check-answers', basePath: '/person/123/recalls/456/' },
       'a1b2c3'
@@ -268,7 +268,7 @@ describe('formActionUrl', () => {
   })
 
   it('uses fromPage query string if supplied', () => {
-    const url = formActionUrl('request-received', {
+    const url = makeUrl('request-received', {
       fromPage: 'check-answers',
       currentPage: 'check-answers',
       basePath: '/person/123/recalls/456/',
@@ -277,7 +277,7 @@ describe('formActionUrl', () => {
   })
 
   it('uses CSRF query string if supplied', () => {
-    const url = formActionUrl(
+    const url = makeUrl(
       'request-received',
       { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
       'a1b2c3'

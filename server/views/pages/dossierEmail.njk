@@ -40,7 +40,7 @@
 
             <div class="govuk-!-margin-top-4">
 
-                <form novalidate action="{{ formActionUrl('dossier-email', urlInfo, csrfToken) }}"
+                <form novalidate action="{{ makeUrl('dossier-email', urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
                         <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>

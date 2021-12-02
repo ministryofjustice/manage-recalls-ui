@@ -49,7 +49,7 @@
             <p class="govuk-body govuk-!-margin-bottom-6">You can also upload any supporting documents the Probation Service have provided.</p>
             <div class="document-upload">
                 <div class="govuk-form-group">
-                    <form novalidate action="{{ formActionUrl('upload-documents', urlInfo, csrfToken) }}" method="post"
+                    <form novalidate action="{{ makeUrl('upload-documents', urlInfo, csrfToken) }}" method="post"
                           enctype="multipart/form-data">
                         <input type="submit" class="govuk-visually-hidden" name="continue" value="continue" />
                         <div class="moj-multi-file__uploaded-files" data-qa="document-count-{{ recall.documents.length }}">
@@ -93,7 +93,7 @@
   if (typeof DocumentUpload !== 'undefined') {
     new DocumentUpload({
       container: $('.document-upload'),
-      uploadUrl: '{{ formActionUrl('upload-documents', urlInfo, csrfToken) | safe }}'
+      uploadUrl: '{{ makeUrl('upload-documents', urlInfo, csrfToken) | safe }}'
     })
   }
 </script>

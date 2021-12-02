@@ -44,7 +44,7 @@
                 <li>upload the email to probation</li>
             </ul>
             <div class="govuk-form-group">
-                <form novalidate action="{{ formActionUrl('missing-documents', urlInfo, csrfToken) }}" method="post"
+                <form novalidate action="{{ makeUrl('missing-documents', urlInfo, csrfToken) }}" method="post"
                       enctype="multipart/form-data">
                     {{ govukTextarea({
                         name: "missingDocumentsDetail",
