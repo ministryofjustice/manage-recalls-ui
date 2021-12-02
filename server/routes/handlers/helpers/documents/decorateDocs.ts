@@ -49,6 +49,7 @@ export const decorateDocs = ({
       uploaded: uploadedDocs.map(d => ({
         url: d.url,
         fileName: d.fileName,
+        standardFileName: d.standardFileName,
         documentId: d.documentId,
         index: d.index,
         version: d.version,
@@ -61,9 +62,20 @@ export const decorateDocs = ({
   if (versionedCategoryName) {
     const categoryData = decoratedDocTypes.find(type => type.name === versionedCategoryName && type.versioned)
     if (categoryData && categoryData.uploaded.length) {
-      const { label, name, type, fileName } = categoryData
-      const { version, url, documentId, category, createdDateTime } = categoryData.uploaded[0]
-      versionedCategory = { label, name, fileName, type, version, url, documentId, category, createdDateTime }
+      const { label, name, type, standardFileName } = categoryData
+      const { version, url, documentId, category, createdDateTime, fileName } = categoryData.uploaded[0]
+      versionedCategory = {
+        label,
+        name,
+        standardFileName,
+        fileName,
+        type,
+        version,
+        url,
+        documentId,
+        category,
+        createdDateTime,
+      }
     }
   }
   return decoratedUploadedDocs.reduce(

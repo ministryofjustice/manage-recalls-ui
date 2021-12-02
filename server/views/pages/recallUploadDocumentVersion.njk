@@ -28,7 +28,7 @@
             {% if recall.versionedCategory.documentId %}
             <div class="govuk-inset-text">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Current {{ formatDocLabel(recall.versionedCategory.category) }}</h2>
-                <p><a href="{{ recall.versionedCategory.url }}" class="govuk-link" target="_blank" data-qa='previousVersionFileName'>{{ recall.versionedCategory.fileName }}</a></p>
+                <p><a href="{{ recall.versionedCategory.url }}" class="govuk-link" target="_blank" data-qa='previousVersionFileName'>{{ recall.versionedCategory.standardFileName }}</a></p>
                 <p class="govuk-body-s" data-qa='previousVersionUploadedDateTime'>Uploaded on {{ recall.versionedCategory.createdDateTime | dateTime }}</p>
             </div>
             {% endif %}

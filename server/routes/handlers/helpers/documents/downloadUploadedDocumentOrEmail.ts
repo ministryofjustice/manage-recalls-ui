@@ -9,7 +9,7 @@ export const downloadUploadedDocumentOrEmail = async (req: Request, res: Respons
   const documentCategory = documentCategories.find(type => type.name === response.category)
   if (documentCategory.type === 'document') {
     res.contentType('application/pdf')
-    res.header('Content-Disposition', `inline; filename="${documentCategory.fileName || response.fileName}"`)
+    res.header('Content-Disposition', `inline; filename="${documentCategory.standardFileName || response.fileName}"`)
   }
   if (documentCategory.type === 'email') {
     res.contentType('application/octet-stream')

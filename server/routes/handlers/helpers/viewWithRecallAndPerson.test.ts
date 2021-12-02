@@ -76,6 +76,7 @@ describe('viewWithRecallAndPerson', () => {
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        fileName: 'Bobby Badger Part A.pdf',
       },
       {
         ...findDocCategory(RecallDocument.category.LICENCE),
@@ -83,6 +84,7 @@ describe('viewWithRecallAndPerson', () => {
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        fileName: 'Bobby Badger licence.pdf',
       },
       {
         ...findDocCategory(RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
@@ -90,6 +92,7 @@ describe('viewWithRecallAndPerson', () => {
         documentId: '1234-5717-4562-b3fc-2c963f66afa6',
         url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        fileName: 'Bobby Badger pre cons.pdf',
       },
       {
         ...findDocCategory(RecallDocument.category.PRE_SENTENCING_REPORT),
@@ -97,6 +100,7 @@ describe('viewWithRecallAndPerson', () => {
         category: 'PRE_SENTENCING_REPORT',
         url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        fileName: 'Bobby Badger presentencing.pdf',
       },
     ])
     expect(res.render).toHaveBeenCalledWith('pages/recallIssuesNeeds')
