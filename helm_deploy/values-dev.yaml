@@ -6,7 +6,6 @@ generic-service:
 
   ingress:
     host: manage-recalls-dev.hmpps.service.justice.gov.uk
-    tlsSecretName: manage-recalls-cert
 
   env:
     INGRESS_URL: "https://manage-recalls-dev.hmpps.service.justice.gov.uk"

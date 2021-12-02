@@ -5,13 +5,13 @@ generic-service:
   replicaCount: 2
 
   ingress:
-    host: manage-recalls-new-preprod.hmpps.service.justice.gov.uk
+    host: manage-recalls-new.hmpps.service.justice.gov.uk
     tlsSecretName: manage-recalls-cert
 
   env:
-    INGRESS_URL: "https://manage-recalls-new-preprod.hmpps.service.justice.gov.uk"
+    INGRESS_URL: "https://manage-recalls-new.hmpps.service.justice.gov.uk"
 
 generic-prometheus-alerts:
   extraDashboardTags:
     - manage-recalls
-    - preprod
+    - prod
