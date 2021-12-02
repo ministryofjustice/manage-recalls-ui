@@ -49,6 +49,7 @@ export const decorateDocs = ({
       uploaded: uploadedDocs.map(d => ({
         url: d.url,
         fileName: d.fileName,
+        standardFileName: d.standardFileName,
         documentId: d.documentId,
         index: d.index,
         version: d.version,

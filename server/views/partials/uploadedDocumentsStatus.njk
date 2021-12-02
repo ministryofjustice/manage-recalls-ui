@@ -7,14 +7,14 @@
     {% for file in category.uploaded %}
     <div class="govuk-summary-list__row document-row" id='{{ file.documentId }}'>
       <dt class=" govuk-summary-list__key">
-        <a href='{{ file.url }}' target='_blank' class='govuk-link{% if errors[file.documentId] %} govuk-link--error{% endif %}' data-qa='link-{{ file.documentId }}'>{{ file.fileName }}</a>
+        <a href='{{ file.url }}' target='_blank' class='govuk-link{% if errors[file.documentId] %} govuk-link--error{% endif %}' data-qa='link-{{ file.documentId }}'>{{ file.standardFileName }}</a>
       </dt>
       <dd class="govuk-summary-list__value">
         <div class="flex flex--col">
           {% if category.name != 'UNCATEGORISED' and file.version > 1 %}
             <span data-qa='category-label-{{ category.name }}'>{{ category.label }}</span>
           {% else %}
-            <input type='hidden' name='fileName-{{ file.documentId }}' value='{{ file.fileName }}'>
+            <input type='hidden' name='fileName-{{ file.documentId }}' value='{{ file.standardFileName }}'>
             <label class="govuk-label govuk-visually-hidden" for="{{ file.documentId }}">
               Select the document category
             </label>
