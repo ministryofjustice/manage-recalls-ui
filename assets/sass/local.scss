@@ -35,3 +35,11 @@ pre.govuk-body {
 .govuk-summary-list--auto-widths .govuk-summary-list__value {
   width: auto;
 }
+
+.flex {
+  display: flex;
+}
+
+.flex--space-between {
+  justify-content: space-between;
+}

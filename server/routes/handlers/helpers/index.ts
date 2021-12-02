@@ -30,6 +30,17 @@ export const areStringArraysTheSame = (arr1: unknown[], arr2: unknown[]) => arr1
 
 export const replaceSpaces = (str: string, replacement: string) => str.replace(/ /g, replacement)
 
+export const sortList = (list: unknown[], key: string, asc = true) =>
+  list.sort((a, b) => {
+    if (a[key] < b[key]) {
+      return asc ? -1 : 1
+    }
+    if (a[key] > b[key]) {
+      return asc ? 1 : -1
+    }
+    return 0
+  })
+
 export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormErrors => {
   const errorMap = errors.filter(Boolean).reduce((acc: ObjectMap<FormError>, curr: NamedFormError) => {
     const { name, ...rest } = curr

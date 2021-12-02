@@ -1,3 +1,5 @@
+import path from 'path'
+
 module.exports = (name, pageObject = {}) => {
   const checkOnPage = () => cy.get('h1').contains(name)
   const logout = () => cy.get('[data-qa=logout]')
@@ -28,8 +30,20 @@ module.exports = (name, pageObject = {}) => {
     cy.get(`[href="#${fieldName}"]`).should('have.text', summaryError)
   }
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
-  const clickButton = ({ qaAttr }) => cy.get(`[data-qa=${qaAttr}]`).click()
+
+  const clickElementByAttrOrLabel = ({ qaAttr, label, tagName }) => {
+    if (qaAttr) {
+      clickElement({ qaAttr })
+    } else if (label) {
+      cy.get(tagName).contains(label).click()
+    }
+  }
+  const clickButton = ({ qaAttr, label }) => clickElementByAttrOrLabel({ qaAttr, label, tagName: 'button' })
+
+  const clickLink = ({ qaAttr, label }) => clickElementByAttrOrLabel({ qaAttr, label, tagName: 'a' })
+
   const clickElement = ({ qaAttr }) => cy.get(`[data-qa="${qaAttr}"]`).click()
+
   const assertLinkHref = ({ qaAttr, href }) => {
     cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
   }
@@ -59,6 +73,13 @@ module.exports = (name, pageObject = {}) => {
       cy.get(`[name=${prefix}${value}]`).clear().type(values[value])
     })
   }
+  const getValuesFromTableColumn = ({ qaAttrTable, qaAttrCell, valuesToCompare }) => {
+    cy.get(`[data-qa="${qaAttrTable}"]`)
+      .find(`[data-qa="${qaAttrCell}"]`)
+      .each((cell, index) => {
+        expect(cell.text().trim()).to.equal(valuesToCompare[index])
+      })
+  }
 
   const clickTodayLink = () => cy.get('[data-qa="today-link"]').click()
 
@@ -67,6 +88,22 @@ module.exports = (name, pageObject = {}) => {
       filePath: `../uploads/${fileName}`,
       mimeType: mimeType || 'application/octet-stream',
     })
+  }
+
+  const checkPdfContents = ({ qaAttr, fileContents }) => {
+    cy.get(`[data-qa="${qaAttr}"]`).then($link => {
+      cy.request({
+        url: $link.prop('href'),
+        encoding: 'base64',
+      }).then(response => {
+        expect(response.body).to.deep.equal(`${fileContents}=`)
+      })
+    })
+  }
+
+  const checkFileDownloaded = fileName => {
+    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
+    cy.readFile(downloadedFilename, 'binary')
   }
 
   const assertApiRequestBody = ({ url, method, bodyValues }) => {
@@ -98,6 +135,7 @@ module.exports = (name, pageObject = {}) => {
     assertRadioChecked,
     clickContinue,
     clickButton,
+    clickLink,
     clickElement,
     enterDateTime,
     clickTodayLink,
@@ -105,5 +143,8 @@ module.exports = (name, pageObject = {}) => {
     enterTextInInput,
     checkRadio,
     assertApiRequestBody,
+    getValuesFromTableColumn,
+    checkFileDownloaded,
+    checkPdfContents,
   }
 }
