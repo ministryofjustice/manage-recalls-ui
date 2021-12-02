@@ -14,23 +14,37 @@ import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import recallInformationPage from '../pages/recallInformation'
 import recallLicenceNamePage from '../pages/recallLicenceName'
+import recallsListPage from '../pages/recallsList'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
 const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
 const recallMissingDocumentsPage = require('../pages/recallMissingDocuments')
+const recallConfirmationPage = require('../pages/recallConfirmation')
 
 context('Book a recall', () => {
+  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
   const newRecall = { ...getEmptyRecallResponse, recallId }
+  const status = 'BEING_BOOKED_ON'
 
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
     cy.task('stubAuthUser')
-    cy.task('expectListRecalls', { expectedResults: [] })
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          recallId,
+          nomsNumber,
+          status,
+          firstName: 'Bobby',
+          lastName: 'Badger',
+        },
+      ],
+    })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectGetRecall', { expectedResult: newRecall })
@@ -45,9 +59,9 @@ context('Book a recall', () => {
     cy.login()
   })
 
-  const nomsNumber = 'A1234AA'
-
   it('User can book a recall', () => {
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.continueBooking({ recallId })
     const recallLicenceName = recallLicenceNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallLicenceName.selectMiddleName()
     recallLicenceName.clickContinue()
@@ -104,15 +118,18 @@ context('Book a recall', () => {
     recallMissingDocuments.enterTextInInput({ name: 'missingDocumentsDetail', text: 'I sent an email' })
     recallMissingDocuments.uploadFile({ fieldName: 'missingDocumentsEmailFileName', fileName: 'email.msg' })
     recallMissingDocuments.clickContinue()
+    const checkAnswers = checkAnswersPage.verifyOnPage()
+    checkAnswers.clickContinue()
+    recallConfirmationPage.verifyOnPage({ personName })
+  })
+
+  it('User can check their answers', () => {
     // eslint-disable-next-line no-unused-vars
     const [licence, ...documents] = [...getRecallResponse.documents]
     cy.task('expectGetRecall', {
       expectedResult: { recallId, ...getRecallResponse, documents, status: RecallResponse.status.BEING_BOOKED_ON },
     })
-    const checkAnswers = checkAnswersPage.verifyOnPage()
-    cy.reload()
-    // Note: as this test runs against the dumb mock following details match the fixed expected RecallResponse _not_ the values entered above
-    // personal details
+    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId, nomsNumber })
     checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
     checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })

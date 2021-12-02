@@ -14,17 +14,11 @@ context('Login', () => {
     AuthLoginPage.verifyOnPage()
   })
 
-  it('User name visible in header', () => {
+  it('User can see their name in the header and can log out', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const landingPage = IndexPage.verifyOnPage()
     landingPage.headerUserName().should('contain.text', 'J. Smith')
-  })
-
-  it('User can log out', () => {
-    cy.task('expectListRecalls', { expectedResults: [] })
-    cy.login()
-    const landingPage = IndexPage.verifyOnPage()
     landingPage.logout().click()
     AuthLoginPage.verifyOnPage()
   })

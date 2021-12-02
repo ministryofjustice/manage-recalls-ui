@@ -1,5 +1,5 @@
 import './commands'
 
 Cypress.Keyboard.defaults({
-  keystrokeDelay: 1,
+  keystrokeDelay: 0,
 })

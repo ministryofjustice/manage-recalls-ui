@@ -7,6 +7,7 @@ import {
   getPrisonsResponse,
   getCourtsResponse,
 } from '../mockApis/mockResponses'
+import recallsListPage from '../pages/recallsList'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
@@ -18,6 +19,11 @@ const assessRecallEmailPage = require('../pages/assessRecallEmail')
 const assessRecallStopPage = require('../pages/assessRecallStop')
 
 context('Assess a recall', () => {
+  const nomsNumber = 'A1234AA'
+  const recallId = '123'
+  const personName = 'Bobby Badger'
+  const status = 'BOOKED_ON'
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
@@ -66,17 +72,12 @@ context('Assess a recall', () => {
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
   })
 
-  const nomsNumber = 'A1234AA'
-  const recallId = '123'
-  const personName = 'Bobby Badger'
-  const status = 'BOOKED_ON'
-
   const checkDownload = fileName => {
     const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
     cy.readFile(downloadedFilename, 'binary')
   }
 
-  it('User can assess and issue a recall', () => {
+  it('User can view recall information before assessing', () => {
     cy.login()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
     assessRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Booked on' })
@@ -98,6 +99,20 @@ context('Assess a recall', () => {
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
       href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=assess&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
+
+    // missing documents
+    assessRecall.assertElementHasText({
+      qaAttr: 'required-LICENCE',
+      textToFind: 'Missing: needed to create dossier',
+    })
+    assessRecall.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
+  })
+
+  it('User can assess a recall', () => {
+    cy.login()
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.assessRecall({ recallId })
+    const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
     assessRecall.clickContinue()
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
     assessRecallDecision.makeYesDecision()
@@ -130,13 +145,6 @@ context('Assess a recall', () => {
     assessRecallEmail.uploadFile({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
     assessRecallEmail.clickContinue()
     assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
-    const recallInformation = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
-    // missing documents
-    recallInformation.assertElementHasText({
-      qaAttr: 'required-LICENCE',
-      textToFind: 'Missing: needed to create dossier',
-    })
-    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
   })
 
   it("User sees an error if they don't make a decision", () => {
