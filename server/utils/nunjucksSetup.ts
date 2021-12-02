@@ -21,8 +21,9 @@ import {
   allowedImageFileTypeLabelList,
   recallStatusTagProperties,
 } from './nunjucksFunctions'
-import { isDefined, listDocumentLabels } from '../routes/handlers/helpers'
+import { isDefined, listDocumentLabels, sortList } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
+import { isoDateToMillis } from '../routes/handlers/helpers/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
 import {
   formatDocLabel,
@@ -51,6 +52,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addFilter('dateOnly', val => formatDateTimeFromIsoString(val, true))
   njkEnv.addFilter('dateTime', formatDateTimeFromIsoString)
   njkEnv.addGlobal('dateTimeItems', dateTimeItems)
+  njkEnv.addGlobal('isoDateToMillis', isoDateToMillis)
   njkEnv.addGlobal('selectItems', selectItems)
   njkEnv.addGlobal('checkboxItems', checkboxItems)
   njkEnv.addGlobal('filterSelectedItems', filterSelectedItems)
@@ -73,6 +75,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('getGeneratedDocFileName', getGeneratedDocFileName)
   njkEnv.addGlobal('getGeneratedDocUrlPath', getGeneratedDocUrlPath)
   njkEnv.addGlobal('generatedDocCategoriesList', generatedDocCategoriesList)
+  njkEnv.addGlobal('sortList', sortList)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)

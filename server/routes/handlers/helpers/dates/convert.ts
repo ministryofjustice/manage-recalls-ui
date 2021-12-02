@@ -174,6 +174,10 @@ export function getDateTimeUTC(isoDate: string) {
   return DateTime.fromISO(isoDate, { zone: 'utc' })
 }
 
+export function isoDateToMillis(isoDate: string) {
+  return getDateTimeUTC(isoDate).toMillis()
+}
+
 export function getDateTimeInEuropeLondon(isoDate: string) {
   return getDateTimeUTC(isoDate).setZone(europeLondon)
 }

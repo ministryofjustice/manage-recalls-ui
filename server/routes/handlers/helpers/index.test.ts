@@ -1,4 +1,4 @@
-import { makeErrorObject, listToString, renderErrorMessages, transformErrorMessages } from './index'
+import { makeErrorObject, listToString, renderErrorMessages, transformErrorMessages, sortList } from './index'
 
 describe('makeErrorObject', () => {
   it('returns an error object', () => {
@@ -81,5 +81,18 @@ describe('listToString', () => {
 
   it('returns a list for 4 items', () => {
     expect(listToString(['year', 'month', 'day', 'minute'], 'and')).toEqual('year, month, day and minute')
+  })
+})
+
+describe('sortList', () => {
+  it('sorts ascending', () => {
+    const list = [{ name: 'bdd' }, { name: 'bbc' }, { name: 'bcc' }]
+    const result = sortList(list, 'name', true)
+    expect(result).toEqual([{ name: 'bbc' }, { name: 'bcc' }, { name: 'bdd' }])
+  })
+  it('sorts descending', () => {
+    const list = [{ name: 'Licence.pdf' }, { name: 'Part A.pdf' }, { name: 'OASys.pdf' }]
+    const result = sortList(list, 'name', false)
+    expect(result).toEqual([{ name: 'Part A.pdf' }, { name: 'OASys.pdf' }, { name: 'Licence.pdf' }])
   })
 })
