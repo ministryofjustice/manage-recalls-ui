@@ -6,7 +6,7 @@ generic-service:
 
   ingress:
     host: manage-recalls-dev.hmpps.service.justice.gov.uk
-    tlsSecretName: ppud-replacement-dev-cert
+    tlsSecretName: manage-recalls-cert
 
   env:
     INGRESS_URL: "https://manage-recalls-dev.hmpps.service.justice.gov.uk"
@@ -19,6 +19,5 @@ generic-service:
 generic-prometheus-alerts:
   alertSeverity: ppud-replacement-alerts
   extraDashboardTags:
-    - ppud-replacement
     - manage-recalls
     - dev
