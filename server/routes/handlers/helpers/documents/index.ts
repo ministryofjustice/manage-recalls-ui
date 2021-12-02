@@ -16,7 +16,7 @@ export const makeMetaDataForFile = (
   const documentCategory = forceCategory ? findDocCategory(forceCategory) : autocategoriseDocFileName(file.originalname)
   return {
     originalFileName: file.originalname,
-    fileName: documentCategory.fileName,
+    standardFileName: documentCategory.standardFileName,
     mimeType: file.mimetype,
     label: documentCategory.label,
     labelLowerCase: documentCategory.labelLowerCase,

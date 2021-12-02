@@ -1,0 +1,2 @@
+<a class='govuk-link' href='{{ document.url }}' target='_blank' data-qa='uploadedDocument-{{ document.category }}'>{{ document.standardFileName }}</a>
+{% if document.version > 1 %} (<span data-qa='uploadedDocument-{{ document.category }}-version'>version {{ document.version }}</span>) {% endif %}

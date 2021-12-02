@@ -7,7 +7,7 @@ export interface DocumentCategoryMetadata {
   name: RecallDocument.category
   type: 'document' | 'email' | 'generated'
   error?: string
-  fileName?: string
+  standardFileName?: string
   required?: boolean
   hintIfMissing?: boolean
   multiple?: boolean
@@ -22,7 +22,7 @@ export interface DecoratedDocument extends DocumentCategoryMetadata, RecallDocum
 
 export interface UploadedFileMetadata {
   originalFileName: string
-  fileName?: string
+  standardFileName?: string
   mimeType: string
   label: string
   labelLowerCase?: string
