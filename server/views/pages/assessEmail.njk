@@ -48,7 +48,7 @@
             }) }}
 
             <div class="govuk-!-margin-top-4">
-                <form novalidate action="{{ formActionUrl('assess-email', urlInfo, csrfToken) }}"
+                <form novalidate action="{{ makeUrl('assess-email', urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
 

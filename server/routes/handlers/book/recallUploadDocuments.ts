@@ -12,7 +12,7 @@ import { validateCategories, validateUploadedFileTypes } from './helpers/validat
 import { deleteDocument } from './helpers/deleteDocument'
 import { renderXhrResponse } from './helpers/uploadRenderXhrResponse'
 import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
-import { formActionUrl } from '../../../utils/nunjucksFunctions'
+import { makeUrl } from '../../../utils/nunjucksFunctions'
 import { makeErrorObject } from '../helpers'
 
 export const uploadRecallDocumentsFormHandler = async (req: Request, res: Response) => {
@@ -98,7 +98,7 @@ export const uploadRecallDocumentsFormHandler = async (req: Request, res: Respon
 
       if (continueWasClicked && listMissingRequiredDocs(recall.documents).length) {
         // if the user came from a recall info page, add querystring so they'll be redirected back there after missing documents page
-        return res.redirect(303, formActionUrl('missing-documents', urlInfo))
+        return res.redirect(303, makeUrl('missing-documents', urlInfo))
       }
       res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers'}`)
     } catch (e) {

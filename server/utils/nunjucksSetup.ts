@@ -14,7 +14,7 @@ import {
   allowedDocumentFileExtensionList,
   allowedImageFileExtensionList,
   backLinkUrl,
-  formActionUrl,
+  makeUrl,
   changeLinkUrl,
   errorMessage,
   removeUndefinedFromObject,
@@ -60,7 +60,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('allowedImageFileExtensionList', allowedImageFileExtensionList)
   njkEnv.addGlobal('allowedImageFileTypeLabelList', allowedImageFileTypeLabelList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
-  njkEnv.addGlobal('formActionUrl', formActionUrl)
+  njkEnv.addGlobal('makeUrl', makeUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
   njkEnv.addGlobal('errorMessage', errorMessage)
   njkEnv.addGlobal('getReferenceDataItemLabel', getReferenceDataItemLabel)

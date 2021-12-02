@@ -143,7 +143,7 @@ export const backLinkUrl = (path: string, { fromPage, fromHash, basePath }: UrlI
   return `${basePath}${path}`
 }
 
-export const formActionUrl = (routeSuffix: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
+export const makeUrl = (routeSuffix: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
   const fromPageQueryParam = fromPage ? `fromPage=${fromPage}` : undefined
   const csrfQueryParam = csrfToken ? `_csrf=${csrfToken}` : undefined
   const queryParams = [fromPageQueryParam, csrfQueryParam].filter(Boolean).join('&')

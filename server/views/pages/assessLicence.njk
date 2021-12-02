@@ -31,7 +31,7 @@
             </h1>
         </div>
         <div class="govuk-grid-column-full">
-            <form novalidate action="{{ formActionUrl('assess-licence', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl('assess-licence', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {{ govukTextarea({
                     name: "licenceConditionsBreached",

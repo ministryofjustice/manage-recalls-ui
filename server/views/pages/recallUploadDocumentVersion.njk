@@ -33,7 +33,7 @@
             </div>
             {% endif %}
             <div class="govuk-form-group">
-                <form novalidate action="{{ formActionUrl('upload-document-version', urlInfo, csrfToken) }}" method="post"
+                <form novalidate action="{{ makeUrl('upload-document-version', urlInfo, csrfToken) }}" method="post"
                       enctype="multipart/form-data">
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload new document</h2>
                         <input type='hidden' name='forceCategory' value='{{ recall.versionedCategory.category }}'>
