@@ -12,7 +12,7 @@ generic-service:
   ingress:
     enabled: true
     host: app-hostname.local    # override per environment
-    tlsSecretName: manage-recalls-ui-cert
+    tlsSecretName: manage-recalls-cert
     annotations:
       nginx.ingress.kubernetes.io/custom-http-errors: "501,502,503,504"
       nginx.ingress.kubernetes.io/default-backend: manage-recalls-error-pages
