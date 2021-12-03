@@ -1,7 +1,7 @@
 import bunyan from 'bunyan'
 import bunyanFormat from 'bunyan-format'
 
-const formatOut = bunyanFormat({ outputMode: 'short', color: true })
+const formatOut = bunyanFormat({ outputMode: 'short', color: process.env.NODE_ENV !== 'production' })
 
 const logger = bunyan.createLogger({
   name: 'Manage Recalls',
