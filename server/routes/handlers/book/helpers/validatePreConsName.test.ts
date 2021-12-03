@@ -52,7 +52,7 @@ describe('validatePreConsName', () => {
       {
         href: '#previousConvictionMainNameCategory',
         name: 'previousConvictionMainNameCategory',
-        text: "Is {{ recall.fullName }}'s name different on the previous convictions report (pre-cons)?",
+        text: "How does {{ recall.fullName }}'s name appear on the previous convictions sheet (pre-cons)?",
       },
     ])
   })
@@ -68,7 +68,7 @@ describe('validatePreConsName', () => {
       {
         href: '#previousConvictionMainName',
         name: 'previousConvictionMainName',
-        text: 'Enter the name on the pre-cons',
+        text: 'Enter the full name on the pre-cons',
       },
     ])
   })
