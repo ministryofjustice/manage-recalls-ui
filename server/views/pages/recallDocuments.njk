@@ -39,20 +39,38 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <p class="govuk-body">Upload these documents:</p>
-            <ul class="govuk-list govuk-list--bullet">
-                <li>Licence</li>
-                <li>Part A recall report</li>
-                <li>Previous convictions sheet</li>
-                <li>OASys report</li>
-            </ul>
-            <p class="govuk-body govuk-!-margin-bottom-6">You can also upload any supporting documents the Probation Service have provided.</p>
+            {% if urlInfo.fromPage %}
+                {% if recall.requiredDocsMissing.length or recall.missingNotRequiredDocs.length %}
+                    <p class="govuk-body">Upload these documents:</p>
+                    <ul class="govuk-list govuk-list--bullet" data-qa='missingDocsList'>
+                        {% for doc in recall.requiredDocsMissing %}
+                            <li>{{ doc.label }}</li>
+                        {% endfor %}
+                        {% for doc in recall.missingNotRequiredDocs %}
+                            <li>{{ doc.label }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="govuk-body govuk-!-margin-bottom-6">You can also upload any supporting documents the Probation
+                        Service have provided.</p>
+                {% endif %}
+            {% else %}
+                <p class="govuk-body">You can upload:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>a licence</li>
+                    <li>a part A recall report</li>
+                    <li>a previous convictions sheet</li>
+                    <li>an OASys report</li>
+                    <li>any supporting documents</li>
+                </ul>
+                <p class="govuk-body govuk-!-margin-bottom-6">You can only upload PDFs.</p>
+            {% endif %}
             <div class="document-upload">
                 <div class="govuk-form-group">
                     <form novalidate action="{{ makeUrl('upload-documents', urlInfo, csrfToken) }}" method="post"
                           enctype="multipart/form-data">
                         <input type="submit" class="govuk-visually-hidden" name="continue" value="continue" />
-                        <div class="moj-multi-file__uploaded-files" data-qa="document-count-{{ recall.documents.length }}">
+                        <div class="moj-multi-file__uploaded-files"
+                             data-qa="document-count-{{ recall.documents.length }}">
                             {% include '../partials/uploadedDocumentsStatus.njk' %}
                         </div>
                         <div id='uploads-progress'></div>

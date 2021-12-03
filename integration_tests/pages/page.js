@@ -73,9 +73,18 @@ module.exports = (name, pageObject = {}) => {
       cy.get(`[name=${prefix}${value}]`).clear().type(values[value])
     })
   }
-  const getValuesFromTableColumn = ({ qaAttrTable, qaAttrCell, valuesToCompare }) => {
+
+  const assertTableColumnValues = ({ qaAttrTable, qaAttrCell, valuesToCompare }) => {
     cy.get(`[data-qa="${qaAttrTable}"]`)
       .find(`[data-qa="${qaAttrCell}"]`)
+      .each((cell, index) => {
+        expect(cell.text().trim()).to.equal(valuesToCompare[index])
+      })
+  }
+
+  const assertListValues = ({ qaAttrList, valuesToCompare }) => {
+    cy.get(`[data-qa="${qaAttrList}"]`)
+      .find(`li`)
       .each((cell, index) => {
         expect(cell.text().trim()).to.equal(valuesToCompare[index])
       })
@@ -143,8 +152,9 @@ module.exports = (name, pageObject = {}) => {
     enterTextInInput,
     checkRadio,
     assertApiRequestBody,
-    getValuesFromTableColumn,
+    assertTableColumnValues,
     checkFileDownloaded,
     checkPdfContents,
+    assertListValues,
   }
 }

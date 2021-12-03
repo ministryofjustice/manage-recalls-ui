@@ -114,11 +114,11 @@ export default function manageRecallsApi(wiremock) {
           urlPattern: `/recalls/(.*)/documents`,
         },
         response: {
-          status: expectation.statusCode || 201,
+          status: (expectation && expectation.statusCode) || 201,
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: expectation.responseBody || { documentId: '123' },
+          jsonBody: (expectation && expectation.responseBody) || { documentId: '123' },
         },
       })
     },
