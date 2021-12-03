@@ -12,7 +12,6 @@ import uploadDocumentsPage from '../pages/uploadDocuments'
 import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import recallInformationPage from '../pages/recallInformation'
 import recallLicenceNamePage from '../pages/recallLicenceName'
 import recallsListPage from '../pages/recallsList'
 
