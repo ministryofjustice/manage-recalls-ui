@@ -1,22 +1,31 @@
 {% if recall.documentsUploaded.length %}
-<h2 class='govuk-heading-m govuk-!-margin-top-9' id='documents'>Uploaded documents</h2>
-<dl class="govuk-summary-list">
-    {% for document in recall.documentsUploaded %}
-        <div class="govuk-summary-list__row">
-            <dt class=" govuk-summary-list__key">
-                {{ document.label }}
-            </dt>
-            <dd class=" govuk-summary-list__value">
-                {%  include '../partials/uploadedDocumentLink.njk' %}
-            </dd>
-            <dd class=" govuk-summary-list__actions">
-                {% if recall.status === 'BEING_BOOKED_ON' %}
-                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}' data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span class="govuk-visually-hidden"> {{ document.label }}</span></a>
-                {% elseif document.version %}
-                <a href='{{ changeLinkUrl('upload-document-version', urlInfo, 'documents', '', 'versionedCategoryName=' + document.category) }}' data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span class="govuk-visually-hidden"> {{ document.label }}</span></a>
-                {% endif %}
-            </dd>
+    <div class='flex flex--align-baseline govuk-!-margin-top-9 govuk-!-margin-bottom-4'>
+        <h2 class='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-right-4' id='documents'>Uploaded documents</h2>
+        <div class="govuk-body govuk-!-margin-0" >
+            <a href="{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}" class="govuk-link">Add documents</a>
         </div>
-    {% endfor %}
-</dl>
+    </div>
+    <dl class="govuk-summary-list">
+        {% for document in recall.documentsUploaded %}
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    {{ document.label }}
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                    {% include '../partials/uploadedDocumentLink.njk' %}
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                    {% if recall.status === 'BEING_BOOKED_ON' %}
+                        <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}'
+                           data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
+                                    class="govuk-visually-hidden"> {{ document.label }}</span></a>
+                    {% elseif document.version %}
+                        <a href='{{ changeLinkUrl('upload-document-version', urlInfo, 'documents', '', 'versionedCategoryName=' + document.category) }}'
+                           data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
+                                    class="govuk-visually-hidden"> {{ document.label }}</span></a>
+                    {% endif %}
+                </dd>
+            </div>
+        {% endfor %}
+    </dl>
 {% endif %}
