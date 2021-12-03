@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - What is the main name on the pre-cons?" %}
+{% set pageTitle = applicationName + " - Book a recall - How does the name appear on the previous convictions sheet (pre-cons)?" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -33,7 +33,7 @@
                             name: "previousConvictionMainName",
                             id: "previousConvictionMainName",
                             label: {
-                                text: "What is the main name?"
+                                text: "Provide the full name on the pre-cons"
                             },
                             value: formValues.previousConvictionMainName,
                             classes: "govuk-input--width-30",
@@ -45,10 +45,13 @@
                         name: "previousConvictionMainNameCategory",
                         fieldset: {
                             legend: {
-                                text: "What is the main name on " + recall.fullName + "'s pre-cons?",
+                                text: "How does " + recall.fullName + "'s name appear on the previous convictions sheet (pre-cons)?",
                                 classes: "govuk-fieldset__legend--l",
                                 isPageHeading: true
                             }
+                        },
+                        hint: {
+                            text: 'Check the forename(s) and surname on the pre-cons'
                         },
                         items: [
                             {

@@ -195,7 +195,7 @@ context('Book a recall', () => {
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'previousConvictionMainNameCategory',
-      summaryError: "Is Bobby Badger's name different on the previous convictions report (pre-cons)?",
+      summaryError: "How does Bobby Badger's name appear on the previous convictions sheet (pre-cons)?",
     })
   })
 
@@ -205,7 +205,7 @@ context('Book a recall', () => {
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'previousConvictionMainName',
-      summaryError: 'Enter the name on the pre-cons',
+      summaryError: 'Enter the full name on the pre-cons',
     })
   })
 
