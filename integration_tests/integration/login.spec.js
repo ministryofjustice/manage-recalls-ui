@@ -15,6 +15,7 @@ context('Login', () => {
   })
 
   it('User can see their name in the header and can log out', () => {
+    cy.task('expectGetCurrentUserDetails')
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const landingPage = IndexPage.verifyOnPage()

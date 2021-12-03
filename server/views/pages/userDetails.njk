@@ -15,9 +15,9 @@
                 }) }}
             {% endif %}
             <h1 class="govuk-heading-l">
-                {% if notFound %}Enter your user details{% else %}User details{% endif %}
+                User details
             </h1>
-
+            <div class="govuk-body-l">We will use your details in the service and on recall documents</div>
             <form novalidate action="/user-details?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukInput({
@@ -99,7 +99,7 @@
                             accept: allowedImageFileExtensionList()
                         },
                         label: {
-                            text: 'Signature',
+                            text: 'Upload signature',
                             classes: "govuk-label--m"
                         },
                         errorMessage: errorMessage(errors.signature)
@@ -112,8 +112,8 @@
                     {% endif %}
                 </div>
                 <div>
-                    <button class="govuk-button" data-qa='updateButton'>
-                        Update
+                    <button class="govuk-button" data-qa='saveButton'>
+                        Save
                     </button>
                 </div>
             </form>

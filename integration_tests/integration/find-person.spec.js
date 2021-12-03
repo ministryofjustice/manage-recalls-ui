@@ -29,6 +29,7 @@ context('Find a person', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     cy.task('expectGetUserDetails', { expectedResults: getUserDetailsResponse })
+    cy.task('expectGetCurrentUserDetails')
     cy.login()
   })
 

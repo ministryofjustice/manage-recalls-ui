@@ -25,6 +25,7 @@ context('Document upload', () => {
       },
     })
     cy.task('expectGetUserDetails', { firstName: 'Bobby', lastName: 'Badger' })
+    cy.task('expectGetCurrentUserDetails')
     cy.login()
   })
 
