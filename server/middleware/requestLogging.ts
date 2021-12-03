@@ -7,15 +7,12 @@ export const requestLogging = (req: Request, res: Response, next: NextFunction) 
   const sessionId = req.session.id
   const pageUrl = req.originalUrl
   logger.debug(
-    {
-      requestData: {
-        userId,
-        appInsightsOperationId,
-        sessionId,
-        pageUrl,
-      },
-    },
-    'request data'
+    JSON.stringify({
+      userId,
+      appInsightsOperationId,
+      sessionId,
+      pageUrl,
+    })
   )
   next()
 }
