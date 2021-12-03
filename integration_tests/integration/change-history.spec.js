@@ -51,26 +51,26 @@ context('Change history', () => {
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
       href: '/persons/A1234AA/recalls/123/documents/456',
     })
-    changeHistory.getValuesFromTableColumn({
+    changeHistory.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['Part A.pdf', 'Pre Cons.pdf'],
     })
-    changeHistory.getValuesFromTableColumn({
+    changeHistory.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'createdDateTime',
       valuesToCompare: ['1 April 2020 at 13:00', '10 May 2020 at 15:22'],
     })
     // re-sort the table by file name (descending)
     changeHistory.clickButton({ label: 'Document' })
-    changeHistory.getValuesFromTableColumn({
+    changeHistory.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['Pre Cons.pdf', 'Part A.pdf'],
     })
     // re-sort the table by date (ascending)
     changeHistory.clickButton({ label: 'Date and time' })
-    changeHistory.getValuesFromTableColumn({
+    changeHistory.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'createdDateTime',
       valuesToCompare: ['1 April 2020 at 13:00', '10 May 2020 at 15:22'],

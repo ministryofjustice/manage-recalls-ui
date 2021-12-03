@@ -21,57 +21,7 @@ context('Document upload', () => {
         ...getRecallResponse,
         recallId,
         status: 'DOSSIER_ISSUED',
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId: '123',
-            version: 2,
-          },
-          {
-            category: 'PREVIOUS_CONVICTIONS_SHEET',
-            documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          },
-          {
-            category: 'RECALL_REQUEST_EMAIL',
-            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
-            fileName: 'recall-request.eml',
-          },
-          {
-            category: 'RECALL_NOTIFICATION_EMAIL',
-            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
-            fileName: '2021-07-03 Phil Jones recall.msg',
-          },
-          {
-            category: 'DOSSIER_EMAIL',
-            documentId: '234-3455-8542-c3ac-8c963f66afa6',
-            fileName: 'email.msg',
-          },
-          {
-            category: 'MISSING_DOCUMENTS_EMAIL',
-            documentId: '123',
-            fileName: 'chase-documents.msg',
-          },
-          {
-            category: 'RECALL_NOTIFICATION',
-            documentId: '1123',
-          },
-          {
-            category: 'REVOCATION_ORDER',
-            documentId: '2123',
-          },
-          {
-            category: 'LETTER_TO_PRISON',
-            documentId: '3123',
-          },
-          {
-            category: 'DOSSIER',
-            documentId: '4123',
-          },
-          {
-            category: 'REASONS_FOR_RECALL',
-            documentId: '5123',
-          },
-        ],
+        documents: [],
       },
     })
     cy.task('expectGetUserDetails', { firstName: 'Bobby', lastName: 'Badger' })
@@ -85,6 +35,7 @@ context('Document upload', () => {
   it('User sees a document listed after it is uploaded', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'
+    cy.task('expectAddRecallDocument', { status: 201, responseBody: { documentId } })
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -210,6 +161,32 @@ context('Document upload', () => {
     recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
+  })
+
+  it('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.BEING_BOOKED_ON,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId,
+          },
+        ],
+      },
+    })
+    cy.task('expectDeleteRecallDocument')
+    cy.task('expectSetDocumentCategory')
+    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
+    checkAnswers.clickLink({ label: 'Add documents' })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
+    uploadDocuments.assertListValues({
+      qaAttrList: 'missingDocsList',
+      valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys Risk Assessment'],
+    })
   })
 
   it("user can't change the category of a document that has more than one version", () => {
