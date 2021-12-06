@@ -52,7 +52,7 @@ export default function createApp(userService: UserService): express.Application
       // enable Express.js middleware tracing
       new Tracing.Integrations.Express({ app }),
     ],
-    ignoreErrors: ['AbortError', /^Invalid URL$/],
+    ignoreErrors: ['AbortError', /^Invalid URL$/, /^Redis connection to/],
     // Quarter of all requests will be used for performance sampling
     tracesSampler: samplingContext => {
       const transactionName =
