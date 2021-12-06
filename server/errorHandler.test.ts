@@ -1,9 +1,9 @@
 import type { Express } from 'express'
 import request from 'supertest'
 import appWithAllRoutes from './routes/testutils/appSetup'
-import { recallList } from './routes/handlers/recallList'
+import { findPerson } from './routes/handlers/person/findPerson'
 
-jest.mock('./routes/handlers/recallList')
+jest.mock('./routes/handlers/person/findPerson')
 
 let app: Express
 
@@ -28,11 +28,11 @@ describe('GET 404', () => {
 })
 
 describe('Server error', () => {
-  beforeEach(() => (recallList as jest.Mock).mockRejectedValue(new Error('Something went wrong')))
+  beforeEach(() => (findPerson as jest.Mock).mockRejectedValue(new Error('Something went wrong')))
 
   it('should render content with stack in dev mode', () => {
     return request(app)
-      .get('/')
+      .get('/find-person')
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {
@@ -43,7 +43,7 @@ describe('Server error', () => {
 
   it('should render content without stack in production mode', () => {
     return request(appWithAllRoutes({ production: true }))
-      .get('/')
+      .get('/find-person')
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {

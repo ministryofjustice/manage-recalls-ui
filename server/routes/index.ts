@@ -37,12 +37,13 @@ import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecall
 import { downloadUploadedDocumentOrEmail } from './handlers/helpers/documents/downloadUploadedDocumentOrEmail'
 import { addMissingDocumentRecordForm } from './handlers/helpers/addMissingDocumentRecordForm'
 import { validateLicenceName } from './handlers/book/helpers/validateLicenceName'
+import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  get('/', recallList)
+  router.get('/', checkUserDetailsExist, recallList)
   get('/find-person', findPerson)
 
   post('/persons/:nomsNumber/recalls', createRecall)
