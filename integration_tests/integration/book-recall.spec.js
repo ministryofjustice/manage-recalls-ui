@@ -97,7 +97,7 @@ context('Book a recall', () => {
     recallLastRelease.setBookingNumber()
     recallLastRelease.clickContinue()
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
-    recallPrisonPolice.setLocalPoliceForce()
+    recallPrisonPolice.setLocalPoliceForceId()
     recallPrisonPolice.clickContinue()
     const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
     recallIssuesNeeds.setVulnerabilityDiversityNo()
@@ -323,19 +323,18 @@ context('Book a recall', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()
     recallPrisonPolice.assertErrorMessage({
-      fieldName: 'localPoliceForce',
+      fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force',
     })
   })
 
   it('User sees error and text as entered if invalid Local Police Force is entered', () => {
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
-    recallPrisonPolice.enterLocalPoliceForce('foobar')
+    recallPrisonPolice.enterLocalPoliceForceId('foobar')
     recallPrisonPolice.clickContinue()
-    // TODO: PUD-453: invalid text is not echo'ed back to user: should get fixed when only ID is used on API
-    // recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceInput', value: 'foobar' })
+    recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceIdInput', value: 'foobar' })
     recallPrisonPolice.assertErrorMessage({
-      fieldName: 'localPoliceForce',
+      fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force from the list',
     })
   })

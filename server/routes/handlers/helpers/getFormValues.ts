@@ -67,7 +67,6 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'mappaLevel',
     'sentencingCourt',
     'indexOffence',
-    'localPoliceForce',
     'localPoliceForceId',
     'bookingNumber',
     'probationOfficerName',

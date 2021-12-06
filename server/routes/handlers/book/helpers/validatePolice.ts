@@ -10,27 +10,27 @@ export const validatePolice = (
   let errors
   let valuesToSave
 
-  const { localPoliceForce, localPoliceForceInput } = requestBody
-  // localPoliceForce is the value of the hidden select dropdown that's populated by the autocomplete
-  // localPoliceForceInput is what the user typed into the autocomplete input. It might be a random string and not a valid policeForces name, so needs validating
+  const { localPoliceForceId, localPoliceForceIdInput } = requestBody
+  // localPoliceForceId is the value of the hidden select dropdown that's populated by the autocomplete
+  // localPoliceForceIdInput is what the user typed into the autocomplete input. It might be a random string and not a valid policeForces name, so needs validating
   const localPoliceForceInvalidInput = Boolean(
-    localPoliceForceInput && !isStringValidReferenceData('policeForces', localPoliceForceInput)
+    localPoliceForceIdInput && !isStringValidReferenceData('policeForces', localPoliceForceIdInput)
   )
 
-  if (!localPoliceForce || localPoliceForceInvalidInput) {
+  if (!localPoliceForceId || localPoliceForceInvalidInput) {
     errors = []
     if (localPoliceForceInvalidInput) {
       errors.push(
         makeErrorObject({
-          id: 'localPoliceForce',
+          id: 'localPoliceForceId',
           text: formatValidationErrorMessage({ errorId: 'invalidSelectionFromList' }, 'a local police force'),
-          values: localPoliceForceInput,
+          values: localPoliceForceIdInput,
         })
       )
-    } else if (!localPoliceForce) {
+    } else if (!localPoliceForceId) {
       errors.push(
         makeErrorObject({
-          id: 'localPoliceForce',
+          id: 'localPoliceForceId',
           text: formatValidationErrorMessage({ errorId: 'noSelectionFromList' }, 'a local police force'),
         })
       )
@@ -38,8 +38,7 @@ export const validatePolice = (
   }
   if (!errors) {
     valuesToSave = {
-      localPoliceForceId: localPoliceForce,
-      localPoliceForce: localPoliceForceInput,
+      localPoliceForceId,
     } as UpdateRecallRequest
   }
   return { errors, valuesToSave }

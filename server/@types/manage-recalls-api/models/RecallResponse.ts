@@ -40,7 +40,6 @@ export type RecallResponse = {
     licenceExpiryDate?: string;
     licenceNameCategory: RecallResponse.licenceNameCategory;
     localDeliveryUnit?: RecallResponse.localDeliveryUnit;
-    localPoliceForce?: string;
     localPoliceForceId?: string;
     mappaLevel?: RecallResponse.mappaLevel;
     middleNames?: string;
