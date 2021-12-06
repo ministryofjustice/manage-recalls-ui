@@ -47,7 +47,7 @@ export interface RecallFormValues {
   mappaLevel?: string
   sentencingCourt?: string
   indexOffence?: string
-  localPoliceForce?: string
+  localPoliceForceId?: string
   agreeWithRecall?: RecallResponse.agreeWithRecall
   agreeWithRecallDetailYes?: string
   agreeWithRecallDetailNo?: string

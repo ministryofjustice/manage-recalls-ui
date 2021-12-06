@@ -29,7 +29,6 @@ export type UpdateRecallRequest = {
     licenceExpiryDate?: string;
     licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
     localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit;
-    localPoliceForce?: string;
     localPoliceForceId?: string;
     mappaLevel?: UpdateRecallRequest.mappaLevel;
     previousConvictionMainName?: string;

@@ -27,7 +27,6 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         contrabandDetail: 'Likely to bring in contraband because...',
         lastReleaseDateTime: '2020-08-03T00:00:00.000Z',
         lastReleasePrison: 'BAI',
-        localPoliceForce: 'Dyfed-Powys Police',
         localPoliceForceId: 'dyfed-powys',
         mappaLevel: 'LEVEL_2',
         recallEmailReceivedDateTime: '2020-12-05T15:33:57.000Z',

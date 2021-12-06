@@ -59,6 +59,11 @@ To get debug output when running cypress:
 For easy creation of IntelliJ run config for these Cypress tests
 (the `integration/*.spec.js` tests) try installing the Cypress support plugin: https://plugins.jetbrains.com/plugin/13819-cypress-support
 That should yield a `Cy` cypress run option for all such tests).
+Notes: (i) the free version does not support debugging; (ii) if this test runner fails with similar
+to the following error a restart of IDEA should fix this:
+```
+Could not load reporter by name: /var/folders/lq ... intellij-cypress-reporter ,,,
+```
 
 ## Pre-commit hooks
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.

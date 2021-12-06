@@ -17,14 +17,13 @@ describe('validatePolice', () => {
 
   it('returns updateRecallRequest as valuesToSave and no errors if valid localPoliceForce is submitted', () => {
     const requestBody = {
-      localPoliceForce: 'metropolitan',
-      localPoliceForceInput: 'Metropolitan Police Service',
+      localPoliceForceId: 'metropolitan',
+      localPoliceForceIdInput: 'Metropolitan Police Service',
     }
     const { errors, valuesToSave } = validatePolice(requestBody)
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       localPoliceForceId: 'metropolitan',
-      localPoliceForce: 'Metropolitan Police Service',
     })
   })
   it('returns no valuesToSave and an error if nothing is submitted', () => {
@@ -32,43 +31,43 @@ describe('validatePolice', () => {
     const { errors, valuesToSave } = validatePolice(requestBody)
     expect(errors).toEqual([
       {
-        href: '#localPoliceForce',
-        name: 'localPoliceForce',
+        href: '#localPoliceForceId',
+        name: 'localPoliceForceId',
         text: 'Select a local police force',
       },
     ])
     expect(valuesToSave).toBeUndefined()
   })
 
-  it("returns an error for invalid localPoliceForce entry when there's an existing selection, and no valuesToSave", () => {
+  it('returns an error and no valuesToSave for invalid localPoliceForce entry when there is an existing selection', () => {
     const requestBody = {
-      localPoliceForce: 'metropolitan',
-      localPoliceForceInput: '123',
+      localPoliceForceId: 'metropolitan',
+      localPoliceForceIdInput: '123',
     }
     const { errors, valuesToSave } = validatePolice(requestBody)
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#localPoliceForce',
-        name: 'localPoliceForce',
+        href: '#localPoliceForceId',
+        name: 'localPoliceForceId',
         text: 'Select a local police force from the list',
         values: '123',
       },
     ])
   })
 
-  it("returns an error for invalid localPoliceForce entry when there's no existing selection, and no valuesToSave", () => {
+  it('returns an error and no valuesToSave for invalid localPoliceForce entry when there is no existing selection', () => {
     const requestBody = {
-      localPoliceForce: '',
-      localPoliceForceInput: '123',
+      localPoliceForceId: '',
+      localPoliceForceIdInput: '123',
     }
     const { errors, valuesToSave } = validatePolice(requestBody)
 
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#localPoliceForce',
-        name: 'localPoliceForce',
+        href: '#localPoliceForceId',
+        name: 'localPoliceForceId',
         text: 'Select a local police force from the list',
         values: '123',
       },

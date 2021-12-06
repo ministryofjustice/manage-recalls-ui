@@ -27,8 +27,8 @@ describe('handleRecallFormPost', () => {
   const nomsNumber = 'A1234AB'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const requestBody = {
-    localPoliceForce: 'metropolitan',
-    localPoliceForceInput: 'Metropolitan Police Service',
+    localPoliceForceId: 'metropolitan',
+    localPoliceForceIdInput: 'Metropolitan Police Service',
   }
 
   afterEach(() => {

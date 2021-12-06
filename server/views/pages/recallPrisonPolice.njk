@@ -34,10 +34,10 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukSelect({
-                        id: "localPoliceForce",
-                        name: "localPoliceForce",
+                        id: "localPoliceForceId",
+                        name: "localPoliceForceId",
                         items: selectItems( referenceData.policeForces, formValues.localPoliceForceId, true),
-                        errorMessage: errorMessage(errors.localPoliceForce)
+                        errorMessage: errorMessage(errors.localPoliceForceId)
                     }) }}
                 </div>
                 <div>
@@ -55,7 +55,8 @@
 {% block bodyEnd %}
     {{ super() }}
     {{ autocomplete({
-            name: 'localPoliceForce',
+            name: 'localPoliceForceId',
+            defaultValue: formValues.localPoliceForceId,
             cspNonce: cspNonce
         })
     }}
