@@ -68,7 +68,6 @@ context('View a recall', () => {
       },
     })
     cy.task('expectGetUserDetails', { firstName: 'Bobby', lastName: 'Badger' })
-    cy.task('expectGetCurrentUserDetails')
     cy.login()
   })
 

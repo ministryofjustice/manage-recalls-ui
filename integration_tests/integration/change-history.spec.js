@@ -27,7 +27,6 @@ context('Change history', () => {
     cy.task('expectListRecalls', {
       expectedResults: [],
     })
-    cy.task('expectGetCurrentUserDetails')
     cy.login()
   })
 

@@ -17,14 +17,14 @@ context('User details', () => {
       status: 404,
     })
     cy.task('expectAddUserDetails')
-    const userDetails = userDetailsPage.verifyOnPage()
+    const userDetails = userDetailsPage.verifyOnPage({ detailsAdded: false })
     userDetails.enterTextInInput({ name: 'firstName', text: 'Barry' })
     userDetails.enterTextInInput({ name: 'lastName', text: 'Badger' })
     userDetails.enterTextInInput({ name: 'email', text: 'barry@badger.com' })
     userDetails.enterTextInInput({ name: 'phoneNumber', text: '0739378378' })
     userDetails.checkRadio({ fieldName: 'caseworkerBand', value: 'FOUR_PLUS' })
     userDetails.uploadFile({ fieldName: 'signature', fileName: 'signature.jpg', mimeType: 'image/jpeg' })
-    userDetails.clickButton({ qaAttr: 'saveButton' })
+    userDetails.clickButton({ qaAttr: 'updateButton' })
     userDetails.assertApiRequestBody({
       url: '/users',
       method: 'POST',
@@ -51,7 +51,7 @@ context('User details', () => {
         userId: '123',
       },
     })
-    const userDetails = userDetailsPage.verifyOnPage()
+    const userDetails = userDetailsPage.verifyOnPage({ detailsAdded: true })
     userDetails.assertInputValue({ fieldName: 'firstName', value: 'Barry' })
     userDetails.assertInputValue({ fieldName: 'lastName', value: 'Badger' })
     userDetails.assertInputValue({ fieldName: 'email', value: 'barry@badger.com' })
