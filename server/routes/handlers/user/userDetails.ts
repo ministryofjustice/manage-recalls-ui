@@ -29,9 +29,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
     const { token } = res.locals.user
     user = await getCurrentUserDetails(token)
   } catch (err) {
-    if (err.status === 404) {
-      res.locals.notFound = true
-    } else {
+    if (err.status !== 404) {
       logger.info(err.message)
       res.locals.errors = {
         list: [

@@ -4,6 +4,7 @@ import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
 import recallLicenceNamePage from '../pages/recallLicenceName'
+import userDetailsPage from '../pages/userDetails'
 
 describe('To do (recalls) list', () => {
   const recallId = '123'
@@ -25,6 +26,13 @@ describe('To do (recalls) list', () => {
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.task('expectGetCurrentUserDetails')
+  })
+
+  it("user is redirected to user details page if they haven't entered any", () => {
+    cy.task('expectGetCurrentUserDetails', { status: 404 })
+    cy.login()
+    userDetailsPage.verifyOnPage()
   })
 
   it('User can continue a previous booking if recall status is BEING_BOOKED_ON', () => {

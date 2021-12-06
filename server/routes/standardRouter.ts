@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import auth from '../authentication/auth'
 import tokenVerifier from '../data/tokenVerification'
-import populateCurrentUser from '../middleware/populateCurrentUser'
+import { populateCurrentUser } from '../middleware/populateCurrentUser'
 import type UserService from '../services/userService'
 import { requestLogging } from '../middleware/requestLogging'
 

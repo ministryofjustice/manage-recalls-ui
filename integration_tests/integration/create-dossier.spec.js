@@ -38,6 +38,7 @@ context('Create a dossier', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
+    cy.task('expectGetCurrentUserDetails')
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
