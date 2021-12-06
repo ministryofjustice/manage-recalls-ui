@@ -1,7 +1,7 @@
 const page = require('./page')
 
-const userDetailsPage = () =>
-  page('User details', {
+const userDetailsPage = ({ detailsAdded }) =>
+  page(detailsAdded ? 'User details' : 'Enter your user details', {
     url: '/user-details',
   })
 

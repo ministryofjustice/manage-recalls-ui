@@ -55,7 +55,6 @@ context('Book a recall', () => {
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     cy.task('expectRefData', { refDataPath: 'police-forces', expectedResult: getPoliceForcesResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
-    cy.task('expectGetCurrentUserDetails')
     cy.login()
   })
 

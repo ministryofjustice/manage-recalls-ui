@@ -186,7 +186,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'GET',
-          urlPattern: `/users/([0-9\\-]+)`,
+          urlPattern: `/users/(.*)`,
         },
         response: {
           status: 200,
@@ -207,11 +207,11 @@ export default function manageRecallsApi(wiremock) {
           urlPattern: '/users/current',
         },
         response: {
-          status: (expectation && expectation.status) || 200,
+          status: expectation.status,
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: (expectation && expectation.expectedResult) || {},
+          jsonBody: expectation.expectedResult,
         },
       })
     },
