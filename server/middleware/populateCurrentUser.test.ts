@@ -23,7 +23,9 @@ describe('populateCurrentUser', () => {
   }
 
   beforeEach(() => {
-    req = {}
+    req = {
+      url: '/',
+    }
     res.locals.user = {
       token,
     }
@@ -60,7 +62,6 @@ describe('populateCurrentUser', () => {
 
   it('redirects to user details page if the user details are not present and the request is not for user details page', async () => {
     ;(getCurrentUserDetails as jest.Mock).mockRejectedValue({ status: 404 })
-    req.url = '/'
     await populateCurrentUser(userService)(req, res, next)
     expect(res.redirect).toHaveBeenCalledWith('/user-details')
   })
