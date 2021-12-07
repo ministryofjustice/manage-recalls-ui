@@ -14,7 +14,8 @@
     label: 'Account navigation',
     items: [{
       text: user.displayName | userName,
-      attributes: {'data-qa': 'header-user-name'}
+      attributes: {'data-qa': 'header-user-name'},
+            href: '/user-details'
     }, {
       text: 'Sign out',
       href: '/logout',
