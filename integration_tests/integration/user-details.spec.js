@@ -1,4 +1,5 @@
 const userDetailsPage = require('../pages/userDetails')
+const recallsListPage = require('../pages/recallsList')
 
 context('User details', () => {
   beforeEach(() => {
@@ -58,5 +59,23 @@ context('User details', () => {
     userDetails.assertInputValue({ fieldName: 'phoneNumber', value: '0739378378' })
     userDetails.assertRadioChecked({ fieldName: 'caseworkerBand', value: 'FOUR_PLUS' })
     userDetails.assertElementPresent({ qaAttr: 'signature-image' })
+  })
+
+  it('user clicks on their name in the header to go to user details page', () => {
+    cy.task('expectGetCurrentUserDetails', {
+      status: 200,
+      expectedResult: {
+        firstName: 'Barry',
+        lastName: 'Badger',
+        email: 'barry@badger.com',
+        phoneNumber: '0739378378',
+        caseworkerBand: 'FOUR_PLUS',
+        signature: 'def',
+        userId: '123',
+      },
+    })
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.clickLink({ qaAttr: 'header-user-name' })
+    userDetailsPage.verifyOnPage()
   })
 })

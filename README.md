@@ -12,3 +12,4 @@ User interface for managing recalls
 * [PACT](./docs/pact.md)
 * [Helm deployments](./docs/helm-deploy.md)
 * [Environment variables](./docs/env-vars.md)
+* [Restarting the app in dev / preprod / prod](./docs/restarting-app.md)

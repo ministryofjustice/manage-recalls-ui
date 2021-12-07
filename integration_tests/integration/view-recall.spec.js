@@ -16,15 +16,6 @@ context('View a recall', () => {
         status: 'DOSSIER_ISSUED',
         documents: [
           {
-            category: 'PART_A_RECALL_REPORT',
-            documentId: '123',
-            version: 2,
-          },
-          {
-            category: 'PREVIOUS_CONVICTIONS_SHEET',
-            documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          },
-          {
             category: 'RECALL_REQUEST_EMAIL',
             documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
             fileName: 'recall-request.eml',
@@ -91,21 +82,8 @@ context('View a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'dossierEmailSentDate', textToFind: '8 September 2021' })
     recallInformation.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bobby Badger' })
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier issued' })
-    // change link for an uploaded document goes to the 'add new document version' page
-    recallInformation.assertLinkHref({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
-    })
-    // missing documents
-    recallInformation.assertElementHasText({
-      qaAttr: 'required-LICENCE',
-      textToFind: 'Missing: needed to create dossier',
-    })
-    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
-    recallInformation.assertElementHasText({
-      qaAttr: 'required-LICENCE',
-      textToFind: 'Missing: needed to create dossier',
-    })
+
+    // generated documents
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
       textToFind: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
@@ -126,6 +104,8 @@ context('View a recall', () => {
       qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
       textToFind: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
     })
+
+    // missing documents detail
     recallInformation.assertElementHasText({
       qaAttr: 'missingDocumentsDetail',
       textToFind: 'Documents were requested by email on 10/12/2020',

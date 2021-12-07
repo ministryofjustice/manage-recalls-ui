@@ -1,4 +1,4 @@
-import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
+import { getEmptyRecallResponse, getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 import uploadDocumentsPage from '../pages/uploadDocuments'
@@ -24,6 +24,7 @@ context('Document upload', () => {
         documents: [],
       },
     })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectGetUserDetails', { firstName: 'Bobby', lastName: 'Badger' })
     cy.login()
   })
@@ -332,5 +333,52 @@ context('Document upload', () => {
       fieldName: 'documents',
       summaryError: 'Select a file',
     })
+  })
+
+  it('User can view all uploaded documents on the recall information page', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'DOSSIER_ISSUED',
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '123',
+            version: 2,
+          },
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: '789',
+          },
+          {
+            category: 'OTHER',
+            fileName: 'record.pdf',
+            documentId: '456',
+          },
+        ],
+      },
+    })
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    // change link for an uploaded document goes to the 'add new document version' page
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
+      textToFind: 'Part A.pdf',
+    })
+    recallInformation.assertLinkHref({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
+      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-OTHER',
+      textToFind: 'record.pdf',
+    })
+    // missing documents
+    recallInformation.assertElementHasText({
+      qaAttr: 'required-LICENCE',
+      textToFind: 'Missing: needed to create dossier',
+    })
+    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
   })
 })
