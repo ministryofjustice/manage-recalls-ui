@@ -8,6 +8,10 @@ import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
 const recallInformationPage = require('../pages/recallInformation')
 
 context('Document upload', () => {
+  const nomsNumber = 'A1234AA'
+  const recallId = '123'
+  const personName = 'Bobby Badger'
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
@@ -29,11 +33,7 @@ context('Document upload', () => {
     cy.login()
   })
 
-  const nomsNumber = 'A1234AA'
-  const recallId = '123'
-  const personName = 'Bobby Badger'
-
-  it('User sees a document listed after it is uploaded', () => {
+  it('an uploaded document is listed as uncategorised after upload if it has an unrecognisable filename', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'
     cy.task('expectAddRecallDocument', { status: 201, responseBody: { documentId } })
@@ -51,7 +51,7 @@ context('Document upload', () => {
       },
     })
     uploadDocuments.upload({
-      filePath: '../test.pdf',
+      filePath: '../uploads/test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertElementHasText({
@@ -64,7 +64,126 @@ context('Document upload', () => {
     })
   })
 
-  it('User sees previously saved documents', () => {
+  it("a document is given a suggested category if it's uncategorised and has a recognisable filename", () => {
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const documentId = '123'
+    cy.task('expectAddRecallDocument', { status: 201, responseBody: { documentId } })
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            fileName: 'licence wesley holt.pdf',
+            documentId,
+          },
+        ],
+      },
+    })
+    uploadDocuments.upload({
+      filePath: '../uploads/test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertElementHasText({
+      qaAttr: `link-${documentId}`,
+      textToFind: 'licence wesley holt.pdf',
+    })
+    uploadDocuments.assertSelectValue({
+      fieldName: `category-${documentId}`,
+      value: 'LICENCE',
+    })
+  })
+
+  it('an uncategorised document can be recategorised if it has a suggested category', () => {
+    const documentId = '123'
+    cy.task('expectSetDocumentCategory')
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            fileName: 'licence wesley holt.pdf',
+            documentId,
+          },
+        ],
+      },
+    })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.selectFromDropdown({
+      fieldName: `category-${documentId}`,
+      value: 'OASys Risk Assessment',
+    })
+    uploadDocuments.clickContinue()
+    uploadDocuments.assertApiRequestBody({
+      url: `/recalls/${recallId}/documents/${documentId}`,
+      method: 'PATCH',
+      bodyValues: {
+        category: 'OASYS_RISK_ASSESSMENT',
+      },
+    })
+    recallMissingDocumentsPage.verifyOnPage()
+  })
+
+  it("an uncategorised document can be recategorised if it doesn't have a suggested category", () => {
+    const documentId = '123'
+    cy.task('expectSetDocumentCategory')
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            fileName: 'random.pdf',
+            documentId,
+          },
+        ],
+      },
+    })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.selectFromDropdown({
+      fieldName: `category-${documentId}`,
+      value: 'OASys Risk Assessment',
+    })
+    uploadDocuments.clickContinue()
+    uploadDocuments.assertApiRequestBody({
+      url: `/recalls/${recallId}/documents/${documentId}`,
+      method: 'PATCH',
+      bodyValues: {
+        category: 'OASYS_RISK_ASSESSMENT',
+      },
+    })
+    recallMissingDocumentsPage.verifyOnPage()
+  })
+
+  it('clicking Continue with an uncategorised document shows an error', () => {
+    const documentId = '123'
+    cy.task('expectSetDocumentCategory')
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            fileName: 'random.pdf',
+            documentId,
+          },
+        ],
+      },
+    })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    uploadDocuments.clickContinue()
+    uploadDocuments.assertDocumentUploadError({
+      documentId: '123',
+      summaryError: 'Choose a type for random.pdf',
+    })
+  })
+
+  it("a previously categorised document can't have its category changed", () => {
     const documentId = '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -82,17 +201,17 @@ context('Document upload', () => {
       qaAttr: `link-${documentId}`,
       textToFind: 'Pre Cons.pdf',
     })
-    uploadDocuments.assertSelectValue({
-      fieldName: `category-${documentId}`,
-      value: 'PREVIOUS_CONVICTIONS_SHEET',
+    uploadDocuments.assertElementHasText({
+      qaAttr: `category-label-PREVIOUS_CONVICTIONS_SHEET`,
+      textToFind: 'Previous convictions sheet',
     })
   })
 
-  it('User sees an error if an upload fails', () => {
-    cy.task('expectAddRecallDocument', { statusCode: 400 })
+  it('an error is shown for an upload that fails to save to the API', () => {
+    cy.task('expectAddRecallDocument', { statusCode: 500 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.uploadSingleFile({
-      filePath: '../test.pdf',
+      filePath: '../uploads/test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertSummaryErrorMessage({
@@ -101,14 +220,14 @@ context('Document upload', () => {
     })
   })
 
-  it('User sees an error if an upload has a virus', () => {
+  it('an error is shown for an upload containing a virus', () => {
     cy.task('expectAddRecallDocument', {
       statusCode: 400,
       responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.uploadSingleFile({
-      filePath: '../test.pdf',
+      filePath: '../uploads/test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertSummaryErrorMessage({
@@ -190,51 +309,7 @@ context('Document upload', () => {
     })
   })
 
-  it("user can't change the category of a document that has more than one version", () => {
-    const documentId = '123'
-    const recallResponse = {
-      recallId,
-      ...getRecallResponse,
-      status: RecallResponse.status.BEING_BOOKED_ON,
-      documents: [
-        {
-          category: 'PART_A_RECALL_REPORT',
-          documentId,
-          version: 2,
-        },
-      ],
-    }
-    cy.task('expectGetRecall', {
-      expectedResult: recallResponse,
-    })
-    cy.task('expectDeleteRecallDocument')
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.assertElementHasText({
-      qaAttr: `category-label-PART_A_RECALL_REPORT`,
-      textToFind: 'Part A recall report',
-    })
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        ...recallResponse,
-        documents: [
-          ...recallResponse.documents,
-          {
-            category: 'PRE_SENTENCING_REPORT',
-            documentId: '456',
-          },
-        ],
-      },
-    })
-    uploadDocuments.uploadSingleFile({
-      filePath: '../uploads/presentencing_report.pdf',
-      mimeType: 'application/pdf',
-    })
-    uploadDocuments.assertElementPresent({ qaAttr: 'category-index-PRE_SENTENCING_REPORT' })
-  })
-
-  it("User sees an error if they don't upload the missing documents email or provide detail", () => {
+  it("an error is shown if the missing documents email and detail aren't submitted", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     recallMissingDocuments.clickContinue()
@@ -280,7 +355,7 @@ context('Document upload', () => {
       textToFind: 'Uploaded on 21 November 2021 at 12:34',
     })
     uploadDocumentVersion.uploadSingleFile({
-      filePath: '../test.pdf',
+      filePath: '../uploads/test.pdf',
       mimeType: 'application/pdf',
     })
     cy.task('expectGetRecall', {
@@ -305,7 +380,7 @@ context('Document upload', () => {
     })
   })
 
-  it("user sees an error if they don't upload a new document version", () => {
+  it("an error is shown if a new document version isn't uploaded", () => {
     const documentId = '123'
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -330,7 +405,7 @@ context('Document upload', () => {
     })
     uploadDocumentVersion.clickContinue()
     uploadDocumentVersion.assertErrorMessage({
-      fieldName: 'documents',
+      fieldName: 'document',
       summaryError: 'Select a file',
     })
   })

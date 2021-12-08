@@ -1,19 +1,23 @@
-import { NamedFormError, ObjectMap, UrlInfo } from '../../../../@types'
-import { documentCategories } from './documentCategories'
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { AddDocumentResponse } from '../../../../@types/manage-recalls-api/models/AddDocumentResponse'
-import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
-import { makeErrorObject } from '../index'
-import { CategorisedFileMetadata, DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../@types/documents'
-import { addRecallDocument, setDocumentCategory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { autocategoriseDocFileName } from './autocategorise'
-import logger from '../../../../../logger'
+import { NamedFormError, ObjectMap, UrlInfo } from '../../../../../@types'
+import { documentCategories } from '../../documentCategories'
+import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
+import { AddDocumentResponse } from '../../../../../@types/manage-recalls-api/models/AddDocumentResponse'
+import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
+import { makeErrorObject } from '../../../helpers'
+import {
+  CategorisedFileMetadata,
+  DocumentCategoryMetadata,
+  UploadedFileMetadata,
+} from '../../../../../@types/documents'
+import { addRecallDocument, setDocumentCategory } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../../../../../logger'
+import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 
 export const makeMetaDataForFile = (
   file: Express.Multer.File,
-  forceCategory?: RecallDocument.category
+  categoryName: RecallDocument.category
 ): UploadedFileMetadata => {
-  const documentCategory = forceCategory ? findDocCategory(forceCategory) : autocategoriseDocFileName(file.originalname)
+  const documentCategory = findDocCategory(categoryName)
   return {
     originalFileName: file.originalname,
     standardFileName: documentCategory.standardFileName,
@@ -27,9 +31,9 @@ export const makeMetaDataForFile = (
 
 export const getMetadataForUploadedFiles = (
   files: Express.Multer.File[],
-  forceCategory?: RecallDocument.category
+  categoryName: RecallDocument.category
 ): UploadedFileMetadata[] => {
-  return files ? files.map(file => makeMetaDataForFile(file, forceCategory)) : []
+  return files ? files.map(file => makeMetaDataForFile(file, categoryName)) : []
 }
 
 export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {
@@ -54,9 +58,6 @@ export const requiredDocsList = (): DocumentCategoryMetadata[] =>
 export const missingNotRequiredDocsList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document' && doc.hintIfMissing)
 
-export const generatedDocCategoriesList = (): DocumentCategoryMetadata[] =>
-  documentCategories.filter(doc => doc.type === 'generated')
-
 export const listMissingRequiredDocs = (docs: RecallDocument[]): string[] => {
   const listOfRequiredAndDesired = [...requiredDocsList(), ...missingNotRequiredDocsList()]
   return listOfRequiredAndDesired
@@ -77,12 +78,12 @@ export const listFailedUploads = (
         if (result.reason.data?.message === 'VirusFoundException') {
           return makeErrorObject({
             id: 'documents',
-            text: `${fileData[idx].originalFileName} contains a virus`,
+            text: errorMsgDocumentUpload.containsVirus(fileData[idx].originalFileName),
           })
         }
         return makeErrorObject({
           id: 'documents',
-          text: `${fileData[idx].originalFileName} could not be uploaded - try again`,
+          text: errorMsgDocumentUpload.uploadFailed(fileData[idx].originalFileName),
         })
       }
       return null
@@ -164,64 +165,3 @@ export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlIn
 
 export const findDocCategory = (category: RecallDocument.category) =>
   documentCategories.find(cat => cat.name === category)
-
-export const getGeneratedDocFileName = ({
-  firstName,
-  lastName,
-  bookingNumber,
-  docCategory,
-}: {
-  firstName: string
-  lastName: string
-  bookingNumber: string
-  docCategory: RecallDocument.category
-}) => {
-  const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
-  switch (docCategory) {
-    case RecallDocument.category.RECALL_NOTIFICATION:
-      return `IN CUSTODY RECALL ${details}.pdf`
-    case RecallDocument.category.DOSSIER:
-      return `${details} RECALL DOSSIER.pdf`
-    case RecallDocument.category.LETTER_TO_PRISON:
-      return `${details} LETTER TO PRISON.pdf`
-    case RecallDocument.category.REVOCATION_ORDER:
-      return `${details} REVOCATION ORDER.pdf`
-    case RecallDocument.category.REASONS_FOR_RECALL:
-      return `${details} REASONS FOR RECALL.pdf`
-    default:
-      return 'document.pdf'
-  }
-}
-
-export const getGeneratedDocUrlPath = ({
-  recallId,
-  nomsNumber,
-  documentId,
-  docCategory,
-}: {
-  recallId: string
-  nomsNumber: string
-  documentId?: string
-  docCategory: RecallDocument.category
-}): string | undefined => {
-  const basePath = `/persons/${nomsNumber}/recalls/${recallId}/documents/`
-  switch (docCategory) {
-    case RecallDocument.category.RECALL_NOTIFICATION:
-      return `${basePath}recall-notification`
-    case RecallDocument.category.DOSSIER:
-      return `${basePath}dossier`
-    case RecallDocument.category.LETTER_TO_PRISON:
-      return `${basePath}letter-to-prison`
-    case RecallDocument.category.REVOCATION_ORDER:
-      return `${basePath}revocation-order/${documentId}`
-    case RecallDocument.category.REASONS_FOR_RECALL:
-      return `${basePath}reasons-for-recall/${documentId}`
-    default:
-      return undefined
-  }
-}
-
-export const formatPersonName = ({ firstName = '', lastName = '' }: { firstName?: string; lastName?: string }) =>
-  `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
-
-export const formatBookingNumber = (bookingNumber: string) => (bookingNumber ? ` ${bookingNumber.toUpperCase()}` : '')

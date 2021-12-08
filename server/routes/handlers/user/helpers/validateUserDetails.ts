@@ -1,6 +1,6 @@
 import { listToString, makeErrorObject } from '../../helpers'
 import { AllowedUploadFileType, NamedFormError, ObjectMap } from '../../../../@types'
-import { allowedImageFileExtensions } from '../../helpers/allowedUploadExtensions'
+import { allowedImageFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { AddUserDetailsRequest } from '../../../../@types/manage-recalls-api/models/AddUserDetailsRequest'
 
 export const isInvalidFileType = (file: Express.Multer.File, allowedExtensions: AllowedUploadFileType[]) => {

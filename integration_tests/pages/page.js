@@ -29,6 +29,7 @@ module.exports = (name, pageObject = {}) => {
   const assertSummaryErrorMessage = ({ fieldName, summaryError }) => {
     cy.get(`[href="#${fieldName}"]`).should('have.text', summaryError)
   }
+
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
 
   const clickElementByAttrOrLabel = ({ qaAttr, label, tagName }) => {
@@ -43,6 +44,8 @@ module.exports = (name, pageObject = {}) => {
   const clickLink = ({ qaAttr, label }) => clickElementByAttrOrLabel({ qaAttr, label, tagName: 'a' })
 
   const clickElement = ({ qaAttr }) => cy.get(`[data-qa="${qaAttr}"]`).click()
+
+  const selectFromDropdown = ({ fieldName, value }) => cy.get(`[name=${fieldName}]`).select(value)
 
   const assertLinkHref = ({ qaAttr, href }) => {
     cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
@@ -117,10 +120,14 @@ module.exports = (name, pageObject = {}) => {
 
   const assertApiRequestBody = ({ url, method, bodyValues }) => {
     cy.task('findApiRequest', { url, method }).then(req => {
-      const requestBody = JSON.parse(req.request.body)
-      Object.entries(bodyValues).forEach(([key, value]) => {
-        expect(requestBody[key]).to.equal(value)
-      })
+      if (req) {
+        const requestBody = JSON.parse(req.request.body)
+        Object.entries(bodyValues).forEach(([key, value]) => {
+          expect(requestBody[key]).to.equal(value)
+        })
+      } else {
+        cy.log(`assertApiRequestBody - request not found for url: ${url} and method: ${method}`)
+      }
     })
   }
 
@@ -146,6 +153,7 @@ module.exports = (name, pageObject = {}) => {
     clickButton,
     clickLink,
     clickElement,
+    selectFromDropdown,
     enterDateTime,
     clickTodayLink,
     uploadFile,

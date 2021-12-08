@@ -1,4 +1,4 @@
-import { AllowedUploadFileType } from '../../../@types'
+import { AllowedUploadFileType } from '../../../../../@types'
 
 export const allowedEmailFileExtensions: AllowedUploadFileType[] = [
   {

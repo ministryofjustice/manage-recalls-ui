@@ -1,21 +1,21 @@
 // @ts-nocheck
-import { emailUploadForm } from './emailUploadForm'
+import { uploadEmailFormHandler } from './uploadEmailFormHandler'
 import {
   addRecallDocument,
   unassignUserFromRecall,
   updateRecall,
-} from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockPostRequest } from '../../testutils/mockRequestUtils'
-import { uploadStorageField } from './uploadStorage'
-import { validateRecallRequestReceived } from '../book/helpers/validateRecallRequestReceived'
-import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
-import { validateRecallNotificationEmail } from '../assess/helpers/validateRecallNotificationEmail'
-import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
+} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { mockPostRequest } from '../../../testutils/mockRequestUtils'
+import { uploadStorageField } from './helpers/uploadStorage'
+import { validateRecallRequestReceived } from '../../book/helpers/validateRecallRequestReceived'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { validateRecallNotificationEmail } from '../../assess/helpers/validateRecallNotificationEmail'
+import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
-jest.mock('./uploadStorage')
+jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('./helpers/uploadStorage')
 
-const handler = emailUploadForm({
+const handler = uploadEmailFormHandler({
   emailFieldName: 'recallRequestEmailFileName',
   validator: validateRecallRequestReceived,
   documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
@@ -231,7 +231,7 @@ describe('emailUploadForm', () => {
   })
 
   it('unassigns the user from the recall', done => {
-    const handlerWithUnassign = emailUploadForm({
+    const handlerWithUnassign = uploadEmailFormHandler({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,
@@ -270,7 +270,7 @@ describe('emailUploadForm', () => {
   })
 
   it('redirects even if the user unassignment fails', done => {
-    const handlerWithUnassign = emailUploadForm({
+    const handlerWithUnassign = uploadEmailFormHandler({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,

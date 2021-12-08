@@ -1,14 +1,11 @@
-import { documentCategories } from './documentCategories'
-import { replaceSpaces } from '../index'
-import { DocumentCategoryMetadata } from '../../../../@types/documents'
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-
-const uncategorised = documentCategories.find(doc => doc.name === RecallDocument.category.UNCATEGORISED)
+import { documentCategories } from '../../documentCategories'
+import { replaceSpaces } from '../../../helpers'
+import { DocumentCategoryMetadata } from '../../../../../@types/documents'
 
 export const autocategoriseDocFileName = (fileName: string): DocumentCategoryMetadata => {
   const fileNameLowerCase = fileName.toLowerCase()
 
-  const category = documentCategories
+  return documentCategories
     .filter(cat => cat.fileNamePatterns)
     .find(cat => {
       return cat.fileNamePatterns.some(
@@ -19,6 +16,4 @@ export const autocategoriseDocFileName = (fileName: string): DocumentCategoryMet
           fileNameLowerCase.includes(replaceSpaces(pattern, ''))
       )
     })
-
-  return category || uncategorised
 }

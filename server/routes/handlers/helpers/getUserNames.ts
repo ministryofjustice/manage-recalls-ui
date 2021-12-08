@@ -1,5 +1,5 @@
 import { getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { RecallResponse } from '../../../@types/manage-recalls-api'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 const getUserName = async (userId: string, token: string): Promise<string> => {
   try {

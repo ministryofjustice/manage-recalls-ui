@@ -1,21 +1,21 @@
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { decorateDocs } from './decorateDocs'
-import { findDocCategory } from './index'
-import { DocumentDecorations } from '../../../../@types'
+import { findDocCategory } from '../../upload/helpers'
+import { DocumentDecorations } from '../../../../../@types'
 
 describe('decorateDocs', () => {
   const docs = [
     {
-      category: RecallDocument.category.LICENCE,
-      documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      version: '1',
-      createdDateTime: '2020-04-01T12:00:00.000Z',
-      fileName: 'Bobby Badger licence.pdf',
-    },
-    {
       category: RecallDocument.category.OTHER,
       documentId: '2345-65434-3455-23432',
       fileName: 'other doc 1.pdf',
+    },
+    {
+      category: RecallDocument.category.LICENCE,
+      documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      version: 1,
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+      fileName: 'Bobby Badger licence.pdf',
     },
     {
       category: RecallDocument.category.OTHER,
@@ -95,6 +95,10 @@ describe('decorateDocs', () => {
   it('returns document categories included the docs uploaded for each', () => {
     expect(results.documentCategories).toEqual([
       {
+        ...findDocCategory(RecallDocument.category.UNCATEGORISED),
+        uploaded: [],
+      },
+      {
         ...findDocCategory(RecallDocument.category.PART_A_RECALL_REPORT),
         uploaded: [],
       },
@@ -103,11 +107,12 @@ describe('decorateDocs', () => {
         uploaded: [
           {
             category: 'LICENCE',
+            suggestedCategory: 'LICENCE',
             documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
             fileName: 'Bobby Badger licence.pdf',
             standardFileName: 'Licence.pdf',
             url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            version: '1',
+            version: 1,
             createdDateTime: '2020-04-01T12:00:00.000Z',
           },
         ],
@@ -145,48 +150,53 @@ describe('decorateDocs', () => {
         uploaded: [
           {
             category: 'OTHER',
+            suggestedCategory: 'OTHER',
             documentId: '2345-65434-3455-23432',
             fileName: 'other doc 1.pdf',
             url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
           },
           {
             category: 'OTHER',
+            suggestedCategory: 'OTHER',
             documentId: '1234-8766-2344-5342',
             fileName: 'other doc 2.pdf',
             url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
           },
         ],
       },
-      {
-        ...findDocCategory(RecallDocument.category.UNCATEGORISED),
-        uploaded: [],
-      },
     ])
   })
 
-  it('returns a list of uploaded documents', () => {
+  it('returns a list of uploaded documents, using the same order as the document category list', () => {
     expect(results.documentsUploaded).toEqual([
       {
-        ...findDocCategory(RecallDocument.category.LICENCE),
-        category: RecallDocument.category.LICENCE,
-        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        version: '1',
+        category: 'LICENCE',
         createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger licence.pdf',
+        label: 'Licence',
+        standardFileName: 'Licence.pdf',
+        suggestedCategory: 'LICENCE',
+        type: 'document',
+        url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        version: 1,
       },
       {
-        ...findDocCategory(RecallDocument.category.OTHER),
-        category: RecallDocument.category.OTHER,
-        fileName: 'other doc 1.pdf',
+        category: 'OTHER',
         documentId: '2345-65434-3455-23432',
+        fileName: 'other doc 1.pdf',
+        label: 'Other',
+        suggestedCategory: 'OTHER',
+        type: 'document',
         url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
       },
       {
-        ...findDocCategory(RecallDocument.category.OTHER),
-        category: RecallDocument.category.OTHER,
-        fileName: 'other doc 2.pdf',
+        category: 'OTHER',
         documentId: '1234-8766-2344-5342',
+        fileName: 'other doc 2.pdf',
+        label: 'Other',
+        suggestedCategory: 'OTHER',
+        type: 'document',
         url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
       },
     ])
@@ -199,9 +209,8 @@ describe('decorateDocs', () => {
       label: 'Licence',
       fileName: 'Bobby Badger licence.pdf',
       standardFileName: 'Licence.pdf',
-      version: '1',
+      version: 1,
       createdDateTime: '2020-04-01T12:00:00.000Z',
-      name: 'LICENCE',
       type: 'document',
       url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
     })
@@ -225,7 +234,6 @@ describe('decorateDocs', () => {
         documentId: '848',
         label: 'Dossier',
         fileName: 'BADGER BOBBY 123 RECALL DOSSIER.pdf',
-        name: 'DOSSIER',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/dossier',
       },
@@ -234,7 +242,6 @@ describe('decorateDocs', () => {
         documentId: '838',
         label: 'Letter to prison',
         fileName: 'BADGER BOBBY 123 LETTER TO PRISON.pdf',
-        name: 'LETTER_TO_PRISON',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/letter-to-prison',
       },
@@ -243,7 +250,6 @@ describe('decorateDocs', () => {
         documentId: '858',
         label: 'Reasons for recall',
         fileName: 'BADGER BOBBY 123 REASONS FOR RECALL.pdf',
-        name: 'REASONS_FOR_RECALL',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/reasons-for-recall/858',
       },
@@ -252,7 +258,6 @@ describe('decorateDocs', () => {
         documentId: '828',
         label: 'Recall notification',
         fileName: 'IN CUSTODY RECALL BADGER BOBBY 123.pdf',
-        name: 'RECALL_NOTIFICATION',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/recall-notification',
       },
@@ -261,7 +266,6 @@ describe('decorateDocs', () => {
         documentId: '868',
         label: 'Revocation order',
         fileName: 'BADGER BOBBY 123 REVOCATION ORDER.pdf',
-        name: 'REVOCATION_ORDER',
         type: 'generated',
         url: '/persons/A123/recalls/abc-456/documents/revocation-order/868',
       },
@@ -273,7 +277,6 @@ describe('decorateDocs', () => {
       DOSSIER_EMAIL: {
         category: 'DOSSIER_EMAIL',
         label: 'Dossier email',
-        name: 'DOSSIER_EMAIL',
         type: 'email',
         fileName: 'dossier.msg',
         documentId: '37423-2389347-234',
@@ -284,7 +287,6 @@ describe('decorateDocs', () => {
         documentId: '1234-3455-8542-c3ac-8c963f66afa6',
         fileName: 'recall-request.eml',
         label: 'Recall request email',
-        name: 'RECALL_REQUEST_EMAIL',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/1234-3455-8542-c3ac-8c963f66afa6',
       },
@@ -293,12 +295,13 @@ describe('decorateDocs', () => {
         documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
         fileName: '2021-07-03 Phil Jones recall.msg',
         label: 'Recall notification email',
-        name: 'RECALL_NOTIFICATION_EMAIL',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
       },
     })
+  })
 
+  it('returns data on missing documents', () => {
     expect(results.missingDocumentsRecord).toEqual({
       category: 'MISSING_DOCUMENTS_EMAIL',
       createdByUserId: '6544',
@@ -311,10 +314,53 @@ describe('decorateDocs', () => {
       fileName: 'missing-docs.msg',
       label: 'Missing documents email',
       missingDocumentsRecordId: '1234',
-      name: 'MISSING_DOCUMENTS_EMAIL',
       type: 'email',
       url: '/persons/A123/recalls/abc-456/documents/845',
       version: 1,
     })
+  })
+
+  it('suggests a category for uploaded documents that have no category, but a recognisable filename', async () => {
+    const result = decorateDocs({
+      docs: [
+        {
+          category: RecallDocument.category.UNCATEGORISED,
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          createdDateTime: '2020-04-01T12:00:00.000Z',
+          fileName: 'Bobby Badger licence.pdf',
+          version: 1,
+        },
+      ],
+      nomsNumber,
+      recallId,
+      firstName: 'Bobby',
+      lastName: 'Badger',
+      bookingNumber: '123',
+      versionedCategoryName: 'LICENCE',
+      missingDocumentsRecords,
+    })
+    expect(result.documentsUploaded[0].suggestedCategory).toEqual('LICENCE')
+  })
+
+  it('defaults suggested category to UNCATEGORISED for uploaded documents that have no category, and no recognisable filename', async () => {
+    const result = decorateDocs({
+      docs: [
+        {
+          category: RecallDocument.category.UNCATEGORISED,
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          createdDateTime: '2020-04-01T12:00:00.000Z',
+          fileName: 'Bobby Badger.pdf',
+          version: 1,
+        },
+      ],
+      nomsNumber,
+      recallId,
+      firstName: 'Bobby',
+      lastName: 'Badger',
+      bookingNumber: '123',
+      versionedCategoryName: 'LICENCE',
+      missingDocumentsRecords,
+    })
+    expect(result.documentsUploaded[0].suggestedCategory).toEqual('UNCATEGORISED')
   })
 })

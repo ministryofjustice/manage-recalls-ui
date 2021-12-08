@@ -1,9 +1,10 @@
 import { Response } from 'express'
-import { UrlInfo } from '../../../../@types'
-import { RecallResponse, SearchResult } from '../../../../@types/manage-recalls-api'
-import { enableDeleteDocuments, uploadedDocCategoriesList } from '../../helpers/documents'
-import { decorateDocs } from '../../helpers/documents/decorateDocs'
-import logger from '../../../../../logger'
+import { UrlInfo } from '../../../../../@types'
+import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
+import { SearchResult } from '../../../../../@types/manage-recalls-api/models/SearchResult'
+import { enableDeleteDocuments, uploadedDocCategoriesList } from './index'
+import { decorateDocs } from '../../download/helpers/decorateDocs'
+import logger from '../../../../../../logger'
 
 export const renderXhrResponse = async ({
   res,

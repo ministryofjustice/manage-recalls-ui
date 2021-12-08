@@ -1,7 +1,13 @@
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { DocumentCategoryMetadata } from '../../../../@types/documents'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { DocumentCategoryMetadata } from '../../../@types/documents'
 
 export const documentCategories: DocumentCategoryMetadata[] = [
+  {
+    label: 'Choose a type',
+    name: RecallDocument.category.UNCATEGORISED,
+    type: 'document',
+    multiple: true,
+  },
   {
     label: 'Part A recall report',
     labelLowerCase: 'part A recall report',
@@ -84,12 +90,6 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   {
     label: 'Other',
     name: RecallDocument.category.OTHER,
-    type: 'document',
-    multiple: true,
-  },
-  {
-    label: 'Choose a type',
-    name: RecallDocument.category.UNCATEGORISED,
     type: 'document',
     multiple: true,
   },
