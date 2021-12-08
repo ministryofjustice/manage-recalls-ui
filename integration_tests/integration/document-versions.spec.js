@@ -4,7 +4,7 @@ import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 
 const recallInformationPage = require('../pages/recallInformation')
 
-context('Document upload', () => {
+context('Document versions', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
@@ -83,6 +83,7 @@ context('Document upload', () => {
         ],
       },
     })
+    uploadDocumentVersion.clickContinue()
     uploadDocumentVersion.assertApiRequestBody({
       url: `/recalls/${recallId}/documents`,
       method: 'POST',
@@ -91,7 +92,6 @@ context('Document upload', () => {
         fileName: 'test.pdf',
       },
     })
-    uploadDocumentVersion.clickContinue()
     recallInformation = recallInformationPage.verifyOnPage({ personName })
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
