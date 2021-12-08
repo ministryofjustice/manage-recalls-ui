@@ -3,9 +3,9 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from './handlers/person/findPerson'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
-import { uploadRecallDocumentsFormHandler } from './handlers/book/recallUploadDocuments'
+import { uploadDocumentsFormHandler } from './handlers/documents/upload/uploadDocumentsFormHandler'
 import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
-import { emailUploadForm } from './handlers/helpers/emailUploadForm'
+import { uploadEmailFormHandler } from './handlers/documents/upload/uploadEmailFormHandler'
 import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
 import { validateDecision } from './handlers/assess/helpers/validateDecision'
 import { validateDossierLetter } from './handlers/dossier/helpers/validateDossierLetter'
@@ -22,7 +22,7 @@ import {
   downloadReasonsForRecallOrder,
   downloadRecallNotification,
   downloadRevocationOrder,
-} from './handlers/helpers/documents/downloadNamedPdfHandler'
+} from './handlers/documents/download/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { AddDocumentRequest } from '../@types/manage-recalls-api/models/AddDocumentRequest'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
@@ -34,10 +34,11 @@ import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from './handlers/helpers/assignUser'
 import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecallsApiClient'
-import { downloadUploadedDocumentOrEmail } from './handlers/helpers/documents/downloadUploadedDocumentOrEmail'
-import { addMissingDocumentRecordForm } from './handlers/helpers/addMissingDocumentRecordForm'
+import { downloadUploadedDocumentOrEmail } from './handlers/documents/download/downloadUploadedDocumentOrEmail'
+import { addMissingDocumentRecordFormHandler } from './handlers/documents/missing-documents/addMissingDocumentRecordFormHandler'
 import { validateLicenceName } from './handlers/book/helpers/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
+import { uploadDocumentVersionFormHandler } from './handlers/documents/upload/uploadDocumentVersionFormHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -60,7 +61,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
-    emailUploadForm({
+    uploadEmailFormHandler({
       emailFieldName: 'recallRequestEmailFileName',
       validator: validateRecallRequestReceived,
       documentCategory: AddDocumentRequest.category.RECALL_REQUEST_EMAIL,
@@ -76,11 +77,11 @@ export default function routes(router: Router): Router {
   get(`${basePath}/probation-officer`, viewWithRecallAndPerson('recallProbationOfficer'))
   post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer, 'upload-documents'))
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
-  post(`${basePath}/upload-documents`, uploadRecallDocumentsFormHandler)
+  post(`${basePath}/upload-documents`, uploadDocumentsFormHandler)
   get(`${basePath}/missing-documents`, viewWithRecallAndPerson('recallMissingDocuments'))
-  post(`${basePath}/missing-documents`, addMissingDocumentRecordForm)
+  post(`${basePath}/missing-documents`, addMissingDocumentRecordFormHandler)
   get(`${basePath}/upload-document-version`, viewWithRecallAndPerson('recallUploadDocumentVersion'))
-  post(`${basePath}/upload-document-version`, uploadRecallDocumentsFormHandler)
+  post(`${basePath}/upload-document-version`, uploadDocumentVersionFormHandler)
   get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
   post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers, 'confirmation'))
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
@@ -99,7 +100,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-email`, viewWithRecallAndPerson('assessEmail'))
   post(
     `${basePath}/assess-email`,
-    emailUploadForm({
+    uploadEmailFormHandler({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,
@@ -120,7 +121,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-email`, viewWithRecallAndPerson('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
-    emailUploadForm({
+    uploadEmailFormHandler({
       emailFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
       unassignUserFromRecall,

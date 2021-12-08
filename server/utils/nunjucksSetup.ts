@@ -25,12 +25,12 @@ import { isDefined, listDocumentLabels, sortList } from '../routes/handlers/help
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { isoDateToMillis } from '../routes/handlers/helpers/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
+import { formatDocLabel } from '../routes/handlers/documents/upload/helpers'
 import {
-  formatDocLabel,
   generatedDocCategoriesList,
   getGeneratedDocFileName,
   getGeneratedDocUrlPath,
-} from '../routes/handlers/helpers/documents'
+} from '../routes/handlers/documents/download/helpers'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(

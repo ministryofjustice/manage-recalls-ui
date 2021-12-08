@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getStoredDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { documentCategories } from './documentCategories'
+import { documentCategories } from '../documentCategories'
 
 export const downloadUploadedDocumentOrEmail = async (req: Request, res: Response) => {
   const { recallId, documentId } = req.params

@@ -1,6 +1,6 @@
 import { autocategoriseDocFileName } from './autocategorise'
-import { documentCategories } from './documentCategories'
-import { replaceSpaces } from '../index'
+import { documentCategories } from '../../documentCategories'
+import { replaceSpaces } from '../../../helpers'
 
 const docCategoriesWithPatterns = documentCategories.filter(cat => cat.fileNamePatterns)
 

@@ -1,10 +1,10 @@
-import { listToString, makeErrorObject } from '../../helpers'
-import { allowedDocumentFileExtensions } from '../../helpers/allowedUploadExtensions'
-import { documentCategories } from '../../helpers/documents/documentCategories'
-import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../@types/documents'
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { AllowedUploadFileType, NamedFormError } from '../../../../@types'
-import { findDocCategory, formatDocLabel } from '../../helpers/documents'
+import { listToString, makeErrorObject } from '../../../helpers'
+import { allowedDocumentFileExtensions } from '../helpers/allowedUploadExtensions'
+import { documentCategories } from '../../documentCategories'
+import { CategorisedFileMetadata, UploadedFileMetadata } from '../../../../../@types/documents'
+import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
+import { AllowedUploadFileType, NamedFormError } from '../../../../../@types'
+import { formatDocLabel } from '../helpers'
 
 export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions: AllowedUploadFileType[]) => {
   return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)
@@ -12,23 +12,20 @@ export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions:
 
 export const validateUploadedFileTypes = (
   uploadedFileData: UploadedFileMetadata[],
-  categorisedFileData: CategorisedFileMetadata[]
+  fileUploadInputName: string
 ): {
   errors?: NamedFormError[]
   valuesToSave: UploadedFileMetadata[]
 } => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
-  const usedCategories = categorisedFileData
-    .map(item => item.category)
-    .filter(category => !findDocCategory(category).multiple) as string[]
   uploadedFileData.forEach(file => {
     let hasError = false
     if (isInvalidFileType(file, allowedDocumentFileExtensions)) {
       errors = errors || []
       errors.push(
         makeErrorObject({
-          id: 'documents',
+          id: fileUploadInputName,
           text: `The selected file '${file.originalFileName}' must be a ${listToString(
             allowedDocumentFileExtensions.map(ext => ext.label),
             'or'
@@ -36,20 +33,6 @@ export const validateUploadedFileTypes = (
         })
       )
       hasError = true
-    }
-    if (usedCategories.includes(file.category)) {
-      errors = errors || []
-      errors.push(
-        makeErrorObject({
-          id: 'documents',
-          text: `You can only upload one ${formatDocLabel(file.category)}`,
-        })
-      )
-      hasError = true
-    }
-    const docCategory = documentCategories.find(cat => cat.name === file.category)
-    if (!docCategory.multiple) {
-      usedCategories.push(file.category)
     }
     if (!hasError) {
       valuesToSave = valuesToSave || []

@@ -1,4 +1,4 @@
-import { requiredDocsList } from '../../server/routes/handlers/helpers/documents'
+import { requiredDocsList } from '../../server/routes/handlers/documents/upload/helpers'
 
 const page = require('./page')
 
@@ -13,7 +13,9 @@ const uploadDocumentsPage = ({ nomsNumber, recallId } = {}) =>
     uploadSingleFile: file => {
       cy.get(`[name="documents"]`).attachFile(file)
     },
-    setDocumentCategory: ({ documentId, category }) => cy.get(`[id="category-${documentId}"]`).select(category),
+    assertDocumentUploadError: ({ documentId, summaryError }) => {
+      cy.get(`[href="#${documentId}"]`).should('have.text', summaryError)
+    },
   })
 
 module.exports = { verifyOnPage: uploadDocumentsPage }

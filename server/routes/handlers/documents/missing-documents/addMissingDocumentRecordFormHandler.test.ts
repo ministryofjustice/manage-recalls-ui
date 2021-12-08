@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { addMissingDocumentRecord } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { mockPostRequest } from '../../testutils/mockRequestUtils'
-import { uploadStorageField } from './uploadStorage'
-import { addMissingDocumentRecordForm } from './addMissingDocumentRecordForm'
+import { addMissingDocumentRecord } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { mockPostRequest } from '../../../testutils/mockRequestUtils'
+import { uploadStorageField } from '../upload/helpers/uploadStorage'
+import { addMissingDocumentRecordFormHandler } from './addMissingDocumentRecordFormHandler'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
-jest.mock('./uploadStorage')
+jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../upload/helpers/uploadStorage')
 
 describe('addMissingDocumentRecordForm', () => {
   let req
@@ -44,7 +44,7 @@ describe('addMissingDocumentRecordForm', () => {
         done()
       },
     }
-    addMissingDocumentRecordForm(req, res)
+    addMissingDocumentRecordFormHandler(req, res)
   })
 
   it('redirects to the fromPage if supplied eg assess recall', done => {
@@ -69,7 +69,7 @@ describe('addMissingDocumentRecordForm', () => {
         done()
       },
     }
-    addMissingDocumentRecordForm(req, res)
+    addMissingDocumentRecordFormHandler(req, res)
   })
 
   it('creates an error if the email has a virus', done => {
@@ -96,7 +96,7 @@ describe('addMissingDocumentRecordForm', () => {
         done()
       },
     }
-    addMissingDocumentRecordForm(req, res)
+    addMissingDocumentRecordFormHandler(req, res)
   })
 
   it("doesn't save to the API if the file extension is invalid", done => {
@@ -121,7 +121,7 @@ describe('addMissingDocumentRecordForm', () => {
         done()
       },
     }
-    addMissingDocumentRecordForm(req, res)
+    addMissingDocumentRecordFormHandler(req, res)
   })
 
   it("doesn't save to the API if the detail is missing", done => {
@@ -147,6 +147,6 @@ describe('addMissingDocumentRecordForm', () => {
         done()
       },
     }
-    addMissingDocumentRecordForm(req, res)
+    addMissingDocumentRecordFormHandler(req, res)
   })
 })

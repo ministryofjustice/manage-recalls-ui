@@ -1,16 +1,14 @@
 import { Request, Response } from 'express'
-import { UrlInfo } from '../../../../@types'
 import { deleteRecallDocument, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { enableDeleteDocuments } from '../../helpers/documents'
+import { enableDeleteDocuments } from '../upload/helpers'
 
-export const deleteDocument = async (
-  documentId: string,
-  recallId: string,
-  urlInfo: UrlInfo,
-  token: string,
-  req: Request,
-  res: Response
-) => {
+export const deleteDocument = async (req: Request, res: Response) => {
+  const { recallId } = req.params
+  const documentId = req.body.delete
+  const {
+    user: { token },
+    urlInfo,
+  } = res.locals
   const recall = await getRecall(recallId, token)
   const document = recall.documents.find(doc => doc.documentId === documentId)
   if (!enableDeleteDocuments(recall.status, urlInfo)) {

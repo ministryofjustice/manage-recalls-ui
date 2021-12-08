@@ -104,6 +104,7 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
       existingDocIds.push($(value).attr('id'))
       formData.append($(value).attr('name'), $(value).val())
     })
+    formData.append('upload', 'upload')
     formData.append('existingDocIds', JSON.stringify(existingDocIds))
     for (var i = 0; i < files.length; i++) {
       formData.append('documents', files[i])

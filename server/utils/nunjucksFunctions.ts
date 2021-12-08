@@ -3,7 +3,7 @@ import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
   allowedImageFileExtensions,
-} from '../routes/handlers/helpers/allowedUploadExtensions'
+} from '../routes/handlers/documents/upload/helpers/allowedUploadExtensions'
 import { isDefined, listToString } from '../routes/handlers/helpers'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 

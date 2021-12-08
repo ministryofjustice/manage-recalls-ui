@@ -1,4 +1,4 @@
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { validateCategories, validateUploadedFileTypes } from './validateDocuments'
 
 describe('validateUploadedFileTypes', () => {
@@ -19,7 +19,7 @@ describe('validateUploadedFileTypes', () => {
         mimeType: 'application/msword',
       },
     ]
-    const { errors } = validateUploadedFileTypes(fileData, [])
+    const { errors } = validateUploadedFileTypes(fileData, 'documents')
     expect(errors).toEqual([
       {
         href: '#documents',
@@ -34,35 +34,7 @@ describe('validateUploadedFileTypes', () => {
     ])
   })
 
-  it("returns errors and no valuesToSave if there are more than one of a category that doesn't allow multiples", () => {
-    const fileData = [
-      {
-        category: RecallDocument.category.PART_A_RECALL_REPORT,
-        originalFileName: 'Wesley Holt part a.pdf',
-        label: 'Part A recall report',
-        fileContent: 'abc',
-        mimeType: 'application/pdf',
-      },
-    ]
-    const categoryData = [
-      {
-        category: RecallDocument.category.PART_A_RECALL_REPORT,
-        documentId: '123',
-        fileName: 'Part A.pdf',
-      },
-    ]
-    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, categoryData)
-    expect(errors).toEqual([
-      {
-        href: '#documents',
-        name: 'documents',
-        text: 'You can only upload one part A recall report',
-      },
-    ])
-    expect(valuesToSave).toBeUndefined()
-  })
-
-  it('returns valuesToSave and no errors if there are more than one of a category that does allow multiples', () => {
+  it('returns valuesToSave and no errors if inputs are valid', () => {
     const fileData = [
       {
         category: RecallDocument.category.UNCATEGORISED,
@@ -72,14 +44,7 @@ describe('validateUploadedFileTypes', () => {
         mimeType: 'application/pdf',
       },
     ]
-    const categoryData = [
-      {
-        category: RecallDocument.category.UNCATEGORISED,
-        documentId: '123',
-        fileName: 'test.pdf',
-      },
-    ]
-    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, categoryData)
+    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, 'documents')
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual([
       {

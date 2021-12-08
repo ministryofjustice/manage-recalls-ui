@@ -5,12 +5,12 @@ import {
   getRecallNotification,
   getStoredDocument,
 } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { getPerson } from '../personCache'
-import { isInvalid } from '../index'
+import { getPerson } from '../../helpers/personCache'
+import { isInvalid } from '../../helpers'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { Pdf } from '../../../../@types/manage-recalls-api/models/Pdf'
 import { ObjectMap } from '../../../../@types'
-import { getGeneratedDocFileName } from './index'
+import { getGeneratedDocFileName } from './helpers'
 
 type DownloadFn = (params: ObjectMap<string>, token: string, uuid?: string) => Promise<Pdf>
 

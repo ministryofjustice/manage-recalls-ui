@@ -1,15 +1,16 @@
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { DecoratedDocument } from '../../../../@types/documents'
-import { documentCategories } from './documentCategories'
+import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
+import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
+import { DecoratedDocument } from '../../../../../@types/documents'
+import { DocumentDecorations } from '../../../../../@types'
 import {
-  getGeneratedDocFileName,
-  getGeneratedDocUrlPath,
+  findDocCategory,
   missingNotRequiredDocsList,
   requiredDocsList,
   uploadedDocCategoriesList,
-} from './index'
-import { MissingDocumentsRecord } from '../../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
-import { DocumentDecorations } from '../../../../@types'
+} from '../../upload/helpers'
+import { autocategoriseDocFileName } from './autocategorise'
+import { getGeneratedDocFileName, getGeneratedDocUrlPath } from './index'
+import { documentCategories } from '../../documentCategories'
 
 export const decorateDocs = ({
   docs,
@@ -30,20 +31,41 @@ export const decorateDocs = ({
   bookingNumber: string
   versionedCategoryName?: string
 }): DocumentDecorations => {
-  const decoratedUploadedDocs = [] as DecoratedDocument[]
-  documentCategories.forEach(documentCategory => {
-    docs
-      .filter(d => documentCategory.name === d.category)
-      .forEach(d => {
-        decoratedUploadedDocs.push({
-          ...d,
-          ...documentCategory,
-          url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${d.documentId}`,
-        })
-      })
-  })
+  const categoryNamesForSorting = documentCategories.map(d => d.name)
+  const decoratedUploadedDocs = docs
+    .map(uploadedDoc => {
+      const autocategory =
+        uploadedDoc.category === RecallDocument.category.UNCATEGORISED &&
+        autocategoriseDocFileName(uploadedDoc.fileName)
+      const documentCategory = findDocCategory(uploadedDoc.category)
+      let suggestedCategory
+      if (documentCategory.type === 'document') {
+        suggestedCategory = autocategory ? autocategory.name : documentCategory.name
+      }
+      return {
+        ...uploadedDoc,
+        type: documentCategory.type,
+        standardFileName: documentCategory.standardFileName,
+        label: documentCategory.label,
+        labelLowerCase: documentCategory.labelLowerCase,
+        category: documentCategory.name,
+        suggestedCategory,
+        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${uploadedDoc.documentId}`,
+      }
+    })
+    .sort((a, b) => {
+      const aIndex = categoryNamesForSorting.indexOf(a.category)
+      const bIndex = categoryNamesForSorting.indexOf(b.category)
+      if (aIndex > bIndex) {
+        return 1
+      }
+      if (aIndex < bIndex) {
+        return -1
+      }
+      return 0
+    })
   const decoratedDocTypes = uploadedDocCategoriesList().map(docType => {
-    const uploadedDocs = decoratedUploadedDocs.filter(d => d.name === docType.name)
+    const uploadedDocs = decoratedUploadedDocs.filter(d => d.suggestedCategory === docType.name)
     return {
       ...docType,
       uploaded: uploadedDocs.map(d => ({
@@ -51,10 +73,10 @@ export const decorateDocs = ({
         fileName: d.fileName,
         standardFileName: d.standardFileName,
         documentId: d.documentId,
-        index: d.index,
         version: d.version,
         createdDateTime: d.createdDateTime,
         category: d.category,
+        suggestedCategory: d.suggestedCategory,
       })),
     }
   })
@@ -62,11 +84,10 @@ export const decorateDocs = ({
   if (versionedCategoryName) {
     const categoryData = decoratedDocTypes.find(type => type.name === versionedCategoryName && type.versioned)
     if (categoryData && categoryData.uploaded.length) {
-      const { label, name, type, standardFileName } = categoryData
+      const { label, type, standardFileName } = categoryData
       const { version, url, documentId, category, createdDateTime, fileName } = categoryData.uploaded[0]
       versionedCategory = {
         label,
-        name,
         standardFileName,
         fileName,
         type,
@@ -90,21 +111,21 @@ export const decorateDocs = ({
           RecallDocument.category.LETTER_TO_PRISON,
           RecallDocument.category.DOSSIER,
           RecallDocument.category.REASONS_FOR_RECALL,
-        ].includes(curr.name)
+        ].includes(curr.category)
       ) {
-        acc.documentsGenerated[curr.name] = {
+        acc.documentsGenerated[curr.category] = {
           ...curr,
           fileName: getGeneratedDocFileName({
             firstName,
             lastName,
             bookingNumber,
-            docCategory: curr.name,
+            docCategory: curr.category,
           }),
           url: getGeneratedDocUrlPath({
             recallId,
             nomsNumber,
             documentId: curr.documentId,
-            docCategory: curr.name,
+            docCategory: curr.category,
           }),
         }
       }
@@ -113,11 +134,11 @@ export const decorateDocs = ({
           RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
           RecallDocument.category.RECALL_REQUEST_EMAIL,
           RecallDocument.category.DOSSIER_EMAIL,
-        ].includes(curr.name)
+        ].includes(curr.category)
       ) {
-        acc.emailsUploaded[curr.name] = curr
+        acc.emailsUploaded[curr.category] = curr
       }
-      if (curr.name === RecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
+      if (curr.category === RecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
         acc.missingDocumentsRecord = {
           ...(missingDocumentsRecords ? missingDocumentsRecords[0] : {}),
           ...curr,
@@ -130,10 +151,10 @@ export const decorateDocs = ({
       missingDocumentsRecord: undefined,
       documentCategories: decoratedDocTypes,
       requiredDocsMissing: requiredDocsList().filter(
-        requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
+        requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.category === requiredDocCategory.name)
       ),
       missingNotRequiredDocs: missingNotRequiredDocsList().filter(
-        requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.name === requiredDocCategory.name)
+        requiredDocCategory => !decoratedUploadedDocs.find(doc => doc.category === requiredDocCategory.name)
       ),
       versionedCategory,
       documentsGenerated: {},

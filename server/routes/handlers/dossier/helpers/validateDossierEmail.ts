@@ -1,7 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
-import { allowedEmailFileExtensions } from '../../helpers/allowedUploadExtensions'
+import { allowedEmailFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'

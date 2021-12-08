@@ -1,6 +1,6 @@
-import { makeErrorObject } from './index'
-import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../@types'
-import { errorMsgEmailUpload, errorMsgProvideDetail } from './errorMessages'
+import { makeErrorObject } from '../../../helpers'
+import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../../@types'
+import { errorMsgEmailUpload, errorMsgProvideDetail } from '../../../helpers/errorMessages'
 
 export const validateMissingDocuments = ({
   requestBody,

@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
-import { addRecallDocument, updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../../logger'
-import { uploadStorageField } from './uploadStorage'
+import { addRecallDocument, updateRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../../../../logger'
+import { uploadStorageField } from './helpers/uploadStorage'
 
-import { AddDocumentRequest } from '../../../@types/manage-recalls-api/models/AddDocumentRequest'
-import { ReqEmailUploadValidatorFn } from '../../../@types'
-import { makeErrorObject } from './index'
-import { allowedEmailFileExtensions } from './allowedUploadExtensions'
-import { RecallResponse } from '../../../@types/manage-recalls-api'
-import { errorMsgEmailUpload } from './errorMessages'
+import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { ReqEmailUploadValidatorFn } from '../../../../@types'
+import { makeErrorObject } from '../../helpers'
+import { allowedEmailFileExtensions } from './helpers/allowedUploadExtensions'
+import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
+import { errorMsgEmailUpload } from '../../helpers/errorMessages'
 
 interface Args {
   emailFieldName: string
@@ -18,7 +18,7 @@ interface Args {
   unassignUserFromRecall?: (recallId: string, userId: string, token: string) => Promise<RecallResponse>
 }
 
-export const emailUploadForm =
+export const uploadEmailFormHandler =
   ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix, unassignUserFromRecall }: Args) =>
   async (req: Request, res: Response): Promise<void> => {
     const processUpload = uploadStorageField(emailFieldName)

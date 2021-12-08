@@ -8,8 +8,8 @@
     <dl class="govuk-summary-list">
         {% for document in recall.documentsUploaded %}
             <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    {{ document.label }}
+                <dt class=" govuk-summary-list__key" data-qa='uploadedDocument-{{ document.category }}-label'>
+                    {% if document.category === 'UNCATEGORISED' %}Uncategorised{% else %}{{ document.label }}{% endif %}
                 </dt>
                 <dd class=" govuk-summary-list__value">
                     {% include '../partials/uploadedDocumentLink.njk' %}

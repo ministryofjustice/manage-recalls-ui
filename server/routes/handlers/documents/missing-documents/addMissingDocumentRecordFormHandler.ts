@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
-import { addMissingDocumentRecord } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../../logger'
-import { uploadStorageField } from './uploadStorage'
-import { validateMissingDocuments } from './validateMissingDocuments'
-import { makeErrorObject } from './index'
-import { allowedEmailFileExtensions } from './allowedUploadExtensions'
-import { errorMsgEmailUpload } from './errorMessages'
-import { RecallDocument } from '../../../@types/manage-recalls-api'
+import { addMissingDocumentRecord } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import logger from '../../../../../logger'
+import { uploadStorageField } from '../upload/helpers/uploadStorage'
+import { validateMissingDocuments } from './validations/validateMissingDocuments'
+import { makeErrorObject } from '../../helpers'
+import { allowedEmailFileExtensions } from '../upload/helpers/allowedUploadExtensions'
+import { errorMsgEmailUpload } from '../../helpers/errorMessages'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 
-export const addMissingDocumentRecordForm = async (req: Request, res: Response): Promise<void> => {
+export const addMissingDocumentRecordFormHandler = async (req: Request, res: Response): Promise<void> => {
   const emailFieldName = 'missingDocumentsEmailFileName'
   const processUpload = uploadStorageField(emailFieldName)
   const { recallId } = req.params

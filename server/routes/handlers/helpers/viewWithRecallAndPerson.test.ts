@@ -4,9 +4,7 @@ import { viewWithRecallAndPerson } from './viewWithRecallAndPerson'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { searchByNomsNumber, getRecall, getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
-import * as decorateDocsExports from './documents/decorateDocs'
-import { findDocCategory } from './documents'
-import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import * as decorateDocsExports from '../documents/download/helpers/decorateDocs'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
@@ -71,36 +69,49 @@ describe('viewWithRecallAndPerson', () => {
     await viewWithRecallAndPerson('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.documentsUploaded).toEqual([
       {
-        ...findDocCategory(RecallDocument.category.PART_A_RECALL_REPORT),
-        category: RecallDocument.category.PART_A_RECALL_REPORT,
+        category: 'PART_A_RECALL_REPORT',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-        createdDateTime: '2020-12-05T18:33:57.000Z',
         fileName: 'Bobby Badger Part A.pdf',
+        label: 'Part A recall report',
+        labelLowerCase: 'part A recall report',
+        standardFileName: 'Part A.pdf',
+        suggestedCategory: 'PART_A_RECALL_REPORT',
+        type: 'document',
+        url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
       },
       {
-        ...findDocCategory(RecallDocument.category.LICENCE),
         category: 'LICENCE',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        createdDateTime: '2020-12-05T18:33:57.000Z',
         fileName: 'Bobby Badger licence.pdf',
+        label: 'Licence',
+        standardFileName: 'Licence.pdf',
+        suggestedCategory: 'LICENCE',
+        type: 'document',
+        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
       },
       {
-        ...findDocCategory(RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
         category: 'PREVIOUS_CONVICTIONS_SHEET',
-        documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-        url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        documentId: '1234-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger pre cons.pdf',
+        label: 'Previous convictions sheet',
+        standardFileName: 'Pre Cons.pdf',
+        suggestedCategory: 'PREVIOUS_CONVICTIONS_SHEET',
+        type: 'document',
+        url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
       },
       {
-        ...findDocCategory(RecallDocument.category.PRE_SENTENCING_REPORT),
-        documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
         category: 'PRE_SENTENCING_REPORT',
-        url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger presentencing.pdf',
+        label: 'Pre-sentencing report',
+        standardFileName: 'PSR.pdf',
+        suggestedCategory: 'PRE_SENTENCING_REPORT',
+        type: 'document',
+        url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
       },
     ])
     expect(res.render).toHaveBeenCalledWith('pages/recallIssuesNeeds')

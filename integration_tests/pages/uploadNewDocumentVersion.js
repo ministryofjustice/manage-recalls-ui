@@ -6,7 +6,7 @@ const uploadDocumentVersionPage = ({ nomsNumber, recallId, documentCategoryLabel
       ? `/persons/${nomsNumber}/recalls/${recallId}/upload-document-version?versionedCategoryName=${documentCategoryName}`
       : null,
     uploadSingleFile: file => {
-      cy.get(`[name="documents"]`).attachFile(file)
+      cy.get(`[name="document"]`).attachFile(file)
     },
   })
 

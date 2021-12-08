@@ -1,8 +1,8 @@
 import * as docExports from './index'
-import { UrlInfo } from '../../../../@types'
-import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { getGeneratedDocFileName, getGeneratedDocUrlPath } from './index'
+import { UrlInfo } from '../../../../../@types'
+import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
+import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
+import { getGeneratedDocFileName, getGeneratedDocUrlPath } from '../../download/helpers'
 
 const { enableDeleteDocuments, makeMetaDataForFile } = docExports
 
@@ -29,7 +29,7 @@ describe('enableDeleteDocuments', () => {
 })
 
 describe('makeMetaDataForFile', () => {
-  it('uses a forced category if supplied', () => {
+  it('uses the supplied category', () => {
     const result = makeMetaDataForFile(
       {
         originalname: 'test.pdf',
@@ -39,15 +39,6 @@ describe('makeMetaDataForFile', () => {
       RecallDocument.category.LICENCE
     )
     expect(result.category).toEqual(RecallDocument.category.LICENCE)
-  })
-
-  it('autocategorises if a forced category is not supplied', () => {
-    const result = makeMetaDataForFile({
-      originalname: 'Part A.pdf',
-      mimetype: 'application/pdf',
-      buffer: Buffer.from('def', 'base64'),
-    } as Express.Multer.File)
-    expect(result.category).toEqual('PART_A_RECALL_REPORT')
   })
 })
 
