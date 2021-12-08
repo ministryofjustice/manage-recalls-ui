@@ -49,7 +49,7 @@ export const viewWithRecallAndPerson =
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
     }
     if (requiresUser(viewName)) {
-      const userNames = await getUserNames(res.locals.recall, res.locals.user.token)
+      const userNames = await getUserNames(res.locals.recall)
       res.locals.recall = { ...res.locals.recall, ...userNames }
     }
     if (personResult.value) {

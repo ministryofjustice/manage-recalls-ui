@@ -109,18 +109,7 @@ describe('viewWithRecallAndPerson', () => {
   it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', done => {
     ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    ;(getUserDetails as jest.Mock).mockImplementation(userId => {
-      if (userId === assessedByUserId) {
-        return Promise.resolve(assessedByUserDetails)
-      }
-      if (userId === bookedByUserId) {
-        return Promise.resolve(bookedByUserDetails)
-      }
-      if (userId === dossierCreatedByUserId) {
-        return Promise.resolve(dossierCreatedByUserDetails)
-      }
-      return null
-    })
+
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.render = view => {
@@ -131,19 +120,6 @@ describe('viewWithRecallAndPerson', () => {
       done()
     }
     viewWithRecallAndPerson('assessRecall')(req, res)
-  })
-
-  it('should add user ids to res.locals if the user details can not be found ', async () => {
-    ;(searchByNomsNumber as jest.Mock).mockResolvedValue(person)
-    ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    ;(getUserDetails as jest.Mock).mockRejectedValue(new Error('timeout'))
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    await viewWithRecallAndPerson('assessRecall')(req, res)
-    expect(res.locals.recall.assessedByUserName).toEqual(assessedByUserId)
-    expect(res.locals.recall.bookedByUserName).toEqual(bookedByUserId)
-    expect(res.locals.recall.dossierCreatedByUserName).toEqual(dossierCreatedByUserId)
-    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
   })
 
   it('should make reference data available to render', async () => {

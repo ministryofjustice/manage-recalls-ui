@@ -1,15 +1,4 @@
-import { getUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { RecallResponse } from '../../../@types/manage-recalls-api'
-
-const getUserName = async (userId: string, token: string): Promise<string> => {
-  try {
-    const { firstName, lastName } = await getUserDetails(userId, token)
-    return `${firstName} ${lastName}`
-  } catch (err) {
-    // What do we do if getUserDetails fails?
-    return userId
-  }
-}
 
 interface UserNames {
   assessedByUserName?: string
@@ -17,22 +6,11 @@ interface UserNames {
   dossierCreatedByUserName?: string
 }
 
-export const getUserNames = async (recall: RecallResponse, token: string): Promise<UserNames> => {
-  const { assessedByUserId, bookedByUserId, dossierCreatedByUserId } = recall
-  const [assessedByResult, bookedByResult, dossierCreatedByResult] = await Promise.allSettled([
-    assessedByUserId ? getUserName(assessedByUserId, token) : undefined,
-    bookedByUserId ? getUserName(bookedByUserId, token) : undefined,
-    dossierCreatedByUserId ? getUserName(dossierCreatedByUserId, token) : undefined,
-  ])
+export const getUserNames = async (recall: RecallResponse): Promise<UserNames> => {
+  const { assessedByUserName, bookedByUserName, dossierCreatedByUserName } = recall
   const result = {} as UserNames
-  if (assessedByResult && assessedByResult.status === 'fulfilled') {
-    result.assessedByUserName = assessedByResult.value
-  }
-  if (bookedByResult && bookedByResult.status === 'fulfilled') {
-    result.bookedByUserName = bookedByResult.value
-  }
-  if (dossierCreatedByResult && dossierCreatedByResult.status === 'fulfilled') {
-    result.dossierCreatedByUserName = dossierCreatedByResult.value
-  }
+  result.assessedByUserName = assessedByUserName || undefined
+  result.bookedByUserName = bookedByUserName || undefined
+  result.dossierCreatedByUserName = dossierCreatedByUserName || undefined
   return result
 }
