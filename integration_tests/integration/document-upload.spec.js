@@ -410,7 +410,7 @@ context('Document upload', () => {
     })
   })
 
-  it('User can view all uploaded documents on the recall information page', () => {
+  it('all uploaded documents are listed on the view recall page, with change links', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -426,6 +426,7 @@ context('Document upload', () => {
           {
             category: 'PREVIOUS_CONVICTIONS_SHEET',
             documentId: '789',
+            version: 1,
           },
           {
             category: 'OTHER',
@@ -436,11 +437,15 @@ context('Document upload', () => {
       },
     })
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
-    // change link for an uploaded document goes to the 'add new document version' page
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
       textToFind: 'Part A.pdf',
     })
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
+      textToFind: 'version 2',
+    })
+    // change link for an uploaded document goes to the 'add new document version' page
     recallInformation.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
       href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
@@ -449,11 +454,76 @@ context('Document upload', () => {
       qaAttr: 'uploadedDocument-OTHER',
       textToFind: 'record.pdf',
     })
+    // Other documents should not have change links
+    recallInformation.assertElementNotPresent({
+      qaAttr: 'uploadedDocument-OTHER-Change',
+    })
     // missing documents
     recallInformation.assertElementHasText({
       qaAttr: 'required-LICENCE',
       textToFind: 'Missing: needed to create dossier',
     })
     recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
+  })
+
+  it('from the check your answers page, for an incomplete booking, Change links for uploaded docs go to the upload page', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'BEING_BOOKED_ON',
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId: '123',
+            version: 1,
+          },
+        ],
+      },
+    })
+    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId, personName })
+    // change link for an uploaded document goes to the 'upload documents' page
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
+      textToFind: 'Part A.pdf',
+    })
+    checkAnswers.assertLinkHref({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
+      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=documents',
+    })
+  })
+
+  it('from the check your answers page, for an incomplete booking, an uncategorised document is listed with a change link', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'BEING_BOOKED_ON',
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            documentId: '123',
+            version: 1,
+            fileName: 'report.pdf',
+          },
+        ],
+      },
+    })
+    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId, personName })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-UNCATEGORISED-label',
+      textToFind: 'Uncategorised',
+    })
+    checkAnswers.assertElementHasText({
+      qaAttr: 'uploadedDocument-UNCATEGORISED',
+      textToFind: 'report.pdf',
+    })
+    // change link for an uploaded document goes to the 'upload documents' page
+    checkAnswers.assertLinkHref({
+      qaAttr: 'uploadedDocument-UNCATEGORISED-Change',
+      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=documents',
+    })
   })
 })
