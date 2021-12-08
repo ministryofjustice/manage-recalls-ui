@@ -390,6 +390,7 @@ workflows:
           context:
             - veracode-credentials
             - hmpps-common-vars
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
 
   security-weekly:
     triggers:
@@ -404,6 +405,7 @@ workflows:
           context:
             - veracode-credentials
             - hmpps-common-vars
+          slack_channel: << pipeline.parameters.alerts-slack-channel >>
 
   check_outdated:
     triggers:
