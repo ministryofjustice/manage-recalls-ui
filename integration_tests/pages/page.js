@@ -121,12 +121,14 @@ module.exports = (name, pageObject = {}) => {
   const assertApiRequestBody = ({ url, method, bodyValues }) => {
     cy.task('findApiRequest', { url, method }).then(req => {
       if (req) {
-        const requestBody = JSON.parse(req.request.body)
-        Object.entries(bodyValues).forEach(([key, value]) => {
-          expect(requestBody[key]).to.equal(value)
-        })
+        if (bodyValues) {
+          const requestBody = JSON.parse(req.request.body)
+          Object.entries(bodyValues).forEach(([key, value]) => {
+            expect(requestBody[key]).to.equal(value)
+          })
+        }
       } else {
-        cy.log(`assertApiRequestBody - request not found for url: ${url} and method: ${method}`)
+        throw new Error(`assertApiRequestBody - request not found for url: ${url} and method: ${method}`)
       }
     })
   }

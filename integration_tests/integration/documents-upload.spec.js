@@ -1,6 +1,5 @@
-import { getEmptyRecallResponse, getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
@@ -257,11 +256,15 @@ context('Document upload', () => {
     checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickElement({ qaAttr: `delete-${documentId}` })
+    uploadDocuments.assertApiRequestBody({
+      url: `/recalls/${recallId}/documents/${documentId}`,
+      method: 'DELETE',
+    })
     uploadDocuments.clickContinue()
     recallMissingDocumentsPage.verifyOnPage()
   })
 
-  it("user can't go back to delete documents from the view recall page", () => {
+  it("user can't go back to delete documents from the view recall page, for an incomplete booking", () => {
     const documentId = '123'
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -281,133 +284,6 @@ context('Document upload', () => {
     recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
-  })
-
-  it('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
-    const documentId = '123'
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.BEING_BOOKED_ON,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId,
-          },
-        ],
-      },
-    })
-    cy.task('expectDeleteRecallDocument')
-    cy.task('expectSetDocumentCategory')
-    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
-    checkAnswers.clickLink({ label: 'Add documents' })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.assertListValues({
-      qaAttrList: 'missingDocsList',
-      valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys Risk Assessment'],
-    })
-  })
-
-  it("an error is shown if the missing documents email and detail aren't submitted", () => {
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    recallMissingDocuments.clickContinue()
-    recallMissingDocuments.assertErrorMessage({
-      fieldName: 'missingDocumentsEmailFileName',
-      summaryError: 'Select an email',
-    })
-    recallMissingDocuments.assertErrorMessage({
-      fieldName: 'missingDocumentsDetail',
-      summaryError: 'Provide more detail',
-    })
-  })
-
-  it('user can go back from the view recall info page to add a new document version', () => {
-    const documentId = '123'
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId,
-            version: 2,
-            createdDateTime: '2021-11-21T12:34:30.000Z',
-          },
-        ],
-      },
-    })
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
-    let recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
-      documentCategoryLabel: 'part A recall report',
-    })
-    uploadDocumentVersion.assertLinkHref({
-      qaAttr: 'previousVersionFileName',
-      href: '/persons/A1234AA/recalls/123/documents/123',
-    })
-    uploadDocumentVersion.assertElementHasText({
-      qaAttr: 'previousVersionUploadedDateTime',
-      textToFind: 'Uploaded on 21 November 2021 at 12:34',
-    })
-    uploadDocumentVersion.uploadSingleFile({
-      filePath: '../uploads/test.pdf',
-      mimeType: 'application/pdf',
-    })
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId: '34589',
-            version: 2,
-          },
-        ],
-      },
-    })
-    uploadDocumentVersion.clickContinue()
-    recallInformation = recallInformationPage.verifyOnPage({ personName })
-    recallInformation.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
-      textToFind: 'version 2',
-    })
-  })
-
-  it("an error is shown if a new document version isn't uploaded", () => {
-    const documentId = '123'
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId,
-            version: 2,
-            createdDateTime: '2021-11-21T12:34:30.000Z',
-          },
-        ],
-      },
-    })
-    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
-      nomsNumber,
-      recallId,
-      documentCategoryLabel: 'part A recall report',
-      documentCategoryName: 'PART_A_RECALL_REPORT',
-    })
-    uploadDocumentVersion.clickContinue()
-    uploadDocumentVersion.assertErrorMessage({
-      fieldName: 'document',
-      summaryError: 'Select a file',
-    })
   })
 
   it('all uploaded documents are listed on the view recall page, with change links', () => {
@@ -458,12 +334,6 @@ context('Document upload', () => {
     recallInformation.assertElementNotPresent({
       qaAttr: 'uploadedDocument-OTHER-Change',
     })
-    // missing documents
-    recallInformation.assertElementHasText({
-      qaAttr: 'required-LICENCE',
-      textToFind: 'Missing: needed to create dossier',
-    })
-    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
   })
 
   it('from the check your answers page, for an incomplete booking, Change links for uploaded docs go to the upload page', () => {
@@ -505,7 +375,6 @@ context('Document upload', () => {
           {
             category: 'UNCATEGORISED',
             documentId: '123',
-            version: 1,
             fileName: 'report.pdf',
           },
         ],
@@ -524,6 +393,37 @@ context('Document upload', () => {
     checkAnswers.assertLinkHref({
       qaAttr: 'uploadedDocument-UNCATEGORISED-Change',
       href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=documents',
+    })
+  })
+
+  it("from the view recall page, for a complete booking, an uncategorised document doesn't have a change link", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'BOOKED_ON',
+        documents: [
+          {
+            category: 'UNCATEGORISED',
+            documentId: '123',
+            fileName: 'report.pdf',
+          },
+        ],
+      },
+    })
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-UNCATEGORISED-label',
+      textToFind: 'Uncategorised',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-UNCATEGORISED',
+      textToFind: 'report.pdf',
+    })
+    // no change link for an uncategorised document
+    recallInformation.assertElementNotPresent({
+      qaAttr: 'uploadedDocument-UNCATEGORISED-Change',
     })
   })
 })
