@@ -3,7 +3,7 @@
 /* eslint-disable */
 
 export type AddUserDetailsRequest = {
-    caseworkerBand?: AddUserDetailsRequest.caseworkerBand;
+    caseworkerBand: AddUserDetailsRequest.caseworkerBand;
     email: string;
     firstName: string;
     lastName: string;
