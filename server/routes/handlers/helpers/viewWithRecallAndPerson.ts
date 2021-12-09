@@ -4,15 +4,11 @@ import { formatName, renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
-import { getUserNames } from './getUserNames'
 import { dossierDueDateString, recallAssessmentDueText } from './dates/format'
 import { enableDeleteDocuments } from '../documents/upload/helpers'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
 import { getPerson } from './personCache'
 import logger from '../../../../logger'
-
-const requiresUser = (viewName: ViewName) =>
-  ['assessRecall', 'dossierRecallInformation', 'viewFullRecall'].includes(viewName)
 
 const requiresPerson = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall', 'recallCheckAnswers'].includes(viewName)
@@ -47,10 +43,6 @@ export const viewWithRecallAndPerson =
       ...recall,
       ...decoratedDocs,
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
-    }
-    if (requiresUser(viewName)) {
-      const userNames = await getUserNames(res.locals.recall)
-      res.locals.recall = { ...res.locals.recall, ...userNames }
     }
     if (personResult.value) {
       const { croNumber, dateOfBirth } = personResult.value

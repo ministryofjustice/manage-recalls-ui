@@ -12,10 +12,12 @@ export type RecallResponse = {
     agreeWithRecall?: RecallResponse.agreeWithRecall;
     agreeWithRecallDetail?: string;
     assessedByUserId?: string;
+    assessedByUserName?: string;
     assignee?: string;
     assigneeUserName?: string;
     authorisingAssistantChiefOfficer?: string;
     bookedByUserId?: string;
+    bookedByUserName?: string;
     bookingNumber?: string;
     conditionalReleaseDate?: string;
     contraband?: boolean;
@@ -27,6 +29,7 @@ export type RecallResponse = {
     differentNomsNumberDetail?: string;
     documents: Array<RecallDocument>;
     dossierCreatedByUserId?: string;
+    dossierCreatedByUserName?: string;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
     firstName: string;
@@ -64,9 +67,6 @@ export type RecallResponse = {
     status: RecallResponse.status;
     vulnerabilityDiversity?: boolean;
     vulnerabilityDiversityDetail?: string;
-    assessedByUserName?: string;
-    bookedByUserName?: string;
-    dossierCreatedByUserName?: string;
 }
 
 export namespace RecallResponse {
