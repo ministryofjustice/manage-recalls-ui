@@ -28,7 +28,10 @@
             {% if recall.versionedCategory.documentId %}
             <div class="govuk-inset-text">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Current {{ formatDocLabel(recall.versionedCategory.category) }}</h2>
-                <p><a href="{{ recall.versionedCategory.url }}" class="govuk-link" target="_blank" data-qa='previousVersionFileName'>{{ recall.versionedCategory.standardFileName }}</a></p>
+                <p>
+                    <a href="{{ recall.versionedCategory.url }}" class="govuk-link" target="_blank" data-qa='previousVersionFileName'>{{ recall.versionedCategory.standardFileName }}</a>
+                    (<span data-qa='previousVersionNumber'>version {{ recall.versionedCategory.version }}</span>)
+                </p>
                 <p class="govuk-body-s" data-qa='previousVersionUploadedDateTime'>Uploaded on {{ recall.versionedCategory.createdDateTime | dateTime }}</p>
             </div>
             {% endif %}
@@ -36,10 +39,10 @@
                 <form novalidate action="{{ makeUrl('upload-document-version', urlInfo, csrfToken) }}" method="post"
                       enctype="multipart/form-data">
                         <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload new document</h2>
-                        <input type='hidden' name='forceCategory' value='{{ recall.versionedCategory.category }}'>
+                        <input type='hidden' name='categoryName' value='{{ recall.versionedCategory.category }}'>
                         {{ govukFileUpload({
-                            id: "documents",
-                            name: "documents",
+                            id: "document",
+                            name: "document",
                             label: {
                                 text: "Upload new document",
                                 classes: 'govuk-visually-hidden'
@@ -47,20 +50,8 @@
                             attributes: {
                                 accept: allowedDocumentFileExtensionList()
                             },
-                            errorMessage: errorMessage(errors.documents)
+                            errorMessage: errorMessage(errors.document)
                         }) }}
-{#                        <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>#}
-{#                        {{ govukTextarea({#}
-{#                            name: "missingDocumentsDetail",#}
-{#                            id: "missingDocumentsDetail",#}
-{#                            label: {#}
-{#                                text: "Provide more detail",#}
-{#                                classes: "govuk-label--m"#}
-{#                            },#}
-{#                            value: formValues.missingDocumentsDetail,#}
-{#                            errorMessage: errorMessage(errors.missingDocumentsDetail)#}
-{#                        }) }}#}
-{#                    </div>#}
                     <div class="govuk-!-margin-top-4">
                         <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
                     </div>

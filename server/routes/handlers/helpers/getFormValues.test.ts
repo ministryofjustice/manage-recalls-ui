@@ -3,7 +3,7 @@ import { FormError, ObjectMap, DecoratedRecall } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import updateRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
-import { decorateDocs } from './documents/decorateDocs'
+import { decorateDocs } from '../documents/download/helpers/decorateDocs'
 import { MissingDocumentsRecord } from '../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 
 describe('getFormValues', () => {

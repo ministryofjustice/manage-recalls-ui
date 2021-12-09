@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { getProperty } from '../index'
-import { RecallResponse } from '../../../../@types/manage-recalls-api'
+import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 
 export const sortListByDateField = <T>({
   list,

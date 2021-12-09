@@ -1,5 +1,5 @@
 import { ValidationError } from '../../../@types'
-import { allowedEmailFileExtensions } from './allowedUploadExtensions'
+import { allowedEmailFileExtensions } from '../documents/upload/helpers/allowedUploadExtensions'
 import { listToString } from './index'
 
 export const errorMsgUserActionDateTime = (
@@ -73,3 +73,10 @@ export const errorMsgEmailUpload = {
 }
 
 export const errorMsgProvideDetail = 'Provide more detail'
+
+export const errorMsgDocumentUpload = {
+  noFile: 'Select a file',
+  saveError: 'An error occurred saving your changes',
+  containsVirus: (fileName: string) => `${fileName} contains a virus`,
+  uploadFailed: (fileName: string) => `${fileName} could not be uploaded - try again`,
+}

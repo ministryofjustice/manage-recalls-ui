@@ -11,20 +11,21 @@
       </dt>
       <dd class="govuk-summary-list__value">
         <div class="flex flex--col">
-          {% if category.name != 'UNCATEGORISED' and file.version > 1 %}
-            <span data-qa='category-label-{{ category.name }}'>{{ category.label }}</span>
+          {% if file.category == 'UNCATEGORISED' %}
+              <input type='hidden' name='fileName-{{ file.documentId }}' value='{{ file.standardFileName if file.standardFileName else file.fileName }}'>
+              <label class="govuk-label govuk-visually-hidden" for="{{ file.documentId }}">
+                  Select the document category
+              </label>
+              <select class="govuk-select document-upload-select-type" id='{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ file.suggestedCategory }}'>
+                  {% for docCategory in recall.documentCategories %}
+                      <option value="{{ docCategory.name }}" {% if (not errors[file.documentId]) and file.suggestedCategory == docCategory.name %}selected{% endif %}>
+                          {{ docCategory.label }}
+                      </option>
+                  {% endfor %}
+              </select>
           {% else %}
-            <input type='hidden' name='fileName-{{ file.documentId }}' value='{{ file.standardFileName if file.standardFileName else file.fileName }}'>
-            <label class="govuk-label govuk-visually-hidden" for="{{ file.documentId }}">
-              Select the document category
-            </label>
-            <select class="govuk-select document-upload-select-type" id='{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ category.name }}'>
-              {% for docCategory in recall.documentCategories %}
-              <option value="{{ docCategory.name }}" {% if category.name == docCategory.name %}selected{% endif %}>
-                {{ docCategory.label }}
-              </option>
-              {% endfor %}
-            </select>
+              <span data-qa='category-label-{{ category.name }}'>{{ category.label }}</span>
+              <input type='hidden' name="category-existing-{{ file.documentId }}" value="{{ file.category }}" />
           {% endif %}
         </div>
       </dd>

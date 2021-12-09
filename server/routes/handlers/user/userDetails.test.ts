@@ -1,11 +1,11 @@
 // @ts-nocheck
 import { mockGetRequest, mockPostRequest } from '../../testutils/mockRequestUtils'
 import { getUser, postUser } from './userDetails'
-import { uploadStorageField } from '../helpers/uploadStorage'
+import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
 import { addUserDetails, getCurrentUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
-jest.mock('../helpers/uploadStorage')
+jest.mock('../documents/upload/helpers/uploadStorage')
 
 const userToken = 'token-1'
 

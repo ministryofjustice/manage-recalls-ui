@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { getCurrentUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { uploadStorageField } from '../helpers/uploadStorage'
+import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
 import { FormError, ObjectMap } from '../../../@types'
 import { validateUserDetails } from './helpers/validateUserDetails'
 import { isDefined } from '../helpers'
