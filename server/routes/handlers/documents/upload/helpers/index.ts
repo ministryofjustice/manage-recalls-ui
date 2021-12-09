@@ -1,16 +1,11 @@
-import { NamedFormError, ObjectMap, UrlInfo } from '../../../../../@types'
+import { NamedFormError, UrlInfo } from '../../../../../@types'
 import { documentCategories } from '../../documentCategories'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { AddDocumentResponse } from '../../../../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
 import { makeErrorObject } from '../../../helpers'
-import {
-  CategorisedFileMetadata,
-  DocumentCategoryMetadata,
-  UploadedFileMetadata,
-} from '../../../../../@types/documents'
-import { addRecallDocument, setDocumentCategory } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import logger from '../../../../../../logger'
+import { DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../../@types/documents'
+import { addRecallDocument } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 
 export const makeMetaDataForFile = (
@@ -34,19 +29,6 @@ export const getMetadataForUploadedFiles = (
   categoryName: RecallDocument.category
 ): UploadedFileMetadata[] => {
   return files ? files.map(file => makeMetaDataForFile(file, categoryName)) : []
-}
-
-export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {
-  logger.info(`getMetadataForCategorisedFiles: ${JSON.stringify(requestBody)}`)
-  const categoryKeys = Object.keys(requestBody).filter(key => key.startsWith('category-'))
-  return categoryKeys.map(key => {
-    const documentId = key.replace('category-', '')
-    return {
-      documentId,
-      category: requestBody[key] as RecallDocument.category,
-      fileName: requestBody[`fileName-${documentId}`], // TODO - log if not found?
-    }
-  })
 }
 
 export const uploadedDocCategoriesList = (): DocumentCategoryMetadata[] =>
@@ -90,22 +72,6 @@ export const listFailedUploads = (
     })
     .filter(Boolean)
 
-export const listFailedCategorySaves = (
-  fileData: CategorisedFileMetadata[],
-  responses: PromiseSettledResult<AddDocumentResponse>[]
-): NamedFormError[] | null =>
-  responses
-    .map((result, idx) => {
-      if (result.status === 'rejected') {
-        return makeErrorObject({
-          id: fileData[idx].documentId,
-          text: `${fileData[idx].fileName} could not be saved - try again`,
-        })
-      }
-      return null
-    })
-    .filter(Boolean)
-
 export const saveUploadedFiles = async ({
   uploadsToSave,
   recallId,
@@ -123,27 +89,6 @@ export const saveUploadedFiles = async ({
       })
     )
     return listFailedUploads(uploadsToSave, responses)
-  }
-  return []
-}
-
-export const saveCategories = async ({
-  recallId,
-  categorisedToSave,
-  token,
-}: {
-  recallId: string
-  categorisedToSave: CategorisedFileMetadata[]
-  token: string
-}) => {
-  if (categorisedToSave?.length) {
-    const responses = await Promise.allSettled(
-      categorisedToSave.map(file => {
-        const { documentId, category } = file
-        return setDocumentCategory(recallId, documentId, category, token)
-      })
-    )
-    return listFailedCategorySaves(categorisedToSave, responses)
   }
   return []
 }

@@ -42,6 +42,7 @@ export interface CategorisedFileMetadata {
   documentId: string
   category: RecallDocument.category
   fileName: string
+  isExistingUpload: boolean
 }
 
 export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecord {
