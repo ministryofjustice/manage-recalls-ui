@@ -25,6 +25,7 @@
               </select>
           {% else %}
               <span data-qa='category-label-{{ category.name }}'>{{ category.label }}</span>
+              <input type='hidden' name="category-existing-{{ file.documentId }}" value="{{ file.category }}" />
           {% endif %}
         </div>
       </dd>

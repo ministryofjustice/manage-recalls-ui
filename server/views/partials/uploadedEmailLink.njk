@@ -1,5 +1,5 @@
 {% if emailField %}
-<input type='hidden' name='{{ emailField.name}}' value='existingUpload'>
+<input type='hidden' name='{{ emailField.category}}' value='existingUpload'>
 <div class='govuk-body govuk-!-margin-bottom-4'>
   <a href='{{ emailField.url }}' class='govuk-link' data-qa='uploadedDocument-{{ emailField.category}}' download>{{ emailField.fileName }}</a>
 </div>

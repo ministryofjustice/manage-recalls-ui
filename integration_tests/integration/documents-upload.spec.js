@@ -206,6 +206,53 @@ context('Document upload', () => {
     })
   })
 
+  it('an error is shown if more than one of a category is uploaded', () => {
+    const documentId1 = '123'
+    const documentId2 = '456'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: documentId1,
+          },
+        ],
+      },
+    })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            documentId: documentId1,
+          },
+          {
+            category: 'UNCATEGORISED',
+            documentId: documentId2,
+            fileName: 'previous_convictions_sheet.pdf',
+          },
+        ],
+      },
+    })
+    uploadDocuments.upload({
+      filePath: '../uploads/previous_convictions_sheet.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.assertElementHasText({
+      qaAttr: `link-${documentId2}`,
+      textToFind: 'previous_convictions_sheet.pdf',
+    })
+    uploadDocuments.clickContinue()
+    uploadDocuments.assertSummaryErrorMessage({
+      fieldName: documentId2,
+      summaryError: 'You can only upload one previous convictions sheet',
+    })
+  })
+
   it('an error is shown for an upload that fails to save to the API', () => {
     cy.task('expectAddRecallDocument', { statusCode: 500 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
