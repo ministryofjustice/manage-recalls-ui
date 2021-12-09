@@ -11,9 +11,6 @@ jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
 const recallId = '123'
-const assessedByUserId = '00000000-0000-0000-0000-000000000000'
-const bookedByUserId = '00000000-1111-0000-0000-000000000000'
-const dossierCreatedByUserId = '00000000-2222-0000-0000-000000000000'
 
 describe('viewWithRecallAndPerson', () => {
   const person = {
