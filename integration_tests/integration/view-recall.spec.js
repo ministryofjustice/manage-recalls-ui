@@ -81,6 +81,9 @@ context('View a recall', () => {
     })
     recallInformation.assertElementHasText({ qaAttr: 'dossierEmailSentDate', textToFind: '8 September 2021' })
     recallInformation.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bobby Badger' })
+    recallInformation.assertElementHasText({ qaAttr: 'bookedByUserName', textToFind: 'Brenda Badger' })
+    recallInformation.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier issued' })
 
     // generated documents
