@@ -5,7 +5,9 @@
 export type GetDocumentResponse = {
     category: GetDocumentResponse.category;
     content: string;
+    createdByUserName: string;
     createdDateTime: string;
+    details?: string;
     documentId: string;
     fileName: string;
     version?: number;

@@ -12,11 +12,15 @@ context('Change history', () => {
       category: 'PART_A_RECALL_REPORT',
       documentId: '123',
       createdDateTime: '2020-04-01T12:00:00.000Z',
+      fileName: 'wesley holt part A.pdf',
+      createdByUserName: 'Arnold Caseworker',
     },
     {
       category: 'PREVIOUS_CONVICTIONS_SHEET',
       documentId: '456',
       createdDateTime: '2020-05-10T14:22:00.000Z',
+      fileName: 'wesley holt pre cons.pdf',
+      createdByUserName: 'Carrie Arnold',
     },
   ]
 
@@ -61,6 +65,11 @@ context('Change history', () => {
       qaAttrCell: 'createdDateTime',
       valuesToCompare: ['1 April 2020 at 13:00', '10 May 2020 at 15:22'],
     })
+    changeHistory.assertTableColumnValues({
+      qaAttrTable: 'uploadedDocuments',
+      qaAttrCell: 'createdByUserName',
+      valuesToCompare: ['Arnold Caseworker', 'Carrie Arnold'],
+    })
     // re-sort the table by file name (descending)
     changeHistory.clickButton({ label: 'Document' })
     changeHistory.assertTableColumnValues({
@@ -75,6 +84,15 @@ context('Change history', () => {
       qaAttrCell: 'createdDateTime',
       valuesToCompare: ['1 April 2020 at 13:00', '10 May 2020 at 15:22'],
     })
+
+    // re-sort the table by user (descending)
+    changeHistory.clickButton({ label: 'User' })
+    changeHistory.clickButton({ label: 'User' })
+    changeHistory.assertTableColumnValues({
+      qaAttrTable: 'uploadedDocuments',
+      qaAttrCell: 'createdByUserName',
+      valuesToCompare: ['Carrie Arnold', 'Arnold Caseworker'],
+    })
   })
 
   it('User can see the document version and download it', () => {
@@ -82,6 +100,7 @@ context('Change history', () => {
       category: 'PART_A_RECALL_REPORT',
       documentId: '123',
       createdDateTime: '2020-04-01T12:00:00.000Z',
+      createdByUserName: 'Arnold Caseworker',
       version: 3,
     }
     cy.task('expectGetRecall', {

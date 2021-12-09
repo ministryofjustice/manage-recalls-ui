@@ -71,6 +71,7 @@ describe('viewWithRecallAndPerson', () => {
       {
         category: 'PART_A_RECALL_REPORT',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
         documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger Part A.pdf',
         label: 'Part A recall report',
@@ -83,6 +84,7 @@ describe('viewWithRecallAndPerson', () => {
       {
         category: 'LICENCE',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
         documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger licence.pdf',
         label: 'Licence',
@@ -94,6 +96,7 @@ describe('viewWithRecallAndPerson', () => {
       {
         category: 'PREVIOUS_CONVICTIONS_SHEET',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
         documentId: '1234-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger pre cons.pdf',
         label: 'Previous convictions sheet',
@@ -105,6 +108,7 @@ describe('viewWithRecallAndPerson', () => {
       {
         category: 'PRE_SENTENCING_REPORT',
         createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
         documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
         fileName: 'Bobby Badger presentencing.pdf',
         label: 'Pre-sentencing report',

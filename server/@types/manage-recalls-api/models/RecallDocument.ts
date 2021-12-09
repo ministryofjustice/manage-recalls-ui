@@ -4,7 +4,9 @@
 
 export type RecallDocument = {
     category: RecallDocument.category;
+    createdByUserName: string;
     createdDateTime: string;
+    details?: string;
     documentId: string;
     fileName: string;
     version?: number;
