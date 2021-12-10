@@ -24,7 +24,7 @@
                 </thead>
                 <tbody class="govuk-table__body">
                 {% for document in sortList(recall.documentsUploaded, 'standardFileName') %}
-                <tr class="govuk-table__row" data-qa='{{ document.documentId }}'>
+                <tr class="govuk-table__row" data-qa='{{ document.category }}'>
                     <td class="govuk-table__cell" data-sort-value='{{ document.standardFileName }}' data-qa='fileName'>
                         {%  include '../partials/uploadedDocumentLink.njk' %}
                     </td>
