@@ -80,12 +80,14 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
   }
 
   DocumentUpload.prototype.onFileChange = function (e) {
-    this.feedbackContainer.removeClass('moj-hidden')
-    this.status.html(this.params.uploadStatusText)
-    this.uploadFiles(e.currentTarget.files)
-    this.fileInput.replaceWith($(e.currentTarget).val('').clone(true))
-    this.setupFileInput()
-    this.fileInput.focus()
+    if (e.currentTarget.files.length) {
+      this.feedbackContainer.removeClass('moj-hidden')
+      this.status.html(this.params.uploadStatusText)
+      this.uploadFiles(e.currentTarget.files)
+      this.fileInput.replaceWith($(e.currentTarget).val('').clone(true))
+      this.setupFileInput()
+      this.fileInput.focus()
+    }
   }
 
   DocumentUpload.prototype.onFileFocus = function (e) {
