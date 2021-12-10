@@ -23,18 +23,6 @@ describe('viewWithRecallAndPerson', () => {
     croNumber: '1234/56A',
     pncNumber: '98/7654Z',
   }
-  const assessedByUserDetails = {
-    firstName: 'Bertie',
-    lastName: 'Badger',
-  }
-  const bookedByUserDetails = {
-    firstName: 'Brenda',
-    lastName: 'Badger',
-  }
-  const dossierCreatedByUserDetails = {
-    firstName: 'Bobby',
-    lastName: 'Badger',
-  }
 
   afterEach(() => {
     jest.clearAllMocks()
