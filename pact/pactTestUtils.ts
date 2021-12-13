@@ -49,3 +49,25 @@ function pactRequestWithBody(description: string, method: string, path: string, 
     },
   }
 }
+
+export function pactGetRequestWithQuery({
+  description,
+  path,
+  query,
+  token,
+}: {
+  description: string
+  path: string
+  query: string
+  token: string
+}) {
+  return {
+    uponReceiving: description,
+    withRequest: {
+      method: 'GET',
+      path,
+      headers: { Authorization: `Bearer ${token}` },
+      query,
+    },
+  }
+}

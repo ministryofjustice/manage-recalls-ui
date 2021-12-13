@@ -20,7 +20,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('change the category of a document', () => {
     test('can successfully change a category', async () => {
       await provider.addInteraction({
-        state: 'a recall and document exist',
+        state: 'a recall and uncategorised document exist',
         ...pactPatchRequest(
           'an update category request',
           `/recalls/${recallId}/documents/${documentId}`,

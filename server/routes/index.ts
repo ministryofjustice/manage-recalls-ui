@@ -39,6 +39,7 @@ import { addMissingDocumentRecordFormHandler } from './handlers/documents/missin
 import { validateLicenceName } from './handlers/book/helpers/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
 import { uploadDocumentVersionFormHandler } from './handlers/documents/upload/uploadDocumentVersionFormHandler'
+import { getDocumentChangeHistory } from './handlers/documents/change-history/getDocumentChangeHistory'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -142,6 +143,11 @@ export default function routes(router: Router): Router {
   get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
 
   // AUDIT / CHANGE HISTORY
+  router.get(
+    `${basePath}/change-history/uploaded-documents`,
+    getDocumentChangeHistory,
+    viewWithRecallAndPerson('uploadedDocumentHistory')
+  )
   get(`${basePath}/change-history`, viewWithRecallAndPerson('changeHistory'))
 
   // DETAILS FOR CURRENT USER
