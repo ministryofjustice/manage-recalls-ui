@@ -3,7 +3,7 @@
 <h2 class="govuk-heading-m">Uploaded documents</h2>
 <dl class="govuk-summary-list govuk-summary-list--auto-widths" id='uploads-list'>
   {% endif %}
-  {% for category in recall.documentCategories %}
+  {% for category in recall.docCategoriesWithUploads %}
     {% for file in category.uploaded %}
     <div class="govuk-summary-list__row document-row" id='{{ file.documentId }}'>
       <dt class=" govuk-summary-list__key">
@@ -17,7 +17,7 @@
                   Select the document category
               </label>
               <select class="govuk-select document-upload-select-type" id='{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ file.suggestedCategory }}'>
-                  {% for docCategory in recall.documentCategories %}
+                  {% for docCategory in recall.docCategoriesWithUploads %}
                       <option value="{{ docCategory.name }}" {% if (not errors[file.documentId]) and file.suggestedCategory == docCategory.name %}selected{% endif %}>
                           {{ docCategory.label }}
                       </option>

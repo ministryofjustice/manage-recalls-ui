@@ -1,7 +1,7 @@
 import { listToString, makeErrorObject } from '../../../helpers'
 import { allowedDocumentFileExtensions } from '../helpers/allowedUploadExtensions'
-import { UploadedFileMetadata } from '../../../../../@types/documents'
-import { AllowedUploadFileType, NamedFormError } from '../../../../../@types'
+import { AllowedUploadFileType, UploadedFileMetadata } from '../../../../../@types/documents'
+import { NamedFormError } from '../../../../../@types'
 
 export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions: AllowedUploadFileType[]) => {
   return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)

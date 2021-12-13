@@ -15,6 +15,7 @@ export interface DocumentCategoryMetadata {
   multiple?: boolean
   versioned?: boolean
   fileNamePatterns?: string[]
+  uploaded?: DecoratedDocument[]
 }
 
 export interface DecoratedDocument extends RecallDocument {
@@ -47,4 +48,32 @@ export interface CategorisedFileMetadata {
 
 export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecord {
   url: string
+}
+
+export interface DocumentDecorations {
+  documentsUploaded: DecoratedDocument[]
+  docCategoriesWithUploads: DocumentCategoryMetadata[]
+  requiredDocsMissing: DocumentCategoryMetadata[]
+  missingNotRequiredDocs: DocumentCategoryMetadata[]
+  missingDocumentsRecord: DecoratedMissingDocumentRecord
+  versionedUpload?: DecoratedDocument
+  versionedGeneratedDoc?: DecoratedDocument
+  emailsUploaded: {
+    RECALL_NOTIFICATION_EMAIL?: DecoratedDocument
+    RECALL_REQUEST_EMAIL?: DecoratedDocument
+    DOSSIER_EMAIL?: DecoratedDocument
+  }
+  documentsGenerated: {
+    RECALL_NOTIFICATION?: DecoratedDocument
+    REVOCATION_ORDER?: DecoratedDocument
+    LETTER_TO_PRISON?: DecoratedDocument
+    DOSSIER?: DecoratedDocument
+    REASONS_FOR_RECALL?: DecoratedDocument
+  }
+}
+
+export interface AllowedUploadFileType {
+  extension: string
+  label: string
+  mimeType?: string
 }
