@@ -101,6 +101,7 @@ export type ViewName =
   | 'dossierConfirmation'
   | 'viewFullRecall'
   | 'changeHistory'
+  | 'uploadedDocumentHistory'
 
 export type ReqValidatorFn = (requestBody: ObjectMap<string>, user?: UserDetails) => ReqValidatorReturn
 export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn

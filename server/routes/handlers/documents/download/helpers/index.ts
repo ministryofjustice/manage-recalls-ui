@@ -59,6 +59,17 @@ export const getGeneratedDocUrlPath = ({
       return undefined
   }
 }
+
+export const getUploadedDocUrlPath = ({
+  recallId,
+  nomsNumber,
+  documentId,
+}: {
+  recallId: string
+  nomsNumber: string
+  documentId?: string
+}) => `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`
+
 export const formatPersonName = ({ firstName = '', lastName = '' }: { firstName?: string; lastName?: string }) =>
   `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
 

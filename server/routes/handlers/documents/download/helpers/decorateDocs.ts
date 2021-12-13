@@ -9,7 +9,7 @@ import {
   uploadedDocCategoriesList,
 } from '../../upload/helpers'
 import { autocategoriseDocFileName } from './autocategorise'
-import { getGeneratedDocFileName, getGeneratedDocUrlPath } from './index'
+import { getGeneratedDocFileName, getGeneratedDocUrlPath, getUploadedDocUrlPath } from './index'
 import { documentCategories } from '../../documentCategories'
 
 export const decorateDocs = ({
@@ -50,7 +50,7 @@ export const decorateDocs = ({
         labelLowerCase: documentCategory.labelLowerCase,
         category: documentCategory.name,
         suggestedCategory,
-        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/${uploadedDoc.documentId}`,
+        url: getUploadedDocUrlPath({ recallId, nomsNumber, documentId: uploadedDoc.documentId }),
       }
     })
     .sort((a, b) => {
