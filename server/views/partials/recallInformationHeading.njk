@@ -6,7 +6,7 @@
     {{govukTag(recallStatusTagProperties(recall.status))}}
     </div>
     <div>
-        <a href="{{ makeUrl('change-history', urlInfo) }}" role='button' class="govuk-button govuk-button--secondary" data-module="govuk-button" data-qa='changeHistoryButton'>
+        <a href="{{ makeUrl('change-history', { basePath: urlInfo.basePath }) }}" role='button' class="govuk-button govuk-button--secondary" data-module="govuk-button" data-qa='changeHistoryButton'>
             View change history
         </a>
     </div>
