@@ -1,5 +1,5 @@
 import { RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
-import { DecoratedDocument, DecoratedMissingDocumentRecord, DocumentCategoryMetadata } from './documents'
+import { DocumentDecorations } from './documents'
 
 export interface FormError {
   text: string
@@ -157,12 +157,6 @@ export interface UrlInfo {
   basePath: string
 }
 
-export interface AllowedUploadFileType {
-  extension: string
-  label: string
-  mimeType?: string
-}
-
 export interface ConfirmationMessage {
   text: string
   type: 'success'
@@ -170,25 +164,4 @@ export interface ConfirmationMessage {
 
 export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
   enableDeleteDocuments: boolean
-}
-
-export interface DocumentDecorations {
-  documentsUploaded: DecoratedDocument[]
-  documentCategories: DocumentCategoryMetadata[]
-  requiredDocsMissing: DocumentCategoryMetadata[]
-  missingNotRequiredDocs: DocumentCategoryMetadata[]
-  missingDocumentsRecord: DecoratedMissingDocumentRecord
-  versionedCategory?: DecoratedDocument
-  emailsUploaded: {
-    RECALL_NOTIFICATION_EMAIL?: DecoratedDocument
-    RECALL_REQUEST_EMAIL?: DecoratedDocument
-    DOSSIER_EMAIL?: DecoratedDocument
-  }
-  documentsGenerated: {
-    RECALL_NOTIFICATION?: DecoratedDocument
-    REVOCATION_ORDER?: DecoratedDocument
-    LETTER_TO_PRISON?: DecoratedDocument
-    DOSSIER?: DecoratedDocument
-    REASONS_FOR_RECALL?: DecoratedDocument
-  }
 }

@@ -117,6 +117,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     label: 'Recall notification',
     name: RecallDocument.category.RECALL_NOTIFICATION,
     type: 'generated',
+    versioned: true,
   },
   {
     label: 'Revocation order',

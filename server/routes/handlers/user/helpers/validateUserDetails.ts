@@ -1,7 +1,8 @@
 import { listToString, makeErrorObject } from '../../helpers'
-import { AllowedUploadFileType, NamedFormError, ObjectMap } from '../../../../@types'
+import { NamedFormError, ObjectMap } from '../../../../@types'
 import { allowedImageFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { AddUserDetailsRequest } from '../../../../@types/manage-recalls-api/models/AddUserDetailsRequest'
+import { AllowedUploadFileType } from '../../../../@types/documents'
 
 export const isInvalidFileType = (file: Express.Multer.File, allowedExtensions: AllowedUploadFileType[]) => {
   return !allowedExtensions.some(ext => file.originalname.endsWith(ext.extension) && file.mimetype === ext.mimeType)
