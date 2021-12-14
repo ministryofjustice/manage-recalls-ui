@@ -6,6 +6,7 @@ import {
 } from '../routes/handlers/documents/upload/helpers/allowedUploadExtensions'
 import { isDefined, listToString } from '../routes/handlers/helpers'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
+import { DecoratedDocument, DocumentCategoryMetadata } from '../@types/documents'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -224,4 +225,14 @@ export const recallStatusTagProperties = (status: RecallResponse.status) => {
         text: 'Unknown status',
       }
   }
+}
+
+export const selectDocCategory = (error: FormError, file: DecoratedDocument, docCategory: DocumentCategoryMetadata) => {
+  if (error?.values === docCategory.name) {
+    return true
+  }
+  if (!error && file.suggestedCategory === docCategory.name) {
+    return true
+  }
+  return false
 }

@@ -51,7 +51,7 @@ describe('categoriseFiles', () => {
     expect(addRecallDocument).not.toHaveBeenCalled()
   })
 
-  it('creates an error if more than one document has the same category', done => {
+  it("creates an error if more than one document (that doesn't allow multiples) has the same category", done => {
     req.body = {
       'category-123': 'LICENCE',
       'category-456': 'LICENCE',
@@ -62,8 +62,21 @@ describe('categoriseFiles', () => {
           href: '#456',
           name: '456',
           text: 'You can only upload one licence',
+          values: 'LICENCE',
         },
       ])
+      done()
+    }
+    categoriseFiles(req, res)
+  })
+
+  it('no error if more than one document (that does allow multiples) has the same category', done => {
+    req.body = {
+      'category-123': 'OTHER',
+      'category-456': 'OTHER',
+    }
+    res.redirect = () => {
+      expect(req.session.errors).toBeUndefined()
       done()
     }
     categoriseFiles(req, res)
