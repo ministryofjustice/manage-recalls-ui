@@ -70,7 +70,7 @@ export const renderErrorMessages = (
           text: renderTemplateString(err.text, locals),
         }))
       } else {
-        acc[key] = { ...acc[key], text: renderTemplateString(val.text, locals) }
+        acc[key] = { ...val, text: renderTemplateString(val.text, locals) }
       }
       return acc
     },

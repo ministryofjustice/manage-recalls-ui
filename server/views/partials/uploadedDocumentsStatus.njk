@@ -18,7 +18,7 @@
               </label>
               <select class="govuk-select document-upload-select-type" id='{{ file.documentId }}' name="category-{{ file.documentId }}" data-qa='category-index-{{ file.suggestedCategory }}'>
                   {% for docCategory in recall.docCategoriesWithUploads %}
-                      <option value="{{ docCategory.name }}" {% if (not errors[file.documentId]) and file.suggestedCategory == docCategory.name %}selected{% endif %}>
+                      <option value="{{ docCategory.name }}" {% if selectDocCategory(errors[file.documentId], file, docCategory) %}selected{% endif %}>
                           {{ docCategory.label }}
                       </option>
                   {% endfor %}

@@ -3,11 +3,10 @@ import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/
 import { AddDocumentResponse } from '../../../../../@types/manage-recalls-api/models/AddDocumentResponse'
 import { NamedFormError, ObjectMap } from '../../../../../@types'
 import { makeErrorObject } from '../../../helpers'
-import logger from '../../../../../../logger'
 import { setDocumentCategory } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { findDocCategory } from '../../upload/helpers'
 
 export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {
-  logger.info(`getMetadataForCategorisedFiles: ${JSON.stringify(requestBody)}`)
   const categoryKeys = Object.keys(requestBody).filter(key => key.startsWith('category-'))
   return categoryKeys.map(key => {
     const isExistingUpload = key.startsWith('category-existing-')
@@ -56,4 +55,15 @@ export const saveCategories = async ({
     return listFailedCategorySaves(categorisedToSave, responses)
   }
   return []
+}
+export const createUsedCategoriesList = (categorisedFileData: CategorisedFileMetadata[]): string[] => {
+  return categorisedFileData
+    .filter(file => {
+      const category = findDocCategory(file.category)
+      if (!category) {
+        throw new Error(`Unable to find category ${file.category}`)
+      }
+      return file.isExistingUpload && !category.multiple
+    })
+    .map(file => file.category)
 }

@@ -34,6 +34,7 @@ describe('renderErrorMessages', () => {
         text: 'Enter the NOMIS number {{ recall.fullName }} is being held under',
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
+        values: 'A123',
       },
     ]
     const result = renderErrorMessages(transformErrorMessages(errors), {
@@ -41,10 +42,13 @@ describe('renderErrorMessages', () => {
     })
     expect(result).toEqual({
       additionalLicenceConditionsDetail: {
+        href: '#additionalLicenceConditionsDetail',
         text: 'Provide detail on additional licence conditions',
       },
       differentNomsNumberDetail: {
         text: 'Enter the NOMIS number Dave Angel is being held under',
+        href: '#differentNomsNumberDetail',
+        values: 'A123',
       },
       list: [
         {
@@ -56,6 +60,7 @@ describe('renderErrorMessages', () => {
           href: '#differentNomsNumberDetail',
           name: 'differentNomsNumberDetail',
           text: 'Enter the NOMIS number Dave Angel is being held under',
+          values: 'A123',
         },
       ],
     })
