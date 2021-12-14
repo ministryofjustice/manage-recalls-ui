@@ -7,7 +7,6 @@ import {
 import { isDefined, listToString } from '../routes/handlers/helpers'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 import { DecoratedDocument, DocumentCategoryMetadata } from '../@types/documents'
-import { RecallDocument } from '../@types/manage-recalls-api'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
