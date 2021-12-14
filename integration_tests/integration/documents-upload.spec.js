@@ -531,8 +531,8 @@ context('Document upload', () => {
       qaAttr: 'uploadedDocument-UNCATEGORISED',
       textToFind: 'report.pdf',
     })
-    // no change link for an uncategorised document
-    recallInformation.assertElementNotPresent({
+    // show change link for an uncategorised document
+    recallInformation.assertElementPresent({
       qaAttr: 'uploadedDocument-UNCATEGORISED-Change',
     })
   })

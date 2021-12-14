@@ -15,7 +15,7 @@
                     {% include '../partials/uploadedDocumentLink.njk' %}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
-                    {% if recall.status === 'BEING_BOOKED_ON' %}
+                    {% if recall.status === 'BEING_BOOKED_ON' or document.category === 'UNCATEGORISED' %}
                         <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'documents') }}'
                            data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
                                     class="govuk-visually-hidden"> {{ document.label }}</span></a>
