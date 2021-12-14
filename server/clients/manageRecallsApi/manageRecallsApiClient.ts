@@ -20,6 +20,7 @@ import {
 } from '../../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../../@types/manage-recalls-api/models/PoliceForce'
+import { GenerateDocumentRequest } from '../../@types/manage-recalls-api/models/GenerateDocumentRequest'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   const request = { nomsNumber }
@@ -114,6 +115,14 @@ export function addMissingDocumentRecord(
   token: string
 ): Promise<superagent.Response> {
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
+}
+
+export function generateRecallDocument(
+  recallId: string,
+  document: GenerateDocumentRequest,
+  token: string
+): Promise<GenerateDocumentRequest> {
+  return restClient(token).post({ path: `/recalls/${recallId}/documents/generated`, data: document })
 }
 
 export function addUserDetails(data: AddUserDetailsRequest, token: string): Promise<UserDetailsResponse> {

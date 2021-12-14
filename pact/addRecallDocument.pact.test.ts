@@ -18,12 +18,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('create recall documents', () => {
-    test('can successfully create a document', async () => {
+  describe('upload recall documents', () => {
+    test('can successfully upload a document', async () => {
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
         ...pactPostRequest(
-          'a create recall document request',
+          'an upload recall document request',
           `/recalls/${recallId}/documents`,
           { category, fileContent, fileName },
           accessToken
@@ -40,7 +40,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
         ...pactPostRequest(
-          'an unauthorized create recall document request',
+          'an unauthorized upload recall document request',
           `/recalls/${recallId}/documents`,
           { category, fileContent, fileName },
           accessToken
