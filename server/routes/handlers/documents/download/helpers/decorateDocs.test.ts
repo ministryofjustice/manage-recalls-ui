@@ -1,7 +1,7 @@
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { decorateDocs } from './decorateDocs'
 import { findDocCategory } from '../../upload/helpers'
-import { DocumentDecorations } from '../../../../../@types'
+import { DocumentDecorations } from '../../../../../@types/documents'
 
 describe('decorateDocs', () => {
   const docs = [
@@ -121,7 +121,7 @@ describe('decorateDocs', () => {
   })
 
   it('returns document categories included the docs uploaded for each', () => {
-    expect(results.documentCategories).toEqual([
+    expect(results.docCategoriesWithUploads).toEqual([
       {
         ...findDocCategory(RecallDocument.category.UNCATEGORISED),
         uploaded: [],
@@ -143,6 +143,8 @@ describe('decorateDocs', () => {
             version: 1,
             createdDateTime: '2020-04-01T12:00:00.000Z',
             createdByUserName: 'Arnold Caseworker',
+            label: 'Licence',
+            type: 'document',
           },
         ],
       },
@@ -185,6 +187,8 @@ describe('decorateDocs', () => {
             url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
             createdByUserName: 'Arnold Caseworker',
             createdDateTime: '2020-04-01T12:00:00.000Z',
+            label: 'Other',
+            type: 'document',
           },
           {
             category: 'OTHER',
@@ -194,6 +198,8 @@ describe('decorateDocs', () => {
             url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
             createdByUserName: 'Arnold Caseworker',
             createdDateTime: '2020-04-01T12:00:00.000Z',
+            label: 'Other',
+            type: 'document',
           },
         ],
       },
@@ -241,7 +247,7 @@ describe('decorateDocs', () => {
   })
 
   it('returns data on the specified versioned category', () => {
-    expect(results.versionedCategory).toEqual({
+    expect(results.versionedUpload).toEqual({
       category: 'LICENCE',
       documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       label: 'Licence',

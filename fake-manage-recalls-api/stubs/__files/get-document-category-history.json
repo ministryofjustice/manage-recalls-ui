@@ -1,0 +1,26 @@
+[
+  {
+    "category": "LICENCE",
+    "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdDateTime": "2020-12-05T18:33:57.000Z",
+    "fileName": "Bobby Badger licence.pdf",
+    "createdByUserName": "Arnold Caseworker",
+    "version": 1
+  },
+  {
+    "category": "LICENCE",
+    "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "createdDateTime": "2020-12-06T18:33:57.000Z",
+    "fileName": "Bobby Badger licence.pdf",
+    "createdByUserName": "Arnold Caseworker",
+    "version": 2
+  },
+  {
+    "category": "LICENCE",
+    "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+    "createdDateTime": "2020-12-07T18:33:57.000Z",
+    "fileName": "Bobby Badger licence.pdf",
+    "createdByUserName": "Arnold Caseworker",
+    "version": 3
+  }
+]

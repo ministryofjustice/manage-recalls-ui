@@ -61,6 +61,14 @@ export function getStoredDocument(
   return restClient(token).get<GetDocumentResponse>({ path: `/recalls/${recallId}/documents/${documentId}` })
 }
 
+export function getDocumentCategoryHistory(
+  recallId: string,
+  category: RecallDocument.category,
+  token: string
+): Promise<RecallDocument[]> {
+  return restClient(token).get<RecallDocument[]>({ path: `/recalls/${recallId}/documents?category=${category}` })
+}
+
 export function getRecall(recallId: string, token: string): Promise<Recall> {
   return restClient(token).get<Recall>({ path: `/recalls/${recallId}` })
 }

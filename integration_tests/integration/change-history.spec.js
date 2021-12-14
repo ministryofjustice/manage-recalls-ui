@@ -1,7 +1,9 @@
-import { getRecallResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, getDocumentCategoryHistoryResponseJson } from '../mockApis/mockResponses'
 
 const recallInformationPage = require('../pages/recallInformation')
 const changeHistoryPage = require('../pages/changeHistory')
+const uploadedDocumentHistoryPage = require('../pages/uploadedDocumentHistory')
+const { formatDateTimeFromIsoString } = require('../../server/routes/handlers/helpers/dates/format')
 
 context('Change history', () => {
   const nomsNumber = 'A1234AA'
@@ -31,6 +33,7 @@ context('Change history', () => {
     cy.task('expectListRecalls', {
       expectedResults: [],
     })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
     cy.login()
   })
 
@@ -127,6 +130,53 @@ context('Change history', () => {
     changeHistory.checkPdfContents({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
       fileContents: 'abc',
+    })
+  })
+
+  it('User can navigate to document history', () => {
+    const category = 'LICENCE'
+    const document = {
+      category,
+      documentId: '123',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+      createdByUserName: 'Arnold Caseworker',
+      version: 3,
+    }
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'DOSSIER_ISSUED',
+        documents: [document],
+      },
+    })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
+    changeHistory.clickLink({ qaAttr: 'viewHistory-LICENCE' })
+    const uploadedDocumentHistory = uploadedDocumentHistoryPage.verifyOnPage({ nomsNumber, recallId, category })
+    getDocumentCategoryHistoryResponseJson.forEach(doc => {
+      const docId = doc.documentId
+      uploadedDocumentHistory.assertElementHasText({
+        qaAttr: `document-${docId}-heading`,
+        textToFind: `Version ${doc.version}`,
+      })
+      uploadedDocumentHistory.assertElementHasText({
+        qaAttr: `document-${docId}-link`,
+        textToFind: 'Licence.pdf',
+      })
+      uploadedDocumentHistory.assertLinkHref({
+        qaAttr: `document-${docId}-link`,
+        href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${docId}`,
+      })
+      uploadedDocumentHistory.assertElementHasText({
+        qaAttr: `document-${docId}-version`,
+        textToFind: `(version ${doc.version})`,
+      })
+      uploadedDocumentHistory.assertElementHasText({
+        qaAttr: `document-${docId}-uploaded-by`,
+        textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
+      })
     })
   })
 })
