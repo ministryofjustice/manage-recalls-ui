@@ -20,6 +20,7 @@ import {
   removeUndefinedFromObject,
   allowedImageFileTypeLabelList,
   recallStatusTagProperties,
+  selectDocCategory,
 } from './nunjucksFunctions'
 import { isDefined, listDocumentLabels, sortList } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
@@ -76,6 +77,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('getGeneratedDocUrlPath', getGeneratedDocUrlPath)
   njkEnv.addGlobal('generatedDocCategoriesList', generatedDocCategoriesList)
   njkEnv.addGlobal('sortList', sortList)
+  njkEnv.addGlobal('selectDocCategory', selectDocCategory)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)

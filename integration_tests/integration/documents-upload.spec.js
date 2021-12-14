@@ -233,23 +233,32 @@ context('Document upload', () => {
           {
             category: 'UNCATEGORISED',
             documentId: documentId2,
-            fileName: 'previous_convictions_sheet.pdf',
+            fileName: 'test.pdf',
           },
         ],
       },
     })
     uploadDocuments.upload({
-      filePath: '../uploads/previous_convictions_sheet.pdf',
+      filePath: '../uploads/test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertElementHasText({
       qaAttr: `link-${documentId2}`,
-      textToFind: 'previous_convictions_sheet.pdf',
+      textToFind: 'test.pdf',
+    })
+    uploadDocuments.selectFromDropdown({
+      fieldName: `category-${documentId2}`,
+      value: 'Previous convictions sheet',
     })
     uploadDocuments.clickContinue()
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: documentId2,
       summaryError: 'You can only upload one previous convictions sheet',
+    })
+    // category dropdown should have the invalid category the user chose
+    uploadDocuments.assertSelectValue({
+      fieldName: `category-${documentId2}`,
+      value: 'PREVIOUS_CONVICTIONS_SHEET',
     })
   })
 

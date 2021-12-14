@@ -25,6 +25,7 @@ export const validateCategories = (
           makeErrorObject({
             id: file.documentId,
             text: `You can only upload one ${formatDocLabel(file.category)}`,
+            values: file.category,
           })
         )
         hasError = true
