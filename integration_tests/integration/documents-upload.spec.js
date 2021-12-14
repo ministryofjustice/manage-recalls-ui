@@ -206,7 +206,7 @@ context('Document upload', () => {
     })
   })
 
-  it('an error is shown if more than one of a category is uploaded', () => {
+  it("an error is shown if more than one of a category that doesn't allow multiples, is uploaded", () => {
     const documentId1 = '123'
     const documentId2 = '456'
     cy.task('expectGetRecall', {
@@ -250,6 +250,60 @@ context('Document upload', () => {
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: documentId2,
       summaryError: 'You can only upload one previous convictions sheet',
+    })
+  })
+
+  it('more than one of a category that does allow multiples can be uploaded', () => {
+    const documentId1 = '123'
+    const documentId2 = '456'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            category: 'OTHER',
+            documentId: documentId1,
+            fileName: 'Other doc 1',
+          },
+        ],
+      },
+    })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        documents: [
+          {
+            category: 'OTHER',
+            documentId: documentId1,
+            fileName: 'Other doc 1',
+          },
+          {
+            category: 'UNCATEGORISED',
+            documentId: documentId2,
+            fileName: 'test.pdf',
+          },
+        ],
+      },
+    })
+    uploadDocuments.upload({
+      filePath: '../uploads/test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocuments.selectFromDropdown({
+      fieldName: `category-${documentId2}`,
+      value: 'Other',
+    })
+    cy.task('expectSetDocumentCategory')
+    uploadDocuments.clickContinue()
+    recallMissingDocumentsPage.verifyOnPage()
+    uploadDocuments.assertApiRequestBody({
+      url: `/recalls/${recallId}/documents/${documentId2}`,
+      method: 'PATCH',
+      bodyValues: {
+        category: 'OTHER',
+      },
     })
   })
 

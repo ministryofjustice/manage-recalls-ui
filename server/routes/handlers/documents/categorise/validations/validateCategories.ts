@@ -4,6 +4,7 @@ import { makeErrorObject } from '../../../helpers'
 import { formatDocLabel } from '../../upload/helpers'
 import { documentCategories } from '../../documentCategories'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
+import { createUsedCategoriesList } from '../helpers'
 
 export const validateCategories = (
   categorisedFileData: CategorisedFileMetadata[]
@@ -13,7 +14,7 @@ export const validateCategories = (
 } => {
   let errors: NamedFormError[]
   let valuesToSave: CategorisedFileMetadata[]
-  const usedCategories = categorisedFileData.filter(file => file.isExistingUpload).map(file => file.category)
+  const usedCategories = createUsedCategoriesList(categorisedFileData)
   categorisedFileData
     .filter(file => !file.isExistingUpload)
     .forEach(file => {
