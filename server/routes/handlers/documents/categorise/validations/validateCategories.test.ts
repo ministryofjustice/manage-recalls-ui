@@ -29,11 +29,13 @@ describe('validateCategories', () => {
         href: '#45',
         name: '45',
         text: 'You can only upload one previous convictions sheet',
+        values: 'PREVIOUS_CONVICTIONS_SHEET',
       },
       {
         href: '#67',
         name: '67',
         text: 'You can only upload one previous convictions sheet',
+        values: 'PREVIOUS_CONVICTIONS_SHEET',
       },
     ])
     expect(valuesToSave).toEqual([
@@ -62,6 +64,7 @@ describe('validateCategories', () => {
         href: '#45',
         name: '45',
         text: 'You can only upload one previous convictions sheet',
+        values: 'PREVIOUS_CONVICTIONS_SHEET',
       },
     ])
     expect(valuesToSave).toBeUndefined()
