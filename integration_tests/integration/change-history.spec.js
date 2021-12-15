@@ -24,6 +24,20 @@ context('Change history', () => {
       fileName: 'wesley holt pre cons.pdf',
       createdByUserName: 'Carrie Arnold',
     },
+    {
+      category: 'RECALL_NOTIFICATION',
+      documentId: '789',
+      createdDateTime: '2020-05-09T14:22:00.000Z',
+      fileName: 'RECALL NOTIFICATION.pdf',
+      createdByUserName: 'Barry Arnold',
+    },
+    {
+      category: 'DOSSIER',
+      documentId: '012',
+      createdDateTime: '2020-04-10T14:22:00.000Z',
+      fileName: 'DOSSIER.pdf',
+      createdByUserName: 'Steve Barry',
+    },
   ]
 
   beforeEach(() => {
@@ -37,7 +51,7 @@ context('Change history', () => {
     cy.login()
   })
 
-  it('User can navigate to view change history for a recall, and resort the table', () => {
+  it('User can navigate to view change history for a recall, and resort the tables', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -50,6 +64,8 @@ context('Change history', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.clickButton({ qaAttr: 'changeHistoryButton' })
     const changeHistory = changeHistoryPage.verifyOnPage()
+
+    // UPLOADED DOCUMENTS
     changeHistory.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
       href: '/persons/A1234AA/recalls/123/documents/123',
@@ -74,27 +90,43 @@ context('Change history', () => {
       valuesToCompare: ['Arnold Caseworker', 'Carrie Arnold'],
     })
     // re-sort the table by file name (descending)
-    changeHistory.clickButton({ label: 'Document' })
+    changeHistory.clickButton({ parentQaAttr: 'uploadedDocuments', label: 'Document' })
     changeHistory.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['Pre Cons.pdf', 'Part A.pdf'],
     })
-    // re-sort the table by date (ascending)
-    changeHistory.clickButton({ label: 'Date and time' })
-    changeHistory.assertTableColumnValues({
-      qaAttrTable: 'uploadedDocuments',
-      qaAttrCell: 'createdDateTime',
-      valuesToCompare: ['1 April 2020 at 13:00', '10 May 2020 at 15:22'],
-    })
 
-    // re-sort the table by user (descending)
-    changeHistory.clickButton({ label: 'User' })
-    changeHistory.clickButton({ label: 'User' })
+    // GENERATED DOCUMENTS
+    changeHistory.assertLinkHref({
+      qaAttr: 'generatedDocument-RECALL_NOTIFICATION',
+      href: '/persons/A1234AA/recalls/123/documents/recall-notification',
+    })
+    changeHistory.assertLinkHref({
+      qaAttr: 'generatedDocument-DOSSIER',
+      href: '/persons/A1234AA/recalls/123/documents/dossier',
+    })
     changeHistory.assertTableColumnValues({
-      qaAttrTable: 'uploadedDocuments',
+      qaAttrTable: 'generatedDocuments',
+      qaAttrCell: 'fileName',
+      valuesToCompare: ['BADGER BOBBY A123456 RECALL DOSSIER.pdf', 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf'],
+    })
+    changeHistory.assertTableColumnValues({
+      qaAttrTable: 'generatedDocuments',
+      qaAttrCell: 'createdDateTime',
+      valuesToCompare: ['10 April 2020 at 15:22', '9 May 2020 at 15:22'],
+    })
+    changeHistory.assertTableColumnValues({
+      qaAttrTable: 'generatedDocuments',
       qaAttrCell: 'createdByUserName',
-      valuesToCompare: ['Carrie Arnold', 'Arnold Caseworker'],
+      valuesToCompare: ['Steve Barry', 'Barry Arnold'],
+    })
+    // re-sort the table by file name (descending)
+    changeHistory.clickButton({ parentQaAttr: 'generatedDocuments', label: 'Document' })
+    changeHistory.assertTableColumnValues({
+      qaAttrTable: 'generatedDocuments',
+      qaAttrCell: 'fileName',
+      valuesToCompare: ['IN CUSTODY RECALL BADGER BOBBY A123456.pdf', 'BADGER BOBBY A123456 RECALL DOSSIER.pdf'],
     })
   })
 
@@ -133,7 +165,7 @@ context('Change history', () => {
     })
   })
 
-  it('User can navigate to document history', () => {
+  it('User can navigate to uploaded document history', () => {
     const category = 'LICENCE'
     const document = {
       category,
