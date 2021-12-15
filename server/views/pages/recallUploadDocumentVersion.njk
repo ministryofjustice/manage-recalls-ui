@@ -52,6 +52,16 @@
                             },
                             errorMessage: errorMessage(errors.document)
                         }) }}
+                        {{ govukTextarea({
+                            name: "details",
+                            id: "details",
+                            label: {
+                                text: "Provide more detail",
+                                classes: "govuk-label--m"
+                            },
+                            value: formValues.details,
+                            errorMessage: errorMessage(errors.details)
+                        }) }}
                     <div class="govuk-!-margin-top-4">
                         <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
                     </div>

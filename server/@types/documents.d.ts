@@ -37,6 +37,7 @@ export interface UploadedFileMetadata {
   labelLowerCase?: string
   category: RecallDocument.category
   fileContent: string
+  details?: string
 }
 
 export interface CategorisedFileMetadata {

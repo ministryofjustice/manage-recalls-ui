@@ -57,6 +57,7 @@ export const uploadEmailFormHandler =
                 fileName: file.originalname,
                 fileContent: file.buffer.toString('base64'),
                 category: documentCategory,
+                details: null,
               },
               user.token
             )
