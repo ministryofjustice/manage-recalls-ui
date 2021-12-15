@@ -30,6 +30,8 @@ export const areStringArraysTheSame = (arr1: unknown[], arr2: unknown[]) => arr1
 
 export const replaceSpaces = (str: string, replacement: string) => str.replace(/ /g, replacement)
 
+export const objectToArray = (obj: ObjectMap<unknown>): unknown[] => Object.values(obj)
+
 export const sortList = (list: unknown[], key: string, asc = true) =>
   list.sort((a, b) => {
     if (a[key] < b[key]) {
