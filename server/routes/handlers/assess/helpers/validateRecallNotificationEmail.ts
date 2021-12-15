@@ -2,7 +2,7 @@ import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
-import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
 export const validateRecallNotificationEmail = ({
@@ -33,7 +33,7 @@ export const validateRecallNotificationEmail = ({
     dateMustBeInPast: true,
     includeTime: true,
   })
-  const existingUpload = requestBody[AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL] === 'existingUpload'
+  const existingUpload = requestBody[UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL] === 'existingUpload'
   if (
     (!emailFileSelected && !existingUpload) ||
     uploadFailed ||

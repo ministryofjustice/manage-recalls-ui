@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
-import { addRecallDocument, updateRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, updateRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../../logger'
 import { uploadStorageField } from './helpers/uploadStorage'
 
-import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { ReqEmailUploadValidatorFn } from '../../../../@types'
 import { makeErrorObject } from '../../helpers'
 import { allowedEmailFileExtensions } from './helpers/allowedUploadExtensions'
@@ -13,7 +13,7 @@ import { errorMsgEmailUpload } from '../../helpers/errorMessages'
 interface Args {
   emailFieldName: string
   validator: ReqEmailUploadValidatorFn
-  documentCategory: AddDocumentRequest.category
+  documentCategory: UploadDocumentRequest.category
   nextPageUrlSuffix: string
   unassignUserFromRecall?: (recallId: string, userId: string, token: string) => Promise<RecallResponse>
 }
@@ -51,7 +51,7 @@ export const uploadEmailFormHandler =
         const shouldSaveToApi = !uploadHasErrors && emailFileSelected && !uploadFailed
         if (shouldSaveToApi) {
           try {
-            const response = await addRecallDocument(
+            const response = await uploadRecallDocument(
               recallId,
               {
                 fileName: file.originalname,

@@ -4,7 +4,7 @@ import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 
 const recallInformationPage = require('../pages/recallInformation')
 
-context('Document versions', () => {
+context('Uploaded document versions', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
@@ -29,7 +29,7 @@ context('Document versions', () => {
     cy.login()
   })
 
-  it('user can go back from the view recall info page for a booked recall to add a new document version', () => {
+  it('user can go back from the view recall info page for a booked recall to upload a new document version', () => {
     const documentId = '123'
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -46,7 +46,7 @@ context('Document versions', () => {
         ],
       },
     })
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectUploadRecallDocument', { statusCode: 201 })
     let recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({

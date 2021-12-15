@@ -4,6 +4,7 @@
 
 export type UpdateDocumentResponse = {
     category: UpdateDocumentResponse.category;
+    details?: string;
     documentId: string;
     fileName: string;
     recallId: string;

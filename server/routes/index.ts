@@ -24,7 +24,7 @@ import {
   downloadRevocationOrder,
 } from './handlers/documents/download/downloadNamedPdfHandler'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
-import { AddDocumentRequest } from '../@types/manage-recalls-api/models/AddDocumentRequest'
+import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
@@ -40,6 +40,7 @@ import { validateLicenceName } from './handlers/book/helpers/validateLicenceName
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
 import { uploadDocumentVersionFormHandler } from './handlers/documents/upload/uploadDocumentVersionFormHandler'
 import { getDocumentChangeHistory } from './handlers/documents/change-history/getDocumentChangeHistory'
+import { generatedDocumentVersionFormHandler } from './handlers/documents/generated/generatedDocumentVersionFormHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -65,7 +66,7 @@ export default function routes(router: Router): Router {
     uploadEmailFormHandler({
       emailFieldName: 'recallRequestEmailFileName',
       validator: validateRecallRequestReceived,
-      documentCategory: AddDocumentRequest.category.RECALL_REQUEST_EMAIL,
+      documentCategory: UploadDocumentRequest.category.RECALL_REQUEST_EMAIL,
       nextPageUrlSuffix: 'last-release',
     })
   )
@@ -105,7 +106,7 @@ export default function routes(router: Router): Router {
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,
-      documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
+      documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
   )
@@ -126,11 +127,14 @@ export default function routes(router: Router): Router {
       emailFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
       unassignUserFromRecall,
-      documentCategory: AddDocumentRequest.category.DOSSIER_EMAIL,
+      documentCategory: UploadDocumentRequest.category.DOSSIER_EMAIL,
       nextPageUrlSuffix: 'dossier-confirmation',
     })
   )
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
+
+  get(`${basePath}/generated-document-version`, viewWithRecallAndPerson('newGeneratedDocumentVersion'))
+  post(`${basePath}/generated-document-version`, generatedDocumentVersionFormHandler)
 
   // DOCUMENT DOWNLOADS
   get(`${basePath}/documents/dossier`, downloadDossier)

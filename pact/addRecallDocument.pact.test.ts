@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { addRecallDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
-import addRecallDocumentResponseJson from '../fake-manage-recalls-api/stubs/__files/add-recall-document.json'
+import addRecallDocumentResponseJson from '../fake-manage-recalls-api/stubs/__files/upload-recall-document.json'
 import { pactPostRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
@@ -31,7 +31,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(addRecallDocumentResponseJson), 201),
       })
 
-      const actual = await addRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
+      const actual = await uploadRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
 
       expect(actual).toEqual(addRecallDocumentResponseJson)
     })
@@ -49,7 +49,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await addRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
+        await uploadRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

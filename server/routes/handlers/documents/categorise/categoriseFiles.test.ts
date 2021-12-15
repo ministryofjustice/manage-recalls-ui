@@ -1,6 +1,6 @@
 // @ts-nocheck
 import {
-  addRecallDocument,
+  uploadRecallDocument,
   getRecall,
   setDocumentCategory,
 } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
@@ -48,7 +48,7 @@ describe('categoriseFiles', () => {
     }
     await categoriseFiles(req, res)
     expect(setDocumentCategory).toHaveBeenCalledTimes(2)
-    expect(addRecallDocument).not.toHaveBeenCalled()
+    expect(uploadRecallDocument).not.toHaveBeenCalled()
   })
 
   it("creates an error if more than one document (that doesn't allow multiples) has the same category", done => {
@@ -83,7 +83,7 @@ describe('categoriseFiles', () => {
   })
 
   it("redirects to Check your answers if a fromPage isn't supplied", done => {
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
@@ -130,7 +130,7 @@ describe('categoriseFiles', () => {
   })
 
   it('redirects to fromPage if one is supplied in res.locals, and there are no missing documents', done => {
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     res = {
@@ -177,7 +177,7 @@ describe('categoriseFiles', () => {
   })
 
   it("redirects to Missing documents if a required doc isn't supplied", done => {
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
@@ -219,7 +219,7 @@ describe('categoriseFiles', () => {
   })
 
   it('adds a fromPage querystring to Missing documents URL if one is present', done => {
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     ;(getRecall as jest.Mock).mockResolvedValue({

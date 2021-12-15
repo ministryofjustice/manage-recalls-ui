@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { uploadEmailFormHandler } from './uploadEmailFormHandler'
 import {
-  addRecallDocument,
+  uploadRecallDocument,
   unassignUserFromRecall,
   updateRecall,
 } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
@@ -10,7 +10,7 @@ import { uploadStorageField } from './helpers/uploadStorage'
 import { validateRecallRequestReceived } from '../../book/helpers/validateRecallRequestReceived'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { validateRecallNotificationEmail } from '../../assess/helpers/validateRecallNotificationEmail'
-import { AddDocumentRequest } from '../../../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
@@ -47,7 +47,7 @@ describe('emailUploadForm', () => {
       }
       cb()
     })
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     const res = {
@@ -56,7 +56,7 @@ describe('emailUploadForm', () => {
         urlInfo: { basePath: '/persons/456/recalls/789/' },
       },
       redirect: (httpStatus, path) => {
-        expect(addRecallDocument).toHaveBeenCalledTimes(1)
+        expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).toHaveBeenCalledTimes(1)
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
@@ -75,7 +75,7 @@ describe('emailUploadForm', () => {
       }
       cb()
     })
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     const res = {
@@ -100,7 +100,7 @@ describe('emailUploadForm', () => {
       }
       cb()
     })
-    ;(addRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
+    ;(uploadRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
@@ -126,7 +126,7 @@ describe('emailUploadForm', () => {
       }
       cb()
     })
-    ;(addRecallDocument as jest.Mock).mockRejectedValue({
+    ;(uploadRecallDocument as jest.Mock).mockRejectedValue({
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const res = {
@@ -157,7 +157,7 @@ describe('emailUploadForm', () => {
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(addRecallDocument).not.toHaveBeenCalled()
+        expect(uploadRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
@@ -180,7 +180,7 @@ describe('emailUploadForm', () => {
     const res = {
       locals: { user: { token: 'TOKEN' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(addRecallDocument).not.toHaveBeenCalled()
+        expect(uploadRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).toHaveBeenCalledWith(
           '789',
           { recallEmailReceivedDateTime: '2021-05-19T23:30:00.000Z' },
@@ -202,13 +202,13 @@ describe('emailUploadForm', () => {
       cb()
     })
     req.body.recallEmailReceivedDateTimeYear = ''
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(addRecallDocument).toHaveBeenCalledTimes(1)
+        expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
@@ -235,7 +235,7 @@ describe('emailUploadForm', () => {
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,
-      documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
+      documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
     req.body = {
@@ -253,7 +253,7 @@ describe('emailUploadForm', () => {
       }
       cb()
     })
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
@@ -274,7 +274,7 @@ describe('emailUploadForm', () => {
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,
-      documentCategory: AddDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
+      documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
     req.body = {
@@ -292,7 +292,7 @@ describe('emailUploadForm', () => {
       }
       cb()
     })
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     ;(unassignUserFromRecall as jest.Mock).mockRejectedValue(new Error('test'))

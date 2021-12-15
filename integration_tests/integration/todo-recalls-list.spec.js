@@ -24,7 +24,7 @@ describe('To do (recalls) list', () => {
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectUpdateRecall', recallId)
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.task('expectGetCurrentUserDetails')
   })

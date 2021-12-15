@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { addRecallDocument, getRecall } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, getRecall } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getPerson } from '../../../helpers/personCache'
 import { uploadMultipleNewDocuments } from './uploadMultipleNewDocuments'
 
@@ -99,11 +99,11 @@ describe('uploadMultipleNewDocuments', () => {
   it("doesn't try to save to the API if there are no uploaded files", async () => {
     req.files = []
     await uploadMultipleNewDocuments(req, res)
-    expect(addRecallDocument).not.toHaveBeenCalled()
+    expect(uploadRecallDocument).not.toHaveBeenCalled()
   })
 
   it('creates errors for failed saves to the API', done => {
-    ;(addRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
+    ;(uploadRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
     req.files = [
       {
         originalname: 'licence.pdf',
@@ -175,7 +175,7 @@ describe('uploadMultipleNewDocuments', () => {
   })
 
   it('creates an error for a failed save to the API due to a virus', done => {
-    ;(addRecallDocument as jest.Mock).mockRejectedValue({
+    ;(uploadRecallDocument as jest.Mock).mockRejectedValue({
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     req.files = [
@@ -214,7 +214,7 @@ describe('uploadMultipleNewDocuments', () => {
     })
     ;(getPerson as jest.Mock).mockResolvedValue(person)
     await uploadMultipleNewDocuments(req, res)
-    expect(addRecallDocument).toHaveBeenCalledWith(
+    expect(uploadRecallDocument).toHaveBeenCalledWith(
       '789',
       { category: 'UNCATEGORISED', fileContent: 'def', fileName: 'PreCons Wesley Holt.pdf' },
       'token'
@@ -222,7 +222,7 @@ describe('uploadMultipleNewDocuments', () => {
   })
 
   it('creates errors for files with either invalid file extensions or MIME types', done => {
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     req.files = [

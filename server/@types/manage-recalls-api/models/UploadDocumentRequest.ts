@@ -2,13 +2,14 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AddDocumentRequest = {
-    category: AddDocumentRequest.category;
+export type UploadDocumentRequest = {
+    category: UploadDocumentRequest.category;
+    details?: string;
     fileContent: string;
     fileName: string;
 }
 
-export namespace AddDocumentRequest {
+export namespace UploadDocumentRequest {
 
     export enum category {
         CHARGE_SHEET = 'CHARGE_SHEET',

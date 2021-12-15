@@ -102,6 +102,7 @@ export type ViewName =
   | 'viewFullRecall'
   | 'changeHistory'
   | 'uploadedDocumentHistory'
+  | 'newGeneratedDocumentVersion'
 
 export type ReqValidatorFn = (requestBody: ObjectMap<string>, user?: UserDetails) => ReqValidatorReturn
 export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn

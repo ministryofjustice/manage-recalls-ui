@@ -2,8 +2,8 @@ import superagent from 'superagent'
 import { manageRecallsApiConfig } from '../../config'
 import RestClient from '../../data/restClient'
 import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models/RecallResponse'
-import { AddDocumentResponse } from '../../@types/manage-recalls-api/models/AddDocumentResponse'
-import { AddDocumentRequest } from '../../@types/manage-recalls-api/models/AddDocumentRequest'
+import { NewDocumentResponse } from '../../@types/manage-recalls-api/models/NewDocumentResponse'
+import { UploadDocumentRequest } from '../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { LocalDeliveryUnitResponse } from '../../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
 import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { SearchResult } from '../../@types/manage-recalls-api/models/SearchResult'
@@ -82,12 +82,15 @@ export function updateRecall(recallId: string, updatedFields: UpdateRecallReques
   return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: updatedFields })
 }
 
-export function addRecallDocument(
+export function uploadRecallDocument(
   recallId: string,
-  document: AddDocumentRequest,
+  document: UploadDocumentRequest,
   token: string
-): Promise<AddDocumentResponse> {
-  return restClient(token).post({ path: `/recalls/${recallId}/documents`, data: document })
+): Promise<NewDocumentResponse> {
+  return restClient(token).post<NewDocumentResponse>({
+    path: `/recalls/${recallId}/documents/uploaded`,
+    data: document,
+  })
 }
 
 export function deleteRecallDocument(
@@ -103,7 +106,7 @@ export function setDocumentCategory(
   documentId: string,
   category: RecallDocument.category,
   token: string
-): Promise<AddDocumentResponse> {
+): Promise<NewDocumentResponse> {
   return restClient(token).patch<RecallDocument>({
     path: `/recalls/${recallId}/documents/${documentId}`,
     data: { category },
@@ -121,8 +124,11 @@ export function generateRecallDocument(
   recallId: string,
   document: GenerateDocumentRequest,
   token: string
-): Promise<GenerateDocumentRequest> {
-  return restClient(token).post({ path: `/recalls/${recallId}/documents/generated`, data: document })
+): Promise<NewDocumentResponse> {
+  return restClient(token).post<NewDocumentResponse>({
+    path: `/recalls/${recallId}/documents/generated`,
+    data: document,
+  })
 }
 
 export function addUserDetails(data: AddUserDetailsRequest, token: string): Promise<UserDetailsResponse> {
