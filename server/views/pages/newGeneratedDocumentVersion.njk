@@ -32,7 +32,7 @@
                     <a href="{{ recall.versionedGeneratedDoc.url }}" class="govuk-link" target="_blank" data-qa='previousVersionFileName'>{{ recall.versionedGeneratedDoc.fileName }}</a>
                     {% if recall.versionedGeneratedDoc.version > 1 %}(<span data-qa='previousVersionNumber'>version {{ recall.versionedGeneratedDoc.version }}</span>){% endif %}
                 </p>
-                <p class="govuk-body-s" data-qa='previousVersionUploadedDateTime'>Uploaded on {{ recall.versionedGeneratedDoc.createdDateTime | dateTime }}</p>
+                <p class="govuk-body-s" data-qa='previousVersionCreatedDateTime'>Created on {{ recall.versionedGeneratedDoc.createdDateTime | dateTime }}</p>
             </div>
             {% endif %}
             <div class="govuk-form-group">

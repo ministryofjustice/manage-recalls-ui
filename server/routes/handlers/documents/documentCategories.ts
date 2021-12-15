@@ -123,6 +123,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     label: 'Revocation order',
     name: RecallDocument.category.REVOCATION_ORDER,
     type: 'generated',
+    versioned: true,
   },
   {
     label: 'Letter to prison',
@@ -133,10 +134,12 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     label: 'Dossier',
     name: RecallDocument.category.DOSSIER,
     type: 'generated',
+    versioned: true,
   },
   {
     label: 'Reasons for recall',
     name: RecallDocument.category.REASONS_FOR_RECALL,
     type: 'generated',
+    versioned: true,
   },
 ]
