@@ -27,7 +27,6 @@ context('Missing documents', () => {
       },
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
-    cy.task('expectGetUserDetails', { firstName: 'Bobby', lastName: 'Badger' })
     cy.login()
   })
 

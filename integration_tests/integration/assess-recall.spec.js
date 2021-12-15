@@ -66,7 +66,6 @@ context('Assess a recall', () => {
     cy.task('expectAddRecallDocument', { statusCode: 201 })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.task('expectUnassignAssessment', { expectedResult: getRecallResponse })
-    cy.task('expectGetUserDetails', { firstName: 'Bertie', lastName: 'Badger' })
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })

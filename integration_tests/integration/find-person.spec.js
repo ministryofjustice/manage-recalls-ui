@@ -3,7 +3,6 @@ import {
   getRecallsResponse,
   getRecallResponse,
   getEmptyRecallResponse,
-  getUserDetailsResponse,
 } from '../mockApis/mockResponses'
 import recallLicenceNamePage from '../pages/recallLicenceName'
 import recallPreConsNamePage from '../pages/recallPreConsName'
@@ -28,7 +27,6 @@ context('Find a person', () => {
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
-    cy.task('expectGetUserDetails', { expectedResults: getUserDetailsResponse })
     cy.login()
   })
 

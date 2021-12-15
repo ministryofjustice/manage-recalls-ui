@@ -197,24 +197,6 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectGetUserDetails: expectation => {
-      return wiremock.stubFor({
-        request: {
-          method: 'GET',
-          urlPattern: `/users/([0-9\\-]+)`,
-        },
-        response: {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
-          },
-          jsonBody: {
-            firstName: expectation.firstName,
-            lastName: expectation.lastName,
-          },
-        },
-      })
-    },
     expectGetCurrentUserDetails: expectation => {
       return wiremock.stubFor({
         request: {
