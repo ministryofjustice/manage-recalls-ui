@@ -33,6 +33,9 @@ context('Generated document versions', () => {
           {
             category: 'REVOCATION_ORDER',
             documentId: '2123',
+            version: 1,
+            createdDateTime: '2021-11-19T14:14:30.000Z',
+            details: 'Details / info changed',
           },
           {
             category: 'LETTER_TO_PRISON',
@@ -41,10 +44,16 @@ context('Generated document versions', () => {
           {
             category: 'DOSSIER',
             documentId: '4123',
+            version: 4,
+            createdDateTime: '2021-11-19T14:14:30.000Z',
+            details: 'Details / info changed',
           },
           {
             category: 'REASONS_FOR_RECALL',
             documentId: '5123',
+            version: 3,
+            createdDateTime: '2021-11-19T14:14:30.000Z',
+            details: 'Details / info changed',
           },
         ],
       },
@@ -91,22 +100,39 @@ context('Generated document versions', () => {
       qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
       textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
     })
+    recallInformation.assertElementPresent({ qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER-Change' })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON',
       textToFind: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
     })
+    recallInformation.assertElementNotPresent({ qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON-Change' })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-DOSSIER',
       textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
     })
+    recallInformation.assertElementPresent({ qaAttr: 'appGeneratedDocuments-DOSSIER-Change' })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
       textToFind: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
     })
-    recallInformation.clickElement({ qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-Change' })
+    recallInformation.assertElementPresent({ qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL-Change' })
 
+    // create a new version of recall notification
+    recallInformation.clickElement({ qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-Change' })
     const newGeneratedDocumentVersion = newGeneratedDocumentVersionPage.verifyOnPage({
       documentCategoryLabel: 'recall notification',
+    })
+    newGeneratedDocumentVersion.assertElementHasText({
+      qaAttr: 'previousVersionFileName',
+      textToFind: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
+    })
+    newGeneratedDocumentVersion.assertLinkHref({
+      qaAttr: 'previousVersionFileName',
+      href: '/persons/A1234AA/recalls/123/documents/recall-notification',
+    })
+    newGeneratedDocumentVersion.assertElementHasText({
+      qaAttr: 'previousVersionCreatedDateTime',
+      textToFind: 'Created on 21 November 2021 at 12:34',
     })
     newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
     newGeneratedDocumentVersion.clickContinue()
