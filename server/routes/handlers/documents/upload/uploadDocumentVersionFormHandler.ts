@@ -6,7 +6,7 @@ import { validateUploadedFileTypes } from './validations/validateDocuments'
 import logger from '../../../../../logger'
 import { errorMsgDocumentUpload } from '../../helpers/errorMessages'
 import { makeErrorObject } from '../../helpers'
-import { addRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 
 export const uploadDocumentVersionFormHandler = async (req: Request, res: Response) => {
   uploadStorageField('document')(req, res, async uploadError => {
@@ -33,7 +33,7 @@ export const uploadDocumentVersionFormHandler = async (req: Request, res: Respon
         if (!session.errors) {
           const { category, fileContent, originalFileName } = uploadedFileData
           try {
-            await addRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, token)
+            await uploadRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, token)
           } catch (err) {
             if (err.data?.message === 'VirusFoundException') {
               session.errors = [

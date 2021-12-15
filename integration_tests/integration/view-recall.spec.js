@@ -35,26 +35,6 @@ context('View a recall', () => {
             documentId: '123',
             fileName: 'chase-documents.msg',
           },
-          {
-            category: 'RECALL_NOTIFICATION',
-            documentId: '1123',
-          },
-          {
-            category: 'REVOCATION_ORDER',
-            documentId: '2123',
-          },
-          {
-            category: 'LETTER_TO_PRISON',
-            documentId: '3123',
-          },
-          {
-            category: 'DOSSIER',
-            documentId: '4123',
-          },
-          {
-            category: 'REASONS_FOR_RECALL',
-            documentId: '5123',
-          },
         ],
       },
     })
@@ -84,28 +64,6 @@ context('View a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
 
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier issued' })
-
-    // generated documents
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
-      textToFind: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
-      textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON',
-      textToFind: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-DOSSIER',
-      textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
-      textToFind: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
-    })
 
     // missing documents detail
     recallInformation.assertElementHasText({

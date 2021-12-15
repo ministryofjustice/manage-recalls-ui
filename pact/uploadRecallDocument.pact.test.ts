@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { addRecallDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
-import addRecallDocumentResponseJson from '../fake-manage-recalls-api/stubs/__files/add-recall-document.json'
+import addRecallDocumentResponseJson from '../fake-manage-recalls-api/stubs/__files/upload-recall-document.json'
 import { pactPostRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
@@ -18,20 +18,20 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('create recall documents', () => {
-    test('can successfully create a document', async () => {
+  describe('upload recall documents', () => {
+    test('can successfully upload a document', async () => {
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
         ...pactPostRequest(
-          'a create recall document request',
-          `/recalls/${recallId}/documents`,
+          'an upload recall document request',
+          `/recalls/${recallId}/documents/uploaded`,
           { category, fileContent, fileName },
           accessToken
         ),
         willRespondWith: pactJsonResponse(Matchers.like(addRecallDocumentResponseJson), 201),
       })
 
-      const actual = await addRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
+      const actual = await uploadRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
 
       expect(actual).toEqual(addRecallDocumentResponseJson)
     })
@@ -40,8 +40,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
         ...pactPostRequest(
-          'an unauthorized create recall document request',
-          `/recalls/${recallId}/documents`,
+          'an unauthorized upload recall document request',
+          `/recalls/${recallId}/documents/uploaded`,
           { category, fileContent, fileName },
           accessToken
         ),
@@ -49,7 +49,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await addRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
+        await uploadRecallDocument(recallId, { category, fileContent, fileName }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { uploadDocumentVersionFormHandler } from './uploadDocumentVersionFormHandler'
-import { addRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { uploadStorageField } from './helpers/uploadStorage'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
@@ -23,7 +23,7 @@ describe('uploadDocumentVersionFormHandler', () => {
   afterEach(() => jest.resetAllMocks())
 
   it('creates errors for a failed save to the API', done => {
-    ;(addRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
+    ;(uploadRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'licence.pdf',
@@ -46,7 +46,7 @@ describe('uploadDocumentVersionFormHandler', () => {
   })
 
   it('creates an error for a failed save to the API due to a virus', done => {
-    ;(addRecallDocument as jest.Mock).mockRejectedValue({
+    ;(uploadRecallDocument as jest.Mock).mockRejectedValue({
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
@@ -73,7 +73,7 @@ describe('uploadDocumentVersionFormHandler', () => {
   })
 
   it('creates an error for a file with either an invalid file extension or MIME type', done => {
-    ;(addRecallDocument as jest.Mock).mockResolvedValue({
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
@@ -85,7 +85,7 @@ describe('uploadDocumentVersionFormHandler', () => {
       cb()
     })
     res.redirect = () => {
-      expect(addRecallDocument).not.toHaveBeenCalled()
+      expect(uploadRecallDocument).not.toHaveBeenCalled()
       expect(req.session.errors).toEqual([
         {
           href: '#document',
@@ -104,7 +104,7 @@ describe('uploadDocumentVersionFormHandler', () => {
       cb()
     })
     res.redirect = () => {
-      expect(addRecallDocument).not.toHaveBeenCalled()
+      expect(uploadRecallDocument).not.toHaveBeenCalled()
       expect(req.session.errors).toEqual([
         {
           href: '#document',

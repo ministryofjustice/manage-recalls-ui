@@ -63,7 +63,7 @@ context('Assess a recall', () => {
       },
     })
     cy.task('expectUpdateRecall', recallId)
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.task('expectUnassignAssessment', { expectedResult: getRecallResponse })
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
@@ -276,7 +276,7 @@ context('Assess a recall', () => {
   })
 
   it('User sees an error if an upload has a virus', () => {
-    cy.task('expectAddRecallDocument', {
+    cy.task('expectUploadRecallDocument', {
       statusCode: 400,
       responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })

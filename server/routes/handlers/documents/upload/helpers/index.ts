@@ -1,11 +1,11 @@
 import { NamedFormError, UrlInfo } from '../../../../../@types'
 import { documentCategories } from '../../documentCategories'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { AddDocumentResponse } from '../../../../../@types/manage-recalls-api/models/AddDocumentResponse'
+import { NewDocumentResponse } from '../../../../../@types/manage-recalls-api/models/NewDocumentResponse'
 import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
 import { makeErrorObject } from '../../../helpers'
 import { DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../../@types/documents'
-import { addRecallDocument } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 
 export const makeMetaDataForFile = (
@@ -52,7 +52,7 @@ export const listMissingRequiredDocs = (docs: RecallDocument[]): string[] => {
 
 export const listFailedUploads = (
   fileData: UploadedFileMetadata[],
-  responses: PromiseSettledResult<AddDocumentResponse>[]
+  responses: PromiseSettledResult<NewDocumentResponse>[]
 ): NamedFormError[] | null =>
   responses
     .map((result, idx) => {
@@ -85,7 +85,7 @@ export const saveUploadedFiles = async ({
     const responses = await Promise.allSettled(
       uploadsToSave.map(file => {
         const { category, fileContent, originalFileName } = file
-        return addRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, token)
+        return uploadRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, token)
       })
     )
     return listFailedUploads(uploadsToSave, responses)

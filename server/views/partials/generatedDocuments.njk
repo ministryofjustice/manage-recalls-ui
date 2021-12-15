@@ -7,9 +7,24 @@
             </dt>
             <dd class=" govuk-summary-list__value">
                 {%  if recall.documentsGenerated[category.name] %}
-                <a class='govuk-link' href='{{ recall.documentsGenerated[category.name].url }}' target='_blank' data-qa='appGeneratedDocuments-{{ category.name }}'>{{ recall.documentsGenerated[category.name].fileName }}</a>
+                    <a class='govuk-link' href='{{ recall.documentsGenerated[category.name].url }}' target='_blank' data-qa='appGeneratedDocuments-{{ category.name }}'>{{ recall.documentsGenerated[category.name].fileName }}</a>
+                    {% if recall.documentsGenerated[category.name].version > 1 %}
+                        <div class='govuk-!-margin-bottom-4'>
+                        (<span data-qa='appGeneratedDocuments-{{ category.name }}-version'>version {{ recall.documentsGenerated[category.name].version }}</span>)
+                        </div>
+                        <pre class='govuk-body' data-qa='appGeneratedDocuments-{{ category.name }}-details'>
+                            {{ recall.documentsGenerated[category.name].details }}
+                        </pre>
+                    {% endif %}
                  {% else %}
-                     <span data-qa='{{ category.name }}NotAvailable'>Not available</span>
+                     <span data-qa='appGeneratedDocuments-{{ category.name }}-not-available'>Not available</span>
+                {% endif %}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                {%  if recall.documentsGenerated[category.name] and category.versioned %}
+                    <a href='{{ changeLinkUrl('generated-document-version', urlInfo, 'documents', '', 'versionedCategoryName=' + category.name) }}'
+                       data-qa='appGeneratedDocuments-{{ category.name }}-Change' class='govuk-link'>Change <span
+                                class="govuk-visually-hidden"> {{ recall.documentsGenerated[category.name].label }}</span></a>
                 {% endif %}
             </dd>
         </div>

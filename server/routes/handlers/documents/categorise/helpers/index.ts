@@ -1,6 +1,6 @@
 import { CategorisedFileMetadata } from '../../../../../@types/documents'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { AddDocumentResponse } from '../../../../../@types/manage-recalls-api/models/AddDocumentResponse'
+import { NewDocumentResponse } from '../../../../../@types/manage-recalls-api/models/NewDocumentResponse'
 import { NamedFormError, ObjectMap } from '../../../../../@types'
 import { makeErrorObject } from '../../../helpers'
 import { setDocumentCategory } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
@@ -22,7 +22,7 @@ export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): 
 
 export const listFailedCategorySaves = (
   fileData: CategorisedFileMetadata[],
-  responses: PromiseSettledResult<AddDocumentResponse>[]
+  responses: PromiseSettledResult<NewDocumentResponse>[]
 ): NamedFormError[] | null =>
   responses
     .map((result, idx) => {

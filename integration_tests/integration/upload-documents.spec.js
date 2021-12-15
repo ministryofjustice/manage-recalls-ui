@@ -6,7 +6,7 @@ import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
 
 const recallInformationPage = require('../pages/recallInformation')
 
-context('Document upload', () => {
+context('Upload documents', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
@@ -34,7 +34,7 @@ context('Document upload', () => {
   it('an uploaded document is listed as uncategorised after upload if it has an unrecognisable filename', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'
-    cy.task('expectAddRecallDocument', { status: 201, responseBody: { documentId } })
+    cy.task('expectUploadRecallDocument', { status: 201, responseBody: { documentId } })
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -65,7 +65,7 @@ context('Document upload', () => {
   it("a document is given a suggested category if it's uncategorised and has a recognisable filename", () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     const documentId = '123'
-    cy.task('expectAddRecallDocument', { status: 201, responseBody: { documentId } })
+    cy.task('expectUploadRecallDocument', { status: 201, responseBody: { documentId } })
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -316,7 +316,7 @@ context('Document upload', () => {
   })
 
   it('an error is shown for an upload that fails to save to the API', () => {
-    cy.task('expectAddRecallDocument', { statusCode: 500 })
+    cy.task('expectUploadRecallDocument', { statusCode: 500 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.uploadSingleFile({
       filePath: '../uploads/test.pdf',
@@ -329,7 +329,7 @@ context('Document upload', () => {
   })
 
   it('an error is shown for an upload containing a virus', () => {
-    cy.task('expectAddRecallDocument', {
+    cy.task('expectUploadRecallDocument', {
       statusCode: 400,
       responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })

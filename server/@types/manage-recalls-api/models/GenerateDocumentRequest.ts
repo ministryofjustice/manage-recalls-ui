@@ -2,15 +2,12 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UpdateDocumentResponse = {
-    category: UpdateDocumentResponse.category;
-    details?: string;
-    documentId: string;
-    fileName: string;
-    recallId: string;
+export type GenerateDocumentRequest = {
+    category: GenerateDocumentRequest.category;
+    details: string;
 }
 
-export namespace UpdateDocumentResponse {
+export namespace GenerateDocumentRequest {
 
     export enum category {
         CHARGE_SHEET = 'CHARGE_SHEET',

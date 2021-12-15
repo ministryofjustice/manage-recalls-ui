@@ -131,7 +131,7 @@ context('Create a dossier', () => {
         ],
       },
     })
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectUploadRecallDocument', { statusCode: 201 })
     const fileName = 'email.msg'
     cy.task('expectGetRecallDocument', {
       category: 'DOSSIER_EMAIL',

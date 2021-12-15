@@ -48,7 +48,7 @@ context('Book a recall', () => {
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectUpdateRecall', recallId)
-    cy.task('expectAddRecallDocument', { statusCode: 201 })
+    cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
     cy.task('expectSetDocumentCategory')
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
