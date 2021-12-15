@@ -10,9 +10,9 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const category = 'REVOCATION_ORDER'
-  const detail = 'Details changed.'
+  const details = 'Details changed.'
   const url = `/recalls/${recallId}/documents/generated`
-  const requestBody = { category, detail }
+  const requestBody = { category, details }
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
