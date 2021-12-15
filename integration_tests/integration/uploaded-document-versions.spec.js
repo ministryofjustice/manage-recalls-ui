@@ -84,7 +84,7 @@ context('Uploaded document versions', () => {
     })
     uploadDocumentVersion.clickContinue()
     uploadDocumentVersion.assertApiRequestBody({
-      url: `/recalls/${recallId}/documents`,
+      url: `/recalls/${recallId}/documents/uploaded`,
       method: 'POST',
       bodyValues: {
         category: 'PART_A_RECALL_REPORT',
