@@ -120,10 +120,6 @@ export function addUserDetails(data: AddUserDetailsRequest, token: string): Prom
   return restClient(token).post<UserDetailsResponse>({ path: '/users', data })
 }
 
-export function getUserDetails(userId: string, token: string): Promise<UserDetailsResponse> {
-  return restClient(token).get<UserDetailsResponse>({ path: `/users/${userId}` })
-}
-
 export function getCurrentUserDetails(token: string): Promise<UserDetailsResponse> {
   return restClient(token).get<UserDetailsResponse>({ path: `/users/current` })
 }
