@@ -24,7 +24,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         state: 'a user and a fully populated recall without documents exists',
         ...pactPostRequest(
           'an upload recall document request',
-          `/recalls/${recallId}/documents`,
+          `/recalls/${recallId}/documents/uploaded`,
           { category, fileContent, fileName },
           accessToken
         ),
@@ -41,7 +41,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         state: 'an unauthorized user accessToken',
         ...pactPostRequest(
           'an unauthorized upload recall document request',
-          `/recalls/${recallId}/documents`,
+          `/recalls/${recallId}/documents/uploaded`,
           { category, fileContent, fileName },
           accessToken
         ),
