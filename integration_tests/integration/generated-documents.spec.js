@@ -82,6 +82,8 @@ context('Generated document versions', () => {
   })
 
   it('all generated documents are listed and user can generate a new document version', () => {
+    const changeLinkHref =
+      '/persons/A1234AA/recalls/123/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName='
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     // show link, version number, detail for a document with verion > 1
     recallInformation.assertElementHasText({
@@ -100,22 +102,33 @@ context('Generated document versions', () => {
       qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
       textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
     })
-    recallInformation.assertElementPresent({ qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER-Change' })
+    recallInformation.assertLinkHref({
+      qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER-Change',
+      href: `${changeLinkHref}REVOCATION_ORDER`,
+    })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON',
       textToFind: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
     })
-    recallInformation.assertElementNotPresent({ qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON-Change' })
+    recallInformation.assertElementNotPresent({
+      qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON-Change',
+    })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-DOSSIER',
       textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
     })
-    recallInformation.assertElementPresent({ qaAttr: 'appGeneratedDocuments-DOSSIER-Change' })
+    recallInformation.assertLinkHref({
+      qaAttr: 'appGeneratedDocuments-DOSSIER-Change',
+      href: `${changeLinkHref}DOSSIER`,
+    })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
       textToFind: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
     })
-    recallInformation.assertElementPresent({ qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL-Change' })
+    recallInformation.assertLinkHref({
+      qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL-Change',
+      href: `${changeLinkHref}REASONS_FOR_RECALL`,
+    })
 
     // create a new version of recall notification
     recallInformation.clickElement({ qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-Change' })
