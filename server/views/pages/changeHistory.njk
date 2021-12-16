@@ -46,7 +46,43 @@
               });
             </script>
             {% else %}
-            <p class='govuk-body'>No documents uploaded</p>
+            <h2 class="govuk-heading-m">Uploaded</h2>
+            <p class='govuk-body'>No documents</p>
+            {% endif %}
+
+            {% set generatedDocs = sortList(objectToArray(recall.documentsGenerated), 'fileName') %}
+            {% if generatedDocs.length %}
+                <table class="govuk-table" id="table-generated" data-module="moj-sortable-table" data-qa='generatedDocuments'>
+                    <caption class="govuk-table__caption govuk-table__caption--m">Generated</caption>
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header govuk-!-width-one-third" aria-sort="ascending">Document</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Date and time</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">User</th>
+                    </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                    {% for document in generatedDocs %}
+                        <tr class="govuk-table__row" data-qa='{{ document.category }}'>
+                            <td class="govuk-table__cell" data-sort-value='{{ document.fileName }}' data-qa='fileName'>
+                                <a class='govuk-link' href='{{ document.url }}' target='_blank' data-qa='generatedDocument-{{ document.category }}'>{{ document.fileName }}</a>
+                                {% if document.version > 1 %} (<span data-qa='generatedDocument-{{ document.category }}-version'>version {{ document.version }}</span>) {% endif %}
+                            </td>
+                            <td class="govuk-table__cell" data-sort-value='{{ isoDateToMillis(document.createdDateTime) }}' data-qa='createdDateTime'>{{ document.createdDateTime | dateTime }}</td>
+                            <td class="govuk-table__cell" data-qa='createdByUserName'>{{ document.createdByUserName }}</td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <script nonce='{{ cspNonce }}'>
+                  new MOJFrontend.SortableTable({
+                    table: $('#table-generated')[0]
+                  });
+                </script>
+            {% else %}
+                <h2 class="govuk-heading-m">Generated</h2>
+                <p class='govuk-body'>No documents</p>
             {% endif %}
         </div>
     </div>

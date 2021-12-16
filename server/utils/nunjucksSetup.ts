@@ -22,7 +22,7 @@ import {
   recallStatusTagProperties,
   selectDocCategory,
 } from './nunjucksFunctions'
-import { isDefined, listDocumentLabels, sortList } from '../routes/handlers/helpers'
+import { isDefined, listDocumentLabels, objectToArray, sortList } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { isoDateToMillis } from '../routes/handlers/helpers/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
@@ -78,6 +78,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('generatedDocCategoriesList', generatedDocCategoriesList)
   njkEnv.addGlobal('sortList', sortList)
   njkEnv.addGlobal('selectDocCategory', selectDocCategory)
+  njkEnv.addGlobal('objectToArray', objectToArray)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)

@@ -32,14 +32,16 @@ module.exports = (name, pageObject = {}) => {
 
   const clickContinue = () => cy.get('[data-qa=continueButton]').click()
 
-  const clickElementByAttrOrLabel = ({ qaAttr, label, tagName }) => {
+  const clickElementByAttrOrLabel = ({ parentQaAttr, qaAttr, label, tagName }) => {
+    const parent = parentQaAttr ? `[data-qa="${parentQaAttr}"]` : 'body'
     if (qaAttr) {
-      clickElement({ qaAttr })
+      cy.get(parent).find(`[data-qa="${qaAttr}"]`).click()
     } else if (label) {
-      cy.get(tagName).contains(label).click()
+      cy.get(parent).find(tagName).contains(label).click()
     }
   }
-  const clickButton = ({ qaAttr, label }) => clickElementByAttrOrLabel({ qaAttr, label, tagName: 'button' })
+  const clickButton = ({ parentQaAttr, qaAttr, label }) =>
+    clickElementByAttrOrLabel({ parentQaAttr, qaAttr, label, tagName: 'button' })
 
   const clickLink = ({ qaAttr, label }) => clickElementByAttrOrLabel({ qaAttr, label, tagName: 'a' })
 
