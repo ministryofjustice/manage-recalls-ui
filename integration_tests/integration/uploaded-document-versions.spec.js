@@ -42,6 +42,7 @@ context('Uploaded document versions', () => {
             documentId,
             version: 2,
             createdDateTime: '2021-11-21T12:34:30.000Z',
+            details: 'Some details',
           },
         ],
       },
