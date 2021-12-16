@@ -1,4 +1,4 @@
-<h2 class='govuk-heading-m govuk-!-margin-top-9' id='recall-documents'>Recall documents</h2>
+<h2 class='govuk-heading-m govuk-!-margin-top-9' id='generated-documents'>Recall documents</h2>
 <dl class="govuk-summary-list">
     {% for category in generatedDocCategoriesList() %}
         <div class="govuk-summary-list__row">
@@ -22,7 +22,7 @@
             </dd>
             <dd class=" govuk-summary-list__actions">
                 {%  if recall.documentsGenerated[category.name] and category.versioned %}
-                    <a href='{{ changeLinkUrl('generated-document-version', urlInfo, 'documents', '', 'versionedCategoryName=' + category.name) }}'
+                    <a href='{{ changeLinkUrl('generated-document-version', urlInfo, 'generated-documents', '', 'versionedCategoryName=' + category.name) }}'
                        data-qa='appGeneratedDocuments-{{ category.name }}-Change' class='govuk-link'>Change <span
                                 class="govuk-visually-hidden"> {{ recall.documentsGenerated[category.name].label }}</span></a>
                 {% endif %}

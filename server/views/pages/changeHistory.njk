@@ -46,7 +46,8 @@
               });
             </script>
             {% else %}
-            <p class='govuk-body'>No documents uploaded</p>
+            <h2 class="govuk-heading-m">Uploaded</h2>
+            <p class='govuk-body'>No documents</p>
             {% endif %}
 
             {% set generatedDocs = sortList(objectToArray(recall.documentsGenerated), 'fileName') %}
@@ -80,6 +81,7 @@
                   });
                 </script>
             {% else %}
+                <h2 class="govuk-heading-m">Generated</h2>
                 <p class='govuk-body'>No documents</p>
             {% endif %}
         </div>
