@@ -11,7 +11,7 @@ import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 export const makeMetaDataForFile = (
   file: Express.Multer.File,
   categoryName: RecallDocument.category,
-  details: string
+  details?: string
 ): UploadedFileMetadata => {
   const documentCategory = findDocCategory(categoryName)
   return {
@@ -29,7 +29,7 @@ export const makeMetaDataForFile = (
 export const getMetadataForUploadedFiles = (
   files: Express.Multer.File[],
   categoryName: RecallDocument.category,
-  details: string
+  details?: string
 ): UploadedFileMetadata[] => {
   return files ? files.map(file => makeMetaDataForFile(file, categoryName, details)) : []
 }
