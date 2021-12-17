@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const uploadedDocumentHistoryPage = ({ nomsNumber, recallId, category } = {}) =>
-  page('Uploaded document change history', {
+const changeHistoryDocumentPage = ({ nomsNumber, recallId, category, isUploaded } = {}) =>
+  page(`${isUploaded ? 'Uploaded' : 'Generated'} document change history`, {
     url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/change-history/document?category=${category}` : null,
   })
 
-module.exports = { verifyOnPage: uploadedDocumentHistoryPage }
+module.exports = { verifyOnPage: changeHistoryDocumentPage }

@@ -241,7 +241,7 @@ context('Book a recall', () => {
         recallId,
         documents: [
           {
-            documentId: 'ea443809-4b29-445a-8c36-3ff259f48b03',
+            documentId: '456',
             category: 'RECALL_REQUEST_EMAIL',
             fileName: 'email.msg',
           },
@@ -252,6 +252,10 @@ context('Book a recall', () => {
     recallRequestReceived.assertElementHasText({
       qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL',
       textToFind: 'email.msg',
+    })
+    recallRequestReceived.assertLinkHref({
+      qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL',
+      href: '/persons/A1234AA/recalls/123/documents/456',
     })
   })
 

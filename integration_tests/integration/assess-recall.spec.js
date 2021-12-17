@@ -71,11 +71,6 @@ context('Assess a recall', () => {
     cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
   })
 
-  const checkDownload = fileName => {
-    const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
-    cy.readFile(downloadedFilename, 'binary')
-  }
-
   it('User can view recall information before assessing', () => {
     cy.login()
     const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
@@ -330,19 +325,5 @@ context('Assess a recall', () => {
       qaAttr: 'uploadedDocument-RECALL_NOTIFICATION_EMAIL',
       textToFind: 'email.msg',
     })
-  })
-
-  it('user can download request email from recall info page', () => {
-    cy.login()
-    assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
-    const fileName = 'recall-request.eml'
-    cy.task('expectGetRecallDocument', {
-      category: 'RECALL_REQUEST_EMAIL',
-      file: 'abc',
-      fileName,
-      documentId: '123',
-    })
-    cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
-    checkDownload(fileName)
   })
 })

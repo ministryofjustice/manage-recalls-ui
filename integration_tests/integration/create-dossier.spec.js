@@ -86,6 +86,13 @@ context('Create a dossier', () => {
     })
     dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
     dossierRecall.assertElementNotPresent({ qaAttr: 'recallNotificationEmailSentDateTime' })
+
+    // generated document
+    dossierRecall.assertLinkHref({
+      qaAttr: 'generatedDocument-REVOCATION_ORDER',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/9876`,
+    })
+
     // uploaded documents
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
@@ -94,10 +101,6 @@ context('Create a dossier', () => {
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
       href: `/persons/${nomsNumber}/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
-    })
-    dossierRecall.assertLinkHref({
-      qaAttr: 'generatedDocument-REVOCATION_ORDER',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/9876`,
     })
 
     // change link for an uploaded document goes to the 'add new document version' page

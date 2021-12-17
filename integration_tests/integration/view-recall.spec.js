@@ -1,4 +1,3 @@
-import path from 'path'
 import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
 
 const recallInformationPage = require('../pages/recallInformation')
@@ -104,34 +103,38 @@ context('View a recall', () => {
   })
 
   it('user can download all uploaded emails', () => {
-    recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
-    const mockFileDownload = ({ fileName, docCategory }) => {
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const mockFileDownload = ({ fileName, category }) => {
       cy.task('expectGetRecallDocument', {
-        category: docCategory,
+        category,
         file: 'abc',
         fileName,
         documentId: '123',
       })
     }
-    const checkDownload = fileName => {
-      const downloadedFilename = path.join(Cypress.config('downloadsFolder'), fileName)
-      cy.readFile(downloadedFilename, 'binary')
-    }
+
+    // recall request
     let fileName = 'recall-request.eml'
-    mockFileDownload({ fileName, docCategory: 'RECALL_REQUEST_EMAIL' })
-    cy.get(`[data-qa="uploadedDocument-RECALL_REQUEST_EMAIL"]`).click()
-    checkDownload(fileName)
+    mockFileDownload({ fileName, category: 'RECALL_REQUEST_EMAIL' })
+    recallInformation.clickButton({ qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL' })
+    recallInformation.checkFileDownloaded(fileName)
 
+    // sent recall notification email
     fileName = '2021-07-03 Phil Jones recall.msg'
-    mockFileDownload({ fileName, docCategory: 'RECALL_NOTIFICATION_EMAIL' })
-    cy.get(`[data-qa="uploadedDocument-RECALL_NOTIFICATION_EMAIL"]`).click()
+    mockFileDownload({ fileName, category: 'RECALL_NOTIFICATION_EMAIL' })
+    recallInformation.clickButton({ qaAttr: 'uploadedDocument-RECALL_NOTIFICATION_EMAIL' })
+    recallInformation.checkFileDownloaded(fileName)
 
-    checkDownload(fileName)
-    cy.get(`[data-qa="uploadedDocument-DOSSIER_EMAIL"]`).click()
-    cy.readFile(path.join(Cypress.config('downloadsFolder'), fileName), 'binary')
-    fileName = 'chase-documents.msg'
-    mockFileDownload({ fileName, docCategory: 'MISSING_DOCUMENTS_EMAIL' })
-    cy.readFile(path.join(Cypress.config('downloadsFolder'), fileName), 'binary')
-    cy.get(`[data-qa="uploadedDocument-MISSING_DOCUMENTS_EMAIL"]`).click()
+    // sent dossier email
+    fileName = 'dossier-email.msg'
+    mockFileDownload({ fileName, category: 'RECALL_REQUEST_EMAIL' })
+    recallInformation.clickButton({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL' })
+    recallInformation.checkFileDownloaded(fileName)
+
+    // sent missing documents email
+    fileName = 'missing-documents.msg'
+    mockFileDownload({ fileName, category: 'MISSING_DOCUMENTS_EMAIL' })
+    recallInformation.clickButton({ qaAttr: 'uploadedDocument-MISSING_DOCUMENTS_EMAIL' })
+    recallInformation.checkFileDownloaded(fileName)
   })
 })
