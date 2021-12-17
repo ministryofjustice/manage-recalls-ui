@@ -42,7 +42,14 @@ npm run start:dev
 ```
 
 #### Debugging in Chrome Developer Tools
-See e.g. https://github.com/ministryofjustice/hmpps-manage-recalls-prototype#to-debug-the-nodejs-app
+1. open the app in Chrome browser
+2. open devtools (CMD + Option + I)
+3. click the green cube at top left of devtools, to open the Node.js debugger
+4. click the "Sources" tab
+5. CMD + O to open a source file eg 'server.js'
+6. click in the left-hand gutter to place a breakpoint
+7. in the browser, navigate to the correct page or perform an action to trigger the breakpoint (eg submit a form)
+8. use the debugger tools to play, step over or step into
 
 #### Debugging in IntelliJ IDEA
 IDEA supports debugging of the typescript source via attaching to a running node process
