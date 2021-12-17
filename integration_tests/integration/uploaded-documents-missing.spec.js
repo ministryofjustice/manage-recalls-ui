@@ -82,7 +82,7 @@ context('Missing uploaded documents', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertListValues({
       qaAttrList: 'missingDocsList',
-      valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys Risk Assessment'],
+      valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys report'],
     })
   })
 

@@ -186,28 +186,28 @@ export const recallStatusTagProperties = (status: RecallResponse.status) => {
     case RecallResponse.status.DOSSIER_ISSUED:
       return {
         ...defaults,
-        text: 'Dossier issued',
+        text: 'Dossier complete',
         classes: `govuk-tag--green`,
       }
     case RecallResponse.status.BEING_BOOKED_ON:
       return {
         ...defaults,
-        text: 'Being booked on',
+        text: 'Booking in progress',
       }
     case RecallResponse.status.BOOKED_ON:
       return {
         ...defaults,
-        text: 'Booked on',
+        text: 'Booking complete',
       }
     case RecallResponse.status.IN_ASSESSMENT:
       return {
         ...defaults,
-        text: 'In assessment',
+        text: 'Assessment in progress',
       }
     case RecallResponse.status.RECALL_NOTIFICATION_ISSUED:
       return {
         ...defaults,
-        text: 'Recall notification issued',
+        text: 'Assessment complete',
       }
     case RecallResponse.status.DOSSIER_IN_PROGRESS:
       return {

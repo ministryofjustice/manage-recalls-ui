@@ -62,7 +62,7 @@ context('View a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'bookedByUserName', textToFind: 'Brenda Badger' })
     recallInformation.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
 
-    recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier issued' })
+    recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
 
     // missing documents detail
     recallInformation.assertElementHasText({

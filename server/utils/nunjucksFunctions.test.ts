@@ -382,21 +382,14 @@ describe('recallStatusTagProperties', () => {
       attributes: {
         'data-qa': 'recallStatus',
       },
-      text: 'Dossier issued',
+      text: 'Dossier complete',
       classes: `govuk-tag--green`,
     })
     expect(recallStatusTagProperties(RecallResponse.status.RECALL_NOTIFICATION_ISSUED)).toEqual({
       attributes: {
         'data-qa': 'recallStatus',
       },
-      text: 'Recall notification issued',
-      classes: `govuk-tag--orange`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.RECALL_NOTIFICATION_ISSUED)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Recall notification issued',
+      text: 'Assessment complete',
       classes: `govuk-tag--orange`,
     })
     expect(recallStatusTagProperties(RecallResponse.status.DOSSIER_IN_PROGRESS)).toEqual({
@@ -410,21 +403,21 @@ describe('recallStatusTagProperties', () => {
       attributes: {
         'data-qa': 'recallStatus',
       },
-      text: 'Being booked on',
+      text: 'Booking in progress',
       classes: `govuk-tag--orange`,
     })
     expect(recallStatusTagProperties(RecallResponse.status.BOOKED_ON)).toEqual({
       attributes: {
         'data-qa': 'recallStatus',
       },
-      text: 'Booked on',
+      text: 'Booking complete',
       classes: `govuk-tag--orange`,
     })
     expect(recallStatusTagProperties(RecallResponse.status.IN_ASSESSMENT)).toEqual({
       attributes: {
         'data-qa': 'recallStatus',
       },
-      text: 'In assessment',
+      text: 'Assessment in progress',
       classes: `govuk-tag--orange`,
     })
     expect(recallStatusTagProperties(RecallResponse.status.STOPPED)).toEqual({
