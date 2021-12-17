@@ -86,6 +86,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'differentNomsNumberDetail',
     'previousConvictionMainName',
     'previousConvictionMainNameCategory',
+    'licenceNameCategory',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })
