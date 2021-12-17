@@ -52,6 +52,11 @@ Or run tests with the cypress UI:
 
 `npm run int-test-ui`
 
+In case you change the application code while running Cypress, you will need to restart the app:
+
+`npm run kill
+npm run start:feature`
+
 To get debug output when running cypress:
 
 `DEBUG=cypress:* npm run int-test-ui`
@@ -64,6 +69,16 @@ to the following error a restart of IDEA should fix this:
 ```
 Could not load reporter by name: /var/folders/lq ... intellij-cypress-reporter ,,,
 ```
+
+## Debugging the node app with running Cypress
+[Running Chrome debugger](./running-app.md)
+
+## Debugging the Cypress test code
+1. open dev tools
+2. do not click on the node symbol (green kube), instead go to Sources tab
+3. `cmd + O` in order to open file search
+4. put a break point on the needed line or type the word `debugger` in the cypress code and save if break points are unreliable 
+5. rerun the test 
 
 ## Pre-commit hooks
 After `npm install`, files will be created under both .git/hooks and .husky, that will automatically lint (and fix) any staged files in your commits, plus run a type check.

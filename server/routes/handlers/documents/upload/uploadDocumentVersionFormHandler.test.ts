@@ -14,6 +14,7 @@ describe('uploadDocumentVersionFormHandler', () => {
     session: {},
     body: {
       categoryName: 'LICENCE',
+      details: 'Random details',
     },
   }
   const res = {

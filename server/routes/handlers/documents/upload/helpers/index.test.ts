@@ -30,15 +30,18 @@ describe('enableDeleteDocuments', () => {
 
 describe('makeMetaDataForFile', () => {
   it('uses the supplied category', () => {
+    const details = 'Extra details'
     const result = makeMetaDataForFile(
       {
         originalname: 'test.pdf',
         mimetype: 'application/pdf',
         buffer: Buffer.from('def', 'base64'),
       } as Express.Multer.File,
-      RecallDocument.category.LICENCE
+      RecallDocument.category.LICENCE,
+      details
     )
     expect(result.category).toEqual(RecallDocument.category.LICENCE)
+    expect(result.details).toEqual(details)
   })
 })
 

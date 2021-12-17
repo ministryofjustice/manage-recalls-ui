@@ -4,7 +4,7 @@ import { uploadStorageField } from './helpers/uploadStorage'
 import { makeMetaDataForFile } from './helpers'
 import { validateUploadedFileTypes } from './validations/validateDocuments'
 import logger from '../../../../../logger'
-import { errorMsgDocumentUpload } from '../../helpers/errorMessages'
+import { errorMsgDocumentUpload, errorMsgProvideDetail } from '../../helpers/errorMessages'
 import { makeErrorObject } from '../../helpers'
 import { uploadRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 
@@ -27,13 +27,22 @@ export const uploadDocumentVersionFormHandler = async (req: Request, res: Respon
           }),
         ]
       } else {
-        const uploadedFileData = makeMetaDataForFile(file, body.categoryName)
+        const uploadedFileData = makeMetaDataForFile(file, body.categoryName, body.details)
         const { errors: invalidFileTypeErrors } = validateUploadedFileTypes([uploadedFileData], 'document')
         session.errors = invalidFileTypeErrors
+        if (!req.body.details) {
+          session.errors = [
+            ...(session.errors || []),
+            makeErrorObject({
+              id: 'details',
+              text: errorMsgProvideDetail,
+            }),
+          ]
+        }
         if (!session.errors) {
-          const { category, fileContent, originalFileName } = uploadedFileData
+          const { category, fileContent, originalFileName, details } = uploadedFileData
           try {
-            await uploadRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, token)
+            await uploadRecallDocument(recallId, { category, fileContent, fileName: originalFileName, details }, token)
           } catch (err) {
             if (err.data?.message === 'VirusFoundException') {
               session.errors = [

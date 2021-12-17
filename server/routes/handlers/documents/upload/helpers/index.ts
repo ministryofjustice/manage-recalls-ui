@@ -10,7 +10,8 @@ import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 
 export const makeMetaDataForFile = (
   file: Express.Multer.File,
-  categoryName: RecallDocument.category
+  categoryName: RecallDocument.category,
+  details?: string
 ): UploadedFileMetadata => {
   const documentCategory = findDocCategory(categoryName)
   return {
@@ -21,14 +22,16 @@ export const makeMetaDataForFile = (
     labelLowerCase: documentCategory.labelLowerCase,
     category: documentCategory.name,
     fileContent: file.buffer.toString('base64'),
+    details,
   }
 }
 
 export const getMetadataForUploadedFiles = (
   files: Express.Multer.File[],
-  categoryName: RecallDocument.category
+  categoryName: RecallDocument.category,
+  details?: string
 ): UploadedFileMetadata[] => {
-  return files ? files.map(file => makeMetaDataForFile(file, categoryName)) : []
+  return files ? files.map(file => makeMetaDataForFile(file, categoryName, details)) : []
 }
 
 export const uploadedDocCategoriesList = (): DocumentCategoryMetadata[] =>
@@ -84,8 +87,8 @@ export const saveUploadedFiles = async ({
   if (uploadsToSave?.length) {
     const responses = await Promise.allSettled(
       uploadsToSave.map(file => {
-        const { category, fileContent, originalFileName } = file
-        return uploadRecallDocument(recallId, { category, fileContent, fileName: originalFileName }, token)
+        const { category, fileContent, originalFileName, details } = file
+        return uploadRecallDocument(recallId, { category, fileContent, fileName: originalFileName, details }, token)
       })
     )
     return listFailedUploads(uploadsToSave, responses)

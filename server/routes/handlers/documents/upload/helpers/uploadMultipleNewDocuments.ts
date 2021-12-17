@@ -24,7 +24,8 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
   } else {
     const uploadedFileData = getMetadataForUploadedFiles(
       files as Express.Multer.File[],
-      RecallDocument.category.UNCATEGORISED
+      RecallDocument.category.UNCATEGORISED,
+      body.details
     )
     const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFileTypes(
       uploadedFileData,
