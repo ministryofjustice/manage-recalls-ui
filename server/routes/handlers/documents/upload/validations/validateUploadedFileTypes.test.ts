@@ -1,5 +1,5 @@
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { validateUploadedFileTypes } from './validateDocuments'
+import { validateUploadedFileTypes } from './validateUploadedFileTypes'
 
 describe('validateUploadedFileTypes', () => {
   it('returns errors for any docs with invalid file extensions or MIME types', () => {

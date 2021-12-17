@@ -12,24 +12,50 @@ describe('uploadDocumentVersionFormHandler', () => {
       recallId: '123',
     },
     session: {},
-    body: {
-      categoryName: 'LICENCE',
-      details: 'Random details',
-    },
+    body: {},
   }
   const res = {
-    locals: { user: {}, urlInfo: {} },
+    locals: { user: { token: 'token' }, urlInfo: {} },
   }
 
   afterEach(() => jest.resetAllMocks())
 
-  it('creates errors for a failed save to the API', done => {
+  it('saves the file and details', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'licence.pdf',
+        buffer: 'abc',
+        mimetype: 'application/pdf',
+      }
+      req.body = {
+        categoryName: 'LICENCE',
+        details: 'Random details',
+      }
+      cb()
+    })
+    res.redirect = () => {
+      expect(uploadRecallDocument).toHaveBeenCalledWith(
+        '123',
+        { category: 'LICENCE', details: 'Random details', fileContent: 'abc', fileName: 'licence.pdf' },
+        'token'
+      )
+      expect(req.session.errors).toBeUndefined()
+      done()
+    }
+    uploadDocumentVersionFormHandler(req, res)
+  })
+
+  it('creates an error for a failed save to the API', done => {
     ;(uploadRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'licence.pdf',
         buffer: 'abc',
         mimetype: 'application/pdf',
+      }
+      req.body = {
+        categoryName: 'LICENCE',
+        details: 'Random details',
       }
       cb()
     })
@@ -58,6 +84,10 @@ describe('uploadDocumentVersionFormHandler', () => {
           mimetype: 'application/pdf',
         },
       ]
+      req.body = {
+        categoryName: 'LICENCE',
+        details: 'Random details',
+      }
       cb()
     })
     res.redirect = () => {
@@ -83,6 +113,10 @@ describe('uploadDocumentVersionFormHandler', () => {
         buffer: 'abc',
         mimetype: 'application/msword',
       }
+      req.body = {
+        categoryName: 'LICENCE',
+        details: 'Random details',
+      }
       cb()
     })
     res.redirect = () => {
@@ -102,6 +136,10 @@ describe('uploadDocumentVersionFormHandler', () => {
   it('creates an error if no file is uploaded', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = undefined
+      req.body = {
+        categoryName: 'LICENCE',
+        details: 'Random details',
+      }
       cb()
     })
     res.redirect = () => {
@@ -116,5 +154,46 @@ describe('uploadDocumentVersionFormHandler', () => {
       done()
     }
     uploadDocumentVersionFormHandler(req, res)
+  })
+
+  it('creates an error if no detail is provided', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'licence.pdf',
+        buffer: 'abc',
+        mimetype: 'application/pdf',
+      }
+      req.body = {
+        categoryName: 'LICENCE',
+      }
+      cb()
+    })
+    res.redirect = () => {
+      expect(uploadRecallDocument).not.toHaveBeenCalled()
+      expect(req.session.errors).toEqual([
+        {
+          href: '#details',
+          name: 'details',
+          text: 'Provide more detail',
+        },
+      ])
+      done()
+    }
+    uploadDocumentVersionFormHandler(req, res)
+  })
+
+  it('throws an error if an invalid category is supplied', async () => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.body = {
+        categoryName: 'RECALL_NOTIFICATION',
+        details: 'Some',
+      }
+      cb()
+    })
+    try {
+      await uploadDocumentVersionFormHandler(req, res)
+    } catch (err) {
+      expect(err.message).toEqual('Invalid category')
+    }
   })
 })

@@ -1,7 +1,8 @@
-import { listToString, makeErrorObject } from '../../../helpers'
+import { makeErrorObject } from '../../../helpers'
 import { allowedDocumentFileExtensions } from '../helpers/allowedUploadExtensions'
 import { AllowedUploadFileType, UploadedFileMetadata } from '../../../../../@types/documents'
 import { NamedFormError } from '../../../../../@types'
+import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 
 export const isInvalidFileType = (file: UploadedFileMetadata, allowedExtensions: AllowedUploadFileType[]) => {
   return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)
@@ -23,10 +24,7 @@ export const validateUploadedFileTypes = (
       errors.push(
         makeErrorObject({
           id: fileUploadInputName,
-          text: `The selected file '${file.originalFileName}' must be a ${listToString(
-            allowedDocumentFileExtensions.map(ext => ext.label),
-            'or'
-          )}`,
+          text: errorMsgDocumentUpload.invalidFileFormat(file.originalFileName),
         })
       )
       hasError = true
