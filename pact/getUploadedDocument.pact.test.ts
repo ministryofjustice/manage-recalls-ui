@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getStoredDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { getDocumentWithContents } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getRecallDocumentResponseJson from '../fake-manage-recalls-api/stubs/__files/get-recall-document.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
@@ -23,7 +23,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(getRecallDocumentResponseJson), 200),
       })
 
-      const actual = await getStoredDocument({ recallId, documentId }, accessToken)
+      const actual = await getDocumentWithContents({ recallId, documentId }, accessToken)
 
       expect(actual).toEqual(getRecallDocumentResponseJson)
     })
@@ -40,7 +40,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await getStoredDocument({ recallId, documentId }, accessToken)
+        await getDocumentWithContents({ recallId, documentId }, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

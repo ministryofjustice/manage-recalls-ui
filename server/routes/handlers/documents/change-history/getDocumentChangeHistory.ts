@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { getDocumentCategoryHistory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { findDocCategory } from '../upload/helpers'
-import { RecallDocument } from '../../../../@types/manage-recalls-api'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { isString, sortList } from '../../helpers'
-import { getUploadedDocUrlPath } from '../download/helpers'
+import { getPersonAndRecall } from '../../helpers/fetch/getPersonAndRecall'
+import { generatedDocMetaData, documentDownloadUrl } from '../download/helpers'
 
 export const getDocumentChangeHistory = async (req: Request, res: Response, next: NextFunction) => {
   const { nomsNumber, recallId } = req.params
@@ -21,18 +22,31 @@ export const getDocumentChangeHistory = async (req: Request, res: Response, next
     if (!isString(category) || !findDocCategory(category as RecallDocument.category)) {
       throw new Error('Invalid category')
     }
-    const { label, labelLowerCase, name, standardFileName } = findDocCategory(category as RecallDocument.category)
+    const { label, labelLowerCase, name, standardFileName, type } = findDocCategory(category as RecallDocument.category)
     res.locals.documentHistory = {
       label,
       labelLowerCase,
       category: name,
-      standardFileName,
+      type,
     }
     const items = await getDocumentCategoryHistory(recallId, category as RecallDocument.category, token)
-    res.locals.documentHistory.items = sortList(items, 'version', false).map((item: RecallDocument) => ({
-      ...item,
-      url: getUploadedDocUrlPath({ recallId, nomsNumber, documentId: item.documentId }),
-    }))
+    const personAndRecall = type === 'generated' ? await getPersonAndRecall({ recallId, nomsNumber, token }) : undefined
+    res.locals.documentHistory.items = sortList(items, 'version', false).map((document: RecallDocument) =>
+      type === 'generated'
+        ? generatedDocMetaData({
+            recallId,
+            nomsNumber,
+            document,
+            firstName: personAndRecall?.person?.firstName,
+            lastName: personAndRecall?.person?.lastName,
+            bookingNumber: personAndRecall?.recall?.bookingNumber,
+          })
+        : {
+            ...document,
+            fileName: standardFileName || document.fileName,
+            url: documentDownloadUrl({ recallId, nomsNumber, documentId: document.documentId }),
+          }
+    )
   } catch (err) {
     next(err)
   } finally {

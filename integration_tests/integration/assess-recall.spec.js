@@ -125,7 +125,10 @@ context('Assess a recall', () => {
     assessRecallPrison.enterPrison()
     assessRecallPrison.clickContinue()
     const assessRecallDownload = assessRecallDownloadPage.verifyOnPage()
-    assessRecallDownload.checkRecallNotificationLink({ noms: nomsNumber, recall: recallId })
+    assessRecallDownload.assertLinkHref({
+      qaAttr: 'getRecallNotificationLink',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/create?category=RECALL_NOTIFICATION`,
+    })
     assessRecallDownload.assertElementHasText({
       qaAttr: 'getRecallNotificationFileName',
       textToFind: 'Filename: IN CUSTODY RECALL BADGER BOBBY A123456.pdf',

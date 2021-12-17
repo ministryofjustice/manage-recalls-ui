@@ -1,7 +1,7 @@
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from '../../upload/helpers'
-import { getGeneratedDocFileName, getGeneratedDocUrlPath } from './index'
+import { generatedDocMetaData } from './index'
 import { decorateAllDocTypes } from './decorateAllDocTypes'
 import { getVersionedUpload } from './getVersionedUpload'
 import { DocumentDecorations } from '../../../../../@types/documents'
@@ -38,21 +38,14 @@ export const decorateDocs = ({
         acc.documentsUploaded.push(curr)
       }
       if (curr.type === 'generated') {
-        acc.documentsGenerated[curr.category] = {
-          ...curr,
-          fileName: getGeneratedDocFileName({
-            firstName,
-            lastName,
-            bookingNumber,
-            docCategory: curr.category,
-          }),
-          url: getGeneratedDocUrlPath({
-            recallId,
-            nomsNumber,
-            documentId: curr.documentId,
-            docCategory: curr.category,
-          }),
-        }
+        acc.documentsGenerated[curr.category] = generatedDocMetaData({
+          document: curr,
+          firstName,
+          lastName,
+          bookingNumber,
+          recallId,
+          nomsNumber,
+        })
         if (versionedCategoryName === curr.category) {
           acc.versionedGeneratedDoc = {
             ...acc.documentsGenerated[curr.category],

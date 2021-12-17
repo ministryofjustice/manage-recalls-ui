@@ -97,7 +97,7 @@ context('Create a dossier', () => {
     })
     dossierRecall.assertLinkHref({
       qaAttr: 'generatedDocument-REVOCATION_ORDER',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/revocation-order/9876`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/9876`,
     })
 
     // change link for an uploaded document goes to the 'add new document version' page
@@ -164,7 +164,7 @@ context('Create a dossier', () => {
     const dossierDownload = dossierDownloadPage.verifyOnPage()
     dossierDownload.assertLinkHref({
       qaAttr: 'getDossierLink',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/dossier`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/create?category=DOSSIER`,
     })
     dossierDownload.assertElementHasText({
       qaAttr: 'getDossierFileName',
@@ -172,7 +172,7 @@ context('Create a dossier', () => {
     })
     dossierDownload.assertLinkHref({
       qaAttr: 'getLetterLink',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/letter-to-prison`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/create?category=LETTER`,
     })
     dossierDownload.assertElementHasText({
       qaAttr: 'getLetterFileName',

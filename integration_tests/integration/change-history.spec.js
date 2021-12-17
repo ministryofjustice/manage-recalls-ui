@@ -100,11 +100,11 @@ context('Change history', () => {
     // GENERATED DOCUMENTS
     changeHistory.assertLinkHref({
       qaAttr: 'generatedDocument-RECALL_NOTIFICATION',
-      href: '/persons/A1234AA/recalls/123/documents/recall-notification',
+      href: '/persons/A1234AA/recalls/123/documents/789',
     })
     changeHistory.assertLinkHref({
       qaAttr: 'generatedDocument-DOSSIER',
-      href: '/persons/A1234AA/recalls/123/documents/dossier',
+      href: '/persons/A1234AA/recalls/123/documents/012',
     })
     changeHistory.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
@@ -190,10 +190,6 @@ context('Change history', () => {
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
       const docId = doc.documentId
       uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-heading`,
-        textToFind: `Version ${doc.version}`,
-      })
-      uploadedDocumentHistory.assertElementHasText({
         qaAttr: `document-${docId}-link`,
         textToFind: 'Licence.pdf',
       })
@@ -201,10 +197,24 @@ context('Change history', () => {
         qaAttr: `document-${docId}-link`,
         href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${docId}`,
       })
-      uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-version`,
-        textToFind: `(version ${doc.version})`,
-      })
+      if (doc.version === 1) {
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-heading`,
+          textToFind: `Licence`,
+        })
+        uploadedDocumentHistory.assertElementNotPresent({
+          qaAttr: `document-${docId}-version`,
+        })
+      } else {
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-heading`,
+          textToFind: `Licence (version ${doc.version})`,
+        })
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-version`,
+          textToFind: `(version ${doc.version})`,
+        })
+      }
       uploadedDocumentHistory.assertElementHasText({
         qaAttr: `document-${docId}-uploaded-by`,
         textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,

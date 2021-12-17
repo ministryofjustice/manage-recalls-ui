@@ -16,13 +16,7 @@ import { validateSentenceDetails } from './handlers/book/helpers/validateSentenc
 import { validatePolice } from './handlers/book/helpers/validatePolice'
 import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds'
 import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
-import {
-  downloadDossier,
-  downloadLetterToPrison,
-  downloadReasonsForRecallOrder,
-  downloadRecallNotification,
-  downloadRevocationOrder,
-} from './handlers/documents/download/downloadNamedPdfHandler'
+import { downloadDocumentOrEmail } from './handlers/documents/download/downloadDocumentOrEmail'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
@@ -34,13 +28,13 @@ import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from './handlers/helpers/assignUser'
 import { unassignUserFromRecall } from '../clients/manageRecallsApi/manageRecallsApiClient'
-import { downloadUploadedDocumentOrEmail } from './handlers/documents/download/downloadUploadedDocumentOrEmail'
 import { addMissingDocumentRecordFormHandler } from './handlers/documents/missing-documents/addMissingDocumentRecordFormHandler'
 import { validateLicenceName } from './handlers/book/helpers/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
 import { uploadDocumentVersionFormHandler } from './handlers/documents/upload/uploadDocumentVersionFormHandler'
 import { getDocumentChangeHistory } from './handlers/documents/change-history/getDocumentChangeHistory'
 import { generatedDocumentVersionFormHandler } from './handlers/documents/generated/generatedDocumentVersionFormHandler'
+import { createGeneratedDocument } from './handlers/documents/generated/createGeneratedDocument'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -136,21 +130,19 @@ export default function routes(router: Router): Router {
   get(`${basePath}/generated-document-version`, viewWithRecallAndPerson('newGeneratedDocumentVersion'))
   post(`${basePath}/generated-document-version`, generatedDocumentVersionFormHandler)
 
-  // DOCUMENT DOWNLOADS
-  get(`${basePath}/documents/dossier`, downloadDossier)
-  get(`${basePath}/documents/letter-to-prison`, downloadLetterToPrison)
-  get(`${basePath}/documents/recall-notification`, downloadRecallNotification)
-  get(`${basePath}/documents/revocation-order/:documentId`, downloadRevocationOrder)
-  get(`${basePath}/documents/reasons-for-recall/:documentId`, downloadReasonsForRecallOrder)
-  get(`${basePath}/documents/:documentId`, downloadUploadedDocumentOrEmail)
+  // GENERATE AND DOWNLOAD A NEW RECALL NOTIFICATION, DOSSIER OR LETTER TO PRISON
+  router.get(`${basePath}/documents/create`, createGeneratedDocument, downloadDocumentOrEmail)
+
+  // DOWNLOAD AN EXISTING UPLOADED DOCUMENT, EMAIL, OR GENERATED DOCUMENT
+  get(`${basePath}/documents/:documentId`, downloadDocumentOrEmail)
 
   get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
 
   // AUDIT / CHANGE HISTORY
   router.get(
-    `${basePath}/change-history/uploaded-documents`,
+    `${basePath}/change-history/document`,
     getDocumentChangeHistory,
-    viewWithRecallAndPerson('uploadedDocumentHistory')
+    viewWithRecallAndPerson('changeHistoryForDocument')
   )
   get(`${basePath}/change-history`, viewWithRecallAndPerson('changeHistory'))
 

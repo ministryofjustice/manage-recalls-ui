@@ -26,13 +26,9 @@
                     firstName: recall.firstName,
                     lastName: recall.lastName,
                     bookingNumber: recall.bookingNumber,
-                    docCategory: 'RECALL_NOTIFICATION'
+                    category: 'RECALL_NOTIFICATION'
                 }),
-                url: getGeneratedDocUrlPath({
-                    recallId: recall.recallId,
-                    nomsNumber: recall.nomsNumber,
-                    docCategory: 'RECALL_NOTIFICATION'
-                }),
+                url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=RECALL_NOTIFICATION',
                 dataQaLink: 'getRecallNotificationLink',
                 dataQaFileName: 'getRecallNotificationFileName'
             })

@@ -141,7 +141,7 @@ context('Generated document versions', () => {
     })
     newGeneratedDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: '/persons/A1234AA/recalls/123/documents/recall-notification',
+      href: '/persons/A1234AA/recalls/123/documents/123',
     })
     newGeneratedDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionCreatedDateTime',
