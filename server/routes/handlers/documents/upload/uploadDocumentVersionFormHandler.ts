@@ -34,7 +34,7 @@ export const uploadDocumentVersionFormHandler = async (req: Request, res: Respon
           session.errors = [
             ...(session.errors || []),
             makeErrorObject({
-              id: 'document',
+              id: 'details',
               text: errorMsgProvideDetail,
             }),
           ]

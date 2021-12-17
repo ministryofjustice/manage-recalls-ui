@@ -42,7 +42,6 @@ context('Uploaded document versions', () => {
             documentId,
             version: 2,
             createdDateTime: '2021-11-21T12:34:30.000Z',
-            details: 'Some details',
           },
         ],
       },
@@ -83,6 +82,7 @@ context('Uploaded document versions', () => {
         ],
       },
     })
+    uploadDocumentVersion.enterTextInInput({ name: 'details', text: 'Some details' })
     uploadDocumentVersion.clickContinue()
     uploadDocumentVersion.assertApiRequestBody({
       url: `/recalls/${recallId}/documents/uploaded`,
@@ -90,6 +90,7 @@ context('Uploaded document versions', () => {
       bodyValues: {
         category: 'PART_A_RECALL_REPORT',
         fileName: 'test.pdf',
+        details: 'Some details',
       },
     })
     recallInformation = recallInformationPage.verifyOnPage({ personName })
@@ -126,6 +127,40 @@ context('Uploaded document versions', () => {
     uploadDocumentVersion.assertErrorMessage({
       fieldName: 'document',
       summaryError: 'Select a file',
+    })
+  })
+
+  it('an error is shown if details are not provided', () => {
+    const documentId = '123'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
+        documents: [
+          {
+            category: 'PART_A_RECALL_REPORT',
+            documentId,
+            version: 2,
+            createdDateTime: '2021-11-21T12:34:30.000Z',
+          },
+        ],
+      },
+    })
+    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
+      nomsNumber,
+      recallId,
+      documentCategoryLabel: 'part A recall report',
+      documentCategoryName: 'PART_A_RECALL_REPORT',
+    })
+    uploadDocumentVersion.uploadSingleFile({
+      filePath: '../uploads/test.pdf',
+      mimeType: 'application/pdf',
+    })
+    uploadDocumentVersion.clickContinue()
+    uploadDocumentVersion.assertErrorMessage({
+      fieldName: 'details',
+      summaryError: 'Provide more detail',
     })
   })
 })
