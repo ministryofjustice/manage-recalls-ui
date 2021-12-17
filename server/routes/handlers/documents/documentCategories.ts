@@ -45,8 +45,8 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     versioned: true,
   },
   {
-    label: 'OASys Risk Assessment',
-    labelLowerCase: 'OASys risk assessment',
+    label: 'OASys report',
+    labelLowerCase: 'OASys report',
     name: RecallDocument.category.OASYS_RISK_ASSESSMENT,
     type: 'document',
     hintIfMissing: true,

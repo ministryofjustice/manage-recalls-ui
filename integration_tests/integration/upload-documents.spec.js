@@ -122,7 +122,7 @@ context('Upload documents', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.selectFromDropdown({
       fieldName: `category-${documentId}`,
-      value: 'OASys Risk Assessment',
+      value: 'OASys report',
     })
     uploadDocuments.clickContinue()
     uploadDocuments.assertApiRequestBody({
@@ -154,7 +154,7 @@ context('Upload documents', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.selectFromDropdown({
       fieldName: `category-${documentId}`,
-      value: 'OASys Risk Assessment',
+      value: 'OASys report',
     })
     uploadDocuments.clickContinue()
     uploadDocuments.assertApiRequestBody({
