@@ -100,11 +100,11 @@ context('Change history', () => {
     // GENERATED DOCUMENTS
     changeHistory.assertLinkHref({
       qaAttr: 'generatedDocument-RECALL_NOTIFICATION',
-      href: '/persons/A1234AA/recalls/123/documents/recall-notification',
+      href: '/persons/A1234AA/recalls/123/documents/789',
     })
     changeHistory.assertLinkHref({
       qaAttr: 'generatedDocument-DOSSIER',
-      href: '/persons/A1234AA/recalls/123/documents/dossier',
+      href: '/persons/A1234AA/recalls/123/documents/012',
     })
     changeHistory.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
@@ -186,13 +186,14 @@ context('Change history', () => {
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
     cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
     changeHistory.clickLink({ qaAttr: 'viewHistory-LICENCE' })
-    const uploadedDocumentHistory = uploadedDocumentHistoryPage.verifyOnPage({ nomsNumber, recallId, category })
+    const uploadedDocumentHistory = uploadedDocumentHistoryPage.verifyOnPage({
+      nomsNumber,
+      recallId,
+      category,
+      isUploaded: true,
+    })
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
       const docId = doc.documentId
-      uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-heading`,
-        textToFind: `Version ${doc.version}`,
-      })
       uploadedDocumentHistory.assertElementHasText({
         qaAttr: `document-${docId}-link`,
         textToFind: 'Licence.pdf',
@@ -201,13 +202,116 @@ context('Change history', () => {
         qaAttr: `document-${docId}-link`,
         href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${docId}`,
       })
-      uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-version`,
-        textToFind: `(version ${doc.version})`,
-      })
+      if (doc.version === 1) {
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-heading`,
+          textToFind: `Licence`,
+        })
+        uploadedDocumentHistory.assertElementNotPresent({
+          qaAttr: `document-${docId}-version`,
+        })
+      } else {
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-heading`,
+          textToFind: `Licence (version ${doc.version})`,
+        })
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-version`,
+          textToFind: `(version ${doc.version})`,
+        })
+      }
       uploadedDocumentHistory.assertElementHasText({
         qaAttr: `document-${docId}-uploaded-by`,
         textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
+      })
+    })
+  })
+
+  it('User can navigate to generated document history', () => {
+    const category = 'DOSSIER'
+    const document = {
+      category,
+      documentId: '123',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+      createdByUserName: 'Arnold Caseworker',
+      version: 4,
+    }
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'DOSSIER_ISSUED',
+        documents: [document],
+      },
+    })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    cy.task('expectGetRecallDocumentHistory', {
+      expectedResult: [
+        {
+          category: 'DOSSIER',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          createdDateTime: '2020-12-05T18:33:57.000Z',
+          fileName: 'DOSSIER.pdf',
+          createdByUserName: 'Arnold Caseworker',
+          version: 1,
+        },
+        {
+          category: 'DOSSIER',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa7',
+          createdDateTime: '2020-12-06T18:33:57.000Z',
+          fileName: 'DOSSIER.pdf',
+          createdByUserName: 'Arnold Caseworker',
+          version: 2,
+        },
+        {
+          category: 'DOSSIER',
+          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa8',
+          createdDateTime: '2020-12-07T18:33:57.000Z',
+          fileName: 'DOSSIER.pdf',
+          createdByUserName: 'Arnold Caseworker',
+          version: 3,
+        },
+      ],
+    })
+    changeHistory.clickLink({ qaAttr: 'viewHistory-DOSSIER' })
+    const uploadedDocumentHistory = uploadedDocumentHistoryPage.verifyOnPage({
+      nomsNumber,
+      recallId,
+      category,
+      isUploaded: false,
+    })
+    getDocumentCategoryHistoryResponseJson.forEach(doc => {
+      const docId = doc.documentId
+      uploadedDocumentHistory.assertElementHasText({
+        qaAttr: `document-${docId}-link`,
+        textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
+      })
+      uploadedDocumentHistory.assertLinkHref({
+        qaAttr: `document-${docId}-link`,
+        href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${docId}`,
+      })
+      if (doc.version === 1) {
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-heading`,
+          textToFind: `Dossier`,
+        })
+        uploadedDocumentHistory.assertElementNotPresent({
+          qaAttr: `document-${docId}-version`,
+        })
+      } else {
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-heading`,
+          textToFind: `Dossier (version ${doc.version})`,
+        })
+        uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-version`,
+          textToFind: `(version ${doc.version})`,
+        })
+      }
+      uploadedDocumentHistory.assertElementHasText({
+        qaAttr: `document-${docId}-uploaded-by`,
+        textToFind: `Created by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
       })
     })
   })

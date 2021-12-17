@@ -39,13 +39,9 @@
                         firstName: recall.firstName,
                         lastName: recall.lastName,
                         bookingNumber: recall.bookingNumber,
-                        docCategory: 'DOSSIER'
+                        category: 'DOSSIER'
                     }),
-                    url: getGeneratedDocUrlPath({
-                        recallId: recall.recallId,
-                        nomsNumber: recall.nomsNumber,
-                        docCategory: 'DOSSIER'
-                    }),
+                    url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER',
                     dataQaLink: 'getDossierLink',
                     dataQaFileName: 'getDossierFileName'
                 })
@@ -58,13 +54,9 @@
                         firstName: recall.firstName,
                         lastName: recall.lastName,
                         bookingNumber: recall.bookingNumber,
-                        docCategory: 'LETTER_TO_PRISON'
+                        category: 'LETTER_TO_PRISON'
                     }),
-                    url: getGeneratedDocUrlPath({
-                        recallId: recall.recallId,
-                        nomsNumber: recall.nomsNumber,
-                        docCategory: 'LETTER_TO_PRISON'
-                    }),
+                    url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',
                     dataQaLink: 'getLetterLink',
                     dataQaFileName: 'getLetterFileName'
                 })

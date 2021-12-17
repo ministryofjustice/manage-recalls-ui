@@ -8,6 +8,7 @@ import recallInformationPage from '../pages/recallInformation'
 context('Missing uploaded documents', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
+  const documentId = '123'
   const personName = 'Bobby Badger'
 
   beforeEach(() => {
@@ -61,7 +62,6 @@ context('Missing uploaded documents', () => {
   })
 
   it('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
-    const documentId = '123'
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -83,6 +83,37 @@ context('Missing uploaded documents', () => {
     uploadDocuments.assertListValues({
       qaAttrList: 'missingDocsList',
       valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys Risk Assessment'],
+    })
+  })
+
+  it('user can view details of a previous missing documents entry', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+        documents: [
+          {
+            category: 'MISSING_DOCUMENTS_EMAIL',
+          },
+        ],
+        missingDocumentsRecords: [
+          {
+            categories: ['OASYS_RISK_ASSESSMENT', 'PART_A_RECALL_REPORT'],
+            createdByUserId: '888',
+            createdDateTime: '2021-11-10T05:34:25.000Z',
+            detail: 'Chased up, see attached',
+            emailId: '987',
+            missingDocumentsRecordId: '1',
+            version: 2,
+          },
+        ],
+      },
+    })
+    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    recallMissingDocuments.assertInputValue({
+      fieldName: 'missingDocumentsDetail',
+      value: 'Chased up, see attached',
     })
   })
 

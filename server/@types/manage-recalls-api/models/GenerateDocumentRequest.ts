@@ -4,7 +4,7 @@
 
 export type GenerateDocumentRequest = {
     category: GenerateDocumentRequest.category;
-    details: string;
+    details?: string;
 }
 
 export namespace GenerateDocumentRequest {

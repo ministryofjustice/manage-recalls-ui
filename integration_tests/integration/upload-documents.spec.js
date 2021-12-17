@@ -48,13 +48,18 @@ context('Upload documents', () => {
         ],
       },
     })
-    uploadDocuments.upload({
-      filePath: '../uploads/test.pdf',
+    uploadDocuments.uploadFile({
+      fieldName: 'documents',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertElementHasText({
       qaAttr: `link-${documentId}`,
       textToFind: 'test.pdf',
+    })
+    uploadDocuments.assertLinkHref({
+      qaAttr: `link-${documentId}`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`,
     })
     uploadDocuments.assertSelectValue({
       fieldName: `category-${documentId}`,
@@ -79,13 +84,18 @@ context('Upload documents', () => {
         ],
       },
     })
-    uploadDocuments.upload({
-      filePath: '../uploads/test.pdf',
+    uploadDocuments.uploadFile({
+      fieldName: 'documents',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertElementHasText({
       qaAttr: `link-${documentId}`,
       textToFind: 'licence wesley holt.pdf',
+    })
+    uploadDocuments.assertLinkHref({
+      qaAttr: `link-${documentId}`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`,
     })
     uploadDocuments.assertSelectValue({
       fieldName: `category-${documentId}`,
@@ -175,8 +185,8 @@ context('Upload documents', () => {
     })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
     uploadDocuments.clickContinue()
-    uploadDocuments.assertDocumentUploadError({
-      documentId: '123',
+    uploadDocuments.assertSummaryErrorMessage({
+      fieldName: '123',
       summaryError: 'Choose a type for random.pdf',
     })
   })
@@ -237,8 +247,9 @@ context('Upload documents', () => {
         ],
       },
     })
-    uploadDocuments.upload({
-      filePath: '../uploads/test.pdf',
+    uploadDocuments.uploadFile({
+      fieldName: 'documents',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertElementHasText({
@@ -295,8 +306,9 @@ context('Upload documents', () => {
         ],
       },
     })
-    uploadDocuments.upload({
-      filePath: '../uploads/test.pdf',
+    uploadDocuments.uploadFile({
+      fieldName: 'documents',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.selectFromDropdown({
@@ -318,8 +330,9 @@ context('Upload documents', () => {
   it('an error is shown for an upload that fails to save to the API', () => {
     cy.task('expectUploadRecallDocument', { statusCode: 500 })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.uploadSingleFile({
-      filePath: '../uploads/test.pdf',
+    uploadDocuments.uploadFile({
+      fieldName: 'documents',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertSummaryErrorMessage({
@@ -334,8 +347,9 @@ context('Upload documents', () => {
       responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
-    uploadDocuments.uploadSingleFile({
-      filePath: '../uploads/test.pdf',
+    uploadDocuments.uploadFile({
+      fieldName: 'documents',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocuments.assertSummaryErrorMessage({

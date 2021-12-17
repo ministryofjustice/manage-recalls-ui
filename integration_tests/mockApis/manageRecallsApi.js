@@ -22,9 +22,6 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectGetRecallNotification: expectation =>
-      expectGetPdfDocument(wiremock, '/recalls/(.*)/recallNotification', expectation),
-    expectGetDossier: expectation => expectGetPdfDocument(wiremock, '/recalls/(.*)/dossier', expectation),
     expectCreateRecall: expectation => {
       return wiremock.stubFor({
         request: {
@@ -297,22 +294,4 @@ export default function manageRecallsApi(wiremock) {
       })
     },
   }
-}
-
-function expectGetPdfDocument(wiremock, path, expectation) {
-  return wiremock.stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: path,
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        content: expectation.expectedPdfFile,
-      },
-    },
-  })
 }

@@ -1,0 +1,46 @@
+
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Uploaded document change history" %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-xl">
+                {% if documentHistory.type == 'generated' %}Generated{% else %}Uploaded{% endif %} document change history
+            </h1>
+            {% if documentHistory.items %}
+            <h2 class='govuk-heading-l'>
+                Why the {{ formatDocLabel(documentHistory.category) }} was changed
+            </h2>
+            {% for document in documentHistory.items %}
+            <h3 class="govuk-heading-m" data-qa='document-{{ document.documentId }}-heading'>{{ documentHistory.label }}{% if document.version > 1 %} (version {{ document.version }}){% endif %}</h3>
+            <dl class="govuk-summary-list govuk-!-margin-bottom-4 govuk-!-width-two-thirds_" data-qa='document-{{ document.documentId }}-row'>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Document</dt>
+                    <dd class="govuk-summary-list__value">
+                        <a href="{{ document.url }}" class="govuk-link govuk-!-margin-right-2" target="_blank" data-qa='document-{{ document.documentId }}-link'>
+                            {{ document.fileName }}
+                        </a>
+                        {% if document.version > 1 %}
+                        <span class="grey-text" data-qa='document-{{ document.documentId }}-version'>(version {{ document.version }})</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                {% if document.details %}
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-one-third">Details</dt>
+                    <dd class="govuk-summary-list__value" data-qa='document-{{ document.documentId }}-detail'>{{ document.details }}</dd>
+                </div>
+                {% endif %}
+            </dl>
+            <p class="govuk-!-margin-bottom-9 govuk-!-margin-top-0 govuk-body-s grey-text" data-qa='document-{{ document.documentId }}-uploaded-by'>
+                {% if documentHistory.type == 'generated' %}Created{% else %}Uploaded{% endif %} by {{ document.createdByUserName}} on {{ document.createdDateTime | dateTime }}
+            </p>
+            {% endfor %}
+            {% else %}
+            <p class='govuk-body'>No document history for the {{ formatDocLabel(documentHistory.category) }}.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

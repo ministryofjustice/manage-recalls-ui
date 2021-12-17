@@ -1,5 +1,7 @@
 import { getPerson } from '../personCache'
 import { getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
+import { SearchResult } from '../../../../@types/manage-recalls-api/models/SearchResult'
 
 export const getPersonAndRecall = async ({
   recallId,
@@ -9,7 +11,7 @@ export const getPersonAndRecall = async ({
   recallId: string
   nomsNumber: string
   token: string
-}) => {
+}): Promise<{ person: SearchResult; recall: RecallResponse }> => {
   const [personResult, recallResult] = await Promise.allSettled([
     getPerson(nomsNumber as string, token),
     getRecall(recallId, token),

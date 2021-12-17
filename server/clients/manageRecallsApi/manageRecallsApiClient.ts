@@ -5,7 +5,6 @@ import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models
 import { NewDocumentResponse } from '../../@types/manage-recalls-api/models/NewDocumentResponse'
 import { UploadDocumentRequest } from '../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { LocalDeliveryUnitResponse } from '../../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
-import { Pdf } from '../../@types/manage-recalls-api/models/Pdf'
 import { SearchResult } from '../../@types/manage-recalls-api/models/SearchResult'
 import { ObjectMap } from '../../@types'
 import {
@@ -43,19 +42,19 @@ export async function searchRecalls(searchParams: ObjectMap<string>, token: stri
   return restClient(token).post<Recall[]>({ path: '/recalls/search', data: searchParams })
 }
 
-export const getRecallNotification =
-  () =>
-  ({ recallId }: { recallId: string }, token: string): Promise<Pdf> => {
-    return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/recallNotification` })
-  }
+export function generateRecallDocument(
+  recallId: string,
+  document: GenerateDocumentRequest,
+  token: string
+): Promise<NewDocumentResponse> {
+  return restClient(token).post<NewDocumentResponse>({
+    path: `/recalls/${recallId}/documents/generated`,
+    data: document,
+  })
+}
 
-export const getGeneratedDocument =
-  (pathSuffix: string) =>
-  ({ recallId }: { recallId: string }, token: string): Promise<Pdf> => {
-    return restClient(token).get<Pdf>({ path: `/recalls/${recallId}/${pathSuffix}` })
-  }
-
-export function getStoredDocument(
+// downloads document metadata and the file contents
+export function getDocumentWithContents(
   { recallId, documentId }: { recallId: string; documentId: string },
   token: string
 ): Promise<GetDocumentResponse> {
@@ -118,17 +117,6 @@ export function addMissingDocumentRecord(
   token: string
 ): Promise<superagent.Response> {
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
-}
-
-export function generateRecallDocument(
-  recallId: string,
-  document: GenerateDocumentRequest,
-  token: string
-): Promise<NewDocumentResponse> {
-  return restClient(token).post<NewDocumentResponse>({
-    path: `/recalls/${recallId}/documents/generated`,
-    data: document,
-  })
 }
 
 export function addUserDetails(data: AddUserDetailsRequest, token: string): Promise<UserDetailsResponse> {

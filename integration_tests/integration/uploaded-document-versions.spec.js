@@ -64,8 +64,9 @@ context('Uploaded document versions', () => {
       qaAttr: 'previousVersionUploadedDateTime',
       textToFind: 'Uploaded on 21 November 2021 at 12:34',
     })
-    uploadDocumentVersion.uploadSingleFile({
-      filePath: '../uploads/test.pdf',
+    uploadDocumentVersion.uploadFile({
+      fieldName: 'document',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     cy.task('expectGetRecall', {
@@ -153,8 +154,9 @@ context('Uploaded document versions', () => {
       documentCategoryLabel: 'part A recall report',
       documentCategoryName: 'PART_A_RECALL_REPORT',
     })
-    uploadDocumentVersion.uploadSingleFile({
-      filePath: '../uploads/test.pdf',
+    uploadDocumentVersion.uploadFile({
+      fieldName: 'document',
+      fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
     uploadDocumentVersion.clickContinue()

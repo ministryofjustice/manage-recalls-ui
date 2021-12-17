@@ -3,7 +3,7 @@ import { DecoratedDocument } from '../../../../../@types/documents'
 import { documentCategories } from '../../documentCategories'
 import { autocategoriseDocFileName } from './autocategorise'
 import { findDocCategory } from '../../upload/helpers'
-import { getUploadedDocUrlPath } from './index'
+import { documentDownloadUrl } from './index'
 
 export const decorateAllDocTypes = ({
   docs,
@@ -32,7 +32,7 @@ export const decorateAllDocTypes = ({
         labelLowerCase: documentCategory.labelLowerCase,
         category: documentCategory.name,
         suggestedCategory,
-        url: getUploadedDocUrlPath({ recallId, nomsNumber, documentId: doc.documentId }),
+        url: documentDownloadUrl({ recallId, nomsNumber, documentId: doc.documentId }),
       }
     })
     .sort((a, b) => {
