@@ -6,6 +6,7 @@ import { isInvalid } from '../../helpers'
 import { generateRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { GenerateDocumentRequest } from '../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
 
+// for the initial creation only of recall notification / letter / dossier, not for creating further versions
 export const createGeneratedDocument = async (req: Request, res: Response, next: NextFunction) => {
   const { nomsNumber, recallId } = req.params
   const { category } = req.query
@@ -19,7 +20,7 @@ export const createGeneratedDocument = async (req: Request, res: Response, next:
   }
   const { documentId } = await generateRecallDocument(
     recallId,
-    { category: category as GenerateDocumentRequest.category, details: '' },
+    { category: category as GenerateDocumentRequest.category },
     token
   )
   res.locals.documentId = documentId
