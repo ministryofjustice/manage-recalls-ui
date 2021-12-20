@@ -129,6 +129,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     label: 'Letter to prison',
     name: RecallDocument.category.LETTER_TO_PRISON,
     type: 'generated',
+    versioned: true,
   },
   {
     label: 'Dossier',
