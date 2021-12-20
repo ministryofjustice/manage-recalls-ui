@@ -29,7 +29,7 @@
     "pact-test": "rm -rf pact/pacts/* && jest --runInBand --coverage --forceExit --config=./jest.pact.config.js"
   },
   "engines": {
-    "node": "16.12.0",
+    "node": "16.13.1",
     "npm": "6.14.13"
   },
   "config": {
