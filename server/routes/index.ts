@@ -33,7 +33,7 @@ import { validateLicenceName } from './handlers/book/helpers/validateLicenceName
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
 import { uploadDocumentVersionFormHandler } from './handlers/documents/upload/uploadDocumentVersionFormHandler'
 import { getDocumentChangeHistory } from './handlers/documents/change-history/getDocumentChangeHistory'
-import { generatedDocumentVersionFormHandler } from './handlers/documents/generated/generatedDocumentVersionFormHandler'
+import { newGeneratedDocumentVersion } from './handlers/documents/generated/newGeneratedDocumentVersion'
 import { createGeneratedDocument } from './handlers/documents/generated/createGeneratedDocument'
 
 export default function routes(router: Router): Router {
@@ -128,7 +128,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
 
   get(`${basePath}/generated-document-version`, viewWithRecallAndPerson('newGeneratedDocumentVersion'))
-  post(`${basePath}/generated-document-version`, generatedDocumentVersionFormHandler)
+  post(`${basePath}/generated-document-version`, newGeneratedDocumentVersion)
 
   // GENERATE AND DOWNLOAD A NEW RECALL NOTIFICATION, DOSSIER OR LETTER TO PRISON
   router.get(`${basePath}/documents/create`, createGeneratedDocument, downloadDocumentOrEmail)

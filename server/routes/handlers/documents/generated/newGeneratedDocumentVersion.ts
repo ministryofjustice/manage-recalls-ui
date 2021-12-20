@@ -3,8 +3,9 @@ import { validateGeneratedDocumentVersion } from './validations/validateGenerate
 import { generateRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../../logger'
 import { generatedDocCategoriesList } from '../download/helpers'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 
-export const generatedDocumentVersionFormHandler = async (req: Request, res: Response) => {
+export const newGeneratedDocumentVersion = async (req: Request, res: Response) => {
   const reload = () => {
     const redirectUrl = req.session.errors
       ? `${req.originalUrl}&versionedCategoryName=${req.body.category}`
@@ -30,6 +31,14 @@ export const generatedDocumentVersionFormHandler = async (req: Request, res: Res
   }
   try {
     await generateRecallDocument(recallId, valuesToSave, token)
+    // if it's a revocation order, then create a new recall notification as well
+    if (body.category === RecallDocument.category.REVOCATION_ORDER) {
+      await generateRecallDocument(
+        recallId,
+        { ...valuesToSave, category: RecallDocument.category.RECALL_NOTIFICATION },
+        token
+      )
+    }
     res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage}`)
   } catch (err) {
     logger.error(err)
