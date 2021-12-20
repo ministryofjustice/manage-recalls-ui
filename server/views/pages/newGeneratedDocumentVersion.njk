@@ -49,6 +49,9 @@
                         value: formValues.details,
                         errorMessage: errorMessage(errors.details)
                     }) }}
+                    {% if recall.versionedGeneratedDoc.category === 'REVOCATION_ORDER' %}
+                        <p class='govuk-body'>We will also create a new version of the recall notification, as it contains the revocation order.</p>
+                    {% endif %}
                     <div class="govuk-!-margin-top-8">
                         <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
                     </div>
