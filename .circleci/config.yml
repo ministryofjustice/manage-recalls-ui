@@ -9,7 +9,7 @@ orbs:
 executors:
   integration-tests:
     docker:
-      - image: cimg/node:16.12-browsers
+      - image: cimg/node:16.13-browsers
       - image: circleci/redis:buster
     working_directory: ~/app
 
@@ -25,7 +25,7 @@ jobs:
   build:
     executor:
       name: hmpps/node
-      tag: 16.12-browsers
+      tag: 16.13-browsers
     steps:
       - checkout
       - node/install-packages
@@ -85,7 +85,7 @@ jobs:
   check_outdated:
     executor:
       name: hmpps/node
-      tag: 16.12-browsers
+      tag: 16.13-browsers
     steps:
       - checkout
       - node/install-packages
@@ -134,7 +134,7 @@ jobs:
       PACT_BROKER_DISABLE_SSL_VERIFICATION: "true"
     executor:
       name: hmpps/node
-      tag: 16.12-browsers
+      tag: 16.13-browsers
     resource_class: xlarge
     steps:
       - checkout
