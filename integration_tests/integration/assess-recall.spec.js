@@ -90,7 +90,7 @@ context('Assess a recall', () => {
     // change link for an uploaded document goes to the 'add new document version' page
     assessRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=assess&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
+      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=assess&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
 
     // missing documents

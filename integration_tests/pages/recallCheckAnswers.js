@@ -63,19 +63,25 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
       )
       checkLink(
         'uploadedDocument-PART_A_RECALL_REPORT-Change',
-        '/upload-documents?fromPage=check-answers&fromHash=documents'
+        '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
       )
-      checkLink('uploadedDocument-LICENCE-Change', '/upload-documents?fromPage=check-answers&fromHash=documents')
+      checkLink(
+        'uploadedDocument-LICENCE-Change',
+        '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
+      )
       checkLink(
         'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET-Change',
-        '/upload-documents?fromPage=check-answers&fromHash=documents'
+        '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
       )
       checkLink(
         'uploadedDocument-PRE_SENTENCING_REPORT-Change',
-        '/upload-documents?fromPage=check-answers&fromHash=documents'
+        '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
       )
-      checkLink('missingDocumentsDetailChange', '/missing-documents?fromPage=check-answers&fromHash=documents')
-      checkLink('missingDocumentsEmailFileNameChange', '/missing-documents?fromPage=check-answers&fromHash=documents')
+      checkLink('missingDocumentsDetailChange', '/missing-documents?fromPage=check-answers&fromHash=missing-documents')
+      checkLink(
+        'missingDocumentsEmailFileNameChange',
+        '/missing-documents?fromPage=check-answers&fromHash=missing-documents'
+      )
     },
   })
 

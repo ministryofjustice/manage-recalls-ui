@@ -447,7 +447,7 @@ context('Upload documents', () => {
     // change link for an uploaded document goes to the 'add new document version' page
     recallInformation.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=documents&versionedCategoryName=PART_A_RECALL_REPORT',
+      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-OTHER',
@@ -483,7 +483,7 @@ context('Upload documents', () => {
     })
     checkAnswers.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=documents',
+      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
     })
   })
 
@@ -515,7 +515,7 @@ context('Upload documents', () => {
     // change link for an uploaded document goes to the 'upload documents' page
     checkAnswers.assertLinkHref({
       qaAttr: 'uploadedDocument-UNCATEGORISED-Change',
-      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=documents',
+      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
     })
   })
 
