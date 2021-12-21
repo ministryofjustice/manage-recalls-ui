@@ -10,21 +10,26 @@ export const getVersionedUpload = ({
   let versionedUpload: DecoratedDocument
   if (versionedCategoryName) {
     const categoryData = docCategoriesWithUploads.find(type => type.name === versionedCategoryName && type.versioned)
-    if (categoryData && categoryData.uploaded.length) {
-      const { label, type, standardFileName } = categoryData
-      const { version, url, documentId, category, createdDateTime, createdByUserName, fileName } =
-        categoryData.uploaded[0]
-      versionedUpload = {
-        label,
-        standardFileName,
-        fileName,
-        type,
-        version,
-        url,
-        documentId,
-        category,
-        createdDateTime,
-        createdByUserName,
+    if (categoryData) {
+      // the uploaded array might include uncategorised docs, so filter them out
+      const uploaded = categoryData.uploaded
+        .filter(file => file.category === versionedCategoryName)
+        .sort((a, b) => b.version - a.version)
+      if (uploaded.length) {
+        const { label, type, standardFileName } = categoryData
+        const { version, url, documentId, category, createdDateTime, createdByUserName, fileName } = uploaded[0]
+        versionedUpload = {
+          label,
+          standardFileName,
+          fileName,
+          type,
+          version,
+          url,
+          documentId,
+          category,
+          createdDateTime,
+          createdByUserName,
+        }
       }
     }
   }
