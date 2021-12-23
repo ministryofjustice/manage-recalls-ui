@@ -43,12 +43,21 @@ export const requiredDocsList = (): DocumentCategoryMetadata[] =>
 export const missingNotRequiredDocsList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document' && doc.hintIfMissing)
 
-export const listMissingRequiredDocs = (docs: RecallDocument[]): string[] => {
+export const listMissingRequiredDocs = ({
+  docs,
+  returnLabels,
+}: {
+  docs: RecallDocument[]
+  returnLabels: boolean
+}): string[] | RecallDocument.category[] => {
   const listOfRequiredAndDesired = [...requiredDocsList(), ...missingNotRequiredDocsList()]
   return listOfRequiredAndDesired
     .map(requiredDocCategory => {
       const uploadedFile = docs.find(doc => doc.category === requiredDocCategory.name)
-      return uploadedFile ? undefined : formatDocLabel(requiredDocCategory.name)
+      if (uploadedFile) {
+        return undefined
+      }
+      return returnLabels ? formatDocLabel(requiredDocCategory.name) : requiredDocCategory.name
     })
     .filter(Boolean)
 }

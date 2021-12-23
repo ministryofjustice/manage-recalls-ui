@@ -1,8 +1,9 @@
 // @ts-nocheck
-import { addMissingDocumentRecord } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addMissingDocumentRecord, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { mockPostRequest } from '../../../testutils/mockRequestUtils'
 import { uploadStorageField } from '../upload/helpers/uploadStorage'
 import { addMissingDocumentRecordFormHandler } from './addMissingDocumentRecordFormHandler'
+import getRecallResponse from '../../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../upload/helpers/uploadStorage')
@@ -28,6 +29,7 @@ describe('addMissingDocumentRecordForm', () => {
       }
       cb()
     })
+    ;(getRecall as jest.Mock).mockResolvedValue(getRecallResponse)
     ;(addMissingDocumentRecord as jest.Mock).mockResolvedValue({
       status: 201,
     })
@@ -47,6 +49,44 @@ describe('addMissingDocumentRecordForm', () => {
     addMissingDocumentRecordFormHandler(req, res)
   })
 
+  it('saves a list of missing document categories to the API', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
+      documents: [
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'PreCons Wesley Holt.pdf',
+        },
+      ],
+    })
+    ;(addMissingDocumentRecord as jest.Mock).mockResolvedValue({
+      status: 201,
+    })
+    const res = {
+      locals: {
+        user: { token: 'token' },
+        urlInfo: { basePath: '/persons/456/recalls/789/' },
+      },
+      redirect: () => {
+        expect(addMissingDocumentRecord.mock.calls[0][0].categories).toEqual([
+          'PART_A_RECALL_REPORT',
+          'LICENCE',
+          'OASYS_RISK_ASSESSMENT',
+        ])
+        done()
+      },
+    }
+    addMissingDocumentRecordFormHandler(req, res)
+  })
+
   it('redirects to the fromPage if supplied eg assess recall', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
@@ -55,6 +95,7 @@ describe('addMissingDocumentRecordForm', () => {
       }
       cb()
     })
+    ;(getRecall as jest.Mock).mockResolvedValue(getRecallResponse)
     ;(addMissingDocumentRecord as jest.Mock).mockResolvedValue({
       status: 201,
     })
@@ -80,6 +121,7 @@ describe('addMissingDocumentRecordForm', () => {
       }
       cb()
     })
+    ;(getRecall as jest.Mock).mockResolvedValue(getRecallResponse)
     ;(addMissingDocumentRecord as jest.Mock).mockRejectedValue({
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
