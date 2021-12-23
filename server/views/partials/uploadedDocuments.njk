@@ -12,11 +12,9 @@
                     {% if document.category === 'UNCATEGORISED' %}Uncategorised{% else %}{{ document.label }}{% endif %}
                 </dt>
                 <dd class=" govuk-summary-list__value">
-                    <div class='govuk-!-margin-bottom-4'>
                     {% include '../partials/uploadedDocumentLink.njk' %}
-                    </div>
                     {% if document.details %}
-                        <pre class='govuk-body' data-qa='uploadedDocument-{{ document.category }}-details'>
+                        <pre class='govuk-body govuk-!-margin-top-4' data-qa='uploadedDocument-{{ document.category }}-details'>
                             {{ document.details }}
                         </pre>
                     {% endif %}
