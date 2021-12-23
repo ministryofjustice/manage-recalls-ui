@@ -13,9 +13,11 @@
                         <div class='govuk-!-margin-bottom-4'>
                         (<span data-qa='appGeneratedDocuments-{{ category.name }}-version'>version {{ recall.documentsGenerated[category.name].version }}</span>)
                         </div>
+                        {% if recall.documentsGenerated[category.name].details %}
                         <pre class='govuk-body' data-qa='appGeneratedDocuments-{{ category.name }}-details'>
                             {{ recall.documentsGenerated[category.name].details }}
                         </pre>
+                        {% endif %}
                     {% endif %}
                  {% else %}
                      <span data-qa='appGeneratedDocuments-{{ category.name }}-not-available'>Not available</span>

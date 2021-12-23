@@ -79,6 +79,7 @@ context('Uploaded document versions', () => {
             category: 'PART_A_RECALL_REPORT',
             documentId,
             version: 2,
+            details: 'Some details',
           },
         ],
       },
@@ -98,6 +99,10 @@ context('Uploaded document versions', () => {
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
       textToFind: 'version 2',
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-details',
+      textToFind: 'Some details',
     })
   })
 
