@@ -99,6 +99,10 @@ context('Uploaded document versions', () => {
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
       textToFind: 'version 2',
     })
+    recallInformation.assertElementHasText({
+      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-details',
+      textToFind: 'Some details',
+    })
   })
 
   it("an error is shown if a new document version isn't uploaded", () => {
