@@ -13,7 +13,8 @@
     "createdDateTime": "2020-12-06T18:33:57.000Z",
     "fileName": "Bobby Badger licence.pdf",
     "createdByUserName": "Arnold Caseworker",
-    "version": 2
+    "version": 2,
+    "details": "Changed"
   },
   {
     "category": "LICENCE",
@@ -21,6 +22,7 @@
     "createdDateTime": "2020-12-07T18:33:57.000Z",
     "fileName": "Bobby Badger licence.pdf",
     "createdByUserName": "Arnold Caseworker",
-    "version": 3
+    "version": 3,
+    "details": "Changed again"
   }
 ]

@@ -228,6 +228,10 @@ context('Change history', () => {
           textToFind: `Licence (version ${doc.version})`,
         })
         uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-details`,
+          textToFind: doc.details,
+        })
+        uploadedDocumentHistory.assertElementHasText({
           qaAttr: `document-${docId}-version`,
           textToFind: `(version ${doc.version})`,
         })
@@ -243,7 +247,7 @@ context('Change history', () => {
       textToFind: 'Missing',
     })
     uploadedDocumentHistory.assertElementHasText({
-      qaAttr: 'document-845-detail',
+      qaAttr: 'document-845-details',
       textToFind: 'Documents were requested by email on 10/12/2020',
     })
     uploadedDocumentHistory.assertLinkHref({
