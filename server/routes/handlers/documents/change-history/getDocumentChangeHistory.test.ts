@@ -138,6 +138,7 @@ describe('getDocumentChangeHistory', () => {
           details: 'Chased',
           fileName: 'email.msg',
           isMissingRecord: true,
+          emailId: '123',
           url: '/persons/123/recalls/456/documents/123',
           version: 2,
         },
