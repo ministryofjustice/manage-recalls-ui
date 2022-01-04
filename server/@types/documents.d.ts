@@ -14,10 +14,10 @@ export interface DocumentCategoryMetadata {
   multiple?: boolean
   versioned?: boolean
   fileNamePatterns?: string[]
-  uploaded?: DecoratedDocument[]
+  uploaded?: DecoratedUploadedDoc[]
 }
 
-export interface DecoratedDocument extends RecallDocument {
+export interface DecoratedUploadedDoc extends RecallDocument {
   label: string
   labelLowerCase?: string
   suggestedCategory?: RecallDocument.category
@@ -63,17 +63,17 @@ export interface DecoratedMissingDocumentsRecord {
 }
 
 export interface DocumentDecorations {
-  documentsUploaded: DecoratedDocument[]
+  documentsUploaded: DecoratedUploadedDoc[]
   docCategoriesWithUploads: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   missingDocumentsRecords: DecoratedMissingDocumentsRecord[]
-  versionedUpload?: DecoratedDocument
-  versionedGeneratedDoc?: DecoratedDocument
+  versionedUpload?: DecoratedUploadedDoc
+  versionedGeneratedDoc?: DecoratedUploadedDoc
   emailsUploaded: {
-    RECALL_NOTIFICATION_EMAIL?: DecoratedDocument
-    RECALL_REQUEST_EMAIL?: DecoratedDocument
-    DOSSIER_EMAIL?: DecoratedDocument
+    RECALL_NOTIFICATION_EMAIL?: DecoratedUploadedDoc
+    RECALL_REQUEST_EMAIL?: DecoratedUploadedDoc
+    DOSSIER_EMAIL?: DecoratedUploadedDoc
   }
   documentsGenerated: {
     RECALL_NOTIFICATION?: DecoratedGeneratedDoc

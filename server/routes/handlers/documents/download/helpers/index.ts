@@ -1,5 +1,5 @@
 import {
-  DecoratedDocument,
+  DecoratedUploadedDoc,
   DecoratedMissingDocumentsRecord,
   DocumentCategoryMetadata,
   DecoratedGeneratedDoc,
@@ -151,7 +151,7 @@ export const getDocHistoryStatus = ({
   doc,
   missingDocumentsRecords,
 }: {
-  doc: DecoratedDocument
+  doc: DecoratedUploadedDoc
   missingDocumentsRecords: MissingDocumentsRecord[]
 }): boolean =>
   Boolean(doc.version > 1 || findCategoryInMissingDocumentsRecords(missingDocumentsRecords, doc.category).length)
