@@ -72,9 +72,9 @@
       "emailId": "845",
       "emailFileName": "missing-documents.msg",
       "categories": ["OASYS_RISK_ASSESSMENT"],
-      "detail": "Documents were requested by email on 10/12/2020",
+      "details": "Documents were requested by email on 10/12/2020",
       "version": 2,
-      "createdByUserId": "098-130913-1-1210",
+      "createdByUserName": "Bobby Badger",
       "createdDateTime": "2021-03-12T12:24:03.000Z"
     }
   ],

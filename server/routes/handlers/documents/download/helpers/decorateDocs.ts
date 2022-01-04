@@ -1,14 +1,14 @@
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from '../../upload/helpers'
-import { generatedDocMetaData } from './index'
+import { decorateMissingDocumentsRecords, generatedDocMetaData, getDocHistoryStatus } from './index'
 import { decorateAllDocTypes } from './decorateAllDocTypes'
 import { getVersionedUpload } from './getVersionedUpload'
 import { DocumentDecorations } from '../../../../../@types/documents'
 
 export const decorateDocs = ({
   docs,
-  missingDocumentsRecords,
+  missingDocumentsRecords = [],
   nomsNumber,
   recallId,
   firstName,
@@ -31,42 +31,39 @@ export const decorateDocs = ({
     uploaded: decoratedDocs.filter(d => d.suggestedCategory === docType.name),
   }))
   const versionedUpload = getVersionedUpload({ versionedCategoryName, docCategoriesWithUploads })
-
+  const decoratedMissingDocumentsRecords = decorateMissingDocumentsRecords({
+    missingDocumentsRecords,
+    nomsNumber,
+    recallId,
+  })
   return decoratedDocs.reduce(
-    (acc, curr) => {
-      if (curr.type === 'document') {
-        acc.documentsUploaded.push(curr)
+    (acc, doc) => {
+      if (doc.type === 'document') {
+        acc.documentsUploaded.push({ ...doc, hasHistory: getDocHistoryStatus({ doc, missingDocumentsRecords }) })
       }
-      if (curr.type === 'generated') {
-        acc.documentsGenerated[curr.category] = generatedDocMetaData({
-          document: curr,
+      if (doc.type === 'generated') {
+        acc.documentsGenerated[doc.category] = generatedDocMetaData({
+          document: doc,
           firstName,
           lastName,
           bookingNumber,
           recallId,
           nomsNumber,
         })
-        if (versionedCategoryName === curr.category) {
+        if (versionedCategoryName === doc.category) {
           acc.versionedGeneratedDoc = {
-            ...acc.documentsGenerated[curr.category],
+            ...acc.documentsGenerated[doc.category],
           }
         }
       }
-      if (curr.type === 'email') {
-        if (curr.category === RecallDocument.category.MISSING_DOCUMENTS_EMAIL) {
-          acc.missingDocumentsRecord = {
-            ...(missingDocumentsRecords ? missingDocumentsRecords[0] : {}),
-            ...curr,
-          }
-        } else {
-          acc.emailsUploaded[curr.category] = curr
-        }
+      if (doc.type === 'email') {
+        acc.emailsUploaded[doc.category] = doc
       }
       return acc
     },
     {
       documentsUploaded: [],
-      missingDocumentsRecord: undefined,
+      missingDocumentsRecords: decoratedMissingDocumentsRecords,
       docCategoriesWithUploads,
       requiredDocsMissing: requiredDocsList().filter(
         requiredDocCategory => !decoratedDocs.find(doc => doc.category === requiredDocCategory.name)

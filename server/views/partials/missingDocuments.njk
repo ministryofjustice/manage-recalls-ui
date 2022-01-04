@@ -11,7 +11,7 @@
                 Missing: needed to create dossier
             </dd>
             <dd class=" govuk-summary-list__actions">
-                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'missing-documents') }}' data-qa='uploadedDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
+                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
             </dd>
         </div>
     {% endfor %}
@@ -24,7 +24,7 @@
                 Missing
             </dd>
             <dd class=" govuk-summary-list__actions">
-                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'missing-documents') }}' data-qa='uploadedDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
+                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
             </dd>
         </div>
     {% endfor %}
@@ -34,7 +34,7 @@
         </dt>
         <dd class=" govuk-summary-list__value">
       <pre class='govuk-body' data-qa='missingDocumentsDetail'>
-            {{ recall.missingDocumentsRecord.detail }}
+            {{ recall.missingDocumentsRecords[0].details }}
       </pre>
         </dd>
         <dd class=" govuk-summary-list__actions">
@@ -47,12 +47,12 @@
         <dt class=" govuk-summary-list__key">
             Email uploaded
         </dt>
-        <dd class=" govuk-summary-list__value" data-qa='missingDocumentsEmailFileName'>
-            <a href='{{ recall.missingDocumentsRecord.url }}' class='govuk-link' data-qa='uploadedDocument-{{ recall.missingDocumentsRecord.category}}' download>{{ recall.missingDocumentsRecord.fileName }}</a>
+        <dd class=" govuk-summary-list__value">
+            <a href='{{ recall.missingDocumentsRecords[0].url }}' class='govuk-link' data-qa='missingDocumentsEmail' download>{{ recall.missingDocumentsRecords[0].fileName }}</a>
         </dd>
         <dd class=" govuk-summary-list__actions">
             {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
-                <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocumentsEmailFileNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden">uploaded email</span></a>
+                <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocumentsEmailChange' class='govuk-link'>Change <span class="govuk-visually-hidden">uploaded email</span></a>
             {% endif %}
         </dd>
     </div>

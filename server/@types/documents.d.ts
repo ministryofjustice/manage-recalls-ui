@@ -1,5 +1,4 @@
 import { RecallDocument } from './manage-recalls-api'
-import { MissingDocumentsRecord } from './manage-recalls-api/models/MissingDocumentsRecord'
 
 type DocumentType = 'document' | 'email' | 'generated'
 
@@ -21,12 +20,16 @@ export interface DocumentCategoryMetadata {
 export interface DecoratedDocument extends RecallDocument {
   label: string
   labelLowerCase?: string
-  category: RecallDocument.category
   suggestedCategory?: RecallDocument.category
   standardFileName?: string
   type: DocumentType
   url: string
   index?: number
+}
+
+export interface DecoratedGeneratedDoc extends RecallDocument {
+  type: DocumentType
+  url: string
 }
 
 export interface UploadedFileMetadata {
@@ -47,8 +50,16 @@ export interface CategorisedFileMetadata {
   isExistingUpload: boolean
 }
 
-export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecord {
-  url: string
+// inherits some from MissingDocumentsRecord
+export interface DecoratedMissingDocumentsRecord {
+  categories: string[]
+  createdByUserName: string
+  createdDateTime: string
+  details: string
+  emailId: string
+  version: number
+  fileName?: string
+  url?: string
 }
 
 export interface DocumentDecorations {
@@ -56,7 +67,7 @@ export interface DocumentDecorations {
   docCategoriesWithUploads: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
-  missingDocumentsRecord: DecoratedMissingDocumentRecord
+  missingDocumentsRecords: DecoratedMissingDocumentsRecord[]
   versionedUpload?: DecoratedDocument
   versionedGeneratedDoc?: DecoratedDocument
   emailsUploaded: {
@@ -65,11 +76,11 @@ export interface DocumentDecorations {
     DOSSIER_EMAIL?: DecoratedDocument
   }
   documentsGenerated: {
-    RECALL_NOTIFICATION?: DecoratedDocument
-    REVOCATION_ORDER?: DecoratedDocument
-    LETTER_TO_PRISON?: DecoratedDocument
-    DOSSIER?: DecoratedDocument
-    REASONS_FOR_RECALL?: DecoratedDocument
+    RECALL_NOTIFICATION?: DecoratedGeneratedDoc
+    REVOCATION_ORDER?: DecoratedGeneratedDoc
+    LETTER_TO_PRISON?: DecoratedGeneratedDoc
+    DOSSIER?: DecoratedGeneratedDoc
+    REASONS_FOR_RECALL?: DecoratedGeneratedDoc
   }
 }
 

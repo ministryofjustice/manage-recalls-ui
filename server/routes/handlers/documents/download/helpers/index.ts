@@ -1,7 +1,14 @@
-import { DocumentCategoryMetadata } from '../../../../../@types/documents'
+import {
+  DecoratedDocument,
+  DecoratedMissingDocumentsRecord,
+  DocumentCategoryMetadata,
+  DecoratedGeneratedDoc,
+} from '../../../../../@types/documents'
 import { documentCategories } from '../../documentCategories'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { getPersonAndRecall } from '../../../helpers/fetch/getPersonAndRecall'
+import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api'
+import { sortList } from '../../../helpers'
 
 export const generatedDocCategoriesList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'generated')
@@ -63,9 +70,10 @@ export const generatedDocMetaData = ({
   firstName: string
   lastName: string
   bookingNumber: string
-}) => {
+}): DecoratedGeneratedDoc => {
   return {
     ...document,
+    type: 'generated',
     fileName: getGeneratedDocFileName({
       firstName,
       lastName,
@@ -103,3 +111,47 @@ export const generatedDocumentFileName = async ({
     category,
   })
 }
+
+export const decorateMissingDocumentsRecords = ({
+  missingDocumentsRecords,
+  nomsNumber,
+  recallId,
+}: {
+  missingDocumentsRecords: MissingDocumentsRecord[]
+  nomsNumber: string
+  recallId: string
+}): DecoratedMissingDocumentsRecord[] => {
+  if (!missingDocumentsRecords.length) {
+    return []
+  }
+  return sortList<MissingDocumentsRecord>(missingDocumentsRecords, 'version', false).map(
+    (record: MissingDocumentsRecord) => {
+      const { createdByUserName, createdDateTime, details, version, emailFileName, categories, emailId } = record
+      return {
+        categories,
+        createdByUserName,
+        createdDateTime,
+        details,
+        version,
+        emailId,
+        fileName: emailFileName,
+        url: documentDownloadUrl({ recallId, nomsNumber, documentId: emailId }),
+      }
+    }
+  )
+}
+
+export const findCategoryInMissingDocumentsRecords = (
+  missingDocumentsRecords: MissingDocumentsRecord[],
+  category: RecallDocument.category
+): MissingDocumentsRecord[] =>
+  missingDocumentsRecords.filter((record: MissingDocumentsRecord) => record.categories.includes(category))
+
+export const getDocHistoryStatus = ({
+  doc,
+  missingDocumentsRecords,
+}: {
+  doc: DecoratedDocument
+  missingDocumentsRecords: MissingDocumentsRecord[]
+}): boolean =>
+  Boolean(doc.version > 1 || findCategoryInMissingDocumentsRecords(missingDocumentsRecords, doc.category).length)

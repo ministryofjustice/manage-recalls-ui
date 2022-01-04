@@ -13,7 +13,6 @@ export type { MissingDocumentsRecord } from './models/MissingDocumentsRecord';
 export type { MissingDocumentsRecordRequest } from './models/MissingDocumentsRecordRequest';
 export { ModelAndView } from './models/ModelAndView';
 export type { NewDocumentResponse } from './models/NewDocumentResponse';
-export type { Pdf } from './models/Pdf';
 export type { PoliceForce } from './models/PoliceForce';
 export type { Prison } from './models/Prison';
 export { RecallDocument } from './models/RecallDocument';

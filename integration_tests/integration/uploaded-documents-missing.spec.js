@@ -102,7 +102,7 @@ context('Missing uploaded documents', () => {
             categories: ['OASYS_RISK_ASSESSMENT', 'PART_A_RECALL_REPORT'],
             createdByUserId: '888',
             createdDateTime: '2021-11-10T05:34:25.000Z',
-            detail: 'Chased up, see attached',
+            details: 'Chased up, see attached',
             emailId: '987',
             missingDocumentsRecordId: '1',
             version: 2,
