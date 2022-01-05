@@ -47,7 +47,7 @@ export const addMissingDocumentRecordFormHandler = async (req: Request, res: Res
             {
               categories: missingDocumentCategories,
               recallId,
-              detail: valuesToSave.missingDocumentsDetail,
+              details: valuesToSave.missingDocumentsDetail,
               emailFileName: file.originalname,
               emailFileContent: file.buffer.toString('base64'),
             },
