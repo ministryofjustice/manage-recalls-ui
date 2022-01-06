@@ -42,7 +42,7 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
       'Content-Disposition',
-      `inline; filename="IN CUSTODY RECALL BADGER BOBBY A1234AB.pdf"`
+      `attachment; filename="IN CUSTODY RECALL BADGER BOBBY A1234AB.pdf"`
     )
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
@@ -57,7 +57,7 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
       'Content-Disposition',
-      `inline; filename="BADGER BOBBY A1234AB RECALL DOSSIER.pdf"`
+      `attachment; filename="BADGER BOBBY A1234AB RECALL DOSSIER.pdf"`
     )
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
@@ -72,7 +72,7 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
       'Content-Disposition',
-      `inline; filename="BADGER BOBBY A1234AB LETTER TO PRISON.pdf"`
+      `attachment; filename="BADGER BOBBY A1234AB LETTER TO PRISON.pdf"`
     )
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
@@ -87,7 +87,7 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
       'Content-Disposition',
-      `inline; filename="BADGER BOBBY A1234AB REVOCATION ORDER.pdf"`
+      `attachment; filename="BADGER BOBBY A1234AB REVOCATION ORDER.pdf"`
     )
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
@@ -102,7 +102,7 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
       'Content-Disposition',
-      `inline; filename="BADGER BOBBY A1234AB REASONS FOR RECALL.pdf"`
+      `attachment; filename="BADGER BOBBY A1234AB REASONS FOR RECALL.pdf"`
     )
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
@@ -115,7 +115,7 @@ describe('downloadDocumentOrEmail', () => {
     ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
-    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `inline; filename="Part A.pdf"`)
+    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="Part A.pdf"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
 
@@ -128,7 +128,7 @@ describe('downloadDocumentOrEmail', () => {
     ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
-    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `inline; filename="report.pdf"`)
+    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="report.pdf"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
   })
 

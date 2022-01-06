@@ -18,7 +18,7 @@ export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
         : await generatedDocumentFileName({ recallId, nomsNumber, category, token })
 
     res.contentType('application/pdf')
-    res.header('Content-Disposition', `inline; filename="${formattedFileName}"`)
+    res.header('Content-Disposition', `attachment; filename="${formattedFileName}"`)
   }
   if (documentCategory.type === 'email') {
     res.contentType('application/octet-stream')

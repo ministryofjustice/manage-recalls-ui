@@ -8,7 +8,7 @@
             </dt>
             <dd class=" govuk-summary-list__value">
                 {%  if recall.documentsGenerated[category.name] %}
-                    <a class='govuk-link' href='{{ recall.documentsGenerated[category.name].url }}' target='_blank' data-qa='appGeneratedDocuments-{{ category.name }}'>{{ recall.documentsGenerated[category.name].fileName }}</a>
+                    <a class='govuk-link' href='{{ recall.documentsGenerated[category.name].url }}' download data-qa='appGeneratedDocuments-{{ category.name }}'>{{ recall.documentsGenerated[category.name].fileName }}</a>
                     {% if recall.documentsGenerated[category.name].version > 1 %}
                         <div class='govuk-!-margin-bottom-4'>
                         (<span data-qa='appGeneratedDocuments-{{ category.name }}-version'>version {{ recall.documentsGenerated[category.name].version }}</span>)

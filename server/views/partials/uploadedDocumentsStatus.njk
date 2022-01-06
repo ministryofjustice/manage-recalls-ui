@@ -7,7 +7,7 @@
     {% for file in category.uploaded %}
     <div class="govuk-summary-list__row document-row" id='group-{{ file.documentId }}'>
       <dt class=" govuk-summary-list__key">
-        <a href='{{ file.url }}' target='_blank' class='govuk-link{% if errors[file.documentId] %} govuk-link--error{% endif %}' data-qa='link-{{ file.documentId }}'>{{ file.standardFileName if file.standardFileName else file.fileName }}</a>
+        <a href='{{ file.url }}' download class='govuk-link{% if errors[file.documentId] %} govuk-link--error{% endif %}' data-qa='link-{{ file.documentId }}'>{{ file.standardFileName if file.standardFileName else file.fileName }}</a>
       </dt>
       <dd class="govuk-summary-list__value">
         <div class="flex flex--col">
