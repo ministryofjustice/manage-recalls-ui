@@ -32,7 +32,7 @@
                     <td class="govuk-table__cell" data-sort-value='{{ isoDateToMillis(document.createdDateTime) }}' data-qa='createdDateTime'>{{ document.createdDateTime | dateTime }}</td>
                     <td class="govuk-table__cell" data-qa='createdByUserName'>{{ document.createdByUserName }}</td>
                     <td class="govuk-table__cell" data-qa='action'>
-                        {% if document.version > 1 %}
+                        {% if document.hasHistory %}
                         <a href='{{ makeUrl('change-history/document?category=' + document.category, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ document.category }}'>View history</a>
                         {% endif %}
                     </td>

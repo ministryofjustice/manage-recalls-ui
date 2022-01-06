@@ -4,7 +4,7 @@ import { findDocCategory } from '../upload/helpers'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { isString, sortList } from '../../helpers'
 import { getPersonAndRecall } from '../../helpers/fetch/getPersonAndRecall'
-import { generatedDocMetaData, documentDownloadUrl } from '../download/helpers'
+import { generated, uploaded } from './helpers'
 
 export const getDocumentChangeHistory = async (req: Request, res: Response, next: NextFunction) => {
   const { nomsNumber, recallId } = req.params
@@ -29,24 +29,31 @@ export const getDocumentChangeHistory = async (req: Request, res: Response, next
       category: name,
       type,
     }
-    const items = await getDocumentCategoryHistory(recallId, category as RecallDocument.category, token)
-    const personAndRecall = type === 'generated' ? await getPersonAndRecall({ recallId, nomsNumber, token }) : undefined
-    res.locals.documentHistory.items = sortList(items, 'version', false).map((document: RecallDocument) =>
+    const [historyResponse, personAndRecallResponse] = await Promise.allSettled([
+      getDocumentCategoryHistory(recallId, name, token),
+      getPersonAndRecall({ recallId, nomsNumber, token }),
+    ])
+    if (historyResponse.status === 'rejected') {
+      throw historyResponse.reason
+    }
+    if (personAndRecallResponse.status === 'rejected') {
+      throw personAndRecallResponse.reason
+    }
+    const historyItems = historyResponse.value
+    const personAndRecall = personAndRecallResponse.value
+    const sortedHistory = sortList<RecallDocument>(historyItems, 'version', false)
+    res.locals.documentHistory.items =
       type === 'generated'
-        ? generatedDocMetaData({
-            recallId,
-            nomsNumber,
-            document,
-            firstName: personAndRecall?.person?.firstName,
-            lastName: personAndRecall?.person?.lastName,
-            bookingNumber: personAndRecall?.recall?.bookingNumber,
+        ? generated({
+            sortedHistory,
+            personAndRecall,
           })
-        : {
-            ...document,
-            fileName: standardFileName || document.fileName,
-            url: documentDownloadUrl({ recallId, nomsNumber, documentId: document.documentId }),
-          }
-    )
+        : uploaded({
+            sortedHistory,
+            recall: personAndRecall.recall,
+            category: name,
+            standardFileName,
+          })
   } catch (err) {
     next(err)
   } finally {

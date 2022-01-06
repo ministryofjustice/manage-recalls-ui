@@ -1,5 +1,5 @@
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { DecoratedDocument } from '../../../../../@types/documents'
+import { DecoratedUploadedDoc } from '../../../../../@types/documents'
 import { documentCategories } from '../../documentCategories'
 import { autocategoriseDocFileName } from './autocategorise'
 import { findDocCategory } from '../../upload/helpers'
@@ -13,7 +13,7 @@ export const decorateAllDocTypes = ({
   docs: RecallDocument[]
   nomsNumber: string
   recallId: string
-}): DecoratedDocument[] => {
+}): DecoratedUploadedDoc[] => {
   const categoryNamesForSorting = documentCategories.map(d => d.name)
   return docs
     .map(doc => {

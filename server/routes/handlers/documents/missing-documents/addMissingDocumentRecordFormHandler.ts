@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { addMissingDocumentRecord } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addMissingDocumentRecord, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import logger from '../../../../../logger'
 import { uploadStorageField } from '../upload/helpers/uploadStorage'
 import { validateMissingDocuments } from './validations/validateMissingDocuments'
@@ -7,6 +7,7 @@ import { makeErrorObject } from '../../helpers'
 import { allowedEmailFileExtensions } from '../upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload } from '../../helpers/errorMessages'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { listMissingRequiredDocs } from '../upload/helpers'
 
 export const addMissingDocumentRecordFormHandler = async (req: Request, res: Response): Promise<void> => {
   const emailFieldName = 'missingDocumentsEmailFileName'
@@ -37,13 +38,16 @@ export const addMissingDocumentRecordFormHandler = async (req: Request, res: Res
       const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
       if (shouldSaveToApi) {
         try {
-          // TODO - get recall to do list of missing docs
-          const missingDocumentCategories = [] as RecallDocument.category[]
+          const recall = await getRecall(recallId, user.token)
+          const missingDocumentCategories = listMissingRequiredDocs({
+            docs: recall.documents,
+            returnLabels: false,
+          }) as RecallDocument.category[]
           const response = await addMissingDocumentRecord(
             {
               categories: missingDocumentCategories,
               recallId,
-              detail: valuesToSave.missingDocumentsDetail,
+              details: valuesToSave.missingDocumentsDetail,
               emailFileName: file.originalname,
               emailFileContent: file.buffer.toString('base64'),
             },

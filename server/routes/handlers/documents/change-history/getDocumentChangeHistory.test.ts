@@ -22,6 +22,39 @@ describe('getDocumentChangeHistory', () => {
       },
     } as unknown as Response
     next = jest.fn()
+    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({
+      person: {
+        firstName: 'Wesley',
+        lastName: 'Holt',
+      },
+      recall: {
+        recallId: '456',
+        nomsNumber: '123',
+        bookingNumber: 'A1234AB',
+        missingDocumentsRecords: [
+          {
+            categories: ['LICENCE', 'OASYS_RISK_ASSESSMENT'],
+            createdByUserName: 'Bobby Badger',
+            createdDateTime: '2021-10-05T08:11:34.000Z',
+            details: 'Chased',
+            emailId: '123',
+            emailFileName: 'email.msg',
+            missingDocumentsRecordId: '456',
+            version: 2,
+          },
+          {
+            categories: ['PART_A_RECALL_REPORT'],
+            createdByUserName: 'Bobby Badger',
+            createdDateTime: '2021-10-05T08:11:34.000Z',
+            details: 'Chased',
+            emailId: '123',
+            emailFileName: 'email.msg',
+            missingDocumentsRecordId: '456',
+            version: 2,
+          },
+        ],
+      },
+    })
   })
 
   afterEach(() => jest.resetAllMocks())
@@ -52,7 +85,7 @@ describe('getDocumentChangeHistory', () => {
     expect(next).toHaveBeenCalledWith(new Error('Invalid category'))
   })
 
-  it('processes uploaded documents', async () => {
+  it('processes uploaded documents and appends missing documents records for the category', async () => {
     req.params.nomsNumber = '123'
     req.params.recallId = '456'
     req.query.category = 'LICENCE'
@@ -98,6 +131,17 @@ describe('getDocumentChangeHistory', () => {
           url: '/persons/123/recalls/456/documents/d4539cd4-c410-408a-b0c3-f91ba97b6e84',
           version: 1,
         },
+        {
+          categories: ['LICENCE', 'OASYS_RISK_ASSESSMENT'],
+          createdByUserName: 'Bobby Badger',
+          createdDateTime: '2021-10-05T08:11:34.000Z',
+          details: 'Chased',
+          fileName: 'email.msg',
+          isMissingRecord: true,
+          emailId: '123',
+          url: '/persons/123/recalls/456/documents/123',
+          version: 2,
+        },
       ],
     })
   })
@@ -106,15 +150,6 @@ describe('getDocumentChangeHistory', () => {
     req.params.nomsNumber = '123'
     req.params.recallId = '456'
     req.query.category = 'DOSSIER'
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({
-      person: {
-        firstName: 'Wesley',
-        lastName: 'Holt',
-      },
-      recall: {
-        bookingNumber: 'A1234AB',
-      },
-    })
     ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([
       {
         category: 'DOSSIER',
@@ -147,6 +182,7 @@ describe('getDocumentChangeHistory', () => {
           fileName: 'HOLT WESLEY A1234AB RECALL DOSSIER.pdf',
           url: '/persons/123/recalls/456/documents/123',
           version: 2,
+          type: 'generated',
         },
         {
           category: 'DOSSIER',
@@ -156,6 +192,7 @@ describe('getDocumentChangeHistory', () => {
           fileName: 'HOLT WESLEY A1234AB RECALL DOSSIER.pdf',
           url: '/persons/123/recalls/456/documents/456',
           version: 1,
+          type: 'generated',
         },
       ],
     })

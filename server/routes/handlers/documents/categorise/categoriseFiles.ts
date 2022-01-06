@@ -25,7 +25,7 @@ export const categoriseFiles = async (req: Request, res: Response) => {
     return res.redirect(303, req.originalUrl)
   }
   const recall = await getRecall(recallId, token)
-  if (listMissingRequiredDocs(recall.documents).length) {
+  if (listMissingRequiredDocs({ docs: recall.documents, returnLabels: true }).length) {
     // if the user came from a recall info page, add querystring so they'll be redirected back there after missing documents page
     return res.redirect(303, makeUrl('missing-documents', urlInfo))
   }

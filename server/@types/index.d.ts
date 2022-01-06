@@ -1,5 +1,5 @@
-import { RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
-import { DocumentDecorations } from './documents'
+import { RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
+import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 
 export interface FormError {
   text: string
@@ -164,5 +164,11 @@ export interface ConfirmationMessage {
 }
 
 export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
+  missingDocumentsRecords: DecoratedMissingDocumentsRecord[] // this is in both ancestor types, so override to get the correct one
   enableDeleteDocuments: boolean
+}
+
+export interface PersonAndRecallResponse {
+  person: SearchResult
+  recall: RecallResponse
 }

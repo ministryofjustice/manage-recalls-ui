@@ -32,7 +32,7 @@ export const replaceSpaces = (str: string, replacement: string) => str.replace(/
 
 export const objectToArray = (obj: ObjectMap<unknown>): unknown[] => Object.values(obj)
 
-export const sortList = (list: unknown[], key: string, asc = true) =>
+export const sortList = <T>(list: T[], key: string, asc = true): T[] =>
   list.sort((a, b) => {
     if (a[key] < b[key]) {
       return asc ? -1 : 1

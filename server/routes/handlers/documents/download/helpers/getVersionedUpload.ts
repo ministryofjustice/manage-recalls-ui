@@ -1,4 +1,4 @@
-import { DecoratedDocument, DocumentCategoryMetadata } from '../../../../../@types/documents'
+import { DecoratedUploadedDoc, DocumentCategoryMetadata } from '../../../../../@types/documents'
 
 export const getVersionedUpload = ({
   versionedCategoryName,
@@ -7,7 +7,7 @@ export const getVersionedUpload = ({
   versionedCategoryName: string
   docCategoriesWithUploads: DocumentCategoryMetadata[]
 }) => {
-  let versionedUpload: DecoratedDocument
+  let versionedUpload: DecoratedUploadedDoc
   if (versionedCategoryName) {
     const categoryData = docCategoriesWithUploads.find(type => type.name === versionedCategoryName && type.versioned)
     if (categoryData) {

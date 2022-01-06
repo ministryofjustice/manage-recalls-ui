@@ -1,6 +1,6 @@
 import { getVersionedUpload } from './getVersionedUpload'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { DecoratedDocument } from '../../../../../@types/documents'
+import { DecoratedUploadedDoc } from '../../../../../@types/documents'
 
 describe('getVersionedUpload', () => {
   it('filters out uncategorised uploads', () => {
@@ -21,13 +21,13 @@ describe('getVersionedUpload', () => {
               category: RecallDocument.category.UNCATEGORISED,
               suggestedCategory: RecallDocument.category.PART_A_RECALL_REPORT,
               label: 'Part A recall report',
-            } as DecoratedDocument,
+            } as DecoratedUploadedDoc,
             {
               category: RecallDocument.category.PART_A_RECALL_REPORT,
               suggestedCategory: RecallDocument.category.PART_A_RECALL_REPORT,
               label: 'Part A recall report',
               version: 2,
-            } as DecoratedDocument,
+            } as DecoratedUploadedDoc,
           ],
         },
       ],

@@ -78,10 +78,7 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
         '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
       )
       checkLink('missingDocumentsDetailChange', '/missing-documents?fromPage=check-answers&fromHash=missing-documents')
-      checkLink(
-        'missingDocumentsEmailFileNameChange',
-        '/missing-documents?fromPage=check-answers&fromHash=missing-documents'
-      )
+      checkLink('missingDocumentsEmailChange', '/missing-documents?fromPage=check-answers&fromHash=missing-documents')
     },
   })
 

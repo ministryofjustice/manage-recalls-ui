@@ -15,7 +15,7 @@ describe('decorateDocs', () => {
     {
       category: RecallDocument.category.LICENCE,
       documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      version: 1,
+      version: 2,
       createdDateTime: '2020-04-01T12:00:00.000Z',
       createdByUserName: 'Arnold Caseworker',
       fileName: 'Bobby Badger licence.pdf',
@@ -24,6 +24,13 @@ describe('decorateDocs', () => {
       category: RecallDocument.category.OTHER,
       documentId: '1234-8766-2344-5342',
       fileName: 'other doc 2.pdf',
+      createdByUserName: 'Arnold Caseworker',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+    },
+    {
+      category: RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET,
+      documentId: '1234-8766-2344-5342',
+      fileName: 'pre cons.pdf',
       createdByUserName: 'Arnold Caseworker',
       createdDateTime: '2020-04-01T12:00:00.000Z',
     },
@@ -96,10 +103,20 @@ describe('decorateDocs', () => {
       missingDocumentsRecordId: '1234',
       emailId: '845',
       emailFileName: 'email.msg',
-      categories: [RecallDocument.category.PART_A_RECALL_REPORT],
-      detail: 'Email sent 12/10/2021',
+      categories: [RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET],
+      details: 'Email sent 12/10/2021',
       version: 1,
-      createdByUserId: '6544',
+      createdByUserName: 'Maria Badger',
+      createdDateTime: '2021-10-12T13:43:00.000Z',
+    },
+    {
+      missingDocumentsRecordId: '1234',
+      emailId: '845',
+      emailFileName: 'email.msg',
+      categories: [RecallDocument.category.OASYS_RISK_ASSESSMENT],
+      details: 'Email sent 12/10/2021',
+      version: 1,
+      createdByUserName: 'Maria Badger',
       createdDateTime: '2021-10-12T13:43:00.000Z',
     },
   ]
@@ -140,7 +157,7 @@ describe('decorateDocs', () => {
             fileName: 'Bobby Badger licence.pdf',
             standardFileName: 'Licence.pdf',
             url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            version: 1,
+            version: 2,
             createdDateTime: '2020-04-01T12:00:00.000Z',
             createdByUserName: 'Arnold Caseworker',
             label: 'Licence',
@@ -150,7 +167,20 @@ describe('decorateDocs', () => {
       },
       {
         ...findDocCategory(RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
-        uploaded: [],
+        uploaded: [
+          {
+            category: 'PREVIOUS_CONVICTIONS_SHEET',
+            createdByUserName: 'Arnold Caseworker',
+            createdDateTime: '2020-04-01T12:00:00.000Z',
+            documentId: '1234-8766-2344-5342',
+            fileName: 'pre cons.pdf',
+            label: 'Previous convictions sheet',
+            standardFileName: 'Pre Cons.pdf',
+            suggestedCategory: 'PREVIOUS_CONVICTIONS_SHEET',
+            type: 'document',
+            url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
+          },
+        ],
       },
       {
         ...findDocCategory(RecallDocument.category.PRE_SENTENCING_REPORT),
@@ -219,7 +249,21 @@ describe('decorateDocs', () => {
         suggestedCategory: 'LICENCE',
         type: 'document',
         url: '/persons/A123/recalls/abc-456/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        version: 1,
+        version: 2,
+        hasHistory: true,
+      },
+      {
+        category: 'PREVIOUS_CONVICTIONS_SHEET',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '1234-8766-2344-5342',
+        fileName: 'pre cons.pdf',
+        hasHistory: true,
+        label: 'Previous convictions sheet',
+        standardFileName: 'Pre Cons.pdf',
+        suggestedCategory: 'PREVIOUS_CONVICTIONS_SHEET',
+        type: 'document',
+        url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
       },
       {
         category: 'OTHER',
@@ -231,6 +275,7 @@ describe('decorateDocs', () => {
         url: '/persons/A123/recalls/abc-456/documents/2345-65434-3455-23432',
         createdByUserName: 'Arnold Caseworker',
         createdDateTime: '2020-04-01T12:00:00.000Z',
+        hasHistory: false,
       },
       {
         category: 'OTHER',
@@ -242,6 +287,7 @@ describe('decorateDocs', () => {
         url: '/persons/A123/recalls/abc-456/documents/1234-8766-2344-5342',
         createdByUserName: 'Arnold Caseworker',
         createdDateTime: '2020-04-01T12:00:00.000Z',
+        hasHistory: false,
       },
     ])
   })
@@ -253,7 +299,7 @@ describe('decorateDocs', () => {
       label: 'Licence',
       fileName: 'Bobby Badger licence.pdf',
       standardFileName: 'Licence.pdf',
-      version: 1,
+      version: 2,
       createdDateTime: '2020-04-01T12:00:00.000Z',
       createdByUserName: 'Arnold Caseworker',
       type: 'document',
@@ -261,14 +307,36 @@ describe('decorateDocs', () => {
     })
   })
 
-  it('returns data on missing documents', () => {
+  it('returns data on missing required documents', () => {
     expect(results.requiredDocsMissing).toEqual([findDocCategory(RecallDocument.category.PART_A_RECALL_REPORT)])
   })
 
-  it('returns data on missing documents', () => {
-    expect(results.missingNotRequiredDocs).toEqual([
-      findDocCategory(RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET),
-      findDocCategory(RecallDocument.category.OASYS_RISK_ASSESSMENT),
+  it('returns data on missing desired documents', () => {
+    expect(results.missingNotRequiredDocs).toEqual([findDocCategory(RecallDocument.category.OASYS_RISK_ASSESSMENT)])
+  })
+
+  it('returns a list of decorated missing documents records', () => {
+    expect(results.missingDocumentsRecords).toEqual([
+      {
+        categories: ['PREVIOUS_CONVICTIONS_SHEET'],
+        createdByUserName: 'Maria Badger',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+        details: 'Email sent 12/10/2021',
+        version: 1,
+        fileName: 'email.msg',
+        emailId: '845',
+        url: '/persons/A123/recalls/abc-456/documents/845',
+      },
+      {
+        categories: ['OASYS_RISK_ASSESSMENT'],
+        createdByUserName: 'Maria Badger',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+        details: 'Email sent 12/10/2021',
+        version: 1,
+        fileName: 'email.msg',
+        emailId: '845',
+        url: '/persons/A123/recalls/abc-456/documents/845',
+      },
     ])
   })
 
@@ -339,6 +407,16 @@ describe('decorateDocs', () => {
         createdByUserName: 'Arnold Caseworker',
         createdDateTime: '2020-04-01T12:00:00.000Z',
       },
+      MISSING_DOCUMENTS_EMAIL: {
+        category: 'MISSING_DOCUMENTS_EMAIL',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '845',
+        fileName: 'missing-docs.msg',
+        label: 'Missing documents email',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/845',
+      },
       RECALL_REQUEST_EMAIL: {
         category: 'RECALL_REQUEST_EMAIL',
         documentId: '1234-3455-8542-c3ac-8c963f66afa6',
@@ -359,26 +437,6 @@ describe('decorateDocs', () => {
         createdByUserName: 'Arnold Caseworker',
         createdDateTime: '2020-04-01T12:00:00.000Z',
       },
-    })
-  })
-
-  it('returns data on missing documents', () => {
-    expect(results.missingDocumentsRecord).toEqual({
-      category: 'MISSING_DOCUMENTS_EMAIL',
-      createdByUserId: '6544',
-      createdDateTime: '2020-04-01T12:00:00.000Z',
-      createdByUserName: 'Arnold Caseworker',
-      detail: 'Email sent 12/10/2021',
-      categories: ['PART_A_RECALL_REPORT'],
-      documentId: '845',
-      emailFileName: 'email.msg',
-      emailId: '845',
-      fileName: 'missing-docs.msg',
-      label: 'Missing documents email',
-      missingDocumentsRecordId: '1234',
-      type: 'email',
-      url: '/persons/A123/recalls/abc-456/documents/845',
-      version: 1,
     })
   })
 

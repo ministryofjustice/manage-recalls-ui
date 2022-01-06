@@ -134,7 +134,7 @@ context('View a recall', () => {
     // sent missing documents email
     fileName = 'missing-documents.msg'
     mockFileDownload({ fileName, category: 'MISSING_DOCUMENTS_EMAIL' })
-    recallInformation.clickButton({ qaAttr: 'uploadedDocument-MISSING_DOCUMENTS_EMAIL' })
+    recallInformation.clickButton({ qaAttr: 'missingDocumentsEmail' })
     recallInformation.checkFileDownloaded(fileName)
   })
 })

@@ -1,5 +1,4 @@
 import { RecallDocument } from './manage-recalls-api'
-import { MissingDocumentsRecord } from './manage-recalls-api/models/MissingDocumentsRecord'
 
 type DocumentType = 'document' | 'email' | 'generated'
 
@@ -15,18 +14,22 @@ export interface DocumentCategoryMetadata {
   multiple?: boolean
   versioned?: boolean
   fileNamePatterns?: string[]
-  uploaded?: DecoratedDocument[]
+  uploaded?: DecoratedUploadedDoc[]
 }
 
-export interface DecoratedDocument extends RecallDocument {
+export interface DecoratedUploadedDoc extends RecallDocument {
   label: string
   labelLowerCase?: string
-  category: RecallDocument.category
   suggestedCategory?: RecallDocument.category
   standardFileName?: string
   type: DocumentType
   url: string
   index?: number
+}
+
+export interface DecoratedGeneratedDoc extends RecallDocument {
+  type: DocumentType
+  url: string
 }
 
 export interface UploadedFileMetadata {
@@ -47,29 +50,37 @@ export interface CategorisedFileMetadata {
   isExistingUpload: boolean
 }
 
-export interface DecoratedMissingDocumentRecord extends MissingDocumentsRecord {
-  url: string
+// inherits some from MissingDocumentsRecord
+export interface DecoratedMissingDocumentsRecord {
+  categories: string[]
+  createdByUserName: string
+  createdDateTime: string
+  details: string
+  emailId: string
+  version: number
+  fileName?: string
+  url?: string
 }
 
 export interface DocumentDecorations {
-  documentsUploaded: DecoratedDocument[]
+  documentsUploaded: DecoratedUploadedDoc[]
   docCategoriesWithUploads: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
-  missingDocumentsRecord: DecoratedMissingDocumentRecord
-  versionedUpload?: DecoratedDocument
-  versionedGeneratedDoc?: DecoratedDocument
+  missingDocumentsRecords: DecoratedMissingDocumentsRecord[]
+  versionedUpload?: DecoratedUploadedDoc
+  versionedGeneratedDoc?: DecoratedUploadedDoc
   emailsUploaded: {
-    RECALL_NOTIFICATION_EMAIL?: DecoratedDocument
-    RECALL_REQUEST_EMAIL?: DecoratedDocument
-    DOSSIER_EMAIL?: DecoratedDocument
+    RECALL_NOTIFICATION_EMAIL?: DecoratedUploadedDoc
+    RECALL_REQUEST_EMAIL?: DecoratedUploadedDoc
+    DOSSIER_EMAIL?: DecoratedUploadedDoc
   }
   documentsGenerated: {
-    RECALL_NOTIFICATION?: DecoratedDocument
-    REVOCATION_ORDER?: DecoratedDocument
-    LETTER_TO_PRISON?: DecoratedDocument
-    DOSSIER?: DecoratedDocument
-    REASONS_FOR_RECALL?: DecoratedDocument
+    RECALL_NOTIFICATION?: DecoratedGeneratedDoc
+    REVOCATION_ORDER?: DecoratedGeneratedDoc
+    LETTER_TO_PRISON?: DecoratedGeneratedDoc
+    DOSSIER?: DecoratedGeneratedDoc
+    REASONS_FOR_RECALL?: DecoratedGeneratedDoc
   }
 }
 

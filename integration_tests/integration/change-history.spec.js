@@ -1,4 +1,4 @@
-import { getRecallResponse, getDocumentCategoryHistoryResponseJson } from '../mockApis/mockResponses'
+import { getRecallResponse, getDocumentCategoryHistoryResponseJson, searchResponse } from '../mockApis/mockResponses'
 
 const recallInformationPage = require('../pages/recallInformation')
 const changeHistoryPage = require('../pages/changeHistory')
@@ -165,7 +165,7 @@ context('Change history', () => {
     })
   })
 
-  it('User can navigate to uploaded document history', () => {
+  it('can see uploaded document history and missing records', () => {
     const category = 'LICENCE'
     const document = {
       category,
@@ -181,6 +181,18 @@ context('Change history', () => {
         recallId,
         status: 'DOSSIER_ISSUED',
         documents: [document],
+        missingDocumentsRecords: [
+          {
+            missingDocumentsRecordId: '0120412-410124',
+            emailId: '845',
+            emailFileName: 'missing-documents.msg',
+            categories: ['OASYS_RISK_ASSESSMENT', 'LICENCE'],
+            details: 'Documents were requested by email on 10/12/2020',
+            version: 2,
+            createdByUserName: 'Bobby Badger',
+            createdDateTime: '2021-03-12T12:24:03.000Z',
+          },
+        ],
       },
     })
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
@@ -216,6 +228,10 @@ context('Change history', () => {
           textToFind: `Licence (version ${doc.version})`,
         })
         uploadedDocumentHistory.assertElementHasText({
+          qaAttr: `document-${docId}-details`,
+          textToFind: doc.details,
+        })
+        uploadedDocumentHistory.assertElementHasText({
           qaAttr: `document-${docId}-version`,
           textToFind: `(version ${doc.version})`,
         })
@@ -224,6 +240,23 @@ context('Change history', () => {
         qaAttr: `document-${docId}-uploaded-by`,
         textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
       })
+    })
+    // missing documents record
+    uploadedDocumentHistory.assertElementHasText({
+      qaAttr: 'missingDocumentsLabel',
+      textToFind: 'Missing',
+    })
+    uploadedDocumentHistory.assertElementHasText({
+      qaAttr: 'document-845-details',
+      textToFind: 'Documents were requested by email on 10/12/2020',
+    })
+    uploadedDocumentHistory.assertLinkHref({
+      qaAttr: 'missingDocumentsEmail',
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/845`,
+    })
+    uploadedDocumentHistory.assertElementHasText({
+      qaAttr: 'document-845-uploaded-by',
+      textToFind: 'Noted by Bobby Badger on 12 March 2021 at 12:24',
     })
   })
 
@@ -245,6 +278,7 @@ context('Change history', () => {
         documents: [document],
       },
     })
+    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
     cy.task('expectGetRecallDocumentHistory', {
       expectedResult: [

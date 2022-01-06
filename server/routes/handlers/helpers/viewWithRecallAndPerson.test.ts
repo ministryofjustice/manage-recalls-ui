@@ -52,56 +52,11 @@ describe('viewWithRecallAndPerson', () => {
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await viewWithRecallAndPerson('recallIssuesNeeds')(req, res)
-    expect(res.locals.recall.documentsUploaded).toEqual([
-      {
-        category: 'PART_A_RECALL_REPORT',
-        createdDateTime: '2020-12-05T18:33:57.000Z',
-        createdByUserName: 'Arnold Caseworker',
-        documentId: '34bdf-5717-4562-b3fc-2c963f66afa6',
-        fileName: 'Bobby Badger Part A.pdf',
-        label: 'Part A recall report',
-        labelLowerCase: 'part A recall report',
-        standardFileName: 'Part A.pdf',
-        suggestedCategory: 'PART_A_RECALL_REPORT',
-        type: 'document',
-        url: '/persons/AA123AA/recalls/123/documents/34bdf-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        category: 'LICENCE',
-        createdDateTime: '2020-12-05T18:33:57.000Z',
-        createdByUserName: 'Arnold Caseworker',
-        documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        fileName: 'Bobby Badger licence.pdf',
-        label: 'Licence',
-        standardFileName: 'Licence.pdf',
-        suggestedCategory: 'LICENCE',
-        type: 'document',
-        url: '/persons/AA123AA/recalls/123/documents/3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        category: 'PREVIOUS_CONVICTIONS_SHEET',
-        createdDateTime: '2020-12-05T18:33:57.000Z',
-        createdByUserName: 'Arnold Caseworker',
-        documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-        fileName: 'Bobby Badger pre cons.pdf',
-        label: 'Previous convictions sheet',
-        standardFileName: 'Pre Cons.pdf',
-        suggestedCategory: 'PREVIOUS_CONVICTIONS_SHEET',
-        type: 'document',
-        url: '/persons/AA123AA/recalls/123/documents/1234-5717-4562-b3fc-2c963f66afa6',
-      },
-      {
-        category: 'PRE_SENTENCING_REPORT',
-        createdDateTime: '2020-12-05T18:33:57.000Z',
-        createdByUserName: 'Arnold Caseworker',
-        documentId: '4563456-5717-4562-b3fc-2c963f66afa6',
-        fileName: 'Bobby Badger presentencing.pdf',
-        label: 'Pre-sentencing report',
-        standardFileName: 'PSR.pdf',
-        suggestedCategory: 'PRE_SENTENCING_REPORT',
-        type: 'document',
-        url: '/persons/AA123AA/recalls/123/documents/4563456-5717-4562-b3fc-2c963f66afa6',
-      },
+    expect(res.locals.recall.documentsUploaded.map(doc => doc.category)).toEqual([
+      'PART_A_RECALL_REPORT',
+      'LICENCE',
+      'PREVIOUS_CONVICTIONS_SHEET',
+      'PRE_SENTENCING_REPORT',
     ])
     expect(res.render).toHaveBeenCalledWith('pages/recallIssuesNeeds')
   })
