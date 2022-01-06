@@ -134,7 +134,7 @@ export const decorateMissingDocumentsRecords = ({
         details,
         version,
         emailId,
-        fileName: emailFileName,
+        fileName: emailFileName || 'Email',
         url: documentDownloadUrl({ recallId, nomsNumber, documentId: emailId }),
       }
     }
