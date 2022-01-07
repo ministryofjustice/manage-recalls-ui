@@ -102,6 +102,7 @@ export type ViewName =
   | 'viewFullRecall'
   | 'changeHistory'
   | 'changeHistoryForDocument'
+  | 'changeHistoryForField'
   | 'newGeneratedDocumentVersion'
 
 export type ReqValidatorFn = (requestBody: ObjectMap<string>, user?: UserDetails) => ReqValidatorReturn

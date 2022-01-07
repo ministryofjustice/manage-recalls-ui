@@ -41,6 +41,7 @@ module.exports = (on, config) => {
     expectAssignUserToRecall: manageRecallsApi.expectAssignUserToRecall,
     expectUnassignAssessment: manageRecallsApi.expectUnassignAssessment,
     expectAddMissingDocumentsRecord: manageRecallsApi.expectAddMissingDocumentsRecord,
+    expectGetFieldChangeHistory: manageRecallsApi.expectGetFieldChangeHistory,
     expectRefData: manageRecallsApi.expectRefData,
     readPdf: readPdf.readPdf,
     findApiRequest: wiremockApi.findApiRequest,

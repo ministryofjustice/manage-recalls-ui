@@ -1,7 +1,62 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import { SessionData } from 'express-session'
 import { ObjectMixed } from '../../@types'
+
+export const mockReq = ({
+  query = {},
+  params = {},
+  body = {},
+  method = 'GET',
+  headers = {},
+  session = {} as SessionData,
+  originalUrl,
+  baseUrl,
+}: {
+  body?: ObjectMixed
+  query?: ObjectMixed
+  params?: ObjectMixed
+  headers?: ObjectMixed
+  method?: string
+  session?: SessionData
+  originalUrl?: string
+  baseUrl?: string
+} = {}): Request => {
+  return {
+    query,
+    params,
+    body,
+    headers,
+    method,
+    session,
+    originalUrl,
+    baseUrl,
+  } as Request
+}
+
+export const mockRes = ({
+  locals = {},
+  token = 'token',
+  redirect = jest.fn(),
+}: {
+  locals?: ObjectMixed
+  token?: string
+  redirect?: jest.Mock
+} = {}): Response => {
+  return {
+    locals: {
+      ...locals,
+      user: {
+        token,
+      },
+    },
+    redirect,
+  } as unknown as Response
+}
+
+export const mockNext = () => jest.fn()
+
+// all functions below this line are deprecated, use the two above if possible
 
 export function mockPostRequest({
   body,

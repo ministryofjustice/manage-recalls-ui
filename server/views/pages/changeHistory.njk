@@ -8,6 +8,39 @@
             <h1 class="govuk-heading-xl">
                 Change history
             </h1>
+
+            {% set informationEnteredHtml %}
+                <table class="govuk-table" id="table-info-entered" data-module="moj-sortable-table" data-qa='uploadedDocuments'>
+                    <caption class="govuk-table__caption govuk-table__caption--m">Information entered</caption>
+                    <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <th scope="col" class="govuk-table__header govuk-!-width-one-third" aria-sort="ascending">Field</th>
+                        <th scope="col" class="govuk-table__header">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                    {% for field in sortList(recall.fields, 'field') %}
+                        <tr class="govuk-table__row" data-qa='{{ field.id }}'>
+                            <td class="govuk-table__cell" data-sort-value='{{ field.label }}' data-qa='fieldName'>
+                                {{ field.label }}
+                            </td>
+                            <td class="govuk-table__cell" data-qa='action'>
+                                {% if field.hasHistory %}
+                                <a href='{{ makeUrl('change-history/field?id=' + field.id, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ field.id }}'>View history</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <script nonce='{{ cspNonce }}'>
+                  new MOJFrontend.SortableTable({
+                    table: $('#table-info-entered')[0]
+                  });
+                </script>
+            {% endset -%}
+
+            {% set documentsHtml %}
              <h2 class="govuk-heading-l">
                 Documents
             </h2>
@@ -89,6 +122,26 @@
                 <h2 class="govuk-heading-m">Generated</h2>
                 <p class='govuk-body'>No documents</p>
             {% endif %}
+
+            {% endset -%}
+            {{ govukTabs({
+                items: [
+                    {
+                        label: "Information entered",
+                        id: "information-entered",
+                        panel: {
+                        html: informationEnteredHtml
+                    }
+                    },
+                    {
+                        label: "Documents",
+                        id: "documents",
+                        panel: {
+                        html: documentsHtml
+                    }
+                    }
+                ]
+            }) }}
         </div>
     </div>
 {% endblock %}
