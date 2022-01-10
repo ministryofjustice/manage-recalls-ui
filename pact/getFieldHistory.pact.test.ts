@@ -19,7 +19,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('get uploaded recall field history', () => {
     test("can successfully retrieve a field's history", async () => {
       await provider.addInteraction({
-        state: 'a recall and field history exist',
+        state: 'a user and a fully populated recall without documents exists',
         ...pactGetRequest('a get recall field history request', path, token),
         willRespondWith: pactJsonResponse(Matchers.like(getFieldHistoryResponseJson), 200),
       })
