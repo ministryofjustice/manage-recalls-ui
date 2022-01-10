@@ -367,7 +367,7 @@ context('Change history', () => {
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
     changeHistory.clickLink({ qaAttr: 'viewHistory-currentPrison' })
     const fieldHistory = changeHistoryFieldPage.verifyOnPage()
-    getFieldChangeHistoryResponseJson.forEach(field => {
+    getFieldChangeHistoryResponseJson.forEach(() => {
       fieldHistory.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'dateAndTime',
