@@ -1,13 +1,13 @@
-import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
-import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
+import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import {
   decorateMissingDocumentsRecords,
   documentDownloadUrl,
   findCategoryInMissingDocumentsRecords,
   generatedDocMetaData,
-} from '../../download/helpers'
-import { PersonAndRecallResponse } from '../../../../../@types'
-import { DecoratedGeneratedDoc } from '../../../../../@types/documents'
+} from '../../documents/download/helpers'
+import { PersonAndRecallResponse } from '../../../../@types'
+import { DecoratedGeneratedDoc } from '../../../../@types/documents'
 
 export const uploaded = ({
   sortedHistory,

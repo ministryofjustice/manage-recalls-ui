@@ -8,6 +8,7 @@ import getCourtsResponse from '../../fake-manage-recalls-api/stubs/__files/get-c
 import getUserDetailsResponse from '../../fake-manage-recalls-api/stubs/__files/user.json'
 import getPoliceForcesResponse from '../../fake-manage-recalls-api/stubs/__files/get-police-forces.json'
 import getDocumentCategoryHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-document-category-history.json'
+import getFieldChangeHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-field-history.json'
 
 export {
   searchResponse,
@@ -20,4 +21,5 @@ export {
   getUserDetailsResponse,
   getPoliceForcesResponse,
   getDocumentCategoryHistoryResponseJson,
+  getFieldChangeHistoryResponseJson,
 }

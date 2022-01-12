@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
-import { getDocumentCategoryHistory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { findDocCategory } from '../upload/helpers'
-import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { isString, sortList } from '../../helpers'
-import { getPersonAndRecall } from '../../helpers/fetch/getPersonAndRecall'
+import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { findDocCategory } from '../documents/upload/helpers'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { isString, sortList } from '../helpers'
+import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
 import { generated, uploaded } from './helpers'
 
 export const getDocumentChangeHistory = async (req: Request, res: Response, next: NextFunction) => {

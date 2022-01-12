@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { getDocumentChangeHistory } from './getDocumentChangeHistory'
-import { getDocumentCategoryHistory } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
-import { getPersonAndRecall } from '../../helpers/fetch/getPersonAndRecall'
+import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
-jest.mock('../../helpers/fetch/getPersonAndRecall')
+jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../helpers/fetch/getPersonAndRecall')
 
 describe('getDocumentChangeHistory', () => {
   let req: Request

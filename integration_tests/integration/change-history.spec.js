@@ -1,8 +1,16 @@
-import { getRecallResponse, getDocumentCategoryHistoryResponseJson, searchResponse } from '../mockApis/mockResponses'
+import {
+  getRecallResponse,
+  getEmptyRecallResponse,
+  getDocumentCategoryHistoryResponseJson,
+  searchResponse,
+  getFieldChangeHistoryResponseJson,
+  getPrisonsResponse,
+} from '../mockApis/mockResponses'
 
 const recallInformationPage = require('../pages/recallInformation')
 const changeHistoryPage = require('../pages/changeHistory')
-const uploadedDocumentHistoryPage = require('../pages/uploadedDocumentHistory')
+const changeHistoryDocumentPage = require('../pages/changeHistoryDocument')
+const changeHistoryFieldPage = require('../pages/changeHistoryField')
 const { formatDateTimeFromIsoString } = require('../../server/routes/handlers/helpers/dates/format')
 
 context('Change history', () => {
@@ -51,7 +59,7 @@ context('Change history', () => {
     cy.login()
   })
 
-  it('User can navigate to view change history for a recall, and resort the tables', () => {
+  it('User can navigate to view document change history for a recall, and resort the tables', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -64,7 +72,7 @@ context('Change history', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.clickButton({ qaAttr: 'changeHistoryButton' })
     const changeHistory = changeHistoryPage.verifyOnPage()
-
+    cy.get('#tab_documents').click()
     // UPLOADED DOCUMENTS
     changeHistory.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
@@ -148,6 +156,7 @@ context('Change history', () => {
       },
     })
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    cy.get('#tab_documents').click()
     changeHistory.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
       textToFind: 'version 3',
@@ -196,12 +205,10 @@ context('Change history', () => {
       },
     })
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    cy.get('#tab_documents').click()
     cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
     changeHistory.clickLink({ qaAttr: 'viewHistory-LICENCE' })
-    const uploadedDocumentHistory = uploadedDocumentHistoryPage.verifyOnPage({
-      nomsNumber,
-      recallId,
-      category,
+    const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
       isUploaded: true,
     })
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
@@ -280,6 +287,7 @@ context('Change history', () => {
     })
     cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    cy.get('#tab_documents').click()
     cy.task('expectGetRecallDocumentHistory', {
       expectedResult: [
         {
@@ -309,10 +317,7 @@ context('Change history', () => {
       ],
     })
     changeHistory.clickLink({ qaAttr: 'viewHistory-DOSSIER' })
-    const uploadedDocumentHistory = uploadedDocumentHistoryPage.verifyOnPage({
-      nomsNumber,
-      recallId,
-      category,
+    const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
       isUploaded: false,
     })
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
@@ -348,5 +353,47 @@ context('Change history', () => {
         textToFind: `Created by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
       })
     })
+  })
+
+  it('shows the change history of a field', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+      },
+    })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    cy.task('expectGetFieldChangeHistory', { expectedResult: getFieldChangeHistoryResponseJson })
+    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    changeHistory.clickLink({ qaAttr: 'viewHistory-currentPrison' })
+    const fieldHistory = changeHistoryFieldPage.verifyOnPage()
+    getFieldChangeHistoryResponseJson.forEach(() => {
+      fieldHistory.assertTableColumnValues({
+        qaAttrTable: 'fieldChangeHistory',
+        qaAttrCell: 'dateAndTime',
+        valuesToCompare: ['4 January 2022 at 17:56', '4 January 2022 at 13:17'],
+      })
+      fieldHistory.assertTableColumnValues({
+        qaAttrTable: 'fieldChangeHistory',
+        qaAttrCell: 'value',
+        valuesToCompare: ['Ashfield (HMP)', 'Kennet (HMP)'],
+      })
+      fieldHistory.assertTableColumnValues({
+        qaAttrTable: 'fieldChangeHistory',
+        qaAttrCell: 'updatedByUserName',
+        valuesToCompare: ['Marcus Baimbridge', 'Maria Badger'],
+      })
+    })
+  })
+
+  it("doesn't show a view history link for a field that has no value set", () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+      },
+    })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    changeHistory.assertElementNotPresent({ qaAttr: 'viewHistory-currentPrison' })
   })
 })

@@ -9,6 +9,7 @@ import { enableDeleteDocuments } from '../documents/upload/helpers'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
 import { getPerson } from './personCache'
 import logger from '../../../../logger'
+import { changeHistoryFieldList } from '../change-history/helpers/fieldList'
 
 const requiresPerson = (viewName: ViewName) =>
   ['assessRecall', 'dossierRecallInformation', 'viewFullRecall', 'recallCheckAnswers'].includes(viewName)
@@ -43,6 +44,7 @@ export const viewWithRecallAndPerson =
       ...recall,
       ...decoratedDocs,
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
+      fields: changeHistoryFieldList(recall),
     }
     if (personResult.value) {
       const { croNumber, dateOfBirth } = personResult.value
