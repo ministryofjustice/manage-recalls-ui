@@ -1,4 +1,4 @@
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
 import newGeneratedDocumentVersionPage from '../pages/newGeneratedDocumentVersion'
 
 const recallInformationPage = require('../pages/recallInformation')
@@ -61,7 +61,7 @@ context('Generated document versions', () => {
         ],
       },
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectGenerateRecallDocument', { statusCode: 201 })
     cy.login()
   })

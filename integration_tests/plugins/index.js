@@ -24,7 +24,7 @@ module.exports = (on, config) => {
     stubAuthPing: authApi.stubPing,
     stubTokenVerificationPing: tokenVerificationApi.stubPing,
     stubManageRecallsApiPing: manageRecallsApi.stubPing,
-    expectSearchResults: manageRecallsApi.expectSearchResults,
+    expectPrisonerResult: manageRecallsApi.expectPrisonerResult,
     expectCreateRecall: manageRecallsApi.expectCreateRecall,
     expectListRecalls: manageRecallsApi.expectListRecalls,
     expectGetRecall: manageRecallsApi.expectGetRecall,

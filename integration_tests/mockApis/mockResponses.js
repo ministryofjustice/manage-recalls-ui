@@ -1,4 +1,4 @@
-import searchResponse from '../../fake-manage-recalls-api/stubs/__files/search.json'
+import getPrisonerResponse from '../../fake-manage-recalls-api/stubs/__files/get-prisoner.json'
 import getRecallsResponse from '../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
 import getRecallResponse from '../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import getEmptyRecallResponse from '../../fake-manage-recalls-api/stubs/__files/get-recall-empty.json'
@@ -12,7 +12,7 @@ import getSingleFieldHistoryResponseJson from '../../fake-manage-recalls-api/stu
 import getAllFieldsHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-all-fields-history.json'
 
 export {
-  searchResponse,
+  getPrisonerResponse,
   getRecallsResponse,
   getRecallResponse,
   getEmptyRecallResponse,

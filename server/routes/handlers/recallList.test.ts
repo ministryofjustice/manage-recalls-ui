@@ -1,16 +1,19 @@
-import nock from 'nock'
 import { Request, Response } from 'express'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import { recallList } from './recallList'
-import config from '../../config'
-import recalls from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
+import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPerson } from './helpers/personCache'
 
-jest.mock('../../clients/redis')
+jest.mock('../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('./helpers/personCache')
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
 describe('recallList', () => {
-  const fakeManageRecallsApi = nock(config.apis.manageRecallsApi.url)
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   let req: Request
   let resp: Response
   const listOfRecalls = [
@@ -67,19 +70,15 @@ describe('recallList', () => {
     req = mockGetRequest({})
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
     resp = res
-    fakeManageRecallsApi
-      .post('/search')
-      .times(listOfRecalls.length)
-      .reply(200, [
-        {
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-      ])
+    const person = {
+      firstName: 'Bobby',
+      lastName: 'Badger',
+    }
+    ;(getPerson as jest.Mock).mockResolvedValue(person)
   })
 
   it('should make recalls with person details available to render', async () => {
-    fakeManageRecallsApi.get('/recalls').reply(200, listOfRecalls)
+    ;(getRecallList as jest.Mock).mockResolvedValue(listOfRecalls)
     await recallList(req, resp)
     expect(resp.locals.results.toDo).toEqual([
       {
@@ -141,7 +140,7 @@ describe('recallList', () => {
   })
 
   it('should make a list of failed recall requests available to render', async () => {
-    fakeManageRecallsApi.get('/recalls').times(recalls.length).reply(404)
+    ;(getRecallList as jest.Mock).mockRejectedValue({ statusCode: 404 })
     await recallList(req, resp)
     expect(resp.locals.errors).toEqual([
       {

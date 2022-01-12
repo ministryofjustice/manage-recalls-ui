@@ -16,11 +16,16 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
         getPerson((trimmedNoms as string).trim(), res.locals.user.token),
         searchRecalls({ nomsNumber: trimmedNoms }, res.locals.user.token),
       ])
+
+      let person
       if (personResult.status === 'rejected') {
-        throw new Error(`getPerson failed`)
+        if (personResult.reason.status !== 404) {
+          throw new Error(`getPerson failed`)
+        }
+      } else {
+        person = personResult.value
       }
       res.locals.persons = []
-      const person = personResult.value
       if (person) {
         res.locals.persons = [person]
         res.locals.persons[0].recalls = recallsResult.status === 'fulfilled' ? recallsResult.value : []

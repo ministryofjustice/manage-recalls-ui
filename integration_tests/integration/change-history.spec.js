@@ -2,7 +2,7 @@ import {
   getRecallResponse,
   getEmptyRecallResponse,
   getDocumentCategoryHistoryResponseJson,
-  searchResponse,
+  getPrisonerResponse,
   getSingleFieldHistoryResponseJson,
   getAllFieldsHistoryResponseJson,
   getPrisonsResponse,
@@ -57,7 +57,7 @@ context('Change history', () => {
     cy.task('expectListRecalls', {
       expectedResults: [],
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: [] })
     cy.login()
   })
 
@@ -299,7 +299,7 @@ context('Change history', () => {
         documents: [document],
       },
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
     cy.get('#tab_documents').click()
     cy.task('expectGetRecallDocumentHistory', {

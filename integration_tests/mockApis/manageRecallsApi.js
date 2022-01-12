@@ -1,24 +1,17 @@
 export default function manageRecallsApi(wiremock) {
   return {
-    expectSearchResults: expectation => {
+    expectPrisonerResult: expectation => {
       return wiremock.stubFor({
         request: {
-          method: 'POST',
-          urlPattern: '/search',
-          bodyPatterns: [
-            {
-              equalToJson: {
-                nomsNumber: expectation.expectedSearchTerm,
-              },
-            },
-          ],
+          method: 'GET',
+          urlPattern: '/prisoner/(.*)',
         },
         response: {
-          status: 200,
+          status: (expectation && expectation.status) || 200,
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: expectation.expectedSearchResults,
+          jsonBody: expectation.expectedPrisonerResult,
         },
       })
     },
