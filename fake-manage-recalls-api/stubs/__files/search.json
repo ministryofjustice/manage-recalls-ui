@@ -8,15 +8,5 @@
     "nomsNumber": "A1234AA",
     "croNumber": "1234/56A",
     "pncNumber": "98/7654Z"
-  },
-  {
-    "firstName": "Bertie",
-    "middleNames": "Barry",
-    "lastName": "Badger",
-    "dateOfBirth": "1990-10-30",
-    "gender": "Male",
-    "nomsNumber": "A1234AA",
-    "croNumber": "1234/56A",
-    "pncNumber": "98/7654Z"
   }
 ]
