@@ -399,7 +399,7 @@ describe('decorateDocs', () => {
     expect(results.emailsUploaded).toEqual({
       DOSSIER_EMAIL: {
         category: 'DOSSIER_EMAIL',
-        label: 'Dossier email',
+        label: 'Dossier and letter email',
         type: 'email',
         fileName: 'dossier.msg',
         documentId: '37423-2389347-234',

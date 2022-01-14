@@ -194,11 +194,26 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectGetFieldChangeHistory: expectation => {
+    expectGetSingleFieldChangeHistory: expectation => {
       return wiremock.stubFor({
         request: {
           method: 'GET',
           urlPattern: `/audit/(.*)/(.*)`,
+        },
+        response: {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: expectation.expectedResult,
+        },
+      })
+    },
+    expectGetAllFieldsChangeHistory: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'GET',
+          urlPattern: `/audit/(.*)`,
         },
         response: {
           status: 200,

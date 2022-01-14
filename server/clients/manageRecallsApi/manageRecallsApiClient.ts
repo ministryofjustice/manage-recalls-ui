@@ -20,7 +20,8 @@ import {
 import { MissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../../@types/manage-recalls-api/models/PoliceForce'
 import { GenerateDocumentRequest } from '../../@types/manage-recalls-api/models/GenerateDocumentRequest'
-import { AuditForField } from '../../@types/manage-recalls-api/models/AuditForField'
+import { FieldAuditEntry } from '../../@types/manage-recalls-api/models/FieldAuditEntry'
+import { FieldAuditSummary } from '../../@types/manage-recalls-api/models/FieldAuditSummary'
 
 export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   const request = { nomsNumber }
@@ -70,8 +71,12 @@ export function getDocumentCategoryHistory(
   return restClient(token).get<RecallDocument[]>({ path: `/recalls/${recallId}/documents?category=${category}` })
 }
 
-export function getFieldHistory(recallId: string, fieldId: string, token: string): Promise<AuditForField[]> {
-  return restClient(token).get<AuditForField[]>({ path: `/audit/${recallId}/${fieldId}` })
+export function getSingleFieldHistory(recallId: string, fieldId: string, token: string): Promise<FieldAuditEntry[]> {
+  return restClient(token).get<FieldAuditEntry[]>({ path: `/audit/${recallId}/${fieldId}` })
+}
+
+export function getAllFieldsHistory(recallId: string, token: string): Promise<FieldAuditSummary[]> {
+  return restClient(token).get<FieldAuditSummary[]>({ path: `/audit/${recallId}` })
 }
 
 export function getRecall(recallId: string, token: string): Promise<Recall> {

@@ -18,7 +18,7 @@ describe('validateDossierLetter', () => {
     })
   })
 
-  it('returns blank strings for detail fields and no errors if No is submitted for both additionalLicenceConditions and differentNomsNumber', () => {
+  it('returns no detail fields and no errors if No is submitted for both additionalLicenceConditions and differentNomsNumber', () => {
     const requestBody = {
       additionalLicenceConditions: 'NO',
       differentNomsNumber: 'NO',
@@ -28,9 +28,7 @@ describe('validateDossierLetter', () => {
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
       additionalLicenceConditions: false,
-      additionalLicenceConditionsDetail: '',
       differentNomsNumber: false,
-      differentNomsNumberDetail: '',
     })
   })
 

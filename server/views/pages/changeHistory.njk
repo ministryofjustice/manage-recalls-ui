@@ -19,14 +19,20 @@
                     </tr>
                     </thead>
                     <tbody class="govuk-table__body">
-                    {% for field in sortList(recall.fields, 'field') %}
+                    {% for field in fieldsHistory %}
                         <tr class="govuk-table__row" data-qa='{{ field.id }}'>
-                            <td class="govuk-table__cell" data-sort-value='{{ field.label }}' data-qa='fieldName'>
+                            <td class="govuk-table__cell" data-sort-value='{{ field.label }}' data-qa='label-{{ field.id }}'>
                                 {{ field.label }}
                             </td>
                             <td class="govuk-table__cell" data-qa='action'>
                                 {% if field.hasHistory %}
-                                <a href='{{ makeUrl('change-history/field?id=' + field.id, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ field.id }}'>View history</a>
+                                    {% if field.fieldType == 'UPLOADED_EMAIL' %}
+                                    <a href='{{ makeUrl('change-history/document?category=' + field.documentCategory, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ field.id }}'>View history</a>
+                                    {% else %}
+                                    <a href='{{ makeUrl('change-history/field?fieldName=' + field.id + '&fieldPath=' + field.fieldPath, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ field.id }}'>View history</a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class='govuk-body'>Not provided</span>
                                 {% endif %}
                             </td>
                         </tr>

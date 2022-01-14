@@ -1,16 +1,15 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getFieldHistory } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { getAllFieldsHistory } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
 import * as configModule from '../server/config'
-import getFieldHistoryResponseJson from '../fake-manage-recalls-api/stubs/__files/get-field-history.json'
+import getFieldsHistoryResponseJson from '../fake-manage-recalls-api/stubs/__files/get-all-fields-history.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const token = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const fieldId = 'currentPrison'
-  const path = `/audit/${recallId}/${fieldId}`
+  const path = `/audit/${recallId}`
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
@@ -21,11 +20,11 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
         ...pactGetRequest('a get recall field history request', path, token),
-        willRespondWith: pactJsonResponse(Matchers.like(getFieldHistoryResponseJson), 200),
+        willRespondWith: pactJsonResponse(Matchers.like(getFieldsHistoryResponseJson), 200),
       })
 
-      const actual = await getFieldHistory(recallId, fieldId, token)
-      expect(actual).toEqual(getFieldHistoryResponseJson)
+      const actual = await getAllFieldsHistory(recallId, token)
+      expect(actual).toEqual(getFieldsHistoryResponseJson)
     })
 
     test('returns 401 if invalid user', async () => {
@@ -36,7 +35,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await getFieldHistory(recallId, fieldId, token)
+        await getAllFieldsHistory(recallId, token)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

@@ -23,9 +23,7 @@
                     {% for record in fieldHistory.items %}
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell" data-qa='value'>
-                                {{ getReferenceDataItemLabel('prisons',
-                                    record.updatedValue
-                                ) }}</td>
+                                {{ record.formattedValue }}</td>
                             <td class="govuk-table__cell" data-qa='dateAndTime'>{{ record.updatedDateTime | dateTime }}</td>
                             <td class="govuk-table__cell" data-qa='updatedByUserName'>{{ record.updatedByUserName }}</td>
                         </tr>

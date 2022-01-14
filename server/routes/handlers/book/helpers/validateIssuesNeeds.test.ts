@@ -20,7 +20,7 @@ describe('validateIssuesNeeds', () => {
     })
   })
 
-  it('returns blank strings for detail fields and no errors if No is submitted for both contraband and vulnerabilities, plus MAPPA level', () => {
+  it('returns no detail fields and no errors if No is submitted for both contraband and vulnerabilities, plus MAPPA level', () => {
     const requestBody = {
       contraband: 'NO',
       vulnerabilityDiversity: 'NO',
@@ -31,10 +31,8 @@ describe('validateIssuesNeeds', () => {
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
       contraband: false,
-      contrabandDetail: '',
       vulnerabilityDiversity: false,
       mappaLevel: 'LEVEL_3',
-      vulnerabilityDiversityDetail: '',
     })
   })
 
