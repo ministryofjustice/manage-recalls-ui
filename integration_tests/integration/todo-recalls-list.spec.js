@@ -142,7 +142,6 @@ describe('To do (recalls) list', () => {
     recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
     recallsList.continueDossier({ recallId })
     const dossierRecallInfo = dossierRecallInformationPage.verifyOnPage({ personName })
-    dossierRecallInfo.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'AC3408303' })
     dossierRecallInfo.assertElementPresent({ qaAttr: 'licenceConditionsBreached' })
     dossierRecallInfo.assertElementPresent({ qaAttr: 'assessedByUserName' })
   })
@@ -177,7 +176,8 @@ describe('To do (recalls) list', () => {
       .eq(1)
       .should($results => expect($results.text().trim()).to.equal('22 October 2020'))
     recallsList.viewRecall({ recallId })
-    recallInformationPage.verifyOnPage({ personName })
+    const recallInfo = recallInformationPage.verifyOnPage({ personName })
+    recallInfo.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'AC3408303' })
   })
 
   it('User can see recalls are ordered by due date on the todo list', () => {

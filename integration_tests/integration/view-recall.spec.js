@@ -77,6 +77,7 @@ context('View a recall', () => {
       expectedResult: {
         ...getEmptyRecallResponse,
         recallId,
+        status: 'DOSSIER_ISSUED',
       },
     })
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
@@ -94,6 +95,7 @@ context('View a recall', () => {
         additionalLicenceConditions: false,
         vulnerabilityDiversity: false,
         contraband: false,
+        status: 'DOSSIER_ISSUED',
       },
     })
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
