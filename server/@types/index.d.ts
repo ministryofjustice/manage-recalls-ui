@@ -1,5 +1,6 @@
-import { RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
+import { RecallDocument, RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
+import { ReferenceDataCategories } from '../referenceData'
 
 export interface FormError {
   text: string
@@ -29,29 +30,6 @@ export interface DatePartsParsed {
   day: string
   hour?: string
   minute?: string
-}
-
-// TODO - needs updating with all fields
-export interface RecallFormValues {
-  recallEmailReceivedDateTimeParts?: DatePartsParsed
-  lastReleaseDateParts?: DatePartsParsed
-  sentenceDateParts?: DatePartsParsed
-  sentenceExpiryDateParts?: DatePartsParsed
-  licenceExpiryDateParts?: DatePartsParsed
-  conditionalReleaseDateParts?: DatePartsParsed
-  lastReleasePrison?: string
-  contraband?: boolean
-  contrabandDetail?: string
-  vulnerabilityDiversity?: boolean
-  vulnerabilityDiversityDetail?: string
-  mappaLevel?: string
-  sentencingCourt?: string
-  indexOffence?: string
-  localPoliceForceId?: string
-  agreeWithRecall?: RecallResponse.agreeWithRecall
-  agreeWithRecallDetailYes?: string
-  agreeWithRecallDetailNo?: string
-  missingDocumentsDetail?: string
 }
 
 export interface Prison {
@@ -172,4 +150,23 @@ export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
 export interface PersonAndRecallResponse {
   person: SearchResult
   recall: RecallResponse
+}
+
+export interface RecallField {
+  label?: string
+  fieldType:
+    | 'TEXT'
+    | 'ENUM'
+    | 'REF_DATA'
+    | 'REF_DATA_LIST'
+    | 'ISO_DATE_TIME'
+    | 'ISO_DATE'
+    | 'BOOLEAN'
+    | 'SENTENCE_LENGTH'
+    | 'UPLOADED_EMAIL'
+  refDataCategory?: ReferenceDataCategories
+  documentCategory?: RecallDocument.category
+  fieldName?: string
+  enumValues?: ObjectMap<string>
+  hasHistory?: boolean
 }

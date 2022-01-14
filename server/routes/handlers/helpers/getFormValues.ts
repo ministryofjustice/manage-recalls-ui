@@ -1,4 +1,4 @@
-import { DecoratedRecall, FormError, ObjectMap, RecallFormValues } from '../../../@types'
+import { DecoratedRecall, FormError, ObjectMap } from '../../../@types'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { isDefined } from './index'
 import { splitIsoDateToParts } from './dates/convert'
@@ -20,7 +20,7 @@ const booleanToYesNo = (val: boolean) => {
 // special case with Yes / No options, each with a detail field in the front end
 // whichever option is selected, its detail field is stored as agreeWithRecallDetail in the API
 export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValues = {}, apiValues }: Args) => {
-  const vals = {} as RecallFormValues
+  const vals = {} as any
   if (agreeWithRecall === 'YES') {
     vals.agreeWithRecallDetailYes = isDefined(errors.agreeWithRecallDetailYes)
       ? ''
@@ -33,7 +33,7 @@ export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValu
   return vals
 }
 
-export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Args): RecallFormValues => {
+export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Args) => {
   let values = {
     sentenceLengthParts: errors.sentenceLength?.values || unsavedValues.sentenceLengthParts || apiValues.sentenceLength,
     recallNotificationEmailFileName:
@@ -44,7 +44,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
       errors.dossierEmailFileName?.values ||
       unsavedValues.dossierEmailFileName ||
       apiValues.emailsUploaded?.DOSSIER_EMAIL?.fileName,
-  } as RecallFormValues
+  } as any
 
   // dates / times
   ;[

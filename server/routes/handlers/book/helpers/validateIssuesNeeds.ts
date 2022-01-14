@@ -69,9 +69,9 @@ export const validateIssuesNeeds = (
   }
   if (!errors) {
     // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
-    // Using blanks as server cannot handle nulls and will just not overwrite existing value
-    const contrabandDetailCleaned = contraband === 'YES' ? contrabandDetail : ''
-    const vulnerabilityDiversityDetailCleaned = vulnerabilityDiversity === 'YES' ? vulnerabilityDiversityDetail : ''
+    const contrabandDetailCleaned = contraband === 'YES' ? contrabandDetail : undefined
+    const vulnerabilityDiversityDetailCleaned =
+      vulnerabilityDiversity === 'YES' ? vulnerabilityDiversityDetail : undefined
     valuesToSave = {
       contraband: contraband === 'YES',
       contrabandDetail: contrabandDetailCleaned,

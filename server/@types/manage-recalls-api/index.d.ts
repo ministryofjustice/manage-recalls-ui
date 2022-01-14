@@ -5,6 +5,8 @@ export { AddUserDetailsRequest } from './models/AddUserDetailsRequest';
 export type { BookRecallRequest } from './models/BookRecallRequest';
 export type { Court } from './models/Court';
 export { ErrorResponse } from './models/ErrorResponse';
+export type { FieldAuditEntry } from './models/FieldAuditEntry';
+export type { FieldAuditSummary } from './models/FieldAuditSummary';
 export { GenerateDocumentRequest } from './models/GenerateDocumentRequest';
 export { GetDocumentResponse } from './models/GetDocumentResponse';
 export type { IndexOffence } from './models/IndexOffence';

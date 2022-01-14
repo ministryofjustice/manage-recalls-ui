@@ -3,7 +3,9 @@
 </div>
 <script type="text/javascript" src="/assets/js/today-link.js"></script>
 <script nonce='{{ params.cspNonce }}'>
-  new TodayLink({
-    dateInputName: '{{ params.name }}'
-  })
+  if (typeof TodayLink !== 'undefined') {
+    new TodayLink({
+      dateInputName: '{{ params.name }}'
+    })
+  }
 </script>

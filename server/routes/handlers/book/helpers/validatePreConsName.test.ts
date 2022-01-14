@@ -14,7 +14,7 @@ describe('validatePreConsName', () => {
     })
   })
 
-  it('returns blank string for detail field and no errors if first + last name is submitted', () => {
+  it('returns no detail field and no errors if first + last name is submitted', () => {
     const requestBody = {
       previousConvictionMainNameCategory: 'FIRST_LAST',
       previousConvictionMainName: 'Wayne Holt',
@@ -24,11 +24,10 @@ describe('validatePreConsName', () => {
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
       previousConvictionMainNameCategory: 'FIRST_LAST',
-      previousConvictionMainName: '',
     })
   })
 
-  it('returns blank string for detail field and no errors if first + middle + last name is submitted', () => {
+  it('returns no detail field and no errors if first + middle + last name is submitted', () => {
     const requestBody = {
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
       previousConvictionMainName: 'Wayne Holt',
@@ -38,7 +37,6 @@ describe('validatePreConsName', () => {
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
-      previousConvictionMainName: '',
     })
   })
 

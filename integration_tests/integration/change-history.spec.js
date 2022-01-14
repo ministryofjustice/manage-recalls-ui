@@ -3,9 +3,11 @@ import {
   getEmptyRecallResponse,
   getDocumentCategoryHistoryResponseJson,
   searchResponse,
-  getFieldChangeHistoryResponseJson,
+  getSingleFieldHistoryResponseJson,
+  getAllFieldsHistoryResponseJson,
   getPrisonsResponse,
 } from '../mockApis/mockResponses'
+import { changeHistoryFieldList } from '../../server/routes/handlers/change-history/helpers/recallFieldList'
 
 const recallInformationPage = require('../pages/recallInformation')
 const changeHistoryPage = require('../pages/changeHistory')
@@ -60,6 +62,9 @@ context('Change history', () => {
   })
 
   it('User can navigate to view document change history for a recall, and resort the tables', () => {
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -138,7 +143,7 @@ context('Change history', () => {
     })
   })
 
-  it('User can see the document version and download it', () => {
+  it('User can see the uploaded document version and download it', () => {
     const document = {
       category: 'PART_A_RECALL_REPORT',
       documentId: '123',
@@ -146,6 +151,9 @@ context('Change history', () => {
       createdByUserName: 'Arnold Caseworker',
       version: 3,
     }
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -183,6 +191,9 @@ context('Change history', () => {
       createdByUserName: 'Arnold Caseworker',
       version: 3,
     }
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -209,7 +220,7 @@ context('Change history', () => {
     cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
     changeHistory.clickLink({ qaAttr: 'viewHistory-LICENCE' })
     const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
-      isUploaded: true,
+      type: 'document',
     })
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
       const docId = doc.documentId
@@ -276,6 +287,9 @@ context('Change history', () => {
       createdByUserName: 'Arnold Caseworker',
       version: 4,
     }
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -318,7 +332,7 @@ context('Change history', () => {
     })
     changeHistory.clickLink({ qaAttr: 'viewHistory-DOSSIER' })
     const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
-      isUploaded: false,
+      type: 'generated',
     })
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
       const docId = doc.documentId
@@ -355,19 +369,72 @@ context('Change history', () => {
     })
   })
 
+  it('shows a list of all fields with change history links', () => {
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
+    const uploadedDocuments = [
+      {
+        category: 'RECALL_REQUEST_EMAIL',
+        documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+        fileName: 'recall-request.eml',
+      },
+      {
+        category: 'RECALL_NOTIFICATION_EMAIL',
+        documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+        fileName: '2021-07-03 Phil Jones recall.msg',
+      },
+      {
+        category: 'DOSSIER_EMAIL',
+        documentId: '234-3455-8542-c3ac-8c963f66afa6',
+        fileName: 'email.msg',
+      },
+      {
+        category: 'MISSING_DOCUMENTS_EMAIL',
+        documentId: '123',
+        fileName: 'chase-documents.msg',
+      },
+    ]
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        documents: uploadedDocuments,
+      },
+    })
+    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const fieldList = changeHistoryFieldList({ changedFields: getAllFieldsHistoryResponseJson, uploadedDocuments })
+    const baseHref = `/persons/${nomsNumber}/recalls/${recallId}/change-history`
+    fieldList.forEach(field => {
+      changeHistory.assertElementHasText({ qaAttr: `label-${field.id}`, textToFind: field.label })
+      const href =
+        field.fieldType === 'UPLOADED_EMAIL'
+          ? `${baseHref}/document?category=${field.documentCategory}`
+          : `${baseHref}/field?fieldName=${field.id}&fieldPath=${field.fieldPath}`
+      changeHistory.assertLinkHref({
+        qaAttr: `viewHistory-${field.id}`,
+        href,
+      })
+    })
+  })
+
   it('shows the change history of a field', () => {
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
         recallId,
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
-    cy.task('expectGetFieldChangeHistory', { expectedResult: getFieldChangeHistoryResponseJson })
+    cy.task('expectGetSingleFieldChangeHistory', { expectedResult: getSingleFieldHistoryResponseJson })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
     changeHistory.clickLink({ qaAttr: 'viewHistory-currentPrison' })
     const fieldHistory = changeHistoryFieldPage.verifyOnPage()
-    getFieldChangeHistoryResponseJson.forEach(() => {
+    getSingleFieldHistoryResponseJson.forEach(() => {
       fieldHistory.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'dateAndTime',
@@ -386,7 +453,67 @@ context('Change history', () => {
     })
   })
 
+  it('shows the change history of an email', () => {
+    const documentId = '123'
+    const fileName = 'recall-request.eml'
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: [
+        {
+          fieldName: 'recallRequestEmailUploaded',
+          updatedByUserName: 'Maria Badger',
+          updatedDateTime: '2022-01-12T15:40:46.537Z',
+        },
+      ],
+    })
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        documents: [
+          {
+            category: 'RECALL_REQUEST_EMAIL',
+            documentId,
+            fileName,
+            createdDateTime: '2020-12-05T18:33:57.000Z',
+            createdByUserName: 'Arnold Caseworker',
+          },
+        ],
+      },
+    })
+
+    cy.task('expectGetRecallDocumentHistory', {
+      expectedResult: [
+        {
+          category: 'RECALL_REQUEST_EMAIL',
+          documentId,
+          createdDateTime: '2020-12-05T18:33:57.000Z',
+          fileName,
+          createdByUserName: 'Arnold Caseworker',
+          version: 1,
+        },
+      ],
+    })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    changeHistory.clickLink({ qaAttr: 'viewHistory-recallRequestEmailUploaded' })
+    const emailHistory = changeHistoryDocumentPage.verifyOnPage({ type: 'email' })
+    emailHistory.assertElementHasText({
+      qaAttr: `document-${documentId}-heading`,
+      textToFind: 'Recall request email',
+    })
+    emailHistory.assertElementHasText({
+      qaAttr: `document-${documentId}-link`,
+      textToFind: fileName,
+    })
+    emailHistory.assertLinkHref({
+      qaAttr: `document-${documentId}-link`,
+      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`,
+    })
+  })
+
   it("doesn't show a view history link for a field that has no value set", () => {
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: [],
+    })
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getEmptyRecallResponse,

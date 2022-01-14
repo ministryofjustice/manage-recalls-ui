@@ -1,21 +1,23 @@
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Document change history" %}
+{% set heading = ("Generated document" if documentHistory.type == 'generated' else ("Uploaded email" if documentHistory.type == 'email' else "Uploaded document")) +  " change history" %}
+
+{% set pageTitle = applicationName + " - " + heading %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-xl">
-                {% if documentHistory.type == 'generated' %}Generated{% else %}Uploaded{% endif %} document change history
+                {{ heading }}
             </h1>
             {% if documentHistory.items %}
             {% for record in documentHistory.items %}
             {% set documentId = record.emailId if record.emailId else record.documentId %}
-            <h3 class="govuk-heading-m govuk-visually-hidden" data-qa='document-{{ documentId }}-heading'>{% if record.isMissingRecord == true %}Missing document - {% endif %}{{ documentHistory.label }}{% if record.version > 1 %} (version {{ record.version }}){% endif %}</h3>
+            <h2 class="govuk-heading-m{% if documentHistory.type != 'email' %} govuk-visually-hidden{% endif %}" data-qa='document-{{ documentId }}-heading'>{% if record.isMissingRecord == true %}Missing document - {% endif %}{{ documentHistory.label }}{% if record.version > 1 %} (version {{ record.version }}){% endif %}</h2>
             <dl class="govuk-summary-list govuk-!-margin-bottom-4 govuk-!-width-two-thirds_" data-qa='{% if record.isMissingRecord == true %}missing{% else %}uploaded{% endif %}-{{ record.version }}-row'>
                 <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">Document</dt>
+                    <dt class="govuk-summary-list__key">{% if documentHistory.type == 'email' %}Email{% else %}Document{% endif %}</dt>
                     <dd class="govuk-summary-list__value">
                         {% if record.isMissingRecord == true %}
                             <span data-qa='missingDocumentsLabel'>Missing</span>
@@ -49,7 +51,7 @@
             </p>
             {% endfor %}
             {% else %}
-            <p class='govuk-body'>No document history for the {{ formatDocLabel(documentHistory.category) }}.</p>
+            <p class='govuk-body'>No history for the {{ formatDocLabel(documentHistory.category) }}.</p>
             {% endif %}
         </div>
     </div>

@@ -35,7 +35,8 @@ import { uploadDocumentVersionFormHandler } from './handlers/documents/upload/up
 import { getDocumentChangeHistory } from './handlers/change-history/getDocumentChangeHistory'
 import { newGeneratedDocumentVersion } from './handlers/documents/generated/newGeneratedDocumentVersion'
 import { createGeneratedDocument } from './handlers/documents/generated/createGeneratedDocument'
-import { getFieldChangeHistory } from './handlers/change-history/getFieldChangeHistory'
+import { getSingleFieldChangeHistory } from './handlers/change-history/getSingleFieldChangeHistory'
+import { getAllFieldsChangeHistory } from './handlers/change-history/getAllFieldsChangeHistory'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -147,10 +148,10 @@ export default function routes(router: Router): Router {
   )
   router.get(
     `${basePath}/change-history/field`,
-    getFieldChangeHistory,
+    getSingleFieldChangeHistory,
     viewWithRecallAndPerson('changeHistoryForField')
   )
-  get(`${basePath}/change-history`, viewWithRecallAndPerson('changeHistory'))
+  router.get(`${basePath}/change-history`, getAllFieldsChangeHistory, viewWithRecallAndPerson('changeHistory'))
 
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)

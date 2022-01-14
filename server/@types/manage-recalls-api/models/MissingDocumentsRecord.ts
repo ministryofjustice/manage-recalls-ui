@@ -7,8 +7,8 @@ export type MissingDocumentsRecord = {
     createdByUserName: string;
     createdDateTime: string;
     details: string;
-    emailId: string;
     emailFileName: string;
+    emailId: string;
     missingDocumentsRecordId: string;
     version: number;
 }

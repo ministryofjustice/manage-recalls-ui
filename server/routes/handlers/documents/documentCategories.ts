@@ -104,7 +104,7 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'email',
   },
   {
-    label: 'Dossier email',
+    label: 'Dossier and letter email',
     name: RecallDocument.category.DOSSIER_EMAIL,
     type: 'email',
   },

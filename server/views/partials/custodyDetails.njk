@@ -10,6 +10,7 @@
     <dd class=" govuk-summary-list__actions">
     </dd>
   </div>
+  {% if recall.currentPrison %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Prison held in
@@ -23,7 +24,8 @@
       <a href='{{ changeLinkUrl('assess-prison', urlInfo, 'custody') }}' data-qa='currentPrisonChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> current prison</span></a>
     </dd>
   </div>
-  {% if recall.status == 'DOSSIER_IN_PROGRESS' or recall.status == 'DOSSIER_ISSUED' %}
+  {% endif %}
+  {% if recall.status == 'DOSSIER_ISSUED' %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Different NOMIS number

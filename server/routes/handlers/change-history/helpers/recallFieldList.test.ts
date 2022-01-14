@@ -1,0 +1,84 @@
+import { changeHistoryFieldList } from './recallFieldList'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+
+const changedFields = [
+  {
+    auditCount: 0,
+    auditId: 0,
+    fieldName: 'probationOfficerPhoneNumber',
+    fieldPath: 'probationInfo.probationOfficerPhoneNumber',
+    updatedByUserName: 'Maria Badger',
+    updatedDateTime: '2022-01-12T15:40:46.537Z',
+  },
+]
+
+describe('changeHistoryFieldList', () => {
+  it('should include changed fields and documents', () => {
+    const uploadedDocuments = [
+      {
+        category: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+        documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+        fileName: '2021-07-03 Phil Jones recall.msg',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
+      },
+      {
+        category: RecallDocument.category.RECALL_REQUEST_EMAIL,
+        documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+        fileName: 'recall-request.eml',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
+      },
+      {
+        category: RecallDocument.category.DOSSIER_EMAIL,
+        documentId: '845',
+        fileName: 'dossier-letter.msg',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
+      },
+    ]
+    const list = changeHistoryFieldList({ changedFields, uploadedDocuments })
+    // filter out the list entries for fields that have history
+    const fieldsWithHistory = list.filter(field => field.hasHistory)
+    expect(fieldsWithHistory).toEqual([
+      {
+        documentCategory: 'DOSSIER_EMAIL',
+        fieldType: 'UPLOADED_EMAIL',
+        fieldPath: 'dossierSentEmailUploaded',
+        hasHistory: true,
+        id: 'dossierSentEmailUploaded',
+        label: 'Dossier and letter email uploaded',
+      },
+      {
+        fieldType: 'TEXT',
+        hasHistory: true,
+        id: 'probationOfficerPhoneNumber',
+        fieldPath: 'probationInfo.probationOfficerPhoneNumber',
+        label: 'Probation officer phone number',
+      },
+      {
+        documentCategory: 'RECALL_REQUEST_EMAIL',
+        fieldType: 'UPLOADED_EMAIL',
+        hasHistory: true,
+        id: 'recallRequestEmailUploaded',
+        fieldPath: 'recallRequestEmailUploaded',
+        label: 'Recall email uploaded',
+      },
+      {
+        documentCategory: 'RECALL_NOTIFICATION_EMAIL',
+        fieldType: 'UPLOADED_EMAIL',
+        hasHistory: true,
+        id: 'recallNotificationSentEmailUploaded',
+        fieldPath: 'recallNotificationSentEmailUploaded',
+        label: 'Recall notification email uploaded',
+      },
+    ])
+  })
+
+  it('should omit documents that have not been uploaded', () => {
+    const uploadedDocuments = [] as RecallDocument[]
+    const list = changeHistoryFieldList({ changedFields, uploadedDocuments })
+    const emailFields = list.filter(field => field.fieldType === 'UPLOADED_EMAIL')
+    emailFields.forEach(field => expect(field.hasHistory).toBe(false))
+  })
+})
