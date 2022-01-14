@@ -48,7 +48,7 @@
       Length of sentence
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='sentenceLength'>
-      {{ formatSentenceLength(recall.sentenceLength) }}
+      {% if recall.sentenceLength.years %}{{ recall.sentenceLength.years }} years {% endif %}{% if recall.sentenceLength.months %}{{ recall.sentenceLength.months }} months {% endif %}{% if recall.sentenceLength.days %}{{ recall.sentenceLength.days }} days{% endif %}
     </dd>
     <dd class=" govuk-summary-list__actions">
       <a href='{{ changeLinkUrl('last-release', urlInfo, 'sentenceDetails', 'sentenceLengthGroup') }}' data-qa='sentenceLengthChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> sentence length</span></a>

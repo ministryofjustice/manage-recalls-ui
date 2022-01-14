@@ -28,7 +28,6 @@ import { isoDateToMillis } from '../routes/handlers/helpers/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
 import { formatDocLabel } from '../routes/handlers/documents/upload/helpers'
 import { generatedDocCategoriesList, getGeneratedDocFileName } from '../routes/handlers/documents/download/helpers'
-import { formatSentenceLength } from '../routes/handlers/change-history/helpers/recallFieldList'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -49,7 +48,6 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addFilter('userName', userNameFilter)
   njkEnv.addFilter('dateOnly', val => formatDateTimeFromIsoString(val, true))
   njkEnv.addFilter('dateTime', formatDateTimeFromIsoString)
-  njkEnv.addGlobal('formatSentenceLength', formatSentenceLength)
   njkEnv.addGlobal('dateTimeItems', dateTimeItems)
   njkEnv.addGlobal('isoDateToMillis', isoDateToMillis)
   njkEnv.addGlobal('selectItems', selectItems)
