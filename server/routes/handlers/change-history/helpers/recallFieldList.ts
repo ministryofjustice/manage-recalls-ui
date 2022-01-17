@@ -255,7 +255,9 @@ const changedFieldProps = ({
           updatedDateTime: uploadedDoc.createdDateTime,
           hasHistory: true,
         }
-      : {}
+      : {
+          hasHistory: false,
+        }
   }
   const changedField = changedFields.find(field => field.fieldName === id)
   return changedField
@@ -264,7 +266,9 @@ const changedFieldProps = ({
         updatedDateTime: changedField.updatedDateTime,
         hasHistory: true,
       }
-    : {}
+    : {
+        hasHistory: false,
+      }
 }
 
 export const changeHistoryFieldList = ({
