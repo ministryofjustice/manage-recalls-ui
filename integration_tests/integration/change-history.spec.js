@@ -388,6 +388,8 @@ context('Change history', () => {
         category: 'DOSSIER_EMAIL',
         documentId: '234-3455-8542-c3ac-8c963f66afa6',
         fileName: 'email.msg',
+        createdByUserName: 'Barry Caseworker',
+        createdDateTime: '2021-10-05T12:34:23.000Z',
       },
       {
         category: 'MISSING_DOCUMENTS_EMAIL',
@@ -417,6 +419,18 @@ context('Change history', () => {
         href,
       })
     })
+    // check user and date for one field
+    cy.getRowValuesFromTable({ parent: '#table-info-entered', rowQaAttr: 'currentPrison' }).then(rowValues =>
+      expect(rowValues).to.include.members(['Prison held in', '14 January 2022 at 13:57', 'Maria Badger'])
+    )
+    // check user and date for one email
+    cy.getRowValuesFromTable({ parent: '#table-info-entered', rowQaAttr: 'dossierSentEmailUploaded' }).then(rowValues =>
+      expect(rowValues).to.include.members([
+        'Dossier and letter email uploaded',
+        '5 October 2021 at 13:34',
+        'Barry Caseworker',
+      ])
+    )
   })
 
   it('shows the change history of a field', () => {

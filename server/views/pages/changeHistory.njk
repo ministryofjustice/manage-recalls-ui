@@ -10,11 +10,13 @@
             </h1>
 
             {% set informationEnteredHtml %}
-                <table class="govuk-table" id="table-info-entered" data-module="moj-sortable-table" data-qa='uploadedDocuments'>
+                <table class="govuk-table" id="table-info-entered" data-module="moj-sortable-table" data-qa='informationEntered'>
                     <caption class="govuk-table__caption govuk-table__caption--m">Information entered</caption>
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header govuk-!-width-one-third" aria-sort="ascending">Field</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="ascending">Field</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Date and time</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">User</th>
                         <th scope="col" class="govuk-table__header">Action</th>
                     </tr>
                     </thead>
@@ -24,6 +26,12 @@
                             <td class="govuk-table__cell" data-sort-value='{{ field.label }}' data-qa='label-{{ field.id }}'>
                                 {{ field.label }}
                             </td>
+                            <td class="govuk-table__cell" data-sort-value='{{ field.updatedDateTime }}' data-qa='updatedDateTime-{{ field.id }}'>
+                                {{ field.updatedDateTime | dateTime }}
+                            </td>
+                            <td class="govuk-table__cell" data-sort-value='{{ field.updatedByUserName }}' data-qa='updatedByUserName-{{ field.id }}'>
+                                {{ field.updatedByUserName }}
+                            </td>
                             <td class="govuk-table__cell" data-qa='action'>
                                 {% if field.hasHistory %}
                                     {% if field.fieldType == 'UPLOADED_EMAIL' %}
@@ -32,7 +40,7 @@
                                     <a href='{{ makeUrl('change-history/field?fieldName=' + field.id + '&fieldPath=' + field.fieldPath, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ field.id }}'>View history</a>
                                     {% endif %}
                                 {% else %}
-                                    <span class='govuk-body'>Not provided</span>
+                                    <span class='govuk-body text-secondary'>Not provided</span>
                                 {% endif %}
                             </td>
                         </tr>

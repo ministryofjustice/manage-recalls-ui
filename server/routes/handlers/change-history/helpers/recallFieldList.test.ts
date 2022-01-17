@@ -41,37 +41,47 @@ describe('changeHistoryFieldList', () => {
     // filter out the list entries for fields that have history
     const fieldsWithHistory = list.filter(field => field.hasHistory)
     expect(fieldsWithHistory).toEqual([
-      {
-        documentCategory: 'DOSSIER_EMAIL',
-        fieldType: 'UPLOADED_EMAIL',
-        fieldPath: 'dossierSentEmailUploaded',
-        hasHistory: true,
-        id: 'dossierSentEmailUploaded',
-        label: 'Dossier and letter email uploaded',
-      },
-      {
-        fieldType: 'TEXT',
-        hasHistory: true,
-        id: 'probationOfficerPhoneNumber',
-        fieldPath: 'probationInfo.probationOfficerPhoneNumber',
-        label: 'Probation officer phone number',
-      },
-      {
-        documentCategory: 'RECALL_REQUEST_EMAIL',
-        fieldType: 'UPLOADED_EMAIL',
-        hasHistory: true,
-        id: 'recallRequestEmailUploaded',
-        fieldPath: 'recallRequestEmailUploaded',
-        label: 'Recall email uploaded',
-      },
-      {
-        documentCategory: 'RECALL_NOTIFICATION_EMAIL',
-        fieldType: 'UPLOADED_EMAIL',
-        hasHistory: true,
-        id: 'recallNotificationSentEmailUploaded',
-        fieldPath: 'recallNotificationSentEmailUploaded',
-        label: 'Recall notification email uploaded',
-      },
+      [
+        {
+          documentCategory: 'DOSSIER_EMAIL',
+          fieldPath: 'dossierSentEmailUploaded',
+          fieldType: 'UPLOADED_EMAIL',
+          hasHistory: true,
+          id: 'dossierSentEmailUploaded',
+          label: 'Dossier and letter email uploaded',
+          updatedByUserName: 'Arnold Caseworker',
+          updatedDateTime: '2020-12-05T18:33:57.000Z',
+        },
+        {
+          fieldPath: 'probationInfo.probationOfficerPhoneNumber',
+          fieldType: 'TEXT',
+          hasHistory: true,
+          id: 'probationOfficerPhoneNumber',
+          label: 'Probation officer phone number',
+          updatedByUserName: 'Maria Badger',
+          updatedDateTime: '2022-01-12T15:40:46.537Z',
+        },
+        {
+          documentCategory: 'RECALL_REQUEST_EMAIL',
+          fieldPath: 'recallRequestEmailUploaded',
+          fieldType: 'UPLOADED_EMAIL',
+          hasHistory: true,
+          id: 'recallRequestEmailUploaded',
+          label: 'Recall email uploaded',
+          updatedByUserName: 'Arnold Caseworker',
+          updatedDateTime: '2020-12-05T18:33:57.000Z',
+        },
+        {
+          documentCategory: 'RECALL_NOTIFICATION_EMAIL',
+          fieldPath: 'recallNotificationSentEmailUploaded',
+          fieldType: 'UPLOADED_EMAIL',
+          hasHistory: true,
+          id: 'recallNotificationSentEmailUploaded',
+          label: 'Recall notification email uploaded',
+          updatedByUserName: 'Arnold Caseworker',
+          updatedDateTime: '2020-12-05T18:33:57.000Z',
+        },
+      ],
     ])
   })
 
