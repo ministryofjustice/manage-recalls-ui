@@ -170,6 +170,42 @@ describe('generatedDocumentVersionFormHandler', () => {
       { category: 'RECALL_NOTIFICATION', details: 'Details changed' },
       'token'
     )
+    // dossier didn't already exist, so should not be recreated
+    expect(generateRecallDocument).not.toHaveBeenCalledWith(
+      '00000000-0000-0000-0000-000000000000',
+      { category: 'DOSSIER', details: 'Details changed' },
+      'token'
+    )
+    expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall`)
+  })
+
+  it('should recreate the dossier if one already exists and the revocation order is generated', async () => {
+    const recallDetails = { recallId, nomsNumber }
+    const requestBody = {
+      details: 'Details changed',
+      category: 'REVOCATION_ORDER',
+      dossierExists: '1',
+    }
+
+    generateRecallDocument.mockResolvedValueOnce(recallDetails)
+
+    const req = mockPostRequest({
+      params: { nomsNumber, recallId },
+      body: requestBody,
+    })
+    const { res } = mockResponseWithAuthenticatedUser('token')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      fromPage: 'dossier-recall',
+    }
+
+    await newGeneratedDocumentVersion(req, res)
+    expect(generateRecallDocument).toHaveBeenNthCalledWith(
+      3,
+      '00000000-0000-0000-0000-000000000000',
+      { category: 'DOSSIER', details: 'Details changed' },
+      'token'
+    )
     expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall`)
   })
 })

@@ -134,22 +134,27 @@ context('Generated document versions', () => {
       href: `${changeLinkHref}REASONS_FOR_RECALL`,
     })
 
-    // create a new version of recall notification
-    recallInformation.clickElement({ qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-Change' })
+    // create a new version of revocation order
+    recallInformation.clickElement({ qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER-Change' })
     const newGeneratedDocumentVersion = newGeneratedDocumentVersionPage.verifyOnPage({
-      documentCategoryLabel: 'recall notification',
+      documentCategoryLabel: 'revocation order',
     })
     newGeneratedDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionFileName',
-      textToFind: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
+      textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
     })
     newGeneratedDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: '/persons/A1234AA/recalls/123/documents/123',
+      href: '/persons/A1234AA/recalls/123/documents/2123',
     })
     newGeneratedDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionCreatedDateTime',
-      textToFind: 'Created on 21 November 2021 at 12:34',
+      textToFind: 'Created on 19 November 2021 at 14:14',
+    })
+    newGeneratedDocumentVersion.assertElementHasText({
+      qaAttr: 'textAdvisory',
+      textToFind:
+        'We will also create new versions of the recall notification and dossier, as they both contain the revocation order.',
     })
     newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
     newGeneratedDocumentVersion.clickContinue()
@@ -157,7 +162,7 @@ context('Generated document versions', () => {
       url: `/recalls/${recallId}/documents/generated`,
       method: 'POST',
       bodyValues: {
-        category: 'RECALL_NOTIFICATION',
+        category: 'DOSSIER',
         details: 'Sentencing date corrected.',
       },
     })

@@ -38,6 +38,9 @@
             <div class="govuk-form-group">
                 <form novalidate action="{{ makeUrl('generated-document-version', urlInfo, csrfToken) }}" method="post">
                     <input type='hidden' name='category' value='{{ recall.versionedGeneratedDoc.category }}'>
+                    {% if recall.documentsGenerated.DOSSIER %}
+                    <input type='hidden' name='dossierExists' value='1'>
+                    {% endif %}
                     {{ govukTextarea({
                         name: "details",
                         id: "details",
@@ -50,7 +53,7 @@
                         errorMessage: errorMessage(errors.details)
                     }) }}
                     {% if recall.versionedGeneratedDoc.category === 'REVOCATION_ORDER' %}
-                        <p class='govuk-body'>We will also create a new version of the recall notification, as it contains the revocation order.</p>
+                        <p class='govuk-body' data-qa='textAdvisory'>We will also create {% if recall.documentsGenerated.DOSSIER %}new versions of the recall notification and dossier, as they both contain the revocation order.{% else %}a new version of the recall notification, as it contains the revocation order.{% endif %}</p>
                     {% endif %}
                     <div class="govuk-!-margin-top-8">
                         <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
