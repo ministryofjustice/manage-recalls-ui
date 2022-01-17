@@ -236,7 +236,7 @@ export const formatSentenceLength = (sentenceLength: SentenceLengthRes) => {
   return `${years ? `${years} years ` : ''}${months ? `${months} months ` : ''}${days ? `${days} days ` : ''}`
 }
 
-const doesFieldHaveHistory = ({
+const changedFieldProps = ({
   id,
   value,
   changedFields,
@@ -248,9 +248,27 @@ const doesFieldHaveHistory = ({
   uploadedDocuments?: RecallDocument[]
 }) => {
   if (value.fieldType === 'UPLOADED_EMAIL') {
-    return uploadedDocuments.some(doc => doc.category === value.documentCategory)
+    const uploadedDoc = uploadedDocuments.find(doc => doc.category === value.documentCategory)
+    return uploadedDoc
+      ? {
+          updatedByUserName: uploadedDoc.createdByUserName,
+          updatedDateTime: uploadedDoc.createdDateTime,
+          hasHistory: true,
+        }
+      : {
+          hasHistory: false,
+        }
   }
-  return changedFields.some(field => field.fieldName === id)
+  const changedField = changedFields.find(field => field.fieldName === id)
+  return changedField
+    ? {
+        updatedByUserName: changedField.updatedByUserName,
+        updatedDateTime: changedField.updatedDateTime,
+        hasHistory: true,
+      }
+    : {
+        hasHistory: false,
+      }
 }
 
 export const changeHistoryFieldList = ({
@@ -267,7 +285,7 @@ export const changeHistoryFieldList = ({
         id,
         ...value,
         fieldPath: changedField ? changedField.fieldPath : id,
-        hasHistory: doesFieldHaveHistory({ id, value, changedFields, uploadedDocuments }),
+        ...changedFieldProps({ id, value, changedFields, uploadedDocuments }),
       }
     })
     .filter(field => field.label)
