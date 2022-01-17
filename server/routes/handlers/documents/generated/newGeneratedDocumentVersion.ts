@@ -4,22 +4,24 @@ import { generateRecallDocument } from '../../../../clients/manageRecallsApi/man
 import logger from '../../../../../logger'
 import { generatedDocCategoriesList } from '../download/helpers'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { revocationOrderCreated } from './helpers/revocationOrderCreated'
 
 export const newGeneratedDocumentVersion = async (req: Request, res: Response) => {
-  const reload = () => {
-    const redirectUrl = req.session.errors
-      ? `${req.originalUrl}&versionedCategoryName=${req.body.category}`
-      : `${res.locals.urlInfo.basePath}${res.locals.urlInfo.fromPage}`
-    res.redirect(303, redirectUrl)
-  }
-
   const { recallId } = req.params
   const { body } = req
+  const { category, dossierExists } = body
   const {
     user: { token },
     urlInfo,
   } = res.locals
-  const invalidCategory = !generatedDocCategoriesList().find(cat => cat.name === body.category)
+  const invalidCategory = !generatedDocCategoriesList().find(cat => cat.name === category)
+  const reload = () => {
+    const redirectUrl = req.session.errors
+      ? `${req.originalUrl}&versionedCategoryName=${category}`
+      : `${urlInfo.basePath}${urlInfo.fromPage}`
+    res.redirect(303, redirectUrl)
+  }
+
   if (invalidCategory) {
     throw new Error('Invalid category')
   }
@@ -31,18 +33,14 @@ export const newGeneratedDocumentVersion = async (req: Request, res: Response) =
   }
   try {
     await generateRecallDocument(recallId, valuesToSave, token)
-    // if it's a revocation order, then create a new recall notification as well
-    if (body.category === RecallDocument.category.REVOCATION_ORDER) {
-      await generateRecallDocument(
-        recallId,
-        { ...valuesToSave, category: RecallDocument.category.RECALL_NOTIFICATION },
-        token
-      )
+    // if it's a revocation order, then create a new recall notification (and dossier, if it already exists) as well
+    if (category === RecallDocument.category.REVOCATION_ORDER) {
+      await revocationOrderCreated({ recallId, valuesToSave, dossierExists, req, token })
     }
     res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage}`)
   } catch (err) {
     logger.error(err)
-    req.session.errors = [
+    req.session.errors = req.session.errors || [
       {
         name: 'saveError',
         text: 'An error occurred saving your changes',
