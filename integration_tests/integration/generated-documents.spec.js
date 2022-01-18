@@ -85,9 +85,9 @@ context('Generated document versions', () => {
   })
 
   it('all generated documents are listed and user can generate a new document version', () => {
-    const changeLinkHref =
-      '/persons/A1234AA/recalls/123/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName='
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recall = '83472929'
+    const changeLinkHref = `/persons/A1234AA/recalls/${recall}/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName=`
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId: recall, personName })
     // show link, version number, detail for a document with verion > 1
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
@@ -145,7 +145,7 @@ context('Generated document versions', () => {
     })
     newGeneratedDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: '/persons/A1234AA/recalls/123/documents/2123',
+      href: `/persons/A1234AA/recalls/${recall}/documents/2123`,
     })
     newGeneratedDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionCreatedDateTime',
@@ -159,7 +159,7 @@ context('Generated document versions', () => {
     newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
     newGeneratedDocumentVersion.clickContinue()
     newGeneratedDocumentVersion.assertApiRequestBody({
-      url: `/recalls/${recallId}/documents/generated`,
+      url: `/recalls/${recall}/documents/generated`,
       method: 'POST',
       bodyValues: {
         category: 'DOSSIER',
