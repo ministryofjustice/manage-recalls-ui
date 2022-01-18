@@ -157,6 +157,14 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Name on pre-cons - other',
     fieldType: 'TEXT',
   },
+  licenceNameCategory: {
+    label: 'Name',
+    fieldType: 'ENUM',
+    enumValues: {
+      FIRST_LAST: 'First & last name',
+      FIRST_MIDDLE_LAST: 'First, middle & last name',
+    },
+  },
   previousConvictionMainNameCategory: {
     label: 'Name on pre-cons',
     fieldType: 'ENUM',
