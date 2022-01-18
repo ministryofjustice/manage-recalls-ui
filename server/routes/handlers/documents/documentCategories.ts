@@ -94,22 +94,22 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     multiple: true,
   },
   {
-    label: 'Recall request email',
+    label: 'Recall request email uploaded',
     name: RecallDocument.category.RECALL_REQUEST_EMAIL,
     type: 'email',
   },
   {
-    label: 'Recall notification email',
+    label: 'Recall notification email uploaded',
     name: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
     type: 'email',
   },
   {
-    label: 'Dossier and letter email',
+    label: 'Dossier and letter email uploaded',
     name: RecallDocument.category.DOSSIER_EMAIL,
     type: 'email',
   },
   {
-    label: 'Missing documents email',
+    label: 'Missing documents email uploaded',
     name: RecallDocument.category.MISSING_DOCUMENTS_EMAIL,
     type: 'email',
   },

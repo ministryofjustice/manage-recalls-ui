@@ -45,7 +45,7 @@ module.exports = (on, config) => {
     expectGetAllFieldsChangeHistory: manageRecallsApi.expectGetAllFieldsChangeHistory,
     expectRefData: manageRecallsApi.expectRefData,
     readPdf: readPdf.readPdf,
-    findApiRequest: wiremockApi.findApiRequest,
+    findApiRequests: wiremockApi.findApiRequests,
   })
   return config
 }

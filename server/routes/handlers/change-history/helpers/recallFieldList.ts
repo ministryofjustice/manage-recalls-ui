@@ -5,6 +5,7 @@ import { FieldAuditSummary } from '../../../../@types/manage-recalls-api/models/
 import { FieldAuditEntry, SentenceLengthRes } from '../../../../@types/manage-recalls-api'
 import { getReferenceDataItemLabel } from '../../../../referenceData'
 import { formatDateTimeFromIsoString } from '../../helpers/dates/format'
+import { findDocCategory } from '../../documents/upload/helpers'
 
 // this uses the key names from the RecallResponse interface, but the field types are more specific
 export const recallFieldList: ObjectMap<RecallField> = {
@@ -189,17 +190,14 @@ export const recallFieldList: ObjectMap<RecallField> = {
   },
   // uploaded emails
   recallRequestEmailUploaded: {
-    label: 'Recall email uploaded',
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
   },
   recallNotificationSentEmailUploaded: {
-    label: 'Recall notification email uploaded',
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
   },
   dossierSentEmailUploaded: {
-    label: 'Dossier and letter email uploaded',
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.DOSSIER_EMAIL,
   },
@@ -257,8 +255,10 @@ const changedFieldProps = ({
 }) => {
   if (value.fieldType === 'UPLOADED_EMAIL') {
     const uploadedDoc = uploadedDocuments.find(doc => doc.category === value.documentCategory)
+    const docCategory = findDocCategory(value.documentCategory)
     return uploadedDoc
       ? {
+          label: docCategory.label,
           updatedByUserName: uploadedDoc.createdByUserName,
           updatedDateTime: uploadedDoc.createdDateTime,
           hasHistory: true,
