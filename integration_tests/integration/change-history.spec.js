@@ -512,7 +512,7 @@ context('Change history', () => {
     const emailHistory = changeHistoryDocumentPage.verifyOnPage({ type: 'email' })
     emailHistory.assertElementHasText({
       qaAttr: `document-${documentId}-heading`,
-      textToFind: 'Recall request email',
+      textToFind: 'Recall request email uploaded',
     })
     emailHistory.assertElementHasText({
       qaAttr: `document-${documentId}-link`,
