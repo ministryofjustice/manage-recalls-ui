@@ -1,4 +1,4 @@
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
@@ -21,7 +21,7 @@ describe('To do (recalls) list', () => {
     cy.task('reset')
     cy.task('stubLogin')
     cy.task('stubAuthUser')
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectUploadRecallDocument', { statusCode: 201 })

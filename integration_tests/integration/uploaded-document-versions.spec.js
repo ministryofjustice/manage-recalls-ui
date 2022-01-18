@@ -1,4 +1,4 @@
-import { getRecallResponse, searchResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
 
@@ -25,7 +25,7 @@ context('Uploaded document versions', () => {
         documents: [],
       },
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.login()
   })
 

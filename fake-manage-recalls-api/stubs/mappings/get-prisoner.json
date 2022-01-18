@@ -1,13 +1,13 @@
 {
   "request": {
-    "method": "POST",
-    "url": "/search"
+    "method": "GET",
+    "url": "/prisoner/(.*)"
   },
   "response": {
     "status": 200,
     "headers": {
       "Content-Type": "application/json"
     },
-    "bodyFileName": "search.json"
+    "bodyFileName": "get-prisoner.json"
   }
 }

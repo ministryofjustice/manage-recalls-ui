@@ -1,6 +1,6 @@
 import {
   getRecallResponse,
-  searchResponse,
+  getPrisonerResponse,
   getEmptyRecallResponse,
   getLocalDeliveryUnitsResponse,
   getPrisonsResponse,
@@ -36,7 +36,7 @@ context('Assess a recall', () => {
         },
       ],
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -185,7 +185,7 @@ context('Assess a recall', () => {
 
   it("User sees an error if they don't enter licence details", () => {
     cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     cy.login()
 
@@ -203,7 +203,7 @@ context('Assess a recall', () => {
 
   it("User sees an error if they don't enter current prison", () => {
     cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     cy.login()
 

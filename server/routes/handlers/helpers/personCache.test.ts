@@ -1,6 +1,6 @@
 import { RedisClient } from 'redis'
 import * as redisExports from '../../../clients/redis'
-import { searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { prisonerByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getPerson } from './personCache'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
@@ -24,7 +24,7 @@ describe('Get person data from cache', () => {
       })
     )
     const person = await getPerson('1', token, true)
-    expect(searchByNomsNumber).not.toHaveBeenCalled()
+    expect(prisonerByNomsNumber).not.toHaveBeenCalled()
     expect(person).toEqual({
       firstName: 'Bobby',
       lastName: 'Badger',
@@ -34,13 +34,13 @@ describe('Get person data from cache', () => {
 
   it('should return the API person, if cache is empty', async () => {
     jest.spyOn(redisExports, 'getRedisAsync').mockResolvedValue(null)
-    ;(searchByNomsNumber as jest.Mock).mockResolvedValue({
+    ;(prisonerByNomsNumber as jest.Mock).mockResolvedValue({
       firstName: 'Bobbie',
       lastName: 'Badgers',
       nomsNumber: '1',
     })
     const person = await getPerson('1', token, true)
-    expect(searchByNomsNumber).toHaveBeenCalledTimes(1)
+    expect(prisonerByNomsNumber).toHaveBeenCalledTimes(1)
     expect(person).toEqual({
       firstName: 'Bobbie',
       lastName: 'Badgers',
@@ -50,7 +50,7 @@ describe('Get person data from cache', () => {
 
   it('should populate the cache with the API person, if cache is empty', async () => {
     jest.spyOn(redisExports, 'getRedisAsync').mockResolvedValue(null)
-    ;(searchByNomsNumber as jest.Mock).mockResolvedValue({
+    ;(prisonerByNomsNumber as jest.Mock).mockResolvedValue({
       firstName: 'Bobbie',
       lastName: 'Badgers',
       nomsNumber: '1',
@@ -68,7 +68,7 @@ describe('Get person data from cache', () => {
 
   it('should not check the cache if param not supplied', async () => {
     jest.spyOn(redisExports, 'getRedisAsync')
-    ;(searchByNomsNumber as jest.Mock).mockResolvedValue({
+    ;(prisonerByNomsNumber as jest.Mock).mockResolvedValue({
       firstName: 'Bobbie',
       lastName: 'Badgers',
       nomsNumber: '1',
@@ -79,7 +79,7 @@ describe('Get person data from cache', () => {
 
   it('should throw if cache is empty and API errors', async () => {
     jest.spyOn(redisExports, 'getRedisAsync').mockResolvedValue(null)
-    ;(searchByNomsNumber as jest.Mock).mockRejectedValue(new Error('Timeout'))
+    ;(prisonerByNomsNumber as jest.Mock).mockRejectedValue(new Error('Timeout'))
     try {
       await getPerson('1', token, true)
     } catch (err) {

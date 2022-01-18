@@ -1,5 +1,5 @@
 import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
-import { searchByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { prisonerByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { getRedisAsync, getRedisClient } from '../../../clients/redis'
 import logger from '../../../../logger'
 import config from '../../../config'
@@ -11,7 +11,7 @@ const fetchPersonFromApiAndCache = async (
   token: string,
   useCache?: boolean
 ): Promise<SearchResult | undefined> =>
-  searchByNomsNumber(nomsNumber, token).then(person => {
+  prisonerByNomsNumber(nomsNumber, token).then(person => {
     if (person && useCache) {
       try {
         const redisClient = getRedisClient()

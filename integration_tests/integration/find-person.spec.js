@@ -1,5 +1,5 @@
 import {
-  searchResponse,
+  getPrisonerResponse,
   getRecallsResponse,
   getRecallResponse,
   getEmptyRecallResponse,
@@ -22,7 +22,7 @@ context('Find a person', () => {
     cy.task('stubLogin')
     cy.task('stubAuthUser')
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectGetRecall', { expectedResult: newRecall })
@@ -77,16 +77,14 @@ context('Find a person', () => {
 
   it('person search returns no results', () => {
     const nomsNumber2 = 'B1234CD'
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber2, expectedSearchResults: [] })
-    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber2, expectedResults: getRecallsResponse })
+    cy.task('expectPrisonerResult', { status: 404 })
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber2, expectedResults: [] })
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber2)
     homePage.expectSearchResultsCountText('0 people found')
   })
 
   it('person search with an invalid NOMIS number returns an error', () => {
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: [] })
-    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor('A123')
     homePage.assertErrorMessage({

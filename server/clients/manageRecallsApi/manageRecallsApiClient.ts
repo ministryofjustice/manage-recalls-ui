@@ -23,17 +23,11 @@ import { GenerateDocumentRequest } from '../../@types/manage-recalls-api/models/
 import { FieldAuditEntry } from '../../@types/manage-recalls-api/models/FieldAuditEntry'
 import { FieldAuditSummary } from '../../@types/manage-recalls-api/models/FieldAuditSummary'
 
-export async function searchByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
-  const request = { nomsNumber }
-  const results = await restClient(token).post<SearchResult[]>({
-    path: '/search',
+export async function prisonerByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
+  return restClient(token).get<SearchResult>({
+    path: `/prisoner/${nomsNumber}`,
     headers: { Accept: 'application/json' },
-    data: request,
   })
-  if (results && results.length) {
-    return results[0]
-  }
-  return null
 }
 
 export async function getRecallList(token: string): Promise<Recall[]> {

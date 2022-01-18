@@ -1,6 +1,6 @@
 import {
   getRecallResponse,
-  searchResponse,
+  getPrisonerResponse,
   getEmptyRecallResponse,
   getLocalDeliveryUnitsResponse,
   getPrisonsResponse,
@@ -35,7 +35,7 @@ context('Create a dossier', () => {
         },
       ],
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })

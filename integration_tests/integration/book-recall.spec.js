@@ -5,7 +5,7 @@ import {
   getPoliceForcesResponse,
   getPrisonsResponse,
   getRecallResponse,
-  searchResponse,
+  getPrisonerResponse,
 } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
@@ -44,7 +44,7 @@ context('Book a recall', () => {
         },
       ],
     })
-    cy.task('expectSearchResults', { expectedSearchTerm: nomsNumber, expectedSearchResults: searchResponse })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectUpdateRecall', recallId)
