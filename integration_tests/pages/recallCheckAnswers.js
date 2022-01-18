@@ -5,6 +5,7 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
     url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/check-answers` : null,
     checkChangeLinks: () => {
       const checkLink = (qaAttr, href) => cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
+      checkLink('inCustodyChange', '/custody-status?fromPage=check-answers&fromHash=custody')
       checkLink('previousConvictionMainNameChange', '/pre-cons-name?fromPage=check-answers&fromHash=personalDetails')
       checkLink('recallEmailReceivedDateTimeChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
       checkLink('recallRequestEmailFileNameChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')

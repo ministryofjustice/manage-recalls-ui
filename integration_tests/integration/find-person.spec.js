@@ -4,8 +4,6 @@ import {
   getRecallResponse,
   getEmptyRecallResponse,
 } from '../mockApis/mockResponses'
-import recallLicenceNamePage from '../pages/recallLicenceName'
-import recallPreConsNamePage from '../pages/recallPreConsName'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 
@@ -47,7 +45,7 @@ context('Find a person', () => {
     const existingRecall3 = getRecallsResponse[2]
     firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`)
     firstResult.get('[data-qa=bookRecallButton]').click()
-    recallLicenceNamePage.verifyOnPage({ personName })
+    cy.pageHeading().should('equal', `Is ${personName} in custody?`)
   })
 
   it('User can assess a recall', () => {
@@ -63,8 +61,7 @@ context('Find a person', () => {
     const firstResult = homePage.searchResults().first()
     const existingRecall2 = getRecallsResponse[1]
     firstResult.get(`[data-qa=continue-booking-${existingRecall2.recallId}]`).click()
-    // it will redirect to precons instead of licence because this user (recall) doesn't have a middle name
-    recallPreConsNamePage.verifyOnPage({ personName })
+    cy.pageHeading().should('equal', `Is ${personName} in custody?`)
   })
 
   it('User can create a dossier', () => {

@@ -1,10 +1,8 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
 
-export const validatePreConsName = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validatePreConsName = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave

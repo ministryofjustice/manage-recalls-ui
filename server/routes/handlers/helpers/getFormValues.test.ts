@@ -8,6 +8,9 @@ import { MissingDocumentsRecord } from '../../../@types/manage-recalls-api/model
 
 describe('getFormValues', () => {
   const errors = {
+    inCustody: {
+      text: 'Custody status',
+    },
     agreeWithRecall: {
       text: 'Decision on recall',
     },
@@ -104,6 +107,7 @@ describe('getFormValues', () => {
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
+    inCustody: 'YES',
     agreeWithRecall: 'NO',
     agreeWithRecallDetail: 'Reasons for no...',
     recallEmailReceivedDateTimeParts: { year: '2020', month: '12', day: '05', hour: '15', minute: '33' },
@@ -182,6 +186,7 @@ describe('getFormValues', () => {
         month: '',
         year: '2016',
       },
+      inCustody: '',
       hasDossierBeenChecked: '',
       previousConvictionMainNameCategory: '',
       indexOffence: '',
@@ -269,6 +274,7 @@ describe('getFormValues', () => {
         year: '2020',
       },
       hasDossierBeenChecked: 'YES',
+      inCustody: 'YES',
       indexOffence: 'Assault',
       lastReleaseDateParts: {
         day: 'ee',
@@ -350,6 +356,7 @@ describe('getFormValues', () => {
       },
       hasDossierBeenChecked: '',
       previousConvictionMainNameCategory: '',
+      inCustody: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -437,6 +444,7 @@ describe('getFormValues', () => {
         year: '2021',
       },
       hasDossierBeenChecked: 'YES',
+      inCustody: 'YES',
       previousConvictionMainNameCategory: 'OTHER',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
@@ -531,6 +539,7 @@ describe('getFormValues', () => {
       },
       hasDossierBeenChecked: 'YES',
       previousConvictionMainNameCategory: 'OTHER',
+      inCustody: 'YES',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: '03',

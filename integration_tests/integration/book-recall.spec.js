@@ -61,7 +61,10 @@ context('Book a recall', () => {
   it('User can book a recall', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.continueBooking({ recallId })
-    const recallLicenceName = recallLicenceNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    // custody status
+    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
+    cy.clickButton('Continue')
+    const recallLicenceName = recallLicenceNamePage.verifyOnPage({ personName })
     recallLicenceName.selectMiddleName()
     recallLicenceName.clickContinue()
     const recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
@@ -134,6 +137,9 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })
     checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
     checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
+
+    checkAnswers.assertElementHasText({ qaAttr: 'inCustody', textToFind: 'In custody' })
+
     // Recall request date and time
     checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
     // Sentence, offence and release details
@@ -177,6 +183,42 @@ context('Book a recall', () => {
 
     // missing documents
     checkAnswers.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
+  })
+
+  it('User sees an error if the custody status question is not answered', () => {
+    cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/custody-status`)
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'inCustody',
+      summaryError: 'Is Bobby Badger in custody?',
+    })
+  })
+
+  it('redirects to pre-cons name after custody status if the person has no middle name', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getEmptyRecallResponse,
+        middleNames: '',
+        status: RecallResponse.status.BEING_BOOKED_ON,
+      },
+    })
+    cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/custody-status`)
+    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
+    cy.clickButton('Continue')
+    cy.pageHeading().should(
+      'equal',
+      "How does Bobby Badger's name appear on the previous convictions sheet (pre-cons)?"
+    )
+  })
+
+  it('User sees an error if the licence name question is not answered', () => {
+    const recallLicenceName = recallLicenceNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallLicenceName.clickContinue()
+    recallLicenceName.assertErrorMessage({
+      fieldName: 'licenceNameCategory',
+      summaryError: "How does Bobby Badger's name appear on the licence?",
+    })
   })
 
   it("User doesn't see a middle name option for pre-cons name if the person doesn't have one", () => {
