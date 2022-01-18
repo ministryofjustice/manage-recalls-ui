@@ -2,9 +2,13 @@
 // dossier
 // letter to prison
 import { NextFunction, Request, Response } from 'express'
-import { isInvalid } from '../../helpers'
-import { generateRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { isInvalid, sortList } from '../../helpers'
+import {
+  generateRecallDocument,
+  getDocumentCategoryHistory,
+} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
 import { GenerateDocumentRequest } from '../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
+import { RecallDocument } from '../../../../@types/manage-recalls-api'
 
 // for the initial creation only of recall notification / letter / dossier, not for creating further versions
 export const createGeneratedDocument = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,11 +22,17 @@ export const createGeneratedDocument = async (req: Request, res: Response, next:
   ) {
     return res.sendStatus(400)
   }
-  const { documentId } = await generateRecallDocument(
-    recallId,
-    { category: category as GenerateDocumentRequest.category },
-    token
-  )
-  res.locals.documentId = documentId
+  const existingDocs = await getDocumentCategoryHistory(recallId, category as RecallDocument.category, token)
+  if (existingDocs.length > 0) {
+    const sorted = sortList(existingDocs, 'version', false)
+    res.locals.documentId = sorted[0].documentId
+  } else {
+    const { documentId } = await generateRecallDocument(
+      recallId,
+      { category: category as GenerateDocumentRequest.category },
+      token
+    )
+    res.locals.documentId = documentId
+  }
   next()
 }
