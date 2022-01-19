@@ -335,6 +335,15 @@ describe('backLinkUrl', () => {
     expect(url).toEqual('/person/123/recalls/456/check-answers')
   })
 
+  it('uses fromPage over a path leading with /', () => {
+    const url = backLinkUrl('/find-person?nomsNumber=A1234AA', {
+      fromPage: 'check-answers',
+      currentPage: 'check-answers',
+      basePath: '/person/123/recalls/456/',
+    })
+    expect(url).toEqual('/person/123/recalls/456/check-answers')
+  })
+
   it('uses the fromHash param if supplied', () => {
     const url = backLinkUrl('request-received', {
       fromPage: 'check-answers',
