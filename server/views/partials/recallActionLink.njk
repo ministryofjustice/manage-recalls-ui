@@ -1,5 +1,5 @@
 {% if recall.status == 'BEING_BOOKED_ON' %}
-    <div><a href='/persons/{{recall.nomsNumber}}/recalls/{{recall.recallId}}/{% if recall.middleNames %}licence-name{% else %}pre-cons-name{% endif %}' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
+    <div><a href='/persons/{{recall.nomsNumber}}/recalls/{{recall.recallId}}/custody-status' data-qa='continue-booking-{{ recall.recallId }}'>Continue booking</a></div>
 {% elif recall.status == 'BOOKED_ON' %}
 <div>
     <form novalidate action="/persons/{{ recall.nomsNumber }}/recalls/{{ recall.recallId }}/assess-assign" method="post">

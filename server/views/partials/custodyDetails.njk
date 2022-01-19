@@ -5,9 +5,12 @@
       Custody status
     </dt>
     <dd class=" govuk-summary-list__value" data-qa='inCustody'>
-      In custody
+      {% if recall.inCustody == true %}In custody{% elseif recall.inCustody == false %}Not in custody{% else %}Not set{% endif %}
     </dd>
     <dd class=" govuk-summary-list__actions">
+      {% if recall.status == 'BEING_BOOKED_ON' %}
+      <a href='{{ changeLinkUrl('custody-status', urlInfo, 'custody') }}' data-qa='inCustodyChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status</span></a>
+      {% endif %}
     </dd>
   </div>
   {% if recall.currentPrison %}

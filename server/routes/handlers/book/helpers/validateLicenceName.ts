@@ -1,33 +1,24 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
 
-export const validateLicenceName = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateLicenceName = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
   let errors
-  let unsavedValues
   let valuesToSave
 
   const { licenceNameCategory } = requestBody
   if (!licenceNameCategory) {
-    errors = []
-    if (!licenceNameCategory) {
-      errors.push(
-        makeErrorObject({
-          id: 'licenceNameCategory',
-          text: "How does {{ recall.fullName }}'s name appear on the licence?",
-        })
-      )
-    }
-    unsavedValues = {
-      licenceNameCategory,
-    }
+    errors = [
+      makeErrorObject({
+        id: 'licenceNameCategory',
+        text: "How does {{ recall.fullName }}'s name appear on the licence?",
+      }),
+    ]
   }
   if (!errors) {
     valuesToSave = {
       licenceNameCategory: licenceNameCategory as UpdateRecallRequest.licenceNameCategory,
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave }
 }

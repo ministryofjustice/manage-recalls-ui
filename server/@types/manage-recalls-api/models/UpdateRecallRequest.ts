@@ -17,6 +17,7 @@ export type UpdateRecallRequest = {
     contraband?: boolean;
     contrabandDetail?: string;
     currentPrison?: string;
+    inCustody?: boolean;
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     dossierCreatedByUserId?: string;

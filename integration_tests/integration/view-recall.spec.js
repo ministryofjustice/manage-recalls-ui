@@ -47,6 +47,11 @@ context('View a recall', () => {
   it('User can view all recall information', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.assertElementHasText({
+      qaAttr: 'inCustody',
+      textToFind: 'In custody',
+    })
+    recallInformation.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
+    recallInformation.assertElementHasText({
       qaAttr: 'recallNotificationEmailSentDateTime',
       textToFind: '15 August 2021 at 14:04',
     })

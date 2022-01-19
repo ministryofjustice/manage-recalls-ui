@@ -25,6 +25,7 @@ export type RecallResponse = {
     createdByUserId: string;
     createdDateTime: string;
     currentPrison?: string;
+    inCustody?: boolean;
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     documents: Array<RecallDocument>;

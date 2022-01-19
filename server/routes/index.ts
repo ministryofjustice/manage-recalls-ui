@@ -37,6 +37,7 @@ import { newGeneratedDocumentVersion } from './handlers/documents/generated/newG
 import { createGeneratedDocument } from './handlers/documents/generated/createGeneratedDocument'
 import { getSingleFieldChangeHistory } from './handlers/change-history/getSingleFieldChangeHistory'
 import { getAllFieldsChangeHistory } from './handlers/change-history/getAllFieldsChangeHistory'
+import { validateCustodyStatus } from './handlers/book/helpers/validateCustodyStatus'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -52,6 +53,8 @@ export default function routes(router: Router): Router {
   router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
 
   // BOOK A RECALL
+  get(`${basePath}/custody-status`, viewWithRecallAndPerson('recallCustodyStatus'))
+  post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'licence-name'))
   get(`${basePath}/licence-name`, viewWithRecallAndPerson('recallLicenceName'))
   post(`${basePath}/licence-name`, handleRecallFormPost(validateLicenceName, 'pre-cons-name'))
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))

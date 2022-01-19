@@ -3,7 +3,6 @@ import recallsListPage from '../pages/recallsList'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
-import recallLicenceNamePage from '../pages/recallLicenceName'
 import userDetailsPage from '../pages/userDetails'
 
 describe('To do (recalls) list', () => {
@@ -50,7 +49,7 @@ describe('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueBooking({ recallId })
-    recallLicenceNamePage.verifyOnPage({ personName })
+    cy.pageHeading().should('equal', `Is ${personName} in custody?`)
   })
 
   it('User can move on to assessRecall if the recall has status BOOKED_ON', () => {
