@@ -135,11 +135,11 @@ export const allowedImageFileTypeLabelList = () =>
   )
 
 export const backLinkUrl = (path: string, { fromPage, fromHash, basePath }: UrlInfo) => {
-  if (path.startsWith('/')) {
-    return `${path}${fromHash ? `#${fromHash}` : ''}`
-  }
   if (fromPage) {
     return `${basePath}${fromPage}${fromHash ? `#${fromHash}` : ''}`
+  }
+  if (path.startsWith('/')) {
+    return `${path}${fromHash ? `#${fromHash}` : ''}`
   }
   return `${basePath}${path}`
 }
