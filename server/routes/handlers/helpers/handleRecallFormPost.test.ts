@@ -5,6 +5,7 @@ import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApi
 import { validatePolice } from '../book/helpers/validatePolice'
 import { validateDecision } from '../assess/helpers/validateDecision'
 import * as referenceDataExports from '../../../referenceData'
+import { validateCustodyStatus } from '../book/helpers/validateCustodyStatus'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 
@@ -134,6 +135,29 @@ describe('handleRecallFormPost', () => {
       body: {
         agreeWithRecall: 'YES',
         agreeWithRecallDetailYes: 'Reasons',
+      },
+    })
+    const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.urlInfo = {
+      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      fromPage: 'check-answers',
+    }
+
+    await requestHandler(req, res)
+
+    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
+  })
+
+  it('should use fromPage over redirectToPage', async () => {
+    const recallDetails = { recallId, nomsNumber }
+    const requestHandler = handleRecallFormPost(validateCustodyStatus, 'licence-name')
+
+    updateRecall.mockResolvedValueOnce(recallDetails)
+
+    const req = mockPostRequest({
+      params: { nomsNumber, recallId },
+      body: {
+        inCustody: 'YES',
       },
     })
     const { res } = mockResponseWithAuthenticatedUser('')

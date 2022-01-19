@@ -16,7 +16,7 @@ export const handleRecallFormPost =
     }
     try {
       await updateRecall(recallId, valuesToSave, user.token)
-      res.redirect(303, `${urlInfo.basePath}${redirectToPage || urlInfo.fromPage || nextPageUrlSuffix}`)
+      res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || redirectToPage || nextPageUrlSuffix}`)
     } catch (err) {
       logger.error(err)
       req.session.errors = [
