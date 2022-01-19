@@ -15,8 +15,12 @@ and integration tests including pact tests:
 `./build.sh`
 
 ## Typescript definitions generated from manage-recalls-api Swagger endpoint
-This done by the NPM task `swagger-to-ts` which is run as part of `npm run build`.
+```
+npm run swagger-to-ts
+```
+
 Types are output to `./server/@types/manage-recalls-api`.
+The online swagger, for comparison, is [here](https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/swagger-ui/)
 
 ## Run linter
 
