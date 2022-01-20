@@ -61,9 +61,6 @@ context('Book a recall', () => {
   it('User can book a recall', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.continueBooking({ recallId })
-    // custody status
-    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
-    cy.clickButton('Continue')
     const recallLicenceName = recallLicenceNamePage.verifyOnPage({ personName })
     recallLicenceName.selectMiddleName()
     recallLicenceName.clickContinue()
@@ -76,6 +73,9 @@ context('Book a recall', () => {
     recallPreConsName.selectOtherName()
     recallPreConsName.enterOtherName('Wayne Holt')
     recallPreConsName.clickContinue()
+    // custody status
+    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
+    cy.clickButton('Continue')
     const recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
     recallRequestReceived.clickTodayLink()
     recallRequestReceived.enterDateTime({
@@ -192,24 +192,6 @@ context('Book a recall', () => {
       fieldName: 'inCustody',
       summaryError: 'Is Bobby Badger in custody?',
     })
-  })
-
-  it('redirects to pre-cons name after custody status if the person has no middle name', () => {
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getEmptyRecallResponse,
-        middleNames: '',
-        status: RecallResponse.status.BEING_BOOKED_ON,
-      },
-    })
-    cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/custody-status`)
-    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
-    cy.clickButton('Continue')
-    cy.pageHeading().should(
-      'equal',
-      "How does Bobby Badger's name appear on the previous convictions sheet (pre-cons)?"
-    )
   })
 
   it('User sees an error if the licence name question is not answered', () => {

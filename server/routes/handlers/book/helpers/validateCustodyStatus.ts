@@ -4,9 +4,8 @@ import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
 export const validateCustodyStatus = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
   let errors
   let valuesToSave
-  let redirectToPage
 
-  const { inCustody, hasMiddleNames } = requestBody
+  const { inCustody } = requestBody
   if (!inCustody || !['YES', 'NO'].includes(inCustody)) {
     errors = [
       makeErrorObject({
@@ -16,10 +15,9 @@ export const validateCustodyStatus = (requestBody: ObjectMap<string>): ReqValida
     ]
   }
   if (!errors) {
-    redirectToPage = hasMiddleNames ? 'licence-name' : 'pre-cons-name'
     valuesToSave = {
       inCustody: inCustody === 'YES',
     }
   }
-  return { errors, valuesToSave, redirectToPage }
+  return { errors, valuesToSave }
 }

@@ -86,6 +86,11 @@ context('Assess a recall', () => {
       qaAttr: 'recallRequestEmailFileNameChange',
       href: `/persons/${nomsNumber}/recalls/${recallId}/request-received`,
     })
+    assessRecall.assertElementHasText({
+      qaAttr: 'inCustody',
+      textToFind: 'In custody',
+    })
+    assessRecall.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
 
     // change link for an uploaded document goes to the 'add new document version' page
     assessRecall.assertLinkHref({
