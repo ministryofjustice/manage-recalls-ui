@@ -23,23 +23,6 @@ describe('validateCustodyStatus', () => {
     })
   })
 
-  it('sets redirectToPage to licence-name if the person has middle names', () => {
-    const requestBody = {
-      inCustody: 'YES',
-      hasMiddleNames: '1',
-    }
-    const { redirectToPage } = validateCustodyStatus(requestBody)
-    expect(redirectToPage).toEqual('licence-name')
-  })
-
-  it('sets redirectToPage to pre-cons-name if the person does not have middle names', () => {
-    const requestBody = {
-      inCustody: 'YES',
-    }
-    const { redirectToPage } = validateCustodyStatus(requestBody)
-    expect(redirectToPage).toEqual('pre-cons-name')
-  })
-
   it('returns an error for the decision, if not set', () => {
     const requestBody = {
       inCustody: '',

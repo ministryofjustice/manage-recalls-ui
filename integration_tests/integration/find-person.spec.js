@@ -45,7 +45,7 @@ context('Find a person', () => {
     const existingRecall3 = getRecallsResponse[2]
     firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`)
     firstResult.get('[data-qa=bookRecallButton]').click()
-    cy.pageHeading().should('equal', `Is ${personName} in custody?`)
+    cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
   })
 
   it('User can assess a recall', () => {
@@ -61,7 +61,10 @@ context('Find a person', () => {
     const firstResult = homePage.searchResults().first()
     const existingRecall2 = getRecallsResponse[1]
     firstResult.get(`[data-qa=continue-booking-${existingRecall2.recallId}]`).click()
-    cy.pageHeading().should('equal', `Is ${personName} in custody?`)
+    cy.pageHeading().should(
+      'equal',
+      `How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`
+    )
   })
 
   it('User can create a dossier', () => {

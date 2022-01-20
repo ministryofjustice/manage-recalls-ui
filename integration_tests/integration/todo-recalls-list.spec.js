@@ -49,7 +49,29 @@ describe('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueBooking({ recallId })
-    cy.pageHeading().should('equal', `Is ${personName} in custody?`)
+    cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
+  })
+
+  it('User will continue a previous booking to pre-cons page if the user has no middle names', () => {
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          ...basicRecall,
+          middleNames: '',
+          status: 'BEING_BOOKED_ON',
+        },
+      ],
+    })
+    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'BEING_BOOKED_ON' } })
+    cy.login()
+    const recallsList = recallsListPage.verifyOnPage()
+    recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
+    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
+    recallsList.continueBooking({ recallId })
+    cy.pageHeading().should(
+      'equal',
+      `How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`
+    )
   })
 
   it('User can move on to assessRecall if the recall has status BOOKED_ON', () => {

@@ -69,7 +69,11 @@ context('Create a dossier', () => {
     })
     cy.login()
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
-
+    dossierRecall.assertElementHasText({
+      qaAttr: 'inCustody',
+      textToFind: 'In custody',
+    })
+    dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
     dossierRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Assessment complete' })
     dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
     dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })

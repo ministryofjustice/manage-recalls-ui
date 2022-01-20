@@ -53,12 +53,12 @@ export default function routes(router: Router): Router {
   router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
 
   // BOOK A RECALL
-  get(`${basePath}/custody-status`, viewWithRecallAndPerson('recallCustodyStatus'))
-  post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'licence-name'))
   get(`${basePath}/licence-name`, viewWithRecallAndPerson('recallLicenceName'))
   post(`${basePath}/licence-name`, handleRecallFormPost(validateLicenceName, 'pre-cons-name'))
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
-  post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'request-received'))
+  post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'custody-status'))
+  get(`${basePath}/custody-status`, viewWithRecallAndPerson('recallCustodyStatus'))
+  post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'request-received'))
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
