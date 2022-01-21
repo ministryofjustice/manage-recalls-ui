@@ -1,7 +1,7 @@
 import { Response } from 'express'
 import { UrlInfo } from '../../../../../@types'
 import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
-import { SearchResult } from '../../../../../@types/manage-recalls-api/models/SearchResult'
+import { Prisoner } from '../../../../../@types/manage-recalls-api/models/Prisoner'
 import { enableDeleteDocuments, uploadedDocCategoriesList } from './index'
 import { decorateDocs } from '../../download/helpers/decorateDocs'
 import logger from '../../../../../../logger'
@@ -20,7 +20,7 @@ export const renderXhrResponse = async ({
   recallId: string
   nomsNumber: string
   urlInfo: UrlInfo
-  person: SearchResult
+  person: Prisoner
   recall: RecallResponse
 }) => {
   let addToExistingUploads = false

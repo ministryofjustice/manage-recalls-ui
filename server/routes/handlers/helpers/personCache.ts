@@ -1,4 +1,4 @@
-import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
+import { Prisoner } from '../../../@types/manage-recalls-api/models/Prisoner'
 import { prisonerByNomsNumber } from '../../../clients/manageRecallsApiClient'
 import { getRedisAsync, getRedisClient } from '../../../clients/redis'
 import logger from '../../../../logger'
@@ -10,7 +10,7 @@ const fetchPersonFromApiAndCache = async (
   nomsNumber: string,
   token: string,
   useCache?: boolean
-): Promise<SearchResult | undefined> =>
+): Promise<Prisoner | undefined> =>
   prisonerByNomsNumber(nomsNumber, token).then(person => {
     if (person && useCache) {
       try {
@@ -24,11 +24,7 @@ const fetchPersonFromApiAndCache = async (
     return person
   })
 
-export const getPerson = async (
-  nomsNumber: string,
-  token: string,
-  enableCache?: boolean
-): Promise<SearchResult | null> => {
+export const getPerson = async (nomsNumber: string, token: string, enableCache?: boolean): Promise<Prisoner | null> => {
   const useCache = enableCache || (process.env.ENVIRONMENT !== 'PRODUCTION' && process.env.NODE_ENV !== 'test')
   if (useCache) {
     const stored = await getRedisAsync(getKey(nomsNumber))
