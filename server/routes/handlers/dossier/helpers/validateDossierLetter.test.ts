@@ -29,6 +29,8 @@ describe('validateDossierLetter', () => {
     expect(valuesToSave).toEqual({
       additionalLicenceConditions: false,
       differentNomsNumber: false,
+      additionalLicenceConditionsDetail: '',
+      differentNomsNumberDetail: '',
     })
   })
 

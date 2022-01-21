@@ -61,6 +61,9 @@ describe('validateIssuesNeeds', () => {
       vulnerabilityDiversity: false,
       arrestIssues: false,
       mappaLevel: 'LEVEL_3',
+      arrestIssuesDetail: '',
+      contrabandDetail: '',
+      vulnerabilityDiversityDetail: '',
     })
   })
 

@@ -35,7 +35,7 @@ export const validatePreConsName = (requestBody: ObjectMap<string>): ReqValidato
   if (!errors) {
     // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
     // Using blanks as server cannot handle nulls and will just not overwrite existing value
-    let previousConvictionMainNameCleaned
+    let previousConvictionMainNameCleaned = ''
     if (isYesOther) {
       previousConvictionMainNameCleaned = previousConvictionMainName
     }

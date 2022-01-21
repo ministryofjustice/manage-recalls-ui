@@ -26,8 +26,8 @@ export const validateDossierLetter = (
     (isNomsYes && differentNomsNumberDetail && !isNomsNumberValid(differentNomsNumberDetail)) || false
 
   // only use the detail fields if 'Yes' was checked; ignore them if 'No' was the last option checked
-  const licenceDetailCleaned = isLicenceYes ? additionalLicenceConditionsDetail : undefined
-  const nomsDetailCleaned = isNomsYes ? differentNomsNumberDetail : undefined
+  const licenceDetailCleaned = isLicenceYes ? additionalLicenceConditionsDetail : ''
+  const nomsDetailCleaned = isNomsYes ? differentNomsNumberDetail : ''
 
   if (!isLicenceChoiceValid || licenceDetailMissing || !isNomsChoiceValid || nomsDetailMissing || nomsDetailInvalid) {
     errors = []
