@@ -47,6 +47,12 @@ describe('getFormValues', () => {
     vulnerabilityDiversityDetail: {
       text: 'Vulnerability detail',
     },
+    arrestIssues: {
+      text: 'Arrest issues',
+    },
+    arrestIssuesDetail: {
+      text: 'Vulnerability detail',
+    },
     mappaLevel: {
       text: 'MAPPA level',
     },
@@ -129,6 +135,8 @@ describe('getFormValues', () => {
     contrabandDetail: 'Likelihood of smuggling knives',
     vulnerabilityDiversity: 'NO',
     vulnerabilityDiversityDetail: '',
+    arrestIssues: 'YES',
+    arrestIssuesDetail: 'Detail..',
     mappaLevel: 'LEVEL_2',
     bookingNumber: '87378435D',
     probationOfficerName: 'Andy Fleming',
@@ -168,6 +176,8 @@ describe('getFormValues', () => {
     const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({
       agreeWithRecall: '',
+      arrestIssues: '',
+      arrestIssuesDetail: '',
       authorisingAssistantChiefOfficer: '',
       bookingNumber: '',
       conditionalReleaseDateParts: {
@@ -255,6 +265,8 @@ describe('getFormValues', () => {
     })
     expect(formValues).toEqual({
       agreeWithRecall: 'NO',
+      arrestIssues: 'YES',
+      arrestIssuesDetail: 'Detail..',
       authorisingAssistantChiefOfficer: 'Carrie Grant',
       bookingNumber: '87378435D',
       conditionalReleaseDateParts: {
@@ -336,6 +348,8 @@ describe('getFormValues', () => {
     const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({
       agreeWithRecall: '',
+      arrestIssues: '',
+      arrestIssuesDetail: '',
       authorisingAssistantChiefOfficer: '',
       bookingNumber: '',
       conditionalReleaseDateParts: {
@@ -426,6 +440,8 @@ describe('getFormValues', () => {
       additionalLicenceConditionsDetail: 'one, two',
       agreeWithRecall: 'YES',
       agreeWithRecallDetailYes: 'Reasons...',
+      arrestIssues: 'YES',
+      arrestIssuesDetail: 'Detail...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
       bookingNumber: 'A123456',
       conditionalReleaseDateParts: {
@@ -444,7 +460,7 @@ describe('getFormValues', () => {
         year: '2021',
       },
       hasDossierBeenChecked: 'YES',
-      inCustody: 'YES',
+      inCustody: 'NO',
       previousConvictionMainNameCategory: 'OTHER',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
@@ -520,6 +536,8 @@ describe('getFormValues', () => {
       additionalLicenceConditionsDetail: 'one, two',
       agreeWithRecall: 'NO_STOP',
       agreeWithRecallDetailNo: 'Reasons for no...',
+      arrestIssues: 'YES',
+      arrestIssuesDetail: 'Detail...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
       bookingNumber: 'A123456',
       conditionalReleaseDateParts: {
@@ -539,7 +557,7 @@ describe('getFormValues', () => {
       },
       hasDossierBeenChecked: 'YES',
       previousConvictionMainNameCategory: 'OTHER',
-      inCustody: 'YES',
+      inCustody: 'NO',
       indexOffence: 'Burglary',
       lastReleaseDateParts: {
         day: '03',

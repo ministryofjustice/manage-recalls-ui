@@ -6,7 +6,7 @@
   "assigneeUserName": "Jimmy Pud",
   "createdByUserId": "11111111-1111-1111-1111-111111111111",
   "createdDateTime": "2020-12-05T16:33:57.000Z",
-  "inCustody": true,
+  "inCustody": false,
   "lastUpdatedDateTime": "2020-12-05T18:33:57.000Z",
   "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
   "nomsNumber": "A1234AA",
@@ -93,6 +93,8 @@
   "contrabandDetail": "Intention to smuggle drugs",
   "vulnerabilityDiversity": true,
   "vulnerabilityDiversityDetail": "Various...",
+  "arrestIssues": true,
+  "arrestIssuesDetail": "Detail...",
   "mappaLevel": "LEVEL_1",
   "sentenceLength": {
     "years": 2,

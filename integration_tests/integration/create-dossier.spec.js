@@ -71,7 +71,7 @@ context('Create a dossier', () => {
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
     dossierRecall.assertElementHasText({
       qaAttr: 'inCustody',
-      textToFind: 'In custody',
+      textToFind: 'Not in custody',
     })
     dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
     dossierRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Assessment complete' })

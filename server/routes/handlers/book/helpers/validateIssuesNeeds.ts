@@ -9,13 +9,24 @@ export const validateIssuesNeeds = (
   let unsavedValues
   let valuesToSave
 
-  const { contraband, contrabandDetail, vulnerabilityDiversity, vulnerabilityDiversityDetail, mappaLevel } = requestBody
+  const {
+    contraband,
+    contrabandDetail,
+    vulnerabilityDiversity,
+    vulnerabilityDiversityDetail,
+    arrestIssues,
+    arrestIssuesDetail,
+    mappaLevel,
+    notInCustody,
+  } = requestBody
 
   if (
     !contraband ||
     !vulnerabilityDiversity ||
+    (notInCustody && !arrestIssues) ||
     (contraband === 'YES' && !contrabandDetail) ||
     (vulnerabilityDiversity === 'YES' && !vulnerabilityDiversityDetail) ||
+    (notInCustody && arrestIssues === 'YES' && !arrestIssuesDetail) ||
     !mappaLevel
   ) {
     errors = []
@@ -24,6 +35,14 @@ export const validateIssuesNeeds = (
         makeErrorObject({
           id: 'vulnerabilityDiversity',
           text: 'Are there any vulnerability issues or diversity needs?',
+        })
+      )
+    }
+    if (notInCustody && !arrestIssues) {
+      errors.push(
+        makeErrorObject({
+          id: 'arrestIssues',
+          text: 'Are there any arrest issues?',
         })
       )
     }
@@ -40,6 +59,14 @@ export const validateIssuesNeeds = (
         makeErrorObject({
           id: 'vulnerabilityDiversityDetail',
           text: 'Provide more detail for any vulnerability issues or diversity needs',
+        })
+      )
+    }
+    if (notInCustody && arrestIssues === 'YES' && !arrestIssuesDetail) {
+      errors.push(
+        makeErrorObject({
+          id: 'arrestIssuesDetail',
+          text: 'Provide more detail for any arrest issues',
         })
       )
     }
@@ -64,12 +91,15 @@ export const validateIssuesNeeds = (
       contrabandDetail,
       vulnerabilityDiversity,
       vulnerabilityDiversityDetail,
+      arrestIssues,
+      arrestIssuesDetail,
       mappaLevel,
     }
   }
   if (!errors) {
     // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
     const contrabandDetailCleaned = contraband === 'YES' ? contrabandDetail : undefined
+    const arrestIssuesCleaned = arrestIssues === 'YES' ? arrestIssuesDetail : undefined
     const vulnerabilityDiversityDetailCleaned =
       vulnerabilityDiversity === 'YES' ? vulnerabilityDiversityDetail : undefined
     valuesToSave = {
@@ -77,6 +107,8 @@ export const validateIssuesNeeds = (
       contrabandDetail: contrabandDetailCleaned,
       vulnerabilityDiversity: vulnerabilityDiversity === 'YES',
       vulnerabilityDiversityDetail: vulnerabilityDiversityDetailCleaned,
+      arrestIssues: notInCustody ? arrestIssues === 'YES' : undefined,
+      arrestIssuesDetail: notInCustody ? arrestIssuesCleaned : undefined,
       mappaLevel: UpdateRecallRequest.mappaLevel[mappaLevel],
     }
   }

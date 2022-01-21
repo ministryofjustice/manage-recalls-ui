@@ -6,3 +6,4 @@ reporter-config.json
 dist/
 server/@types/manage-recalls-api
 coverage
+integration_tests

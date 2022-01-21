@@ -88,7 +88,7 @@ context('Assess a recall', () => {
     })
     assessRecall.assertElementHasText({
       qaAttr: 'inCustody',
-      textToFind: 'In custody',
+      textToFind: 'Not in custody',
     })
     assessRecall.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
 

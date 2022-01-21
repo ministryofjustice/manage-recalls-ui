@@ -72,6 +72,48 @@
                         errorMessage: errorMessage(errors.vulnerabilityDiversity)
                     }) }}
                 </div>
+                {% if recall.inCustody == false %}
+                    <input type='hidden' name='notInCustody' value='1' />
+                    <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='arrestIssuesGroup'>
+                    {% set arrestIssuesYesHtml %}
+                        {{ govukTextarea({
+                            id: "arrestIssuesDetail",
+                            name: "arrestIssuesDetail",
+                            label: {
+                                text: "Provide more detail"
+                            },
+                            value: formValues.arrestIssuesDetail,
+                            errorMessage: errorMessage(errors.arrestIssuesDetail)
+                        }) }}
+                    {% endset -%}
+                    {{ govukRadios({
+                        idPrefix: "arrestIssues",
+                        name: "arrestIssues",
+                        fieldset: {
+                            legend: {
+                                text: "Are there any arrest issues?",
+                                classes: "govuk-fieldset__legend--m"
+                            }
+                        },
+                        items: [
+                            {
+                                value: 'YES',
+                                text: "Yes",
+                                conditional: {
+                                html: arrestIssuesYesHtml
+                            },
+                                checked: true if formValues.arrestIssues == 'YES'
+                            },
+                            {
+                                value: 'NO',
+                                text: "No",
+                                checked: true if formValues.arrestIssues == 'NO'
+                            }
+                        ],
+                        errorMessage: errorMessage(errors.arrestIssues)
+                    }) }}
+                </div>
+                {% endif %}
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='contrabandGroup'>
                     {% set contrabandYesHtml %}
                         {{ govukTextarea({

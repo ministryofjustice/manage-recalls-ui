@@ -13,6 +13,23 @@
       <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'vulnerabilityDiversityGroup') }}' data-qa='vulnerabilityDiversityChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> vulnerability and diversity</span></a>
     </dd>
   </div>
+
+  {% if recall.inCustody == false %}
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Arrest issues
+    </dt>
+    <dd class="govuk-summary-list__value">
+      <pre class='govuk-body' data-qa='arrestIssues'>
+        {% if recall.arrestIssues == true %}{{ recall.arrestIssuesDetail }}{% elif recall.arrestIssues == false %}No{% else %}Not available{% endif %}
+      </pre>
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('issues-needs', urlInfo, 'issues', 'arrestIssuesGroup') }}' data-qa='arrestIssuesChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> arrest issues</span></a>
+    </dd>
+  </div>
+  {% endif %}
+
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Contraband

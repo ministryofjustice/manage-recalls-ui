@@ -11,6 +11,8 @@ export type RecallResponse = {
     additionalLicenceConditionsDetail?: string;
     agreeWithRecall?: RecallResponse.agreeWithRecall;
     agreeWithRecallDetail?: string;
+    arrestIssues?: boolean;
+    arrestIssuesDetail?: string;
     assessedByUserId?: string;
     assessedByUserName?: string;
     assignee?: string;
