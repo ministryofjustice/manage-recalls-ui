@@ -27,7 +27,6 @@ export type RecallResponse = {
     createdByUserId: string;
     createdDateTime: string;
     currentPrison?: string;
-    inCustody?: boolean;
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     documents: Array<RecallDocument>;
@@ -37,7 +36,9 @@ export type RecallResponse = {
     dossierTargetDate?: string;
     firstName: string;
     hasDossierBeenChecked?: boolean;
+    inCustody?: boolean;
     indexOffence?: string;
+    lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
     lastName: string;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
@@ -76,6 +77,11 @@ export namespace RecallResponse {
 
     export enum agreeWithRecall {
         NO_STOP = 'NO_STOP',
+        YES = 'YES',
+    }
+
+    export enum lastKnownAddressOption {
+        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
         YES = 'YES',
     }
 

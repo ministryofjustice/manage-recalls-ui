@@ -19,13 +19,14 @@ export type UpdateRecallRequest = {
     contraband?: boolean;
     contrabandDetail?: string;
     currentPrison?: string;
-    inCustody?: boolean;
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     dossierCreatedByUserId?: string;
     dossierEmailSentDate?: string;
     hasDossierBeenChecked?: boolean;
+    inCustody?: boolean;
     indexOffence?: string;
+    lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
     licenceConditionsBreached?: string;
@@ -55,6 +56,11 @@ export namespace UpdateRecallRequest {
 
     export enum agreeWithRecall {
         NO_STOP = 'NO_STOP',
+        YES = 'YES',
+    }
+
+    export enum lastKnownAddressOption {
+        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
         YES = 'YES',
     }
 

@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type SearchResult = {
+export type Prisoner = {
     croNumber?: string;
     dateOfBirth?: string;
     firstName?: string;

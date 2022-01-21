@@ -5,7 +5,7 @@ import { RecallResponse as Recall } from '../@types/manage-recalls-api/models/Re
 import { NewDocumentResponse } from '../@types/manage-recalls-api/models/NewDocumentResponse'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
-import { SearchResult } from '../@types/manage-recalls-api/models/SearchResult'
+import { Prisoner } from '../@types/manage-recalls-api/models/Prisoner'
 import { ObjectMap } from '../@types'
 import {
   Court,
@@ -23,8 +23,8 @@ import { GenerateDocumentRequest } from '../@types/manage-recalls-api/models/Gen
 import { FieldAuditEntry } from '../@types/manage-recalls-api/models/FieldAuditEntry'
 import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAuditSummary'
 
-export async function prisonerByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
-  return restClient(token).get<SearchResult>({
+export async function prisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
+  return restClient(token).get<Prisoner>({
     path: `/prisoner/${nomsNumber}`,
     headers: { Accept: 'application/json' },
   })
