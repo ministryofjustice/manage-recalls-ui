@@ -23,6 +23,7 @@ describe('validatePreConsName', () => {
     expect(errors).toBeUndefined()
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
+      previousConvictionMainName: '',
       previousConvictionMainNameCategory: 'FIRST_LAST',
     })
   })
@@ -36,6 +37,7 @@ describe('validatePreConsName', () => {
     expect(errors).toBeUndefined()
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
+      previousConvictionMainName: '',
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
     })
   })
