@@ -131,15 +131,15 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Licence conditions breached',
     fieldType: 'TEXT',
   },
-  // reasonsForRecall: {
-  //   label: 'Reasons for recall',
-  //   fieldType: 'REF_DATA_LIST',
-  //   refDataCategory: 'reasonsForRecall',
-  // },
-  // reasonsForRecallOtherDetail: {
-  //   label: 'Reasons for recall - other',
-  //   fieldType: 'TEXT',
-  // },
+  reasonsForRecall: {
+    label: 'Reasons for recall',
+    fieldType: 'REF_DATA_LIST',
+    refDataCategory: 'reasonsForRecall',
+  },
+  reasonsForRecallOtherDetail: {
+    label: 'Reasons for recall - other',
+    fieldType: 'TEXT',
+  },
   additionalLicenceConditionsDetail: {
     label: 'Additional licence conditions',
     fieldType: 'TEXT',
@@ -225,7 +225,9 @@ export const formatRecallFieldValue = ({
     case 'REF_DATA':
       return getReferenceDataItemLabel(fieldTypeData.refDataCategory, record.updatedValue)
     case 'REF_DATA_LIST':
-      return record.updatedValue.map((value: string) => getReferenceDataItemLabel(fieldTypeData.refDataCategory, value))
+      return record.updatedValue
+        .map((value: string) => getReferenceDataItemLabel(fieldTypeData.refDataCategory, value))
+        .join(', ')
     case 'ISO_DATE_TIME':
       return formatDateTimeFromIsoString(record.updatedValue)
     case 'ISO_DATE':
