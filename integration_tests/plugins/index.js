@@ -17,7 +17,7 @@ module.exports = (on, config) => {
   // eslint-disable-next-line no-param-reassign
   config.env.AUTH_PASSWORD = process.env.AUTH_PASSWORD
 
-  on('before:browser:launch', (browser = {}, launchOptions) => {
+  on('before:browser:launch', (_browser = {}, launchOptions) => {
     prepareAudit(launchOptions)
   })
 
