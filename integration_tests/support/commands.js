@@ -1,6 +1,8 @@
 import { exactMatchIgnoreWhitespace, splitIsoDateToParts } from './utils'
 import { recall } from '../fixtures/recall'
 import { getPrisonerResponse, getRecallResponse } from '../mockApis/mockResponses'
+import 'cypress-file-upload'
+import 'cypress-audit/commands'
 
 Cypress.Commands.add('login', () => {
   cy.task('reset')
