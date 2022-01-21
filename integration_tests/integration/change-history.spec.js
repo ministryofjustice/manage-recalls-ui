@@ -433,7 +433,7 @@ context('Change history', () => {
     )
   })
 
-  it('shows the change history of a field', () => {
+  it('shows the change history of a ref data field', () => {
     cy.task('expectGetAllFieldsChangeHistory', {
       expectedResult: getAllFieldsHistoryResponseJson,
     })
@@ -458,6 +458,60 @@ context('Change history', () => {
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'value',
         valuesToCompare: ['Ashfield (HMP)', 'Kennet (HMP)'],
+      })
+      fieldHistory.assertTableColumnValues({
+        qaAttrTable: 'fieldChangeHistory',
+        qaAttrCell: 'updatedByUserName',
+        valuesToCompare: ['Marcus Baimbridge', 'Maria Badger'],
+      })
+    })
+  })
+
+  it('shows the change history of the reasons for recall field', () => {
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
+    })
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+      },
+    })
+    cy.task('expectGetSingleFieldChangeHistory', {
+      expectedResult: [
+        {
+          auditId: 0,
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          updatedByUserName: 'Maria Badger',
+          updatedDateTime: '2022-01-04T13:17:34.443Z',
+          updatedValue: ['ELM_BREACH_NON_CURFEW_CONDITION', 'OTHER'],
+        },
+        {
+          auditId: 1,
+          recallId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          updatedByUserName: 'Marcus Baimbridge',
+          updatedDateTime: '2022-01-04T17:56:22.000Z',
+          updatedValue: ['OTHER'],
+        },
+      ],
+    })
+    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
+    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    changeHistory.clickLink({ qaAttr: 'viewHistory-reasonsForRecall' })
+    const fieldHistory = changeHistoryFieldPage.verifyOnPage()
+    getSingleFieldHistoryResponseJson.forEach(() => {
+      fieldHistory.assertTableColumnValues({
+        qaAttrTable: 'fieldChangeHistory',
+        qaAttrCell: 'dateAndTime',
+        valuesToCompare: ['4 January 2022 at 17:56', '4 January 2022 at 13:17'],
+      })
+      fieldHistory.assertTableColumnValues({
+        qaAttrTable: 'fieldChangeHistory',
+        qaAttrCell: 'value',
+        valuesToCompare: [
+          'Other',
+          'Electronic locking and monitoring (ELM) - Breach of non-curfew related condition, Other',
+        ],
       })
       fieldHistory.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
