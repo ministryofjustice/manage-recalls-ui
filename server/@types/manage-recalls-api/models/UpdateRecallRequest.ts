@@ -9,6 +9,8 @@ export type UpdateRecallRequest = {
     additionalLicenceConditionsDetail?: string;
     agreeWithRecall?: UpdateRecallRequest.agreeWithRecall;
     agreeWithRecallDetail?: string;
+    arrestIssues?: boolean;
+    arrestIssuesDetail?: string;
     assessedByUserId?: string;
     authorisingAssistantChiefOfficer?: string;
     bookedByUserId?: string;

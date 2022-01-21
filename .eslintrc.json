@@ -16,7 +16,7 @@
         "alwaysTryTypes": true
       },
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"]
+        "extensions": [".jsx", ".ts", ".tsx", ".json"]
       }
     }
   },
@@ -96,7 +96,10 @@
         "functions": "never"
       }
     ],
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["**/*.test.js", "**/*.test.ts", "scripts/*.js", "**/testutils/**/*"] }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": ["**/*.test.js", "**/*.test.ts", "scripts/*.js", "**/testutils/**/*"] }
+    ],
     "prettier/prettier": [
       "error",
       {

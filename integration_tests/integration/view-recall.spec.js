@@ -11,6 +11,7 @@ context('View a recall', () => {
       recallId,
       expectedResult: {
         ...getRecallResponse,
+        inCustody: true,
         recallId,
         status: 'DOSSIER_ISSUED',
         documents: [
@@ -51,6 +52,7 @@ context('View a recall', () => {
       textToFind: 'In custody',
     })
     recallInformation.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
+    recallInformation.assertElementNotPresent({ qaAttr: 'arrestIssues' })
     recallInformation.assertElementHasText({
       qaAttr: 'recallNotificationEmailSentDateTime',
       textToFind: '15 August 2021 at 14:04',
@@ -82,6 +84,7 @@ context('View a recall', () => {
       expectedResult: {
         ...getEmptyRecallResponse,
         recallId,
+        inCustody: false,
         status: 'DOSSIER_ISSUED',
       },
     })
@@ -89,6 +92,7 @@ context('View a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Not available' })
+    recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'Not available' })
   })
 
   it('User can view No, No and None respectively for additionalLicenceConditions,vulnerabilityDiversity and contraband when selected No', () => {
@@ -99,6 +103,7 @@ context('View a recall', () => {
         recallId,
         additionalLicenceConditions: false,
         vulnerabilityDiversity: false,
+        arrestIssues: false,
         contraband: false,
         status: 'DOSSIER_ISSUED',
       },
@@ -107,6 +112,7 @@ context('View a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'None' })
     recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'No' })
     recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'No' })
+    recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'No' })
   })
 
   it('user can download all uploaded emails', () => {

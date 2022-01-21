@@ -13,14 +13,13 @@ import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import recallLicenceNamePage from '../pages/recallLicenceName'
-import recallsListPage from '../pages/recallsList'
+import { booleanToYesNo } from '../support/utils'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
 const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
-const recallMissingDocumentsPage = require('../pages/recallMissingDocuments')
-const recallConfirmationPage = require('../pages/recallConfirmation')
+const { recall } = require('../fixtures')
 
 context('Book a recall', () => {
   const nomsNumber = 'A1234AA'
@@ -59,70 +58,81 @@ context('Book a recall', () => {
   })
 
   it('User can book a recall', () => {
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.continueBooking({ recallId })
-    const recallLicenceName = recallLicenceNamePage.verifyOnPage({ personName })
-    recallLicenceName.selectMiddleName()
-    recallLicenceName.clickContinue()
-    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
-    recallPreConsName.showPreConsOptions([
-      { label: 'Bobby Badger', value: 'FIRST_LAST' },
-      { label: 'Bobby Dave Badger', value: 'FIRST_MIDDLE_LAST' },
-      { label: 'Other name', value: 'OTHER' },
-    ])
-    recallPreConsName.selectOtherName()
-    recallPreConsName.enterOtherName('Wayne Holt')
-    recallPreConsName.clickContinue()
+    cy.visit(`/find-person?nomsNumber=${nomsNumber}`)
+    cy.clickButton('Book a recall')
+
+    // licence name
+    cy.selectRadio(`How does ${personName}'s name appear on the licence?`, personName)
+    cy.clickButton('Continue')
+
+    // pre-cons name
+    cy.selectRadio(
+      `How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`,
+      'Bobby Dave Badger'
+    )
+    cy.clickButton('Continue')
+
     // custody status
     cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
     cy.clickButton('Continue')
-    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage()
-    recallRequestReceived.clickTodayLink()
-    recallRequestReceived.enterDateTime({
-      prefix: 'recallEmailReceivedDateTime',
-      values: {
-        Hour: '00',
-        Minute: '00',
-      },
+
+    // recall request
+    cy.enterDateTimeForToday()
+    cy.uploadEmail({ field: 'recallRequestEmailFileName' })
+    cy.clickButton('Continue')
+
+    // sentence details
+    cy.enterDateTimeFromRecall('sentenceDate')
+    cy.enterDateTimeFromRecall('licenceExpiryDate')
+    cy.enterDateTimeFromRecall('sentenceExpiryDate')
+    const { years, months, days } = recall.sentenceLength
+    cy.fillInputGroup({ Years: years, Months: months, Days: days }, { parent: '#sentenceLength' })
+    cy.selectFromAutocomplete('Sentencing court', recall.sentencingCourtLabel)
+    cy.selectFromAutocomplete('Releasing prison', recall.lastReleasePrisonLabel)
+    cy.fillInput('Index offence', recall.indexOffence)
+    cy.fillInput('Booking number', recall.bookingNumber)
+    cy.enterDateTimeFromRecall('lastReleaseDate')
+    cy.enterDateTimeFromRecall('conditionalReleaseDate')
+    cy.clickButton('Continue')
+
+    // police force
+    cy.selectFromAutocomplete('What is the name of the local police force?', recall.localPoliceForceLabel)
+    cy.clickButton('Continue')
+
+    // vulnerability / contraband
+    cy.selectRadio(
+      'Are there any vulnerability issues or diversity needs?',
+      booleanToYesNo(recall.vulnerabilityDiversity)
+    )
+    cy.fillInput('Provide more detail', recall.vulnerabilityDiversityDetail, {
+      parent: '#conditional-vulnerabilityDiversity',
     })
-    recallRequestReceived.uploadFile({ fieldName: 'recallRequestEmailFileName', fileName: 'email.msg' })
-    recallRequestReceived.clickContinue()
-    const recallLastRelease = recallLastReleasePage.verifyOnPage()
-    recallLastRelease.setSentenceDate()
-    recallLastRelease.setSentenceExpiryDate()
-    recallLastRelease.setLicenceExpiryDate()
-    recallLastRelease.setSentenceLength()
-    recallLastRelease.setConditionalReleaseExpiryDate()
-    recallLastRelease.setReleasingPrison()
-    recallLastRelease.setLastReleaseDate()
-    recallLastRelease.setSentencingCourt()
-    recallLastRelease.setIndexOffence()
-    recallLastRelease.setBookingNumber()
-    recallLastRelease.clickContinue()
-    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage()
-    recallPrisonPolice.setLocalPoliceForceId()
-    recallPrisonPolice.clickContinue()
-    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage()
-    recallIssuesNeeds.setVulnerabilityDiversityNo()
-    recallIssuesNeeds.setContrabandNo()
-    recallIssuesNeeds.setMappaLevel()
-    recallIssuesNeeds.clickContinue()
-    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage()
-    recallProbationOfficer.setProbationOfficerName()
-    recallProbationOfficer.setProbationOfficerEmail()
-    recallProbationOfficer.setProbationOfficerPhoneNumber()
-    recallProbationOfficer.setLocalDeliveryUnit()
-    recallProbationOfficer.setAssistantChiefOfficer()
-    recallProbationOfficer.clickContinue()
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.clickContinue()
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage()
-    recallMissingDocuments.enterTextInInput({ name: 'missingDocumentsDetail', text: 'I sent an email' })
-    recallMissingDocuments.uploadFile({ fieldName: 'missingDocumentsEmailFileName', fileName: 'email.msg' })
-    recallMissingDocuments.clickContinue()
-    const checkAnswers = checkAnswersPage.verifyOnPage()
-    checkAnswers.clickContinue()
-    recallConfirmationPage.verifyOnPage({ personName })
+    cy.selectRadio(`Do you think ${personName} will bring contraband into prison?`, booleanToYesNo(recall.contraband))
+    cy.fillInput('Provide more detail', recall.contrabandDetail, { parent: '#conditional-contraband' })
+
+    cy.selectFromDropdown('MAPPA level', recall.mappaLevelLabel)
+    cy.clickButton('Continue')
+
+    // probation officer
+    cy.fillInput('Name', recall.probationOfficerName)
+    cy.fillInput('Email address', recall.probationOfficerEmail)
+    cy.fillInput('Phone number', recall.probationOfficerPhoneNumber)
+    cy.selectFromAutocomplete('Local Delivery Unit (LDU)', recall.localDeliveryUnitLabel)
+    cy.fillInput('Assistant Chief Officer (ACO) that signed-off the recall', recall.authorisingAssistantChiefOfficer)
+    cy.clickButton('Continue')
+
+    // upload documents
+    cy.pageHeading('Upload documents')
+    cy.clickButton('Continue')
+
+    // missing documents
+    cy.uploadEmail({ field: 'missingDocumentsEmailFileName' })
+    cy.fillInput('Provide more detail', 'Chased', { clearExistingText: true })
+    cy.clickButton('Continue')
+    cy.pageHeading().should('equal', 'Check the details before booking this recall')
+
+    cy.clickButton('Complete booking')
+    cy.pageHeading().should('equal', `Recall booked for ${personName}`)
   })
 
   it('User can check their answers', () => {
@@ -138,7 +148,7 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
     checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
 
-    checkAnswers.assertElementHasText({ qaAttr: 'inCustody', textToFind: 'In custody' })
+    checkAnswers.assertElementHasText({ qaAttr: 'inCustody', textToFind: 'Not in custody' })
 
     // Recall request date and time
     checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
@@ -158,6 +168,7 @@ context('Book a recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Devon & Cornwall Police' })
     // issues or needs
     checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Various...' })
+    checkAnswers.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'Detail...' })
     checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Intention to smuggle drugs' })
     checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
     // probation details
@@ -367,33 +378,44 @@ context('Book a recall', () => {
     })
   })
 
-  it('User sees errors if vulnerability or diversity not answered', () => {
-    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
-    recallIssuesNeeds.clickContinue()
-    recallIssuesNeeds.assertErrorMessage({
+  it('User sees errors if issues & needs questions not answered', () => {
+    cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustody: false } })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'issues-needs' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'vulnerabilityDiversity',
       summaryError: 'Are there any vulnerability issues or diversity needs?',
     })
-    recallIssuesNeeds.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'contraband',
       summaryError: `Do you think ${personName} will bring contraband into prison?`,
     })
-    recallIssuesNeeds.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldName: 'arrestIssues',
+      summaryError: 'Are there any arrest issues?',
+    })
+    cy.assertErrorMessage({
       fieldName: 'mappaLevel',
       summaryError: 'Select a MAPPA level',
     })
   })
 
-  it('User sees errors if vulnerability or diversity detail not provided', () => {
-    const recallIssuesNeeds = recallIssuesNeedsPage.verifyOnPage({ nomsNumber, recallId })
-    recallIssuesNeeds.setVulnerabilityDiversityYes()
-    recallIssuesNeeds.setContrabandYes()
-    recallIssuesNeeds.clickContinue()
-    recallIssuesNeeds.assertErrorMessage({
+  it('User sees errors if issues & needs detail not provided', () => {
+    cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustody: false } })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'issues-needs' })
+    cy.selectRadio('Are there any vulnerability issues or diversity needs?', 'Yes')
+    cy.selectRadio('Do you think Bobby Badger will bring contraband into prison?', 'Yes')
+    cy.selectRadio('Are there any arrest issues?', 'Yes')
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'vulnerabilityDiversityDetail',
       summaryError: 'Provide more detail for any vulnerability issues or diversity needs',
     })
-    recallIssuesNeeds.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldName: 'arrestIssuesDetail',
+      summaryError: 'Provide more detail for any arrest issues',
+    })
+    cy.assertErrorMessage({
       fieldName: 'contrabandDetail',
       summaryError: 'Provide more detail on why you think Bobby Badger will bring contraband into prison',
     })

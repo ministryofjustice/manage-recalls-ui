@@ -49,6 +49,7 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
         '/issues-needs?fromPage=check-answers&fromHash=issues#vulnerabilityDiversityGroup'
       )
       checkLink('contrabandChange', '/issues-needs?fromPage=check-answers&fromHash=issues#contrabandGroup')
+      checkLink('arrestIssuesChange', '/issues-needs?fromPage=check-answers&fromHash=issues#arrestIssuesGroup')
       checkLink('mappaLevelChange', '/issues-needs?fromPage=check-answers&fromHash=issues#mappaLevelGroup')
       checkLink(
         'probationOfficerChange',
