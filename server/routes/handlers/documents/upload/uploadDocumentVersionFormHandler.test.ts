@@ -3,7 +3,7 @@ import { uploadDocumentVersionFormHandler } from './uploadDocumentVersionFormHan
 import { uploadRecallDocument } from '../../../../clients/manageRecallsApiClient'
 import { uploadStorageField } from './helpers/uploadStorage'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
 
 describe('uploadDocumentVersionFormHandler', () => {

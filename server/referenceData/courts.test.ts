@@ -1,7 +1,7 @@
 import { courts } from './courts'
 import { getCourts } from '../clients/manageRecallsApiClient'
 
-jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../clients/manageRecallsApiClient')
 
 describe('Courts ref data', () => {
   ;(getCourts as jest.Mock).mockResolvedValue([

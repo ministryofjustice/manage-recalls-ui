@@ -3,7 +3,7 @@ import { getDocumentChangeHistory } from './getDocumentChangeHistory'
 import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApiClient'
 import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('../helpers/fetch/getPersonAndRecall')
 
 describe('getDocumentChangeHistory', () => {

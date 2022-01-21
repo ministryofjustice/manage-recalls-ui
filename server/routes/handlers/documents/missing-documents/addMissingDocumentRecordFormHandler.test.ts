@@ -5,7 +5,7 @@ import { uploadStorageField } from '../upload/helpers/uploadStorage'
 import { addMissingDocumentRecordFormHandler } from './addMissingDocumentRecordFormHandler'
 import getRecallResponse from '../../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 jest.mock('../upload/helpers/uploadStorage')
 
 describe('addMissingDocumentRecordForm', () => {

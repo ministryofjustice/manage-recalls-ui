@@ -6,7 +6,7 @@ import { RecallResponse } from '../../../@types/manage-recalls-api/models/Recall
 import { prisonerByNomsNumber, getRecall } from '../../../clients/manageRecallsApiClient'
 import * as decorateDocsExports from '../documents/download/helpers/decorateDocs'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 
 const nomsNumber = 'AA123AA'
 const accessToken = 'abc'

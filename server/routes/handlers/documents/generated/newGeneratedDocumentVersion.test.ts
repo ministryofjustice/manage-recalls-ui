@@ -3,7 +3,7 @@ import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../../tes
 import { newGeneratedDocumentVersion } from './newGeneratedDocumentVersion'
 import { generateRecallDocument } from '../../../../clients/manageRecallsApiClient'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 
 describe('generatedDocumentVersionFormHandler', () => {
   const nomsNumber = 'A1234AB'

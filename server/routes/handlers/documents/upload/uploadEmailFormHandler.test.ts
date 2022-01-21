@@ -8,7 +8,7 @@ import { RecallDocument } from '../../../../@types/manage-recalls-api/models/Rec
 import { validateRecallNotificationEmail } from '../../assess/helpers/validateRecallNotificationEmail'
 import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
 
 const handler = uploadEmailFormHandler({

@@ -4,7 +4,7 @@ import { GetDocumentResponse } from '../../../../@types/manage-recalls-api/model
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { deleteDocument } from './deleteDocument'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 
 describe('deleteDocument', () => {
   let req

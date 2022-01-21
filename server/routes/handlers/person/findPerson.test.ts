@@ -4,7 +4,7 @@ import { searchRecalls } from '../../../clients/manageRecallsApiClient'
 import { getPerson } from '../helpers/personCache'
 import getRecallsResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('../helpers/personCache')
 const nomsNumber = ' A1234AB '
 

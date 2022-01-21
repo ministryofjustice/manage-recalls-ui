@@ -3,7 +3,7 @@ import { uploadRecallDocument, getRecall } from '../../../../../clients/manageRe
 import { getPerson } from '../../../helpers/personCache'
 import { uploadMultipleNewDocuments } from './uploadMultipleNewDocuments'
 
-jest.mock('../../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../../clients/manageRecallsApiClient')
 jest.mock('../../../helpers/personCache')
 
 describe('uploadMultipleNewDocuments', () => {

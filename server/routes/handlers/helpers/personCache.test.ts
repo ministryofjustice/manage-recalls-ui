@@ -3,7 +3,7 @@ import * as redisExports from '../../../clients/redis'
 import { prisonerByNomsNumber } from '../../../clients/manageRecallsApiClient'
 import { getPerson } from './personCache'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 
 describe('Get person data from cache', () => {
   const token = 'token'

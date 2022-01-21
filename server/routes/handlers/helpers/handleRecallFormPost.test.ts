@@ -7,7 +7,7 @@ import { validateDecision } from '../assess/helpers/validateDecision'
 import * as referenceDataExports from '../../../referenceData'
 import { validateCustodyStatus } from '../book/helpers/validateCustodyStatus'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 
 const handler = handleRecallFormPost(validatePolice, 'issues-needs')
 

@@ -1,7 +1,7 @@
 import { prisons } from './prisons'
 import { getPrisons } from '../clients/manageRecallsApiClient'
 
-jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../clients/manageRecallsApiClient')
 
 describe('prisons refdata', () => {
   ;(getPrisons as jest.Mock).mockResolvedValue([

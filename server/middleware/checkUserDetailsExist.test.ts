@@ -2,7 +2,7 @@
 import { checkUserDetailsExist } from './checkUserDetailsExist'
 import { getCurrentUserDetails } from '../clients/manageRecallsApiClient'
 
-jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../clients/manageRecallsApiClient')
 
 describe('checkUserDetailsExist', () => {
   let req
