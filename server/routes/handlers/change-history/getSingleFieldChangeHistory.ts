@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getSingleFieldHistory } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getSingleFieldHistory } from '../../../clients/manageRecallsApiClient'
 import { isString } from '../helpers'
 import { FieldAuditEntry } from '../../../@types/manage-recalls-api/models/FieldAuditEntry'
 import { sortListByDateField } from '../helpers/dates/sort'

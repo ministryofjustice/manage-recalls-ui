@@ -1,8 +1,8 @@
 import { getPersonAndRecall } from './getPersonAndRecall'
-import { getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall } from '../../../../clients/manageRecallsApiClient'
 import { getPerson } from '../personCache'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 jest.mock('../personCache')
 
 describe('getPersonAndRecall', () => {

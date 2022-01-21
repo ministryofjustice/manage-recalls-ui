@@ -1,13 +1,9 @@
 // @ts-nocheck
-import {
-  uploadRecallDocument,
-  getRecall,
-  setDocumentCategory,
-} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, getRecall, setDocumentCategory } from '../../../../clients/manageRecallsApiClient'
 import { categoriseFiles } from './categoriseFiles'
 import { getPerson } from '../../helpers/personCache'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 jest.mock('../../helpers/personCache')
 
 describe('categoriseFiles', () => {

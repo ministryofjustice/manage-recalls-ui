@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { deleteRecallDocument, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { deleteRecallDocument, getRecall } from '../../../../clients/manageRecallsApiClient'
 import { enableDeleteDocuments } from '../upload/helpers'
 
 export const deleteDocument = async (req: Request, res: Response) => {

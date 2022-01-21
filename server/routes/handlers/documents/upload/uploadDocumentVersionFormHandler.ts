@@ -6,7 +6,7 @@ import { validateDocumentVersion } from './validations/validateDocumentVersion'
 import logger from '../../../../../logger'
 import { errorMsgDocumentUpload } from '../../helpers/errorMessages'
 import { makeErrorObject } from '../../helpers'
-import { uploadRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../../../../clients/manageRecallsApiClient'
 
 export const uploadDocumentVersionFormHandler = async (req: Request, res: Response) => {
   uploadStorageField('document')(req, res, async uploadError => {

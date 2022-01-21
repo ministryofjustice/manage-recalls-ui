@@ -1,4 +1,4 @@
-import { getCourts } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCourts } from '../clients/manageRecallsApiClient'
 import { Court } from '../@types/manage-recalls-api'
 import { RefDataBaseClass } from './refDataBaseClass'
 

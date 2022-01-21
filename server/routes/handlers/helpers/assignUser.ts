@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { assignUserToRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { assignUserToRecall } from '../../../clients/manageRecallsApiClient'
 
 export const assignUser =
   ({ nextPageUrlSuffix }: { nextPageUrlSuffix: string }) =>

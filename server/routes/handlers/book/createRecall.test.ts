@@ -1,9 +1,9 @@
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { createRecall } from './createRecall'
 import { getPerson } from '../helpers/personCache'
-import { createRecall as createRecallApi } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { createRecall as createRecallApi } from '../../../clients/manageRecallsApiClient'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('../helpers/personCache')
 
 const userToken = { access_token: 'token-1', expires_in: 300 }

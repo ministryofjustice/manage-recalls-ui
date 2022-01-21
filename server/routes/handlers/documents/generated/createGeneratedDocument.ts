@@ -3,10 +3,7 @@
 // letter to prison
 import { NextFunction, Request, Response } from 'express'
 import { isInvalid, sortList } from '../../helpers'
-import {
-  generateRecallDocument,
-  getDocumentCategoryHistory,
-} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { generateRecallDocument, getDocumentCategoryHistory } from '../../../../clients/manageRecallsApiClient'
 import { GenerateDocumentRequest } from '../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
 import { RecallDocument } from '../../../../@types/manage-recalls-api'
 

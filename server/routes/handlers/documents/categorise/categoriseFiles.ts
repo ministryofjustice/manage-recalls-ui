@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { listMissingRequiredDocs } from '../upload/helpers'
-import { getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall } from '../../../../clients/manageRecallsApiClient'
 import { makeUrl } from '../../../../utils/nunjucksFunctions'
 import { getMetadataForCategorisedFiles, saveCategories } from './helpers'
 import { validateCategories } from './validations/validateCategories'

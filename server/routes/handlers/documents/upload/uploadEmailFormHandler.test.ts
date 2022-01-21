@@ -1,10 +1,6 @@
 // @ts-nocheck
 import { uploadEmailFormHandler } from './uploadEmailFormHandler'
-import {
-  uploadRecallDocument,
-  unassignUserFromRecall,
-  updateRecall,
-} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, unassignUserFromRecall, updateRecall } from '../../../../clients/manageRecallsApiClient'
 import { mockPostRequest } from '../../../testutils/mockRequestUtils'
 import { uploadStorageField } from './helpers/uploadStorage'
 import { validateRecallRequestReceived } from '../../book/helpers/validateRecallRequestReceived'
@@ -12,7 +8,7 @@ import { RecallDocument } from '../../../../@types/manage-recalls-api/models/Rec
 import { validateRecallNotificationEmail } from '../../assess/helpers/validateRecallNotificationEmail'
 import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 
-jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
 
 const handler = uploadEmailFormHandler({

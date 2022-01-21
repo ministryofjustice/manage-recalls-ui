@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getDocumentCategoryHistory } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { getDocumentCategoryHistory } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getDocumentCategoryHistoryResponseJson from '../fake-manage-recalls-api/stubs/__files/get-document-category-history.json'
 import { pactGetRequestWithQuery, pactJsonResponse } from './pactTestUtils'

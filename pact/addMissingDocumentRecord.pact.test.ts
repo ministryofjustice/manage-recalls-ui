@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
-import { addMissingDocumentRecord } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { addMissingDocumentRecord } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import { pactPostRequest } from './pactTestUtils'
 

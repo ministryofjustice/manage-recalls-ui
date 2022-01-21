@@ -3,7 +3,7 @@ import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/
 import { NewDocumentResponse } from '../../../../../@types/manage-recalls-api/models/NewDocumentResponse'
 import { NamedFormError, ObjectMap } from '../../../../../@types'
 import { makeErrorObject } from '../../../helpers'
-import { setDocumentCategory } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { setDocumentCategory } from '../../../../../clients/manageRecallsApiClient'
 import { findDocCategory } from '../../upload/helpers'
 
 export const getMetadataForCategorisedFiles = (requestBody: ObjectMap<string>): CategorisedFileMetadata[] => {

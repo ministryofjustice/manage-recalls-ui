@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getCurrentUserDetails, addUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCurrentUserDetails, addUserDetails } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
 import { FormError, ObjectMap } from '../../../@types'

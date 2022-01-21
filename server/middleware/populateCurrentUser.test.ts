@@ -1,7 +1,7 @@
 // @ts-nocheck
 import populateCurrentUser from './populateCurrentUser'
 
-jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../clients/manageRecallsApiClient')
 
 describe('populateCurrentUser', () => {
   let req

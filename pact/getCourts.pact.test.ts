@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getCourts } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { getCourts } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getCourtsJson from '../fake-manage-recalls-api/stubs/__files/get-courts.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'

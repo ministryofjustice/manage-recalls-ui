@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
-import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecallList } from '../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { getPerson } from './helpers/personCache'
 import logger from '../../../logger'

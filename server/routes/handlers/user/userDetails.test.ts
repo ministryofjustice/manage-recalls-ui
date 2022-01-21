@@ -2,9 +2,9 @@
 import { mockGetRequest, mockPostRequest } from '../../testutils/mockRequestUtils'
 import { getUser, postUser } from './userDetails'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
-import { addUserDetails, getCurrentUserDetails } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addUserDetails, getCurrentUserDetails } from '../../../clients/manageRecallsApiClient'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('../documents/upload/helpers/uploadStorage')
 
 const userToken = 'token-1'

@@ -1,8 +1,8 @@
 import { getSingleFieldChangeHistory } from './getSingleFieldChangeHistory'
-import { getSingleFieldHistory } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getSingleFieldHistory } from '../../../clients/manageRecallsApiClient'
 import { mockReq, mockRes, mockNext } from '../../testutils/mockRequestUtils'
 
-jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../../../clients/manageRecallsApiClient')
 
 describe('getFieldChangeHistory', () => {
   afterEach(() => jest.resetAllMocks())

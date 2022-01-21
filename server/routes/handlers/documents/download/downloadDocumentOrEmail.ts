@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import { getDocumentWithContents } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getDocumentWithContents } from '../../../../clients/manageRecallsApiClient'
 import { generatedDocumentFileName } from './helpers'
 import { documentCategories } from '../documentCategories'
 

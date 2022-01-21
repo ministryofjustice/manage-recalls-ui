@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { updateRecall } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { ReqValidatorFn } from '../../../@types'
 

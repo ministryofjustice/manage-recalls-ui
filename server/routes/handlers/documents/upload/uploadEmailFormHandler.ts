@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { uploadRecallDocument, updateRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, updateRecall } from '../../../../clients/manageRecallsApiClient'
 import logger from '../../../../../logger'
 import { uploadStorageField } from './helpers/uploadStorage'
 

@@ -1,5 +1,5 @@
 import { Prison } from '../@types'
-import { getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPrisons } from '../clients/manageRecallsApiClient'
 import { RefDataBaseClass } from './refDataBaseClass'
 
 class Prisons extends RefDataBaseClass {

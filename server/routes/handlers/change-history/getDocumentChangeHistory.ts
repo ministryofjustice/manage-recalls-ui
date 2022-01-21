@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApiClient'
 import { findDocCategory } from '../documents/upload/helpers'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { isString, sortList } from '../helpers'

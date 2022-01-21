@@ -1,7 +1,7 @@
 import { localDeliveryUnits } from './localDeliveryUnits'
-import { getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getLocalDeliveryUnits } from '../clients/manageRecallsApiClient'
 
-jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
+jest.mock('../clients/manageRecallsApiClient')
 
 describe('Local Delivery Units ref data', () => {
   ;(getLocalDeliveryUnits as jest.Mock).mockResolvedValue([
