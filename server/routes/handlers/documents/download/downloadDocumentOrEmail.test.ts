@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { downloadDocumentOrEmail } from './downloadDocumentOrEmail'
-import { getDocumentWithContents } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getDocumentWithContents } from '../../../../clients/manageRecallsApiClient'
 import { getPersonAndRecall } from '../../helpers/fetch/getPersonAndRecall'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')

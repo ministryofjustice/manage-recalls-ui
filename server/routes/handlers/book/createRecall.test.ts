@@ -1,7 +1,7 @@
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { createRecall } from './createRecall'
 import { getPerson } from '../helpers/personCache'
-import { createRecall as createRecallApi } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { createRecall as createRecallApi } from '../../../clients/manageRecallsApiClient'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')
 jest.mock('../helpers/personCache')

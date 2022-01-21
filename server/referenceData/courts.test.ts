@@ -1,5 +1,5 @@
 import { courts } from './courts'
-import { getCourts } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCourts } from '../clients/manageRecallsApiClient'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 

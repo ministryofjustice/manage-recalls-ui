@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getCurrentUserDetails } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCurrentUserDetails } from '../clients/manageRecallsApiClient'
 import logger from '../../logger'
 
 export const checkUserDetailsExist = async (req: Request, res: Response, next: NextFunction) => {

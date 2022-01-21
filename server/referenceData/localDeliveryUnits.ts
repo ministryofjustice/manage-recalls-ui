@@ -1,4 +1,4 @@
-import { getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getLocalDeliveryUnits } from '../clients/manageRecallsApiClient'
 import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api'
 import { RefDataBaseClass } from './refDataBaseClass'
 

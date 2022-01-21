@@ -1,10 +1,6 @@
 // @ts-nocheck
 import { uploadEmailFormHandler } from './uploadEmailFormHandler'
-import {
-  uploadRecallDocument,
-  unassignUserFromRecall,
-  updateRecall,
-} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, unassignUserFromRecall, updateRecall } from '../../../../clients/manageRecallsApiClient'
 import { mockPostRequest } from '../../../testutils/mockRequestUtils'
 import { uploadStorageField } from './helpers/uploadStorage'
 import { validateRecallRequestReceived } from '../../book/helpers/validateRecallRequestReceived'

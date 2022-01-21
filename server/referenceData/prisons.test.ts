@@ -1,5 +1,5 @@
 import { prisons } from './prisons'
-import { getPrisons } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPrisons } from '../clients/manageRecallsApiClient'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 

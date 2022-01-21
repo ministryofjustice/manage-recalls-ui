@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
-import { deleteRecallDocument } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { deleteRecallDocument } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import { pactDeleteRequest } from './pactTestUtils'
 

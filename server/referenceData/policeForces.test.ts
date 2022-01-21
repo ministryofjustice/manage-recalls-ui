@@ -1,5 +1,5 @@
 import { policeForces } from './policeForces'
-import { getPoliceForces } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPoliceForces } from '../clients/manageRecallsApiClient'
 import { getReferenceDataItemLabel, isStringValidReferenceData } from './index'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')

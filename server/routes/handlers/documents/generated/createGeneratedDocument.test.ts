@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { createGeneratedDocument } from './createGeneratedDocument'
-import {
-  generateRecallDocument,
-  getDocumentCategoryHistory,
-} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { generateRecallDocument, getDocumentCategoryHistory } from '../../../../clients/manageRecallsApiClient'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
 

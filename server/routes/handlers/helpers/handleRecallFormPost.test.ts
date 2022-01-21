@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { handleRecallFormPost } from './handleRecallFormPost'
-import { updateRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { updateRecall } from '../../../clients/manageRecallsApiClient'
 import { validatePolice } from '../book/helpers/validatePolice'
 import { validateDecision } from '../assess/helpers/validateDecision'
 import * as referenceDataExports from '../../../referenceData'

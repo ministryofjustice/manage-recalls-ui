@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { checkUserDetailsExist } from './checkUserDetailsExist'
-import { getCurrentUserDetails } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getCurrentUserDetails } from '../clients/manageRecallsApiClient'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 

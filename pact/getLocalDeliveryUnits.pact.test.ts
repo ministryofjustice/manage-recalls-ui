@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getLocalDeliveryUnits } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { getLocalDeliveryUnits } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getLocalDeliveryUnitsJson from '../fake-manage-recalls-api/stubs/__files/get-local-delivery-units.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'

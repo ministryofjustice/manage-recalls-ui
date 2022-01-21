@@ -5,7 +5,7 @@ import { NewDocumentResponse } from '../../../../../@types/manage-recalls-api/mo
 import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
 import { makeErrorObject } from '../../../helpers'
 import { DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../../@types/documents'
-import { uploadRecallDocument } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../../../../../clients/manageRecallsApiClient'
 import { errorMsgDocumentUpload } from '../../../helpers/errorMessages'
 
 export const makeMetaDataForFile = (

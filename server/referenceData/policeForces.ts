@@ -1,5 +1,5 @@
 import { PoliceForce } from '../@types'
-import { getPoliceForces } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getPoliceForces } from '../clients/manageRecallsApiClient'
 import { RefDataBaseClass } from './refDataBaseClass'
 
 class PoliceForces extends RefDataBaseClass {

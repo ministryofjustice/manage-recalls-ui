@@ -1,5 +1,5 @@
 import { SearchResult } from '../../../@types/manage-recalls-api/models/SearchResult'
-import { prisonerByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { prisonerByNomsNumber } from '../../../clients/manageRecallsApiClient'
 import { getRedisAsync, getRedisClient } from '../../../clients/redis'
 import logger from '../../../../logger'
 import config from '../../../config'

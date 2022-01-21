@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall } from '../../../clients/manageRecallsApiClient'
 import { formatName, renderErrorMessages } from './index'
 import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'

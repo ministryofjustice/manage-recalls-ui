@@ -1,9 +1,5 @@
 // @ts-nocheck
-import {
-  uploadRecallDocument,
-  getRecall,
-  setDocumentCategory,
-} from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument, getRecall, setDocumentCategory } from '../../../../clients/manageRecallsApiClient'
 import { categoriseFiles } from './categoriseFiles'
 import { getPerson } from '../../helpers/personCache'
 

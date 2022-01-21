@@ -1,6 +1,6 @@
 import { RedisClient } from 'redis'
 import * as redisExports from '../../../clients/redis'
-import { prisonerByNomsNumber } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { prisonerByNomsNumber } from '../../../clients/manageRecallsApiClient'
 import { getPerson } from './personCache'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')

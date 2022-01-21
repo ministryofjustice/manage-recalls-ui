@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { addMissingDocumentRecord, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addMissingDocumentRecord, getRecall } from '../../../../clients/manageRecallsApiClient'
 import { mockPostRequest } from '../../../testutils/mockRequestUtils'
 import { uploadStorageField } from '../upload/helpers/uploadStorage'
 import { addMissingDocumentRecordFormHandler } from './addMissingDocumentRecordFormHandler'

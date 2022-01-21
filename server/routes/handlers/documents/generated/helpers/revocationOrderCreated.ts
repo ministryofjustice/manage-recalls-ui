@@ -1,7 +1,7 @@
 import { Request } from 'express'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { GenerateDocumentRequest } from '../../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
-import { generateRecallDocument } from '../../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { generateRecallDocument } from '../../../../../clients/manageRecallsApiClient'
 
 export const revocationOrderCreated = async ({
   recallId,

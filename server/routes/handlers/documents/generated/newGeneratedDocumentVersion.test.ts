@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../../testutils/mockRequestUtils'
 import { newGeneratedDocumentVersion } from './newGeneratedDocumentVersion'
-import { generateRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { generateRecallDocument } from '../../../../clients/manageRecallsApiClient'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')
 

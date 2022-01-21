@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { validateGeneratedDocumentVersion } from './validations/validateGeneratedDocumentVersion'
-import { generateRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { generateRecallDocument } from '../../../../clients/manageRecallsApiClient'
 import logger from '../../../../../logger'
 import { generatedDocCategoriesList } from '../download/helpers'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'

@@ -1,5 +1,5 @@
 import { getPerson } from '../personCache'
-import { getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecall } from '../../../../clients/manageRecallsApiClient'
 import { PersonAndRecallResponse } from '../../../../@types'
 
 export const getPersonAndRecall = async ({

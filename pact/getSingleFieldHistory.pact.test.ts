@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
-import { getSingleFieldHistory } from '../server/clients/manageRecallsApi/manageRecallsApiClient'
+import { getSingleFieldHistory } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getFieldHistoryResponseJson from '../fake-manage-recalls-api/stubs/__files/get-single-field-history.json'
 import { pactGetRequest, pactJsonResponse } from './pactTestUtils'

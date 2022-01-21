@@ -3,7 +3,7 @@ import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testuti
 import { viewWithRecallAndPerson } from './viewWithRecallAndPerson'
 import recall from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
-import { prisonerByNomsNumber, getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { prisonerByNomsNumber, getRecall } from '../../../clients/manageRecallsApiClient'
 import * as decorateDocsExports from '../documents/download/helpers/decorateDocs'
 
 jest.mock('../../../clients/manageRecallsApi/manageRecallsApiClient')

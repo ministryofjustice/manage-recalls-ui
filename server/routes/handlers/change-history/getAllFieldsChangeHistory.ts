@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getAllFieldsHistory, getRecall } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getAllFieldsHistory, getRecall } from '../../../clients/manageRecallsApiClient'
 import { isString } from '../helpers'
 import { changeHistoryFieldList } from './helpers/recallFieldList'
 

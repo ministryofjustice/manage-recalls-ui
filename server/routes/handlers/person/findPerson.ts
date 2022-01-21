@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { searchRecalls } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { searchRecalls } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { getPerson } from '../helpers/personCache'
 import { isDefined, makeErrorObject, transformErrorMessages } from '../helpers'

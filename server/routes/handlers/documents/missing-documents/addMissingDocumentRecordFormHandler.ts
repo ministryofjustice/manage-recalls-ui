@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { addMissingDocumentRecord, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { addMissingDocumentRecord, getRecall } from '../../../../clients/manageRecallsApiClient'
 import logger from '../../../../../logger'
 import { uploadStorageField } from '../upload/helpers/uploadStorage'
 import { validateMissingDocuments } from './validations/validateMissingDocuments'

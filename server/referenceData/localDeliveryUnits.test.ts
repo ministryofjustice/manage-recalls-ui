@@ -1,5 +1,5 @@
 import { localDeliveryUnits } from './localDeliveryUnits'
-import { getLocalDeliveryUnits } from '../clients/manageRecallsApi/manageRecallsApiClient'
+import { getLocalDeliveryUnits } from '../clients/manageRecallsApiClient'
 
 jest.mock('../clients/manageRecallsApi/manageRecallsApiClient')
 

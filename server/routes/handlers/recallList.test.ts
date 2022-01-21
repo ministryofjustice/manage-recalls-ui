@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import { recallList } from './recallList'
-import { getRecallList } from '../../clients/manageRecallsApi/manageRecallsApiClient'
+import { getRecallList } from '../../clients/manageRecallsApiClient'
 import { getPerson } from './helpers/personCache'
 
 jest.mock('../../clients/manageRecallsApi/manageRecallsApiClient')

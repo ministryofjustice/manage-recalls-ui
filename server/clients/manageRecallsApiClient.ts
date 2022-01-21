@@ -1,12 +1,12 @@
 import superagent from 'superagent'
-import { manageRecallsApiConfig } from '../../config'
-import RestClient from '../../data/restClient'
-import { RecallResponse as Recall } from '../../@types/manage-recalls-api/models/RecallResponse'
-import { NewDocumentResponse } from '../../@types/manage-recalls-api/models/NewDocumentResponse'
-import { UploadDocumentRequest } from '../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { LocalDeliveryUnitResponse } from '../../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
-import { SearchResult } from '../../@types/manage-recalls-api/models/SearchResult'
-import { ObjectMap } from '../../@types'
+import { manageRecallsApiConfig } from '../config'
+import RestClient from '../data/restClient'
+import { RecallResponse as Recall } from '../@types/manage-recalls-api/models/RecallResponse'
+import { NewDocumentResponse } from '../@types/manage-recalls-api/models/NewDocumentResponse'
+import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
+import { SearchResult } from '../@types/manage-recalls-api/models/SearchResult'
+import { ObjectMap } from '../@types'
 import {
   Court,
   GetDocumentResponse,
@@ -16,12 +16,12 @@ import {
   RecallDocument,
   BookRecallRequest,
   AddUserDetailsRequest,
-} from '../../@types/manage-recalls-api'
-import { MissingDocumentsRecordRequest } from '../../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
-import { PoliceForce } from '../../@types/manage-recalls-api/models/PoliceForce'
-import { GenerateDocumentRequest } from '../../@types/manage-recalls-api/models/GenerateDocumentRequest'
-import { FieldAuditEntry } from '../../@types/manage-recalls-api/models/FieldAuditEntry'
-import { FieldAuditSummary } from '../../@types/manage-recalls-api/models/FieldAuditSummary'
+} from '../@types/manage-recalls-api'
+import { MissingDocumentsRecordRequest } from '../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
+import { PoliceForce } from '../@types/manage-recalls-api/models/PoliceForce'
+import { GenerateDocumentRequest } from '../@types/manage-recalls-api/models/GenerateDocumentRequest'
+import { FieldAuditEntry } from '../@types/manage-recalls-api/models/FieldAuditEntry'
+import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAuditSummary'
 
 export async function prisonerByNomsNumber(nomsNumber: string, token: string): Promise<SearchResult | null> {
   return restClient(token).get<SearchResult>({

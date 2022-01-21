@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { uploadDocumentVersionFormHandler } from './uploadDocumentVersionFormHandler'
-import { uploadRecallDocument } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { uploadRecallDocument } from '../../../../clients/manageRecallsApiClient'
 import { uploadStorageField } from './helpers/uploadStorage'
 
 jest.mock('../../../../clients/manageRecallsApi/manageRecallsApiClient')

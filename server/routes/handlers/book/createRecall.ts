@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createRecall as createRecallApi } from '../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { createRecall as createRecallApi } from '../../../clients/manageRecallsApiClient'
 import { getPerson } from '../helpers/personCache'
 
 export const createRecall = async (req: Request, res: Response): Promise<void> => {

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { deleteRecallDocument, getRecall } from '../../../../clients/manageRecallsApi/manageRecallsApiClient'
+import { deleteRecallDocument, getRecall } from '../../../../clients/manageRecallsApiClient'
 import { GetDocumentResponse } from '../../../../@types/manage-recalls-api/models/GetDocumentResponse'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { deleteDocument } from './deleteDocument'
