@@ -6,7 +6,7 @@ import {
   getCourtsResponse,
 } from '../mockApis/mockResponses'
 
-const pa11yArgs = { standard: 'WCAG2AA' }
+const pa11yArgs = { runners: ['axe'], standard: 'WCAG2AA' }
 const nomsNumber = 'A1234AA'
 const recallId = '123'
 const status = 'BOOKED_ON'
