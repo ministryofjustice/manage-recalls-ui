@@ -5,9 +5,9 @@ import logger from '../../logger'
 import sanitiseError from '../sanitisedError'
 import { ApiConfig } from '../config'
 
-interface GetRequest {
+export interface GetRequest {
   path?: string
-  query?: string
+  query?: object | string
   headers?: Record<string, string>
   responseType?: string
   raw?: boolean
