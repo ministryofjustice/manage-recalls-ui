@@ -51,14 +51,14 @@ context('Change history', () => {
   ]
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
+    cy.login()
+  })
+
+  it('User can navigate to view change history for a recall, and re-sort the tables', () => {
     cy.task('expectListRecalls', {
       expectedResults: [],
     })
     cy.task('expectPrisonerResult', { expectedPrisonerResult: [] })
-    cy.login()
   })
 
   it('User can navigate to view document change history for a recall, and resort the tables', () => {
@@ -433,7 +433,7 @@ context('Change history', () => {
     )
   })
 
-  it('shows the change history of a ref data field', () => {
+  it('shows the change history of a field', () => {
     cy.task('expectGetAllFieldsChangeHistory', {
       expectedResult: getAllFieldsHistoryResponseJson,
     })

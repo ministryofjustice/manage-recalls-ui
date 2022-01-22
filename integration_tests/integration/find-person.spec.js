@@ -1,9 +1,4 @@
-import {
-  getPrisonerResponse,
-  getRecallsResponse,
-  getRecallResponse,
-  getEmptyRecallResponse,
-} from '../mockApis/mockResponses'
+import { getRecallsResponse, getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 
@@ -16,21 +11,27 @@ context('Find a person', () => {
   const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectCreateRecall', { expectedResults: { recallId } })
-    cy.task('expectGetRecall', { expectedResult: newRecall })
-    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     cy.login()
   })
-
-  it('User can search for a person and create a booking', () => {
-    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+  it('can search for a person and create a booking', () => {
+    cy.task('expectCreateRecall', { expectedResults: { recallId } })
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const homePage = findOffenderPage.verifyOnPage()
+
+    // no results
+    const nomsNumber2 = 'B1234CD'
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: null })
+    homePage.searchFor(nomsNumber2)
+    homePage.expectSearchResultsCountText('0 people found')
+
+    // invalid NOMIS number returns an error
+    homePage.searchFor('A123')
+    homePage.assertErrorMessage({
+      fieldName: 'nomsNumber',
+      summaryError: 'Enter a NOMIS number in the correct format',
+    })
+
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('1 person found')
     homePage.searchResults().find('tr').should('have.length', 1)
@@ -48,7 +49,10 @@ context('Find a person', () => {
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
   })
 
-  it('User can assess a recall', () => {
+  it('can assess a recall', () => {
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const homePage = findOffenderPage.verifyOnPage(nomsNumber)
     const firstResult = homePage.searchResults().first()
     const existingRecall1 = getRecallsResponse[0]
@@ -56,7 +60,9 @@ context('Find a person', () => {
     assessRecallPage.verifyOnPage({ fullName: personName })
   })
 
-  it('User can continue a booking', () => {
+  it('can continue a booking', () => {
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const homePage = findOffenderPage.verifyOnPage(nomsNumber)
     const firstResult = homePage.searchResults().first()
     const existingRecall2 = getRecallsResponse[1]
@@ -67,7 +73,10 @@ context('Find a person', () => {
     )
   })
 
-  it('User can create a dossier', () => {
+  it('can create a dossier', () => {
+    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const homePage = findOffenderPage.verifyOnPage(nomsNumber)
     const firstResult = homePage.searchResults().first()
     const existingRecall3 = getRecallsResponse[2]

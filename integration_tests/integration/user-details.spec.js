@@ -3,13 +3,6 @@ const recallsListPage = require('../pages/recallsList')
 
 context('User details', () => {
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectListRecalls', {
-      expectedResults: [],
-    })
-    cy.task('expectAddUserDetails')
     cy.login()
   })
 
@@ -62,6 +55,9 @@ context('User details', () => {
   })
 
   it('user clicks on their name in the header to go to user details page', () => {
+    cy.task('expectListRecalls', {
+      expectedResults: [],
+    })
     cy.task('expectGetCurrentUserDetails', {
       status: 200,
       expectedResult: {

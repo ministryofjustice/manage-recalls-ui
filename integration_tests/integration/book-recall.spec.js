@@ -1,18 +1,11 @@
-import {
-  getCourtsResponse,
-  getEmptyRecallResponse,
-  getLocalDeliveryUnitsResponse,
-  getPoliceForcesResponse,
-  getPrisonsResponse,
-  getRecallResponse,
-  getPrisonerResponse,
-} from '../mockApis/mockResponses'
+import { getEmptyRecallResponse, getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import recallLicenceNamePage from '../pages/recallLicenceName'
 import { booleanToYesNo } from '../support/utils'
+import { stubRefData } from '../support/mock-api'
 
 const recallPreConsNamePage = require('../pages/recallPreConsName')
 const recallRequestReceivedPage = require('../pages/recallRequestReceived')
@@ -25,38 +18,20 @@ context('Book an in-custody recall', () => {
   const recallId = '123'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
   const newRecall = { ...getEmptyRecallResponse, recallId }
-  const status = 'BEING_BOOKED_ON'
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectListRecalls', {
-      expectedResults: [
-        {
-          recallId,
-          nomsNumber,
-          status,
-          firstName: 'Bobby',
-          lastName: 'Badger',
-        },
-      ],
-    })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    cy.task('expectCreateRecall', { expectedResults: { recallId } })
+    cy.login()
+  })
+
+  it('book a recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
     cy.task('expectSetDocumentCategory')
-    cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
-    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    cy.task('expectRefData', { refDataPath: 'police-forces', expectedResult: getPoliceForcesResponse })
-    cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
-    cy.login()
-  })
-
-  it('User can book an in-custody recall recall', () => {
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
+    cy.task('expectCreateRecall', { expectedResults: { recallId } })
+    stubRefData()
     cy.visit(`/find-person?nomsNumber=${nomsNumber}`)
     cy.clickButton('Book a recall')
 
@@ -134,12 +109,13 @@ context('Book an in-custody recall', () => {
     cy.pageHeading().should('equal', `Recall booked for ${personName}`)
   })
 
-  it('User can check their answers', () => {
+  it('check their answers', () => {
     // eslint-disable-next-line no-unused-vars
     const [licence, ...documents] = [...getRecallResponse.documents]
     cy.task('expectGetRecall', {
       expectedResult: { recallId, ...getRecallResponse, documents, status: RecallResponse.status.BEING_BOOKED_ON },
     })
+    stubRefData()
     const checkAnswers = checkAnswersPage.verifyOnPage({ recallId, nomsNumber })
     checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
@@ -196,6 +172,12 @@ context('Book an in-custody recall', () => {
   })
 
   it('User sees an error if the custody status question is not answered', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getEmptyRecallResponse,
+      },
+    })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'custody-status' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
@@ -205,6 +187,12 @@ context('Book an in-custody recall', () => {
   })
 
   it('User sees an error if the licence name question is not answered', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getEmptyRecallResponse,
+      },
+    })
     const recallLicenceName = recallLicenceNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallLicenceName.clickContinue()
     recallLicenceName.assertErrorMessage({
@@ -224,17 +212,15 @@ context('Book an in-custody recall', () => {
     ])
   })
 
-  it('User sees an error if pre-cons main name question is not answered', () => {
+  it('errors - pre-cons questions are not answered', () => {
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
       fieldName: 'previousConvictionMainNameCategory',
       summaryError: "How does Bobby Badger's name appear on the previous convictions sheet (pre-cons)?",
     })
-  })
-
-  it('User sees an error if pre-cons other main name is not supplied', () => {
-    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
+    // other name not supplied
     recallPreConsName.selectOtherName()
     recallPreConsName.clickContinue()
     recallPreConsName.assertErrorMessage({
@@ -243,7 +229,8 @@ context('Book an in-custody recall', () => {
     })
   })
 
-  it('User sees an error if an invalid email received date is entered', () => {
+  it('errors - email request received', () => {
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
     recallRequestReceived.enterDateTime({
       prefix: 'recallEmailReceivedDateTime',
@@ -258,18 +245,14 @@ context('Book an in-custody recall', () => {
       fieldName: 'recallEmailReceivedDateTime',
       summaryError: 'The date and time you received the recall email must include a day and month',
     })
-  })
-
-  it('User sees an error if a recall email is not uploaded', () => {
-    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ nomsNumber, recallId })
-    recallRequestReceived.clickContinue()
+    // recall email is not uploaded'
     recallRequestReceived.assertErrorMessage({
       fieldName: 'recallRequestEmailFileName',
       summaryError: 'Select an email',
     })
   })
 
-  it('User sees a previously saved recall request email', () => {
+  it('sees a previously saved recall request email', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -293,7 +276,8 @@ context('Book an in-custody recall', () => {
     })
   })
 
-  it('User sees errors if sentence, offence and release details are not entered', () => {
+  it('errors - sentence, offence and release details', () => {
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
     recallLastRelease.clickContinue()
     recallLastRelease.assertErrorMessage({
@@ -328,20 +312,15 @@ context('Book an in-custody recall', () => {
       fieldName: 'bookingNumber',
       summaryError: 'Enter a booking number',
     })
-  })
-
-  it('User sees an error if invalid booking number is entered', () => {
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
+    // invalid booking number is entered
     recallLastRelease.setBookingNumber('12343')
     recallLastRelease.clickContinue()
     recallLastRelease.assertErrorMessage({
       fieldName: 'bookingNumber',
       summaryError: 'Enter a booking number in the correct format, like 12345C, A12347 or AB1234',
     })
-  })
 
-  it('User sees invalid inputs for sentencing court or releasing prison', () => {
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ nomsNumber, recallId })
+    // invalid inputs for sentencing court or releasing prison
     cy.get('[id="sentencingCourt"]').clear().type('blah blah blah')
     cy.get('[id="lastReleasePrison"]').clear().type('piffle')
     recallLastRelease.clickContinue()
@@ -357,17 +336,15 @@ context('Book an in-custody recall', () => {
     })
   })
 
-  it('User sees an error if Local Police Force not entered', () => {
+  it('errors - Local Police Force', () => {
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
     recallPrisonPolice.clickContinue()
     recallPrisonPolice.assertErrorMessage({
       fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force',
     })
-  })
-
-  it('User sees error and text as entered if invalid Local Police Force is entered', () => {
-    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ nomsNumber, recallId })
+    // invalid Local Police Force is entered
     recallPrisonPolice.enterLocalPoliceForceId('foobar')
     recallPrisonPolice.clickContinue()
     recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceIdInput', value: 'foobar' })
@@ -420,7 +397,8 @@ context('Book an in-custody recall', () => {
     })
   })
 
-  it('User sees errors if probation officer details are not entered', () => {
+  it('errors - probation details', () => {
+    cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallProbationOfficer.clickContinue()
     recallProbationOfficer.assertErrorMessage({
@@ -443,10 +421,7 @@ context('Book an in-custody recall', () => {
       fieldName: 'authorisingAssistantChiefOfficer',
       summaryError: 'Enter the Assistant Chief Officer that signed-off the recall',
     })
-  })
-
-  it('User sees errors if invalid probation officer email and phone are entered', () => {
-    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ nomsNumber, recallId, personName })
+    // invalid probation officer email and phone are entered
     recallProbationOfficer.setProbationOfficerEmail('invalid@email')
     recallProbationOfficer.setProbationOfficerPhoneNumber('12343')
     recallProbationOfficer.clickContinue()
@@ -458,10 +433,7 @@ context('Book an in-custody recall', () => {
       fieldName: 'probationOfficerPhoneNumber',
       summaryError: 'Enter a phone number in the correct format, like 01277 960901',
     })
-  })
-
-  it('User sees an invalid input for local delivery unit', () => {
-    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ nomsNumber, recallId, personName })
+    // invalid input for local delivery unit
     cy.get('[id="localDeliveryUnit"]').clear().type('blah blah blah')
     recallProbationOfficer.clickContinue()
     recallProbationOfficer.assertSelectValue({ fieldName: 'localDeliveryUnitInput', value: 'blah blah blah' })
@@ -471,18 +443,12 @@ context('Book an in-custody recall', () => {
     })
   })
 
-  it('user can check and change their answers then navigate back to the check answers page', () => {
+  it('can check and change their answers then navigate back to the check answers page', () => {
     cy.task('expectGetRecall', {
       expectedResult: { recallId, ...getRecallResponse, status: RecallResponse.status.BEING_BOOKED_ON },
     })
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
     checkAnswers.checkChangeLinks()
-    checkAnswers.clickElement({ qaAttr: 'previousConvictionMainNameChange' })
-    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ personName })
-    recallPreConsName.selectOtherName()
-    recallPreConsName.enterOtherName('Walter Holt')
-    recallPreConsName.clickContinue()
-    checkAnswersPage.verifyOnPage()
     checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickElement({ qaAttr: 'backLinkUploadDocuments' })

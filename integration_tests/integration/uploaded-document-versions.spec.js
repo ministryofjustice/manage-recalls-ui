@@ -10,22 +10,6 @@ context('Uploaded document versions', () => {
   const personName = 'Bobby Badger'
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectListRecalls', {
-      expectedResults: [],
-    })
-    cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getRecallResponse,
-        recallId,
-        status: 'DOSSIER_ISSUED',
-        documents: [],
-      },
-    })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.login()
   })
 
@@ -106,7 +90,7 @@ context('Uploaded document versions', () => {
     })
   })
 
-  it("an error is shown if a new document version isn't uploaded", () => {
+  it('errors - add a new document version', () => {
     const documentId = '123'
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -134,31 +118,8 @@ context('Uploaded document versions', () => {
       fieldName: 'document',
       summaryError: 'Select a file',
     })
-  })
 
-  it('an error is shown if details are not provided', () => {
-    const documentId = '123'
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        recallId,
-        ...getRecallResponse,
-        status: RecallResponse.status.DOSSIER_IN_PROGRESS,
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId,
-            version: 2,
-            createdDateTime: '2021-11-21T12:34:30.000Z',
-          },
-        ],
-      },
-    })
-    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
-      nomsNumber,
-      recallId,
-      documentCategoryLabel: 'part A recall report',
-      documentCategoryName: 'PART_A_RECALL_REPORT',
-    })
+    // details are not provided
     uploadDocumentVersion.uploadFile({
       fieldName: 'document',
       fileName: 'test.pdf',

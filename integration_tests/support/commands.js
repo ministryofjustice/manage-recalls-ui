@@ -1,8 +1,18 @@
 import { exactMatchIgnoreWhitespace, splitIsoDateToParts } from './utils'
 import { recall } from '../fixtures/recall'
+import { getPrisonerResponse, getRecallResponse } from '../mockApis/mockResponses'
 
 Cypress.Commands.add('login', () => {
-  cy.request(`/`)
+  cy.task('reset')
+  cy.task('stubAuthUser')
+  cy.task('stubLogin')
+  cy.task('expectGetCurrentUserDetails')
+  cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
+  cy.task('expectListRecalls', { expectedResults: [] })
+  cy.task('expectGetRecall', {
+    expectedResult: getRecallResponse,
+  })
+  cy.request('/')
   cy.task('getLoginUrl').then(cy.visit)
 })
 

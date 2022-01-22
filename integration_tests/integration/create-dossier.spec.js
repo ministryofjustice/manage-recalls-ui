@@ -1,11 +1,4 @@
-import {
-  getRecallResponse,
-  getPrisonerResponse,
-  getEmptyRecallResponse,
-  getLocalDeliveryUnitsResponse,
-  getPrisonsResponse,
-  getCourtsResponse,
-} from '../mockApis/mockResponses'
+import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
 
@@ -21,31 +14,13 @@ context('Create a dossier', () => {
   const recallId = '123'
   const personName = 'Bobby Badger'
   const status = 'RECALL_NOTIFICATION_ISSUED'
+  const emptyRecall = { ...getEmptyRecallResponse, recallId }
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectListRecalls', {
-      expectedResults: [
-        {
-          recallId,
-          nomsNumber,
-          status,
-        },
-      ],
-    })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    cy.task('expectUpdateRecall', recallId)
-    cy.task('expectRefData', { refDataPath: 'local-delivery-units', expectedResult: getLocalDeliveryUnitsResponse })
-    cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
-    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.login()
   })
-
-  it('User can verify recall details before creating a dossier', () => {
+  it('can verify recall details before creating a dossier', () => {
     cy.task('expectGetRecall', {
-      recallId,
       expectedResult: {
         ...getRecallResponse,
         recallId,
@@ -67,7 +42,6 @@ context('Create a dossier', () => {
         ],
       },
     })
-    cy.login()
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
     dossierRecall.assertElementHasText({
       qaAttr: 'inCustody',
@@ -119,9 +93,8 @@ context('Create a dossier', () => {
     dossierRecall.assertElementHasText({ qaAttr: 'createDossierDisabled', textToFind: 'Create dossier' })
   })
 
-  it('User can create a dossier', () => {
+  it('can create a dossier', () => {
     cy.task('expectGetRecall', {
-      recallId,
       expectedResult: {
         ...getRecallResponse,
         recallId,
@@ -146,7 +119,18 @@ context('Create a dossier', () => {
       fileName,
       documentId: '123',
     })
-    cy.login()
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          recallId,
+          nomsNumber,
+          status,
+        },
+      ],
+    })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.task('expectUpdateRecall', recallId)
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
     const dossierRecall = dossierRecallPage.verifyOnPage({ personName })
@@ -195,15 +179,10 @@ context('Create a dossier', () => {
     dossierConfirmationPage.verifyOnPage()
   })
 
-  it("User sees an error if they don't confirm the dossier was checked", () => {
+  it('errors - download the dossier', () => {
     cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getEmptyRecallResponse,
-        recallId,
-      },
+      expectedResult: emptyRecall,
     })
-    cy.login()
     const dossierDownload = dossierDownloadPage.verifyOnPage({ nomsNumber, recallId })
     dossierDownload.clickContinue()
     dossierDownload.assertErrorMessage({
@@ -212,33 +191,19 @@ context('Create a dossier', () => {
     })
   })
 
-  it("User sees an error if they don't confirm sending the dossier", () => {
+  it('errors - email the dossier', () => {
     cy.task('expectGetRecall', {
       recallId,
-      expectedResult: {
-        ...getEmptyRecallResponse,
-        recallId,
-      },
+      expectedResult: emptyRecall,
     })
-    cy.login()
     const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
     dossierEmail.clickContinue()
     dossierEmail.assertErrorMessage({
       fieldName: 'confirmDossierEmailSent',
       summaryError: "Confirm you've sent the email to all recipients",
     })
-  })
 
-  it("User sees an error if they confirm sending but don't enter a send date or upload an email", () => {
-    cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getEmptyRecallResponse,
-        recallId,
-      },
-    })
-    cy.login()
-    const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
+    // confirm sending but don't enter a send date or upload an email
     dossierEmail.confirmEmailSent()
     dossierEmail.clickContinue()
     dossierEmail.assertErrorMessage({
@@ -251,7 +216,7 @@ context('Create a dossier', () => {
     })
   })
 
-  it('User sees a previously saved dossier email', () => {
+  it('previously saved dossier email', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -264,12 +229,11 @@ context('Create a dossier', () => {
         ],
       },
     })
-    cy.login()
     const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
     dossierEmail.assertElementHasText({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL', textToFind: 'email.msg' })
   })
 
-  it("User sees errors if they don't enter info on the letter page", () => {
+  it('errors - letter page', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -277,7 +241,6 @@ context('Create a dossier', () => {
         recallId,
       },
     })
-    cy.login()
     const dossierLetter = dossierLetterPage.verifyOnPage({ nomsNumber, recallId })
     dossierLetter.clickContinue()
     dossierLetter.assertErrorMessage({
@@ -288,18 +251,8 @@ context('Create a dossier', () => {
       fieldName: 'differentNomsNumber',
       summaryError: 'Is Bobby Badger being held under a different NOMIS number to the one on the licence?',
     })
-  })
 
-  it("User sees an error if they don't enter a valid NOMIS on the letter page", () => {
-    cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getEmptyRecallResponse,
-        recallId,
-      },
-    })
-    cy.login()
-    const dossierLetter = dossierLetterPage.verifyOnPage({ nomsNumber, recallId })
+    // invalid NOMIS
     dossierLetter.additionalLicenceConditions()
     dossierLetter.addLicenceDetail()
     dossierLetter.differentNomsNumber()
