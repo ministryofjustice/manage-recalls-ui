@@ -9,7 +9,6 @@ import {
 } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
-import recallIssuesNeedsPage from '../pages/recallIssuesNeeds'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import recallLicenceNamePage from '../pages/recallLicenceName'
@@ -21,7 +20,7 @@ const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
 const { recall } = require('../fixtures')
 
-context('Book a recall', () => {
+context('Book an in-custody recall', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
@@ -57,7 +56,7 @@ context('Book a recall', () => {
     cy.login()
   })
 
-  it('User can book a recall', () => {
+  it('User can book an in-custody recall recall', () => {
     cy.visit(`/find-person?nomsNumber=${nomsNumber}`)
     cy.clickButton('Book a recall')
 
@@ -197,7 +196,7 @@ context('Book a recall', () => {
   })
 
   it('User sees an error if the custody status question is not answered', () => {
-    cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/custody-status`)
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'custody-status' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'inCustody',

@@ -61,5 +61,18 @@
       <a href='{{ changeLinkUrl('pre-cons-name', urlInfo, 'personalDetails') }}' data-qa='previousConvictionMainNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> pre-cons main name</span></a>
     </dd>
   </div>
+  {% if recall.inCustody == false %}
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Address
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='lastKnownAddressOption'>
+      {% if recall.lastKnownAddressOption == 'NO_FIXED_ABODE' %}No fixed abode{% else %}[Address]{% endif %}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('last-known-address', urlInfo, 'personalDetails') }}' data-qa='lastKnownAddressOptionChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> whether the person has a last known address</span></a>
+    </dd>
+  </div>
+  {% endif %}
 </dl>
 </div>

@@ -23,6 +23,14 @@ describe('validateCustodyStatus', () => {
     })
   })
 
+  it('sets redirectToPage to last known address, if answer is No', () => {
+    const requestBody = {
+      inCustody: 'NO',
+    }
+    const { redirectToPage } = validateCustodyStatus(requestBody)
+    expect(redirectToPage).toEqual('last-known-address')
+  })
+
   it('returns an error for the decision, if not set', () => {
     const requestBody = {
       inCustody: '',
