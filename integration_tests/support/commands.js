@@ -23,16 +23,6 @@ Cypress.Commands.add('pageHeading', () =>
     .then(text => text.trim())
 )
 
-// =============================== TABLES ===============================
-
-Cypress.Commands.add('getRowValuesFromTable', ({ rowQaAttr }, opts = {}) =>
-  cy
-    .get(opts.parent || 'body')
-    .find(`[data-qa="${rowQaAttr}"]`)
-    .find('.govuk-table__cell')
-    .then($els => Cypress.$.makeArray($els).map(el => el.innerText.trim()))
-)
-
 // =============================== NAVIGATE ===============================
 
 const clickElement = (label, tagName, opts = { parent: 'body' }) => {
@@ -197,3 +187,32 @@ Cypress.Commands.add('assertErrorMessage', ({ fieldName, summaryError, fieldErro
     expect(text.trim()).to.contain(fieldError || summaryError)
   })
 })
+
+// ================================ RECALL INFO ================================
+Cypress.Commands.add('recallInfo', (label, opts = {}) =>
+  cy
+    .get(opts.parent || 'body')
+    .find('.govuk-summary-list__key')
+    .contains(exactMatchIgnoreWhitespace(label))
+    .next('.govuk-summary-list__value')
+    .invoke('text')
+    .then(text => text.trim())
+)
+
+// ================================ GET RECALL FROM LIST ================================
+Cypress.Commands.add('getRecallItemFromList', ({ recallId, columnQaAttr }, opts = {}) =>
+  cy
+    .get(opts.parent || 'body')
+    .find(`[data-qa="recall-id-${recallId}"]`)
+    .find(`[data-qa="${columnQaAttr}"]`)
+    .invoke('text')
+)
+
+// ====================================== TABLES ================================
+Cypress.Commands.add('getRowValuesFromTable', ({ rowQaAttr }, opts = {}) =>
+  cy
+    .get(opts.parent || 'body')
+    .find(`[data-qa="${rowQaAttr}"]`)
+    .find('.govuk-table__cell')
+    .then($els => Cypress.$.makeArray($els).map(el => el.innerText.trim()))
+)

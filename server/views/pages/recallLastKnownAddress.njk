@@ -1,0 +1,70 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Does the person have a last known address?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("custody-status", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+
+            <form novalidate action="{{ makeUrl('last-known-address', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                {% if recall.middleNames %}
+                <input type="hidden" name="hasMiddleNames" value="1" />
+                {% endif %}
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukRadios({
+                        idPrefix: "lastKnownAddressOption",
+                        name: "lastKnownAddressOption",
+                        fieldset: {
+                            legend: {
+                                text: "Does " + recall.fullName + " have a last known address?
+",
+                                classes: "govuk-fieldset__legend--l",
+                                isPageHeading: true
+                            }
+                        },
+                        items: [
+                            {
+                                value: "YES",
+                                text: 'Yes',
+                                checked: formValues.lastKnownAddressOption == 'YES'
+                            },
+                            {
+                                value: "NO_FIXED_ABODE",
+                                text: 'No fixed abode',
+                                checked: formValues.lastKnownAddressOption == 'NO_FIXED_ABODE'
+                            }
+                        ],
+                        errorMessage: errorMessage(errors.lastKnownAddressOption)
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                            data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

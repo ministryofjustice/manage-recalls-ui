@@ -38,6 +38,7 @@ import { createGeneratedDocument } from './handlers/documents/generated/createGe
 import { getSingleFieldChangeHistory } from './handlers/change-history/getSingleFieldChangeHistory'
 import { getAllFieldsChangeHistory } from './handlers/change-history/getAllFieldsChangeHistory'
 import { validateCustodyStatus } from './handlers/book/helpers/validateCustodyStatus'
+import { validateLastKnownAddress } from './handlers/book/helpers/validateLastKnownAddress'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -59,6 +60,8 @@ export default function routes(router: Router): Router {
   post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'custody-status'))
   get(`${basePath}/custody-status`, viewWithRecallAndPerson('recallCustodyStatus'))
   post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'request-received'))
+  get(`${basePath}/last-known-address`, viewWithRecallAndPerson('recallLastKnownAddress'))
+  post(`${basePath}/last-known-address`, handleRecallFormPost(validateLastKnownAddress, 'request-received'))
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
