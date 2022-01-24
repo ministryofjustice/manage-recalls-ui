@@ -2,11 +2,9 @@ import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockRespo
 
 const recallInformationPage = require('../pages/recallInformation')
 
-context('View a recall', () => {
+context('View recall information', () => {
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
+    cy.login()
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -38,7 +36,6 @@ context('View a recall', () => {
         ],
       },
     })
-    cy.login()
   })
 
   const nomsNumber = 'A1234AA'
@@ -115,6 +112,7 @@ context('View a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'No' })
   })
 
+  // TODO - just check hrefs and move the check of downloaded files to E2E
   it('user can download all uploaded emails', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     const mockFileDownload = ({ fileName, category }) => {

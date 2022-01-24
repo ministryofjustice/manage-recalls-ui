@@ -17,20 +17,11 @@ describe('To do (recalls) list', () => {
   const personName = `${basicRecall.firstName} ${basicRecall.lastName}`
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    cy.task('expectCreateRecall', { expectedResults: { recallId } })
-    cy.task('expectUpdateRecall', recallId)
-    cy.task('expectUploadRecallDocument', { statusCode: 201 })
-    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
-    cy.task('expectGetCurrentUserDetails')
+    cy.login()
   })
-
   it("user is redirected to user details page if they haven't entered any", () => {
     cy.task('expectGetCurrentUserDetails', { status: 404 })
-    cy.login()
+    cy.visit('/')
     userDetailsPage.verifyOnPage()
   })
 
@@ -44,7 +35,7 @@ describe('To do (recalls) list', () => {
       ],
     })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'BEING_BOOKED_ON' } })
-    cy.login()
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -62,8 +53,8 @@ describe('To do (recalls) list', () => {
         },
       ],
     })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'BEING_BOOKED_ON' } })
-    cy.login()
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'BEING_BOOKED_ON' } })
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -85,8 +76,9 @@ describe('To do (recalls) list', () => {
         },
       ],
     })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'BOOKED_ON' } })
-    cy.login()
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'BOOKED_ON' } })
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `assess-recall-${recallId}`, text: 'Assess recall' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -108,8 +100,8 @@ describe('To do (recalls) list', () => {
         },
       ],
     })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'IN_ASSESSMENT' } })
-    cy.login()
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'IN_ASSESSMENT' } })
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '12 Oct at 15:30' })
     recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
@@ -133,7 +125,8 @@ describe('To do (recalls) list', () => {
       recallId,
       expectedResult: { ...getRecallResponse, status: 'RECALL_NOTIFICATION_ISSUED' },
     })
-    cy.login()
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -154,8 +147,8 @@ describe('To do (recalls) list', () => {
         },
       ],
     })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'DOSSIER_IN_PROGRESS' } })
-    cy.login()
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_IN_PROGRESS' } })
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-dossier-${recallId}`, text: 'Continue dossier creation' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -185,8 +178,8 @@ describe('To do (recalls) list', () => {
     cy.task('expectListRecalls', {
       expectedResults: recalls,
     })
-    cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
-    cy.login()
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.clickCompletedTab()
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
@@ -272,7 +265,8 @@ describe('To do (recalls) list', () => {
     cy.task('expectListRecalls', {
       expectedResults: recalls,
     })
-    cy.login()
+
+    cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectRecallsSortOrder(['', '', '10 Dec at 15:33', '6 May at 16:33', '15 Aug', '15 Aug'])
   })

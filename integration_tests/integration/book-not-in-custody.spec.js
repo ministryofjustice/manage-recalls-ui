@@ -8,13 +8,8 @@ context('Book a "not in custody" recall', () => {
   const newRecall = { ...getEmptyRecallResponse, recallId, status }
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectListRecalls', { expectedResults: [] })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    cy.task('expectUpdateRecall', recallId)
     cy.login()
+    cy.task('expectUpdateRecall', recallId)
   })
 
   it('user can book a not in custody recall', () => {

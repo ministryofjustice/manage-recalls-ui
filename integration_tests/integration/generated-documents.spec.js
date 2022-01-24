@@ -1,4 +1,4 @@
-import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
+import { getRecallResponse } from '../mockApis/mockResponses'
 import newGeneratedDocumentVersionPage from '../pages/newGeneratedDocumentVersion'
 
 const recallInformationPage = require('../pages/recallInformation')
@@ -10,12 +10,7 @@ context('Generated document versions', () => {
   const documentId = '123'
 
   beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubLogin')
-    cy.task('stubAuthUser')
-    cy.task('expectListRecalls', {
-      expectedResults: [],
-    })
+    cy.login()
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -61,9 +56,7 @@ context('Generated document versions', () => {
         ],
       },
     })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectGenerateRecallDocument', { statusCode: 201 })
-    cy.login()
   })
 
   it("if a document hasn't been generated, it won't be listed on recall info", () => {
@@ -156,6 +149,15 @@ context('Generated document versions', () => {
       textToFind:
         'We will also create new versions of the recall notification and dossier, as they both contain the revocation order.',
     })
+
+    // error shown if details not entered
+    newGeneratedDocumentVersion.clickContinue()
+    newGeneratedDocumentVersion.assertErrorMessage({
+      fieldName: 'details',
+      errorMessage: 'Provide more detail',
+      summaryError: 'Provide more detail',
+    })
+
     newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
     newGeneratedDocumentVersion.clickContinue()
     newGeneratedDocumentVersion.assertApiRequestBody({
