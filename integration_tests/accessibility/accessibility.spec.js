@@ -21,6 +21,12 @@ const urls = [
   `/persons/${nomsNumber}/recalls/${recallId}/change-history/field?fieldName=authorisingAssistantChiefOfficer&fieldPath=probationInfo.authorisingAssistantChiefOfficer`,
 ]
 
+//
+// TODO:
+// - Error messages - if they're all the same, just one example will do
+// - Document change history
+//
+
 context('Accessibility', () => {
   beforeEach(() => {
     cy.login()
@@ -40,6 +46,7 @@ context('Accessibility', () => {
         },
       ],
     })
+
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -71,6 +78,7 @@ context('Accessibility', () => {
         ],
       },
     })
+
     cy.task('expectGetAllFieldsChangeHistory', {
       expectedResult: getAllFieldsHistoryResponseJson,
     })
