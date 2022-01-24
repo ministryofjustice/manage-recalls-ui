@@ -24,6 +24,22 @@ const urls = [
 context('Accessibility', () => {
   beforeEach(() => {
     cy.login()
+
+    const basicRecall = {
+      recallId,
+      nomsNumber,
+      firstName: getRecallResponse.firstName,
+      lastName: getRecallResponse.lastName,
+    }
+
+    cy.task('expectListRecalls', {
+      expectedResults: [
+        {
+          ...basicRecall,
+          status: 'BEING_BOOKED_ON',
+        },
+      ],
+    })
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -61,8 +77,7 @@ context('Accessibility', () => {
   })
 
   urls.forEach(url => {
-    it(`${url} passes the pa11y checks`, () => {
-      cy.task('expectListRecalls', { expectedResults: [] })
+    it(`${url} - a11y checks`, () => {
       cy.visit(url)
       cy.pa11y(pa11yArgs)
     })
