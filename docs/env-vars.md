@@ -15,6 +15,9 @@ You will need to create a secret for your app in kubernetes.  It should contain 
 - OS_PLACES_API_KEY - API key for Ordnance Survey Places API
 
 ## Steps
+
+If you already have a context set, go to step 5.
+
 1. [download a kubeconfig file](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#get-a-kubeconfig-file) with the 'live' env (not 'live-1')
 2. move the file: ` mv ~/Downloads/kubecfg.yaml ~/.kube/config`
 3. set context: `kubectl config set-context live.cloud-platform.service.justice.gov.uk --cluster live.cloud-platform.service.justice.gov.uk --user="< your github email >"`
