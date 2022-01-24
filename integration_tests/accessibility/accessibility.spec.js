@@ -1,9 +1,25 @@
-import { getRecallResponse } from '../mockApis/mockResponses'
+import { getRecallResponse, getAllFieldsHistoryResponseJson } from '../mockApis/mockResponses'
 
 const pa11yArgs = { runners: ['axe'], standard: 'WCAG2AA' }
 const nomsNumber = 'A1234AA'
 const recallId = '123'
-const urls = ['/', `/find-person?nomsNumber=${nomsNumber}`, `/persons/${nomsNumber}/recalls/${recallId}/pre-cons-name`]
+const urls = [
+  '/',
+  `/find-person?nomsNumber=${nomsNumber}`,
+  `/persons/${nomsNumber}/recalls/${recallId}/view-recall`,
+  `/persons/${nomsNumber}/recalls/${recallId}/licence-name`,
+  `/persons/${nomsNumber}/recalls/${recallId}/pre-cons-name`,
+  `/persons/${nomsNumber}/recalls/${recallId}/custody-status`,
+  `/persons/${nomsNumber}/recalls/${recallId}/request-received`,
+  `/persons/${nomsNumber}/recalls/${recallId}/issues-needs`,
+  `/persons/${nomsNumber}/recalls/${recallId}/last-release`,
+  `/persons/${nomsNumber}/recalls/${recallId}/prison-police`,
+  `/persons/${nomsNumber}/recalls/${recallId}/probation-officer`,
+  `/persons/${nomsNumber}/recalls/${recallId}/upload-documents`,
+  `/persons/${nomsNumber}/recalls/${recallId}/missing-documents`,
+  `/persons/${nomsNumber}/recalls/${recallId}/change-history`,
+  `/persons/${nomsNumber}/recalls/${recallId}/change-history/field?fieldName=authorisingAssistantChiefOfficer&fieldPath=probationInfo.authorisingAssistantChiefOfficer`,
+]
 
 context('Accessibility', () => {
   beforeEach(() => {
@@ -38,6 +54,9 @@ context('Accessibility', () => {
           },
         ],
       },
+    })
+    cy.task('expectGetAllFieldsChangeHistory', {
+      expectedResult: getAllFieldsHistoryResponseJson,
     })
   })
 
