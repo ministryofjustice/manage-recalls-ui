@@ -3,9 +3,7 @@
 
 Environment variables for each env are specified in the files in https://github.com/ministryofjustice/manage-recalls-ui/tree/main/helm_deploy
 
-### Adding a secret in Kubernetes
-
-You will need to create a secret for your app in kubernetes.  It should contain the following:
+Env vars in use include:
 - APPINSIGHTS_INSTRUMENTATIONKEY - Can be found from the relevant Application Insights instance for your environment in azure.portal.com
 - API_CLIENT_ID - Created add added by the HMPPS tech team when they create the ClientId for your app
 - API_CLIENT_SECRET - Created add added by the HMPPS tech team when they create the ClientId for your app
@@ -14,7 +12,9 @@ You will need to create a secret for your app in kubernetes.  It should contain 
 - SESSION_SECRET
 - OS_PLACES_API_KEY - API key for Ordnance Survey Places API
 
-## Steps
+## Adding a secret in Kubernetes
+
+You will need to create a secret for your app in kubernetes.  It should contain the following:
 
 If you already have a context set, go to step 5.
 
