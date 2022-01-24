@@ -1,3 +1,4 @@
+import { pa11y, lighthouse, prepareAudit } from 'cypress-audit'
 import wiremock from '../mockApis/wiremock'
 import auth from '../mockApis/auth'
 import tokenVerification from '../mockApis/tokenVerification'
@@ -16,36 +17,43 @@ module.exports = (on, config) => {
   // eslint-disable-next-line no-param-reassign
   config.env.AUTH_PASSWORD = process.env.AUTH_PASSWORD
 
+  on('before:browser:launch', (_browser = {}, launchOptions) => {
+    prepareAudit(launchOptions)
+  })
+
   on('task', {
-    reset: wiremockApi.resetStubs,
-    getLoginUrl: authApi.getLoginUrl,
-    stubLogin: authApi.stubLogin,
-    stubAuthUser: authApi.stubUser,
-    stubAuthPing: authApi.stubPing,
-    stubTokenVerificationPing: tokenVerificationApi.stubPing,
-    stubManageRecallsApiPing: manageRecallsApi.stubPing,
-    expectPrisonerResult: manageRecallsApi.expectPrisonerResult,
-    expectCreateRecall: manageRecallsApi.expectCreateRecall,
-    expectListRecalls: manageRecallsApi.expectListRecalls,
-    expectGetRecall: manageRecallsApi.expectGetRecall,
-    expectSearchRecalls: manageRecallsApi.expectSearchRecalls,
-    expectUploadRecallDocument: manageRecallsApi.expectUploadRecallDocument,
-    expectGenerateRecallDocument: manageRecallsApi.expectGenerateRecallDocument,
-    expectDeleteRecallDocument: manageRecallsApi.expectDeleteRecallDocument,
-    expectUpdateRecall: manageRecallsApi.expectUpdateRecall,
-    expectSetDocumentCategory: manageRecallsApi.expectSetDocumentCategory,
-    expectGetRecallDocument: manageRecallsApi.expectGetRecallDocument,
-    expectGetRecallDocumentHistory: manageRecallsApi.expectGetRecallDocumentHistory,
-    expectGetCurrentUserDetails: manageRecallsApi.expectGetCurrentUserDetails,
+    expectAddMissingDocumentsRecord: manageRecallsApi.expectAddMissingDocumentsRecord,
     expectAddUserDetails: manageRecallsApi.expectAddUserDetails,
     expectAssignUserToRecall: manageRecallsApi.expectAssignUserToRecall,
-    expectUnassignAssessment: manageRecallsApi.expectUnassignAssessment,
-    expectAddMissingDocumentsRecord: manageRecallsApi.expectAddMissingDocumentsRecord,
-    expectGetSingleFieldChangeHistory: manageRecallsApi.expectGetSingleFieldChangeHistory,
+    expectCreateRecall: manageRecallsApi.expectCreateRecall,
+    expectDeleteRecallDocument: manageRecallsApi.expectDeleteRecallDocument,
+    expectGenerateRecallDocument: manageRecallsApi.expectGenerateRecallDocument,
     expectGetAllFieldsChangeHistory: manageRecallsApi.expectGetAllFieldsChangeHistory,
+    expectGetCurrentUserDetails: manageRecallsApi.expectGetCurrentUserDetails,
+    expectGetRecall: manageRecallsApi.expectGetRecall,
+    expectGetRecallDocument: manageRecallsApi.expectGetRecallDocument,
+    expectGetRecallDocumentHistory: manageRecallsApi.expectGetRecallDocumentHistory,
+    expectGetSingleFieldChangeHistory: manageRecallsApi.expectGetSingleFieldChangeHistory,
+    expectListRecalls: manageRecallsApi.expectListRecalls,
+    expectPrisonerResult: manageRecallsApi.expectPrisonerResult,
     expectRefData: manageRecallsApi.expectRefData,
-    readPdf: readPdf.readPdf,
+    expectSearchRecalls: manageRecallsApi.expectSearchRecalls,
+    expectSetDocumentCategory: manageRecallsApi.expectSetDocumentCategory,
+    expectUnassignAssessment: manageRecallsApi.expectUnassignAssessment,
+    expectUpdateRecall: manageRecallsApi.expectUpdateRecall,
+    expectUploadRecallDocument: manageRecallsApi.expectUploadRecallDocument,
     findApiRequests: wiremockApi.findApiRequests,
+    getLoginUrl: authApi.getLoginUrl,
+    lighthouse: lighthouse(),
+    pa11y: pa11y(),
+    readPdf: readPdf.readPdf,
+    reset: wiremockApi.resetStubs,
+    stubAuthPing: authApi.stubPing,
+    stubAuthUser: authApi.stubUser,
+    stubLogin: authApi.stubLogin,
+    stubManageRecallsApiPing: manageRecallsApi.stubPing,
+    stubTokenVerificationPing: tokenVerificationApi.stubPing,
   })
+
   return config
 }

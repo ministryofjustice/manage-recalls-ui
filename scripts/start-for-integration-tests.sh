@@ -31,11 +31,15 @@ echo "  docker logs fake-manage-recalls-api"
 echo "  docker logs redis"
 
 echo "Starting ${MANAGE_RECALLS_UI_NAME}, logs can be found here: ${LOG_FILE}"
-npm run start:feature >> "${LOG_FILE}" 2>&1 &
+npm run start:feature >>"${LOG_FILE}" 2>&1 &
+sleep 5
 
 echo
 echo "Checking ${MANAGE_RECALLS_UI_NAME} is running..."
-curl -s -4 --retry 10 -o /dev/null --retry-delay 1 --retry-connrefused http://localhost:3000/ping || (echo "...FAILED, please check ${LOG_FILE}"; exit 1)
+curl -s -4 --retry 20 -o /dev/null --retry-delay 2 --retry-connrefused http://localhost:3000/ping || (
+    echo "...FAILED, please check ${LOG_FILE}"
+    exit 1
+)
 echo "...done"
 echo "To start the integration tests run: "
 echo "npm run int-test"
