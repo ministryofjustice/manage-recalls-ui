@@ -76,7 +76,7 @@ const config = {
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     osPlacesApi: {
-      url: get('OS_PLACES_API_URL', 'https://api.os.uk/search/places/v1', requiredInProduction),
+      url: get('OS_PLACES_API_URL', 'https://api.os.uk/search/places/v1'),
       apiClientKey: get('OS_PLACES_API_KEY', requiredInProduction),
       timeout: {
         response: Number(get('OS_PLACES_API_TIMEOUT_RESPONSE', 10000)),
