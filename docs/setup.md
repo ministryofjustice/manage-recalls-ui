@@ -44,3 +44,17 @@ action is to remove the local copies and start again.  This can be achieved by:
 rm -rf node_modules
 npm install
 ```
+
+### optional, if doing postcode lookups (for 'not in custody' recalls)
+
+Create a .env file in the root folder:
+```
+OS_PLACES_API_KEY=<API KEY>
+```
+
+You can get the API key value using the Cloud Platform CLI ([setup guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/cloud-platform-cli.html#the-cloud-platform-cli)):
+```
+cloud-platform decode-secret -n manage-recalls-dev -s manage-recalls-ui
+```
+
+Copy the encoded value for that key. 

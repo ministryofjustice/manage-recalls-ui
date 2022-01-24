@@ -75,6 +75,15 @@ const config = {
       agent: new AgentConfig(),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
+    osPlacesApi: {
+      url: get('OS_PLACES_API_URL', 'https://api.os.uk/search/places/v1'),
+      apiClientKey: get('OS_PLACES_API_KEY', requiredInProduction),
+      timeout: {
+        response: Number(get('OS_PLACES_API_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('OS_PLACES_API_TIMEOUT_DEADLINE', 10000)),
+      },
+      agent: new AgentConfig(),
+    },
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   sensitiveInfo: {

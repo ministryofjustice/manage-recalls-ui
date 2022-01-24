@@ -55,6 +55,7 @@ services:
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=session-secret
+      - OS_PLACES_API_KEY=$OS_PLACES_API_KEY
 
 networks:
   manage-recalls-ui:

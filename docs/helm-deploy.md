@@ -67,19 +67,3 @@ cloud-platform-environments/namespaces/live-1.cloud-platform.service.justice.gov
 Ensure the certificate is created and ready for use.
 
 The name of the kubernetes secret where the certificate is stored is used as a value to the helm chart - this is used to configured the ingress.
-
-### Kubernetes secrets
-
-You will need to create a secret for your app in kubernetes.  It should contain the following:
-- APPINSIGHTS_INSTRUMENTATIONKEY - Can be found from the relevant Application Insights instance for your environment in azure.portal.com
-- API_CLIENT_ID - Created add added by the HMPPS tech team when they create the ClientId for your app
-- API_CLIENT_SECRET - Created add added by the HMPPS tech team when they create the ClientId for your app
-- SYSTEM_CLIENT_ID - If required, created add added by the HMPPS tech team
-- SYSTEM_CLIENT_SECRET - If required, created add added by the HMPPS tech team
-- SESSION_SECRET
-
-e.g.
-```
-kubectl create secret manage-recalls-ui --from-literal=APPINSIGHTS_INSTRUMENTATIONKEY=00000000-0000-0000-0000-000000000000
-kubectl edit secret manage-recalls-ui
-```
