@@ -54,6 +54,7 @@ generic-service:
       SESSION_SECRET: "SESSION_SECRET"
       MANAGER_NAME: "MANAGER_NAME"
       MANAGER_PHONE: "MANAGER_PHONE"
+      OS_PLACES_API_KEY: "OS_PLACES_API_KEY"
     manage-recalls-ui-elasticache-redis:
       REDIS_HOST: "primary_endpoint_address"
       REDIS_AUTH_TOKEN: "auth_token"
