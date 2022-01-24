@@ -1,6 +1,7 @@
 import { getRecallResponse, getAllFieldsHistoryResponseJson } from '../mockApis/mockResponses'
 
-const pa11yArgs = { runners: ['axe'], standard: 'WCAG2AA' }
+const pa11yArgs = { runners: ['axe'], standard: 'WCAG2AA', hideElements: '.govuk-footer' }
+
 const nomsNumber = 'A1234AA'
 const recallId = '123'
 const urls = [
