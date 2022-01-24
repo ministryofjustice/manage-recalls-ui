@@ -30,3 +30,8 @@ stringData:
 ```
 7. Re-run  `kubectl edit secret manage-recalls-ui -n manage-recalls-dev` and confirm the new value is encoded and moved under the data section in the secret file
 8. push changes and the secret will picked up on the next deployment
+
+You can see the values in the secret using the Cloud Platform CLI ([setup guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/cloud-platform-cli.html#the-cloud-platform-cli)):
+```
+cloud-platform decode-secret -n manage-recalls-dev -s manage-recalls-ui
+```
