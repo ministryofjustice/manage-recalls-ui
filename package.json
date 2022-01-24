@@ -23,9 +23,9 @@
     "test:coverage": "jest --forceExit --coverage",
     "security_audit": "npx audit-ci --config audit-ci.json --skip-dev",
     "int-test": "rm -rf cypress/downloads && cypress run --browser chrome",
-    "int-test-ui": "rm -rf cypress/downloads && cypress open --browser chrome",
+    "int-test-ui": "rm -rf cypress/downloads && cypress open",
     "accessibility-test": "rm -rf cypress/downloads && cypress run --browser chrome --config integrationFolder=integration_tests/accessibility",
-    "accessibility-test-ui": "rm -rf cypress/downloads && cypress open --browser chrome --config integrationFolder=integration_tests/accessibility",
+    "accessibility-test-ui": "rm -rf cypress/downloads && cypress open --config integrationFolder=integration_tests/accessibility",
     "clean": "rm -rf dist build",
     "prepare": "npx husky install",
     "pact-test": "rm -rf pact/pacts/* && jest --runInBand --coverage --forceExit --config=./jest.pact.config.js"
