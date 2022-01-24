@@ -6,6 +6,7 @@ const nomsNumber = 'A1234AA'
 const recallId = '123'
 const urls = [
   '/',
+  '/user-details',
   `/find-person?nomsNumber=${nomsNumber}`,
   `/persons/${nomsNumber}/recalls/${recallId}/view-recall`,
   `/persons/${nomsNumber}/recalls/${recallId}/licence-name`,
