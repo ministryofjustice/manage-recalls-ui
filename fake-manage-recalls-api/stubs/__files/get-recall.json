@@ -87,7 +87,9 @@
       "town": "Portsmouth",
       "postcode": "PO1 4OY",
       "index": 0,
-      "id": "345"
+      "lastKnownAddressId": "345",
+      "createdByUserName": "Bobby Badger",
+      "createdDateTime": "2021-03-12T12:24:03.000Z"
     }
   ],
   "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",

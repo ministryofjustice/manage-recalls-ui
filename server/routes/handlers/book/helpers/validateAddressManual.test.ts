@@ -18,6 +18,7 @@ describe('validateAddressManual', () => {
       line2: 'Southsea',
       town: 'Portsmouth',
       postcode: 'PO1 4OY',
+      source: 'MANUAL',
     })
   })
 
@@ -30,6 +31,7 @@ describe('validateAddressManual', () => {
       line2: '',
       town: 'Portsmouth',
       postcode: 'PO1 4OY',
+      source: 'MANUAL',
     })
   })
 
@@ -42,6 +44,7 @@ describe('validateAddressManual', () => {
       line2: 'Southsea',
       town: 'Portsmouth',
       postcode: '',
+      source: 'MANUAL',
     })
   })
 
