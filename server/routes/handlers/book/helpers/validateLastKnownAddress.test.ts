@@ -1,5 +1,4 @@
 import { validateLastKnownAddress } from './validateLastKnownAddress'
-import { validateCustodyStatus } from './validateCustodyStatus'
 
 describe('validateLastKnownAddress', () => {
   it('returns a value to save and no errors if No fixed abode is submitted', () => {
