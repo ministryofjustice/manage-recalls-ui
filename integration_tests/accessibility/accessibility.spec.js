@@ -1,3 +1,5 @@
+import { getEmptyRecallResponse } from '../mockApis/mockResponses'
+
 const pa11yArgs = { runners: ['axe'], standard: 'WCAG2AA', hideElements: '.govuk-footer' }
 
 const nomsNumber = 'A1234AA'
@@ -30,11 +32,6 @@ const urls = [
   `/persons/${nomsNumber}/recalls/${recallId}/view-recall`,
 ]
 
-//
-// TODO:
-// - Error messages - if they're all the same, just one example will do
-//
-
 context('Accessibility (a11y) Checks', () => {
   beforeEach(() => {
     cy.stubRecallsAndLogin()
@@ -45,5 +42,12 @@ context('Accessibility (a11y) Checks', () => {
       cy.visit(url)
       cy.pa11y(pa11yArgs)
     })
+  })
+
+  it('error state (using /issues-needs as the example)', () => {
+    cy.task('expectGetRecall', { expectedResult: { recallId: '123', ...getEmptyRecallResponse } })
+    cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/issues-needs`)
+    cy.clickButton('Continue')
+    cy.pa11y(pa11yArgs)
   })
 })
