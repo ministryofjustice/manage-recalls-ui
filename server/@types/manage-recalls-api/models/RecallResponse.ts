@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { LastKnownAddress } from './LastKnownAddress';
 import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
 import type { RecallDocument } from './RecallDocument';
 import type { SentenceLengthRes } from './SentenceLengthRes';
@@ -39,6 +40,7 @@ export type RecallResponse = {
     inCustody?: boolean;
     indexOffence?: string;
     lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
+    lastKnownAddresses: Array<LastKnownAddress>;
     lastName: string;
     lastReleaseDate?: string;
     lastReleasePrison?: string;

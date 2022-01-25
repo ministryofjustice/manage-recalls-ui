@@ -60,6 +60,7 @@ export type ViewName =
   | 'assessDownload'
   | 'assessEmail'
   | 'recallCustodyStatus'
+  | 'recallAddressManual'
   | 'recallLastKnownAddress'
   | 'recallLicenceName'
   | 'recallPreConsName'
@@ -171,4 +172,11 @@ export interface RecallField {
   fieldName?: string
   enumValues?: ObjectMap<string>
   hasHistory?: boolean
+}
+
+export interface Address {
+  line1: string
+  line2?: string
+  town: string
+  postcode?: string
 }

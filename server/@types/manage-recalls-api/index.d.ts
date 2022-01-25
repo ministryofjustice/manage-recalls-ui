@@ -4,11 +4,13 @@
 export { AddUserDetailsRequest } from './models/AddUserDetailsRequest';
 export type { BookRecallRequest } from './models/BookRecallRequest';
 export type { Court } from './models/Court';
+export { CreateLastKnownAddressRequest } from './models/CreateLastKnownAddressRequest';
 export { ErrorResponse } from './models/ErrorResponse';
 export type { FieldAuditEntry } from './models/FieldAuditEntry';
 export type { FieldAuditSummary } from './models/FieldAuditSummary';
 export { GenerateDocumentRequest } from './models/GenerateDocumentRequest';
 export { GetDocumentResponse } from './models/GetDocumentResponse';
+export { LastKnownAddress } from './models/LastKnownAddress';
 export type { LocalDeliveryUnitResponse } from './models/LocalDeliveryUnitResponse';
 export type { MissingDocumentsRecord } from './models/MissingDocumentsRecord';
 export type { MissingDocumentsRecordRequest } from './models/MissingDocumentsRecordRequest';

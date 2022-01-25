@@ -1,6 +1,6 @@
 import config from '../config'
 import RestClient from '../data/restClient'
-import { Address } from '../@types/manage-recalls-api/models/Address'
+import { Address } from '../@types'
 import { OsPlacesLookupResponse } from '../@types/os-places-api'
 
 const transformAddresses = (addresses: OsPlacesLookupResponse): Address[] => {

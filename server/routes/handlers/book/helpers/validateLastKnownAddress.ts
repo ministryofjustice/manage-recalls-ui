@@ -5,6 +5,7 @@ import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api'
 export const validateLastKnownAddress = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
   let errors
   let valuesToSave
+  let redirectToPage
 
   const { lastKnownAddressOption } = requestBody
   if (!lastKnownAddressOption || !['YES', 'NO_FIXED_ABODE'].includes(lastKnownAddressOption)) {
@@ -16,9 +17,12 @@ export const validateLastKnownAddress = (requestBody: ObjectMap<string>): ReqVal
     ]
   }
   if (!errors) {
+    if (lastKnownAddressOption === 'YES') {
+      redirectToPage = 'address-manual'
+    }
     valuesToSave = {
       lastKnownAddressOption: lastKnownAddressOption as UpdateRecallRequest.lastKnownAddressOption,
     }
   }
-  return { errors, valuesToSave }
+  return { errors, valuesToSave, redirectToPage }
 }

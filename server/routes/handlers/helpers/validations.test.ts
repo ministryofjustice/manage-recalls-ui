@@ -1,4 +1,4 @@
-import { isEmailValid, isPhoneValid, isBookingNumberValid, isNomsNumberValid } from './validations'
+import { isEmailValid, isPhoneValid, isBookingNumberValid, isNomsNumberValid, normalisePostcode } from './validations'
 
 describe('Validations', () => {
   describe('isEmailValid', () => {
@@ -66,6 +66,28 @@ describe('Validations', () => {
 
     it('passes for format A1234AB', () => {
       expect(isNomsNumberValid('A1234AB')).toEqual(true)
+    })
+  })
+
+  describe('normalizePostcode', () => {
+    it('removes whitespace', () => {
+      expect(normalisePostcode('  S1A 1AA  ')).toEqual('S1A 1AA')
+    })
+
+    it('removes hyphens', () => {
+      expect(normalisePostcode('  SW1A-1AA-  ')).toEqual('SW1A 1AA')
+    })
+
+    it('removes underscores', () => {
+      expect(normalisePostcode('  M1_1AA-  ')).toEqual('M1 1AA')
+    })
+
+    it('removes full stops', () => {
+      expect(normalisePostcode('  .SW1A_1AA-  ')).toEqual('SW1A 1AA')
+    })
+
+    it('converts to uppercase and inserts a space', () => {
+      expect(normalisePostcode('dt34by')).toEqual('DT3 4BY')
     })
   })
 })

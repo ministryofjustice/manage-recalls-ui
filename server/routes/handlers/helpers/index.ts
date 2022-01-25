@@ -26,6 +26,8 @@ export const isDefined = (val: unknown) => typeof val !== 'undefined'
 
 export const isString = (val: unknown) => typeof val === 'string'
 
+export const isEmptyString = (val: unknown) => isString(val) && val === ''
+
 export const areStringArraysTheSame = (arr1: unknown[], arr2: unknown[]) => arr1.join('') === arr2.join('')
 
 export const replaceSpaces = (str: string, replacement: string) => str.replace(/ /g, replacement)
