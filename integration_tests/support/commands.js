@@ -1,6 +1,13 @@
 import { exactMatchIgnoreWhitespace, splitIsoDateToParts } from './utils'
 import { recall } from '../fixtures/recall'
-import { getPrisonerResponse, getRecallResponse } from '../mockApis/mockResponses'
+import {
+  getAllFieldsHistoryResponseJson,
+  getDocumentCategoryHistoryResponseJson,
+  getPrisonerResponse,
+  getRecallResponse,
+  getRecallsResponse,
+  getUserDetailsResponse,
+} from '../mockApis/mockResponses'
 import 'cypress-audit/commands'
 
 Cypress.Commands.add('login', () => {
@@ -13,6 +20,20 @@ Cypress.Commands.add('login', () => {
   cy.task('expectGetRecall', {
     expectedResult: getRecallResponse,
   })
+  cy.request('/')
+  cy.task('getLoginUrl').then(cy.visit)
+})
+
+Cypress.Commands.add('stubRecallsAndLogin', () => {
+  cy.task('reset')
+  cy.task('stubAuthUser')
+  cy.task('stubLogin')
+  cy.task('expectGetCurrentUserDetails', { expectedResult: getUserDetailsResponse })
+  cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
+  cy.task('expectListRecalls', { expectedResults: getRecallsResponse })
+  cy.task('expectGetRecall', { expectedResult: { recallId: '123', ...getRecallResponse } })
+  cy.task('expectGetAllFieldsChangeHistory', { expectedResult: getAllFieldsHistoryResponseJson })
+  cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
   cy.request('/')
   cy.task('getLoginUrl').then(cy.visit)
 })
