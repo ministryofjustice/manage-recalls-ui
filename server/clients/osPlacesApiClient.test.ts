@@ -1,4 +1,4 @@
-import { getAddressesByPostcode } from './osPlacesApiClient'
+import { getAddressByUprn, getAddressesByPostcode } from './osPlacesApiClient'
 import RestClient, { GetRequest } from '../data/restClient'
 import config from '../config'
 
@@ -12,7 +12,7 @@ class FakeClient {
   }
 }
 
-describe('osPlacesApiClient', () => {
+describe('getAddressesByPostcode', () => {
   it('returns formatted addresses if the API responds with addresses', async () => {
     ;(RestClient as jest.Mock).mockReturnValue(new FakeClient())
     fakeGet.mockResolvedValue({
@@ -74,6 +74,46 @@ describe('osPlacesApiClient', () => {
     fakeGet.mockRejectedValue(new Error('error'))
     try {
       await getAddressesByPostcode('E15 1JZ')
+    } catch (e) {
+      expect(e.message).toEqual('error')
+    }
+  })
+})
+
+describe('getAddressByUprn', () => {
+  it('returns a formatted address if the API responds with an address', async () => {
+    ;(RestClient as jest.Mock).mockReturnValue(new FakeClient())
+    fakeGet.mockResolvedValue({
+      results: [
+        {
+          DPA: {
+            ORGANISATION_NAME: 'SUBWAY',
+            BUILDING_NUMBER: '109',
+            THOROUGHFARE_NAME: 'SHIRLEY HIGH STREET',
+            POST_TOWN: 'SOUTHAMPTON',
+            POSTCODE: 'SO16 4EY',
+          },
+        },
+      ],
+    })
+    const uprn = '10000054643'
+    const address = await getAddressByUprn(uprn)
+    expect(fakeGet).toHaveBeenCalledWith({
+      path: '/uprn',
+      query: { uprn, key: config.apis.osPlacesApi.apiClientKey },
+    })
+    expect(address).toEqual({
+      line1: 'SUBWAY, 109, SHIRLEY HIGH STREET',
+      postcode: 'SO16 4EY',
+      town: 'SOUTHAMPTON',
+    })
+  })
+
+  it('throws if the API call fails', async () => {
+    ;(RestClient as jest.Mock).mockReturnValue(new FakeClient())
+    fakeGet.mockRejectedValue(new Error('error'))
+    try {
+      await getAddressByUprn('123')
     } catch (e) {
       expect(e.message).toEqual('error')
     }

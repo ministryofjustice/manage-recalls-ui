@@ -64,19 +64,19 @@
   {% if recall.inCustody == false %}
     {% if recall.lastKnownAddressOption == "YES" and recall.lastKnownAddresses.length %}
       {% for address in recall.lastKnownAddresses %}
-      <div class="govuk-summary-list__row">
+      <div class="govuk-summary-list__row" data-qa='address-{{ address.lastKnownAddressId }}'>
         <dt class=" govuk-summary-list__key">
-          Address {{ address.index + 1 if recall.lastKnownAddresses.length > 1 else '' }}
+          Address {{ address.index if recall.lastKnownAddresses.length > 1 else '' }}
         </dt>
         <dd class=" govuk-summary-list__value">
             <div class='govuk-body'>
-              <div data-qa='address-{{ address.id }}-line1'>{{ address.line1 }}</div>
+              <div data-qa='line1'>{{ address.line1 }}</div>
               {% if address.line2 %}
-              <div data-qa='address-{{ address.id }}-line2'>{{ address.line2 }}</div>
+              <div data-qa='line2'>{{ address.line2 }}</div>
               {% endif %}
-              <div data-qa='address-{{ address.id }}-town'>{{ address.town }}</div>
+              <div data-qa='town'>{{ address.town }}</div>
               {% if address.postcode %}
-              <div data-qa='address-{{ address.id }}-postcode'>{{ address.postcode }}</div>
+              <div data-qa='postcode'>{{ address.postcode }}</div>
               {% endif %}
             </div>
         </dd>

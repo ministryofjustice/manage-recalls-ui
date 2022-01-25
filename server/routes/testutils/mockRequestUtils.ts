@@ -1,7 +1,7 @@
 import { getMockReq, getMockRes } from '@jest-mock/express'
 import { Request, Response } from 'express'
 import { SessionData } from 'express-session'
-import { ObjectMixed } from '../../@types'
+import { ObjectMap, ObjectMixed } from '../../@types'
 
 export const mockReq = ({
   query = {},
@@ -39,16 +39,17 @@ export const mockRes = ({
   token = 'token',
   redirect = jest.fn(),
 }: {
-  locals?: ObjectMixed
+  locals?: ObjectMap<unknown>
   token?: string
   redirect?: jest.Mock
 } = {}): Response => {
   return {
     locals: {
-      ...locals,
+      urlInfo: {},
       user: {
         token,
       },
+      ...locals,
     },
     redirect,
   } as unknown as Response

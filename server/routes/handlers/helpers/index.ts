@@ -34,8 +34,11 @@ export const replaceSpaces = (str: string, replacement: string) => str.replace(/
 
 export const objectToArray = (obj: ObjectMap<unknown>): unknown[] => Object.values(obj)
 
-export const sortList = <T>(list: T[], key: string, asc = true): T[] =>
-  list.sort((a, b) => {
+export const sortList = <T>(list: T[], key: string, asc = true): T[] => {
+  if (!Array.isArray(list)) {
+    return undefined
+  }
+  return list.sort((a, b) => {
     if (a[key] < b[key]) {
       return asc ? -1 : 1
     }
@@ -44,6 +47,7 @@ export const sortList = <T>(list: T[], key: string, asc = true): T[] =>
     }
     return 0
   })
+}
 
 export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormErrors => {
   const errorMap = errors.filter(Boolean).reduce((acc: ObjectMap<FormError>, curr: NamedFormError) => {

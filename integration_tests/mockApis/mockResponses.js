@@ -10,6 +10,8 @@ import getPoliceForcesResponse from '../../fake-manage-recalls-api/stubs/__files
 import getDocumentCategoryHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-document-category-history.json'
 import getSingleFieldHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-single-field-history.json'
 import getAllFieldsHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-all-fields-history.json'
+import getOsPlacesAddresses from './responses/postcode.json'
+import getOsPlacesAddress from './responses/uprn.json'
 
 export {
   getPrisonerResponse,
@@ -24,4 +26,6 @@ export {
   getDocumentCategoryHistoryResponseJson,
   getSingleFieldHistoryResponseJson,
   getAllFieldsHistoryResponseJson,
+  getOsPlacesAddresses,
+  getOsPlacesAddress,
 }

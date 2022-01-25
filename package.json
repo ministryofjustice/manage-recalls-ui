@@ -87,6 +87,7 @@
     "@opentelemetry/api": "^1.0.4",
     "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
+    "@types/qs": "^6.9.7",
     "accessible-autocomplete": "^2.0.3",
     "agentkeepalive": "^4.2.0",
     "applicationinsights": "^2.2.0",

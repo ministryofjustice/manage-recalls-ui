@@ -1,8 +1,8 @@
-import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
+import { getEmptyRecallResponse, getRecallResponse, getOsPlacesAddresses } from '../mockApis/mockResponses'
 
 context('Book a "not in custody" recall', () => {
   const nomsNumber = 'A1234AA'
-  const recallId = '123'
+  const recallId = '86954'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
   const status = 'BEING_BOOKED_ON'
   const newRecall = { ...getEmptyRecallResponse, recallId, status }
@@ -15,18 +15,69 @@ context('Book a "not in custody" recall', () => {
   it('user can book a not in custody recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectAddLastKnownAddress')
+    cy.intercept('https://api.os.uk/search/places/v1/postcode', getOsPlacesAddresses)
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'custody-status' })
     cy.selectRadio('Is Bobby Badger in custody?', 'No')
     cy.clickButton('Continue')
     cy.selectRadio(`Does ${personName} have a last known address?`, 'Yes')
     cy.clickButton('Continue')
-    // add an address
+    // ============================ postcode lookup ============================
+    cy.pageHeading().should('equal', `Find an address`)
+    // check error
+    cy.clickButton('Find')
+    cy.assertErrorMessage({ fieldName: 'postcode', summaryError: 'Enter a postcode' })
+    // valid input
+    cy.fillInput('Postcode', 'PE14 7DF')
+    cy.clickButton('Find')
+    // ============================ select an address ============================
+    // check error
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({ fieldName: 'addressUprn', summaryError: 'Select an address' })
+    // valid input
+    cy.selectFromDropdown('16 addresses', 'THE OAKS, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
+    cy.clickButton('Continue')
+    cy.assertSaveToRecallsApi({
+      url: '/last-known-addresses',
+      method: 'POST',
+      bodyValues: {
+        line1: 'THE OAKS, LYNN ROAD',
+        town: 'WISBECH',
+        postcode: 'PE14 7DF',
+        recallId,
+        source: 'LOOKUP',
+      },
+    })
+    cy.go('back')
+    cy.clickLink("I can't find the address in the list")
+    // ============================ manual address entry ============================
     cy.pageHeading('Add an address')
+    // check errors
+    cy.fillInput('Postcode', 'ZZZ 333')
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({ fieldName: 'line1', summaryError: 'Enter an address line 1' })
+    cy.assertErrorMessage({ fieldName: 'town', summaryError: 'Enter a town or city' })
+    cy.assertErrorMessage({
+      fieldName: 'postcode',
+      summaryError: 'Enter a postcode in the correct format, like SW1H 9AJ',
+    })
+    // valid inputs
     cy.fillInput('Address line 1', '345 Porchester Road')
     cy.fillInput('Address line 2', 'Southsea')
     cy.fillInput('Town or city', 'Portsmouth')
-    cy.fillInput('Postcode', 'PO1 4OY')
+    cy.fillInput('Postcode', 'PO1 4OY', { clearExistingText: true })
     cy.clickButton('Continue')
+    cy.assertSaveToRecallsApi({
+      url: '/last-known-addresses',
+      method: 'POST',
+      bodyValues: {
+        line1: '345 Porchester Road',
+        line2: 'Southsea',
+        town: 'Portsmouth',
+        postcode: 'PO1 4OY',
+        recallId,
+        source: 'MANUAL',
+      },
+    })
     cy.pageHeading().should('equal', 'When did you receive the recall request?')
   })
 
@@ -45,8 +96,8 @@ context('Book a "not in custody" recall', () => {
         line2: 'Southsea',
         town: 'Portsmouth',
         postcode: 'PO1 4OY',
-        index: 0,
-        id: '345',
+        index: 2,
+        lastKnownAddressId: '345',
       },
       {
         line1: 'The Oaks, Amblin Road',
@@ -54,7 +105,7 @@ context('Book a "not in custody" recall', () => {
         town: 'Birmingham',
         postcode: 'B3 5HU',
         index: 1,
-        id: '678',
+        lastKnownAddressId: '678',
       },
     ]
     cy.task('expectGetRecall', {
@@ -66,16 +117,21 @@ context('Book a "not in custody" recall', () => {
       },
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
-    const addressId = lastKnownAddresses[0].id
-    cy.getText(`address-${addressId}-line1`).should('equal', '345 Porchester Road')
-    cy.getText(`address-${addressId}-line2`).should('equal', 'Southsea')
-    cy.getText(`address-${addressId}-town`).should('equal', 'Portsmouth')
-    cy.getText(`address-${addressId}-postcode`).should('equal', 'PO1 4OY')
-    const addressId2 = lastKnownAddresses[1].id
-    cy.getText(`address-${addressId2}-line1`).should('equal', 'The Oaks, Amblin Road')
-    cy.getText(`address-${addressId2}-town`).should('equal', 'Birmingham')
-    cy.getText(`address-${addressId2}-postcode`).should('equal', 'B3 5HU')
-    cy.recallInfo('Arrest issues', 'Detail...')
+    const addressId = lastKnownAddresses[1].lastKnownAddressId
+    let opts = { parent: `[data-qa="address-${addressId}"]` }
+    cy.recallInfo('Address 1').should('contain', 'The Oaks, Amblin Road')
+    cy.getText('line1', opts).should('equal', 'The Oaks, Amblin Road')
+    cy.getText('town', opts).should('equal', 'Birmingham')
+    cy.getText('postcode', opts).should('equal', 'B3 5HU')
+    const addressId2 = lastKnownAddresses[0].lastKnownAddressId
+    opts = { parent: `[data-qa="address-${addressId2}"]` }
+    cy.recallInfo('Address 2').should('contain', '345 Porchester Road')
+    cy.getText('line1', opts).should('equal', '345 Porchester Road')
+    cy.getText('line2', opts).should('equal', 'Southsea')
+    cy.getText('town', opts).should('equal', 'Portsmouth')
+    cy.getText('postcode', opts).should('equal', 'PO1 4OY')
+
+    cy.recallInfo('Arrest issues').should('equal', 'Detail...')
   })
 
   it('shows if person has no last known address on the recall info page', () => {
@@ -87,7 +143,7 @@ context('Book a "not in custody" recall', () => {
     cy.getElement({ qaAttr: 'lastKnownAddressOptionChange' }).should(
       'have.attr',
       'href',
-      '/persons/A1234AA/recalls/123/last-known-address?fromPage=view-recall&fromHash=personalDetails'
+      `/persons/${nomsNumber}/recalls/${recallId}/last-known-address?fromPage=view-recall&fromHash=personalDetails`
     )
   })
 })

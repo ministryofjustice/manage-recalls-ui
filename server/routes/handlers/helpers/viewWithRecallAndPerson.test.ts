@@ -201,4 +201,19 @@ describe('viewWithRecallAndPerson', () => {
       missingDocumentsRecords: recall.missingDocumentsRecords,
     })
   })
+
+  it('should sort last known addresses by index in ascending order', async () => {
+    ;(prisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      status: RecallResponse.status.BEING_BOOKED_ON,
+      lastKnownAddresses: [{ index: 2 }, { index: 1 }],
+    })
+    jest.spyOn(decorateDocsExports, 'decorateDocs')
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    res.locals.urlInfo = {}
+    await viewWithRecallAndPerson('assessRecall')(req, res)
+    expect(res.locals.recall.lastKnownAddresses.map(a => a.index)).toEqual([1, 2])
+  })
 })

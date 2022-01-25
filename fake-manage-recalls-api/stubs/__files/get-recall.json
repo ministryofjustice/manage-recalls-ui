@@ -83,11 +83,21 @@
   "lastKnownAddressOption": "YES",
   "lastKnownAddresses": [
     {
+      "line1": "20 Farringdon Road",
+      "line2": "",
+      "town": "London",
+      "postcode": "EC1M 3HE",
+      "index": 2,
+      "lastKnownAddressId": "678",
+      "createdByUserName": "Bobby Badger",
+      "createdDateTime": "2021-03-12T12:24:03.000Z"
+    },
+    {
       "line1": "345 Porchester Road",
       "line2": "Southsea",
       "town": "Portsmouth",
       "postcode": "PO1 4OY",
-      "index": 0,
+      "index": 1,
       "lastKnownAddressId": "345",
       "createdByUserName": "Bobby Badger",
       "createdDateTime": "2021-03-12T12:24:03.000Z"

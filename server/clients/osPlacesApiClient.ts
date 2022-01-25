@@ -1,24 +1,38 @@
 import config from '../config'
 import RestClient from '../data/restClient'
 import { Address } from '../@types'
-import { OsPlacesLookupResponse } from '../@types/os-places-api'
+import { OsPlacesApiAddress, OsPlacesLookupResponse } from '../@types/os-places-api'
 
-const transformAddresses = (addresses: OsPlacesLookupResponse): Address[] => {
-  return addresses.results.map(r => {
-    const { ORGANISATION_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME, POST_TOWN, POSTCODE } = r.DPA
-    return {
-      line1: [ORGANISATION_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME].filter(Boolean).join(', '),
-      town: POST_TOWN,
-      postcode: POSTCODE,
-    }
-  })
+interface DecoratedAddress extends Address {
+  uprn: string
+  address: string
+}
+const transformAddress = (address: OsPlacesApiAddress): DecoratedAddress => {
+  const { UPRN, ADDRESS, ORGANISATION_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME, POST_TOWN, POSTCODE } =
+    address
+  return {
+    uprn: UPRN,
+    address: ADDRESS,
+    line1: [ORGANISATION_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME].filter(Boolean).join(', '),
+    town: POST_TOWN,
+    postcode: POSTCODE,
+  }
 }
 
-export const getAddressesByPostcode = async (postcode: string): Promise<Address[]> => {
+export const getAddressesByPostcode = async (postcode: string): Promise<DecoratedAddress[]> => {
   const restClient = new RestClient('OS Places API', config.apis.osPlacesApi)
-  const addresses = await restClient.get<OsPlacesLookupResponse>({
+  const response = await restClient.get<OsPlacesLookupResponse>({
     path: '/postcode',
     query: { postcode, key: config.apis.osPlacesApi.apiClientKey },
   })
-  return transformAddresses(addresses)
+  return response.results.map(r => transformAddress(r.DPA))
+}
+
+export const getAddressByUprn = async (uprn: string): Promise<Address> => {
+  const restClient = new RestClient('OS Places API', config.apis.osPlacesApi)
+  const response = await restClient.get<OsPlacesLookupResponse>({
+    path: '/uprn',
+    query: { uprn, key: config.apis.osPlacesApi.apiClientKey },
+  })
+  return transformAddress(response.results[0].DPA)
 }

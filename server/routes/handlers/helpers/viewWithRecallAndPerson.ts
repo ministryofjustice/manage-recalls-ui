@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { getRecall } from '../../../clients/manageRecallsApiClient'
-import { formatName, renderErrorMessages } from './index'
+import { formatName, renderErrorMessages, sortList } from './index'
 import { getFormValues } from './getFormValues'
 import { ViewName } from '../../../@types'
 import { referenceData } from '../../../referenceData'
@@ -68,6 +68,9 @@ export const viewWithRecallAndPerson =
       otherName: recall.previousConvictionMainName,
       recall,
     })
+
+    // sort any last known addresses
+    res.locals.recall.lastKnownAddresses = sortList(recall.lastKnownAddresses, 'index', true)
 
     // TODO - use nunjucks filters to format these from the views
     res.locals.recall.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)

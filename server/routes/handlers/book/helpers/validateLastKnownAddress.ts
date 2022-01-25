@@ -18,7 +18,7 @@ export const validateLastKnownAddress = (requestBody: ObjectMap<string>): ReqVal
   }
   if (!errors) {
     if (lastKnownAddressOption === 'YES') {
-      redirectToPage = 'address-manual'
+      redirectToPage = 'postcode-lookup'
     }
     valuesToSave = {
       lastKnownAddressOption: lastKnownAddressOption as UpdateRecallRequest.lastKnownAddressOption,
