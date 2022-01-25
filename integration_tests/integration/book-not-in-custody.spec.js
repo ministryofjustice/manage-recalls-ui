@@ -38,7 +38,7 @@ context('Book a "not in custody" recall', () => {
     cy.pageHeading().should('equal', 'When did you receive the recall request?')
   })
 
-  it('shows if person has last known addresses on the recall info page', () => {
+  it('shows if person has last known addresses and arrest issues on the recall info page', () => {
     const lastKnownAddresses = [
       {
         line1: '345 Porchester Road',
@@ -75,6 +75,7 @@ context('Book a "not in custody" recall', () => {
     cy.getText(`address-${addressId2}-line1`).should('equal', 'The Oaks, Amblin Road')
     cy.getText(`address-${addressId2}-town`).should('equal', 'Birmingham')
     cy.getText(`address-${addressId2}-postcode`).should('equal', 'B3 5HU')
+    cy.recallInfo('Arrest issues', 'Detail...')
   })
 
   it('shows if person has no last known address on the recall info page', () => {

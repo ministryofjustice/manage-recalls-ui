@@ -149,7 +149,6 @@ context('Book an in-custody recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Devon & Cornwall Police' })
     // issues or needs
     checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Various...' })
-    checkAnswers.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'Detail...' })
     checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Intention to smuggle drugs' })
     checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
     // probation details
