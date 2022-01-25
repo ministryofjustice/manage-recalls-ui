@@ -5,7 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("custody-status", urlInfo)
+        href: backLinkUrl("postcode-lookup", urlInfo)
     }) }}
 {% endblock %}
 
@@ -68,7 +68,7 @@
 
                     {{ govukInput({
                         label: {
-                            text: "Postcode",
+                            text: "Postcode (optional)",
                             classes: "govuk-label--m"
                         },
                         classes: "govuk-input--width-10",

@@ -39,7 +39,9 @@ import { getSingleFieldChangeHistory } from './handlers/change-history/getSingle
 import { getAllFieldsChangeHistory } from './handlers/change-history/getAllFieldsChangeHistory'
 import { validateCustodyStatus } from './handlers/book/helpers/validateCustodyStatus'
 import { addLastKnownAddressHandler } from './handlers/book/addLastKnownAddressHandler'
+import { findAddressHandler } from './handlers/book/findAddressHandler'
 import { validateLastKnownAddress } from './handlers/book/helpers/validateLastKnownAddress'
+import { selectLookupAddressHandler } from './handlers/book/selectLookupAddressHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -63,6 +65,9 @@ export default function routes(router: Router): Router {
   post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'request-received'))
   get(`${basePath}/last-known-address`, viewWithRecallAndPerson('recallLastKnownAddress'))
   post(`${basePath}/last-known-address`, handleRecallFormPost(validateLastKnownAddress, 'request-received'))
+  get(`${basePath}/postcode-lookup`, viewWithRecallAndPerson('recallFindAddress'))
+  router.get(`${basePath}/postcode-results`, findAddressHandler, viewWithRecallAndPerson('recallFindAddressResults'))
+  post(`${basePath}/postcode-results`, selectLookupAddressHandler)
   get(`${basePath}/address-manual`, viewWithRecallAndPerson('recallAddressManual'))
   post(`${basePath}/address-manual`, addLastKnownAddressHandler)
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))

@@ -73,9 +73,10 @@ Cypress.Commands.add('clickLink', (label, opts = { parent: 'body' }) => {
 
 // =============================== GET TEXT ===============================
 
-Cypress.Commands.add('getText', qaAttr =>
+Cypress.Commands.add('getText', (qaAttr, opts = { parent: 'body' }) =>
   cy
-    .get(`[data-qa="${qaAttr}"]`)
+    .get(opts.parent || 'body')
+    .find(`[data-qa="${qaAttr}"]`)
     .invoke('text')
     .then(text => text.trim())
 )
@@ -248,3 +249,21 @@ Cypress.Commands.add('getRowValuesFromTable', ({ rowQaAttr }, opts = {}) =>
     .find('.govuk-table__cell')
     .then($els => Cypress.$.makeArray($els).map(el => el.innerText.trim()))
 )
+
+// ============================== CHECK REQUESTS SENT TO MANAGE RECALLS API ======================
+
+Cypress.Commands.add('assertSaveToRecallsApi', ({ url, method, bodyValues }) => {
+  cy.task('findApiRequests', { url, method }).then(requests => {
+    if (requests.length) {
+      if (bodyValues) {
+        const found = requests.some(req => {
+          const requestBody = JSON.parse(req.request.body)
+          return Object.entries(bodyValues).every(([key, value]) => requestBody[key] === value)
+        })
+        expect(found).to.equal(true)
+      }
+    } else {
+      throw new Error(`assertApiRequestBody - request not found for url: ${url} and method: ${method}`)
+    }
+  })
+})
