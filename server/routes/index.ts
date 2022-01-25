@@ -38,6 +38,7 @@ import { createGeneratedDocument } from './handlers/documents/generated/createGe
 import { getSingleFieldChangeHistory } from './handlers/change-history/getSingleFieldChangeHistory'
 import { getAllFieldsChangeHistory } from './handlers/change-history/getAllFieldsChangeHistory'
 import { validateCustodyStatus } from './handlers/book/helpers/validateCustodyStatus'
+import { addLastKnownAddressHandler } from './handlers/book/addLastKnownAddressHandler'
 import { validateLastKnownAddress } from './handlers/book/helpers/validateLastKnownAddress'
 
 export default function routes(router: Router): Router {
@@ -62,6 +63,8 @@ export default function routes(router: Router): Router {
   post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'request-received'))
   get(`${basePath}/last-known-address`, viewWithRecallAndPerson('recallLastKnownAddress'))
   post(`${basePath}/last-known-address`, handleRecallFormPost(validateLastKnownAddress, 'request-received'))
+  get(`${basePath}/address-manual`, viewWithRecallAndPerson('recallAddressManual'))
+  post(`${basePath}/address-manual`, addLastKnownAddressHandler)
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
   post(
     `${basePath}/request-received`,

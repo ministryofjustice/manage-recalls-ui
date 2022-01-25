@@ -5,6 +5,7 @@
 import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
 import type { RecallDocument } from './RecallDocument';
 import type { SentenceLengthRes } from './SentenceLengthRes';
+import { Address } from './Address'
 
 export type RecallResponse = {
     additionalLicenceConditions?: boolean;
@@ -39,6 +40,7 @@ export type RecallResponse = {
     inCustody?: boolean;
     indexOffence?: string;
     lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
+    lastKnownAddresses?: Address[];
     lastName: string;
     lastReleaseDate?: string;
     lastReleasePrison?: string;

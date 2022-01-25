@@ -113,7 +113,13 @@ context('Book an in-custody recall', () => {
     // eslint-disable-next-line no-unused-vars
     const [licence, ...documents] = [...getRecallResponse.documents]
     cy.task('expectGetRecall', {
-      expectedResult: { recallId, ...getRecallResponse, documents, status: RecallResponse.status.BEING_BOOKED_ON },
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        documents,
+        status: RecallResponse.status.BEING_BOOKED_ON,
+        inCustody: true,
+      },
     })
     stubRefData()
     const checkAnswers = checkAnswersPage.verifyOnPage({ recallId, nomsNumber })
@@ -123,7 +129,7 @@ context('Book an in-custody recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
     checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
 
-    checkAnswers.assertElementHasText({ qaAttr: 'inCustody', textToFind: 'Not in custody' })
+    checkAnswers.assertElementHasText({ qaAttr: 'inCustody', textToFind: 'In custody' })
 
     // Recall request date and time
     checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
@@ -183,6 +189,24 @@ context('Book an in-custody recall', () => {
     cy.assertErrorMessage({
       fieldName: 'inCustody',
       summaryError: 'Is Bobby Badger in custody?',
+    })
+  })
+
+  it('User sees errors if address details are not entered or are invalid', () => {
+    cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/address-manual`)
+    cy.fillInput('Postcode', '1234')
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'line1',
+      summaryError: 'Enter an address line 1',
+    })
+    cy.assertErrorMessage({
+      fieldName: 'town',
+      summaryError: 'Enter a town or city',
+    })
+    cy.assertErrorMessage({
+      fieldName: 'postcode',
+      summaryError: 'Enter a postcode in the correct format, like SW1H 9AJ',
     })
   })
 

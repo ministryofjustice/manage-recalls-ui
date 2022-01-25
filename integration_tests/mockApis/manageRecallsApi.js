@@ -152,6 +152,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectAddLastKnownAddress: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: '/last-known-addresses',
+        },
+        response: {
+          status: (expectation && expectation.statusCode) || 201,
+        },
+      })
+    },
     expectGetRecallDocument: expectation => {
       return wiremock.stubFor({
         request: {

@@ -88,3 +88,8 @@ export const errorMsgDocumentUpload = {
       'or'
     )}`,
 }
+
+export const saveErrorObject = {
+  name: 'saveError',
+  text: 'An error occurred saving your changes',
+}

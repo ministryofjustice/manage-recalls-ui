@@ -1,0 +1,91 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Add an address" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("custody-status", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <form novalidate action="{{ makeUrl('address-manual', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+                {% call govukFieldset({
+                    legend: {
+                        text: "Add an address",
+                        classes: "govuk-fieldset__legend--l",
+                        isPageHeading: true
+                    }
+                }) %}
+
+                    {{ govukInput({
+                        label: {
+                            html: 'Address line 1',
+                            classes: "govuk-label--m"
+                        },
+                        id: "line1",
+                        name: "line1",
+                        value: unsavedValues.line1,
+                        errorMessage: errorMessage(errors.line1)
+                    }) }}
+
+                    {{ govukInput({
+                        label: {
+                            html: 'Address line 2 (optional)',
+                            classes: "govuk-label--m"
+                        },
+                        id: "line2",
+                        name: "line2",
+                        value: unsavedValues.line2,
+                        errorMessage: errorMessage(errors.line2)
+                    }) }}
+
+                    {{ govukInput({
+                        label: {
+                            text: "Town or city",
+                            classes: "govuk-label--m"
+                        },
+                        classes: "govuk-!-width-two-thirds",
+                        id: "town",
+                        name: "town",
+                        value: unsavedValues.town,
+                        errorMessage: errorMessage(errors.town)
+                    }) }}
+
+                    {{ govukInput({
+                        label: {
+                            text: "Postcode",
+                            classes: "govuk-label--m"
+                        },
+                        classes: "govuk-input--width-10",
+                        id: "postcode",
+                        name: "postcode",
+                        value: unsavedValues.postcode,
+                        errorMessage: errorMessage(errors.postcode)
+                    }) }}
+
+                {% endcall %}
+                <div class='govuk-!-margin-top-2'>
+                    <button class="govuk-button"
+                       data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

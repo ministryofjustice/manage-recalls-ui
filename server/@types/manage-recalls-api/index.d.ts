@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export { AddUserDetailsRequest } from './models/AddUserDetailsRequest';
+export { AddAddressRequest } from './models/AddAddressRequest';
 export type { BookRecallRequest } from './models/BookRecallRequest';
 export type { Court } from './models/Court';
 export { ErrorResponse } from './models/ErrorResponse';

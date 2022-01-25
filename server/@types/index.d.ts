@@ -60,6 +60,7 @@ export type ViewName =
   | 'assessDownload'
   | 'assessEmail'
   | 'recallCustodyStatus'
+  | 'recallAddressManual'
   | 'recallLastKnownAddress'
   | 'recallLicenceName'
   | 'recallPreConsName'

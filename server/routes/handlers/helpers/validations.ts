@@ -23,4 +23,15 @@ export const isBookingNumberValid = (bookingNumber: string) =>
 // e.g. A1234AB
 const validNomsNumberRegex = /^[A-Z]\d{4}[A-Z]{2}$/
 
+const validUkPostcodeRegex =
+  /^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$/
+
+export const isPostcodeValid = (postcode: string) => validUkPostcodeRegex.test(postcode)
+
+export const normalisePostcode = (postcode: string) => {
+  const stripped = postcode.toUpperCase().replace(/[\s\\.\-_]*/g, '')
+  const withSpace = stripped.replace(/.{3}$/, ' $&')
+  return withSpace
+}
+
 export const isNomsNumberValid = (nomsNumber: string) => validNomsNumberRegex.test(nomsNumber)

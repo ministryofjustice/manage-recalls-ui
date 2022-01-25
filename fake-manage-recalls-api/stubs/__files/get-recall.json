@@ -79,6 +79,17 @@
       "createdDateTime": "2021-03-12T12:24:03.000Z"
     }
   ],
+  "lastKnownAddressOption": "YES",
+  "lastKnownAddresses": [
+    {
+      "line1": "345 Porchester Road",
+      "line2": "Southsea",
+      "town": "Portsmouth",
+      "postcode": "PO1 4OY",
+      "index": 0,
+      "id": "345"
+    }
+  ],
   "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
   "lastReleasePrison": "KTI",
   "sentenceDate": "2019-08-03",

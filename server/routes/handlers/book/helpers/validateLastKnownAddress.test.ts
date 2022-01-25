@@ -1,4 +1,5 @@
 import { validateLastKnownAddress } from './validateLastKnownAddress'
+import { validateCustodyStatus } from './validateCustodyStatus'
 
 describe('validateLastKnownAddress', () => {
   it('returns a value to save and no errors if No fixed abode is submitted', () => {
@@ -12,15 +13,16 @@ describe('validateLastKnownAddress', () => {
     })
   })
 
-  it('returns a value to save and no errors if Yes is submitted', () => {
+  it('returns a value to save and no errors, and redirects to manual address, if Yes is submitted', () => {
     const requestBody = {
       lastKnownAddressOption: 'YES',
     }
-    const { errors, valuesToSave } = validateLastKnownAddress(requestBody)
+    const { errors, valuesToSave, redirectToPage } = validateLastKnownAddress(requestBody)
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       lastKnownAddressOption: 'YES',
     })
+    expect(redirectToPage).toEqual('address-manual')
   })
 
   it('returns an error for the decision, if not set', () => {

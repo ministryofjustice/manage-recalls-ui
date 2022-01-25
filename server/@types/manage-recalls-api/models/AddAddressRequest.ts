@@ -2,11 +2,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type Address = {
+export type AddAddressRequest = {
+    recallId: string;
     line1: string;
-    line2?: string;
+    line2: string;
     town: string;
-    postcode?: string;
-    index?: number;
-    id?: string;
+    postcode: string;
 }
