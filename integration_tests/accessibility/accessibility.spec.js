@@ -1,5 +1,3 @@
-import { getRecallResponse, getAllFieldsHistoryResponseJson } from '../mockApis/mockResponses'
-
 const pa11yArgs = { runners: ['axe'], standard: 'WCAG2AA', hideElements: '.govuk-footer' }
 
 const nomsNumber = 'A1234AA'
@@ -11,6 +9,7 @@ const urls = [
   `/persons/${nomsNumber}/recalls/${recallId}/assess-confirmation`,
   `/persons/${nomsNumber}/recalls/${recallId}/assess-download`,
   `/persons/${nomsNumber}/recalls/${recallId}/assess`,
+  `/persons/${nomsNumber}/recalls/${recallId}/change-history/document?category=PART_A_RECALL_REPORT`,
   `/persons/${nomsNumber}/recalls/${recallId}/change-history/field?fieldName=authorisingAssistantChiefOfficer&fieldPath=probationInfo.authorisingAssistantChiefOfficer`,
   `/persons/${nomsNumber}/recalls/${recallId}/change-history`,
   `/persons/${nomsNumber}/recalls/${recallId}/check-answers`,
@@ -34,68 +33,15 @@ const urls = [
 //
 // TODO:
 // - Error messages - if they're all the same, just one example will do
-// - Document change history
 //
 
-context('Accessibility', () => {
+context('Accessibility (a11y) Checks', () => {
   beforeEach(() => {
-    cy.login()
-
-    const basicRecall = {
-      recallId,
-      nomsNumber,
-      firstName: getRecallResponse.firstName,
-      lastName: getRecallResponse.lastName,
-    }
-
-    cy.task('expectListRecalls', {
-      expectedResults: [
-        {
-          ...basicRecall,
-          status: 'BEING_BOOKED_ON',
-        },
-      ],
-    })
-
-    cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getRecallResponse,
-        inCustody: true,
-        recallId,
-        status: 'DOSSIER_ISSUED',
-        documents: [
-          {
-            category: 'RECALL_REQUEST_EMAIL',
-            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
-            fileName: 'recall-request.eml',
-          },
-          {
-            category: 'RECALL_NOTIFICATION_EMAIL',
-            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
-            fileName: '2021-07-03 Phil Jones recall.msg',
-          },
-          {
-            category: 'DOSSIER_EMAIL',
-            documentId: '234-3455-8542-c3ac-8c963f66afa6',
-            fileName: 'email.msg',
-          },
-          {
-            category: 'MISSING_DOCUMENTS_EMAIL',
-            documentId: '123',
-            fileName: 'chase-documents.msg',
-          },
-        ],
-      },
-    })
-
-    cy.task('expectGetAllFieldsChangeHistory', {
-      expectedResult: getAllFieldsHistoryResponseJson,
-    })
+    cy.stubRecallsAndLogin()
   })
 
   urls.forEach(url => {
-    it(`${url} - a11y checks`, () => {
+    it(url, () => {
       cy.visit(url)
       cy.pa11y(pa11yArgs)
     })
