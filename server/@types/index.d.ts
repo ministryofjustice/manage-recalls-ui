@@ -1,4 +1,10 @@
-import { RecallDocument, RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
+import {
+  LastKnownAddress,
+  RecallDocument,
+  RecallResponse,
+  SearchResult,
+  UpdateRecallRequest,
+} from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 import { ReferenceDataCategories } from '../referenceData'
 
@@ -172,4 +178,11 @@ export interface RecallField {
   fieldName?: string
   enumValues?: ObjectMap<string>
   hasHistory?: boolean
+}
+
+export interface Address {
+  line1: string
+  line2?: string
+  town: string
+  postcode?: string
 }

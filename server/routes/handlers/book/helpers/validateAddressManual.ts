@@ -1,14 +1,14 @@
 import { makeErrorObject, isString, isEmptyString } from '../../helpers'
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { isPostcodeValid, normalisePostcode } from '../../helpers/validations'
-import { AddAddressRequest } from '../../../../@types/manage-recalls-api/models/AddAddressRequest'
+import { CreateLastKnownAddressRequest } from '../../../../@types/manage-recalls-api/models/CreateLastKnownAddressRequest'
 
 export const validateAddressManual = (
   recallId: string,
   requestBody: ObjectMap<string>
 ): {
   errors?: NamedFormError[]
-  valuesToSave?: AddAddressRequest
+  valuesToSave?: CreateLastKnownAddressRequest
   unsavedValues?: ObjectMap<unknown>
 } => {
   let errors: NamedFormError[]
@@ -60,6 +60,7 @@ export const validateAddressManual = (
       line2,
       town,
       postcode,
+      source: CreateLastKnownAddressRequest.source.MANUAL,
     }
   }
   return { errors, valuesToSave, unsavedValues }

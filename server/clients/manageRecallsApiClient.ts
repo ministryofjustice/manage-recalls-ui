@@ -16,7 +16,7 @@ import {
   RecallDocument,
   BookRecallRequest,
   AddUserDetailsRequest,
-  AddAddressRequest,
+  CreateLastKnownAddressRequest,
 } from '../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../@types/manage-recalls-api/models/PoliceForce'
@@ -124,7 +124,7 @@ export function addMissingDocumentRecord(
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
 }
 
-export function addLastKnownAddress(address: AddAddressRequest, token: string) {
+export function addLastKnownAddress(address: CreateLastKnownAddressRequest, token: string) {
   return restClient(token).post({
     path: '/last-known-addresses',
     data: address,
