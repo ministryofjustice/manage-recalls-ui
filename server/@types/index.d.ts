@@ -1,10 +1,4 @@
-import {
-  LastKnownAddress,
-  RecallDocument,
-  RecallResponse,
-  SearchResult,
-  UpdateRecallRequest,
-} from './manage-recalls-api'
+import { RecallDocument, RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 import { ReferenceDataCategories } from '../referenceData'
 
