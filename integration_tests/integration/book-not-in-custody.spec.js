@@ -1,4 +1,9 @@
-import { getEmptyRecallResponse, getRecallResponse, getOsPlacesAddresses } from '../mockApis/mockResponses'
+import {
+  getEmptyRecallResponse,
+  getRecallResponse,
+  getOsPlacesAddresses,
+  getOsPlacesAddress,
+} from '../mockApis/mockResponses'
 
 context('Book a "not in custody" recall', () => {
   const nomsNumber = 'A1234AA'
@@ -16,6 +21,7 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectAddLastKnownAddress')
     cy.task('osPlacesPostcodeLookup', { expectedResult: getOsPlacesAddresses })
+    cy.task('osPlacesUprnLookup', { expectedResult: getOsPlacesAddress })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'custody-status' })
     cy.selectRadio('Is Bobby Badger in custody?', 'No')
     cy.clickButton('Continue')
@@ -36,19 +42,10 @@ context('Book a "not in custody" recall', () => {
     // valid input
     cy.selectFromDropdown('16 addresses', 'THE OAKS, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
     cy.clickButton('Continue')
-    cy.go('back')
-    // cy.assertSaveToRecallsApi({
-    //   url: '/last-known-addresses',
-    //   method: 'POST',
-    //   bodyValues: {
-    //     line1: 'THE OAKS, LYNN ROAD',
-    //     town: 'WISBECH',
-    //     postcode: 'PE14 7DF',
-    //     recallId,
-    //     source: 'LOOKUP',
-    //   },
-    // })
-    cy.clickLink("I can't find the address in the list")
+    cy.pageHeading().should('equal', 'Address added')
+    cy.selectRadio('Do you want to add another address?', 'Yes')
+    cy.clickButton('Continue')
+    cy.clickLink("I can't find the postcode")
     // ============================ manual address entry ============================
     cy.pageHeading('Add an address')
     // check errors
@@ -66,19 +63,11 @@ context('Book a "not in custody" recall', () => {
     cy.fillInput('Town or city', 'Portsmouth')
     cy.fillInput('Postcode', 'PO1 4OY', { clearExistingText: true })
     cy.clickButton('Continue')
+
+    cy.pageHeading().should('equal', 'Address added')
+    cy.selectRadio('Do you want to add another address?', 'No')
+    cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'When did you receive the recall request?')
-    // cy.assertSaveToRecallsApi({
-    //   url: '/last-known-addresses',
-    //   method: 'POST',
-    //   bodyValues: {
-    //     line1: '345 Porchester Road',
-    //     line2: 'Southsea',
-    //     town: 'Portsmouth',
-    //     postcode: 'PO1 4OY',
-    //     recallId,
-    //     source: 'MANUAL',
-    //   },
-    // })
   })
 
   it('no fixed abode', () => {

@@ -14,6 +14,7 @@ import {
   allowedDocumentFileExtensionList,
   allowedImageFileExtensionList,
   backLinkUrl,
+  backLinkUrlRecallReceived,
   makeUrl,
   changeLinkUrl,
   errorMessage,
@@ -59,6 +60,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('allowedImageFileExtensionList', allowedImageFileExtensionList)
   njkEnv.addGlobal('allowedImageFileTypeLabelList', allowedImageFileTypeLabelList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
+  njkEnv.addGlobal('backLinkUrlRecallReceived', backLinkUrlRecallReceived)
   njkEnv.addGlobal('makeUrl', makeUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
   njkEnv.addGlobal('errorMessage', errorMessage)

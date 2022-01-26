@@ -26,5 +26,18 @@ export default function osPlacesApi(wiremock) {
         },
       })
     },
+    osPlacesUprnLookup: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'GET',
+          urlPattern: '/search/places/v1/uprn(.*)',
+        },
+        response: {
+          status: 200,
+          headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+          jsonBody: expectation.expectedResult,
+        },
+      })
+    },
   }
 }
