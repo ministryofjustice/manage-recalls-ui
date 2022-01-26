@@ -66,7 +66,7 @@ services:
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=session-secret
-      - OS_PLACES_API_URL=http://localhost:9092/search/places/v1
+      - OS_PLACES_API_URL=http://fake-os-places-api:9092/search/places/v1
       - OS_PLACES_API_KEY=$OS_PLACES_API_KEY
 
 networks:
