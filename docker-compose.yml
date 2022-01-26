@@ -35,6 +35,17 @@ services:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/health/liveness" ]
     command: --verbose
 
+  fake-os-places-api:
+    build: ./fake-os-places-api
+    networks:
+      - manage-recalls-ui
+    container_name: fake-os-places-api
+    ports:
+      - "9092:8080"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health/liveness" ]
+    command: --verbose
+
   manage-recalls-ui:
     build: .
     networks:
@@ -55,6 +66,7 @@ services:
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
       - SESSION_SECRET=session-secret
+      - OS_PLACES_API_URL=http://localhost:9092/search/places/v1
       - OS_PLACES_API_KEY=$OS_PLACES_API_KEY
 
 networks:

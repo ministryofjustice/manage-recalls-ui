@@ -4,6 +4,7 @@ import auth from '../mockApis/auth'
 import tokenVerification from '../mockApis/tokenVerification'
 import manageRecalls from '../mockApis/manageRecallsApi'
 import readPdf from './read-pdf'
+import osPlaces from '../mockApis/osPlacesApi'
 
 module.exports = (on, config) => {
   const { wiremockUrl, uiClientId } = config.env
@@ -11,6 +12,7 @@ module.exports = (on, config) => {
   const authApi = auth(wiremockApi, uiClientId, config.baseUrl)
   const tokenVerificationApi = tokenVerification(wiremockApi)
   const manageRecallsApi = manageRecalls(wiremockApi)
+  const osPlacesApi = osPlaces(wiremockApi)
 
   // eslint-disable-next-line no-param-reassign
   config.env.AUTH_USERNAME = process.env.AUTH_USERNAME
@@ -54,7 +56,7 @@ module.exports = (on, config) => {
     stubLogin: authApi.stubLogin,
     stubManageRecallsApiPing: manageRecallsApi.stubPing,
     stubTokenVerificationPing: tokenVerificationApi.stubPing,
-    osPlacesPostcodeLookup: manageRecallsApi.osPlacesPostcodeLookup,
+    osPlacesPostcodeLookup: osPlacesApi.osPlacesPostcodeLookup,
   })
 
   return config
