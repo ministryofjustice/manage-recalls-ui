@@ -498,7 +498,6 @@ workflows:
           <<: *slack-fail-post-step
 
   fake-os-places-api-build:
-    unless: << pipeline.parameters.only_run_pact_workflow >>
     jobs:
       - hmpps/build_docker:
           name: build_fake_os_places_api
