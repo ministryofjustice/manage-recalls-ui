@@ -5,7 +5,11 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("custody-status", urlInfo)
+        href: backLinkUrlRecallReceived({
+            inCustody: recall.inCustody,
+            lastKnownAddressOption: recall.lastKnownAddressOption,
+            urlInfo: urlInfo
+        })
     }) }}
 {% endblock %}
 

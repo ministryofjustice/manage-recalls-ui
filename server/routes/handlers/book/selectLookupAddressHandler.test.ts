@@ -22,7 +22,7 @@ describe('selectLookupAddressHandler', () => {
     await selectLookupAddressHandler(req, res)
     // check address was saved to API
 
-    expect(res.redirect).toHaveBeenCalledWith(303, '/recalls/request-received')
+    expect(res.redirect).toHaveBeenCalledWith(303, '/recalls/address-list')
   })
 
   it('creates an error and redirects if no addressUprn is submitted', async () => {

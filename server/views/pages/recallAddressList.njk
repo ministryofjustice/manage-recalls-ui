@@ -1,0 +1,90 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Book a recall - Address added" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("postcode-lookup", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            <h1 class="govuk-heading-l">{% if urlInfo.fromPage %}Last known addresses{% else %}Address added{% endif %}</h1>
+
+            {% if recall.lastKnownAddresses.length %}
+            <dl class="govuk-summary-list">
+            {% for address in recall.lastKnownAddresses %}
+            <div class="govuk-summary-list__row" data-qa='address-{{ address.lastKnownAddressId }}'>
+                <dt class=" govuk-summary-list__key">
+                    Address {{ address.index if recall.lastKnownAddresses.length > 1 else '' }}
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                    <div class='govuk-body'>
+                        <div data-qa='line1'>{{ address.line1 }}</div>
+                        {% if address.line2 %}
+                            <div data-qa='line2'>{{ address.line2 }}</div>
+                        {% endif %}
+                        <div data-qa='town'>{{ address.town }}</div>
+                        {% if address.postcode %}
+                            <div data-qa='postcode'>{{ address.postcode }}</div>
+                        {% endif %}
+                    </div>
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
+            {% endfor %}
+            </dl>
+            {% endif %}
+            <form novalidate action="{{ makeUrl('address-list', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukRadios({
+                        idPrefix: "addAnotherAddressOption",
+                        name: "addAnotherAddressOption",
+                        fieldset: {
+                            legend: {
+                                text: "Do you want to add another address?
+",
+                                classes: "govuk-fieldset__legend--m"
+                            }
+                        },
+                        items: [
+                            {
+                                value: "YES",
+                                text: 'Yes'
+                            },
+                            {
+                                value: "NO",
+                                text: 'No'
+                            }
+                        ],
+                        errorMessage: errorMessage(errors.addAnotherAddressOption)
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                            data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

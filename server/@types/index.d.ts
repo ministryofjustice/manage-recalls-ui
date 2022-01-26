@@ -63,6 +63,7 @@ export type ViewName =
   | 'recallFindAddress'
   | 'recallFindAddressResults'
   | 'recallAddressManual'
+  | 'recallAddressList'
   | 'recallLastKnownAddress'
   | 'recallLicenceName'
   | 'recallPreConsName'

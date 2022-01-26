@@ -81,7 +81,7 @@
             </div>
         </dd>
         <dd class=" govuk-summary-list__actions">
-          <a href='{{ changeLinkUrl('last-known-address', urlInfo, 'personalDetails') }}' data-qa='lastKnownAddressOptionChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> last known addresses</span></a>
+          <a href='{{ changeLinkUrl('address-list', urlInfo, 'personalDetails') }}' data-qa='lastKnownAddressOptionChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> address {{ address.index if recall.lastKnownAddresses.length > 1 else '' }}</span></a>
         </dd>
       </div>
       {% endfor %}

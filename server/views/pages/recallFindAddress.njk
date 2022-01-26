@@ -27,6 +27,7 @@
                 Find an address
             </h1>
             <form novalidate action="{{ makeUrl('postcode-results', urlInfo) }}" method='get'>
+                <input type='hidden' name='fromPage' value='{{ urlInfo.fromPage }}' />
                 {{ govukInput({
                     label: {
                         text: "Postcode",

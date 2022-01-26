@@ -25,7 +25,7 @@ export const selectLookupAddressHandler = async (req: Request, res: Response): P
       user.token
     )
 
-    res.redirect(303, makeUrl('request-received', urlInfo))
+    res.redirect(303, makeUrl('address-list', urlInfo))
   } catch (err) {
     req.session.errors = [
       makeErrorObject({

@@ -4,6 +4,7 @@ import logger from '../../../../logger'
 import { validateAddressManual } from './helpers/validateAddressManual'
 import { saveErrorObject } from '../helpers/errorMessages'
 import { isString } from '../helpers'
+import { makeUrl } from '../../../utils/nunjucksFunctions'
 
 export const addLastKnownAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { recallId } = req.params
@@ -19,7 +20,7 @@ export const addLastKnownAddressHandler = async (req: Request, res: Response): P
   }
   try {
     await addLastKnownAddress(valuesToSave, user.token)
-    res.redirect(303, `${urlInfo.basePath}request-received`)
+    res.redirect(303, makeUrl('address-list', urlInfo))
   } catch (err) {
     logger.error(err)
     req.session.errors = [saveErrorObject]

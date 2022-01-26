@@ -42,6 +42,7 @@ import { addLastKnownAddressHandler } from './handlers/book/addLastKnownAddressH
 import { findAddressHandler } from './handlers/book/findAddressHandler'
 import { validateLastKnownAddress } from './handlers/book/helpers/validateLastKnownAddress'
 import { selectLookupAddressHandler } from './handlers/book/selectLookupAddressHandler'
+import { addAnotherAddressHandler } from './handlers/book/addAnotherAddressHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -70,6 +71,8 @@ export default function routes(router: Router): Router {
   post(`${basePath}/postcode-results`, selectLookupAddressHandler)
   get(`${basePath}/address-manual`, viewWithRecallAndPerson('recallAddressManual'))
   post(`${basePath}/address-manual`, addLastKnownAddressHandler)
+  get(`${basePath}/address-list`, viewWithRecallAndPerson('recallAddressList'))
+  post(`${basePath}/address-list`, addAnotherAddressHandler)
   get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
   post(
     `${basePath}/request-received`,

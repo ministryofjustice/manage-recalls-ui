@@ -2,6 +2,7 @@ import {
   allowedDocumentFileExtensionList,
   allowedEmailFileExtensionList,
   backLinkUrl,
+  backLinkUrlRecallReceived,
   changeLinkUrl,
   checkboxItems,
   dateTimeItems,
@@ -372,6 +373,35 @@ describe('backLinkUrl', () => {
       basePath: '',
     })
     expect(url).toEqual('/#completed')
+  })
+})
+
+describe('backLinkUrlRecallReceived', () => {
+  it('returns to custody-status if inCustody is true', () => {
+    const url = backLinkUrlRecallReceived({
+      inCustody: true,
+      lastKnownAddressOption: undefined,
+      urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
+    })
+    expect(url).toEqual('/recalls/custody-status')
+  })
+
+  it('returns to address-list if inCustody is false and lastKnownAddressOption is YES', () => {
+    const url = backLinkUrlRecallReceived({
+      inCustody: false,
+      lastKnownAddressOption: 'YES' as RecallResponse.lastKnownAddressOption,
+      urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
+    })
+    expect(url).toEqual('/recalls/address-list')
+  })
+
+  it('returns to last-known-address if inCustody is false and lastKnownAddressOption is not YES', () => {
+    const url = backLinkUrlRecallReceived({
+      inCustody: false,
+      lastKnownAddressOption: 'NO_FIXED_ABODE' as RecallResponse.lastKnownAddressOption,
+      urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
+    })
+    expect(url).toEqual('/recalls/last-known-address')
   })
 })
 

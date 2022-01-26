@@ -57,6 +57,7 @@ module.exports = (on, config) => {
     stubManageRecallsApiPing: manageRecallsApi.stubPing,
     stubTokenVerificationPing: tokenVerificationApi.stubPing,
     osPlacesPostcodeLookup: osPlacesApi.osPlacesPostcodeLookup,
+    osPlacesUprnLookup: osPlacesApi.osPlacesUprnLookup,
   })
 
   return config

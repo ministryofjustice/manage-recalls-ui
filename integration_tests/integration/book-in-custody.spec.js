@@ -13,7 +13,7 @@ const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
 const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
 const { recall } = require('../fixtures')
 
-context('Book an in-custody recall', () => {
+context('Book an "in-custody" recall', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
