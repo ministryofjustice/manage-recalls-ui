@@ -83,7 +83,10 @@ export default class RestClient {
       return raw ? result : result.body
     } catch (error) {
       const sanitisedError = sanitiseError(error)
-      logger.warn({ ...sanitisedError, query }, `Error calling ${this.name}, path: '${path}', verb: 'GET'`)
+      logger.warn(
+        { ...sanitisedError, query },
+        `Error calling ${this.name}, path: '${this.apiUrl()}${path}', verb: 'GET'`
+      )
       throw sanitisedError
     }
   }
