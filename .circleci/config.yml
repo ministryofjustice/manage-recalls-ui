@@ -497,6 +497,17 @@ workflows:
             - hmpps-common-vars
           <<: *slack-fail-post-step
 
+  fake-os-places-api-build:
+    jobs:
+      - hmpps/build_docker:
+          name: build_fake_os_places_api
+          image_name: quay.io/hmpps/ppud-fake-os-places-api
+          dockerfile_dir: fake-os-places-api
+          filters:
+            branches:
+              only:
+                - main
+
   security:
     triggers:
       - schedule:

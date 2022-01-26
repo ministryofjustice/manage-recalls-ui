@@ -327,18 +327,5 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    osPlacesPostcodeLookup: expectation => {
-      return wiremock.stubFor({
-        request: {
-          method: 'GET',
-          urlPattern: '/search/places/v1/postcode(.*)',
-        },
-        response: {
-          status: 200,
-          headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-          jsonBody: expectation.expectedResult,
-        },
-      })
-    },
   }
 }
