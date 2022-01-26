@@ -72,35 +72,45 @@
     {
       "missingDocumentsRecordId": "0120412-410124",
       "emailId": "845",
-      "emailFileName": "missing-documents.msg",
+      "emailFileName": "missing-documents2.msg",
       "categories": ["OASYS_RISK_ASSESSMENT"],
       "details": "Documents were requested by email on 10/12/2020",
       "version": 2,
       "createdByUserName": "Bobby Badger",
-      "createdDateTime": "2021-03-12T12:24:03.000Z"
+      "createdDateTime": "2020-12-10T12:24:03.000Z"
+    },
+    {
+      "missingDocumentsRecordId": "0120412-848484",
+      "emailId": "123",
+      "emailFileName": "missing-documents.msg",
+      "categories": ["OASYS_RISK_ASSESSMENT", "PART_A_RECALL_REPORT"],
+      "details": "Documents were requested by email on 09/12/2020",
+      "version": 1,
+      "createdByUserName": "Bobby Badger",
+      "createdDateTime": "2020-12-09T12:24:03.000Z"
     }
   ],
   "lastKnownAddressOption": "YES",
   "lastKnownAddresses": [
     {
-      "line1": "20 Farringdon Road",
-      "line2": "",
-      "town": "London",
-      "postcode": "EC1M 3HE",
-      "index": 2,
+      "line1": "345 Porchester Road",
+      "line2": "Southsea",
+      "town": "Portsmouth",
+      "postcode": "PO1 4OY",
+      "source": "LOOKUP",
+      "index": 3,
       "lastKnownAddressId": "678",
       "createdByUserName": "Bobby Badger",
       "createdDateTime": "2021-03-12T12:24:03.000Z"
     },
     {
-      "line1": "345 Porchester Road",
-      "line2": "Southsea",
-      "town": "Portsmouth",
-      "postcode": "PO1 4OY",
+      "line1": "Highwood Cottage, 43 Blandford Road",
+      "town": "Wareham",
+      "source": "MANUAL",
       "index": 1,
       "lastKnownAddressId": "345",
       "createdByUserName": "Bobby Badger",
-      "createdDateTime": "2021-03-12T12:24:03.000Z"
+      "createdDateTime": "2021-03-11T12:24:03.000Z"
     }
   ],
   "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
