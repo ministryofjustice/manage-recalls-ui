@@ -62,29 +62,45 @@
     </dd>
   </div>
   {% if recall.inCustody == false %}
-    {% if recall.lastKnownAddressOption == "YES" and recall.lastKnownAddresses.length %}
-      {% for address in recall.lastKnownAddresses %}
-      <div class="govuk-summary-list__row" data-qa='address-{{ address.lastKnownAddressId }}'>
-        <dt class=" govuk-summary-list__key">
-          Address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}
-        </dt>
-        <dd class=" govuk-summary-list__value">
+    {% if recall.lastKnownAddressOption == "YES" %}
+      {% if recall.lastKnownAddresses.length %}
+        {% for address in recall.lastKnownAddresses %}
+        <div class="govuk-summary-list__row" data-qa='address-{{ address.lastKnownAddressId }}'>
+          <dt class=" govuk-summary-list__key">
+            Address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}
+          </dt>
+          <dd class=" govuk-summary-list__value">
+              <div class='govuk-body'>
+                <div data-qa='line1'>{{ address.line1 }}</div>
+                {% if address.line2 %}
+                <div data-qa='line2'>{{ address.line2 }}</div>
+                {% endif %}
+                <div data-qa='town'>{{ address.town }}</div>
+                {% if address.postcode %}
+                <div data-qa='postcode'>{{ address.postcode }}</div>
+                {% endif %}
+              </div>
+          </dd>
+          <dd class=" govuk-summary-list__actions">
+            <a href='{{ changeLinkUrl('address-list', urlInfo, 'personalDetails') }}' data-qa='lastKnownAddressOptionChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}</span></a>
+          </dd>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="govuk-summary-list__row">
+          <dt class=" govuk-summary-list__key">
+            Address
+          </dt>
+          <dd class=" govuk-summary-list__value">
             <div class='govuk-body'>
-              <div data-qa='line1'>{{ address.line1 }}</div>
-              {% if address.line2 %}
-              <div data-qa='line2'>{{ address.line2 }}</div>
-              {% endif %}
-              <div data-qa='town'>{{ address.town }}</div>
-              {% if address.postcode %}
-              <div data-qa='postcode'>{{ address.postcode }}</div>
-              {% endif %}
+              Not provided
             </div>
-        </dd>
-        <dd class=" govuk-summary-list__actions">
-          <a href='{{ changeLinkUrl('address-list', urlInfo, 'personalDetails') }}' data-qa='lastKnownAddressOptionChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}</span></a>
-        </dd>
-      </div>
-      {% endfor %}
+          </dd>
+          <dd class=" govuk-summary-list__actions">
+            <a href='{{ changeLinkUrl('address-list', urlInfo, 'personalDetails') }}' data-qa='lastKnownAddressOptionChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> or add addresses</span></a>
+          </dd>
+        </div>
+      {% endif %}
     {% elseif recall.lastKnownAddressOption == "NO_FIXED_ABODE" %}
       <div class="govuk-summary-list__row">
         <dt class=" govuk-summary-list__key">
