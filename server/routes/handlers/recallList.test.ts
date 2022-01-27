@@ -2,10 +2,8 @@ import { Request, Response } from 'express'
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testutils/mockRequestUtils'
 import { recallList } from './recallList'
 import { getRecallList } from '../../clients/manageRecallsApiClient'
-import { getPerson } from './helpers/personCache'
 
 jest.mock('../../clients/manageRecallsApiClient')
-jest.mock('./helpers/personCache')
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
@@ -70,11 +68,6 @@ describe('recallList', () => {
     req = mockGetRequest({})
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
     resp = res
-    const person = {
-      firstName: 'Bobby',
-      lastName: 'Badger',
-    }
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
   })
 
   it('should make recalls with person details available to render', async () => {
