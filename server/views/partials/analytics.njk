@@ -18,9 +18,10 @@
       non_interaction: true,
     });
   }
-
-  window.webVitals.getCLS(sendToGoogleAnalytics);
-  window.webVitals.getFID(sendToGoogleAnalytics);
-  window.webVitals.getLCP(sendToGoogleAnalytics);
+  if (typeof window.webVitals !== 'undefined') {
+    window.webVitals.getCLS(sendToGoogleAnalytics);
+    window.webVitals.getFID(sendToGoogleAnalytics);
+    window.webVitals.getLCP(sendToGoogleAnalytics);
+  }
 </script>
 {% endif %}
