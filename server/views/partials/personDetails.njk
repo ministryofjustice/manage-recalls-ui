@@ -66,7 +66,7 @@
       {% for address in recall.lastKnownAddresses %}
       <div class="govuk-summary-list__row" data-qa='address-{{ address.lastKnownAddressId }}'>
         <dt class=" govuk-summary-list__key">
-          Address {{ address.index if recall.lastKnownAddresses.length > 1 else '' }}
+          Address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}
         </dt>
         <dd class=" govuk-summary-list__value">
             <div class='govuk-body'>
