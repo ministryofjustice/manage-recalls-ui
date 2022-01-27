@@ -25,7 +25,7 @@ export const getAddressesByPostcode = async (postcode: string): Promise<Decorate
     path: '/postcode',
     query: { postcode, key: config.apis.osPlacesApi.apiClientKey },
   })
-  if (response.header.totalresults === 0) {
+  if (response.header && response.header.totalresults === 0) {
     return []
   }
   return response.results.map(r => transformAddress(r.DPA))
