@@ -38,5 +38,8 @@ export interface OsPlacesLookupItem {
 }
 
 export interface OsPlacesLookupResponse {
-  results: OsPlacesLookupItem[]
+  header?: {
+    totalresults: number
+  }
+  results?: OsPlacesLookupItem[]
 }
