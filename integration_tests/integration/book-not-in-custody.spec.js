@@ -123,7 +123,7 @@ context('Book a "not in custody" recall', () => {
     cy.recallInfo('Arrest issues').should('equal', 'Detail...')
   })
 
-  it('shows if person has no last known address on the recall info page', () => {
+  it('shows if person has no fixed abode on the recall info page', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...newRecall, inCustody: false, lastKnownAddressOption: 'NO_FIXED_ABODE' },
     })
@@ -133,6 +133,19 @@ context('Book a "not in custody" recall', () => {
       'have.attr',
       'href',
       `/persons/${nomsNumber}/recalls/${recallId}/last-known-address?fromPage=view-recall&fromHash=personalDetails`
+    )
+  })
+
+  it('shows if person has no last known addresses provided on the recall info page', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: { ...newRecall, inCustody: false, lastKnownAddressOption: 'YES', lastKnownAddresses: [] },
+    })
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
+    cy.recallInfo('Address').should('equal', 'Not provided')
+    cy.getElement({ qaAttr: 'lastKnownAddressOptionChange' }).should(
+      'have.attr',
+      'href',
+      `/persons/${nomsNumber}/recalls/${recallId}/address-list?fromPage=view-recall&fromHash=personalDetails`
     )
   })
 })
