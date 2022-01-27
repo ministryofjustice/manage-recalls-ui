@@ -15,7 +15,15 @@ export const validateAddressManual = (
   let valuesToSave
   let unsavedValues
 
-  const { line1, line2, town, postcode: postcodeUnprocessed } = requestBody
+  const {
+    line1: line1Unprocessed,
+    line2: line2Unprocessed,
+    town: townUnprocessed,
+    postcode: postcodeUnprocessed,
+  } = requestBody
+  const line1 = line1Unprocessed?.trim()
+  const line2 = line2Unprocessed?.trim()
+  const town = townUnprocessed?.trim()
 
   const postcode = isString(postcodeUnprocessed) ? normalisePostcode(postcodeUnprocessed) : undefined
   // check again if it's an empty string as spaces have been removed
