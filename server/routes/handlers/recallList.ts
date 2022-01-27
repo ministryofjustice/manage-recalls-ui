@@ -3,7 +3,6 @@ import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList } from '../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
-import { getPerson } from './helpers/personCache'
 import logger from '../../../logger'
 import { sortCompletedList, sortToDoList } from './helpers/dates/sort'
 import { formatName } from './helpers'
@@ -21,16 +20,13 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     if (recallsWithNomsNumbers.length) {
       const start2 = performance.now()
       const results = await Promise.allSettled(
-        recallsWithNomsNumbers.map(recall =>
-          getPerson(recall.nomsNumber, token).then(person => ({
-            ...person,
-            ...recall,
-            fullName: formatName({
-              category: recall.licenceNameCategory,
-              recall,
-            }),
-          }))
-        )
+        recallsWithNomsNumbers.map(recall => ({
+          ...recall,
+          fullName: formatName({
+            category: recall.licenceNameCategory,
+            recall,
+          }),
+        }))
       )
       appInsightsClient?.trackMetric({
         name: 'searchByNomsNumber_total',

@@ -13,6 +13,7 @@ describe('To do (recalls) list', () => {
     nomsNumber,
     firstName: getRecallResponse.firstName,
     lastName: getRecallResponse.lastName,
+    middleNames: getRecallResponse.middleNames,
   }
   const personName = `${basicRecall.firstName} ${basicRecall.lastName}`
 
