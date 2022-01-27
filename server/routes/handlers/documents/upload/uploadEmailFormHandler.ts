@@ -14,12 +14,11 @@ interface Args {
   emailFieldName: string
   validator: ReqEmailUploadValidatorFn
   documentCategory: UploadDocumentRequest.category
-  nextPageUrlSuffix: string
   unassignUserFromRecall?: (recallId: string, userId: string, token: string) => Promise<RecallResponse>
 }
 
 export const uploadEmailFormHandler =
-  ({ emailFieldName, validator, documentCategory, nextPageUrlSuffix, unassignUserFromRecall }: Args) =>
+  ({ emailFieldName, validator, documentCategory, unassignUserFromRecall }: Args) =>
   async (req: Request, res: Response): Promise<void> => {
     const processUpload = uploadStorageField(emailFieldName)
     const { recallId } = req.params
@@ -39,7 +38,7 @@ export const uploadEmailFormHandler =
         const invalidFileFormat = emailFileSelected
           ? !allowedEmailFileExtensions.some(ext => file.originalname.endsWith(ext.extension))
           : false
-        const { errors, valuesToSave, unsavedValues } = validator({
+        const { errors, valuesToSave, unsavedValues, redirectToPage } = validator({
           requestBody: req.body,
           fileName: file?.originalname,
           emailFileSelected,
@@ -88,7 +87,7 @@ export const uploadEmailFormHandler =
             logger.error(`User ${user.uuid} could not be unassigned from recall ${recallId}`)
           }
         }
-        return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || nextPageUrlSuffix}`)
+        return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || redirectToPage}`)
       } catch (e) {
         logger.error(e)
         req.session.errors = !saveToApiSuccessful

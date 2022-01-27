@@ -1,18 +1,21 @@
-import { makeErrorObject } from '../../helpers'
-import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { makeErrorObject, makeUrl } from '../../helpers'
+import { ObjectMap, ReqValidatorReturn, UrlInfo } from '../../../../@types'
 import { errorMsgProvideDetail } from '../../helpers/errorMessages'
 import { reasonForRecall } from '../../../../referenceData'
 
-export const validateLicence = (
-  requestBody: ObjectMap<unknown>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateLicence = ({
+  requestBody,
+  urlInfo,
+}: {
+  requestBody?: ObjectMap<string | string[]>
+  urlInfo?: UrlInfo
+}): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
 
   const { licenceConditionsBreached, reasonsForRecall, reasonsForRecallOtherDetail } = requestBody
-  let reasonsForRecallList = reasonsForRecall
+  let reasonsForRecallList: string[] | string = reasonsForRecall
   if (reasonsForRecall && !Array.isArray(reasonsForRecall)) {
     reasonsForRecallList = [reasonsForRecall]
   }
@@ -59,5 +62,5 @@ export const validateLicence = (
       reasonsForRecallOtherDetail: reasonsForRecallOtherDetail as string,
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'assess-prison', urlInfo) }
 }

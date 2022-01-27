@@ -1,7 +1,7 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { ValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
+import { ValidationError, EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { errorMsgUserActionDateTime, errorMsgEmailUpload } from '../../helpers/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
@@ -10,11 +10,7 @@ export const validateRecallRequestReceived = ({
   emailFileSelected,
   uploadFailed,
   invalidFileFormat,
-}: EmailUploadValidatorArgs): {
-  errors?: NamedFormError[]
-  valuesToSave: UpdateRecallRequest
-  unsavedValues: ObjectMap<unknown>
-} => {
+}: EmailUploadValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -79,5 +75,5 @@ export const validateRecallRequestReceived = ({
   if (!errors) {
     valuesToSave = { recallEmailReceivedDateTime } as UpdateRecallRequest
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: 'last-release' }
 }

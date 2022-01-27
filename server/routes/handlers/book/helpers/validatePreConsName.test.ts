@@ -1,12 +1,14 @@
 import { validatePreConsName } from './validatePreConsName'
 
 describe('validatePreConsName', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'prison-police' }
+
   it('returns valuesToSave and no errors if Other is submitted', () => {
     const requestBody = {
       previousConvictionMainNameCategory: 'OTHER',
       previousConvictionMainName: 'Wayne Holt',
     }
-    const { errors, valuesToSave } = validatePreConsName(requestBody)
+    const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       previousConvictionMainNameCategory: 'OTHER',
@@ -14,12 +16,30 @@ describe('validatePreConsName', () => {
     })
   })
 
+  it('redirects to custody status if fromPage not supplied', () => {
+    const requestBody = {
+      previousConvictionMainNameCategory: 'OTHER',
+      previousConvictionMainName: 'Wayne Holt',
+    }
+    const { redirectToPage } = validatePreConsName({ requestBody, urlInfo })
+    expect(redirectToPage).toEqual('/recalls/custody-status')
+  })
+
+  it('redirects to fromPage if supplied', () => {
+    const requestBody = {
+      previousConvictionMainNameCategory: 'OTHER',
+      previousConvictionMainName: 'Wayne Holt',
+    }
+    const { redirectToPage } = validatePreConsName({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
+    expect(redirectToPage).toEqual('/recalls/view-recall')
+  })
+
   it('returns no detail field and no errors if first + last name is submitted', () => {
     const requestBody = {
       previousConvictionMainNameCategory: 'FIRST_LAST',
       previousConvictionMainName: 'Wayne Holt',
     }
-    const { errors, valuesToSave } = validatePreConsName(requestBody)
+    const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
@@ -33,7 +53,7 @@ describe('validatePreConsName', () => {
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
       previousConvictionMainName: 'Wayne Holt',
     }
-    const { errors, valuesToSave } = validatePreConsName(requestBody)
+    const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
@@ -46,7 +66,7 @@ describe('validatePreConsName', () => {
     const requestBody = {
       previousConvictionMainNameCategory: '',
     }
-    const { errors, valuesToSave } = validatePreConsName(requestBody)
+    const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -62,7 +82,7 @@ describe('validatePreConsName', () => {
       previousConvictionMainNameCategory: 'OTHER',
       previousConvictionMainName: '',
     }
-    const { errors, valuesToSave } = validatePreConsName(requestBody)
+    const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {

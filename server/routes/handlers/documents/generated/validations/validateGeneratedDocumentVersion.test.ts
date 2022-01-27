@@ -3,7 +3,7 @@ import { validateGeneratedDocumentVersion } from './validateGeneratedDocumentVer
 describe('validateGeneratedDocumentVersion', () => {
   it('returns an error if details is missing, and no valuesToSave', () => {
     const requestBody = {}
-    const { errors, valuesToSave, unsavedValues } = validateGeneratedDocumentVersion(requestBody)
+    const { errors, valuesToSave, unsavedValues } = validateGeneratedDocumentVersion({ requestBody })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
       details: undefined,
@@ -22,7 +22,7 @@ describe('validateGeneratedDocumentVersion', () => {
       details: 'Changed',
       category: 'RECALL_NOTIFICATION',
     }
-    const { errors, valuesToSave } = validateGeneratedDocumentVersion(requestBody)
+    const { errors, valuesToSave } = validateGeneratedDocumentVersion({ requestBody })
     expect(valuesToSave).toEqual(requestBody)
 
     expect(errors).toBeUndefined()

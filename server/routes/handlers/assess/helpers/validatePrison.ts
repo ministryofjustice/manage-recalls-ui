@@ -1,12 +1,9 @@
-import { makeErrorObject } from '../../helpers'
-import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { makeErrorObject, makeUrl } from '../../helpers'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 
-export const validatePrison = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest } => {
+export const validatePrison = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let valuesToSave
 
@@ -35,5 +32,5 @@ export const validatePrison = (
   if (!errors) {
     valuesToSave = { currentPrison }
   }
-  return { errors, valuesToSave }
+  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || 'assess-download', urlInfo) }
 }

@@ -3,8 +3,7 @@ import { addLastKnownAddress } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { validateAddressManual } from './helpers/validateAddressManual'
 import { saveErrorObject } from '../helpers/errorMessages'
-import { isString } from '../helpers'
-import { makeUrl } from '../../../utils/nunjucksFunctions'
+import { isString, makeUrl } from '../helpers'
 
 export const addLastKnownAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { recallId } = req.params

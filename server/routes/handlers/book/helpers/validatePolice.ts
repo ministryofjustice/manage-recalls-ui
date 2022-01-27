@@ -1,12 +1,10 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 
-export const validatePolice = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest } => {
+export const validatePolice = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let valuesToSave
 
@@ -41,5 +39,5 @@ export const validatePolice = (
       localPoliceForceId,
     } as UpdateRecallRequest
   }
-  return { errors, valuesToSave }
+  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || 'issues-needs', urlInfo) }
 }

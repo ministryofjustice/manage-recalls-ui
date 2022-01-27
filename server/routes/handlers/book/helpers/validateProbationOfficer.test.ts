@@ -2,6 +2,7 @@ import { validateProbationOfficer } from './validateProbationOfficer'
 import * as referenceDataExports from '../../../../referenceData'
 
 describe('validateProbationOfficer', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'probation-officer' }
   const requestBody = {
     probationOfficerName: 'Dave Angel',
     probationOfficerPhoneNumber: '07473739388',
@@ -28,7 +29,7 @@ describe('validateProbationOfficer', () => {
   })
 
   it('returns valuesToSave and no errors if all fields are submitted', () => {
-    const { errors, valuesToSave } = validateProbationOfficer(requestBody)
+    const { errors, valuesToSave } = validateProbationOfficer({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       probationOfficerName: 'Dave Angel',
@@ -39,9 +40,22 @@ describe('validateProbationOfficer', () => {
     })
   })
 
+  it('redirects to upload documents if fromPage not supplied', () => {
+    const { redirectToPage } = validateProbationOfficer({ requestBody, urlInfo })
+    expect(redirectToPage).toEqual('/recalls/upload-documents')
+  })
+
+  it('redirects to fromPage if supplied', () => {
+    const { redirectToPage } = validateProbationOfficer({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'view-recall' },
+    })
+    expect(redirectToPage).toEqual('/recalls/view-recall')
+  })
+
   it('returns errors for missing fields, and no valuesToSave', () => {
     const emptyBody = {}
-    const { errors, valuesToSave } = validateProbationOfficer(emptyBody)
+    const { errors, valuesToSave } = validateProbationOfficer({ requestBody: emptyBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -74,9 +88,12 @@ describe('validateProbationOfficer', () => {
 
   it('returns errors for invalid email and phone, and no valuesToSave', () => {
     const { errors, valuesToSave } = validateProbationOfficer({
-      ...requestBody,
-      probationOfficerPhoneNumber: '003139485349',
-      probationOfficerEmail: 'probation.office',
+      requestBody: {
+        ...requestBody,
+        probationOfficerPhoneNumber: '003139485349',
+        probationOfficerEmail: 'probation.office',
+      },
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -96,7 +113,10 @@ describe('validateProbationOfficer', () => {
   })
 
   it("returns an error for invalid Local Delivery Unit when there's an existing selection, and no valuesToSave", () => {
-    const { errors, valuesToSave } = validateProbationOfficer({ ...requestBody, localDeliveryUnitInput: '123' })
+    const { errors, valuesToSave } = validateProbationOfficer({
+      requestBody: { ...requestBody, localDeliveryUnitInput: '123' },
+      urlInfo,
+    })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -110,9 +130,12 @@ describe('validateProbationOfficer', () => {
 
   it("returns an error for invalid Local Delivery Unit when there's no existing selection, and no valuesToSave", () => {
     const { errors, valuesToSave } = validateProbationOfficer({
-      ...requestBody,
-      localDeliveryUnit: '',
-      localDeliveryUnitInput: '123',
+      requestBody: {
+        ...requestBody,
+        localDeliveryUnit: '',
+        localDeliveryUnitInput: '123',
+      },
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

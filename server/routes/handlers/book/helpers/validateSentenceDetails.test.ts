@@ -2,6 +2,7 @@ import { validateSentenceDetails } from './validateSentenceDetails'
 import * as referenceDataExports from '../../../../referenceData'
 
 describe('validateSentenceDetails', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'last-release' }
   const requestBody = {
     lastReleasePrison: 'BAI',
     lastReleasePrisonInput: 'Belmarsh (HMP)',
@@ -49,7 +50,7 @@ describe('validateSentenceDetails', () => {
   })
 
   it('returns valuesToSave for all valid fields', () => {
-    const { errors, valuesToSave } = validateSentenceDetails(requestBody)
+    const { errors, valuesToSave } = validateSentenceDetails({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       conditionalReleaseDate: '2021-10-04',
@@ -67,12 +68,25 @@ describe('validateSentenceDetails', () => {
     })
   })
 
+  it('redirects to prison-police if fromPage not supplied', () => {
+    const { redirectToPage } = validateSentenceDetails({ requestBody, urlInfo })
+    expect(redirectToPage).toEqual('/recalls/prison-police')
+  })
+
+  it('redirects to fromPage if supplied', () => {
+    const { redirectToPage } = validateSentenceDetails({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'view-recall' },
+    })
+    expect(redirectToPage).toEqual('/recalls/view-recall')
+  })
+
   it('returns errors for missing fields', () => {
     const emptyBody = Object.entries(requestBody).reduce((acc, [key]) => {
       acc[key] = ''
       return acc
     }, {})
-    const { errors, valuesToSave } = validateSentenceDetails(emptyBody)
+    const { errors, valuesToSave } = validateSentenceDetails({ requestBody: emptyBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -153,7 +167,7 @@ describe('validateSentenceDetails', () => {
       ...requestBody,
       bookingNumber: '123',
     }
-    const { errors, valuesToSave } = validateSentenceDetails(body)
+    const { errors, valuesToSave } = validateSentenceDetails({ requestBody: body, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -166,7 +180,10 @@ describe('validateSentenceDetails', () => {
   })
 
   it("returns an error for invalid Sentencing Court entry when there's an existing selection, and no valuesToSave", () => {
-    const { errors, valuesToSave } = validateSentenceDetails({ ...requestBody, sentencingCourtInput: '123' })
+    const { errors, valuesToSave } = validateSentenceDetails({
+      requestBody: { ...requestBody, sentencingCourtInput: '123' },
+      urlInfo,
+    })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -180,9 +197,12 @@ describe('validateSentenceDetails', () => {
 
   it("returns an error for invalid Sentencing Court entry when there's no existing selection, and no valuesToSave", () => {
     const { errors, valuesToSave } = validateSentenceDetails({
-      ...requestBody,
-      sentencingCourt: '',
-      sentencingCourtInput: '123',
+      requestBody: {
+        ...requestBody,
+        sentencingCourt: '',
+        sentencingCourtInput: '123',
+      },
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -196,7 +216,10 @@ describe('validateSentenceDetails', () => {
   })
 
   it("returns an error for invalid releasing prison when there's an existing selection, and no valuesToSave", () => {
-    const { errors, valuesToSave } = validateSentenceDetails({ ...requestBody, lastReleasePrisonInput: '123' })
+    const { errors, valuesToSave } = validateSentenceDetails({
+      requestBody: { ...requestBody, lastReleasePrisonInput: '123' },
+      urlInfo,
+    })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -210,9 +233,12 @@ describe('validateSentenceDetails', () => {
 
   it("returns an error for invalid releasing prison when there's no existing selection, and no valuesToSave", () => {
     const { errors, valuesToSave } = validateSentenceDetails({
-      ...requestBody,
-      lastReleasePrison: '',
-      lastReleasePrisonInput: '123',
+      requestBody: {
+        ...requestBody,
+        lastReleasePrison: '',
+        lastReleasePrisonInput: '123',
+      },
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

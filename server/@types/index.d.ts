@@ -89,14 +89,21 @@ export type ViewName =
   | 'changeHistoryForField'
   | 'newGeneratedDocumentVersion'
 
-export type ReqValidatorFn = (requestBody: ObjectMap<string>, user?: UserDetails) => ReqValidatorReturn
+export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
+
+export interface ReqValidatorArgs {
+  requestBody?: ObjectMap<string>
+  user?: UserDetails
+  urlInfo?: UrlInfo
+}
+
 export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn
 
 export interface ReqValidatorReturn {
   errors?: NamedFormError[]
   valuesToSave?: UpdateRecallRequest
   unsavedValues?: ObjectMap<unknown>
-  redirectToPage?: string
+  redirectToPage: string
 }
 
 export interface EmailUploadValidatorArgs {

@@ -1,8 +1,8 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 
-export const validatePreConsName = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
+export const validatePreConsName = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -45,5 +45,5 @@ export const validatePreConsName = (requestBody: ObjectMap<string>): ReqValidato
       previousConvictionMainName: previousConvictionMainNameCleaned,
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'custody-status', urlInfo) }
 }

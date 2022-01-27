@@ -1,11 +1,8 @@
-import { makeErrorObject } from '../../helpers'
-import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { makeErrorObject, makeUrl } from '../../helpers'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isNomsNumberValid } from '../../helpers/validations'
 
-export const validateDossierLetter = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateDossierLetter = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -87,5 +84,5 @@ export const validateDossierLetter = (
       differentNomsNumberDetail: nomsDetailCleaned,
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl('dossier-check', urlInfo) }
 }

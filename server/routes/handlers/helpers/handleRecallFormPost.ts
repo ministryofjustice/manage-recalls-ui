@@ -4,11 +4,11 @@ import logger from '../../../../logger'
 import { ReqValidatorFn } from '../../../@types'
 
 export const handleRecallFormPost =
-  (validator: ReqValidatorFn, nextPageUrlSuffix: string) =>
+  (validator: ReqValidatorFn) =>
   async (req: Request, res: Response): Promise<void> => {
     const { recallId } = req.params
     const { user, urlInfo } = res.locals
-    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator(req.body, user)
+    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator({ requestBody: req.body, urlInfo, user })
     if (errors) {
       req.session.errors = errors
       req.session.unsavedValues = unsavedValues
@@ -16,7 +16,7 @@ export const handleRecallFormPost =
     }
     try {
       await updateRecall(recallId, valuesToSave, user.token)
-      res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || redirectToPage || nextPageUrlSuffix}`)
+      res.redirect(303, redirectToPage)
     } catch (err) {
       logger.error(err)
       req.session.errors = [

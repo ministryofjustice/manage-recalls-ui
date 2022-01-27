@@ -1,9 +1,9 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { errorMsgProvideDetail } from '../../helpers/errorMessages'
 
-export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
+export const validateDecision = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -53,9 +53,7 @@ export const validateDecision = (requestBody: ObjectMap<string>): ReqValidatorRe
       agreeWithRecall: UpdateRecallRequest.agreeWithRecall[agreeWithRecall],
       agreeWithRecallDetail: detail,
     }
-    if (isNo) {
-      redirectToPage = 'assess-stop'
-    }
+    redirectToPage = isNo ? 'assess-stop' : 'assess-licence'
   }
-  return { errors, valuesToSave, unsavedValues, redirectToPage }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(redirectToPage, urlInfo) }
 }

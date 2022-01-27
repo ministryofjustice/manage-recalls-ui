@@ -10,7 +10,7 @@ describe('validateEmail', () => {
   const actionedByUserId = '00000000-0000-0000-0000-000000000000'
 
   it('returns valuesToSave for all valid fields', () => {
-    const { errors, valuesToSave } = validateDossierEmail({
+    const { errors, valuesToSave, redirectToPage } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -23,6 +23,7 @@ describe('validateEmail', () => {
       dossierEmailSentDate: '2021-09-04',
       dossierCreatedByUserId: actionedByUserId,
     })
+    expect(redirectToPage).toEqual('dossier-confirmation')
   })
 
   it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {

@@ -162,13 +162,6 @@ export const backLinkUrlRecallReceived = ({
   return backLinkUrl('last-known-address', urlInfo)
 }
 
-export const makeUrl = (routeSuffix: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
-  const fromPageQueryParam = fromPage ? `fromPage=${fromPage}` : undefined
-  const csrfQueryParam = csrfToken ? `_csrf=${csrfToken}` : undefined
-  const queryParams = [fromPageQueryParam, csrfQueryParam].filter(Boolean).join('&')
-  return `${basePath}${routeSuffix}${queryParams ? `?${queryParams}` : ''}${fromHash ? `#${fromHash}` : ''}`
-}
-
 export const changeLinkUrl = (
   pageSlug: string,
   { currentPage, basePath }: UrlInfo,

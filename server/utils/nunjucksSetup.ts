@@ -15,7 +15,6 @@ import {
   allowedImageFileExtensionList,
   backLinkUrl,
   backLinkUrlRecallReceived,
-  makeUrl,
   changeLinkUrl,
   errorMessage,
   removeUndefinedFromObject,
@@ -23,7 +22,7 @@ import {
   recallStatusTagProperties,
   selectDocCategory,
 } from './nunjucksFunctions'
-import { isDefined, listDocumentLabels, objectToArray, sortList } from '../routes/handlers/helpers'
+import { isDefined, listDocumentLabels, makeUrl, objectToArray, sortList } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { isoDateToMillis } from '../routes/handlers/helpers/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
