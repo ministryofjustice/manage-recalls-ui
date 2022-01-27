@@ -1,24 +1,45 @@
 import { validateLicence } from './validateLicence'
 
 describe('validateLicence', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'assess-licence' }
+
   it('returns valuesToSave and no errors if licence conditions and one reason are submitted', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
     }
-    const { errors, valuesToSave } = validateLicence(requestBody)
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: ['FAILED_WORK_AS_APPROVED'],
     })
   })
+
+  it('redirects to assess prison page if fromPage not supplied', () => {
+    const requestBody = {
+      licenceConditionsBreached: 'one, two',
+      reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
+    }
+    const { redirectToPage } = validateLicence({ requestBody, urlInfo })
+    expect(redirectToPage).toEqual('/recalls/assess-prison')
+  })
+
+  it('redirects to fromPage if supplied', () => {
+    const requestBody = {
+      licenceConditionsBreached: 'one, two',
+      reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
+    }
+    const { redirectToPage } = validateLicence({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
+    expect(redirectToPage).toEqual('/recalls/view-recall')
+  })
+
   it('returns valuesToSave and no errors if licence conditions and several reasons are submitted', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: ['FAILED_WORK_AS_APPROVED', 'POOR_BEHAVIOUR_NON_COMPLIANCE', 'ELM_BREACH_EXCLUSION_ZONE'],
     }
-    const { errors, valuesToSave } = validateLicence(requestBody)
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       licenceConditionsBreached: 'one, two',
@@ -32,7 +53,7 @@ describe('validateLicence', () => {
       reasonsForRecall: ['OTHER', 'FAILED_WORK_AS_APPROVED'],
       reasonsForRecallOtherDetail: 'Other reasons',
     }
-    const { errors, valuesToSave } = validateLicence(requestBody)
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       licenceConditionsBreached: 'one, two',
@@ -43,7 +64,7 @@ describe('validateLicence', () => {
 
   it('returns no valuesToSave and all errors if nothing is submitted', () => {
     const requestBody = {}
-    const { errors, valuesToSave } = validateLicence(requestBody)
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
     expect(errors).toEqual([
       {
         href: '#licenceConditionsBreached',
@@ -63,7 +84,7 @@ describe('validateLicence', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
     }
-    const { errors, valuesToSave } = validateLicence(requestBody)
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
     expect(errors).toEqual([
       {
         href: '#reasonsForRecall',
@@ -79,7 +100,7 @@ describe('validateLicence', () => {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: ['POOR_BEHAVIOUR_NON_COMPLIANCE', 'OTHER'],
     }
-    const { errors, valuesToSave } = validateLicence(requestBody)
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
     expect(errors).toEqual([
       {
         href: '#reasonsForRecallOtherDetail',

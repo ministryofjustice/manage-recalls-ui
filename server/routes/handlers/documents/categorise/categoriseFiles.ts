@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { listMissingRequiredDocs } from '../upload/helpers'
 import { getRecall } from '../../../../clients/manageRecallsApiClient'
-import { makeUrl } from '../../../../utils/nunjucksFunctions'
 import { getMetadataForCategorisedFiles, saveCategories } from './helpers'
 import { validateCategories } from './validations/validateCategories'
+import { makeUrl } from '../../helpers'
 
 export const categoriseFiles = async (req: Request, res: Response) => {
   const { session, body } = req

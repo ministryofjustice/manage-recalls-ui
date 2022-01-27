@@ -3,9 +3,11 @@ import { NamedFormError, ObjectMap } from '../../../../../@types'
 import { errorMsgProvideDetail } from '../../../helpers/errorMessages'
 import { GenerateDocumentRequest } from '../../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
 
-export const validateGeneratedDocumentVersion = (
+export const validateGeneratedDocumentVersion = ({
+  requestBody,
+}: {
   requestBody: ObjectMap<string>
-): {
+}): {
   errors?: NamedFormError[]
   valuesToSave: GenerateDocumentRequest
   unsavedValues: ObjectMap<unknown>

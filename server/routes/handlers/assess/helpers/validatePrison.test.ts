@@ -2,6 +2,8 @@ import { validatePrison } from './validatePrison'
 import * as referenceDataExports from '../../../../referenceData'
 
 describe('validatePrison', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'assess-prison' }
+
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -20,16 +22,34 @@ describe('validatePrison', () => {
       currentPrison: 'BEL',
       currentPrisonInput: 'Belmarsh (HMP)',
     }
-    const { errors, valuesToSave } = validatePrison(requestBody)
+    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       currentPrison: 'BEL',
     })
   })
 
+  it('redirects to assess download page if fromPage not supplied', () => {
+    const requestBody = {
+      currentPrison: 'BEL',
+      currentPrisonInput: 'Belmarsh (HMP)',
+    }
+    const { redirectToPage } = validatePrison({ requestBody, urlInfo })
+    expect(redirectToPage).toEqual('/recalls/assess-download')
+  })
+
+  it('redirects to fromPage if supplied', () => {
+    const requestBody = {
+      currentPrison: 'BEL',
+      currentPrisonInput: 'Belmarsh (HMP)',
+    }
+    const { redirectToPage } = validatePrison({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
+    expect(redirectToPage).toEqual('/recalls/view-recall')
+  })
+
   it('returns no valuesToSave and an error if nothing is submitted', () => {
     const requestBody = {}
-    const { errors, valuesToSave } = validatePrison(requestBody)
+    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
     expect(errors).toEqual([
       {
         href: '#currentPrison',
@@ -45,7 +65,7 @@ describe('validatePrison', () => {
       currentPrison: 'BAI',
       currentPrisonInput: '1235',
     }
-    const { errors, valuesToSave } = validatePrison(requestBody)
+    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -62,7 +82,7 @@ describe('validatePrison', () => {
       currentPrison: '',
       currentPrisonInput: '1235',
     }
-    const { errors, valuesToSave } = validatePrison(requestBody)
+    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {

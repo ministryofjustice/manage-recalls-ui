@@ -1,13 +1,11 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isEmailValid, isPhoneValid } from '../../helpers/validations'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 
-export const validateProbationOfficer = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateProbationOfficer = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -121,5 +119,10 @@ export const validateProbationOfficer = (
       authorisingAssistantChiefOfficer,
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return {
+    errors,
+    valuesToSave,
+    unsavedValues,
+    redirectToPage: makeUrl(urlInfo.fromPage || 'upload-documents', urlInfo),
+  }
 }

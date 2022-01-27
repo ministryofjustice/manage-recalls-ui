@@ -1,8 +1,8 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ObjectMap, ReqValidatorReturn } from '../../../../@types'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 
-export const validateLicenceName = (requestBody: ObjectMap<string>): ReqValidatorReturn => {
+export const validateLicenceName = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let valuesToSave
 
@@ -20,5 +20,5 @@ export const validateLicenceName = (requestBody: ObjectMap<string>): ReqValidato
       licenceNameCategory: licenceNameCategory as UpdateRecallRequest.licenceNameCategory,
     }
   }
-  return { errors, valuesToSave }
+  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || 'pre-cons-name', urlInfo) }
 }

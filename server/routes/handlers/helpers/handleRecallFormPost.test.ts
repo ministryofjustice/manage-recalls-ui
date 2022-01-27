@@ -5,24 +5,10 @@ import { updateRecall } from '../../../clients/manageRecallsApiClient'
 import { validatePolice } from '../book/helpers/validatePolice'
 import { validateDecision } from '../assess/helpers/validateDecision'
 import * as referenceDataExports from '../../../referenceData'
-import { validateCustodyStatus } from '../book/helpers/validateCustodyStatus'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 
 const handler = handleRecallFormPost(validatePolice, 'issues-needs')
-
-beforeEach(() => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  jest.spyOn(referenceDataExports, 'referenceData').mockReturnValue({
-    policeForces: [
-      {
-        value: 'metropolitan',
-        text: 'Metropolitan Police Service',
-      },
-    ],
-  })
-})
 
 describe('handleRecallFormPost', () => {
   const nomsNumber = 'A1234AB'
@@ -31,6 +17,19 @@ describe('handleRecallFormPost', () => {
     localPoliceForceId: 'metropolitan',
     localPoliceForceIdInput: 'Metropolitan Police Service',
   }
+
+  beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    jest.spyOn(referenceDataExports, 'referenceData').mockReturnValue({
+      policeForces: [
+        {
+          value: 'metropolitan',
+          text: 'Metropolitan Police Service',
+        },
+      ],
+    })
+  })
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -122,52 +121,5 @@ describe('handleRecallFormPost', () => {
     await requestHandler(req, res)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-stop`)
-  })
-
-  it('should redirect to fromPage if one is supplied in res.locals', async () => {
-    const recallDetails = { recallId, nomsNumber }
-    const requestHandler = handleRecallFormPost(validateDecision, 'assess-licence')
-
-    updateRecall.mockResolvedValueOnce(recallDetails)
-
-    const req = mockPostRequest({
-      params: { nomsNumber, recallId },
-      body: {
-        agreeWithRecall: 'YES',
-        agreeWithRecallDetailYes: 'Reasons',
-      },
-    })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
-      fromPage: 'check-answers',
-    }
-
-    await requestHandler(req, res)
-
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
-  })
-
-  it('should use fromPage over redirectToPage', async () => {
-    const recallDetails = { recallId, nomsNumber }
-    const requestHandler = handleRecallFormPost(validateCustodyStatus, 'licence-name')
-
-    updateRecall.mockResolvedValueOnce(recallDetails)
-
-    const req = mockPostRequest({
-      params: { nomsNumber, recallId },
-      body: {
-        inCustody: 'YES',
-      },
-    })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
-      fromPage: 'check-answers',
-    }
-
-    await requestHandler(req, res)
-
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/check-answers`)
   })
 })

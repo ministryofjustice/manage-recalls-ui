@@ -11,7 +11,7 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeHour: '05',
       recallEmailReceivedDateTimeMinute: '03',
     }
-    const { errors, valuesToSave } = validateRecallRequestReceived({
+    const { errors, valuesToSave, redirectToPage } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -22,6 +22,7 @@ describe('validateRecallRequestReceived', () => {
     expect(valuesToSave).toEqual({
       recallEmailReceivedDateTime: '2021-05-10T04:03:00.000Z',
     })
+    expect(redirectToPage).toEqual('last-release')
   })
 
   it('returns valuesToSave with an uncorrected time if not in daylight-saving period, and no errors if all fields are submitted', () => {

@@ -1,6 +1,5 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { ReqValidatorReturn, UrlInfo } from '../../../../@types'
-import { makeUrl } from '../../../../utils/nunjucksFunctions'
 
 export const validateAddAnotherAddress = ({
   addAnotherAddressOption,
@@ -22,13 +21,10 @@ export const validateAddAnotherAddress = ({
   }
   if (!errors) {
     if (addAnotherAddressOption === 'YES') {
-      redirectToPage = makeUrl('postcode-lookup', urlInfo)
-    } else if (urlInfo.fromPage) {
-      // if we're returning to a 'fromPage' eg recall info, don't include the fromPage querystring when forming the URL
-      redirectToPage = makeUrl(urlInfo.fromPage, { basePath: urlInfo.basePath, currentPage: urlInfo.currentPage })
+      redirectToPage = 'postcode-lookup'
     } else {
-      redirectToPage = makeUrl('request-received', urlInfo)
+      redirectToPage = urlInfo.fromPage || 'request-received'
     }
   }
-  return { errors, redirectToPage }
+  return { errors, redirectToPage: makeUrl(redirectToPage, urlInfo) }
 }

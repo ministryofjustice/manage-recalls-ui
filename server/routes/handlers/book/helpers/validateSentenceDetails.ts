@@ -1,14 +1,12 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ValidationError, NamedFormError, ObjectMap } from '../../../../@types'
+import { ValidationError, ReqValidatorReturn, ReqValidatorArgs } from '../../../../@types'
 import { isBookingNumberValid } from '../../helpers/validations'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
-export const validateSentenceDetails = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateSentenceDetails = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let valuesToSave
   let unsavedValues
@@ -253,5 +251,5 @@ export const validateSentenceDetails = (
         : undefined,
     } as UpdateRecallRequest
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'prison-police', urlInfo) }
 }

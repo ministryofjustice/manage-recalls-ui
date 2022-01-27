@@ -1,6 +1,8 @@
 import { validateDossierLetter } from './validateDossierLetter'
 
 describe('validateDossierLetter', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'dossier-download' }
+
   it('returns valuesToSave and no errors if Yes + detail is submitted for both additionalLicenceConditions and differentNomsNumber', () => {
     const requestBody = {
       additionalLicenceConditions: 'YES',
@@ -8,7 +10,7 @@ describe('validateDossierLetter', () => {
       differentNomsNumber: 'YES',
       differentNomsNumberDetail: 'A1234AB',
     }
-    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    const { errors, valuesToSave, redirectToPage } = validateDossierLetter({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       additionalLicenceConditions: true,
@@ -16,6 +18,7 @@ describe('validateDossierLetter', () => {
       differentNomsNumber: true,
       differentNomsNumberDetail: 'A1234AB',
     })
+    expect(redirectToPage).toEqual('/recalls/dossier-check')
   })
 
   it('returns no detail fields and no errors if No is submitted for both additionalLicenceConditions and differentNomsNumber', () => {
@@ -23,7 +26,7 @@ describe('validateDossierLetter', () => {
       additionalLicenceConditions: 'NO',
       differentNomsNumber: 'NO',
     }
-    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    const { errors, valuesToSave } = validateDossierLetter({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
     expect(valuesToSave).toEqual({
@@ -38,7 +41,7 @@ describe('validateDossierLetter', () => {
     const requestBody = {
       differentNomsNumber: 'NO',
     }
-    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    const { errors, valuesToSave } = validateDossierLetter({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -54,7 +57,7 @@ describe('validateDossierLetter', () => {
       additionalLicenceConditions: 'YES',
       additionalLicenceConditionsDetail: 'Reasons',
     }
-    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    const { errors, valuesToSave } = validateDossierLetter({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -72,7 +75,7 @@ describe('validateDossierLetter', () => {
       differentNomsNumber: 'YES',
       differentNomsNumberDetail: '123',
     }
-    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    const { errors, valuesToSave } = validateDossierLetter({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -89,7 +92,7 @@ describe('validateDossierLetter', () => {
       additionalLicenceConditions: 'YES',
       differentNomsNumber: 'YES',
     }
-    const { errors, valuesToSave } = validateDossierLetter(requestBody)
+    const { errors, valuesToSave } = validateDossierLetter({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {

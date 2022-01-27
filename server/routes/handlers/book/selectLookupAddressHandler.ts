@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { getAddressByUprn } from '../../../clients/osPlacesApiClient'
 import { validateSelectedAddress } from './helpers/validateSelectedAddress'
-import { makeErrorObject } from '../helpers'
-import { makeUrl } from '../../../utils/nunjucksFunctions'
+import { makeErrorObject, makeUrl } from '../helpers'
 import { addLastKnownAddress } from '../../../clients/manageRecallsApiClient'
 import { LastKnownAddress } from '../../../@types/manage-recalls-api/models/LastKnownAddress'
 

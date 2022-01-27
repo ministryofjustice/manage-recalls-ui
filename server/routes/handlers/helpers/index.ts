@@ -1,5 +1,5 @@
 import nunjucks from 'nunjucks'
-import { FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
+import { FormError, KeyedFormErrors, NamedFormError, ObjectMap, UrlInfo } from '../../../@types'
 import { UploadedFileMetadata } from '../../../@types/documents'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
@@ -129,4 +129,13 @@ export const formatName = ({
     return `${recall.firstName} ${recall.middleNames} ${recall.lastName}`
   }
   return `${recall.firstName} ${recall.lastName}`
+}
+
+export const makeUrl = (routeSuffix: string, { fromPage, fromHash, basePath }: UrlInfo, csrfToken?: string) => {
+  const fromPageQueryParam = fromPage ? `fromPage=${fromPage}` : undefined
+  const csrfQueryParam = csrfToken ? `_csrf=${csrfToken}` : undefined
+  const queryParams = [fromPageQueryParam, csrfQueryParam].filter(Boolean).join('&')
+  const includeQuery = queryParams && routeSuffix !== fromPage
+  const includeHash = fromHash && routeSuffix !== fromPage
+  return `${basePath}${routeSuffix}${includeQuery ? `?${queryParams}` : ''}${includeHash ? `#${fromHash}` : ''}`
 }

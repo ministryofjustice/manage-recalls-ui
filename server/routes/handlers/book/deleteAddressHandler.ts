@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
 import { deleteLastKnownAddress } from '../../../clients/manageRecallsApiClient'
 import { saveErrorObject } from '../helpers/errorMessages'
-import { isString } from '../helpers'
-import { makeUrl } from '../../../utils/nunjucksFunctions'
+import { isString, makeUrl } from '../helpers'
 
 export const deleteAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { recallId } = req.params

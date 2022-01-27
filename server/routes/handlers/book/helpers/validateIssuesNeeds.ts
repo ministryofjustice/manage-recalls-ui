@@ -1,10 +1,8 @@
-import { makeErrorObject } from '../../helpers'
+import { makeErrorObject, makeUrl } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 
-export const validateIssuesNeeds = (
-  requestBody: ObjectMap<string>
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest; unsavedValues: ObjectMap<unknown> } => {
+export const validateIssuesNeeds = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -112,5 +110,10 @@ export const validateIssuesNeeds = (
       mappaLevel: UpdateRecallRequest.mappaLevel[mappaLevel],
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return {
+    errors,
+    valuesToSave,
+    unsavedValues,
+    redirectToPage: makeUrl(urlInfo.fromPage || 'probation-officer', urlInfo),
+  }
 }

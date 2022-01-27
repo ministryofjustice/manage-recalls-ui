@@ -18,7 +18,6 @@ import { validateIssuesNeeds } from './handlers/book/helpers/validateIssuesNeeds
 import { validateProbationOfficer } from './handlers/book/helpers/validateProbationOfficer'
 import { downloadDocumentOrEmail } from './handlers/documents/download/downloadDocumentOrEmail'
 import { validateRecallNotificationEmail } from './handlers/assess/helpers/validateRecallNotificationEmail'
-import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateDossierEmail } from './handlers/dossier/helpers/validateDossierEmail'
 import { validatePreConsName } from './handlers/book/helpers/validatePreConsName'
 import { validateDossierDownload } from './handlers/dossier/helpers/validateDossierDownload'
@@ -44,6 +43,7 @@ import { validateLastKnownAddress } from './handlers/book/helpers/validateLastKn
 import { selectLookupAddressHandler } from './handlers/book/selectLookupAddressHandler'
 import { addAnotherAddressHandler } from './handlers/book/addAnotherAddressHandler'
 import { deleteAddressHandler } from './handlers/book/deleteAddressHandler'
+import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -60,13 +60,13 @@ export default function routes(router: Router): Router {
 
   // BOOK A RECALL
   get(`${basePath}/licence-name`, viewWithRecallAndPerson('recallLicenceName'))
-  post(`${basePath}/licence-name`, handleRecallFormPost(validateLicenceName, 'pre-cons-name'))
+  post(`${basePath}/licence-name`, handleRecallFormPost(validateLicenceName))
   get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
-  post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName, 'custody-status'))
+  post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName))
   get(`${basePath}/custody-status`, viewWithRecallAndPerson('recallCustodyStatus'))
-  post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus, 'request-received'))
+  post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus))
   get(`${basePath}/last-known-address`, viewWithRecallAndPerson('recallLastKnownAddress'))
-  post(`${basePath}/last-known-address`, handleRecallFormPost(validateLastKnownAddress, 'request-received'))
+  post(`${basePath}/last-known-address`, handleRecallFormPost(validateLastKnownAddress))
   get(`${basePath}/postcode-lookup`, viewWithRecallAndPerson('recallFindAddress'))
   router.get(`${basePath}/postcode-results`, findAddressHandler, viewWithRecallAndPerson('recallFindAddressResults'))
   post(`${basePath}/postcode-results`, selectLookupAddressHandler)
@@ -82,17 +82,16 @@ export default function routes(router: Router): Router {
       emailFieldName: 'recallRequestEmailFileName',
       validator: validateRecallRequestReceived,
       documentCategory: UploadDocumentRequest.category.RECALL_REQUEST_EMAIL,
-      nextPageUrlSuffix: 'last-release',
     })
   )
   get(`${basePath}/last-release`, viewWithRecallAndPerson('recallSentenceDetails'))
-  post(`${basePath}/last-release`, handleRecallFormPost(validateSentenceDetails, 'prison-police'))
+  post(`${basePath}/last-release`, handleRecallFormPost(validateSentenceDetails))
   get(`${basePath}/prison-police`, viewWithRecallAndPerson('recallPrisonPolice'))
-  post(`${basePath}/prison-police`, handleRecallFormPost(validatePolice, 'issues-needs'))
+  post(`${basePath}/prison-police`, handleRecallFormPost(validatePolice))
   get(`${basePath}/issues-needs`, viewWithRecallAndPerson('recallIssuesNeeds'))
-  post(`${basePath}/issues-needs`, handleRecallFormPost(validateIssuesNeeds, 'probation-officer'))
+  post(`${basePath}/issues-needs`, handleRecallFormPost(validateIssuesNeeds))
   get(`${basePath}/probation-officer`, viewWithRecallAndPerson('recallProbationOfficer'))
-  post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer, 'upload-documents'))
+  post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer))
   get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadDocumentsFormHandler)
   get(`${basePath}/missing-documents`, viewWithRecallAndPerson('recallMissingDocuments'))
@@ -100,19 +99,19 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-document-version`, viewWithRecallAndPerson('recallUploadDocumentVersion'))
   post(`${basePath}/upload-document-version`, uploadDocumentVersionFormHandler)
   get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
-  post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers, 'confirmation'))
+  post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers))
   get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
 
   // ASSESS A RECALL
   post(`${basePath}/assess-assign`, assignUser({ nextPageUrlSuffix: 'assess' }))
   get(`${basePath}/assess`, viewWithRecallAndPerson('assessRecall'))
   get(`${basePath}/assess-decision`, viewWithRecallAndPerson('assessDecision'))
-  post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision, 'assess-licence'))
+  post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision))
   get(`${basePath}/assess-stop`, viewWithRecallAndPerson('assessStop'))
   get(`${basePath}/assess-licence`, viewWithRecallAndPerson('assessLicence'))
-  post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence, 'assess-prison'))
+  post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence))
   get(`${basePath}/assess-prison`, viewWithRecallAndPerson('assessPrison'))
-  post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison, 'assess-download'))
+  post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison))
   get('/persons/:nomsNumber/recalls/:recallId/assess-download', viewWithRecallAndPerson('assessDownload'))
   get(`${basePath}/assess-email`, viewWithRecallAndPerson('assessEmail'))
   post(
@@ -122,7 +121,6 @@ export default function routes(router: Router): Router {
       validator: validateRecallNotificationEmail,
       unassignUserFromRecall,
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
-      nextPageUrlSuffix: 'assess-confirmation',
     })
   )
   get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
@@ -131,10 +129,10 @@ export default function routes(router: Router): Router {
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
   get(`${basePath}/dossier-recall`, viewWithRecallAndPerson('dossierRecallInformation'))
   get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
-  post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter, 'dossier-check'))
+  post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter))
   get(`${basePath}/dossier-check`, viewWithRecallAndPerson('dossierCheck'))
   get(`${basePath}/dossier-download`, viewWithRecallAndPerson('dossierDownload'))
-  post(`${basePath}/dossier-download`, handleRecallFormPost(validateDossierDownload, 'dossier-email'))
+  post(`${basePath}/dossier-download`, handleRecallFormPost(validateDossierDownload))
   get(`${basePath}/dossier-email`, viewWithRecallAndPerson('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
@@ -143,7 +141,6 @@ export default function routes(router: Router): Router {
       validator: validateDossierEmail,
       unassignUserFromRecall,
       documentCategory: UploadDocumentRequest.category.DOSSIER_EMAIL,
-      nextPageUrlSuffix: 'dossier-confirmation',
     })
   )
   get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))

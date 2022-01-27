@@ -25,7 +25,7 @@ export const newGeneratedDocumentVersion = async (req: Request, res: Response) =
   if (invalidCategory) {
     throw new Error('Invalid category')
   }
-  const { errors, unsavedValues, valuesToSave } = validateGeneratedDocumentVersion(body)
+  const { errors, unsavedValues, valuesToSave } = validateGeneratedDocumentVersion({ requestBody: body })
   if (errors) {
     req.session.errors = errors
     req.session.unsavedValues = unsavedValues

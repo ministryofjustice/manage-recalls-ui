@@ -1,6 +1,7 @@
 import { validateIssuesNeeds } from './validateIssuesNeeds'
 
 describe('validateIssuesNeeds', () => {
+  const urlInfo = { basePath: '/recalls/', currentPage: 'custody-status' }
   it('returns valuesToSave and no errors if Yes + detail is submitted for contraband, arrest issues and vulnerabilities, plus MAPPA level', () => {
     const requestBody = {
       contraband: 'YES',
@@ -12,7 +13,7 @@ describe('validateIssuesNeeds', () => {
       mappaLevel: 'LEVEL_1',
       notInCustody: '1',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       contraband: true,
@@ -35,7 +36,7 @@ describe('validateIssuesNeeds', () => {
       arrestIssuesDetail: 'Details',
       mappaLevel: 'LEVEL_1',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       contraband: true,
@@ -54,7 +55,7 @@ describe('validateIssuesNeeds', () => {
       mappaLevel: 'LEVEL_3',
       notInCustody: '1',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       contraband: false,
@@ -72,7 +73,7 @@ describe('validateIssuesNeeds', () => {
       vulnerabilityDiversity: 'NO',
       mappaLevel: 'LEVEL_3',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -90,7 +91,7 @@ describe('validateIssuesNeeds', () => {
       contrabandDetail: 'Reasons',
       mappaLevel: 'NA',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -109,7 +110,7 @@ describe('validateIssuesNeeds', () => {
       mappaLevel: 'NA',
       notInCustody: '1',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -127,7 +128,7 @@ describe('validateIssuesNeeds', () => {
       vulnerabilityDiversity: 'NO',
       mappaLevel: 'NA',
     }
-    const { errors } = validateIssuesNeeds(requestBody)
+    const { errors } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
   })
 
@@ -139,7 +140,7 @@ describe('validateIssuesNeeds', () => {
       mappaLevel: 'NA',
       notInCustody: '1',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -167,7 +168,7 @@ describe('validateIssuesNeeds', () => {
       arrestIssues: 'YES',
       mappaLevel: 'NA',
     }
-    const { errors } = validateIssuesNeeds(requestBody)
+    const { errors } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
   })
 
@@ -179,7 +180,7 @@ describe('validateIssuesNeeds', () => {
       vulnerabilityDiversityDetail: 'More reasons',
       arrestIssues: 'NO',
     }
-    const { errors, valuesToSave } = validateIssuesNeeds(requestBody)
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -188,5 +189,31 @@ describe('validateIssuesNeeds', () => {
         text: 'Select a MAPPA level',
       },
     ])
+  })
+
+  it('sets redirectToPage to fromPage, if one is supplied', () => {
+    const requestBody = {
+      contraband: 'NO',
+      vulnerabilityDiversity: 'NO',
+      mappaLevel: 'NA',
+    }
+    const { redirectToPage } = validateIssuesNeeds({
+      requestBody,
+      urlInfo: { basePath: '/recalls/', currentPage: 'issues-needs', fromPage: 'check-answers' },
+    })
+    expect(redirectToPage).toEqual('/recalls/check-answers')
+  })
+
+  it('sets redirectToPage to probation details, if fromPage is not supplied', () => {
+    const requestBody = {
+      contraband: 'NO',
+      vulnerabilityDiversity: 'NO',
+      mappaLevel: 'NA',
+    }
+    const { redirectToPage } = validateIssuesNeeds({
+      requestBody,
+      urlInfo,
+    })
+    expect(redirectToPage).toEqual('/recalls/probation-officer')
   })
 })

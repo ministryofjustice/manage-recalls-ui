@@ -1,11 +1,7 @@
-import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { NamedFormError, ObjectMap } from '../../../../@types'
-import { UserDetails } from '../../../../services/userService'
+import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl } from '../../helpers'
 
-export const validateCheckAnswers = (
-  requestBody: ObjectMap<string>,
-  user: UserDetails
-): { errors?: NamedFormError[]; valuesToSave: UpdateRecallRequest } => {
+export const validateCheckAnswers = ({ user, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   const valuesToSave = { bookedByUserId: user.uuid }
-  return { errors: undefined, valuesToSave }
+  return { errors: undefined, valuesToSave, redirectToPage: makeUrl('confirmation', urlInfo) }
 }

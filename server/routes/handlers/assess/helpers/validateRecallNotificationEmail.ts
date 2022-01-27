@@ -1,8 +1,8 @@
 import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
-import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { ValidationError, EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
 export const validateRecallNotificationEmail = ({
@@ -12,11 +12,7 @@ export const validateRecallNotificationEmail = ({
   uploadFailed,
   invalidFileFormat,
   actionedByUserId,
-}: EmailUploadValidatorArgs): {
-  errors?: NamedFormError[]
-  valuesToSave: UpdateRecallRequest
-  unsavedValues: ObjectMap<unknown>
-} => {
+}: EmailUploadValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -94,5 +90,5 @@ export const validateRecallNotificationEmail = ({
   if (!errors) {
     valuesToSave = { recallNotificationEmailSentDateTime, assessedByUserId: actionedByUserId } as UpdateRecallRequest
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: 'assess-confirmation' }
 }

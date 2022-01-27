@@ -1,6 +1,5 @@
 import { makeErrorObject } from '../../helpers'
-import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
-import { ValidationError, EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
+import { ValidationError, EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { allowedEmailFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { UploadDocumentRequest } from '../../../../@types/manage-recalls-api/models/UploadDocumentRequest'
@@ -13,11 +12,7 @@ export const validateDossierEmail = ({
   uploadFailed,
   invalidFileFormat,
   actionedByUserId,
-}: EmailUploadValidatorArgs): {
-  errors?: NamedFormError[]
-  valuesToSave: UpdateRecallRequest
-  unsavedValues: ObjectMap<unknown>
-} => {
+}: EmailUploadValidatorArgs): ReqValidatorReturn => {
   let errors
   let unsavedValues
   let valuesToSave
@@ -88,5 +83,5 @@ export const validateDossierEmail = ({
   if (!errors) {
     valuesToSave = { dossierEmailSentDate: dossierEmailSentDate as string, dossierCreatedByUserId: actionedByUserId }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: 'dossier-confirmation' }
 }

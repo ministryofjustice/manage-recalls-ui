@@ -7,7 +7,6 @@ import {
   checkboxItems,
   dateTimeItems,
   filterSelectedItems,
-  makeUrl,
   personOrPeopleFilter,
   recallStatusTagProperties,
   removeUndefinedFromObject,
@@ -255,35 +254,6 @@ describe('allowedDocumentFileExtensionList', () => {
 describe('allowedEmailFileExtensionList', () => {
   it('should return a list of extensions', () => {
     expect(allowedEmailFileExtensionList()).toEqual('.msg,.eml')
-  })
-})
-
-describe('makeUrl', () => {
-  it('uses fromPage and CSRF query strings if both are supplied', () => {
-    const url = makeUrl(
-      'request-received',
-      { fromPage: 'check-answers', currentPage: 'check-answers', basePath: '/person/123/recalls/456/' },
-      'a1b2c3'
-    )
-    expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers&_csrf=a1b2c3')
-  })
-
-  it('uses fromPage query string if supplied', () => {
-    const url = makeUrl('request-received', {
-      fromPage: 'check-answers',
-      currentPage: 'check-answers',
-      basePath: '/person/123/recalls/456/',
-    })
-    expect(url).toEqual('/person/123/recalls/456/request-received?fromPage=check-answers')
-  })
-
-  it('uses CSRF query string if supplied', () => {
-    const url = makeUrl(
-      'request-received',
-      { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
-      'a1b2c3'
-    )
-    expect(url).toEqual('/person/123/recalls/456/request-received?_csrf=a1b2c3')
   })
 })
 

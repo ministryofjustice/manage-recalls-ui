@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { getAddressesByPostcode } from '../../../clients/osPlacesApiClient'
 import { validateFindAddress } from './helpers/validateFindAddress'
-import { makeErrorObject } from '../helpers'
-import { makeUrl } from '../../../utils/nunjucksFunctions'
+import { makeErrorObject, makeUrl } from '../helpers'
 
 export const findAddressHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { postcode } = req.query

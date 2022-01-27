@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import { makeUrl } from '../../../utils/nunjucksFunctions'
 import { validateAddAnotherAddress } from './helpers/validateAddAnotherAddress'
+import { makeUrl } from '../helpers'
 
 export const addAnotherAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { addAnotherAddressOption } = req.body

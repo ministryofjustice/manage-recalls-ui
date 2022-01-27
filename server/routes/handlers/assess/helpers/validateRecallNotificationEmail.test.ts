@@ -11,8 +11,8 @@ describe('validateEmail', () => {
   }
   const actionedByUserId = '00000000-0000-0000-0000-000000000000'
 
-  it('returns valuesToSave for all valid fields', () => {
-    const { errors, valuesToSave } = validateRecallNotificationEmail({
+  it('returns valuesToSave for all valid fields and a redirect', () => {
+    const { errors, valuesToSave, redirectToPage } = validateRecallNotificationEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: true,
@@ -25,6 +25,7 @@ describe('validateEmail', () => {
       recallNotificationEmailSentDateTime: '2021-09-04T13:47:00.000Z',
       assessedByUserId: actionedByUserId,
     })
+    expect(redirectToPage).toEqual('assess-confirmation')
   })
 
   it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {
