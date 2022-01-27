@@ -26,11 +26,13 @@
             <h1 class="govuk-heading-l">{% if urlInfo.fromPage %}Last known addresses{% else %}Address added{% endif %}</h1>
 
             {% if recall.lastKnownAddresses.length %}
+            <form novalidate action="{{ makeUrl('address-list-delete', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
             <dl class="govuk-summary-list">
             {% for address in recall.lastKnownAddresses %}
             <div class="govuk-summary-list__row" data-qa='address-{{ address.lastKnownAddressId }}'>
                 <dt class=" govuk-summary-list__key">
-                    Address {{ address.index if recall.lastKnownAddresses.length > 1 else '' }}
+                    Address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}
                 </dt>
                 <dd class=" govuk-summary-list__value">
                     <div class='govuk-body'>
@@ -45,10 +47,14 @@
                     </div>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <button type="submit" class="reset-button link-button" name="deleteAddressId" value="{{address.lastKnownAddressId}}">Delete</button>
                 </dd>
             </div>
             {% endfor %}
             </dl>
+            </form>
+            {% else %}
+                <p class='govuk-body'>No addresses.</p>
             {% endif %}
             <form novalidate action="{{ makeUrl('address-list', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />

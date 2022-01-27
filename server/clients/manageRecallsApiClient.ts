@@ -132,6 +132,13 @@ export function addLastKnownAddress(address: CreateLastKnownAddressRequest, toke
   })
 }
 
+export function deleteLastKnownAddress(recallId: string, lastKnownAddressId: string, token: string) {
+  return restClient(token).delete({
+    path: `/recalls/${recallId}/last-known-addresses/${lastKnownAddressId}`,
+    raw: true,
+  })
+}
+
 export function addUserDetails(data: AddUserDetailsRequest, token: string): Promise<UserDetailsResponse> {
   return restClient(token).post<UserDetailsResponse>({ path: '/users', data })
 }
