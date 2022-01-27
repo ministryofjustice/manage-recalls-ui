@@ -47,7 +47,9 @@
                     </div>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
-                    <button type="submit" class="reset-button link-button" name="deleteAddressId" value="{{address.lastKnownAddressId}}">Delete</button>
+                    <button type="submit" class="reset-button link-button" name="deleteAddressId" value="{{address.lastKnownAddressId}}">
+                        Delete<span class="govuk-visually-hidden"> address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}</span>
+                    </button>
                 </dd>
             </div>
             {% endfor %}

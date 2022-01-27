@@ -64,4 +64,21 @@ describe('findAddressHandler', () => {
     expect(next).not.toHaveBeenCalled()
     expect(res.redirect).toHaveBeenCalledWith(303, '/recalls/postcode-lookup')
   })
+
+  it('creates an error if the API returns no results', async () => {
+    const req = mockReq({ query: { postcode } })
+    const res = mockRes({ locals: { urlInfo: { basePath: '/recalls/' } } })
+    const next = jest.fn()
+    ;(getAddressesByPostcode as jest.Mock).mockResolvedValue([])
+    await findAddressHandler(req, res, next)
+    expect(req.session.errors).toEqual([
+      {
+        href: '#postcode',
+        name: 'postcode',
+        text: 'No matching post code found',
+      },
+    ])
+    expect(next).not.toHaveBeenCalled()
+    expect(res.redirect).toHaveBeenCalledWith(303, '/recalls/postcode-lookup')
+  })
 })
