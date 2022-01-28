@@ -7,4 +7,6 @@ export type BookRecallRequest = {
     lastName: string;
     middleNames?: string;
     nomsNumber: string;
+    croNumber?: string;
+    dateOfBirth?: string;
 }
