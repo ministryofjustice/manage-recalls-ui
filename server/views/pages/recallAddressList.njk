@@ -22,6 +22,13 @@
                     }
                 }) }}
             {% endif %}
+            {% if confirmationMessage %}
+                {{ mojBanner({
+                    type: confirmationMessage.type,
+                    text: confirmationMessage.text,
+                    iconFallbackText: confirmationMessage.type
+                }) }}
+            {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
             <h1 class="govuk-heading-l">{% if urlInfo.fromPage %}Last known addresses{% else %}Address added{% endif %}</h1>
 
