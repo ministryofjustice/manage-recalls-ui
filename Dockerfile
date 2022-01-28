@@ -23,9 +23,10 @@ ARG BUILD_NUMBER
 ARG BUILD_URL
 ARG GIT_REF
 
-RUN apt-get install -y make python g++
+RUN apt-get install -y make python g++ jq
 
 COPY package*.json ./
+RUN npm install -g npm@$(jq -r '.engines.npm' < package.json)
 RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit
 
 COPY . .
