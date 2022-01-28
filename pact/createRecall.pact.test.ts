@@ -13,6 +13,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     firstName: 'Bobby',
     lastName: 'Badger',
     middleNames: 'Bryan',
+    croNumber: '1234/56A',
+    dateOfBirth: '1999-05-28',
   }
 
   beforeEach(() => {
@@ -38,13 +40,15 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         firstName: '',
         lastName: '',
         middleNames: '',
+        croNumber: '',
+        dateOfBirth: '',
       }
       const errorResponse = {
         status: 'BAD_REQUEST',
         message: 'nomsNumber: must not be blank',
       }
       await provider.addInteraction({
-        state: 'no state required',
+        state: 'a user exists',
         ...pactPostRequest('a create recall request with blank nomsNumber', '/recalls', blankBody, accessToken),
         willRespondWith: pactJsonResponse(Matchers.like(errorResponse), 400),
       })
