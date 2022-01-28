@@ -15,7 +15,7 @@ export const findAddressHandler = async (req: Request, res: Response, next: Next
       req.session.unsavedValues = unsavedValues
       return reloadOnError()
     }
-    res.locals.postcode = postcode
+    res.locals.postcode = valuesToSave.postcode
     const addresses = await getAddressesByPostcode(valuesToSave.postcode)
     if (addresses.length === 0) {
       req.session.errors = [makeErrorObject({ id: 'postcode', text: 'No matching post code found' })]

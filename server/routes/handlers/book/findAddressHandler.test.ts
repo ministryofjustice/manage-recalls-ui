@@ -7,7 +7,7 @@ jest.mock('../../../clients/osPlacesApiClient')
 describe('findAddressHandler', () => {
   afterEach(() => jest.resetAllMocks())
 
-  const postcode = 'E15 1JZ'
+  const postcode = 'PE147df'
 
   it('adds postcode and addresses to res.locals and calls next', async () => {
     ;(getAddressesByPostcode as jest.Mock).mockResolvedValue([
@@ -24,7 +24,8 @@ describe('findAddressHandler', () => {
     const res = mockRes()
     const next = jest.fn()
     await findAddressHandler(req, res, next)
-    expect(res.locals.postcode).toEqual(postcode)
+    // reformatted postcode is used
+    expect(res.locals.postcode).toEqual('PE14 7DF')
     expect(res.locals.addresses).toEqual([
       {
         text: 'SUBWAY, 109, SHIRLEY HIGH STREET, SOUTHAMPTON, SO16 4EY',
