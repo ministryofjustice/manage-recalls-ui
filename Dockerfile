@@ -25,7 +25,9 @@ ARG GIT_REF
 
 RUN apt-get install -y make python g++ jq
 
+COPY .npmrc ./
 COPY package*.json ./
+
 RUN npm install -g npm@$(jq -r '.engines.npm' < package.json)
 RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit
 
