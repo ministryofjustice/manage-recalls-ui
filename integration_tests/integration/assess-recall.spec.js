@@ -1,23 +1,24 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
-import recallsListPage from '../pages/recallsList'
 import { stubRefData } from '../support/mock-api'
+import { getIsoDateForMinutesAgo } from '../support/utils'
 
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
-const assessRecallConfirmationPage = require('../pages/assessRecallConfirmation')
 const assessRecallLicencePage = require('../pages/assessRecallLicence')
-const assessRecallDownloadPage = require('../pages/assessRecallDownload')
 const assessRecallEmailPage = require('../pages/assessRecallEmail')
 const assessRecallStopPage = require('../pages/assessRecallStop')
 
 context('Assess a recall', () => {
+  const recall = getRecallResponse
   const nomsNumber = 'A1234AA'
   const recallId = '123'
-  const personName = 'Bobby Badger'
+  const firstName = 'Bobby'
+  const lastName = 'Badger'
+  const firstLastName = `${firstName} ${lastName}`
   const status = 'BOOKED_ON'
   const fullRecall = {
-    ...getRecallResponse,
+    ...recall,
     recallId,
     status: 'BOOKED_ON',
     documents: [
@@ -48,7 +49,7 @@ context('Assess a recall', () => {
       expectedResult: fullRecall,
     })
     stubRefData()
-    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: personName })
+    const assessRecall = assessRecallPage.verifyOnPage({ nomsNumber, recallId, fullName: firstLastName })
     assessRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Booking complete' })
     assessRecall.assertElementHasText({
       qaAttr: 'recallAssessmentDueText',
@@ -89,54 +90,51 @@ context('Assess a recall', () => {
           recallId,
           nomsNumber,
           status,
+          firstName,
+          lastName,
         },
       ],
     })
     cy.task('expectGetRecall', {
       expectedResult: fullRecall,
     })
-    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    stubRefData()
+    cy.task('expectAssignUserToRecall', { expectedResult: recall })
     cy.task('expectUpdateRecall', recallId)
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.visitPage('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.assessRecall({ recallId })
-    const assessRecall = assessRecallPage.verifyOnPage({ fullName: personName })
-    assessRecall.clickContinue()
-    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage()
-    assessRecallDecision.makeYesDecision()
-    assessRecallDecision.addYesDetail()
-    assessRecallDecision.clickContinue()
-    const assessRecallLicence = assessRecallLicencePage.verifyOnPage()
-    assessRecallLicence.enterLicenceConditionsBreached()
-    assessRecallLicence.checkReasonsRecalled()
-    assessRecallLicence.clickContinue()
-    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ personName })
-    assessRecallPrison.enterPrison()
-    assessRecallPrison.clickContinue()
-    const assessRecallDownload = assessRecallDownloadPage.verifyOnPage()
-    assessRecallDownload.assertLinkHref({
-      qaAttr: 'getRecallNotificationLink',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/create?category=RECALL_NOTIFICATION`,
-    })
-    assessRecallDownload.assertElementHasText({
-      qaAttr: 'getRecallNotificationFileName',
-      textToFind: 'Filename: IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
-    })
-    assessRecallDownload.clickContinue()
-    const assessRecallEmail = assessRecallEmailPage.verifyOnPage()
-    assessRecallEmail.confirmEmailSent()
-    assessRecallEmail.clickTodayLink()
-    assessRecallEmail.enterDateTime({
-      prefix: 'recallNotificationEmailSentDateTime',
-      values: {
-        Hour: '00',
-        Minute: '00',
-      },
-    })
-    assessRecallEmail.uploadFile({ fieldName: 'recallNotificationEmailFileName', fileName: 'email.msg' })
-    assessRecallEmail.clickContinue()
-    assessRecallConfirmationPage.verifyOnPage({ fullName: personName })
+    cy.clickButton('Assess recall')
+    cy.pageHeading('Assess a recall for Bobby Badger')
+    cy.clickLink('Assess recall')
+
+    cy.selectRadio('Do you agree with the fixed term 14 day recall recommendation?', 'Yes')
+    cy.fillInput('Provide more detail', 'No evidence that the recommendation was wrong')
+    cy.clickButton('Continue')
+
+    cy.pageHeading('How has the licence been breached?')
+    cy.fillInput('Licence conditions breached', recall.licenceConditionsBreached)
+    cy.selectCheckboxes('Reasons for recall', recall.reasonsForRecall, { findByValue: true })
+    cy.fillInput('Provide more detail', recall.reasonsForRecallOtherDetail)
+    cy.clickButton('Continue')
+
+    cy.selectFromAutocomplete(`Which prison is ${firstLastName} in?`, 'Kenn')
+    cy.clickButton('Continue')
+
+    cy.pageHeading('Download recall notification')
+    cy.clickLink('Recall notification')
+    cy.getText('getRecallNotificationFileName').should(
+      'contain',
+      'Filename: IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
+    )
+    cy.clickLink('Continue')
+
+    cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
+    const fiveMinutesAgo = getIsoDateForMinutesAgo(5)
+    cy.enterDateTime(fiveMinutesAgo)
+    cy.uploadEmail({ field: 'recallNotificationEmailFileName', file: 'email.msg' })
+    cy.clickButton('Complete assessment')
+
+    cy.pageHeading(`Recall assessed for ${firstLastName}`)
   })
 
   it('errors - recall recommendation', () => {
@@ -168,7 +166,7 @@ context('Assess a recall', () => {
     assessRecallDecision.makeNoDecision()
     assessRecallDecision.addNoDetail()
     assessRecallDecision.clickContinue()
-    const assessRecallStop = assessRecallStopPage.verifyOnPage({ personName })
+    const assessRecallStop = assessRecallStopPage.verifyOnPage({ firstLastName })
     assessRecallStop.assertElementHasText({ qaAttr: 'managerName', textToFind: '[name]' })
     assessRecallStop.assertElementHasText({ qaAttr: 'managerPhone', textToFind: '[phone]' })
   })
@@ -213,7 +211,7 @@ context('Assess a recall', () => {
 
   it('errors - current prison', () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, firstLastName })
     assessRecallPrison.clickContinue()
     assessRecallPrison.assertErrorMessage({
       fieldName: 'currentPrison',
@@ -282,7 +280,7 @@ context('Assess a recall', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
-        ...getRecallResponse,
+        ...recall,
         recallId,
         status: 'BOOKED_ON',
         documents: [
