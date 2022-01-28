@@ -2,7 +2,7 @@
 ARG BUILD_NUMBER
 ARG GIT_REF
 
-FROM node:16.13.1-bullseye-slim as base
+FROM node:16.13.2-bullseye-slim as base
 
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
@@ -23,9 +23,12 @@ ARG BUILD_NUMBER
 ARG BUILD_URL
 ARG GIT_REF
 
-RUN apt-get install -y make python g++
+RUN apt-get install -y make python g++ jq
 
+COPY .npmrc ./
 COPY package*.json ./
+
+RUN npm install -g npm@$(jq -r '.engines.npm' < package.json)
 RUN CYPRESS_INSTALL_BINARY=0 npm ci --no-audit
 
 COPY . .
