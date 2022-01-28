@@ -15,6 +15,10 @@ export const deleteAddressHandler = async (req: Request, res: Response): Promise
   const { user, urlInfo } = res.locals
   try {
     await deleteLastKnownAddress(recallId, lastKnownAddressId, user.token)
+    req.session.confirmationMessage = {
+      text: 'The address has been deleted',
+      type: 'success',
+    }
     res.redirect(303, makeUrl('address-list', urlInfo))
   } catch (err) {
     req.session.errors = [saveErrorObject]

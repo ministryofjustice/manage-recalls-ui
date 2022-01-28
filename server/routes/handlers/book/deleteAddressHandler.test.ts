@@ -12,6 +12,10 @@ describe('deleteAddressHandler', () => {
     const res = mockRes({ locals: { urlInfo: { basePath: '/recalls/' } } })
     await deleteAddressHandler(req, res)
 
+    expect(req.session.confirmationMessage).toEqual({
+      text: 'The address has been deleted',
+      type: 'success',
+    })
     expect(deleteLastKnownAddress).toHaveBeenCalledWith(recallId, lastKnownAddressId, 'token')
     expect(res.redirect).toHaveBeenCalledWith(303, '/recalls/address-list')
   })
