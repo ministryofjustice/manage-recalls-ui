@@ -61,7 +61,7 @@ jobs:
       - checkout
       - run:
           name: Update NPM to match package.json
-          command: npm install -g npm@$(jq -r '.engines.npm' < package.json)
+          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
       - node/install-packages
       - run:
           command: |
