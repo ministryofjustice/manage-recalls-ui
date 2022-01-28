@@ -119,7 +119,6 @@ context('Book a "not in custody" recall', () => {
     cy.getText('line2', opts).should('equal', 'Southsea')
     cy.getText('town', opts).should('equal', 'Portsmouth')
     cy.getText('postcode', opts).should('equal', 'PO1 4OY')
-
     cy.recallInfo('Arrest issues').should('equal', 'Detail...')
   })
 

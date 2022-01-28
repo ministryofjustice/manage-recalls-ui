@@ -87,6 +87,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'differentNomsNumberDetail',
     'previousConvictionMainName',
     'previousConvictionMainNameCategory',
+    'lastKnownAddressOption',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })
@@ -107,7 +108,6 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     ...values,
     ...recallRecommendation({ agreeWithRecall: values.agreeWithRecall, errors, unsavedValues, apiValues }),
   }
-
   // missing documents detail
   values.missingDocumentsDetail = isDefined(errors.missingDocumentsDetail)
     ? ''

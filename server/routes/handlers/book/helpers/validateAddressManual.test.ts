@@ -3,9 +3,9 @@ import { validateAddressManual } from './validateAddressManual'
 describe('validateAddressManual', () => {
   const recallId = '123'
   const requestBody = {
-    line1: '345 Porchester Road',
-    line2: 'Southsea',
-    town: 'Portsmouth',
+    line1: '345 Porchester Road ',
+    line2: ' Southsea',
+    town: 'Portsmouth ',
     postcode: 'PO14OY',
   }
 
@@ -51,6 +51,27 @@ describe('validateAddressManual', () => {
   it('returns errors for missing fields, and no valuesToSave', () => {
     const emptyBody = {}
     const { errors, valuesToSave } = validateAddressManual(recallId, emptyBody)
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#line1',
+        name: 'line1',
+        text: 'Enter an address line 1',
+      },
+      {
+        href: '#town',
+        name: 'town',
+        text: 'Enter a town or city',
+      },
+    ])
+  })
+
+  it('returns errors for required fields with only whitespace', () => {
+    const body = {
+      line1: '   ',
+      town: '  ',
+    }
+    const { errors, valuesToSave } = validateAddressManual(recallId, body)
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {

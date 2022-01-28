@@ -463,6 +463,7 @@ describe('getFormValues', () => {
       inCustody: 'NO',
       previousConvictionMainNameCategory: 'OTHER',
       indexOffence: 'Burglary',
+      lastKnownAddressOption: 'YES',
       lastReleaseDateParts: {
         day: 'ee',
         month: 'rr',
@@ -559,6 +560,7 @@ describe('getFormValues', () => {
       previousConvictionMainNameCategory: 'OTHER',
       inCustody: 'NO',
       indexOffence: 'Burglary',
+      lastKnownAddressOption: 'YES',
       lastReleaseDateParts: {
         day: '03',
         month: '08',
