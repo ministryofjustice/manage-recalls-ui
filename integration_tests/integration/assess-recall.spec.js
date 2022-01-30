@@ -38,7 +38,7 @@ context('Assess a recall', () => {
       },
     ],
   }
-  const emptyRecall = { ...getEmptyRecallResponse, recallId }
+  const emptyRecall = { ...getEmptyRecallResponse, recallId, recallLength: 'FOURTEEN_DAYS', bookingNumber: 'A123456' }
 
   beforeEach(() => {
     cy.login()
@@ -96,7 +96,7 @@ context('Assess a recall', () => {
       ],
     })
     cy.task('expectGetRecall', {
-      expectedResult: fullRecall,
+      expectedResult: emptyRecall,
     })
     stubRefData()
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
@@ -115,6 +115,9 @@ context('Assess a recall', () => {
     cy.fillInput('Licence conditions breached', recall.licenceConditionsBreached)
     cy.selectCheckboxes('Reasons for recall', recall.reasonsForRecall, { findByValue: true })
     cy.fillInput('Provide more detail', recall.reasonsForRecallOtherDetail)
+    cy.clickButton('Continue')
+
+    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
     cy.clickButton('Continue')
 
     cy.selectFromAutocomplete(`Which prison is ${firstLastName} in?`, 'Kenn')
@@ -137,9 +140,39 @@ context('Assess a recall', () => {
     cy.pageHeading(`Recall assessed for ${firstLastName}`)
   })
 
+  it('if not in custody, redirect to Download recall notification page', () => {
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.selectRadio('Is Bobby Badger in custody?', 'No')
+    cy.clickButton('Continue')
+    cy.pageHeading('Download recall notification')
+  })
+
+  it('error - custody status', () => {
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'inCustody',
+      summaryError: `Is ${firstLastName} in custody?`,
+    })
+  })
+
+  it('pre-select "No" for custody status if returning to page', () => {
+    // pre-select 'No' if the user has downloaded the recall notification, because that implies they've already visited
+    // custody status and saved a value, then on a following page have clicked Back to return
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...emptyRecall,
+        inCustody: false,
+        documents: [{ category: 'RECALL_NOTIFICATION', type: 'generated' }],
+      },
+    })
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'No').should('be.checked')
+  })
+
   it('errors - recall recommendation', () => {
     cy.task('expectGetRecall', {
-      expectedResult: { ...emptyRecall, recallLength: 'FOURTEEN_DAYS' },
+      expectedResult: emptyRecall,
     })
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallDecision.clickContinue()
@@ -159,14 +192,14 @@ context('Assess a recall', () => {
 
   it('can stop a recall', () => {
     cy.task('expectGetRecall', {
-      expectedResult: { ...emptyRecall, recallLength: 'FOURTEEN_DAYS' },
+      expectedResult: emptyRecall,
     })
     cy.task('expectUpdateRecall', recallId)
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallDecision.makeNoDecision()
     assessRecallDecision.addNoDetail()
     assessRecallDecision.clickContinue()
-    const assessRecallStop = assessRecallStopPage.verifyOnPage({ firstLastName })
+    const assessRecallStop = assessRecallStopPage.verifyOnPage({ personName: firstLastName })
     assessRecallStop.assertElementHasText({ qaAttr: 'managerName', textToFind: '[name]' })
     assessRecallStop.assertElementHasText({ qaAttr: 'managerPhone', textToFind: '[phone]' })
   })
@@ -211,7 +244,7 @@ context('Assess a recall', () => {
 
   it('errors - current prison', () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, firstLastName })
+    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName: firstLastName })
     assessRecallPrison.clickContinue()
     assessRecallPrison.assertErrorMessage({
       fieldName: 'currentPrison',

@@ -13,13 +13,10 @@ export const validateLicence = ({
   let errors
   let unsavedValues
   let valuesToSave
+  let redirectToPage
 
-  const {
-    licenceConditionsBreached,
-    reasonsForRecall,
-    reasonsForRecallOtherDetail,
-    hasExistingReasonsForRecallOtherDetail,
-  } = requestBody
+  const { licenceConditionsBreached, reasonsForRecall, reasonsForRecallOtherDetail, inCustody,
+    hasExistingReasonsForRecallOtherDetail, } = requestBody
   let reasonsForRecallList: string[] | string = reasonsForRecall
   if (reasonsForRecall && !Array.isArray(reasonsForRecall)) {
     reasonsForRecallList = [reasonsForRecall]
@@ -66,6 +63,12 @@ export const validateLicence = ({
       reasonsForRecall: reasonsForRecallList as reasonForRecall[],
       reasonsForRecallOtherDetail: otherSelected ? (reasonsForRecallOtherDetail as string) : otherDetailIfNotSelected,
     }
+    redirectToPage = inCustody ? 'assess-prison' : 'assess-custody-status'
   }
-  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'assess-prison', urlInfo) }
+  return {
+    errors,
+    valuesToSave,
+    unsavedValues,
+    redirectToPage: !errors ? makeUrl(urlInfo.fromPage || redirectToPage, urlInfo) : undefined,
+  }
 }

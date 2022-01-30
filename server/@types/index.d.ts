@@ -57,6 +57,7 @@ export type ViewName =
   | 'assessPrison'
   | 'assessRecall'
   | 'assessLicence'
+  | 'assessCustodyStatus'
   | 'assessDownload'
   | 'assessEmail'
   | 'recallCustodyStatus'

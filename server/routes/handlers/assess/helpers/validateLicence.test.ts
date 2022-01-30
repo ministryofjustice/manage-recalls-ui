@@ -16,19 +16,39 @@ describe('validateLicence', () => {
     })
   })
 
-  it('redirects to assess prison page if fromPage not supplied', () => {
+  it('redirects to custody status page if not in custody and fromPage not supplied', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
     }
     const { redirectToPage } = validateLicence({ requestBody, urlInfo })
-    expect(redirectToPage).toEqual('/recalls/assess-prison')
+    expect(redirectToPage).toEqual('/recalls/assess-custody-status')
   })
 
-  it('redirects to fromPage if supplied', () => {
+  it('redirects to fromPage if supplied and not in custody', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
+    }
+    const { redirectToPage } = validateLicence({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
+    expect(redirectToPage).toEqual('/recalls/view-recall')
+  })
+
+  it('redirects to prison page if in custody and fromPage not supplied', () => {
+    const requestBody = {
+      licenceConditionsBreached: 'one, two',
+      reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
+      inCustody: '1',
+    }
+    const { redirectToPage } = validateLicence({ requestBody, urlInfo })
+    expect(redirectToPage).toEqual('/recalls/assess-prison')
+  })
+
+  it('redirects to fromPage if supplied and in custody', () => {
+    const requestBody = {
+      licenceConditionsBreached: 'one, two',
+      reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
+      inCustody: '1',
     }
     const { redirectToPage } = validateLicence({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
     expect(redirectToPage).toEqual('/recalls/view-recall')

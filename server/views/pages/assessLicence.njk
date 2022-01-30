@@ -33,6 +33,9 @@
         <div class="govuk-grid-column-full">
             <form novalidate action="{{ makeUrl('assess-licence', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                {% if recall.inCustody == true %}
+                    <input type="hidden" name="inCustody" value="1" />
+                {% endif %}
                 {{ govukTextarea({
                     name: "licenceConditionsBreached",
                     id: "licenceConditionsBreached",
