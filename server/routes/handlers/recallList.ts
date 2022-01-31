@@ -4,7 +4,7 @@ import { buildAppInsightsClient } from '../../utils/azureAppInsights'
 import { getRecallList } from '../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import logger from '../../../logger'
-import { sortCompletedList, sortToDoList } from './helpers/dates/sort'
+import { sortCompletedList, sortNotInCustodyList, sortToDoList } from './helpers/dates/sort'
 import { formatName } from './helpers'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
@@ -43,16 +43,20 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     }
     const toDoList = [] as RecallResponse[]
     const completed = [] as RecallResponse[]
-    successful.forEach(recallResult => {
-      if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recallResult.status)) {
-        completed.push(recallResult)
+    const notInCustody = [] as RecallResponse[]
+    successful.forEach(recall => {
+      if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recall.status)) {
+        completed.push(recall)
+      } else if (recall.inCustody === false) {
+        notInCustody.push(recall)
       } else {
-        toDoList.push(recallResult)
+        toDoList.push(recall)
       }
     })
     res.locals.results = {
       toDo: sortToDoList(toDoList),
       completed: sortCompletedList(completed),
+      notInCustody: sortNotInCustodyList(notInCustody),
     }
     if (failed.length) {
       res.locals.errors = res.locals.errors || []
