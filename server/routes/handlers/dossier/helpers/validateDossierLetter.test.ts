@@ -32,6 +32,20 @@ describe('validateDossierLetter', () => {
     expect(valuesToSave).toEqual({
       additionalLicenceConditions: false,
       differentNomsNumber: false,
+    })
+  })
+
+  it('returns empty strings for detail fields No is submitted for both and they have existing values', () => {
+    const requestBody = {
+      additionalLicenceConditions: 'NO',
+      differentNomsNumber: 'NO',
+      hasExistingAdditionalLicenceConditionsDetail: '1',
+      hasExistingDifferentNomsNumberDetail: '1',
+    }
+    const { valuesToSave } = validateDossierLetter({ requestBody, urlInfo })
+    expect(valuesToSave).toEqual({
+      additionalLicenceConditions: false,
+      differentNomsNumber: false,
       additionalLicenceConditionsDetail: '',
       differentNomsNumberDetail: '',
     })

@@ -62,6 +62,21 @@ describe('validateLicence', () => {
     })
   })
 
+  it('returns an empty string for Other detail if it previously had a value, and Other is not selected', () => {
+    const requestBody = {
+      licenceConditionsBreached: 'one, two',
+      reasonsForRecall: ['FAILED_WORK_AS_APPROVED'],
+      hasExistingReasonsForRecallOtherDetail: '1',
+    }
+    const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })
+    expect(errors).toBeUndefined()
+    expect(valuesToSave).toEqual({
+      licenceConditionsBreached: 'one, two',
+      reasonsForRecall: ['FAILED_WORK_AS_APPROVED'],
+      reasonsForRecallOtherDetail: '',
+    })
+  })
+
   it('returns no valuesToSave and all errors if nothing is submitted', () => {
     const requestBody = {}
     const { errors, valuesToSave } = validateLicence({ requestBody, urlInfo })

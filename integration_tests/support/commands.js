@@ -258,12 +258,25 @@ Cypress.Commands.add('assertSaveToRecallsApi', ({ url, method, bodyValues }) => 
       if (bodyValues) {
         const found = requests.some(req => {
           const requestBody = JSON.parse(req.request.body)
-          return Object.entries(bodyValues).every(([key, value]) => requestBody[key] === value)
+          return Object.entries(bodyValues).every(([key, value]) => {
+            if (Array.isArray(value)) {
+              return JSON.stringify(value) === JSON.stringify(requestBody[key])
+            }
+            return requestBody[key] === value
+          })
         })
         expect(found).to.equal(true)
       }
     } else {
       throw new Error(`assertApiRequestBody - request not found for url: ${url} and method: ${method}`)
     }
+  })
+})
+
+Cypress.Commands.add('assertRecallFieldsSavedToApi', ({ recallId, bodyValues }) => {
+  cy.assertSaveToRecallsApi({
+    url: `/recalls/${recallId}`,
+    method: 'PATCH',
+    bodyValues,
   })
 })

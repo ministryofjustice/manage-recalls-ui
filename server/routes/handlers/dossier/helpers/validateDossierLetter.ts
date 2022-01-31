@@ -12,6 +12,8 @@ export const validateDossierLetter = ({ requestBody, urlInfo }: ReqValidatorArgs
     additionalLicenceConditionsDetail,
     differentNomsNumber,
     differentNomsNumberDetail,
+    hasExistingAdditionalLicenceConditionsDetail,
+    hasExistingDifferentNomsNumberDetail,
   } = requestBody
   const isLicenceChoiceValid = ['YES', 'NO'].includes(additionalLicenceConditions)
   const isNomsChoiceValid = ['YES', 'NO'].includes(differentNomsNumber)
@@ -21,10 +23,6 @@ export const validateDossierLetter = ({ requestBody, urlInfo }: ReqValidatorArgs
   const nomsDetailMissing = isNomsYes && !differentNomsNumberDetail
   const nomsDetailInvalid =
     (isNomsYes && differentNomsNumberDetail && !isNomsNumberValid(differentNomsNumberDetail)) || false
-
-  // only use the detail fields if 'Yes' was checked; ignore them if 'No' was the last option checked
-  const licenceDetailCleaned = isLicenceYes ? additionalLicenceConditionsDetail : ''
-  const nomsDetailCleaned = isNomsYes ? differentNomsNumberDetail : ''
 
   if (!isLicenceChoiceValid || licenceDetailMissing || !isNomsChoiceValid || nomsDetailMissing || nomsDetailInvalid) {
     errors = []
@@ -71,17 +69,22 @@ export const validateDossierLetter = ({ requestBody, urlInfo }: ReqValidatorArgs
     }
     unsavedValues = {
       additionalLicenceConditions,
-      additionalLicenceConditionsDetail: licenceDetailCleaned,
+      additionalLicenceConditionsDetail,
       differentNomsNumber,
-      differentNomsNumberDetail: nomsDetailCleaned,
+      differentNomsNumberDetail,
     }
   }
   if (!errors) {
+    // in the case of no detail, only send an empty string to reset the detail field, if it has an existing value
+    const additionalLicenceConditionsDetailIfNo = hasExistingAdditionalLicenceConditionsDetail ? '' : undefined
+    const differentNomsNumberDetailIfNo = hasExistingDifferentNomsNumberDetail ? '' : undefined
     valuesToSave = {
       additionalLicenceConditions: isLicenceYes,
-      additionalLicenceConditionsDetail: licenceDetailCleaned,
+      additionalLicenceConditionsDetail: isLicenceYes
+        ? additionalLicenceConditionsDetail
+        : additionalLicenceConditionsDetailIfNo,
       differentNomsNumber: isNomsYes,
-      differentNomsNumberDetail: nomsDetailCleaned,
+      differentNomsNumberDetail: isNomsYes ? differentNomsNumberDetail : differentNomsNumberDetailIfNo,
     }
   }
   return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl('dossier-check', urlInfo) }

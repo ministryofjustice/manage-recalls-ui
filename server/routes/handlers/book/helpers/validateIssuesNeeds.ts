@@ -10,10 +10,13 @@ export const validateIssuesNeeds = ({ requestBody, urlInfo }: ReqValidatorArgs):
   const {
     contraband,
     contrabandDetail,
+    hasExistingContrabandDetail,
     vulnerabilityDiversity,
     vulnerabilityDiversityDetail,
+    hasExistingVulnerabilityDiversityDetail,
     arrestIssues,
     arrestIssuesDetail,
+    hasExistingArrestIssuesDetail,
     mappaLevel,
     notInCustody,
   } = requestBody
@@ -95,18 +98,18 @@ export const validateIssuesNeeds = ({ requestBody, urlInfo }: ReqValidatorArgs):
     }
   }
   if (!errors) {
-    // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
-    // Using blanks as server cannot handle nulls and will just not overwrite existing value
-    const contrabandDetailCleaned = contraband === 'YES' ? contrabandDetail : ''
-    const vulnerabilityDiversityDetailCleaned = vulnerabilityDiversity === 'YES' ? vulnerabilityDiversityDetail : ''
-    const arrestIssuesCleaned = arrestIssues === 'YES' ? arrestIssuesDetail : ''
+    // in the case of No + no detail, only send an empty string to reset the detail field, if it has an existing value
+    const contrabandDetailIfNo = hasExistingContrabandDetail ? '' : undefined
+    const vulnerabilityDiversityDetailIfNo = hasExistingVulnerabilityDiversityDetail ? '' : undefined
+    const arrestIssuesDetailIfNo = notInCustody && hasExistingArrestIssuesDetail ? '' : undefined
     valuesToSave = {
       contraband: contraband === 'YES',
-      contrabandDetail: contrabandDetailCleaned,
+      contrabandDetail: contraband === 'YES' ? contrabandDetail : contrabandDetailIfNo,
       vulnerabilityDiversity: vulnerabilityDiversity === 'YES',
-      vulnerabilityDiversityDetail: vulnerabilityDiversityDetailCleaned,
+      vulnerabilityDiversityDetail:
+        vulnerabilityDiversity === 'YES' ? vulnerabilityDiversityDetail : vulnerabilityDiversityDetailIfNo,
       arrestIssues: notInCustody ? arrestIssues === 'YES' : undefined,
-      arrestIssuesDetail: notInCustody ? arrestIssuesCleaned : undefined,
+      arrestIssuesDetail: notInCustody && arrestIssues === 'YES' ? arrestIssuesDetail : arrestIssuesDetailIfNo,
       mappaLevel: UpdateRecallRequest.mappaLevel[mappaLevel],
     }
   }

@@ -14,15 +14,18 @@ export const validateLicence = ({
   let unsavedValues
   let valuesToSave
 
-  const { licenceConditionsBreached, reasonsForRecall, reasonsForRecallOtherDetail } = requestBody
+  const {
+    licenceConditionsBreached,
+    reasonsForRecall,
+    reasonsForRecallOtherDetail,
+    hasExistingReasonsForRecallOtherDetail,
+  } = requestBody
   let reasonsForRecallList: string[] | string = reasonsForRecall
   if (reasonsForRecall && !Array.isArray(reasonsForRecall)) {
     reasonsForRecallList = [reasonsForRecall]
   }
-  const noOtherDetail =
-    Array.isArray(reasonsForRecallList) &&
-    reasonsForRecallList?.includes(reasonForRecall.OTHER) &&
-    !reasonsForRecallOtherDetail
+  const otherSelected = Array.isArray(reasonsForRecallList) && reasonsForRecallList?.includes(reasonForRecall.OTHER)
+  const noOtherDetail = otherSelected && !reasonsForRecallOtherDetail
   if (!licenceConditionsBreached || !reasonsForRecall || noOtherDetail) {
     errors = []
     if (!licenceConditionsBreached) {
@@ -56,10 +59,12 @@ export const validateLicence = ({
     }
   }
   if (!errors) {
+    // in the case of Other not being selected, only send an empty string to reset the Other detail field, if it has an existing value
+    const otherDetailIfNotSelected = hasExistingReasonsForRecallOtherDetail ? '' : undefined
     valuesToSave = {
       licenceConditionsBreached: licenceConditionsBreached as string,
       reasonsForRecall: reasonsForRecallList as reasonForRecall[],
-      reasonsForRecallOtherDetail: reasonsForRecallOtherDetail as string,
+      reasonsForRecallOtherDetail: otherSelected ? (reasonsForRecallOtherDetail as string) : otherDetailIfNotSelected,
     }
   }
   return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'assess-prison', urlInfo) }

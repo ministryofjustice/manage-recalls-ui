@@ -44,7 +44,9 @@
                             errorMessage: errorMessage(errors.vulnerabilityDiversityDetail)
                         }) }}
                     {% endset -%}
-
+                    {% if recall.vulnerabilityDiversityDetail %}
+                    <input type='hidden' name='hasExistingVulnerabilityDiversityDetail' value='1'>
+                    {% endif %}
                     {{ govukRadios({
                         idPrefix: "vulnerabilityDiversity",
                         name: "vulnerabilityDiversity",
@@ -86,6 +88,9 @@
                             errorMessage: errorMessage(errors.arrestIssuesDetail)
                         }) }}
                     {% endset -%}
+                    {% if recall.arrestIssuesDetail %}
+                        <input type='hidden' name='hasExistingArrestIssuesDetail' value='1'>
+                    {% endif %}
                     {{ govukRadios({
                         idPrefix: "arrestIssues",
                         name: "arrestIssues",
@@ -126,7 +131,9 @@
                             errorMessage: errorMessage(errors.contrabandDetail)
                         }) }}
                     {% endset -%}
-
+                    {% if recall.contrabandDetail %}
+                        <input type='hidden' name='hasExistingContrabandDetail' value='1'>
+                    {% endif %}
                     {{ govukRadios({
                         idPrefix: "contraband",
                         name: "contraband",

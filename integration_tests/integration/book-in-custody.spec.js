@@ -235,20 +235,39 @@ context('Book an "in-custody" recall', () => {
     ])
   })
 
-  it('errors - pre-cons questions are not answered', () => {
+  it('pre-cons - errors, detail', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
-    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallPreConsName.clickContinue()
-    recallPreConsName.assertErrorMessage({
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'pre-cons-name' })
+    cy.clickButton('Continue')
+    const heading = `How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`
+    cy.assertErrorMessage({
       fieldName: 'previousConvictionMainNameCategory',
-      summaryError: "How does Bobby Badger's name appear on the previous convictions sheet (pre-cons)?",
+      summaryError: heading,
     })
     // other name not supplied
-    recallPreConsName.selectOtherName()
-    recallPreConsName.clickContinue()
-    recallPreConsName.assertErrorMessage({
+    cy.selectRadio(heading, 'Other name')
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'previousConvictionMainName',
       summaryError: 'Enter the full name on the pre-cons',
+    })
+    // first + last selected, and previously Other was selected
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...newRecall,
+        previousConvictionMainNameCategory: 'OTHER',
+        previousConvictionMainName: 'Walter Holt',
+      },
+    })
+    cy.reload()
+    cy.selectRadio(heading, personName)
+    cy.clickButton('Continue')
+    cy.assertRecallFieldsSavedToApi({
+      recallId,
+      bodyValues: {
+        previousConvictionMainNameCategory: 'FIRST_LAST',
+        previousConvictionMainName: '',
+      },
     })
   })
 
@@ -399,9 +418,12 @@ context('Book an "in-custody" recall', () => {
     })
   })
 
-  it('User sees errors if issues & needs detail not provided', () => {
+  it('issues & needs detail', () => {
+    stubRefData()
     cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustody: false } })
+    cy.task('expectUpdateRecall', recallId)
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'issues-needs' })
+    // errors if detail not provided
     cy.selectRadio('Are there any vulnerability issues or diversity needs?', 'Yes')
     cy.selectRadio('Do you think Bobby Badger will bring contraband into prison?', 'Yes')
     cy.selectRadio('Are there any arrest issues?', 'Yes')
@@ -417,6 +439,36 @@ context('Book an "in-custody" recall', () => {
     cy.assertErrorMessage({
       fieldName: 'contrabandDetail',
       summaryError: 'Provide more detail on why you think Bobby Badger will bring contraband into prison',
+    })
+    // reset detail to empty string if user selects No, and there is existing detail
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...newRecall,
+        inCustody: false,
+        contraband: true,
+        contrabandDetail: 'Detail',
+        vulnerabilityDiversity: true,
+        vulnerabilityDiversityDetail: 'Detail',
+        arrestIssues: true,
+        arrestIssuesDetail: 'Detail',
+      },
+    })
+    cy.reload()
+    cy.selectRadio('Are there any vulnerability issues or diversity needs?', 'No')
+    cy.selectRadio('Do you think Bobby Badger will bring contraband into prison?', 'No')
+    cy.selectRadio('Are there any arrest issues?', 'No')
+    cy.selectFromDropdown('MAPPA level', recall.mappaLevelLabel)
+    cy.clickButton('Continue')
+    cy.assertRecallFieldsSavedToApi({
+      recallId,
+      bodyValues: {
+        contraband: false,
+        contrabandDetail: '',
+        vulnerabilityDiversity: false,
+        vulnerabilityDiversityDetail: '',
+        arrestIssues: false,
+        arrestIssuesDetail: '',
+      },
     })
   })
 
