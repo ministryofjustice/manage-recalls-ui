@@ -15,8 +15,13 @@ export const validateLicence = ({
   let valuesToSave
   let redirectToPage
 
-  const { licenceConditionsBreached, reasonsForRecall, reasonsForRecallOtherDetail, inCustody,
-    hasExistingReasonsForRecallOtherDetail, } = requestBody
+  const {
+    licenceConditionsBreached,
+    reasonsForRecall,
+    reasonsForRecallOtherDetail,
+    inCustody,
+    hasExistingReasonsForRecallOtherDetail,
+  } = requestBody
   let reasonsForRecallList: string[] | string = reasonsForRecall
   if (reasonsForRecall && !Array.isArray(reasonsForRecall)) {
     reasonsForRecallList = [reasonsForRecall]
