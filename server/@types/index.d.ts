@@ -1,4 +1,4 @@
-import { RecallDocument, RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
+import { RecallDocument, RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 import { ReferenceDataCategories } from '../referenceData'
 
@@ -162,7 +162,6 @@ export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
 }
 
 export interface PersonAndRecallResponse {
-  person: SearchResult
   recall: RecallResponse
 }
 

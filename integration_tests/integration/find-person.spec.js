@@ -31,6 +31,7 @@ context('Find a person', () => {
       summaryError: 'Enter a NOMIS number in the correct format',
     })
 
+    // Expect a single result returned
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('1 person found')

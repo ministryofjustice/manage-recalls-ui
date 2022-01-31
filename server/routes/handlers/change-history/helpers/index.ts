@@ -6,7 +6,6 @@ import {
   findCategoryInMissingDocumentsRecords,
   generatedDocMetaData,
 } from '../../documents/download/helpers'
-import { PersonAndRecallResponse } from '../../../../@types'
 import { DecoratedGeneratedDoc } from '../../../../@types/documents'
 
 export const uploaded = ({
@@ -39,14 +38,12 @@ export const uploaded = ({
 
 export const generated = ({
   sortedHistory,
-  personAndRecall,
+  recall,
 }: {
   sortedHistory: RecallDocument[]
-  personAndRecall: PersonAndRecallResponse
+  recall: RecallResponse
 }): DecoratedGeneratedDoc[] => {
-  const { person, recall } = personAndRecall
-  const { recallId, nomsNumber, bookingNumber } = recall
-  const { firstName, lastName } = person
+  const { recallId, nomsNumber, bookingNumber, firstName, lastName } = recall
   return sortedHistory.map((document: RecallDocument) =>
     generatedDocMetaData({
       recallId,

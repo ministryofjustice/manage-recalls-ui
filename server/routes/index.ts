@@ -4,7 +4,7 @@ import { findPerson } from './handlers/person/findPerson'
 import { createRecall } from './handlers/book/createRecall'
 import { recallList } from './handlers/recallList'
 import { uploadDocumentsFormHandler } from './handlers/documents/upload/uploadDocumentsFormHandler'
-import { viewWithRecallAndPerson } from './handlers/helpers/viewWithRecallAndPerson'
+import { viewWithRecall } from './handlers/helpers/viewWithRecall'
 import { uploadEmailFormHandler } from './handlers/documents/upload/uploadEmailFormHandler'
 import { handleRecallFormPost } from './handlers/helpers/handleRecallFormPost'
 import { validateDecision } from './handlers/assess/helpers/validateDecision'
@@ -60,23 +60,23 @@ export default function routes(router: Router): Router {
   router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
 
   // BOOK A RECALL
-  get(`${basePath}/licence-name`, viewWithRecallAndPerson('recallLicenceName'))
+  get(`${basePath}/licence-name`, viewWithRecall('recallLicenceName'))
   post(`${basePath}/licence-name`, handleRecallFormPost(validateLicenceName))
-  get(`${basePath}/pre-cons-name`, viewWithRecallAndPerson('recallPreConsName'))
+  get(`${basePath}/pre-cons-name`, viewWithRecall('recallPreConsName'))
   post(`${basePath}/pre-cons-name`, handleRecallFormPost(validatePreConsName))
-  get(`${basePath}/custody-status`, viewWithRecallAndPerson('recallCustodyStatus'))
+  get(`${basePath}/custody-status`, viewWithRecall('recallCustodyStatus'))
   post(`${basePath}/custody-status`, handleRecallFormPost(validateCustodyStatus))
-  get(`${basePath}/last-known-address`, viewWithRecallAndPerson('recallLastKnownAddress'))
+  get(`${basePath}/last-known-address`, viewWithRecall('recallLastKnownAddress'))
   post(`${basePath}/last-known-address`, handleRecallFormPost(validateLastKnownAddress))
-  get(`${basePath}/postcode-lookup`, viewWithRecallAndPerson('recallFindAddress'))
-  router.get(`${basePath}/postcode-results`, findAddressHandler, viewWithRecallAndPerson('recallFindAddressResults'))
+  get(`${basePath}/postcode-lookup`, viewWithRecall('recallFindAddress'))
+  router.get(`${basePath}/postcode-results`, findAddressHandler, viewWithRecall('recallFindAddressResults'))
   post(`${basePath}/postcode-results`, selectLookupAddressHandler)
-  get(`${basePath}/address-manual`, viewWithRecallAndPerson('recallAddressManual'))
+  get(`${basePath}/address-manual`, viewWithRecall('recallAddressManual'))
   post(`${basePath}/address-manual`, addLastKnownAddressHandler)
-  get(`${basePath}/address-list`, viewWithRecallAndPerson('recallAddressList'))
+  get(`${basePath}/address-list`, viewWithRecall('recallAddressList'))
   post(`${basePath}/address-list`, addAnotherAddressHandler)
   post(`${basePath}/address-list-delete`, deleteAddressHandler)
-  get(`${basePath}/request-received`, viewWithRecallAndPerson('recallRequestReceived'))
+  get(`${basePath}/request-received`, viewWithRecall('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
     uploadEmailFormHandler({
@@ -85,38 +85,38 @@ export default function routes(router: Router): Router {
       documentCategory: UploadDocumentRequest.category.RECALL_REQUEST_EMAIL,
     })
   )
-  get(`${basePath}/last-release`, viewWithRecallAndPerson('recallSentenceDetails'))
+  get(`${basePath}/last-release`, viewWithRecall('recallSentenceDetails'))
   post(`${basePath}/last-release`, handleRecallFormPost(validateSentenceDetails))
-  get(`${basePath}/prison-police`, viewWithRecallAndPerson('recallPrisonPolice'))
+  get(`${basePath}/prison-police`, viewWithRecall('recallPrisonPolice'))
   post(`${basePath}/prison-police`, handleRecallFormPost(validatePolice))
-  get(`${basePath}/issues-needs`, viewWithRecallAndPerson('recallIssuesNeeds'))
+  get(`${basePath}/issues-needs`, viewWithRecall('recallIssuesNeeds'))
   post(`${basePath}/issues-needs`, handleRecallFormPost(validateIssuesNeeds))
-  get(`${basePath}/probation-officer`, viewWithRecallAndPerson('recallProbationOfficer'))
+  get(`${basePath}/probation-officer`, viewWithRecall('recallProbationOfficer'))
   post(`${basePath}/probation-officer`, handleRecallFormPost(validateProbationOfficer))
-  get(`${basePath}/upload-documents`, viewWithRecallAndPerson('recallDocuments'))
+  get(`${basePath}/upload-documents`, viewWithRecall('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadDocumentsFormHandler)
-  get(`${basePath}/missing-documents`, viewWithRecallAndPerson('recallMissingDocuments'))
+  get(`${basePath}/missing-documents`, viewWithRecall('recallMissingDocuments'))
   post(`${basePath}/missing-documents`, addMissingDocumentRecordFormHandler)
-  get(`${basePath}/upload-document-version`, viewWithRecallAndPerson('recallUploadDocumentVersion'))
+  get(`${basePath}/upload-document-version`, viewWithRecall('recallUploadDocumentVersion'))
   post(`${basePath}/upload-document-version`, uploadDocumentVersionFormHandler)
-  get(`${basePath}/check-answers`, viewWithRecallAndPerson('recallCheckAnswers'))
+  get(`${basePath}/check-answers`, viewWithRecall('recallCheckAnswers'))
   post(`${basePath}/check-answers`, handleRecallFormPost(validateCheckAnswers))
-  get(`${basePath}/confirmation`, viewWithRecallAndPerson('recallConfirmation'))
+  get(`${basePath}/confirmation`, viewWithRecall('recallConfirmation'))
 
   // ASSESS A RECALL
   post(`${basePath}/assess-assign`, assignUser({ nextPageUrlSuffix: 'assess' }))
-  get(`${basePath}/assess`, viewWithRecallAndPerson('assessRecall'))
-  get(`${basePath}/assess-decision`, viewWithRecallAndPerson('assessDecision'))
+  get(`${basePath}/assess`, viewWithRecall('assessRecall'))
+  get(`${basePath}/assess-decision`, viewWithRecall('assessDecision'))
   post(`${basePath}/assess-decision`, handleRecallFormPost(validateDecision))
-  get(`${basePath}/assess-stop`, viewWithRecallAndPerson('assessStop'))
-  get(`${basePath}/assess-licence`, viewWithRecallAndPerson('assessLicence'))
+  get(`${basePath}/assess-stop`, viewWithRecall('assessStop'))
+  get(`${basePath}/assess-licence`, viewWithRecall('assessLicence'))
   post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence))
-  get(`${basePath}/assess-custody-status`, viewWithRecallAndPerson('assessCustodyStatus'))
+  get(`${basePath}/assess-custody-status`, viewWithRecall('assessCustodyStatus'))
   post(`${basePath}/assess-custody-status`, handleRecallFormPost(validateConfirmCustodyStatus))
-  get(`${basePath}/assess-prison`, viewWithRecallAndPerson('assessPrison'))
+  get(`${basePath}/assess-prison`, viewWithRecall('assessPrison'))
   post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison))
-  get('/persons/:nomsNumber/recalls/:recallId/assess-download', viewWithRecallAndPerson('assessDownload'))
-  get(`${basePath}/assess-email`, viewWithRecallAndPerson('assessEmail'))
+  get('/persons/:nomsNumber/recalls/:recallId/assess-download', viewWithRecall('assessDownload'))
+  get(`${basePath}/assess-email`, viewWithRecall('assessEmail'))
   post(
     `${basePath}/assess-email`,
     uploadEmailFormHandler({
@@ -126,17 +126,17 @@ export default function routes(router: Router): Router {
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
     })
   )
-  get(`${basePath}/assess-confirmation`, viewWithRecallAndPerson('assessConfirmation'))
+  get(`${basePath}/assess-confirmation`, viewWithRecall('assessConfirmation'))
 
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
-  get(`${basePath}/dossier-recall`, viewWithRecallAndPerson('dossierRecallInformation'))
-  get(`${basePath}/dossier-letter`, viewWithRecallAndPerson('dossierLetter'))
+  get(`${basePath}/dossier-recall`, viewWithRecall('dossierRecallInformation'))
+  get(`${basePath}/dossier-letter`, viewWithRecall('dossierLetter'))
   post(`${basePath}/dossier-letter`, handleRecallFormPost(validateDossierLetter))
-  get(`${basePath}/dossier-check`, viewWithRecallAndPerson('dossierCheck'))
-  get(`${basePath}/dossier-download`, viewWithRecallAndPerson('dossierDownload'))
+  get(`${basePath}/dossier-check`, viewWithRecall('dossierCheck'))
+  get(`${basePath}/dossier-download`, viewWithRecall('dossierDownload'))
   post(`${basePath}/dossier-download`, handleRecallFormPost(validateDossierDownload))
-  get(`${basePath}/dossier-email`, viewWithRecallAndPerson('dossierEmail'))
+  get(`${basePath}/dossier-email`, viewWithRecall('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
     uploadEmailFormHandler({
@@ -146,9 +146,9 @@ export default function routes(router: Router): Router {
       documentCategory: UploadDocumentRequest.category.DOSSIER_EMAIL,
     })
   )
-  get(`${basePath}/dossier-confirmation`, viewWithRecallAndPerson('dossierConfirmation'))
+  get(`${basePath}/dossier-confirmation`, viewWithRecall('dossierConfirmation'))
 
-  get(`${basePath}/generated-document-version`, viewWithRecallAndPerson('newGeneratedDocumentVersion'))
+  get(`${basePath}/generated-document-version`, viewWithRecall('newGeneratedDocumentVersion'))
   post(`${basePath}/generated-document-version`, newGeneratedDocumentVersion)
 
   // GENERATE AND DOWNLOAD A NEW RECALL NOTIFICATION, DOSSIER OR LETTER TO PRISON
@@ -157,20 +157,16 @@ export default function routes(router: Router): Router {
   // DOWNLOAD AN EXISTING UPLOADED DOCUMENT, EMAIL, OR GENERATED DOCUMENT
   get(`${basePath}/documents/:documentId`, downloadDocumentOrEmail)
 
-  get(`${basePath}/view-recall`, viewWithRecallAndPerson('viewFullRecall'))
+  get(`${basePath}/view-recall`, viewWithRecall('viewFullRecall'))
 
   // AUDIT / CHANGE HISTORY
   router.get(
     `${basePath}/change-history/document`,
     getDocumentChangeHistory,
-    viewWithRecallAndPerson('changeHistoryForDocument')
+    viewWithRecall('changeHistoryForDocument')
   )
-  router.get(
-    `${basePath}/change-history/field`,
-    getSingleFieldChangeHistory,
-    viewWithRecallAndPerson('changeHistoryForField')
-  )
-  router.get(`${basePath}/change-history`, getAllFieldsChangeHistory, viewWithRecallAndPerson('changeHistory'))
+  router.get(`${basePath}/change-history/field`, getSingleFieldChangeHistory, viewWithRecall('changeHistoryForField'))
+  router.get(`${basePath}/change-history`, getAllFieldsChangeHistory, viewWithRecall('changeHistory'))
 
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)
