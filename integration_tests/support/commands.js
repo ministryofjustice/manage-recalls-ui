@@ -119,6 +119,20 @@ Cypress.Commands.add('selectRadio', (groupLabel, value, opts = {}) => {
     })
 })
 
+Cypress.Commands.add('getRadioOptionByLabel', (groupLabel, value, opts = {}) => {
+  return cy
+    .get(opts.parent || 'body')
+    .contains('legend', groupLabel)
+    .parent('fieldset')
+    .then($fieldset =>
+      cy
+        .wrap($fieldset)
+        .contains('label', value)
+        .invoke('attr', 'for')
+        .then(id => cy.get(`#${id}`))
+    )
+})
+
 Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
   cy.get(opts.parent || 'body')
     .contains('legend', groupLabel)

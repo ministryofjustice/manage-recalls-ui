@@ -1,0 +1,66 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Assess a recall - Is the person in custody?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("assess-licence", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Assess a recall for {{ recall.fullName }}</span>
+
+            <form novalidate action="{{ makeUrl('assess-custody-status', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukRadios({
+                        idPrefix: "inCustody",
+                        name: "inCustody",
+                        fieldset: {
+                            legend: {
+                                text: "Is " + recall.fullName + " in custody?",
+                                classes: "govuk-fieldset__legend--l",
+                                isPageHeading: true
+                            }
+                        },
+                        items: [
+                            {
+                                value: "YES",
+                                text: 'Yes',
+                                checked: formValues.inCustody == 'YES'
+                            },
+                            {
+                                value: "NO",
+                                text: 'No',
+                                checked: recall.documentsGenerated.RECALL_NOTIFICATION and formValues.inCustody == 'NO'
+                            }
+                        ],
+                        errorMessage: errorMessage(errors.inCustody)
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                            data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

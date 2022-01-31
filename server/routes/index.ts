@@ -44,6 +44,7 @@ import { selectLookupAddressHandler } from './handlers/book/selectLookupAddressH
 import { addAnotherAddressHandler } from './handlers/book/addAnotherAddressHandler'
 import { deleteAddressHandler } from './handlers/book/deleteAddressHandler'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { validateConfirmCustodyStatus } from './handlers/assess/helpers/validateConfirmCustodyStatus'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -110,6 +111,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-stop`, viewWithRecallAndPerson('assessStop'))
   get(`${basePath}/assess-licence`, viewWithRecallAndPerson('assessLicence'))
   post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence))
+  get(`${basePath}/assess-custody-status`, viewWithRecallAndPerson('assessCustodyStatus'))
+  post(`${basePath}/assess-custody-status`, handleRecallFormPost(validateConfirmCustodyStatus))
   get(`${basePath}/assess-prison`, viewWithRecallAndPerson('assessPrison'))
   post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison))
   get('/persons/:nomsNumber/recalls/:recallId/assess-download', viewWithRecallAndPerson('assessDownload'))

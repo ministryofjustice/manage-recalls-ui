@@ -8,7 +8,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("assess-prison", urlInfo)
+        href: backLinkUrl("assess-prison" if recall.inCustody == true else "assess-custody-status", urlInfo)
     }) }}
 {% endblock %}
 
