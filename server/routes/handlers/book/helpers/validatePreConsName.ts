@@ -7,7 +7,8 @@ export const validatePreConsName = ({ requestBody, urlInfo }: ReqValidatorArgs):
   let unsavedValues
   let valuesToSave
 
-  const { previousConvictionMainNameCategory, previousConvictionMainName } = requestBody
+  const { previousConvictionMainNameCategory, previousConvictionMainName, hasExistingPreviousConvictionMainName } =
+    requestBody
   const isYesOther = previousConvictionMainNameCategory === 'OTHER'
   if (!previousConvictionMainNameCategory || (isYesOther && !previousConvictionMainName)) {
     errors = []
@@ -33,16 +34,12 @@ export const validatePreConsName = ({ requestBody, urlInfo }: ReqValidatorArgs):
     }
   }
   if (!errors) {
-    // If someone chooses Yes, and types a response, before choosing No, the response is still sent. This 'cleans' that.
-    // Using blanks as server cannot handle nulls and will just not overwrite existing value
-    let previousConvictionMainNameCleaned = ''
-    if (isYesOther) {
-      previousConvictionMainNameCleaned = previousConvictionMainName
-    }
+    // in the case of no detail, only send an empty string to reset the detail field, if it has an existing value
+    const previousConvictionMainNameIfNotOther = hasExistingPreviousConvictionMainName ? '' : undefined
     valuesToSave = {
       previousConvictionMainNameCategory:
         previousConvictionMainNameCategory as UpdateRecallRequest.previousConvictionMainNameCategory,
-      previousConvictionMainName: previousConvictionMainNameCleaned,
+      previousConvictionMainName: isYesOther ? previousConvictionMainName : previousConvictionMainNameIfNotOther,
     }
   }
   return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'custody-status', urlInfo) }

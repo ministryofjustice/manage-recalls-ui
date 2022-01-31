@@ -1,6 +1,7 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
+import { booleanToYesNo } from '../support/utils'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -233,7 +234,9 @@ context('Create a dossier', () => {
     dossierEmail.assertElementHasText({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL', textToFind: 'email.msg' })
   })
 
-  it('errors - letter page', () => {
+  it.only('letter page', () => {
+    const nomisQuestion = `Is ${personName} being held under a different NOMIS number to the one on the licence?`
+    // errors for missing fields
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -241,26 +244,52 @@ context('Create a dossier', () => {
         recallId,
       },
     })
-    const dossierLetter = dossierLetterPage.verifyOnPage({ nomsNumber, recallId })
-    dossierLetter.clickContinue()
-    dossierLetter.assertErrorMessage({
+    cy.task('expectUpdateRecall', recallId)
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-letter' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'additionalLicenceConditions',
       summaryError: 'Are there additional licence conditions?',
     })
-    dossierLetter.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'differentNomsNumber',
-      summaryError: 'Is Bobby Badger being held under a different NOMIS number to the one on the licence?',
+      summaryError: nomisQuestion,
     })
 
     // invalid NOMIS
-    dossierLetter.additionalLicenceConditions()
-    dossierLetter.addLicenceDetail()
-    dossierLetter.differentNomsNumber()
-    dossierLetter.addNomsDetail('123')
-    dossierLetter.clickContinue()
-    dossierLetter.assertErrorMessage({
+    cy.selectRadio('Are there additional licence conditions?', 'No')
+    cy.selectRadio(nomisQuestion, 'Yes')
+    cy.fillInput(`NOMIS number ${personName} is being held under`, '123', {
+      parent: '#conditional-differentNomsNumber',
+    })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'differentNomsNumberDetail',
       summaryError: 'Enter a NOMIS number in the correct format',
+    })
+
+    // reset detail to empty string if user doesn't select Other reason, and there is existing detail for it
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...emptyRecall,
+        additionalLicenceConditions: true,
+        additionalLicenceConditionsDetail: 'one, two',
+        differentNomsNumber: true,
+        differentNomsNumberDetail: 'AC3408303',
+      },
+    })
+    cy.reload()
+    cy.selectRadio('Are there additional licence conditions?', 'No')
+    cy.selectRadio(nomisQuestion, 'No')
+    cy.clickButton('Continue')
+    cy.assertRecallFieldsSavedToApi({
+      recallId,
+      bodyValues: {
+        additionalLicenceConditions: false,
+        additionalLicenceConditionsDetail: '',
+        differentNomsNumber: false,
+        differentNomsNumberDetail: '',
+      },
     })
   })
 })

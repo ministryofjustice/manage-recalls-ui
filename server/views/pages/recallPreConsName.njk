@@ -40,6 +40,9 @@
                             errorMessage: errorMessage(errors.previousConvictionMainName)
                         }) }}
                     {% endset -%}
+                    {% if recall.previousConvictionMainNameCategory == 'OTHER' and recall.previousConvictionMainName %}
+                        <input type='hidden' name='hasExistingPreviousConvictionMainName' value='1' />
+                    {% endif %}
                     {{ govukRadios({
                         idPrefix: "previousConvictionMainNameCategory",
                         name: "previousConvictionMainNameCategory",

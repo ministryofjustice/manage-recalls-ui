@@ -34,20 +34,6 @@ describe('validatePreConsName', () => {
     expect(redirectToPage).toEqual('/recalls/view-recall')
   })
 
-  it('returns no detail field and no errors if first + last name is submitted', () => {
-    const requestBody = {
-      previousConvictionMainNameCategory: 'FIRST_LAST',
-      previousConvictionMainName: 'Wayne Holt',
-    }
-    const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
-    expect(errors).toBeUndefined()
-    // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
-    expect(valuesToSave).toEqual({
-      previousConvictionMainName: '',
-      previousConvictionMainNameCategory: 'FIRST_LAST',
-    })
-  })
-
   it('returns no detail field and no errors if first + middle + last name is submitted', () => {
     const requestBody = {
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
@@ -55,7 +41,18 @@ describe('validatePreConsName', () => {
     }
     const { errors, valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
-    // NOTE - should be blank strings for detail fields, not null, so that existing DB values are overwritten
+    expect(valuesToSave).toEqual({
+      previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
+    })
+  })
+
+  it('returns empty string for detail field if it has an existing value and Other is not selected', () => {
+    const requestBody = {
+      previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
+      previousConvictionMainName: 'Wayne Holt',
+      hasExistingPreviousConvictionMainName: '1',
+    }
+    const { valuesToSave } = validatePreConsName({ requestBody, urlInfo })
     expect(valuesToSave).toEqual({
       previousConvictionMainName: '',
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',

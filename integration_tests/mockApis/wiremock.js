@@ -8,7 +8,9 @@ export default function wiremock(wiremockUrl) {
     return new Promise(resolve => {
       superagent.get(`${wiremockAdminUrl}/requests`, (err, res) => {
         const parsed = JSON.parse(res.text)
-        const reqs = parsed.requests.filter(entry => entry.request.url === url && entry.request.method === method)
+        const reqs = parsed.requests.filter(
+          entry => entry.request.url === url && entry.request.method === method.toUpperCase()
+        )
         resolve(reqs || null)
       })
     })

@@ -59,6 +59,9 @@
                         errorMessage: errorMessage(errors.reasonsForRecallOtherDetail)
                     }) }}
                 {% endset %}
+                {% if recall.reasonsForRecallOtherDetail %}
+                    <input type='hidden' name='hasExistingReasonsForRecallOtherDetail' value='1' />
+                {% endif %}
                 {% if referenceData.reasonsForRecall %}
                     {{ govukCheckboxes({
                         id: "reasonsForRecall",

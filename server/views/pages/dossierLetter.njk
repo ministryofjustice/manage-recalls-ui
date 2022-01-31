@@ -43,6 +43,10 @@
                         } if errors.additionalLicenceConditionsDetail else undefined
                     }) }}
                 {% endset -%}
+
+                {% if recall.additionalLicenceConditionsDetail %}
+                    <input type='hidden' name='hasExistingAdditionalLicenceConditionsDetail' value='1' />
+                {% endif %}
                 {{ govukRadios({
                     idPrefix: "additionalLicenceConditions",
                     name: "additionalLicenceConditions",
@@ -71,8 +75,6 @@
                         text: errors.additionalLicenceConditions.text
                     } if errors.additionalLicenceConditions else undefined
                 }) }}
-
-
                 {% set yesDetailHtml %}
                     {{ govukInput({
                         name: "differentNomsNumberDetail",
@@ -87,6 +89,9 @@
                         } if errors.differentNomsNumberDetail else undefined
                     }) }}
                 {% endset -%}
+                {% if recall.differentNomsNumberDetail %}
+                    <input type='hidden' name='hasExistingDifferentNomsNumberDetail' value='1' />
+                {% endif %}
                 {{ govukRadios({
                     idPrefix: "differentNomsNumber",
                     name: "differentNomsNumber",

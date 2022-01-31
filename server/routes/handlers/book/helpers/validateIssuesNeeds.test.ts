@@ -62,6 +62,27 @@ describe('validateIssuesNeeds', () => {
       vulnerabilityDiversity: false,
       arrestIssues: false,
       mappaLevel: 'LEVEL_3',
+    })
+  })
+
+  it('returns empty strings for detail fields if No is submitted and the detail fields have existing saved values', () => {
+    const requestBody = {
+      contraband: 'NO',
+      vulnerabilityDiversity: 'NO',
+      arrestIssues: 'NO',
+      mappaLevel: 'LEVEL_3',
+      notInCustody: '1',
+      hasExistingVulnerabilityDiversityDetail: '1',
+      hasExistingContrabandDetail: '1',
+      hasExistingArrestIssuesDetail: '1',
+    }
+    const { errors, valuesToSave } = validateIssuesNeeds({ requestBody, urlInfo })
+    expect(errors).toBeUndefined()
+    expect(valuesToSave).toEqual({
+      contraband: false,
+      vulnerabilityDiversity: false,
+      arrestIssues: false,
+      mappaLevel: 'LEVEL_3',
       arrestIssuesDetail: '',
       contrabandDetail: '',
       vulnerabilityDiversityDetail: '',

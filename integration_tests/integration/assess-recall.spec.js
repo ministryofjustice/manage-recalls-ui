@@ -173,17 +173,41 @@ context('Assess a recall', () => {
     assessRecallStop.assertElementHasText({ qaAttr: 'managerPhone', textToFind: '[phone]' })
   })
 
-  it('errors - licence details', () => {
+  it('licence details', () => {
+    // errors if fields not completed
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallLicence = assessRecallLicencePage.verifyOnPage({ nomsNumber, recallId, personName })
-    assessRecallLicence.clickContinue()
-    assessRecallLicence.assertErrorMessage({
+    cy.task('expectUpdateRecall', recallId)
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-licence' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'licenceConditionsBreached',
       summaryError: 'Enter the licence conditions breached',
     })
-    assessRecallLicence.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'reasonsForRecall',
       summaryError: 'Select reasons for recall',
+    })
+
+    // reset detail to empty string if user doesn't select Other reason, and there is existing detail for it
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...emptyRecall,
+        licenceConditionsBreached: 'Some',
+        reasonsForRecall: ['OTHER'],
+        reasonsForRecallOtherDetail: 'Detail',
+      },
+    })
+    cy.reload()
+    cy.selectCheckboxes('Reasons for recall', ['TRAVELLING_OUTSIDE_UK'], { findByValue: true })
+    // de-select Other checkbox
+    cy.contains('label', 'Other').click()
+    cy.clickButton('Continue')
+    cy.assertRecallFieldsSavedToApi({
+      recallId,
+      bodyValues: {
+        reasonsForRecall: ['TRAVELLING_OUTSIDE_UK'],
+        reasonsForRecallOtherDetail: '',
+      },
     })
   })
 
