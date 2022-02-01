@@ -21,9 +21,9 @@ export const validateAddressManual = (
     town: townUnprocessed,
     postcode: postcodeUnprocessed,
   } = requestBody
-  const line1 = line1Unprocessed?.trim()
-  const line2 = line2Unprocessed?.trim()
-  const town = townUnprocessed?.trim()
+  const line1 = line1Unprocessed?.trim().toUpperCase()
+  const line2 = line2Unprocessed?.trim().toUpperCase()
+  const town = townUnprocessed?.trim().toUpperCase()
 
   const postcode = isString(postcodeUnprocessed) ? normalisePostcode(postcodeUnprocessed) : undefined
   // check again if it's an empty string as spaces have been removed
