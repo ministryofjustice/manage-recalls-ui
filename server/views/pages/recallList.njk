@@ -81,12 +81,11 @@
                         <tbody class="govuk-table__body" data-qa="search-results">
                         {% for result in results.completed %}
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                                <td class="govuk-table__cell"
-                                    data-qa="name">{{ result.fullName }}</td>
+                                <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
                                 <td class="govuk-table__cell" data-qa="completedDate">
                                     {% if result.status == 'DOSSIER_ISSUED'%}{{ result.dossierEmailSentDate | dateTime }}{% elif result.status == 'STOPPED'%}{{ result.lastUpdatedDateTime | dateOnly }}{% endif %}
                                 </td>
-                                <td class="govuk-table__cell" data-qa="assignedTo">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
+                                <td class="govuk-table__cell" data-qa="status">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
                                 <td class="govuk-table__cell">
                                     <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=completed' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                 </td>
@@ -98,21 +97,61 @@
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
             {% endset -%}
+
+            {% set notInCustodyHtml %}
+                {% if results and results.notInCustody.length > 0 %}
+                    <table class="govuk-table" data-qa='notInCustody'>
+                        <caption class="govuk-table__caption govuk-table__caption--l" data-qa="notInCustody-list-heading">
+                            Not in custody
+                        </caption>
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header">Assigned to</th>
+                            <th scope="col" class="govuk-table__header">Status</th>
+                            <th scope="col" class="govuk-table__header">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="govuk-table__body" data-qa="search-results">
+                        {% for result in results.notInCustody %}
+                            <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
+                                <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
+                                <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
+                                <td class="govuk-table__cell" data-qa="status">{% if result.status == 'RECALL_NOTIFICATION_ISSUED'%}Assessment complete{% else %}Awaiting return to custody{% endif %}</td>
+                                <td class="govuk-table__cell">
+                                    <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class='govuk-body'>No recalls</p>
+                {% endif %}
+            {% endset -%}
+
             {{ govukTabs({
                 items: [
                     {
                         label: "To do (" + results.toDo.length + ")",
                         id: "to-do",
                         panel: {
-                        html: toDoHtml
-                    }
+                            html: toDoHtml
+                        }
                     },
                     {
                         label: "Completed (" + results.completed.length + ")",
                         id: "completed",
                         panel: {
-                        html: completedHtml
-                    }
+                            html: completedHtml
+                        }
+                    },
+                    {
+                        label: "Not in custody (" + results.notInCustody.length + ")",
+                        id: "notInCustody",
+                        panel: {
+                            html: notInCustodyHtml
+                        }
                     }
                 ]
             }) }}

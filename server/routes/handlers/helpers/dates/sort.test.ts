@@ -1,4 +1,4 @@
-import { sortListByDateField, sortToDoList } from './sort'
+import { sortListByDateField, sortNotInCustodyList, sortToDoList } from './sort'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 
 describe('sortToDoList', () => {
@@ -95,6 +95,14 @@ describe('sortCompletedList', () => {
       { dossierEmailSentDate: '2021-08-15T15:33:57.000Z' },
       { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
     ])
+  })
+})
+
+describe('sortNotInCustodyList', () => {
+  it('sorts by assessment complete first', () => {
+    const recalls = [{ status: 'BOOKED_ON' }, { status: 'RECALL_NOTIFICATION_ISSUED' }]
+    const sorted = sortNotInCustodyList(recalls as RecallResponse[])
+    expect(sorted).toEqual([{ status: 'RECALL_NOTIFICATION_ISSUED' }, { status: 'BOOKED_ON' }])
   })
 })
 

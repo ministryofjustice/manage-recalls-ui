@@ -79,8 +79,8 @@ export const uploadEmailFormHandler =
           req.session.unsavedValues = unsavedValues
           return res.redirect(303, req.originalUrl)
         }
-        await updateRecall(recallId, valuesToSave, user.token)
-        if (unassignUserFromRecall) {
+        const recall = await updateRecall(recallId, valuesToSave, user.token)
+        if (unassignUserFromRecall && recall.inCustody === true) {
           try {
             await unassignUserFromRecall(recallId, user.uuid, user.token)
           } catch (e) {
