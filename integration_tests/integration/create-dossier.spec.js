@@ -234,7 +234,7 @@ context('Create a dossier', () => {
     dossierEmail.assertElementHasText({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL', textToFind: 'email.msg' })
   })
 
-  it.only('letter page', () => {
+  it('letter page', () => {
     const nomisQuestion = `Is ${personName} being held under a different NOMIS number to the one on the licence?`
     // errors for missing fields
     cy.task('expectGetRecall', {
