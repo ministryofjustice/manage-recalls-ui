@@ -3,9 +3,9 @@ import { validateAddressManual } from './validateAddressManual'
 describe('validateAddressManual', () => {
   const recallId = '123'
   const requestBody = {
-    line1: '345 Porchester Road ',
-    line2: ' Southsea',
-    town: 'Portsmouth ',
+    line1: '345 PORCHESTER ROAD ',
+    line2: ' SOUTHSEA',
+    town: 'PORTSMOUTH ',
     postcode: 'PO14OY',
   }
 
@@ -14,9 +14,9 @@ describe('validateAddressManual', () => {
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallId: '123',
-      line1: '345 Porchester Road',
-      line2: 'Southsea',
-      town: 'Portsmouth',
+      line1: '345 PORCHESTER ROAD',
+      line2: 'SOUTHSEA',
+      town: 'PORTSMOUTH',
       postcode: 'PO1 4OY',
       source: 'MANUAL',
     })
@@ -27,9 +27,9 @@ describe('validateAddressManual', () => {
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallId: '123',
-      line1: '345 Porchester Road',
+      line1: '345 PORCHESTER ROAD',
       line2: '',
-      town: 'Portsmouth',
+      town: 'PORTSMOUTH',
       postcode: 'PO1 4OY',
       source: 'MANUAL',
     })
@@ -40,9 +40,9 @@ describe('validateAddressManual', () => {
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallId: '123',
-      line1: '345 Porchester Road',
-      line2: 'Southsea',
-      town: 'Portsmouth',
+      line1: '345 PORCHESTER ROAD',
+      line2: 'SOUTHSEA',
+      town: 'PORTSMOUTH',
       postcode: '',
       source: 'MANUAL',
     })
@@ -90,8 +90,8 @@ describe('validateAddressManual', () => {
   it('returns unsavedValues when there are errors', () => {
     const { errors, unsavedValues } = validateAddressManual(recallId, { ...requestBody, town: '' })
     expect(unsavedValues).toEqual({
-      line1: '345 Porchester Road',
-      line2: 'Southsea',
+      line1: '345 PORCHESTER ROAD',
+      line2: 'SOUTHSEA',
       postcode: 'PO1 4OY',
       town: '',
     })
