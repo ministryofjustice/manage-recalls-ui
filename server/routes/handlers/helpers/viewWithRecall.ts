@@ -7,20 +7,12 @@ import { referenceData } from '../../../referenceData'
 import { dossierDueDateString, recallAssessmentDueText } from './dates/format'
 import { enableDeleteDocuments } from '../documents/upload/helpers'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
-import logger from '../../../../logger'
 
 export const viewWithRecall =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
     const { nomsNumber, recallId } = req.params
-    const [recallResult] = await Promise.allSettled([getRecall(recallId, res.locals.user.token)])
-    if (recallResult.status === 'rejected') {
-      logger.info('Error getting recall', {
-        recallResult: (recallResult as PromiseRejectedResult).reason,
-      })
-      return res.render('pages/error')
-    }
-    const recall = recallResult.value
+    const recall = await getRecall(recallId, res.locals.user.token)
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
       missingDocumentsRecords: recall.missingDocumentsRecords,

@@ -161,10 +161,6 @@ export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
   enableDeleteDocuments: boolean
 }
 
-export interface PersonAndRecallResponse {
-  recall: RecallResponse
-}
-
 export interface RecallField {
   label?: string
   fieldType:
