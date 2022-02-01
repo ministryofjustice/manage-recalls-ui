@@ -17,14 +17,6 @@ describe('viewWithRecall', () => {
     jest.clearAllMocks()
   })
 
-  it('renders an error page if get recall errors', async () => {
-    ;(getRecall as jest.Mock).mockRejectedValue(new Error('timeout'))
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    await viewWithRecall('assessRecall')(req, res)
-    expect(res.render).toHaveBeenCalledWith('pages/error')
-  })
-
   it('should attach uploaded documents to res locals', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
     const req = mockGetRequest({ params: { recallId, nomsNumber } })
