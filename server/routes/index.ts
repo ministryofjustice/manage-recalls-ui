@@ -112,11 +112,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-stop`, viewWithRecall('assessStop'))
   get(`${basePath}/assess-licence`, viewWithRecall('assessLicence'))
   post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence))
-  router.get(
-    `${basePath}/assess-custody-status`,
-    readConfirmedCustodyStatus,
-    viewWithRecall('assessCustodyStatus')
-  )
+  router.get(`${basePath}/assess-custody-status`, readConfirmedCustodyStatus, viewWithRecall('assessCustodyStatus'))
   router.post(
     `${basePath}/assess-custody-status`,
     setConfirmedCustodyStatus,
@@ -135,11 +131,7 @@ export default function routes(router: Router): Router {
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
     })
   )
-  router.get(
-    `${basePath}/assess-confirmation`,
-    clearConfirmedCustodyStatus,
-    viewWithRecall('assessConfirmation')
-  )
+  router.get(`${basePath}/assess-confirmation`, clearConfirmedCustodyStatus, viewWithRecall('assessConfirmation'))
 
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
