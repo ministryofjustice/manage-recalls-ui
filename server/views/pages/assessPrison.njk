@@ -8,7 +8,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("assess-licence", urlInfo)
+        href: backLinkUrl("assess-custody-status" if custodyStatusWasConfirmed else "assess-licence", urlInfo)
     }) }}
 {% endblock %}
 

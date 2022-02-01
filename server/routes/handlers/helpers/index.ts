@@ -1,4 +1,5 @@
 import nunjucks from 'nunjucks'
+import { NextFunction, Request, Response } from 'express'
 import { FormError, KeyedFormErrors, NamedFormError, ObjectMap, UrlInfo } from '../../../@types'
 import { UploadedFileMetadata } from '../../../@types/documents'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
@@ -138,4 +139,19 @@ export const makeUrl = (routeSuffix: string, { fromPage, fromHash, basePath }: U
   const includeQuery = queryParams && routeSuffix !== fromPage
   const includeHash = fromHash && routeSuffix !== fromPage
   return `${basePath}${routeSuffix}${includeQuery ? `?${queryParams}` : ''}${includeHash ? `#${fromHash}` : ''}`
+}
+
+export const setConfirmedCustodyStatus = (req: Request, res: Response, next: NextFunction) => {
+  res.cookie('custodyStatusWasConfirmed', '1', { httpOnly: true })
+  next()
+}
+
+export const readConfirmedCustodyStatus = (req: Request, res: Response, next: NextFunction) => {
+  res.locals.custodyStatusWasConfirmed = req.cookies.custodyStatusWasConfirmed
+  next()
+}
+
+export const clearConfirmedCustodyStatus = (req: Request, res: Response, next: NextFunction) => {
+  res.clearCookie('custodyStatusWasConfirmed')
+  next()
 }

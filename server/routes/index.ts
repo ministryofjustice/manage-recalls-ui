@@ -45,6 +45,7 @@ import { addAnotherAddressHandler } from './handlers/book/addAnotherAddressHandl
 import { deleteAddressHandler } from './handlers/book/deleteAddressHandler'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateConfirmCustodyStatus } from './handlers/assess/helpers/validateConfirmCustodyStatus'
+import { clearConfirmedCustodyStatus, readConfirmedCustodyStatus, setConfirmedCustodyStatus } from './handlers/helpers'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -111,9 +112,13 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-stop`, viewWithRecall('assessStop'))
   get(`${basePath}/assess-licence`, viewWithRecall('assessLicence'))
   post(`${basePath}/assess-licence`, handleRecallFormPost(validateLicence))
-  get(`${basePath}/assess-custody-status`, viewWithRecall('assessCustodyStatus'))
-  post(`${basePath}/assess-custody-status`, handleRecallFormPost(validateConfirmCustodyStatus))
-  get(`${basePath}/assess-prison`, viewWithRecall('assessPrison'))
+  router.get(`${basePath}/assess-custody-status`, readConfirmedCustodyStatus, viewWithRecall('assessCustodyStatus'))
+  router.post(
+    `${basePath}/assess-custody-status`,
+    setConfirmedCustodyStatus,
+    handleRecallFormPost(validateConfirmCustodyStatus)
+  )
+  router.get(`${basePath}/assess-prison`, readConfirmedCustodyStatus, viewWithRecall('assessPrison'))
   post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison))
   get('/persons/:nomsNumber/recalls/:recallId/assess-download', viewWithRecall('assessDownload'))
   get(`${basePath}/assess-email`, viewWithRecall('assessEmail'))
@@ -126,7 +131,7 @@ export default function routes(router: Router): Router {
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
     })
   )
-  get(`${basePath}/assess-confirmation`, viewWithRecall('assessConfirmation'))
+  router.get(`${basePath}/assess-confirmation`, clearConfirmedCustodyStatus, viewWithRecall('assessConfirmation'))
 
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))

@@ -46,7 +46,7 @@
                             {
                                 value: "NO",
                                 text: 'No',
-                                checked: recall.documentsGenerated.RECALL_NOTIFICATION and formValues.inCustody == 'NO'
+                                checked: custodyStatusWasConfirmed and formValues.inCustody == 'NO'
                             }
                         ],
                         errorMessage: errorMessage(errors.inCustody)

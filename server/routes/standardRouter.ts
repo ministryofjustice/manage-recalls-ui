@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import cookieParser from 'cookie-parser'
 
 import auth from '../authentication/auth'
 import tokenVerifier from '../data/tokenVerification'
@@ -12,6 +13,7 @@ export default function standardRouter(userService: UserService): Router {
   router.use(auth.authenticationMiddleware(tokenVerifier))
   router.use(populateCurrentUser(userService))
   router.use(requestLogging)
+  router.use(cookieParser())
   router.use((req, res, next) => {
     if (typeof req.csrfToken === 'function') {
       res.locals.csrfToken = req.csrfToken()

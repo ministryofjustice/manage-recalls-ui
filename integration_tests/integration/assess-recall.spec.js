@@ -5,7 +5,6 @@ import { getIsoDateForMinutesAgo } from '../support/utils'
 const assessRecallPage = require('../pages/assessRecall')
 const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
-const assessRecallLicencePage = require('../pages/assessRecallLicence')
 const assessRecallEmailPage = require('../pages/assessRecallEmail')
 const assessRecallStopPage = require('../pages/assessRecallStop')
 
@@ -156,18 +155,35 @@ context('Assess a recall', () => {
     })
   })
 
-  it('pre-select "No" for custody status if returning to page', () => {
-    // pre-select 'No' if the user has downloaded the recall notification, because that implies they've already visited
-    // custody status and saved a value, then on a following page have clicked Back to return
+  it('pre-selects "No" for custody status if returning to page', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...emptyRecall,
         inCustody: false,
-        documents: [{ category: 'RECALL_NOTIFICATION', type: 'generated' }],
       },
     })
+    cy.task('expectUpdateRecall', recallId)
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'No').should('not.be.checked')
+    cy.selectRadio('Is Bobby Badger in custody?', 'No')
+    cy.clickButton('Continue')
+    cy.clickLink('Back')
     cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'No').should('be.checked')
+  })
+
+  it('returns to custody status page if it was previously viewed and user is in custody', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...emptyRecall,
+        inCustody: true,
+      },
+    })
+    cy.task('expectUpdateRecall', recallId)
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
+    cy.clickButton('Continue')
+    cy.clickLink('Back')
+    cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'Yes').should('be.checked')
   })
 
   it('errors - recall recommendation', () => {
