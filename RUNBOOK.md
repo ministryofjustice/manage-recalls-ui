@@ -41,6 +41,12 @@ The main application runs as a deployment named `manage-recalls-ui`. The applica
 
 See the `values-<tier>.yaml` files in the [helm_deploy](helm_deploy) directory for the current configuration of each tier.
 
+### Security and access control
+
+In order to gain access to the `manage-recalls-<tier>` namespaces in kubernetes you will need to be a member of the [ministryofjustice](https://github.com/orgs/ministryofjustice) github organisation and a member of the [ppud-replacement-devs](https://github.com/orgs/ministryofjustice/teams/ppud-replacement-devs) (github) team. Once joined, you should have access to the cluster within 24 hours.
+
+You will need to follow the [Cloud Platform User Guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#how-to-use-kubectl-to-connect-to-the-cluster) to setup your access from there - use instructions for connecting to the `live` cluster.
+
 ### Throttling and partial shutdown
 
 If there is an issue with the service where it is causing load on downstream services and it needs to be shutdown quickly the following command will reduce the number of pod replicas to zero:
@@ -61,12 +67,6 @@ Infrastructure wise, all three tiers are identical, but `prod` has the following
 ### Tools
 
 See the [scripts](scripts) directory and the documentation held in [docs](docs) for more details.
-
-## Security and access control
-
-In order to gain access to the `manage-recalls-<tier>` namespaces in kubernetes you will need to be a member of the [ministryofjustice](https://github.com/orgs/ministryofjustice) github organisation and a member of the [ppud-replacement-devs](https://github.com/orgs/ministryofjustice/teams/ppud-replacement-devs) (github) team. Once joined, you should have access to the cluster within 24 hours.
-
-You will need to follow the [Cloud Platform User Guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#how-to-use-kubectl-to-connect-to-the-cluster) to setup your access from there - use instructions for connecting to the `live` cluster.
 
 ## System configuration
 
