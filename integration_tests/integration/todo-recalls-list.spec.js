@@ -271,45 +271,4 @@ describe('To do (recalls) list', () => {
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectRecallsSortOrder(['', '', '10 Dec at 15:33', '6 May at 16:33', '15 Aug', '15 Aug'])
   })
-
-  it('lists "not in custody" recalls on a separate tab', () => {
-    const recalls = [
-      {
-        ...getRecallResponse,
-        firstName: 'Jack',
-        lastName: 'Jones',
-        status: 'BOOKED_ON',
-        inCustody: false,
-        assignee: '123',
-        assigneeUserName: 'Mary Badger',
-      },
-      {
-        ...getRecallResponse,
-        status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustody: false,
-        assignee: '122',
-        assigneeUserName: 'Jimmy Pud',
-      },
-      {
-        ...getRecallResponse,
-        firstName: 'Ben',
-        lastName: 'Adams',
-        status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustody: false,
-        assignee: '122',
-        assigneeUserName: 'Jimmy Pud',
-      },
-    ]
-
-    cy.task('expectListRecalls', {
-      expectedResults: recalls,
-    })
-    cy.visit('/')
-    cy.clickLink(`Not in custody (${recalls.length})`)
-    cy.assertTableColumnValues({
-      qaAttrTable: 'notInCustody',
-      qaAttrCell: 'status',
-      valuesToCompare: ['Assessment complete', 'Assessment complete', 'Awaiting return to custody'],
-    })
-  })
 })

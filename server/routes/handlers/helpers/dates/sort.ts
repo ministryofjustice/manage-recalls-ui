@@ -73,15 +73,3 @@ export const sortToDoList = (toDoList: RecallResponse[]) =>
     }
     return diffDatesForSort(dateA, dateB, false)
   })
-
-export const sortNotInCustodyList = (notInCustodyList: RecallResponse[]) => {
-  return notInCustodyList.sort((a: RecallResponse, b: RecallResponse): number => {
-    if (a.status === 'RECALL_NOTIFICATION_ISSUED' && b.status !== 'RECALL_NOTIFICATION_ISSUED') {
-      return -1
-    }
-    if (a.status !== 'RECALL_NOTIFICATION_ISSUED' && b.status === 'RECALL_NOTIFICATION_ISSUED') {
-      return 1
-    }
-    return 0
-  })
-}
