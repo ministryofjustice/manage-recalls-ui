@@ -41,6 +41,12 @@ The main application runs as a deployment named `manage-recalls-ui`. The applica
 
 See the `values-<tier>.yaml` files in the [helm_deploy](helm_deploy) directory for the current configuration of each tier.
 
+### Security and access control
+
+In order to gain access to the `manage-recalls-<tier>` namespaces in kubernetes you will need to be a member of the [ministryofjustice](https://github.com/orgs/ministryofjustice) github organisation and a member of the [ppud-replacement-devs](https://github.com/orgs/ministryofjustice/teams/ppud-replacement-devs) (github) team. Once joined, you should have access to the cluster within 24 hours.
+
+You will need to follow the [Cloud Platform User Guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#how-to-use-kubectl-to-connect-to-the-cluster) to setup your access from there - use instructions for connecting to the `live` cluster.
+
 ### Throttling and partial shutdown
 
 If there is an issue with the service where it is causing load on downstream services and it needs to be shutdown quickly the following command will reduce the number of pod replicas to zero:
@@ -56,17 +62,11 @@ We do not currently have a strategy in place to throttle requests.
 Infrastructure wise, all three tiers are identical, but `prod` has the following differences:
 
 - It will have more pod replicas of the main application deployment.
-- As this is live data, you **must** be SC cleared to work on it or access the data held within it.
+- As this is live data, you **must** be SC cleared if you need log into the cluster and interact with the application pods or data held within. You **do not** however need to be SC cleared to make changes to the application and deploy via the CI pipelines.
 
 ### Tools
 
 See the [scripts](scripts) directory and the documentation held in [docs](docs) for more details.
-
-## Security and access control
-
-In order to gain access to the `manage-recalls-<tier>` namespaces in kubernetes you will need to be a member of the [ministryofjustice](https://github.com/orgs/ministryofjustice) github organisation and a member of the [ppud-replacement-devs](https://github.com/orgs/ministryofjustice/teams/ppud-replacement-devs) (github) team. Once joined, you should have access to the cluster within 24 hours.
-
-You will need to follow the [Cloud Platform User Guide](https://user-guide.cloud-platform.service.justice.gov.uk/documentation/getting-started/kubectl-config.html#how-to-use-kubectl-to-connect-to-the-cluster) to setup your access from there - use instructions for connecting to the `live` cluster.
 
 ## System configuration
 
@@ -81,17 +81,7 @@ Secrets are stored within the `manage-recalls-<tier>` namespaces in kubernetes.
 
 Secrets with information from [cloud-platform-environments](https://github.com/ministryofjustice/cloud-platform-environments) will be managed via the terraform code in there.
 
-The contents of the `manage-recalls-ui` secret are handled in the following way:
-
-- `API_CLIENT_ID` - managed externally via tooling in the `hmpps-auth` project.
-- `API_CLIENT_SECRET` - managed externally via tooling in the `hmpps-auth` project.
-- `APPINSIGHTS_INSTRUMENTATIONKEY` - managed externally via the [dps-project-bootstrap](https://github.com/ministryofjustice/dps-project-bootstrap) tooling.
-- `MANAGER_NAME` - set manually by the [#ppud-replacement-devs](https://mojdt.slack.com/archives/C0223AGGQU8) team.
-- `MANAGER_PHONE` - set manually by the [#ppud-replacement-devs](https://mojdt.slack.com/archives/C0223AGGQU8) team.
-- `OS_PLACES_API_KEY` - set manually by the [#ppud-replacement-devs](https://mojdt.slack.com/archives/C0223AGGQU8) team.
-- `SESSION_SECRET` - managed externally via the [dps-project-bootstrap](https://github.com/ministryofjustice/dps-project-bootstrap) tooling.
-- `SYSTEM_CLIENT_ID` - legacy secret no longer used (and set blank) but still needed for the application to start up (due to code coming from the template repo).
-- `SYSTEM_CLIENT_SECRET` - legacy secret no longer used (and set blank) but still needed for the application to start up (due to code coming from the template repo).
+The contents of the `manage-recalls-ui` secret are detailed in [docs/env-vars.md](docs/env-vars.md).
 
 ## System backup and restore
 
@@ -127,11 +117,13 @@ Please see [Confluence](https://dsdmoj.atlassian.net/wiki/spaces/PUD/pages/36228
 
 #### Health of dependencies
 
-`/health` (i.e. https://manage-recalls.hmpps.service.justice.gov.uk/health) checks and reports the health of all services and components that the application depends upon. A HTTP 200 response code indicates that everything is healthy.
+`/health` (i.e. <https://manage-recalls.hmpps.service.justice.gov.uk/health>) checks and reports the health of all services and components that the application depends upon. A HTTP 200 response code indicates that everything is healthy.
+
+You can see the services that this application depends on within the [healthcheck file](server/services/healthCheck.ts#L58-L70).
 
 #### Health of service
 
-`/ping` (i.e. https://manage-recalls.hmpps.service.justice.gov.uk/ping) indicates that the application is started up and is ready to process work. A HTTP 200 response code indicates that the application is healthy.
+`/ping` (i.e. <https://manage-recalls.hmpps.service.justice.gov.uk/ping>) indicates that the application is started up and is ready to process work. A HTTP 200 response code indicates that the application is healthy.
 
 ## Operational tasks
 
@@ -144,7 +136,7 @@ We use CircleCI to manage deployments (see [.circleci/config.yml](.circleci/conf
 
 ### Troubleshooting
 
-Please see [Confluence](https://dsdmoj.atlassian.net/wiki/spaces/PUD/pages/3622830168/Monitoring+Operability#Direct-Log-Access-etc.-with-kubectl-(e.g.-Debugging-an-Application-That-Fails-to-Start)) for some generic troubleshooting notes.
+Please see [Confluence](<https://dsdmoj.atlassian.net/wiki/spaces/PUD/pages/3622830168/Monitoring+Operability#Direct-Log-Access-etc.-with-kubectl-(e.g.-Debugging-an-Application-That-Fails-to-Start)>) for some generic troubleshooting notes.
 
 ## Maintenance tasks
 
