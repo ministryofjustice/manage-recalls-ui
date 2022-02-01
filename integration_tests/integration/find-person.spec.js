@@ -1,4 +1,9 @@
-import { getRecallsResponse, getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
+import {
+  getRecallsResponse,
+  getRecallResponse,
+  getEmptyRecallResponse,
+  getPrisonerResponse,
+} from '../mockApis/mockResponses'
 import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 
@@ -31,6 +36,8 @@ context('Find a person', () => {
       summaryError: 'Enter a NOMIS number in the correct format',
     })
 
+    // Expect a single result returned
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber, expectedResults: getRecallsResponse })
     homePage.searchFor(nomsNumber)
     homePage.expectSearchResultsCountText('1 person found')

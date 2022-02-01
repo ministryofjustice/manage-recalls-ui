@@ -1,10 +1,13 @@
 // @ts-nocheck
-import { uploadRecallDocument, getRecall, setDocumentCategory } from '../../../../clients/manageRecallsApiClient'
+import {
+  uploadRecallDocument,
+  getRecall,
+  setDocumentCategory,
+  getPrisonerByNomsNumber,
+} from '../../../../clients/manageRecallsApiClient'
 import { categoriseFiles } from './categoriseFiles'
-import { getPerson } from '../../helpers/personCache'
 
 jest.mock('../../../../clients/manageRecallsApiClient')
-jest.mock('../../helpers/personCache')
 
 describe('categoriseFiles', () => {
   let req
@@ -107,7 +110,7 @@ describe('categoriseFiles', () => {
         },
       ],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res = {
       ...res,
       locals: {
@@ -196,7 +199,7 @@ describe('categoriseFiles', () => {
         },
       ],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res = {
       ...res,
       locals: {
@@ -238,7 +241,7 @@ describe('categoriseFiles', () => {
         },
       ],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res = {
       ...res,
       locals: {

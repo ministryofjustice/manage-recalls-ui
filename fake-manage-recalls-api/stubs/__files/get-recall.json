@@ -2,6 +2,8 @@
   "firstName": "Bobby",
   "middleNames": "John",
   "lastName": "Badger",
+  "dateOfBirth": "1999-05-28",
+  "croNumber": "1234/56A",
   "assignee": "11111111-1111-1111-1111-111111111111",
   "assigneeUserName": "Jimmy Pud",
   "createdByUserId": "11111111-1111-1111-1111-111111111111",

@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { getDocumentChangeHistory } from './getDocumentChangeHistory'
-import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApiClient'
-import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
+import { getDocumentCategoryHistory, getRecall } from '../../../clients/manageRecallsApiClient'
 
 jest.mock('../../../clients/manageRecallsApiClient')
-jest.mock('../helpers/fetch/getPersonAndRecall')
 
 describe('getDocumentChangeHistory', () => {
   let req: Request
@@ -22,38 +20,34 @@ describe('getDocumentChangeHistory', () => {
       },
     } as unknown as Response
     next = jest.fn()
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({
-      person: {
-        firstName: 'Wesley',
-        lastName: 'Holt',
-      },
-      recall: {
-        recallId: '456',
-        nomsNumber: '123',
-        bookingNumber: 'A1234AB',
-        missingDocumentsRecords: [
-          {
-            categories: ['LICENCE', 'OASYS_RISK_ASSESSMENT'],
-            createdByUserName: 'Bobby Badger',
-            createdDateTime: '2021-10-05T08:11:34.000Z',
-            details: 'Chased',
-            emailId: '123',
-            emailFileName: 'email.msg',
-            missingDocumentsRecordId: '456',
-            version: 2,
-          },
-          {
-            categories: ['PART_A_RECALL_REPORT'],
-            createdByUserName: 'Bobby Badger',
-            createdDateTime: '2021-10-05T08:11:34.000Z',
-            details: 'Chased',
-            emailId: '123',
-            emailFileName: 'email.msg',
-            missingDocumentsRecordId: '456',
-            version: 2,
-          },
-        ],
-      },
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      recallId: '456',
+      nomsNumber: '123',
+      firstName: 'Wesley',
+      lastName: 'Holt',
+      bookingNumber: 'A1234AB',
+      missingDocumentsRecords: [
+        {
+          categories: ['LICENCE', 'OASYS_RISK_ASSESSMENT'],
+          createdByUserName: 'Bobby Badger',
+          createdDateTime: '2021-10-05T08:11:34.000Z',
+          details: 'Chased',
+          emailId: '123',
+          emailFileName: 'email.msg',
+          missingDocumentsRecordId: '456',
+          version: 2,
+        },
+        {
+          categories: ['PART_A_RECALL_REPORT'],
+          createdByUserName: 'Bobby Badger',
+          createdDateTime: '2021-10-05T08:11:34.000Z',
+          details: 'Chased',
+          emailId: '123',
+          emailFileName: 'email.msg',
+          missingDocumentsRecordId: '456',
+          version: 2,
+        },
+      ],
     })
   })
 

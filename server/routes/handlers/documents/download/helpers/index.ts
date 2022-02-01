@@ -6,9 +6,9 @@ import {
 } from '../../../../../@types/documents'
 import { documentCategories } from '../../documentCategories'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { getPersonAndRecall } from '../../../helpers/fetch/getPersonAndRecall'
 import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api'
 import { sortList } from '../../../helpers'
+import { getRecall } from '../../../../../clients/manageRecallsApiClient'
 
 export const generatedDocCategoriesList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'generated')
@@ -90,23 +90,17 @@ export const generatedDocMetaData = ({
 
 export const generatedDocumentFileName = async ({
   recallId,
-  nomsNumber,
   category,
   token,
 }: {
   recallId: string
-  nomsNumber: string
   category: RecallDocument.category
   token: string
 }) => {
-  const { person, recall } = await getPersonAndRecall({
-    nomsNumber,
-    recallId,
-    token,
-  })
+  const recall = await getRecall(recallId, token)
   return getGeneratedDocFileName({
-    firstName: person.firstName,
-    lastName: person.lastName,
+    firstName: recall.firstName,
+    lastName: recall.lastName,
     bookingNumber: recall.bookingNumber,
     category,
   })

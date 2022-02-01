@@ -1,10 +1,8 @@
 // @ts-nocheck
-import { uploadRecallDocument, getRecall } from '../../../../../clients/manageRecallsApiClient'
-import { getPerson } from '../../../helpers/personCache'
+import { uploadRecallDocument, getRecall, getPrisonerByNomsNumber } from '../../../../../clients/manageRecallsApiClient'
 import { uploadMultipleNewDocuments } from './uploadMultipleNewDocuments'
 
 jest.mock('../../../../../clients/manageRecallsApiClient')
-jest.mock('../../../helpers/personCache')
 
 describe('uploadMultipleNewDocuments', () => {
   let req
@@ -56,7 +54,7 @@ describe('uploadMultipleNewDocuments', () => {
         },
       ],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res.render = (partial, data) => {
       expect(data.recall.documentsUploaded).toHaveLength(1)
       expect(data.recall.documentsUploaded[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
@@ -85,7 +83,7 @@ describe('uploadMultipleNewDocuments', () => {
         },
       ],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res.render = (partial, data) => {
       expect(data.recall.documents).toHaveLength(1)
       expect(data.recall.documents[0]).toHaveProperty('category', 'PREVIOUS_CONVICTIONS_SHEET')
@@ -212,7 +210,7 @@ describe('uploadMultipleNewDocuments', () => {
       bookingNumber: '123',
       documents: [],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     await uploadMultipleNewDocuments(req, res)
     expect(uploadRecallDocument).toHaveBeenCalledWith(
       '789',
@@ -241,7 +239,7 @@ describe('uploadMultipleNewDocuments', () => {
       bookingNumber: '123',
       documents: [],
     })
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res.json = () => {
       expect(req.session.errors).toEqual([
         {

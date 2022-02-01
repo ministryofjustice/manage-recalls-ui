@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
-import { createRecall as createRecallApi } from '../../../clients/manageRecallsApiClient'
-import { getPerson } from '../helpers/personCache'
+import { createRecall as createRecallApi, getPrisonerByNomsNumber } from '../../../clients/manageRecallsApiClient'
 
 export const createRecall = async (req: Request, res: Response): Promise<void> => {
   const { nomsNumber } = req.params
@@ -9,7 +8,10 @@ export const createRecall = async (req: Request, res: Response): Promise<void> =
     return
   }
   const { user } = res.locals
-  const { firstName, lastName, middleNames, croNumber, dateOfBirth } = await getPerson(nomsNumber, user.token)
+  const { firstName, lastName, middleNames, croNumber, dateOfBirth } = await getPrisonerByNomsNumber(
+    nomsNumber,
+    user.token
+  )
   const { recallId } = await createRecallApi(
     { firstName, lastName, middleNames, nomsNumber, croNumber, dateOfBirth },
     user.token

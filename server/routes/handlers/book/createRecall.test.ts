@@ -1,10 +1,8 @@
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { createRecall } from './createRecall'
-import { getPerson } from '../helpers/personCache'
-import { createRecall as createRecallApi } from '../../../clients/manageRecallsApiClient'
+import { createRecall as createRecallApi, getPrisonerByNomsNumber } from '../../../clients/manageRecallsApiClient'
 
 jest.mock('../../../clients/manageRecallsApiClient')
-jest.mock('../helpers/personCache')
 
 const userToken = { access_token: 'token-1', expires_in: 300 }
 
@@ -17,7 +15,7 @@ describe('createRecall', () => {
 
   it("redirects to pre cons if the person doesn't have a middle name", async () => {
     const recallId = '123'
-    ;(getPerson as jest.Mock).mockResolvedValue(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(createRecallApi as jest.Mock).mockResolvedValue({ recallId })
 
     const req = mockPostRequest({ params: { nomsNumber } })
@@ -30,7 +28,7 @@ describe('createRecall', () => {
 
   it('redirects to licence name if the person does have a middle name', async () => {
     const recallId = '123'
-    ;(getPerson as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
     ;(createRecallApi as jest.Mock).mockResolvedValue({ recallId })
 
     const req = mockPostRequest({ params: { nomsNumber } })
@@ -42,7 +40,7 @@ describe('createRecall', () => {
   })
 
   it("doesn't catch an error thrown if createRecall fails", async () => {
-    ;(getPerson as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
     ;(createRecallApi as jest.Mock).mockRejectedValue(new Error('Timeout'))
 
     const req = mockPostRequest({ params: { nomsNumber } })

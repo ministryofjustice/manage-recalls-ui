@@ -4,20 +4,26 @@
     "nomsNumber": "A1234AA",
     "status": "BOOKED_ON",
     "firstName": "Bobby",
-    "lastName": "Badger"
+    "lastName": "Badger",
+    "dateOfBirth": "1999-05-28",
+    "croNumber": "1234/56A"
   },
   {
     "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "nomsNumber": "A1234AA",
     "status": "BEING_BOOKED_ON",
     "firstName": "Dave",
-    "lastName": "Angel"
+    "lastName": "Angel",
+    "dateOfBirth": "2020-01-09",
+    "croNumber": "64747/24G"
   },
   {
     "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
     "nomsNumber": "A1234AA",
     "status": "RECALL_NOTIFICATION_ISSUED",
     "firstName": "Bob",
-    "lastName": "Monkfish"
+    "lastName": "Monkfish",
+    "dateOfBirth": "1975-12-30",
+    "croNumber": "98765/67C"
   }
 ]

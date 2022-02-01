@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
-import { prisonerByNomsNumber } from '../server/clients/manageRecallsApiClient'
+import { getPrisonerByNomsNumber } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import getPrisonerResponseJson from '../fake-manage-recalls-api/stubs/__files/get-prisoner.json'
 import { pactJsonResponse, pactGetRequest } from './pactTestUtils'
@@ -21,7 +21,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(getPrisonerResponseJson, 200),
       })
 
-      const actualResult = await prisonerByNomsNumber(nomsNumber, accessToken)
+      const actualResult = await getPrisonerByNomsNumber(nomsNumber, accessToken)
 
       expect(actualResult).toStrictEqual(getPrisonerResponseJson)
     })
@@ -35,7 +35,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await prisonerByNomsNumber(blankNomsNumber, accessToken)
+        await getPrisonerByNomsNumber(blankNomsNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(404)
       }
@@ -49,7 +49,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await prisonerByNomsNumber(nomsNumber, accessToken)
+        await getPrisonerByNomsNumber(nomsNumber, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }
