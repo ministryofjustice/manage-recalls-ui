@@ -7,28 +7,12 @@ import { referenceData } from '../../../referenceData'
 import { dossierDueDateString, recallAssessmentDueText } from './dates/format'
 import { enableDeleteDocuments } from '../documents/upload/helpers'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
-import { getPerson } from './personCache'
-import logger from '../../../../logger'
 
-const requiresPerson = (viewName: ViewName) =>
-  ['assessRecall', 'dossierRecallInformation', 'viewFullRecall', 'recallCheckAnswers'].includes(viewName)
-
-export const viewWithRecallAndPerson =
+export const viewWithRecall =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
     const { nomsNumber, recallId } = req.params
-    const [recallResult, personResult] = await Promise.allSettled([
-      getRecall(recallId, res.locals.user.token),
-      requiresPerson(viewName) ? getPerson(nomsNumber as string, res.locals.user.token) : undefined,
-    ])
-    if (recallResult.status === 'rejected' || personResult.status === 'rejected') {
-      logger.info('Error getting recall or person', {
-        personResult: (personResult as PromiseRejectedResult).reason,
-        recallResult: (recallResult as PromiseRejectedResult).reason,
-      })
-      return res.render('pages/error')
-    }
-    const recall = recallResult.value
+    const recall = await getRecall(recallId, res.locals.user.token)
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
       missingDocumentsRecords: recall.missingDocumentsRecords,
@@ -43,10 +27,6 @@ export const viewWithRecallAndPerson =
       ...recall,
       ...decoratedDocs,
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
-    }
-    if (personResult.value) {
-      const { croNumber, dateOfBirth } = personResult.value
-      res.locals.recall = { ...res.locals.recall, ...{ nomsNumber, croNumber, dateOfBirth } }
     }
     // get values to preload into form inputs
     res.locals.formValues = getFormValues({

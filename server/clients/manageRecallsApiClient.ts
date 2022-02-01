@@ -24,7 +24,7 @@ import { GenerateDocumentRequest } from '../@types/manage-recalls-api/models/Gen
 import { FieldAuditEntry } from '../@types/manage-recalls-api/models/FieldAuditEntry'
 import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAuditSummary'
 
-export async function prisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
+export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
     path: `/prisoner/${nomsNumber}`,
     headers: { Accept: 'application/json' },

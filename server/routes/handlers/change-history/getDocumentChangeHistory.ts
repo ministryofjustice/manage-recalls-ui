@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import { getDocumentCategoryHistory } from '../../../clients/manageRecallsApiClient'
+import { getDocumentCategoryHistory, getRecall } from '../../../clients/manageRecallsApiClient'
 import { findDocCategory } from '../documents/upload/helpers'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { isString, sortList } from '../helpers'
-import { getPersonAndRecall } from '../helpers/fetch/getPersonAndRecall'
 import { generated, uploaded } from './helpers'
 
 export const getDocumentChangeHistory = async (req: Request, res: Response, next: NextFunction) => {
@@ -29,28 +28,28 @@ export const getDocumentChangeHistory = async (req: Request, res: Response, next
       category: name,
       type,
     }
-    const [historyResponse, personAndRecallResponse] = await Promise.allSettled([
+    const [historyResponse, recallResponse] = await Promise.allSettled([
       getDocumentCategoryHistory(recallId, name, token),
-      getPersonAndRecall({ recallId, nomsNumber, token }),
+      getRecall(recallId, token),
     ])
     if (historyResponse.status === 'rejected') {
       throw historyResponse.reason
     }
-    if (personAndRecallResponse.status === 'rejected') {
-      throw personAndRecallResponse.reason
+    if (recallResponse.status === 'rejected') {
+      throw recallResponse.reason
     }
     const historyItems = historyResponse.value
-    const personAndRecall = personAndRecallResponse.value
+    const recall = recallResponse.value
     const sortedHistory = sortList<RecallDocument>(historyItems, 'version', false)
     res.locals.documentHistory.items =
       type === 'generated'
         ? generated({
             sortedHistory,
-            personAndRecall,
+            recall,
           })
         : uploaded({
             sortedHistory,
-            recall: personAndRecall.recall,
+            recall,
             category: name,
             standardFileName,
           })

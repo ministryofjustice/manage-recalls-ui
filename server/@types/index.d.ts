@@ -1,4 +1,4 @@
-import { RecallDocument, RecallResponse, SearchResult, UpdateRecallRequest } from './manage-recalls-api'
+import { RecallDocument, RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 import { ReferenceDataCategories } from '../referenceData'
 
@@ -159,11 +159,6 @@ export interface ConfirmationMessage {
 export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
   missingDocumentsRecords: DecoratedMissingDocumentsRecord[] // this is in both ancestor types, so override to get the correct one
   enableDeleteDocuments: boolean
-}
-
-export interface PersonAndRecallResponse {
-  person: SearchResult
-  recall: RecallResponse
 }
 
 export interface RecallField {

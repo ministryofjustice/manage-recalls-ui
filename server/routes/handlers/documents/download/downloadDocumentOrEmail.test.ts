@@ -1,19 +1,15 @@
 import { Request, Response } from 'express'
 import { downloadDocumentOrEmail } from './downloadDocumentOrEmail'
-import { getDocumentWithContents } from '../../../../clients/manageRecallsApiClient'
-import { getPersonAndRecall } from '../../helpers/fetch/getPersonAndRecall'
+import { getDocumentWithContents, getRecall } from '../../../../clients/manageRecallsApiClient'
 
 jest.mock('../../../../clients/manageRecallsApiClient')
-jest.mock('../../helpers/fetch/getPersonAndRecall')
 
 const nomsNumber = 'AA123AA'
 const recallId = '123'
 const documentId = '88'
 const bookingNumber = 'A1234AB'
-const person = {
-  firstName: 'Bobby',
-  lastName: 'Badger',
-}
+const firstName = 'Bobby'
+const lastName = 'Badger'
 
 describe('downloadDocumentOrEmail', () => {
   const expectedPdfContents = 'pdf contents'
@@ -37,7 +33,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'RECALL_NOTIFICATION',
       content: expectedPdfContents,
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -52,7 +48,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'DOSSIER',
       content: expectedPdfContents,
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -67,7 +63,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'LETTER_TO_PRISON',
       content: expectedPdfContents,
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -82,7 +78,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'REVOCATION_ORDER',
       content: expectedPdfContents,
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -97,7 +93,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'REASONS_FOR_RECALL',
       content: expectedPdfContents,
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -112,7 +108,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'PART_A_RECALL_REPORT',
       content: expectedPdfContents,
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="Part A.pdf"`)
@@ -125,7 +121,7 @@ describe('downloadDocumentOrEmail', () => {
       content: expectedPdfContents,
       fileName: 'report.pdf',
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="report.pdf"`)
@@ -138,7 +134,7 @@ describe('downloadDocumentOrEmail', () => {
       content: expectedPdfContents,
       fileName: 'email.eml',
     })
-    ;(getPersonAndRecall as jest.Mock).mockResolvedValue({ person, recall: { bookingNumber } })
+    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/octet-stream')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="email.eml"`)

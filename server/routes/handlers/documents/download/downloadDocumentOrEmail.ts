@@ -4,7 +4,7 @@ import { generatedDocumentFileName } from './helpers'
 import { documentCategories } from '../documentCategories'
 
 export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
-  const { recallId, nomsNumber } = req.params
+  const { recallId } = req.params
   const documentId = res.locals.documentId || req.params.documentId
   const {
     user: { token },
@@ -15,7 +15,7 @@ export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
     const formattedFileName =
       documentCategory.type === 'document'
         ? documentCategory.standardFileName || fileName
-        : await generatedDocumentFileName({ recallId, nomsNumber, category, token })
+        : await generatedDocumentFileName({ recallId, category, token })
 
     res.contentType('application/pdf')
     res.header('Content-Disposition', `attachment; filename="${formattedFileName}"`)

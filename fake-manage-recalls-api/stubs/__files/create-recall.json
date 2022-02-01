@@ -4,5 +4,7 @@
   "firstName": "Bobby",
   "middleNames": "John",
   "lastName": "Badger",
+  "croNumber": "1234/56A",
+  "dateOfBirth": "1999-05-28",
   "createdByUserId": "11111111-1111-1111-1111-111111111111"
 }

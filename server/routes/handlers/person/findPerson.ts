@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
-import { searchRecalls } from '../../../clients/manageRecallsApiClient'
+import { getPrisonerByNomsNumber, searchRecalls } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { getPerson } from '../helpers/personCache'
 import { isDefined, makeErrorObject, transformErrorMessages } from '../helpers'
 import { validateFindPerson } from './helpers/validateFindPerson'
 
@@ -13,7 +12,7 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
     if (isDefined(nomsNumber) && !errors) {
       const trimmedNoms = (nomsNumber as string).trim()
       const [personResult, recallsResult] = await Promise.allSettled([
-        getPerson((trimmedNoms as string).trim(), res.locals.user.token),
+        getPrisonerByNomsNumber((trimmedNoms as string).trim(), res.locals.user.token),
         searchRecalls({ nomsNumber: trimmedNoms }, res.locals.user.token),
       ])
 

@@ -1,7 +1,6 @@
 import { Response } from 'express'
 import { UrlInfo } from '../../../../../@types'
 import { RecallResponse } from '../../../../../@types/manage-recalls-api/models/RecallResponse'
-import { Prisoner } from '../../../../../@types/manage-recalls-api/models/Prisoner'
 import { enableDeleteDocuments, uploadedDocCategoriesList } from './index'
 import { decorateDocs } from '../../download/helpers/decorateDocs'
 import logger from '../../../../../../logger'
@@ -12,7 +11,6 @@ export const renderXhrResponse = async ({
   recallId,
   nomsNumber,
   urlInfo,
-  person,
   recall,
 }: {
   res: Response
@@ -20,7 +18,6 @@ export const renderXhrResponse = async ({
   recallId: string
   nomsNumber: string
   urlInfo: UrlInfo
-  person: Prisoner
   recall: RecallResponse
 }) => {
   let addToExistingUploads = false
@@ -37,7 +34,8 @@ export const renderXhrResponse = async ({
     nomsNumber,
     recallId,
     bookingNumber: recall.bookingNumber,
-    ...person,
+    firstName: recall.firstName,
+    lastName: recall.lastName,
   })
   res.render(
     'partials/uploadedDocumentsStatus',

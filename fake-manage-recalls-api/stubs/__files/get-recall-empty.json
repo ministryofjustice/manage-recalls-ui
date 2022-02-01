@@ -4,5 +4,7 @@
   "firstName": "Bobby",
   "lastName": "Badger",
   "middleNames": "Dave",
+  "dateOfBirth": "1999-05-28",
+  "croNumber": "1234/56A",
   "documents": []
 }

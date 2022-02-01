@@ -1,11 +1,9 @@
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../../testutils/mockRequestUtils'
 import { findPerson } from './findPerson'
-import { searchRecalls } from '../../../clients/manageRecallsApiClient'
-import { getPerson } from '../helpers/personCache'
+import { getPrisonerByNomsNumber, searchRecalls } from '../../../clients/manageRecallsApiClient'
 import getRecallsResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
 
 jest.mock('../../../clients/manageRecallsApiClient')
-jest.mock('../helpers/personCache')
 const nomsNumber = ' A1234AB '
 
 describe('findPerson', () => {
@@ -20,12 +18,12 @@ describe('findPerson', () => {
       nomsNumber,
       dateOfBirth: '1990-10-30',
     }
-    ;(getPerson as jest.Mock).mockReturnValueOnce(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockReturnValueOnce(person)
     ;(searchRecalls as jest.Mock).mockReturnValueOnce(getRecallsResponse)
     const req = mockGetRequest({ query: { nomsNumber } })
     const { res, next } = mockResponseWithAuthenticatedUser('token')
     await findPerson(req, res, next)
-    expect(getPerson).toHaveBeenCalledWith(nomsNumber.trim(), 'token')
+    expect(getPrisonerByNomsNumber).toHaveBeenCalledWith(nomsNumber.trim(), 'token')
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.persons).toEqual([person])
     expect(res.locals.persons[0].recalls).toEqual(getRecallsResponse)
@@ -38,7 +36,7 @@ describe('findPerson', () => {
       nomsNumber,
       dateOfBirth: '1990-10-30',
     }
-    ;(getPerson as jest.Mock).mockReturnValueOnce(person)
+    ;(getPrisonerByNomsNumber as jest.Mock).mockReturnValueOnce(person)
     ;(searchRecalls as jest.Mock).mockRejectedValue(new Error('test'))
     const req = mockGetRequest({ query: { nomsNumber } })
     const { res, next } = mockResponseWithAuthenticatedUser('token')
@@ -47,7 +45,7 @@ describe('findPerson', () => {
   })
 
   it('should render an error, if the person request fails', async () => {
-    ;(getPerson as jest.Mock).mockRejectedValue(new Error('test'))
+    ;(getPrisonerByNomsNumber as jest.Mock).mockRejectedValue(new Error('test'))
     ;(searchRecalls as jest.Mock).mockReturnValueOnce(getRecallsResponse)
     const req = mockGetRequest({ query: { nomsNumber } })
     const { res, next } = mockResponseWithAuthenticatedUser('token')
@@ -71,7 +69,7 @@ describe('findPerson', () => {
     const req = mockGetRequest({ query: { nomsNumber: 0 as unknown as string } })
     const { res, next } = mockResponseWithAuthenticatedUser('')
     await findPerson(req, res, next)
-    expect(getPerson).not.toHaveBeenCalled()
+    expect(getPrisonerByNomsNumber).not.toHaveBeenCalled()
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.errors).toEqual({
       list: [
@@ -94,7 +92,7 @@ describe('findPerson', () => {
     const req = mockGetRequest({ query: { nomsNumber: '' } })
     const { res, next } = mockResponseWithAuthenticatedUser('')
     await findPerson(req, res, next)
-    expect(getPerson).not.toHaveBeenCalled()
+    expect(getPrisonerByNomsNumber).not.toHaveBeenCalled()
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.errors).toEqual({
       list: [
