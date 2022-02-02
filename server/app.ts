@@ -15,7 +15,6 @@ import session from 'express-session'
 import connectRedis from 'connect-redis'
 import { randomBytes } from 'crypto'
 
-import promBundle from 'express-prom-bundle'
 import auth from './authentication/auth'
 import indexRoutes from './routes'
 import healthcheck from './services/healthCheck'
@@ -28,6 +27,7 @@ import type UserService from './services/userService'
 import { getStoredSessionData } from './middleware/getStoredSessionData'
 import { getRedisClient } from './clients/redis'
 import { appInsightsOperationId } from './middleware/appInsightsOperationId'
+import { metricsMiddleware } from './metricsApp'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
@@ -38,11 +38,6 @@ export default function createApp(userService: UserService): express.Application
   const app = express()
 
   // Setup prometheus metrics
-  const metricsMiddleware = promBundle({
-    includeMethod: true,
-    includePath: true,
-    normalizePath: [['^/assets/.+$', '/assets/#assetPath']],
-  })
   app.use(metricsMiddleware)
 
   Sentry.init({
