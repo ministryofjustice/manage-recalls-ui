@@ -15,7 +15,6 @@ import session from 'express-session'
 import connectRedis from 'connect-redis'
 import { randomBytes } from 'crypto'
 
-import promBundle from 'express-prom-bundle'
 import auth from './authentication/auth'
 import indexRoutes from './routes'
 import healthcheck from './services/healthCheck'
