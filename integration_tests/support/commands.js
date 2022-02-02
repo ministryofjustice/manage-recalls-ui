@@ -264,6 +264,15 @@ Cypress.Commands.add('getRowValuesFromTable', ({ rowQaAttr }, opts = {}) =>
     .then($els => Cypress.$.makeArray($els).map(el => el.innerText.trim()))
 )
 
+Cypress.Commands.add('assertTableColumnValues', ({ qaAttrTable, qaAttrCell, valuesToCompare }) =>
+  cy
+    .get(`[data-qa="${qaAttrTable}"]`)
+    .find(`[data-qa="${qaAttrCell}"]`)
+    .each((cell, index) => {
+      expect(cell.text().trim()).to.equal(valuesToCompare[index])
+    })
+)
+
 // ============================== CHECK REQUESTS SENT TO MANAGE RECALLS API ======================
 
 Cypress.Commands.add('assertSaveToRecallsApi', ({ url, method, bodyValues }) => {

@@ -37,6 +37,7 @@ describe('recallList', () => {
       nomsNumber: '456',
       status: 'RECALL_NOTIFICATION_ISSUED',
       dossierTargetDate: '2021-08-13',
+      inCustody: false,
     },
     {
       firstName: 'Bartholomew',
@@ -62,6 +63,15 @@ describe('recallList', () => {
       status: 'DOSSIER_ISSUED',
       dossierEmailSentDate: '2020-10-22',
     },
+    {
+      firstName: 'Barry',
+      lastName: 'Badger',
+      recallId: '3',
+      nomsNumber: '456',
+      status: 'BOOKED_ON',
+      dossierTargetDate: '2021-08-13',
+      inCustody: false,
+    },
   ]
 
   beforeEach(() => {
@@ -83,13 +93,14 @@ describe('recallList', () => {
         status: 'BEING_BOOKED_ON',
       },
       {
-        dossierTargetDate: '2021-08-13',
         firstName: 'Barry',
         fullName: 'Barry Badger',
         lastName: 'Badger',
-        nomsNumber: '456',
         recallId: '3',
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        nomsNumber: '456',
+        status: 'BOOKED_ON',
+        dossierTargetDate: '2021-08-13',
+        inCustody: false,
       },
       {
         firstName: 'Bobby',
@@ -99,6 +110,18 @@ describe('recallList', () => {
         recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
         recallId: '1',
         status: 'BOOKED_ON',
+      },
+    ])
+    expect(resp.locals.results.notInCustody).toEqual([
+      {
+        dossierTargetDate: '2021-08-13',
+        firstName: 'Barry',
+        fullName: 'Barry Badger',
+        lastName: 'Badger',
+        nomsNumber: '456',
+        recallId: '3',
+        status: 'RECALL_NOTIFICATION_ISSUED',
+        inCustody: false,
       },
     ])
     expect(resp.locals.results.completed).toEqual([
