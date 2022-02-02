@@ -70,7 +70,7 @@ COPY --from=build --chown=appuser:appgroup \
 ARG BUILD_NUMBER
 ENV SENTRY_RELEASE ${BUILD_NUMBER:-1_0_0}
 
-EXPOSE 3000
+EXPOSE 3000 3001
 ENV NODE_ENV='production'
 USER 2000
 
