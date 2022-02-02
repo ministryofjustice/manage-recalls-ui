@@ -297,7 +297,7 @@ describe('To do (recalls) list', () => {
         recallId: '3',
         firstName: 'Ben',
         lastName: 'Adams',
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'AWAITING_RETURN_TO_CUSTODY',
         inCustody: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',

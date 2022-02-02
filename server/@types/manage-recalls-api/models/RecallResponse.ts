@@ -283,6 +283,7 @@ export namespace RecallResponse {
     }
 
     export enum status {
+        AWAITING_RETURN_TO_CUSTODY = 'AWAITING_RETURN_TO_CUSTODY',
         BEING_BOOKED_ON = 'BEING_BOOKED_ON',
         BOOKED_ON = 'BOOKED_ON',
         DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',

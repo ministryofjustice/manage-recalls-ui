@@ -220,6 +220,11 @@ export const recallStatusTagProperties = (status: RecallResponse.status) => {
         ...defaults,
         text: 'Assessment complete',
       }
+    case RecallResponse.status.AWAITING_RETURN_TO_CUSTODY:
+      return {
+        ...defaults,
+        text: 'Awaiting return to custody',
+      }
     case RecallResponse.status.DOSSIER_IN_PROGRESS:
       return {
         ...defaults,

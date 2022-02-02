@@ -436,5 +436,12 @@ describe('recallStatusTagProperties', () => {
       text: 'Stopped',
       classes: `govuk-tag--red`,
     })
+    expect(recallStatusTagProperties(RecallResponse.status.AWAITING_RETURN_TO_CUSTODY)).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Awaiting return to custody',
+      classes: `govuk-tag--orange`,
+    })
   })
 })

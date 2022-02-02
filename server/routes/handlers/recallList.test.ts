@@ -48,6 +48,14 @@ describe('recallList', () => {
       dossierEmailSentDate: '2021-05-04',
     },
     {
+      firstName: 'Bootsy',
+      lastName: 'Badger',
+      recallId: '12',
+      nomsNumber: '123',
+      status: 'AWAITING_RETURN_TO_CUSTODY',
+      dossierTargetDate: '2021-08-13',
+    },
+    {
       firstName: 'Beyonce',
       lastName: 'Badger',
       recallId: '5',
@@ -122,6 +130,15 @@ describe('recallList', () => {
         recallId: '3',
         status: 'RECALL_NOTIFICATION_ISSUED',
         inCustody: false,
+      },
+      {
+        dossierTargetDate: '2021-08-13',
+        firstName: 'Bootsy',
+        fullName: 'Bootsy Badger',
+        lastName: 'Badger',
+        nomsNumber: '123',
+        recallId: '12',
+        status: 'AWAITING_RETURN_TO_CUSTODY',
       },
     ])
     expect(resp.locals.results.completed).toEqual([
