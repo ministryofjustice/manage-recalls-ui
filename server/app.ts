@@ -28,38 +28,14 @@ import type UserService from './services/userService'
 import { getStoredSessionData } from './middleware/getStoredSessionData'
 import { getRedisClient } from './clients/redis'
 import { appInsightsOperationId } from './middleware/appInsightsOperationId'
+import { metricsMiddleware } from './metricsApp'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
 const RedisStore = connectRedis(session)
-const metricsMiddleware = promBundle({
-  includeMethod: true,
-  includePath: true,
-  autoregister: false,
-  normalizePath: [['^/assets/.+$', '/assets/#assetPath']],
-})
 
-function appPort() {
-  let port = 3000
-  if (process.env.PORT != null) {
-    port = Number(process.env.PORT)
-  }
-  return port
-}
-
-function metricsPort() {
-  return appPort() + 1
-}
-
-function createMetricsApp(): express.Application {
-  const metricsApp = express()
-  metricsApp.use(metricsMiddleware.metricsMiddleware)
-  metricsApp.set('port', metricsPort())
-  return metricsApp
-}
-
-function createApp(userService: UserService): express.Application {
+export default function createApp(userService: UserService): express.Application {
   const app = express()
 
   // Setup prometheus metrics
@@ -116,7 +92,7 @@ function createApp(userService: UserService): express.Application {
   nunjucksSetup(app, path)
 
   // Server Configuration
-  app.set('port', appPort())
+  app.set('port', process.env.PORT || 3000)
 
   app.use((req, res, next) => {
     res.locals.cspNonce = randomBytes(16).toString('hex')
@@ -290,5 +266,3 @@ function createApp(userService: UserService): express.Application {
 
   return app
 }
-
-export { createApp, createMetricsApp }

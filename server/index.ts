@@ -1,4 +1,5 @@
-import { createApp, createMetricsApp } from './app'
+import createApp from './app'
+import { createMetricsApp } from './metricsApp'
 import { HmppsAuthClient } from './data/hmppsAuthClient'
 import TokenStore from './data/tokenStore'
 import UserService from './services/userService'
