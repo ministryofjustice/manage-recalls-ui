@@ -276,6 +276,7 @@ describe('To do (recalls) list', () => {
     const recalls = [
       {
         ...getRecallResponse,
+        recallId: '1',
         firstName: 'Jack',
         lastName: 'Jones',
         status: 'BOOKED_ON',
@@ -285,6 +286,7 @@ describe('To do (recalls) list', () => {
       },
       {
         ...getRecallResponse,
+        recallId: '2',
         status: 'RECALL_NOTIFICATION_ISSUED',
         inCustody: false,
         assignee: '122',
@@ -292,12 +294,14 @@ describe('To do (recalls) list', () => {
       },
       {
         ...getRecallResponse,
+        recallId: '3',
         firstName: 'Ben',
         lastName: 'Adams',
         status: 'RECALL_NOTIFICATION_ISSUED',
         inCustody: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
+        warrantReferenceNumber: '04RC/6457367A74325',
       },
     ]
 
@@ -309,7 +313,12 @@ describe('To do (recalls) list', () => {
     cy.assertTableColumnValues({
       qaAttrTable: 'notInCustody',
       qaAttrCell: 'status',
-      valuesToCompare: ['Assessment complete', 'Assessment complete', 'Awaiting return to custody'],
+      valuesToCompare: ['Assessment complete', 'Awaiting return to custody'],
     })
+    cy.getLinkHref({ qaAttr: 'warrant-reference-2' }).should(
+      'equal',
+      `/persons/${nomsNumber}/recalls/2/warrant-reference`
+    )
+    cy.getElement({ qaAttr: 'warrant-reference-3' }).should('not.exist')
   })
 })

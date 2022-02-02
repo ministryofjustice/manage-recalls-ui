@@ -13,6 +13,21 @@
       {% endif %}
     </dd>
   </div>
+  {% if recall.warrantReferenceNumber %}
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key">
+        Warrant reference number
+      </dt>
+      <dd class=" govuk-summary-list__value" data-qa='warrantReferenceNumber'>
+        {{
+          recall.warrantReferenceNumber
+         }}
+      </dd>
+      <dd class=" govuk-summary-list__actions">
+        <a href='{{ changeLinkUrl('warrant-reference', urlInfo, 'custody') }}' data-qa='warrantReferenceNumberChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> warrant reference number</span></a>
+      </dd>
+    </div>
+  {% endif %}
   {% if recall.currentPrison %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
