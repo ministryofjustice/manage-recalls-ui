@@ -89,6 +89,7 @@ export type ViewName =
   | 'changeHistoryForDocument'
   | 'changeHistoryForField'
   | 'newGeneratedDocumentVersion'
+  | 'warrantReference'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 
@@ -154,6 +155,10 @@ export interface UrlInfo {
 export interface ConfirmationMessage {
   text: string
   type: 'success'
+  link?: {
+    text: string
+    href: string
+  }
 }
 
 export interface DecoratedRecall extends RecallResponse, DocumentDecorations {

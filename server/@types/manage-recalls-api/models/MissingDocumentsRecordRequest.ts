@@ -7,5 +7,5 @@ export type MissingDocumentsRecordRequest = {
     details: string;
     emailFileContent: string;
     emailFileName: string;
-    recallId: string;
+    recallId?: string;
 }

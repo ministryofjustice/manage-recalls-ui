@@ -47,7 +47,10 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     successful.forEach(recall => {
       if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recall.status)) {
         completed.push(recall)
-      } else if (recall.status === RecallResponse.status.RECALL_NOTIFICATION_ISSUED && recall.inCustody === false) {
+      } else if (
+        recall.status === RecallResponse.status.AWAITING_RETURN_TO_CUSTODY ||
+        (recall.status === RecallResponse.status.RECALL_NOTIFICATION_ISSUED && recall.inCustody === false)
+      ) {
         notInCustody.push(recall)
       } else {
         toDoList.push(recall)

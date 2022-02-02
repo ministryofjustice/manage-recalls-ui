@@ -50,6 +50,7 @@ export type UpdateRecallRequest = {
     sentencingCourt?: string;
     vulnerabilityDiversity?: boolean;
     vulnerabilityDiversityDetail?: string;
+    warrantReferenceNumber?: string;
 }
 
 export namespace UpdateRecallRequest {

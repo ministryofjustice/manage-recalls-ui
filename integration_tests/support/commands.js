@@ -71,6 +71,13 @@ Cypress.Commands.add('clickLink', (label, opts = { parent: 'body' }) => {
   clickElement(label, 'a', opts)
 })
 
+Cypress.Commands.add('getLinkHref', ({ qaAttr }, opts = { parent: 'body' }) =>
+  cy
+    .get(opts.parent || 'body')
+    .find(`[data-qa=${qaAttr}]`)
+    .invoke('attr', 'href')
+)
+
 // =============================== GET TEXT ===============================
 
 Cypress.Commands.add('getText', (qaAttr, opts = { parent: 'body' }) =>
