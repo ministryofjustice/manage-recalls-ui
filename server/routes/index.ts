@@ -46,6 +46,8 @@ import { deleteAddressHandler } from './handlers/book/deleteAddressHandler'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateConfirmCustodyStatus } from './handlers/assess/helpers/validateConfirmCustodyStatus'
 import { clearConfirmedCustodyStatus, readConfirmedCustodyStatus, setConfirmedCustodyStatus } from './handlers/helpers'
+import { validateWarrantReference } from './handlers/assess/helpers/validateWarrantReference'
+import { afterWarrantReferenceSaved } from './handlers/assess/helpers/afterWarrantReferenceSaved'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -132,6 +134,8 @@ export default function routes(router: Router): Router {
     })
   )
   router.get(`${basePath}/assess-confirmation`, clearConfirmedCustodyStatus, viewWithRecall('assessConfirmation'))
+  get(`${basePath}/warrant-reference`, viewWithRecall('warrantReference'))
+  post(`${basePath}/warrant-reference`, handleRecallFormPost(validateWarrantReference, afterWarrantReferenceSaved))
 
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))

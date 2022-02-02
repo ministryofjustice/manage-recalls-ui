@@ -45,11 +45,11 @@ export const mockRes = ({
 } = {}): Response => {
   return {
     locals: {
-      urlInfo: {},
+      urlInfo: locals.urlInfo || {},
       user: {
+        ...((locals.user as object) || {}),
         token,
       },
-      ...locals,
     },
     redirect,
   } as unknown as Response

@@ -27,7 +27,9 @@ export type RecallResponse = {
     contrabandDetail?: string;
     createdByUserId: string;
     createdDateTime: string;
+    croNumber: string;
     currentPrison?: string;
+    dateOfBirth: string;
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     documents: Array<RecallDocument>;
@@ -73,6 +75,7 @@ export type RecallResponse = {
     status: RecallResponse.status;
     vulnerabilityDiversity?: boolean;
     vulnerabilityDiversityDetail?: string;
+    warrantReferenceNumber?: string;
 }
 
 export namespace RecallResponse {

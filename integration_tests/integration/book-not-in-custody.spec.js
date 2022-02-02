@@ -147,4 +147,42 @@ context('Book a "not in custody" recall', () => {
       `/persons/${nomsNumber}/recalls/${recallId}/address-list?fromPage=view-recall&fromHash=personalDetails`
     )
   })
+
+  it('lets the user enter a warrant reference if assessment is complete', () => {
+    const recalls = [
+      {
+        ...getRecallResponse,
+        status: 'RECALL_NOTIFICATION_ISSUED',
+        inCustody: false,
+        assignee: '122',
+        assigneeUserName: 'Jimmy Pud',
+        warrantReferenceNumber: '02RC/1234567C12345',
+      },
+      {
+        ...getRecallResponse,
+        firstName: 'Ben',
+        lastName: 'Adams',
+        status: 'RECALL_NOTIFICATION_ISSUED',
+        inCustody: false,
+        assignee: '122',
+        assigneeUserName: 'Jimmy Pud',
+      },
+    ]
+    const warrantReferenceNumber = '04RC/6457367A74325'
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.visit('/')
+    cy.clickLink('Not in custody (2)')
+    cy.clickLink('Add warrant reference')
+    cy.fillInput('What is the warrant reference number?', warrantReferenceNumber)
+    cy.task('expectGetRecall', {
+      expectedResult: { ...getRecallResponse, warrantReferenceNumber },
+    })
+    cy.clickButton('Continue')
+
+    cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
+    cy.clickLink('View')
+    cy.recallInfo('Warrant reference number').should('equal', warrantReferenceNumber)
+  })
 })
