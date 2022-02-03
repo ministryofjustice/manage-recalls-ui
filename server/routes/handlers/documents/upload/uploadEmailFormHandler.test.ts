@@ -78,11 +78,11 @@ describe('emailUploadForm', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { fromPage: 'check-answers', basePath: '/persons/456/recalls/789/' },
+        urlInfo: { fromPage: 'check-answers', basePath: '/persons/456/recalls/789/', fromHash: 'recall-details' },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/check-answers')
+        expect(path).toEqual('/persons/456/recalls/789/check-answers#recall-details')
         done()
       },
     }

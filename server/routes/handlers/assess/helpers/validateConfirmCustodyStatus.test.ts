@@ -25,7 +25,7 @@ describe('validateConfirmCustodyStatus', () => {
     })
   })
 
-  it('sets redirectToPage to download notification, if answer is No and there is no fromPage', () => {
+  it('sets redirectToPage to download notification, if answer is No', () => {
     const requestBody = {
       inCustody: 'NO',
     }
@@ -33,34 +33,12 @@ describe('validateConfirmCustodyStatus', () => {
     expect(redirectToPage).toEqual('/recalls/assess-download')
   })
 
-  it('sets redirectToPage to fromPage, if one is supplied and the answer is No', () => {
-    const requestBody = {
-      inCustody: 'NO',
-    }
-    const { redirectToPage } = validateConfirmCustodyStatus({
-      requestBody,
-      urlInfo: { ...urlInfo, fromPage: 'check-answers' },
-    })
-    expect(redirectToPage).toEqual('/recalls/check-answers')
-  })
-
-  it('sets redirectToPage to current prison page, if answer is Yes and there is no fromPage', () => {
+  it('sets redirectToPage to current prison page, if answer is Yes ', () => {
     const requestBody = {
       inCustody: 'YES',
     }
     const { redirectToPage } = validateConfirmCustodyStatus({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/assess-prison')
-  })
-
-  it('sets redirectToPage to the fromPage, if one is supplied and answer is Yes', () => {
-    const requestBody = {
-      inCustody: 'YES',
-    }
-    const { redirectToPage } = validateConfirmCustodyStatus({
-      requestBody,
-      urlInfo: { ...urlInfo, fromPage: 'view-recall' },
-    })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
   })
 
   it('returns an error for the decision, if not set', () => {

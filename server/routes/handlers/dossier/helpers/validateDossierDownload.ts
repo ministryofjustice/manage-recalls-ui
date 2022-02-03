@@ -1,5 +1,6 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl } from '../../helpers/makeUrl'
 
 export const validateDossierDownload = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors

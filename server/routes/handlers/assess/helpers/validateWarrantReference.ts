@@ -1,5 +1,6 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl } from '../../helpers/makeUrl'
 
 export const validateWarrantReference = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -17,5 +18,9 @@ export const validateWarrantReference = ({ requestBody, urlInfo }: ReqValidatorA
   if (!errors) {
     valuesToSave = { warrantReferenceNumber }
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl('view-recall', urlInfo) }
+  return {
+    errors,
+    valuesToSave,
+    redirectToPage: makeUrl('view-recall', { ...urlInfo, fromPage: '/', fromHash: 'notInCustody' }),
+  }
 }

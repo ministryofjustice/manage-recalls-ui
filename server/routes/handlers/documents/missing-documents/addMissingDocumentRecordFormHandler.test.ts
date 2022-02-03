@@ -102,11 +102,11 @@ describe('addMissingDocumentRecordForm', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { fromPage: 'assess-recall', basePath: '/persons/456/recalls/789/' },
+        urlInfo: { fromPage: 'assess-recall', basePath: '/persons/456/recalls/789/', fromHash: 'missing-documents' },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/assess-recall')
+        expect(path).toEqual('/persons/456/recalls/789/assess-recall#missing-documents')
         done()
       },
     }

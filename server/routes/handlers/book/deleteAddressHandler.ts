@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { deleteLastKnownAddress } from '../../../clients/manageRecallsApiClient'
 import { saveErrorObject } from '../helpers/errorMessages'
-import { isString, makeUrl } from '../helpers'
+import { isString } from '../helpers'
+import { makeUrl } from '../helpers/makeUrl'
 
 export const deleteAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { recallId } = req.params

@@ -1,5 +1,6 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl } from '../../helpers/makeUrl'
 
 export const validateConfirmCustodyStatus = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -26,5 +27,5 @@ export const validateConfirmCustodyStatus = ({ requestBody, urlInfo }: ReqValida
       inCustody: isInCustody,
     }
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || redirectToPage, urlInfo) }
+  return { errors, valuesToSave, redirectToPage: makeUrl(redirectToPage, urlInfo) }
 }

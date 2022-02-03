@@ -30,8 +30,11 @@ describe('validateLicence', () => {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
     }
-    const { redirectToPage } = validateLicence({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    const { redirectToPage } = validateLicence({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'view-recall', fromHash: 'licenceDetails' },
+    })
+    expect(redirectToPage).toEqual('/recalls/view-recall#licenceDetails')
   })
 
   it('redirects to prison page if in custody and fromPage not supplied', () => {
@@ -50,8 +53,11 @@ describe('validateLicence', () => {
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
       inCustody: '1',
     }
-    const { redirectToPage } = validateLicence({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    const { redirectToPage } = validateLicence({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'view-recall', fromHash: 'licenceDetails' },
+    })
+    expect(redirectToPage).toEqual('/recalls/view-recall#licenceDetails')
   })
 
   it('returns valuesToSave and no errors if licence conditions and several reasons are submitted', () => {

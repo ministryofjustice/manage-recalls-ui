@@ -15,7 +15,14 @@ describe('uploadDocumentVersionFormHandler', () => {
     body: {},
   }
   const res = {
-    locals: { user: { token: 'token' }, urlInfo: {} },
+    locals: {
+      user: { token: 'token' },
+      urlInfo: {
+        basePath: '/recalls/',
+        fromPage: 'check-answers',
+        fromHash: 'uploaded-documents',
+      },
+    },
   }
 
   afterEach(() => jest.resetAllMocks())
@@ -33,13 +40,16 @@ describe('uploadDocumentVersionFormHandler', () => {
       }
       cb()
     })
-    res.redirect = () => {
+    res.redirect = (code, url) => {
       expect(uploadRecallDocument).toHaveBeenCalledWith(
         '123',
         { category: 'LICENCE', details: 'Random details', fileContent: 'abc', fileName: 'licence.pdf' },
         'token'
       )
       expect(req.session.errors).toBeUndefined()
+
+      expect(code).toEqual(303)
+      expect(url).toEqual('/recalls/check-answers#uploaded-documents')
       done()
     }
     uploadDocumentVersionFormHandler(req, res)

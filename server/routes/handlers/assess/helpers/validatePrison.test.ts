@@ -43,8 +43,11 @@ describe('validatePrison', () => {
       currentPrison: 'BEL',
       currentPrisonInput: 'Belmarsh (HMP)',
     }
-    const { redirectToPage } = validatePrison({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    const { redirectToPage } = validatePrison({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'view-recall', fromHash: 'prisonDetails' },
+    })
+    expect(redirectToPage).toEqual('/recalls/view-recall#prisonDetails')
   })
 
   it('returns no valuesToSave and an error if nothing is submitted', () => {

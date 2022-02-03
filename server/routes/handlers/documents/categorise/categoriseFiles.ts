@@ -3,7 +3,7 @@ import { listMissingRequiredDocs } from '../upload/helpers'
 import { getRecall } from '../../../../clients/manageRecallsApiClient'
 import { getMetadataForCategorisedFiles, saveCategories } from './helpers'
 import { validateCategories } from './validations/validateCategories'
-import { makeUrl } from '../../helpers'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const categoriseFiles = async (req: Request, res: Response) => {
   const { session, body } = req
@@ -29,5 +29,8 @@ export const categoriseFiles = async (req: Request, res: Response) => {
     // if the user came from a recall info page, add querystring so they'll be redirected back there after missing documents page
     return res.redirect(303, makeUrl('missing-documents', urlInfo))
   }
-  res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers'}`)
+  if (urlInfo.fromPage) {
+    return res.redirect(303, makeUrlToFromPage(urlInfo.fromPage, urlInfo))
+  }
+  res.redirect(303, makeUrlToFromPage('check-answers', urlInfo))
 }

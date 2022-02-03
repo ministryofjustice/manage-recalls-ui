@@ -8,6 +8,7 @@ import { allowedEmailFileExtensions } from '../upload/helpers/allowedUploadExten
 import { errorMsgEmailUpload } from '../../helpers/errorMessages'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { listMissingRequiredDocs } from '../upload/helpers'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const addMissingDocumentRecordFormHandler = async (req: Request, res: Response): Promise<void> => {
   const emailFieldName = 'missingDocumentsEmailFileName'
@@ -73,7 +74,10 @@ export const addMissingDocumentRecordFormHandler = async (req: Request, res: Res
         req.session.unsavedValues = unsavedValues
         return res.redirect(303, req.originalUrl)
       }
-      return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || 'check-answers'}`)
+      return res.redirect(
+        303,
+        urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('check-answers', urlInfo)
+      )
     } catch (e) {
       logger.error(e)
       req.session.errors = !saveToApiSuccessful

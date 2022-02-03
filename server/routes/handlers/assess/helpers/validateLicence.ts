@@ -1,7 +1,8 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ObjectMap, ReqValidatorReturn, UrlInfo } from '../../../../@types'
 import { errorMsgProvideDetail } from '../../helpers/errorMessages'
 import { reasonForRecall } from '../../../../referenceData'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateLicence = ({
   requestBody,
@@ -68,12 +69,15 @@ export const validateLicence = ({
       reasonsForRecall: reasonsForRecallList as reasonForRecall[],
       reasonsForRecallOtherDetail: otherSelected ? (reasonsForRecallOtherDetail as string) : otherDetailIfNotSelected,
     }
-    redirectToPage = inCustody ? 'assess-prison' : 'assess-custody-status'
+    redirectToPage = makeUrl(inCustody ? 'assess-prison' : 'assess-custody-status', urlInfo)
+    if (urlInfo.fromPage) {
+      redirectToPage = makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+    }
   }
   return {
     errors,
     valuesToSave,
     unsavedValues,
-    redirectToPage: !errors ? makeUrl(urlInfo.fromPage || redirectToPage, urlInfo) : undefined,
+    redirectToPage,
   }
 }

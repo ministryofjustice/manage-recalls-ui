@@ -131,11 +131,12 @@ describe('generatedDocumentVersionFormHandler', () => {
     res.locals.urlInfo = {
       basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
       fromPage: 'dossier-recall',
+      fromHash: 'generated-documents',
     }
 
     await newGeneratedDocumentVersion(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall#generated-documents`)
   })
 
   it('should recreate the recall notification if the revocation order is generated', async () => {

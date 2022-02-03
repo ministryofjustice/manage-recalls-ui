@@ -1,6 +1,7 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateLastKnownAddress = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -18,14 +19,16 @@ export const validateLastKnownAddress = ({ requestBody, urlInfo }: ReqValidatorA
   }
   if (!errors) {
     if (lastKnownAddressOption === 'NO_FIXED_ABODE') {
-      redirectToPage = urlInfo.fromPage || 'request-received'
+      redirectToPage = urlInfo.fromPage
+        ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+        : makeUrl('request-received', urlInfo)
     } else {
       // if they have an address, proceed to postcode lookup, even if user arrived from a recall info page (ie change link)
-      redirectToPage = 'postcode-lookup'
+      redirectToPage = makeUrl('postcode-lookup', urlInfo)
     }
     valuesToSave = {
       lastKnownAddressOption: lastKnownAddressOption as UpdateRecallRequest.lastKnownAddressOption,
     }
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl(redirectToPage, urlInfo) }
+  return { errors, valuesToSave, redirectToPage }
 }

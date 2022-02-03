@@ -1,9 +1,10 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isEmailValid, isPhoneValid } from '../../helpers/validations'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateProbationOfficer = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -123,6 +124,8 @@ export const validateProbationOfficer = ({ requestBody, urlInfo }: ReqValidatorA
     errors,
     valuesToSave,
     unsavedValues,
-    redirectToPage: makeUrl(urlInfo.fromPage || 'upload-documents', urlInfo),
+    redirectToPage: urlInfo.fromPage
+      ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+      : makeUrl('upload-documents', urlInfo),
   }
 }

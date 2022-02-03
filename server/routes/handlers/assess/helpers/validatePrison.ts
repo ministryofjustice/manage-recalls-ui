@@ -1,7 +1,8 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
+import { makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validatePrison = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -32,5 +33,5 @@ export const validatePrison = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqV
   if (!errors) {
     valuesToSave = { currentPrison }
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || 'assess-download', urlInfo) }
+  return { errors, valuesToSave, redirectToPage: makeUrlToFromPage(urlInfo.fromPage || 'assess-download', urlInfo) }
 }

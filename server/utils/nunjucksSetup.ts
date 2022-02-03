@@ -22,12 +22,13 @@ import {
   recallStatusTagProperties,
   selectDocCategory,
 } from './nunjucksFunctions'
-import { isDefined, listDocumentLabels, makeUrl, objectToArray, sortList } from '../routes/handlers/helpers'
+import { isDefined, listDocumentLabels, objectToArray, sortList } from '../routes/handlers/helpers'
 import { formatDateTimeFromIsoString, dueDateLabel } from '../routes/handlers/helpers/dates/format'
 import { isoDateToMillis } from '../routes/handlers/helpers/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
 import { formatDocLabel } from '../routes/handlers/documents/upload/helpers'
 import { generatedDocCategoriesList, getGeneratedDocFileName } from '../routes/handlers/documents/download/helpers'
+import { makeUrl } from '../routes/handlers/helpers/makeUrl'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(

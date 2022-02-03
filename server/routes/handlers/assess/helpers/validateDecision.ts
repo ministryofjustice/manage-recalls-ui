@@ -1,7 +1,8 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { errorMsgProvideDetail } from '../../helpers/errorMessages'
+import { makeUrl } from '../../helpers/makeUrl'
 
 export const validateDecision = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors

@@ -1,6 +1,7 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateLicenceName = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -20,5 +21,9 @@ export const validateLicenceName = ({ requestBody, urlInfo }: ReqValidatorArgs):
       licenceNameCategory: licenceNameCategory as UpdateRecallRequest.licenceNameCategory,
     }
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || 'pre-cons-name', urlInfo) }
+  return {
+    errors,
+    valuesToSave,
+    redirectToPage: urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('pre-cons-name', urlInfo),
+  }
 }

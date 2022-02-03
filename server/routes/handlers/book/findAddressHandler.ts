@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import { getAddressesByPostcode } from '../../../clients/osPlacesApiClient'
 import { validateFindAddress } from './helpers/validateFindAddress'
-import { makeErrorObject, makeUrl } from '../helpers'
+import { makeErrorObject } from '../helpers'
+import { makeUrl } from '../helpers/makeUrl'
 
 export const findAddressHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { postcode } = req.query

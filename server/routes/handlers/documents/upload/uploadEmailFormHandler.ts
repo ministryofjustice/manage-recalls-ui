@@ -9,6 +9,7 @@ import { makeErrorObject } from '../../helpers'
 import { allowedEmailFileExtensions } from './helpers/allowedUploadExtensions'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { errorMsgEmailUpload } from '../../helpers/errorMessages'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 interface Args {
   emailFieldName: string
@@ -87,7 +88,10 @@ export const uploadEmailFormHandler =
             logger.error(`User ${user.uuid} could not be unassigned from recall ${recallId}`)
           }
         }
-        return res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage || redirectToPage}`)
+        return res.redirect(
+          303,
+          urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl(redirectToPage, urlInfo)
+        )
       } catch (e) {
         logger.error(e)
         req.session.errors = !saveToApiSuccessful

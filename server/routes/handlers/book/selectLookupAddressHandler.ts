@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { getAddressByUprn } from '../../../clients/osPlacesApiClient'
 import { validateSelectedAddress } from './helpers/validateSelectedAddress'
-import { makeErrorObject, makeUrl } from '../helpers'
+import { makeErrorObject } from '../helpers'
 import { addLastKnownAddress } from '../../../clients/manageRecallsApiClient'
 import { LastKnownAddress } from '../../../@types/manage-recalls-api/models/LastKnownAddress'
+import { makeUrl } from '../helpers/makeUrl'
 
 export const selectLookupAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { recallId } = req.params

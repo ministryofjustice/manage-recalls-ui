@@ -217,7 +217,7 @@ describe('categoriseFiles', () => {
     categoriseFiles(req, res)
   })
 
-  it('adds a fromPage querystring to Missing documents URL if one is present', done => {
+  it('adds a fromPage & fromHash querystring to Missing documents URL if one is present', done => {
     ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
@@ -254,7 +254,7 @@ describe('categoriseFiles', () => {
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual(`/persons/123/recalls/456/missing-documents?fromPage=assess#documents`)
+        expect(path).toEqual(`/persons/123/recalls/456/missing-documents?fromPage=assess&fromHash=documents`)
         done()
       },
     }
