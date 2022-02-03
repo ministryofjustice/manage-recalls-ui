@@ -28,6 +28,7 @@
             </h1>
             <form novalidate action="{{ makeUrl('postcode-results', urlInfo) }}" method='get'>
                 <input type='hidden' name='fromPage' value='{{ urlInfo.fromPage }}' />
+                <input type='hidden' name='fromHash' value='{{ urlInfo.fromHash }}' />
                 {{ govukInput({
                     label: {
                         text: "Postcode",

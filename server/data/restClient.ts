@@ -83,7 +83,7 @@ export default class RestClient {
       return raw ? result : result.body
     } catch (error) {
       const sanitisedError = sanitiseError(error)
-      logger.warn(
+      logger.error(
         { ...sanitisedError, query },
         `Error calling ${this.name}, path: '${this.apiUrl()}${path}', verb: 'GET'`
       )
@@ -115,7 +115,7 @@ export default class RestClient {
       return raw ? result : result.body
     } catch (error) {
       const sanitisedError = sanitiseError(error)
-      logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'POST'`)
+      logger.error({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'POST'`)
       throw sanitisedError
     }
   }
@@ -144,7 +144,7 @@ export default class RestClient {
       return raw ? result : result.body
     } catch (error) {
       const sanitisedError = sanitiseError(error)
-      logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'PATCH'`)
+      logger.error({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'PATCH'`)
       throw sanitisedError
     }
   }
@@ -166,7 +166,7 @@ export default class RestClient {
       return raw ? result : result.body
     } catch (error) {
       const sanitisedError = sanitiseError(error)
-      logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'DELETE'`)
+      logger.error({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'DELETE'`)
       throw sanitisedError
     }
   }
