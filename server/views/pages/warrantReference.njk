@@ -1,0 +1,56 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - What is the warrant reference number?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("/#notInCustody", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+
+            <form novalidate action="{{ makeUrl('warrant-reference', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukInput({
+                        label: {
+                            text: "What is the warrant reference number?",
+                            classes: "govuk-label--l",
+                            pageHeading: true
+                        },
+                        hint: {
+                            text: 'For example, 02RC/1234567C12345. Also called the End Warrant System (EWS) number'
+                        },
+                        id: "warrantReferenceNumber",
+                        name: "warrantReferenceNumber",
+                        value: formValues.warrantReferenceNumber,
+                        classes: "govuk-input--width-10",
+                        errorMessage: errorMessage(errors.warrantReferenceNumber)
+                    }) }}
+                </div>
+                <div>
+                    <button class="govuk-button"
+                            data-qa='continueButton'>
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+

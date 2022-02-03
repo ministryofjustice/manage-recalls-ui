@@ -1,0 +1,70 @@
+[
+  {
+    "id": "BREACH_EXCLUSION_ZONE",
+    "name": "Breach of exclusion zone"
+  },
+  {
+    "id": "ELM_BREACH_EXCLUSION_ZONE",
+    "name": "Electronic locking and monitoring (ELM) - Breach of exclusion zone - detected by ELM"
+  },
+  {
+    "id": "ELM_BREACH_NON_CURFEW_CONDITION",
+    "name": "Electronic locking and monitoring (ELM) - Breach of non-curfew related condition"
+  },
+  {
+    "id": "ELM_FURTHER_OFFENCE",
+    "name": "Electronic locking and monitoring (ELM) - Charged with a further offence - detected by ELM"
+  },
+  {
+    "id": "ELM_EQUIPMENT_TAMPER",
+    "name": "Electronic locking and monitoring (ELM) - Equipment tamper"
+  },
+  {
+    "id": "ELM_FAILURE_CHARGE_BATTERY",
+    "name": "Electronic locking and monitoring (ELM) - Failure to charge battery"
+  },
+  {
+    "id": "FAILED_HOME_VISIT",
+    "name": "Failed home visit"
+  },
+  {
+    "id": "FAILED_KEEP_IN_TOUCH",
+    "name": "Failed to keep in touch"
+  },
+  {
+    "id": "FAILED_RESIDE",
+    "name": "Failed to reside"
+  },
+  {
+    "id": "FAILED_WORK_AS_APPROVED",
+    "name": "Failed to work as approved"
+  },
+  {
+    "id": "POOR_BEHAVIOUR_ALCOHOL",
+    "name": "Poor behaviour - Alcohol"
+  },
+  {
+    "id": "POOR_BEHAVIOUR_FURTHER_OFFENCE",
+    "name": "Poor behaviour - Charged with a further offence"
+  },
+  {
+    "id": "POOR_BEHAVIOUR_DRUGS",
+    "name": "Poor behaviour - Drugs"
+  },
+  {
+    "id": "POOR_BEHAVIOUR_NON_COMPLIANCE",
+    "name": "Poor behaviour - Non-compliance"
+  },
+  {
+    "id": "POOR_BEHAVIOUR_RELATIONSHIPS",
+    "name": "Poor behaviour - Relationships"
+  },
+  {
+    "id": "TRAVELLING_OUTSIDE_UK",
+    "name": "Travelling outside the UK"
+  },
+  {
+    "id": "OTHER",
+    "name": "Other"
+  }
+]
