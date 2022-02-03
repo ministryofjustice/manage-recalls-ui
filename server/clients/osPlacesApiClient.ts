@@ -8,12 +8,23 @@ interface DecoratedAddress extends Address {
   address: string
 }
 const transformAddress = (address: OsPlacesApiAddress): DecoratedAddress => {
-  const { UPRN, ADDRESS, ORGANISATION_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME, POST_TOWN, POSTCODE } =
-    address
+  const {
+    UPRN,
+    ADDRESS,
+    ORGANISATION_NAME,
+    SUB_BUILDING_NAME,
+    BUILDING_NAME,
+    BUILDING_NUMBER,
+    THOROUGHFARE_NAME,
+    POST_TOWN,
+    POSTCODE,
+  } = address
   return {
     uprn: UPRN,
     address: ADDRESS,
-    line1: [ORGANISATION_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME].filter(Boolean).join(', '),
+    line1: [ORGANISATION_NAME, SUB_BUILDING_NAME, BUILDING_NAME, BUILDING_NUMBER, THOROUGHFARE_NAME]
+      .filter(Boolean)
+      .join(', '),
     town: POST_TOWN,
     postcode: POSTCODE,
   }

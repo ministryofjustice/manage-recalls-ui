@@ -4,6 +4,7 @@ export interface OsPlacesApiAddress {
   ADDRESS: string
   ORGANISATION_NAME?: string
   BUILDING_NUMBER?: string
+  SUB_BUILDING_NAME?: string
   BUILDING_NAME?: string
   THOROUGHFARE_NAME: string
   POST_TOWN: string
