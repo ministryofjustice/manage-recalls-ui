@@ -1,5 +1,6 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorReturn, UrlInfo } from '../../../../@types'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateAddAnotherAddress = ({
   addAnotherAddressOption,
@@ -21,10 +22,12 @@ export const validateAddAnotherAddress = ({
   }
   if (!errors) {
     if (addAnotherAddressOption === 'YES') {
-      redirectToPage = 'postcode-lookup'
+      redirectToPage = makeUrl('postcode-lookup', urlInfo)
     } else {
-      redirectToPage = urlInfo.fromPage || 'request-received'
+      redirectToPage = urlInfo.fromPage
+        ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+        : makeUrl('request-received', urlInfo)
     }
   }
-  return { errors, redirectToPage: makeUrl(redirectToPage, urlInfo) }
+  return { errors, redirectToPage }
 }

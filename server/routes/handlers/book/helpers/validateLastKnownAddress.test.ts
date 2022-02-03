@@ -44,8 +44,11 @@ describe('validateLastKnownAddress', () => {
     const requestBody = {
       lastKnownAddressOption: 'YES',
     }
-    const { redirectToPage } = validateLastKnownAddress({ requestBody, urlInfo })
-    expect(redirectToPage).toEqual('/recalls/postcode-lookup')
+    const { redirectToPage } = validateLastKnownAddress({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'check-answers', fromHash: 'custodyDetails' },
+    })
+    expect(redirectToPage).toEqual('/recalls/postcode-lookup?fromPage=check-answers&fromHash=custodyDetails')
   })
 
   it('sets redirectToPage to request received, if answer is No, and no fromPage supplied', () => {
@@ -62,8 +65,8 @@ describe('validateLastKnownAddress', () => {
     }
     const { redirectToPage } = validateLastKnownAddress({
       requestBody,
-      urlInfo: { ...urlInfo, fromPage: 'view-recall' },
+      urlInfo: { ...urlInfo, fromPage: 'view-recall', fromHash: 'custodyDetails' },
     })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    expect(redirectToPage).toEqual('/recalls/view-recall#custodyDetails')
   })
 })

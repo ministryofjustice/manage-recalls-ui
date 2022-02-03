@@ -1,8 +1,9 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isStringValidReferenceData } from '../../../../referenceData'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validatePolice = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -39,5 +40,9 @@ export const validatePolice = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqV
       localPoliceForceId,
     } as UpdateRecallRequest
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl(urlInfo.fromPage || 'issues-needs', urlInfo) }
+  return {
+    errors,
+    valuesToSave,
+    redirectToPage: urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('issues-needs', urlInfo),
+  }
 }

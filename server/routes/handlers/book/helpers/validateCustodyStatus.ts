@@ -1,5 +1,6 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateCustodyStatus = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -18,14 +19,16 @@ export const validateCustodyStatus = ({ requestBody, urlInfo }: ReqValidatorArgs
   if (!errors) {
     const isInCustody = inCustody === 'YES'
     if (isInCustody) {
-      redirectToPage = urlInfo.fromPage || 'request-received'
+      redirectToPage = urlInfo.fromPage
+        ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+        : makeUrl('request-received', urlInfo)
     } else {
       // if not in custody, proceed to last known address question, even if user arrived from a recall info page (ie change link)
-      redirectToPage = 'last-known-address'
+      redirectToPage = makeUrl('last-known-address', urlInfo)
     }
     valuesToSave = {
       inCustody: isInCustody,
     }
   }
-  return { errors, valuesToSave, redirectToPage: makeUrl(redirectToPage, urlInfo) }
+  return { errors, valuesToSave, redirectToPage }
 }

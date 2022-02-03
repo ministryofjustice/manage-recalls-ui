@@ -1,6 +1,7 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
 import { isNomsNumberValid } from '../../helpers/validations'
+import { makeUrl } from '../../helpers/makeUrl'
 
 export const validateDossierLetter = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors

@@ -1,6 +1,7 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validateIssuesNeeds = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -117,6 +118,8 @@ export const validateIssuesNeeds = ({ requestBody, urlInfo }: ReqValidatorArgs):
     errors,
     valuesToSave,
     unsavedValues,
-    redirectToPage: makeUrl(urlInfo.fromPage || 'probation-officer', urlInfo),
+    redirectToPage: urlInfo.fromPage
+      ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+      : makeUrl('probation-officer', urlInfo),
   }
 }

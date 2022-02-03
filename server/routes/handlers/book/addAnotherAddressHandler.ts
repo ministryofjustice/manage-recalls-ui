@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { validateAddAnotherAddress } from './helpers/validateAddAnotherAddress'
-import { makeUrl } from '../helpers'
+import { makeUrl } from '../helpers/makeUrl'
 
 export const addAnotherAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { addAnotherAddressOption } = req.body

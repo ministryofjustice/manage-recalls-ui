@@ -5,6 +5,7 @@ import logger from '../../../../../logger'
 import { generatedDocCategoriesList } from '../download/helpers'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { revocationOrderCreated } from './helpers/revocationOrderCreated'
+import { makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const newGeneratedDocumentVersion = async (req: Request, res: Response) => {
   const { recallId } = req.params
@@ -37,7 +38,7 @@ export const newGeneratedDocumentVersion = async (req: Request, res: Response) =
     if (category === RecallDocument.category.REVOCATION_ORDER) {
       await revocationOrderCreated({ recallId, valuesToSave, dossierExists, req, token })
     }
-    res.redirect(303, `${urlInfo.basePath}${urlInfo.fromPage}`)
+    res.redirect(303, makeUrlToFromPage(urlInfo.fromPage, urlInfo))
   } catch (err) {
     logger.error(err)
     req.session.errors = req.session.errors || [

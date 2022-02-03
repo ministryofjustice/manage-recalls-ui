@@ -1,6 +1,7 @@
-import { makeErrorObject, makeUrl } from '../../helpers'
+import { makeErrorObject } from '../../helpers'
 import { UpdateRecallRequest } from '../../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../../@types'
+import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
 
 export const validatePreConsName = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
   let errors
@@ -42,5 +43,12 @@ export const validatePreConsName = ({ requestBody, urlInfo }: ReqValidatorArgs):
       previousConvictionMainName: isYesOther ? previousConvictionMainName : previousConvictionMainNameIfNotOther,
     }
   }
-  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl(urlInfo.fromPage || 'custody-status', urlInfo) }
+  return {
+    errors,
+    valuesToSave,
+    unsavedValues,
+    redirectToPage: urlInfo.fromPage
+      ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+      : makeUrl('custody-status', urlInfo),
+  }
 }

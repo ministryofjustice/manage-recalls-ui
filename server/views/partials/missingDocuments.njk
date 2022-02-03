@@ -11,7 +11,7 @@
                 Missing: needed to create dossier
             </dd>
             <dd class=" govuk-summary-list__actions">
-                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
+                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'uploaded-documents') }}' data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
             </dd>
         </div>
     {% endfor %}
@@ -24,7 +24,7 @@
                 Missing
             </dd>
             <dd class=" govuk-summary-list__actions">
-                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
+                <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'uploaded-documents') }}' data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span class="govuk-visually-hidden">{{ document.label }}</span></a>
             </dd>
         </div>
     {% endfor %}
@@ -39,7 +39,7 @@
         </dd>
         <dd class=" govuk-summary-list__actions">
             {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
-            <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocumentsDetailChange' class='govuk-link'>Change <span class="govuk-visually-hidden">missing documents detail</span></a>
+            <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'uploaded-documents') }}' data-qa='missingDocumentsDetailChange' class='govuk-link'>Change <span class="govuk-visually-hidden">missing documents detail</span></a>
             {% endif %}
         </dd>
     </div>
@@ -52,7 +52,7 @@
         </dd>
         <dd class=" govuk-summary-list__actions">
             {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
-                <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'missing-documents') }}' data-qa='missingDocumentsEmailChange' class='govuk-link'>Change <span class="govuk-visually-hidden">uploaded email</span></a>
+                <a href='{{ changeLinkUrl('missing-documents', urlInfo, 'uploaded-documents') }}' data-qa='missingDocumentsEmailChange' class='govuk-link'>Change <span class="govuk-visually-hidden">uploaded email</span></a>
             {% endif %}
         </dd>
     </div>

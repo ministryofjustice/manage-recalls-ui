@@ -39,9 +39,9 @@ describe('validateCustodyStatus', () => {
     }
     const { redirectToPage } = validateCustodyStatus({
       requestBody,
-      urlInfo: { ...urlInfo, fromPage: 'check-answers' },
+      urlInfo: { ...urlInfo, fromPage: 'check-answers', fromHash: 'custodyDetails' },
     })
-    expect(redirectToPage).toEqual('/recalls/last-known-address?fromPage=check-answers')
+    expect(redirectToPage).toEqual('/recalls/last-known-address?fromPage=check-answers&fromHash=custodyDetails')
   })
 
   it('sets redirectToPage to request received page, if answer is Yes and there is no fromPage', () => {
@@ -56,8 +56,11 @@ describe('validateCustodyStatus', () => {
     const requestBody = {
       inCustody: 'YES',
     }
-    const { redirectToPage } = validateCustodyStatus({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    const { redirectToPage } = validateCustodyStatus({
+      requestBody,
+      urlInfo: { ...urlInfo, fromPage: 'view-recall', fromHash: 'custodyDetails' },
+    })
+    expect(redirectToPage).toEqual('/recalls/view-recall#custodyDetails')
   })
 
   it('returns an error for the decision, if not set', () => {

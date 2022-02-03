@@ -12,7 +12,7 @@ describe('validateWarrantReference', () => {
     expect(valuesToSave).toEqual({
       warrantReferenceNumber: '04RC/6457367A74325',
     })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    expect(redirectToPage).toEqual('/recalls/view-recall?fromPage=/&fromHash=notInCustody')
   })
 
   it('returns an error for the warrant reference, if not set', () => {
