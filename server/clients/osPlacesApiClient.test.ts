@@ -42,6 +42,14 @@ describe('getAddressesByPostcode', () => {
             POSTCODE: 'SO16 9NY',
           },
         },
+        {
+          DPA: {
+            SUB_BUILDING_NAME: 'FLAT 3',
+            THOROUGHFARE_NAME: 'COLNE AVENUE',
+            POST_TOWN: 'SOUTHAMPTON',
+            POSTCODE: 'SO16 9NY',
+          },
+        },
       ],
     })
     const postcode = 'E15 1JZ'
@@ -63,6 +71,11 @@ describe('getAddressesByPostcode', () => {
       },
       {
         line1: 'COLNE AVENUE BAPTIST CHURCH, COLNE AVENUE',
+        postcode: 'SO16 9NY',
+        town: 'SOUTHAMPTON',
+      },
+      {
+        line1: 'FLAT 3, COLNE AVENUE',
         postcode: 'SO16 9NY',
         town: 'SOUTHAMPTON',
       },
