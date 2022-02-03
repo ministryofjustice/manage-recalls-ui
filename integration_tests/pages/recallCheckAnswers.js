@@ -79,8 +79,8 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
         'uploadedDocument-PRE_SENTENCING_REPORT-Change',
         '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
       )
-      checkLink('missingDocumentsDetailChange', '/missing-documents?fromPage=check-answers&fromHash=missing-documents')
-      checkLink('missingDocumentsEmailChange', '/missing-documents?fromPage=check-answers&fromHash=missing-documents')
+      checkLink('missingDocumentsDetailChange', '/missing-documents?fromPage=check-answers&fromHash=uploaded-documents')
+      checkLink('missingDocumentsEmailChange', '/missing-documents?fromPage=check-answers&fromHash=uploaded-documents')
     },
   })
 
