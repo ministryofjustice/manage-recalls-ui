@@ -1,3 +1,9 @@
+import { DateTime } from 'luxon'
+
+const tomorrow = DateTime.now().plus({ days: 1 })
+const sixMonthsTime = tomorrow.plus({ months: 6 })
+const nineMonthsTime = tomorrow.plus({ months: 9 })
+
 export const recall = {
   recallType: 'Fixed term',
   agreeWithRecall: 'YES',
@@ -9,9 +15,9 @@ export const recall = {
   lastReleasePrison: 'KTI',
   lastReleasePrisonLabel: 'Kennet (HMP)',
   sentenceDate: '2019-08-03',
-  sentenceExpiryDate: '2022-02-03',
-  licenceExpiryDate: '2022-08-03',
-  conditionalReleaseDate: '2021-12-03',
+  sentenceExpiryDate: tomorrow.toISODate(),
+  licenceExpiryDate: sixMonthsTime.toISODate(),
+  conditionalReleaseDate: nineMonthsTime.toISODate(),
   lastReleaseDate: '2020-08-03',
   localPoliceForceId: 'devon-and-cornwall',
   localPoliceForceLabel: 'Devon & Cornwall Police',
@@ -49,5 +55,5 @@ export const recall = {
   dossierEmailSentDate: '2021-09-08',
   hasDossierBeenChecked: true,
   recallAssessmentDueDateTime: '2020-08-06T15:33:57.000Z',
-  dossierTargetDate: '2020-12-14',
+  dossierTargetDate: tomorrow.toISODate(),
 }
