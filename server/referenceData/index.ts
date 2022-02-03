@@ -10,9 +10,9 @@ import { localDeliveryUnits } from './localDeliveryUnits'
 import { courts } from './courts'
 
 export const referenceData = () => ({
-  mappaLevels,
+  mappaLevels: mappaLevels.data,
   recallLengths,
-  reasonsForRecall,
+  reasonsForRecall: reasonsForRecall.data,
   sensitiveInfo,
   prisons: prisons.data,
   policeForces: policeForces.data,
@@ -35,6 +35,8 @@ export const fetchRemoteRefData = async (req: Request, res: Response, next: Next
     policeForces.data ? undefined : policeForces.updateData(),
     localDeliveryUnits.data ? undefined : localDeliveryUnits.updateData(),
     courts.data ? undefined : courts.updateData(),
+    reasonsForRecall.data ? undefined : reasonsForRecall.updateData(),
+    mappaLevels.data ? undefined : mappaLevels.updateData(),
   ])
   next()
 }
@@ -48,4 +50,5 @@ export const isStringValidReferenceData = (refDataCategory: ReferenceDataCategor
   const list = (referenceData()[refDataCategory] || []) as UiListItem[]
   return list.some((item: UiListItem) => item.text === str)
 }
+
 export { reasonForRecall } from './reasonsForRecall'
