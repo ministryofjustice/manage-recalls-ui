@@ -1,9 +1,4 @@
-import {
-  getReferenceDataItemLabel,
-  isStringValidReferenceData,
-  ReferenceDataCategories,
-  reasonForRecall,
-} from './index'
+import { getReferenceDataItemLabel, isStringValidReferenceData, ReferenceDataCategories } from './index'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 
 describe('Reference data helpers', () => {
