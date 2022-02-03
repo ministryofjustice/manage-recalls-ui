@@ -28,18 +28,6 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
 
-                    {% set yesDetailHtml %}
-                        {{ govukInput({
-                            name: "licenceName",
-                            id: "licenceName",
-                            label: {
-                                text: "What is the main name?"
-                            },
-                            value: formValues.licenceName,
-                            classes: "govuk-input--width-30",
-                            errorMessage: errorMessage(errors.licenceName)
-                        }) }}
-                    {% endset -%}
                     {{ govukRadios({
                         idPrefix: "licenceNameCategory",
                         name: "licenceNameCategory",
