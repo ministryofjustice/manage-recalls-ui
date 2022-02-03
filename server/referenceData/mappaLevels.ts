@@ -1,28 +1,18 @@
-import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
+import { getMappaLevels } from '../clients/manageRecallsApiClient'
+import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
+import { RefDataBaseClass } from './refDataBaseClass'
 
-export const mappaLevels = [
-  {
-    value: RecallResponse.mappaLevel.NA,
-    text: 'N/A',
-  },
-  {
-    value: RecallResponse.mappaLevel.LEVEL_1,
-    text: 'Level 1',
-  },
-  {
-    value: RecallResponse.mappaLevel.LEVEL_2,
-    text: 'Level 2',
-  },
-  {
-    value: RecallResponse.mappaLevel.LEVEL_3,
-    text: 'Level 3',
-  },
-  {
-    value: RecallResponse.mappaLevel.NOT_KNOWN,
-    text: 'Not known',
-  },
-  {
-    value: RecallResponse.mappaLevel.CONFIRMATION_REQUIRED,
-    text: 'Confirmation required',
-  },
-]
+class MappaLevels extends RefDataBaseClass {
+  constructor() {
+    super({ fetchData: getMappaLevels, formatList: MappaLevels.formatMappaLevelsList })
+  }
+
+  static formatMappaLevelsList(list: MappaLevelResponse[]) {
+    return list.map(({ id, name }: MappaLevelResponse) => ({
+      value: id,
+      text: name,
+    }))
+  }
+}
+
+export const mappaLevels = new MappaLevels()

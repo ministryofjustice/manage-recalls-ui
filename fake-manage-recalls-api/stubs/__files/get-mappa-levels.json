@@ -1,0 +1,26 @@
+[
+  {
+    "id": "NA",
+    "name": "N/A"
+  },
+  {
+    "id": "LEVEL_1",
+    "name": "Level 1"
+  },
+  {
+    "id": "LEVEL_2",
+    "name": "Level 2"
+  },
+  {
+    "id": "LEVEL_3",
+    "name": "Level 3"
+  },
+  {
+    "id": "NOT_KNOWN",
+    "name": "Not Known"
+  },
+  {
+    "id": "CONFIRMATION_REQUIRED",
+    "name": "Confirmation Required"
+  }
+]

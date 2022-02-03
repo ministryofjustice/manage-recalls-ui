@@ -12,6 +12,8 @@ import getSingleFieldHistoryResponseJson from '../../fake-manage-recalls-api/stu
 import getAllFieldsHistoryResponseJson from '../../fake-manage-recalls-api/stubs/__files/get-all-fields-history.json'
 import getOsPlacesAddresses from '../../fake-os-places-api/stubs/__files/get-addresses-by-postcode.json'
 import getOsPlacesAddress from '../../fake-os-places-api/stubs/__files/get-addresses-by-uprn.json'
+import getMappaLevelsResponse from '../../fake-manage-recalls-api/stubs/__files/get-mappa-levels.json'
+import getReasonsForRecallResponse from '../../fake-manage-recalls-api/stubs/__files/get-reasons-for-recall.json'
 
 export {
   getPrisonerResponse,
@@ -28,4 +30,6 @@ export {
   getAllFieldsHistoryResponseJson,
   getOsPlacesAddresses,
   getOsPlacesAddress,
+  getMappaLevelsResponse,
+  getReasonsForRecallResponse,
 }

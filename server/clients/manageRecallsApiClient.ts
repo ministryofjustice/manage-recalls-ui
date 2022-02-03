@@ -23,6 +23,8 @@ import { PoliceForce } from '../@types/manage-recalls-api/models/PoliceForce'
 import { GenerateDocumentRequest } from '../@types/manage-recalls-api/models/GenerateDocumentRequest'
 import { FieldAuditEntry } from '../@types/manage-recalls-api/models/FieldAuditEntry'
 import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAuditSummary'
+import { RecallReasonResponse } from '../@types/manage-recalls-api/models/RecallReasonResponse'
+import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -161,6 +163,14 @@ export function getPrisons(): Promise<Prison[]> {
 
 export function getPoliceForces(): Promise<PoliceForce[]> {
   return restClient().get<PoliceForce[]>({ path: '/reference-data/police-forces' })
+}
+
+export function getReasonsForRecall(): Promise<RecallReasonResponse[]> {
+  return restClient().get<RecallReasonResponse[]>({ path: '/reference-data/recall-reasons' })
+}
+
+export function getMappaLevels(): Promise<MappaLevelResponse[]> {
+  return restClient().get<MappaLevelResponse[]>({ path: '/reference-data/mappa-levels' })
 }
 
 export function assignUserToRecall(recallId: string, assignee: string, token: string): Promise<Recall> {

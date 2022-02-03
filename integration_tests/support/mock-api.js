@@ -3,6 +3,8 @@ import {
   getLocalDeliveryUnitsResponse,
   getPoliceForcesResponse,
   getPrisonsResponse,
+  getMappaLevelsResponse,
+  getReasonsForRecallResponse,
 } from '../mockApis/mockResponses'
 
 export const stubRefData = () => {
@@ -10,4 +12,6 @@ export const stubRefData = () => {
   cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
   cy.task('expectRefData', { refDataPath: 'police-forces', expectedResult: getPoliceForcesResponse })
   cy.task('expectRefData', { refDataPath: 'courts', expectedResult: getCourtsResponse })
+  cy.task('expectRefData', { refDataPath: 'mappa-levels', expectedResult: getMappaLevelsResponse })
+  cy.task('expectRefData', { refDataPath: 'recall-reasons', expectedResult: getReasonsForRecallResponse })
 }
