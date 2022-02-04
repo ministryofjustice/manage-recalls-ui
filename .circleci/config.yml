@@ -393,11 +393,9 @@ workflows:
             - hmpps-common-vars
           <<: *slack-fail-post-step
 
-      - hmpps/trigger_job:
+      - e2e-tests:
           name: e2e-tests-dev
-          repository: manage-recalls-e2e-tests
-          token: $CIRCLECI_AUTH_TOKEN
-          build_parameters: '{ "check-docker": false, "check-dev": true, "check-preprod": false }'
+          environment: dev
           requires:
             - deploy_dev
           context:
@@ -448,11 +446,9 @@ workflows:
             - hmpps-common-vars
           <<: *slack-fail-post-step
 
-      - hmpps/trigger_job:
+      - e2e-tests:
           name: e2e-tests-preprod
-          repository: manage-recalls-e2e-tests
-          token: $CIRCLECI_AUTH_TOKEN
-          build_parameters: '{ "check-docker": false, "check-dev": false, "check-preprod": true }'
+          environment: preprod
           requires:
             - deploy_preprod
           context:
