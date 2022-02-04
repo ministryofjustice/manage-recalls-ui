@@ -94,6 +94,8 @@ describe('changeHistoryFieldList', () => {
 
 describe('formatRecallFieldValue', () => {
   it('should alphabetically sort reasons for recall', () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     jest.spyOn(refDataExports, 'referenceData').mockReturnValue({
       reasonsForRecall: [
         {
@@ -113,7 +115,7 @@ describe('formatRecallFieldValue', () => {
           text: 'Other',
         },
       ],
-    } as any)
+    })
     const record = {
       auditId: 0,
       recallId: '11',
