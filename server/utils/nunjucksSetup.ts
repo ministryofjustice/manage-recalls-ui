@@ -29,6 +29,7 @@ import { getReferenceDataItemLabel } from '../referenceData'
 import { formatDocLabel } from '../routes/handlers/documents/upload/helpers'
 import { generatedDocCategoriesList, getGeneratedDocFileName } from '../routes/handlers/documents/download/helpers'
 import { makeUrl } from '../routes/handlers/helpers/makeUrl'
+import { isStatusAfterAssessStart } from '../routes/handlers/helpers/recallStatus'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -76,6 +77,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('sortList', sortList)
   njkEnv.addGlobal('selectDocCategory', selectDocCategory)
   njkEnv.addGlobal('objectToArray', objectToArray)
+  njkEnv.addGlobal('isStatusAfterAssessStart', isStatusAfterAssessStart)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)
