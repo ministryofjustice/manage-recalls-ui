@@ -227,6 +227,7 @@ export const formatRecallFieldValue = ({
     case 'REF_DATA_LIST':
       return record.updatedValue
         .map((value: string) => getReferenceDataItemLabel(fieldTypeData.refDataCategory, value))
+        .sort()
         .join(', ')
     case 'ISO_DATE_TIME':
       return formatDateTimeFromIsoString(record.updatedValue)

@@ -1,5 +1,6 @@
-import { changeHistoryFieldList } from './recallFieldList'
+import { changeHistoryFieldList, formatRecallFieldValue } from './recallFieldList'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import * as refDataExports from '../../../../referenceData'
 
 const changedFields = [
   {
@@ -88,5 +89,41 @@ describe('changeHistoryFieldList', () => {
     const list = changeHistoryFieldList({ changedFields, uploadedDocuments })
     const emailFields = list.filter(field => field.fieldType === 'UPLOADED_EMAIL')
     emailFields.forEach(field => expect(field.hasHistory).toBe(false))
+  })
+})
+
+describe('formatRecallFieldValue', () => {
+  it('should alphabetically sort reasons for recall', () => {
+    jest.spyOn(refDataExports, 'referenceData').mockReturnValue({
+      reasonsForRecall: [
+        {
+          value: 'ELM_BREACH_EXCLUSION_ZONE',
+          text: 'Electronic locking and monitoring (ELM) - Breach of exclusion zone - detected by ELM',
+        },
+        {
+          value: 'POOR_BEHAVIOUR_ALCOHOL',
+          text: 'Poor behaviour - Alcohol',
+        },
+        {
+          value: 'TRAVELLING_OUTSIDE_UK',
+          text: 'Travelling outside the UK',
+        },
+        {
+          value: 'OTHER',
+          text: 'Other',
+        },
+      ],
+    } as any)
+    const record = {
+      auditId: 0,
+      recallId: '11',
+      updatedByUserName: 'Dave',
+      updatedDateTime: '2021-10-03',
+      updatedValue: ['TRAVELLING_OUTSIDE_UK', 'OTHER', 'ELM_BREACH_EXCLUSION_ZONE', 'POOR_BEHAVIOUR_ALCOHOL'],
+    }
+    const value = formatRecallFieldValue({ record, fieldName: 'reasonsForRecall' })
+    expect(value).toEqual(
+      'Electronic locking and monitoring (ELM) - Breach of exclusion zone - detected by ELM, Other, Poor behaviour - Alcohol, Travelling outside the UK'
+    )
   })
 })
