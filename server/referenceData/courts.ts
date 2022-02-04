@@ -1,6 +1,7 @@
 import { getCourts } from '../clients/manageRecallsApiClient'
 import { Court } from '../@types/manage-recalls-api'
 import { RefDataBaseClass } from './refDataBaseClass'
+import { sortList } from '../routes/handlers/helpers'
 
 class Courts extends RefDataBaseClass {
   constructor() {
@@ -8,10 +9,11 @@ class Courts extends RefDataBaseClass {
   }
 
   static formatCourtsList(list: Court[]) {
-    return list.map(({ courtId, courtName }: Court) => ({
+    const mapped = list.map(({ courtId, courtName }: Court) => ({
       value: courtId,
       text: courtName,
     }))
+    return sortList(mapped, 'text')
   }
 }
 

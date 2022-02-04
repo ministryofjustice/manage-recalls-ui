@@ -71,34 +71,37 @@
                 </dd>
             </div>
         {% endif %}
-        {% if recall.status == 'RECALL_NOTIFICATION_ISSUED' or recall.status == 'DOSSIER_IN_PROGRESS' or recall.status == 'DOSSIER_ISSUED' %}
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Licence conditions breached
-                </dt>
-                <dd class=" govuk-summary-list__value">
+        {% if isStatusAfterAssessStart(recall.status) %}
+            {% if recall.licenceConditionsBreached %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Licence conditions breached
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
                     <pre class='govuk-body'
                          data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Reasons for recall
-                </dt>
-                <dd class=" govuk-summary-list__value">
-                    <ul class='govuk-list govuk-list--bullet'>
-                        {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
-                            <li data-qa='reasonsForRecall-{{ reason.value }}'>
-                                {{ reason.text }}{% if reason.text == 'Other' %} - {{ recall.reasonsForRecallOtherDetail }}{% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions">
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Reasons for recall
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                        <ul class='govuk-list govuk-list--bullet'>
+                            {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
+                                <li data-qa='reasonsForRecall-{{ reason.value }}'>
+                                    {{ reason.text }}{% if reason.text == 'Other' %} - <br /><pre class='govuk-body'>{{ recall.reasonsForRecallOtherDetail }}</pre>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions">
+                    </dd>
+                </div>
+            {% endif %}
+            {% if recall.assessedByUserName %}
             <div class="govuk-summary-list__row">
                 <dt class=" govuk-summary-list__key">
                     Recall assessed by
@@ -109,6 +112,8 @@
                 <dd class=" govuk-summary-list__actions">
                 </dd>
             </div>
+            {% endif %}
+            {% if recall.agreeWithRecallDetail %}
             <div class="govuk-summary-list__row">
                 <dt class=" govuk-summary-list__key">
                     Assessment notes
@@ -119,34 +124,31 @@
                 <dd class=" govuk-summary-list__actions">
                 </dd>
             </div>
-            {% if recall.status == 'DOSSIER_ISSUED' %}
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key">
-                        Recall notification email sent
-                    </dt>
-                    <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
-                        {{ recall.recallNotificationEmailSentDateTime | dateTime }}
-                    </dd>
-                    <dd class=" govuk-summary-list__actions">
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class=" govuk-summary-list__key">
-                        Recall notification email uploaded
-                    </dt>
-                    <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
-                        <a href='{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.url }}' class='govuk-link'
-                           data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.category }}'
-                           download>{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.fileName }}</a>
-                    </dd>
-                    <dd class=" govuk-summary-list__actions">
-                    </dd>
-                </div>
             {% endif %}
-
         {% endif %}
-
         {% if recall.status == 'DOSSIER_ISSUED' %}
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Recall notification email sent
+                </dt>
+                <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailSentDateTime'>
+                    {{ recall.recallNotificationEmailSentDateTime | dateTime }}
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Recall notification email uploaded
+                </dt>
+                <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
+                    <a href='{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.url }}' class='govuk-link'
+                       data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.category }}'
+                       download>{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.fileName }}</a>
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
             <div class="govuk-summary-list__row">
                 <dt class=" govuk-summary-list__key">
                     Dossier created by

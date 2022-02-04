@@ -75,7 +75,7 @@ context('View recall information', () => {
     })
   })
 
-  it('User can view not available for additionalLicenceConditions,vulnerabilityDiversity and contraband when information is not provided', () => {
+  it('User can view not available for vulnerabilityDiversity and contraband when information is not provided', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -86,7 +86,6 @@ context('View recall information', () => {
       },
     })
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'Not available' })
