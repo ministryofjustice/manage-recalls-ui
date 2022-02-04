@@ -92,7 +92,7 @@
                         <ul class='govuk-list govuk-list--bullet'>
                             {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
                                 <li data-qa='reasonsForRecall-{{ reason.value }}'>
-                                    {{ reason.text }}{% if reason.text == 'Other' %} - {{ recall.reasonsForRecallOtherDetail }}{% endif %}
+                                    {{ reason.text }}{% if reason.text == 'Other' %} - <br /><pre class='govuk-body'>{{ recall.reasonsForRecallOtherDetail }}</pre>{% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
