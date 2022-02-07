@@ -144,16 +144,36 @@ export const backLinkUrl = (path: string, { fromPage, fromHash, basePath }: UrlI
   return `${basePath}${path}`
 }
 
+export const backLinkUrlAssessDownload = ({
+  inCustodyAtBooking,
+  inCustodyAtAssessment,
+  urlInfo,
+}: {
+  inCustodyAtBooking: boolean
+  inCustodyAtAssessment: boolean
+  urlInfo: UrlInfo
+}) => {
+  if (inCustodyAtBooking === true) {
+    return backLinkUrl('assess-licence', urlInfo)
+  }
+  if (inCustodyAtBooking === false && inCustodyAtAssessment === false) {
+    return backLinkUrl('assess-custody-status', urlInfo)
+  }
+  if (inCustodyAtBooking === false && inCustodyAtAssessment === true) {
+    return backLinkUrl('assess-prison', urlInfo)
+  }
+}
+
 export const backLinkUrlRecallReceived = ({
-  inCustody,
+  inCustodyAtBooking,
   lastKnownAddressOption,
   urlInfo,
 }: {
-  inCustody: boolean
+  inCustodyAtBooking: boolean
   lastKnownAddressOption?: RecallResponse.lastKnownAddressOption
   urlInfo: UrlInfo
 }) => {
-  if (inCustody === true) {
+  if (inCustodyAtBooking === true) {
     return backLinkUrl('custody-status', urlInfo)
   }
   if (lastKnownAddressOption === 'YES') {

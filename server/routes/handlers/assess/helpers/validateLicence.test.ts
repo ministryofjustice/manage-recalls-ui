@@ -41,7 +41,7 @@ describe('validateLicence', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
-      inCustody: '1',
+      inCustodyAtBooking: '1',
     }
     const { redirectToPage } = validateLicence({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/assess-prison')
@@ -51,7 +51,7 @@ describe('validateLicence', () => {
     const requestBody = {
       licenceConditionsBreached: 'one, two',
       reasonsForRecall: 'FAILED_WORK_AS_APPROVED',
-      inCustody: '1',
+      inCustodyAtBooking: '1',
     }
     const { redirectToPage } = validateLicence({
       requestBody,

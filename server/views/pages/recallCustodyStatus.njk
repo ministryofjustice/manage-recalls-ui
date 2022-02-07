@@ -31,8 +31,8 @@
                 {% endif %}
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukRadios({
-                        idPrefix: "inCustody",
-                        name: "inCustody",
+                        idPrefix: "inCustodyAtBooking",
+                        name: "inCustodyAtBooking",
                         fieldset: {
                             legend: {
                                 text: "Is " + recall.fullName + " in custody?",
@@ -44,15 +44,15 @@
                             {
                                 value: "YES",
                                 text: 'Yes',
-                                checked: formValues.inCustody == 'YES'
+                                checked: formValues.inCustodyAtBooking == 'YES'
                             },
                             {
                                 value: "NO",
                                 text: 'No',
-                                checked: formValues.inCustody == 'NO'
+                                checked: formValues.inCustodyAtBooking == 'NO'
                             }
                         ],
-                        errorMessage: errorMessage(errors.inCustody)
+                        errorMessage: errorMessage(errors.inCustodyAtBooking)
                     }) }}
                 </div>
                 <div>

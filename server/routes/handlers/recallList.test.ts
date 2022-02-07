@@ -22,6 +22,7 @@ describe('recallList', () => {
       nomsNumber: '123',
       status: 'BOOKED_ON',
       recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
+      inCustodyAtBooking: true,
     },
     {
       firstName: 'Belinda',
@@ -29,6 +30,7 @@ describe('recallList', () => {
       recallId: '2',
       nomsNumber: '123',
       status: 'BEING_BOOKED_ON',
+      inCustodyAtBooking: false,
     },
     {
       firstName: 'Barry',
@@ -37,7 +39,8 @@ describe('recallList', () => {
       nomsNumber: '456',
       status: 'RECALL_NOTIFICATION_ISSUED',
       dossierTargetDate: '2021-08-13',
-      inCustody: false,
+      inCustodyAtBooking: false,
+      inCustodyAtAssessment: false,
     },
     {
       firstName: 'Bartholomew',
@@ -46,6 +49,8 @@ describe('recallList', () => {
       nomsNumber: '123',
       status: 'DOSSIER_ISSUED',
       dossierEmailSentDate: '2021-05-04',
+      inCustodyAtBooking: false,
+      inCustodyAtAssessment: true,
     },
     {
       firstName: 'Bootsy',
@@ -54,6 +59,8 @@ describe('recallList', () => {
       nomsNumber: '123',
       status: 'AWAITING_RETURN_TO_CUSTODY',
       dossierTargetDate: '2021-08-13',
+      inCustodyAtBooking: false,
+      inCustodyAtAssessment: false,
     },
     {
       firstName: 'Beyonce',
@@ -62,6 +69,8 @@ describe('recallList', () => {
       nomsNumber: '123',
       status: 'STOPPED',
       dossierEmailSentDate: '2021-03-22',
+      inCustodyAtBooking: false,
+      inCustodyAtAssessment: true,
     },
     {
       firstName: 'Brenda',
@@ -70,6 +79,8 @@ describe('recallList', () => {
       nomsNumber: '456',
       status: 'DOSSIER_ISSUED',
       dossierEmailSentDate: '2020-10-22',
+      inCustodyAtBooking: true,
+      inCustodyAtAssessment: true,
     },
     {
       firstName: 'Barry',
@@ -78,7 +89,7 @@ describe('recallList', () => {
       nomsNumber: '456',
       status: 'BOOKED_ON',
       dossierTargetDate: '2021-08-13',
-      inCustody: false,
+      inCustodyAtBooking: false,
     },
   ]
 
@@ -88,31 +99,33 @@ describe('recallList', () => {
     resp = res
   })
 
-  it('should make recalls with person details available to render', async () => {
+  it('should make filtered lists of recalls', async () => {
     ;(getRecallList as jest.Mock).mockResolvedValue(listOfRecalls)
     await recallList(req, resp)
     expect(resp.locals.results.toDo).toEqual([
       {
         firstName: 'Belinda',
         fullName: 'Belinda Badger',
+        inCustodyAtBooking: false,
         lastName: 'Badger',
         nomsNumber: '123',
         recallId: '2',
         status: 'BEING_BOOKED_ON',
       },
       {
+        dossierTargetDate: '2021-08-13',
         firstName: 'Barry',
         fullName: 'Barry Badger',
+        inCustodyAtBooking: false,
         lastName: 'Badger',
-        recallId: '3',
         nomsNumber: '456',
+        recallId: '3',
         status: 'BOOKED_ON',
-        dossierTargetDate: '2021-08-13',
-        inCustody: false,
       },
       {
         firstName: 'Bobby',
         fullName: 'Bobby Badger',
+        inCustodyAtBooking: true,
         lastName: 'Badger',
         nomsNumber: '123',
         recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
@@ -129,7 +142,8 @@ describe('recallList', () => {
         nomsNumber: '456',
         recallId: '3',
         status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
       },
       {
         dossierTargetDate: '2021-08-13',
@@ -139,6 +153,8 @@ describe('recallList', () => {
         nomsNumber: '123',
         recallId: '12',
         status: 'AWAITING_RETURN_TO_CUSTODY',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
       },
     ])
     expect(resp.locals.results.completed).toEqual([
@@ -146,6 +162,8 @@ describe('recallList', () => {
         dossierEmailSentDate: '2021-05-04',
         firstName: 'Bartholomew',
         fullName: 'Bartholomew Badger',
+        inCustodyAtAssessment: true,
+        inCustodyAtBooking: false,
         lastName: 'Badger',
         nomsNumber: '123',
         recallId: '4',
@@ -155,6 +173,8 @@ describe('recallList', () => {
         dossierEmailSentDate: '2021-03-22',
         firstName: 'Beyonce',
         fullName: 'Beyonce Badger',
+        inCustodyAtAssessment: true,
+        inCustodyAtBooking: false,
         lastName: 'Badger',
         nomsNumber: '123',
         recallId: '5',
@@ -164,6 +184,8 @@ describe('recallList', () => {
         dossierEmailSentDate: '2020-10-22',
         firstName: 'Brenda',
         fullName: 'Brenda Badger',
+        inCustodyAtAssessment: true,
+        inCustodyAtBooking: true,
         lastName: 'Badger',
         nomsNumber: '456',
         recallId: '6',

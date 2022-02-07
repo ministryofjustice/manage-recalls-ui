@@ -30,7 +30,7 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectUpdateRecall: recallId => {
+    expectUpdateRecall: ({ recallId, status }) => {
       return wiremock.stubFor({
         request: {
           method: 'PATCH',
@@ -41,7 +41,7 @@ export default function manageRecallsApi(wiremock) {
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: { recallId },
+          jsonBody: { recallId, status },
         },
       })
     },

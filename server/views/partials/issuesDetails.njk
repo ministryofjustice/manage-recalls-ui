@@ -14,7 +14,7 @@
     </dd>
   </div>
 
-  {% if recall.inCustody == false %}
+  {% if not isInCustody(recall) %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Arrest issues

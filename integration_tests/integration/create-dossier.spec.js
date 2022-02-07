@@ -1,7 +1,6 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
-import { booleanToYesNo } from '../support/utils'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -20,6 +19,7 @@ context('Create a dossier', () => {
   beforeEach(() => {
     cy.login()
   })
+
   it('can verify recall details before creating a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -45,10 +45,15 @@ context('Create a dossier', () => {
     })
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
     dossierRecall.assertElementHasText({
-      qaAttr: 'inCustody',
+      qaAttr: 'inCustodyAtBooking',
       textToFind: 'Not in custody',
     })
-    dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'inCustodyAtAssessment',
+      textToFind: 'In custody',
+    })
+    dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyAtBookingChange' })
+    dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyAtAssessmentChange' })
     dossierRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Assessment complete' })
     dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
     dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
@@ -126,11 +131,12 @@ context('Create a dossier', () => {
           recallId,
           nomsNumber,
           status,
+          inCustodyAtBooking: true,
         },
       ],
     })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId, status })
     cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
@@ -244,7 +250,7 @@ context('Create a dossier', () => {
         recallId,
       },
     })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-letter' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({

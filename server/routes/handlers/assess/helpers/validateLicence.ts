@@ -20,7 +20,7 @@ export const validateLicence = ({
     licenceConditionsBreached,
     reasonsForRecall,
     reasonsForRecallOtherDetail,
-    inCustody,
+    inCustodyAtBooking,
     hasExistingReasonsForRecallOtherDetail,
   } = requestBody
   let reasonsForRecallList: string[] | string = reasonsForRecall
@@ -69,7 +69,7 @@ export const validateLicence = ({
       reasonsForRecall: reasonsForRecallList as reasonForRecall[],
       reasonsForRecallOtherDetail: otherSelected ? (reasonsForRecallOtherDetail as string) : otherDetailIfNotSelected,
     }
-    redirectToPage = makeUrl(inCustody ? 'assess-prison' : 'assess-custody-status', urlInfo)
+    redirectToPage = makeUrl(inCustodyAtBooking ? 'assess-prison' : 'assess-custody-status', urlInfo)
     if (urlInfo.fromPage) {
       redirectToPage = makeUrlToFromPage(urlInfo.fromPage, urlInfo)
     }

@@ -9,7 +9,7 @@ context('View recall information', () => {
       recallId,
       expectedResult: {
         ...getRecallResponse,
-        inCustody: true,
+        inCustodyAtBooking: true,
         recallId,
         status: 'DOSSIER_ISSUED',
         documents: [
@@ -42,10 +42,10 @@ context('View recall information', () => {
   const recallId = '123'
   const personName = 'Bobby Badger'
 
-  it('User can view all recall information', () => {
+  it('User can view all recall information (after dossier issued)', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.assertElementHasText({
-      qaAttr: 'inCustody',
+      qaAttr: 'inCustodyAtBooking',
       textToFind: 'In custody',
     })
     recallInformation.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
@@ -102,6 +102,8 @@ context('View recall information', () => {
         arrestIssues: false,
         contraband: false,
         status: 'DOSSIER_ISSUED',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
       },
     })
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })

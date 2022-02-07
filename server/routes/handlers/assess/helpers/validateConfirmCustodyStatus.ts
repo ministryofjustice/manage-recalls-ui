@@ -7,24 +7,24 @@ export const validateConfirmCustodyStatus = ({ requestBody, urlInfo }: ReqValida
   let valuesToSave
   let redirectToPage
 
-  const { inCustody } = requestBody
-  if (!inCustody || !['YES', 'NO'].includes(inCustody)) {
+  const { inCustodyAtAssessment } = requestBody
+  if (!inCustodyAtAssessment || !['YES', 'NO'].includes(inCustodyAtAssessment)) {
     errors = [
       makeErrorObject({
-        id: 'inCustody',
+        id: 'inCustodyAtAssessment',
         text: 'Is {{ recall.fullName }} in custody?',
       }),
     ]
   }
   if (!errors) {
-    const isInCustody = inCustody === 'YES'
+    const isInCustody = inCustodyAtAssessment === 'YES'
     if (isInCustody) {
       redirectToPage = 'assess-prison'
     } else {
       redirectToPage = 'assess-download'
     }
     valuesToSave = {
-      inCustody: isInCustody,
+      inCustodyAtAssessment: isInCustody,
     }
   }
   return { errors, valuesToSave, redirectToPage: makeUrl(redirectToPage, urlInfo) }

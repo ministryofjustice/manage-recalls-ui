@@ -8,7 +8,10 @@ import { MissingDocumentsRecord } from '../../../@types/manage-recalls-api/model
 
 describe('getFormValues', () => {
   const errors = {
-    inCustody: {
+    inCustodyAtBooking: {
+      text: 'Custody status',
+    },
+    inCustodyAtAssessment: {
       text: 'Custody status',
     },
     agreeWithRecall: {
@@ -113,7 +116,8 @@ describe('getFormValues', () => {
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
-    inCustody: 'YES',
+    inCustodyAtBooking: 'NO',
+    inCustodyAtAssessment: 'YES',
     agreeWithRecall: 'NO',
     agreeWithRecallDetail: 'Reasons for no...',
     recallEmailReceivedDateTimeParts: { year: '2020', month: '12', day: '05', hour: '15', minute: '33' },
@@ -196,7 +200,8 @@ describe('getFormValues', () => {
         month: '',
         year: '2016',
       },
-      inCustody: '',
+      inCustodyAtBooking: '',
+      inCustodyAtAssessment: '',
       hasDossierBeenChecked: '',
       previousConvictionMainNameCategory: '',
       indexOffence: '',
@@ -286,7 +291,8 @@ describe('getFormValues', () => {
         year: '2020',
       },
       hasDossierBeenChecked: 'YES',
-      inCustody: 'YES',
+      inCustodyAtBooking: 'NO',
+      inCustodyAtAssessment: 'YES',
       indexOffence: 'Assault',
       lastReleaseDateParts: {
         day: 'ee',
@@ -370,7 +376,8 @@ describe('getFormValues', () => {
       },
       hasDossierBeenChecked: '',
       previousConvictionMainNameCategory: '',
-      inCustody: '',
+      inCustodyAtBooking: '',
+      inCustodyAtAssessment: '',
       indexOffence: '',
       lastReleaseDateParts: {
         day: 'ee',
@@ -460,7 +467,8 @@ describe('getFormValues', () => {
         year: '2021',
       },
       hasDossierBeenChecked: 'YES',
-      inCustody: 'NO',
+      inCustodyAtBooking: 'NO',
+      inCustodyAtAssessment: 'YES',
       previousConvictionMainNameCategory: 'OTHER',
       indexOffence: 'Burglary',
       lastKnownAddressOption: 'YES',
@@ -558,7 +566,8 @@ describe('getFormValues', () => {
       },
       hasDossierBeenChecked: 'YES',
       previousConvictionMainNameCategory: 'OTHER',
-      inCustody: 'NO',
+      inCustodyAtBooking: 'NO',
+      inCustodyAtAssessment: 'YES',
       indexOffence: 'Burglary',
       lastKnownAddressOption: 'YES',
       lastReleaseDateParts: {

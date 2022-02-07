@@ -37,7 +37,13 @@ context('Assess a recall', () => {
       },
     ],
   }
-  const emptyRecall = { ...getEmptyRecallResponse, recallId, recallLength: 'FOURTEEN_DAYS', bookingNumber: 'A123456' }
+  const emptyRecall = {
+    ...getEmptyRecallResponse,
+    recallId,
+    recallLength: 'FOURTEEN_DAYS',
+    bookingNumber: 'A123456',
+    status: 'IN_ASSESSMENT',
+  }
 
   beforeEach(() => {
     cy.login()
@@ -63,10 +69,10 @@ context('Assess a recall', () => {
       href: `/persons/${nomsNumber}/recalls/${recallId}/request-received`,
     })
     assessRecall.assertElementHasText({
-      qaAttr: 'inCustody',
+      qaAttr: 'inCustodyAtBooking',
       textToFind: 'Not in custody',
     })
-    assessRecall.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
+    assessRecall.assertElementNotPresent({ qaAttr: 'inCustodyAtBookingChange' })
 
     // change link for an uploaded document goes to the 'add new document version' page
     assessRecall.assertLinkHref({
@@ -99,7 +105,7 @@ context('Assess a recall', () => {
     })
     stubRefData()
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.visitPage('/')
     cy.clickButton('Assess recall')
@@ -139,7 +145,7 @@ context('Assess a recall', () => {
     cy.pageHeading(`Recall assessed for ${firstLastName}`)
   })
 
-  it('if not in custody, redirect to Download recall notification page', () => {
+  it('if not in custody, redirect to download recall notification page', () => {
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
     cy.selectRadio('Is Bobby Badger in custody?', 'No')
     cy.clickButton('Continue')
@@ -147,43 +153,51 @@ context('Assess a recall', () => {
   })
 
   it('error - custody status', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...emptyRecall,
+      },
+    })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
-      fieldName: 'inCustody',
+      fieldName: 'inCustodyAtAssessment',
       summaryError: `Is ${firstLastName} in custody?`,
     })
   })
 
-  it('pre-selects "No" for custody status if returning to page', () => {
+  it('custody status - back links', () => {
+    // back link from current prison page goes to custody status if user entered custody after booking
     cy.task('expectGetRecall', {
       expectedResult: {
         ...emptyRecall,
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: true,
       },
     })
-    cy.task('expectUpdateRecall', recallId)
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
-    cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'No').should('not.be.checked')
-    cy.selectRadio('Is Bobby Badger in custody?', 'No')
-    cy.clickButton('Continue')
-    cy.clickLink('Back')
-    cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'No').should('be.checked')
-  })
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-prison' })
+    cy.getLinkHref('Back').should('contain', '/assess-custody-status')
 
-  it('returns to custody status page if it was previously viewed and user is in custody', () => {
+    // back link from current prison page goes to licence page if user was in custody at booking
     cy.task('expectGetRecall', {
       expectedResult: {
         ...emptyRecall,
-        inCustody: true,
+        inCustodyAtBooking: true,
       },
     })
-    cy.task('expectUpdateRecall', recallId)
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
-    cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
-    cy.clickButton('Continue')
-    cy.clickLink('Back')
-    cy.getRadioOptionByLabel('Is Bobby Badger in custody?', 'Yes').should('be.checked')
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-prison' })
+    cy.getLinkHref('Back').should('contain', '/assess-licence')
+
+    // back link from download notification page goes to custody status if user is not in custody
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...emptyRecall,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+      },
+    })
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-download' })
+    cy.getLinkHref('Back').should('contain', '/assess-custody-status')
   })
 
   it('errors - recall recommendation', () => {
@@ -210,7 +224,7 @@ context('Assess a recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: emptyRecall,
     })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId })
     const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallDecision.makeNoDecision()
     assessRecallDecision.addNoDetail()
@@ -223,7 +237,7 @@ context('Assess a recall', () => {
   it('licence details', () => {
     // errors if fields not completed
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-licence' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
@@ -276,7 +290,7 @@ context('Assess a recall', () => {
     })
   })
 
-  it("User sees an error if they don't upload the recall notification email or enter a sent date", () => {
+  it("error - if they don't upload the recall notification email or enter a sent date", () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
     assessRecallEmail.confirmEmailSent()

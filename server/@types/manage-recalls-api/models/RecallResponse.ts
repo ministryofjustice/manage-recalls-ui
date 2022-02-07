@@ -40,6 +40,8 @@ export type RecallResponse = {
     firstName: string;
     hasDossierBeenChecked?: boolean;
     inCustody?: boolean;
+    inCustodyAtAssessment?: boolean;
+    inCustodyAtBooking?: boolean;
     indexOffence?: string;
     lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
     lastKnownAddresses: Array<LastKnownAddress>;

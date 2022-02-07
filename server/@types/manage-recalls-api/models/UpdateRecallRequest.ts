@@ -25,6 +25,8 @@ export type UpdateRecallRequest = {
     dossierEmailSentDate?: string;
     hasDossierBeenChecked?: boolean;
     inCustody?: boolean;
+    inCustodyAtAssessment?: boolean;
+    inCustodyAtBooking?: boolean;
     indexOffence?: string;
     lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
     lastReleaseDate?: string;

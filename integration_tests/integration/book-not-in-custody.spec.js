@@ -14,7 +14,7 @@ context('Book a "not in custody" recall', () => {
 
   beforeEach(() => {
     cy.login()
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId })
   })
 
   it('user can book a not in custody recall', () => {
@@ -78,7 +78,7 @@ context('Book a "not in custody" recall', () => {
     cy.pageHeading().should('equal', 'When did you receive the recall request?')
   })
 
-  it('shows if person has last known addresses and arrest issues on the recall info page', () => {
+  it('shows if person has last known addresses and arrest issues on the recall info page, after booking', () => {
     const lastKnownAddresses = [
       {
         line1: '345 Porchester Road',
@@ -100,9 +100,10 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
-        inCustody: false,
+        inCustodyAtBooking: false,
         lastKnownAddressOption: 'YES',
         lastKnownAddresses,
+        status: 'BOOKED_ON',
       },
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
@@ -124,7 +125,12 @@ context('Book a "not in custody" recall', () => {
 
   it('shows if person has no fixed abode on the recall info page', () => {
     cy.task('expectGetRecall', {
-      expectedResult: { ...newRecall, inCustody: false, lastKnownAddressOption: 'NO_FIXED_ABODE' },
+      expectedResult: {
+        ...newRecall,
+        status: 'BOOKED_ON',
+        inCustodyAtBooking: false,
+        lastKnownAddressOption: 'NO_FIXED_ABODE',
+      },
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
     cy.recallInfo('Address').should('equal', 'No fixed abode')
@@ -137,7 +143,12 @@ context('Book a "not in custody" recall', () => {
 
   it('shows if person has no last known addresses provided on the recall info page', () => {
     cy.task('expectGetRecall', {
-      expectedResult: { ...newRecall, inCustody: false, lastKnownAddressOption: 'YES', lastKnownAddresses: [] },
+      expectedResult: {
+        ...newRecall,
+        inCustodyAtBooking: false,
+        lastKnownAddressOption: 'YES',
+        lastKnownAddresses: [],
+      },
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
     cy.recallInfo('Address').should('equal', 'Not provided')
@@ -153,7 +164,8 @@ context('Book a "not in custody" recall', () => {
       {
         ...getRecallResponse,
         status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
         warrantReferenceNumber: '02RC/1234567C12345',
@@ -163,7 +175,8 @@ context('Book a "not in custody" recall', () => {
         firstName: 'Ben',
         lastName: 'Adams',
         status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
       },
