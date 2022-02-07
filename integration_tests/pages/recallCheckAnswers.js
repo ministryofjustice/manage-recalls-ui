@@ -9,7 +9,7 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
         'contain',
         '/licence-name?fromPage=check-answers&fromHash=personalDetails'
       )
-      cy.getLinkHref('Custody status at booking').should(
+      cy.getLinkHref('Change custody status at booking').should(
         'contain',
         '/custody-status?fromPage=check-answers&fromHash=custody'
       )
