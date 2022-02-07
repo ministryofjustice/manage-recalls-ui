@@ -2,6 +2,7 @@ import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/
 import { decorateDocs } from './decorateDocs'
 import { findDocCategory } from '../../upload/helpers'
 import { DocumentDecorations } from '../../../../../@types/documents'
+import { RecallResponse } from '../../../../../@types/manage-recalls-api'
 
 describe('decorateDocs', () => {
   const docs = [
@@ -123,15 +124,19 @@ describe('decorateDocs', () => {
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
   let results: DocumentDecorations
+  const recall = {
+    nomsNumber,
+    recallId,
+    firstName: 'Bobby',
+    lastName: 'Badger',
+    bookingNumber: '123',
+    status: 'DOSSIER_ISSUED',
+  } as RecallResponse
 
   beforeEach(() => {
     results = decorateDocs({
       docs,
-      nomsNumber,
-      recallId,
-      firstName: 'Bobby',
-      lastName: 'Badger',
-      bookingNumber: '123',
+      recall,
       versionedCategoryName: 'LICENCE',
       missingDocumentsRecords,
     })
@@ -452,11 +457,7 @@ describe('decorateDocs', () => {
           version: 1,
         },
       ],
-      nomsNumber,
-      recallId,
-      firstName: 'Bobby',
-      lastName: 'Badger',
-      bookingNumber: '123',
+      recall,
       versionedCategoryName: 'LICENCE',
       missingDocumentsRecords,
     })
@@ -475,11 +476,7 @@ describe('decorateDocs', () => {
           version: 1,
         },
       ],
-      nomsNumber,
-      recallId,
-      firstName: 'Bobby',
-      lastName: 'Badger',
-      bookingNumber: '123',
+      recall,
       versionedCategoryName: 'LICENCE',
       missingDocumentsRecords,
     })

@@ -15,6 +15,12 @@ describe('downloadDocumentOrEmail', () => {
   const expectedPdfContents = 'pdf contents'
   let req: Request
   let res: Response
+  const recall = {
+    bookingNumber,
+    firstName,
+    lastName,
+    status: 'RECALL_NOTIFICATION_ISSUED',
+  }
 
   beforeEach(() => {
     req = { params: { nomsNumber, recallId, documentId } } as unknown as Request
@@ -33,7 +39,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'RECALL_NOTIFICATION',
       content: expectedPdfContents,
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -48,7 +54,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'DOSSIER',
       content: expectedPdfContents,
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -63,7 +69,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'LETTER_TO_PRISON',
       content: expectedPdfContents,
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -78,7 +84,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'REVOCATION_ORDER',
       content: expectedPdfContents,
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -93,7 +99,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'REASONS_FOR_RECALL',
       content: expectedPdfContents,
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
@@ -108,7 +114,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'PART_A_RECALL_REPORT',
       content: expectedPdfContents,
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="Part A.pdf"`)
@@ -121,7 +127,7 @@ describe('downloadDocumentOrEmail', () => {
       content: expectedPdfContents,
       fileName: 'report.pdf',
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="report.pdf"`)
@@ -134,7 +140,7 @@ describe('downloadDocumentOrEmail', () => {
       content: expectedPdfContents,
       fileName: 'email.eml',
     })
-    ;(getRecall as jest.Mock).mockResolvedValue({ bookingNumber, firstName, lastName })
+    ;(getRecall as jest.Mock).mockResolvedValue(recall)
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/octet-stream')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="email.eml"`)

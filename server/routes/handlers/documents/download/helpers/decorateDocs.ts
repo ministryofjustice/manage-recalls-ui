@@ -5,26 +5,21 @@ import { decorateMissingDocumentsRecords, generatedDocMetaData, getDocHistorySta
 import { decorateAllDocTypes } from './decorateAllDocTypes'
 import { getVersionedUpload } from './getVersionedUpload'
 import { DocumentDecorations } from '../../../../../@types/documents'
+import { isInCustody } from '../../../helpers/recallStatus'
+import { RecallResponse } from '../../../../../@types/manage-recalls-api'
 
 export const decorateDocs = ({
   docs,
   missingDocumentsRecords = [],
-  nomsNumber,
-  recallId,
-  firstName,
-  lastName,
-  bookingNumber,
   versionedCategoryName,
+  recall,
 }: {
   docs: RecallDocument[]
   missingDocumentsRecords?: MissingDocumentsRecord[]
-  nomsNumber: string
-  recallId: string
-  firstName?: string
-  lastName?: string
-  bookingNumber: string
   versionedCategoryName?: string
+  recall: RecallResponse
 }): DocumentDecorations => {
+  const { nomsNumber, recallId, bookingNumber, firstName, lastName } = recall
   const decoratedDocs = decorateAllDocTypes({ docs, nomsNumber, recallId })
   const docCategoriesWithUploads = uploadedDocCategoriesList().map(docType => ({
     ...docType,
@@ -49,6 +44,7 @@ export const decorateDocs = ({
           bookingNumber,
           recallId,
           nomsNumber,
+          inCustody: isInCustody(recall),
         })
         if (versionedCategoryName === doc.category) {
           acc.versionedGeneratedDoc = {

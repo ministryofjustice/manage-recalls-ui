@@ -132,15 +132,10 @@ describe('viewWithRecall', () => {
     res.locals.urlInfo = {}
     await viewWithRecall('assessRecall')(req, res)
     expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
-    expect(decorateDocsExports.decorateDocs).toHaveBeenCalledWith({
-      docs: recall.documents,
-      nomsNumber,
-      recallId,
-      bookingNumber: recall.bookingNumber,
-      firstName: recall.firstName,
-      lastName: recall.lastName,
-      missingDocumentsRecords: recall.missingDocumentsRecords,
-    })
+    expect(decorateDocsExports.decorateDocs.mock.calls[0][0].docs).toEqual(recall.documents)
+    expect(decorateDocsExports.decorateDocs.mock.calls[0][0].missingDocumentsRecords).toEqual(
+      recall.missingDocumentsRecords
+    )
   })
 
   it('should pass document category query string to decorateDocs', async () => {
@@ -150,16 +145,7 @@ describe('viewWithRecall', () => {
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.locals.urlInfo = {}
     await viewWithRecall('assessRecall')(req, res)
-    expect(decorateDocsExports.decorateDocs).toHaveBeenCalledWith({
-      docs: recall.documents,
-      nomsNumber,
-      recallId,
-      bookingNumber: recall.bookingNumber,
-      firstName: recall.firstName,
-      lastName: recall.lastName,
-      versionedCategoryName: 'LICENCE',
-      missingDocumentsRecords: recall.missingDocumentsRecords,
-    })
+    expect(decorateDocsExports.decorateDocs.mock.calls[0][0].versionedCategoryName).toEqual('LICENCE')
   })
 
   it('should sort last known addresses by index in ascending order', async () => {

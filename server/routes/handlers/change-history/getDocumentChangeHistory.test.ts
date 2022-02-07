@@ -26,6 +26,7 @@ describe('getDocumentChangeHistory', () => {
       firstName: 'Wesley',
       lastName: 'Holt',
       bookingNumber: 'A1234AB',
+      status: 'DOSSIER_ISSUED',
       missingDocumentsRecords: [
         {
           categories: ['LICENCE', 'OASYS_RISK_ASSESSMENT'],

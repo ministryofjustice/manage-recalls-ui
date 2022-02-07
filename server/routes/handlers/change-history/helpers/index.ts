@@ -7,6 +7,7 @@ import {
   generatedDocMetaData,
 } from '../../documents/download/helpers'
 import { DecoratedGeneratedDoc } from '../../../../@types/documents'
+import { isInCustody } from '../../helpers/recallStatus'
 
 export const uploaded = ({
   sortedHistory,
@@ -52,6 +53,7 @@ export const generated = ({
       firstName,
       lastName,
       bookingNumber,
+      inCustody: isInCustody(recall),
     })
   )
 }
