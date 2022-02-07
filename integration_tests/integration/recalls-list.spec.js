@@ -1,6 +1,5 @@
-import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
+import { getRecallResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
-import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
 import userDetailsPage from '../pages/userDetails'
@@ -85,7 +84,7 @@ describe('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '5 Nov at 13:12' })
     recallsList.assessRecall({ recallId })
-    assessRecallPage.verifyOnPage({ fullName: personName })
+    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
   it('continue assessment if the recall has status IN_ASSESSMENT', () => {
@@ -109,7 +108,7 @@ describe('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `continue-assess-${recallId}`, text: 'Continue assessment' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueAssessment({ recallId })
-    assessRecallPage.verifyOnPage({ fullName: personName })
+    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
   it('move on to createDossier if the recall has status RECALL_NOTIFICATION_ISSUED', () => {

@@ -15,6 +15,7 @@ import {
   allowedImageFileExtensionList,
   backLinkUrl,
   backLinkUrlRecallReceived,
+  backLinkUrlAssessDownload,
   changeLinkUrl,
   errorMessage,
   removeUndefinedFromObject,
@@ -66,6 +67,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('allowedImageFileTypeLabelList', allowedImageFileTypeLabelList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
   njkEnv.addGlobal('backLinkUrlRecallReceived', backLinkUrlRecallReceived)
+  njkEnv.addGlobal('backLinkUrlAssessDownload', backLinkUrlAssessDownload)
   njkEnv.addGlobal('makeUrl', makeUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)
   njkEnv.addGlobal('errorMessage', errorMessage)

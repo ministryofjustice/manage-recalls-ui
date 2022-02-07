@@ -96,7 +96,7 @@ context('Book an "in-custody" recall', () => {
     cy.clickButton('Continue')
 
     // upload documents
-    cy.pageHeading('Upload documents')
+    cy.pageHeading().should('equal', 'Upload documents')
     cy.clickButton('Continue')
 
     // missing documents

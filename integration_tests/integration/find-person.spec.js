@@ -4,7 +4,6 @@ import {
   getEmptyRecallResponse,
   getPrisonerResponse,
 } from '../mockApis/mockResponses'
-import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 
 const findOffenderPage = require('../pages/findOffender')
@@ -64,7 +63,7 @@ context('Find a person', () => {
     const firstResult = homePage.searchResults().first()
     const existingRecall1 = getRecallsResponse[0]
     firstResult.get(`[data-qa=assess-recall-${existingRecall1.recallId}]`).click()
-    assessRecallPage.verifyOnPage({ fullName: personName })
+    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
   it('can continue a booking', () => {

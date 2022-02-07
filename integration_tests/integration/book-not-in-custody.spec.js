@@ -47,7 +47,7 @@ context('Book a "not in custody" recall', () => {
     cy.clickButton('Continue')
     cy.clickLink("I can't find the postcode")
     // ============================ manual address entry ============================
-    cy.pageHeading('Add an address')
+    cy.pageHeading().should('equal', 'Add an address')
     // check errors
     cy.fillInput('Postcode', 'ZZZ 333')
     cy.clickButton('Continue')
