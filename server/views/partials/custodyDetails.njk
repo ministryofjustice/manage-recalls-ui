@@ -9,7 +9,7 @@
     </dd>
     <dd class=" govuk-summary-list__actions">
       {% if recall.status == 'BEING_BOOKED_ON' %}
-      <a href='{{ changeLinkUrl('custody-status', urlInfo, 'custody') }}' data-qa='inCustodyAtBookingChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status at booking</span></a>
+      <a href='{{ changeLinkUrl('custody-status', urlInfo, 'custody') }}' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status at booking</span></a>
       {% endif %}
     </dd>
   </div>
@@ -23,7 +23,7 @@
     </dd>
     <dd class=" govuk-summary-list__actions">
       {% if recall.status == 'IN_ASSESSMENT' %}
-        <a href='{{ changeLinkUrl('assess-custody-status', urlInfo, 'custody') }}' data-qa='inCustodyAtAssessmentChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status at assessment</span></a>
+        <a href='{{ changeLinkUrl('assess-custody-status', urlInfo, 'custody') }}' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status at assessment</span></a>
       {% endif %}
     </dd>
   </div>
