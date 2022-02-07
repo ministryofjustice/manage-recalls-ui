@@ -17,8 +17,8 @@ context('Uploaded document versions', () => {
     const documentId = '123'
     cy.task('expectGetRecall', {
       expectedResult: {
-        recallId,
         ...getRecallResponse,
+        recallId,
         status: RecallResponse.status.DOSSIER_IN_PROGRESS,
         documents: [
           {
@@ -38,7 +38,7 @@ context('Uploaded document versions', () => {
     })
     uploadDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: '/persons/A1234AA/recalls/123/documents/123',
+      href: `/persons/A1234AA/recalls/${recallId}/documents/123`,
     })
     uploadDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionNumber',

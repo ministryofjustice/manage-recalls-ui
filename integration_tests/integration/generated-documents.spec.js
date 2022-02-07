@@ -8,54 +8,51 @@ context('Generated document versions', () => {
   const recallId = '123'
   const personName = 'Bobby Badger'
   const documentId = '123'
+  const recall = {
+    ...getRecallResponse,
+    recallId,
+    status: 'DOSSIER_ISSUED',
+    documents: [
+      {
+        category: 'RECALL_NOTIFICATION',
+        documentId,
+        version: 2,
+        createdDateTime: '2021-11-21T12:34:30.000Z',
+        details: 'Sentencing info changed',
+      },
+      {
+        category: 'REVOCATION_ORDER',
+        documentId: '2123',
+        version: 1,
+        createdDateTime: '2021-11-19T14:14:30.000Z',
+        details: 'Details / info changed',
+      },
+      {
+        category: 'LETTER_TO_PRISON',
+        documentId: '3123',
+        version: 5,
+        createdDateTime: '2021-11-19T14:14:30.000Z',
+        details: 'Details / info changed',
+      },
+      {
+        category: 'DOSSIER',
+        documentId: '4123',
+        version: 4,
+        createdDateTime: '2021-11-19T14:14:30.000Z',
+        details: 'Details / info changed',
+      },
+      {
+        category: 'REASONS_FOR_RECALL',
+        documentId: '5123',
+        version: 3,
+        createdDateTime: '2021-11-19T14:14:30.000Z',
+        details: 'Details / info changed',
+      },
+    ],
+  }
 
   beforeEach(() => {
     cy.login()
-    cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getRecallResponse,
-        recallId,
-        status: 'DOSSIER_ISSUED',
-        documents: [
-          {
-            category: 'RECALL_NOTIFICATION',
-            documentId,
-            version: 2,
-            createdDateTime: '2021-11-21T12:34:30.000Z',
-            details: 'Sentencing info changed',
-          },
-          {
-            category: 'REVOCATION_ORDER',
-            documentId: '2123',
-            version: 1,
-            createdDateTime: '2021-11-19T14:14:30.000Z',
-            details: 'Details / info changed',
-          },
-          {
-            category: 'LETTER_TO_PRISON',
-            documentId: '3123',
-            version: 5,
-            createdDateTime: '2021-11-19T14:14:30.000Z',
-            details: 'Details / info changed',
-          },
-          {
-            category: 'DOSSIER',
-            documentId: '4123',
-            version: 4,
-            createdDateTime: '2021-11-19T14:14:30.000Z',
-            details: 'Details / info changed',
-          },
-          {
-            category: 'REASONS_FOR_RECALL',
-            documentId: '5123',
-            version: 3,
-            createdDateTime: '2021-11-19T14:14:30.000Z',
-            details: 'Details / info changed',
-          },
-        ],
-      },
-    })
     cy.task('expectGenerateRecallDocument', { statusCode: 201 })
   })
 
@@ -63,9 +60,7 @@ context('Generated document versions', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
-        ...getRecallResponse,
-        recallId,
-        status: 'DOSSIER_ISSUED',
+        ...recall,
         documents: [],
       },
     })
@@ -78,9 +73,10 @@ context('Generated document versions', () => {
   })
 
   it('all generated documents are listed and user can generate a new document version', () => {
-    const recall = '83472929'
-    const changeLinkHref = `/persons/A1234AA/recalls/${recall}/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName=`
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId: recall, personName })
+    const recallId2 = '83472929'
+    cy.task('expectGetRecall', { expectedResult: { ...recall, recallId: recallId2 } })
+    const changeLinkHref = `/persons/A1234AA/recalls/${recallId2}/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName=`
+    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId: recallId2, personName })
     // show link, version number, detail for a document with verion > 1
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
@@ -138,7 +134,7 @@ context('Generated document versions', () => {
     })
     newGeneratedDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: `/persons/A1234AA/recalls/${recall}/documents/2123`,
+      href: `/persons/A1234AA/recalls/${recallId2}/documents/2123`,
     })
     newGeneratedDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionCreatedDateTime',
@@ -161,7 +157,7 @@ context('Generated document versions', () => {
     newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
     newGeneratedDocumentVersion.clickContinue()
     newGeneratedDocumentVersion.assertApiRequestBody({
-      url: `/recalls/${recall}/documents/generated`,
+      url: `/recalls/${recallId2}/documents/generated`,
       method: 'POST',
       bodyValues: {
         category: 'DOSSIER',
@@ -172,6 +168,10 @@ context('Generated document versions', () => {
   })
 
   it("an error is shown if details aren't entered", () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: recall,
+    })
     const newGeneratedDocumentVersion = newGeneratedDocumentVersionPage.verifyOnPage({
       recallId,
       nomsNumber,
