@@ -167,11 +167,13 @@ describe('getFormValues', () => {
     ...updateRecallResponse,
     ...decorateDocs({
       docs: updateRecallResponse.documents as RecallDocument[],
-      nomsNumber: '123',
-      recallId: '456',
-      bookingNumber: updateRecallResponse.bookingNumber,
-      firstName: 'Bobby',
-      lastName: 'Badger',
+      recall: {
+        nomsNumber: '123',
+        recallId: '456',
+        bookingNumber: updateRecallResponse.bookingNumber,
+        firstName: 'Bobby',
+        lastName: 'Badger',
+      } as RecallResponse,
       missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecord[],
     }),
     enableDeleteDocuments: false,

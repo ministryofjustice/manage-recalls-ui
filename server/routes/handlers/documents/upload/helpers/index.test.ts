@@ -50,11 +50,21 @@ describe('getGeneratedDocFileName', () => {
     firstName: 'Bobby',
     lastName: 'Badger',
     bookingNumber: 'A1234BC',
+    inCustody: true,
   }
 
-  it('returns a filename for recall notification', () => {
+  it('returns a filename for in custody recall notification', () => {
     const fileName = getGeneratedDocFileName({ ...args, category: RecallDocument.category.RECALL_NOTIFICATION })
     expect(fileName).toEqual('IN CUSTODY RECALL BADGER BOBBY A1234BC.pdf')
+  })
+
+  it('returns a filename for not in custody recall notification', () => {
+    const fileName = getGeneratedDocFileName({
+      ...args,
+      inCustody: false,
+      category: RecallDocument.category.RECALL_NOTIFICATION,
+    })
+    expect(fileName).toEqual('NOT IN CUSTODY RECALL BADGER BOBBY A1234BC.pdf')
   })
 
   it('returns a filename for dossier', () => {

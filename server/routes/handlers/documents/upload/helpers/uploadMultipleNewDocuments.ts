@@ -9,7 +9,7 @@ import { getRecall } from '../../../../../clients/manageRecallsApiClient'
 
 export const uploadMultipleNewDocuments = async (req: Request, res: Response) => {
   const { files, session, body } = req
-  const { recallId, nomsNumber } = req.params
+  const { recallId } = req.params
   const {
     user: { token },
     urlInfo,
@@ -49,6 +49,6 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
   if (req.xhr) {
     const { existingDocIds } = body
     const parsed = JSON.parse(existingDocIds)
-    return renderXhrResponse({ res, existingDocIds: parsed, recallId, nomsNumber, urlInfo, recall })
+    return renderXhrResponse({ res, existingDocIds: parsed, urlInfo, recall })
   }
 }

@@ -144,11 +144,18 @@ context('Assess a recall', () => {
   })
 
   it('if not in custody, redirect to download recall notification page', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: { ...fullRecall, inCustodyAtAssessment: false },
+    })
     cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
     cy.selectRadio('Is Bobby Badger in custody?', 'No')
     cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'Download recall notification')
+    cy.getText('getRecallNotificationFileName').should(
+      'contain',
+      'Filename: NOT IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
+    )
   })
 
   it('error - custody status', () => {

@@ -9,6 +9,7 @@ import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/
 import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api'
 import { sortList } from '../../../helpers'
 import { getRecall } from '../../../../../clients/manageRecallsApiClient'
+import { isInCustody } from '../../../helpers/recallStatus'
 
 export const generatedDocCategoriesList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'generated')
@@ -18,16 +19,18 @@ export const getGeneratedDocFileName = ({
   lastName,
   bookingNumber,
   category,
+  inCustody,
 }: {
   firstName: string
   lastName: string
   bookingNumber: string
   category: RecallDocument.category
+  inCustody: boolean
 }) => {
   const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
   switch (category) {
     case RecallDocument.category.RECALL_NOTIFICATION:
-      return `IN CUSTODY RECALL ${details}.pdf`
+      return `${inCustody === false ? 'NOT ' : ''}IN CUSTODY RECALL ${details}.pdf`
     case RecallDocument.category.DOSSIER:
       return `${details} RECALL DOSSIER.pdf`
     case RecallDocument.category.LETTER_TO_PRISON:
@@ -63,6 +66,7 @@ export const generatedDocMetaData = ({
   firstName,
   lastName,
   bookingNumber,
+  inCustody,
 }: {
   recallId: string
   nomsNumber: string
@@ -70,6 +74,7 @@ export const generatedDocMetaData = ({
   firstName: string
   lastName: string
   bookingNumber: string
+  inCustody: boolean
 }): DecoratedGeneratedDoc => {
   return {
     ...document,
@@ -79,6 +84,7 @@ export const generatedDocMetaData = ({
       lastName,
       bookingNumber,
       category: document.category,
+      inCustody,
     }),
     url: documentDownloadUrl({
       recallId,
@@ -103,6 +109,7 @@ export const generatedDocumentFileName = async ({
     lastName: recall.lastName,
     bookingNumber: recall.bookingNumber,
     category,
+    inCustody: isInCustody(recall),
   })
 }
 

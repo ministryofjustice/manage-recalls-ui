@@ -11,16 +11,12 @@ import { decorateDocs } from '../documents/download/helpers/decorateDocs'
 export const viewWithRecall =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
-    const { nomsNumber, recallId } = req.params
+    const { recallId } = req.params
     const recall = await getRecall(recallId, res.locals.user.token)
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
       missingDocumentsRecords: recall.missingDocumentsRecords,
-      nomsNumber,
-      recallId,
-      bookingNumber: recall.bookingNumber,
-      firstName: recall.firstName,
-      lastName: recall.lastName,
+      recall,
       versionedCategoryName: req.query.versionedCategoryName as string,
     })
     res.locals.recall = {

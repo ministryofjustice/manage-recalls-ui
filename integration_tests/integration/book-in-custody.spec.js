@@ -298,6 +298,7 @@ context('Book an "in-custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
+        nomsNumber,
         documents: [
           {
             documentId: '456',

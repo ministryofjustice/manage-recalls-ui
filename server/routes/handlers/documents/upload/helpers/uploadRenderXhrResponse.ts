@@ -8,15 +8,11 @@ import logger from '../../../../../../logger'
 export const renderXhrResponse = async ({
   res,
   existingDocIds,
-  recallId,
-  nomsNumber,
   urlInfo,
   recall,
 }: {
   res: Response
   existingDocIds: string[]
-  recallId: string
-  nomsNumber: string
   urlInfo: UrlInfo
   recall: RecallResponse
 }) => {
@@ -31,11 +27,7 @@ export const renderXhrResponse = async ({
   }
   const decoratedDocs = decorateDocs({
     docs: lastUploadedDocs,
-    nomsNumber,
-    recallId,
-    bookingNumber: recall.bookingNumber,
-    firstName: recall.firstName,
-    lastName: recall.lastName,
+    recall,
   })
   res.render(
     'partials/uploadedDocumentsStatus',
