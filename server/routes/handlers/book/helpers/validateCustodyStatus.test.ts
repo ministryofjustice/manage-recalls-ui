@@ -5,29 +5,29 @@ describe('validateCustodyStatus', () => {
 
   it('returns a value to save and no errors if No is submitted', () => {
     const requestBody = {
-      inCustody: 'NO',
+      inCustodyAtBooking: 'NO',
     }
     const { errors, valuesToSave } = validateCustodyStatus({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      inCustody: false,
+      inCustodyAtBooking: false,
     })
   })
 
   it('returns a value to save and no errors if Yes is submitted', () => {
     const requestBody = {
-      inCustody: 'YES',
+      inCustodyAtBooking: 'YES',
     }
     const { errors, valuesToSave } = validateCustodyStatus({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      inCustody: true,
+      inCustodyAtBooking: true,
     })
   })
 
   it('sets redirectToPage to last known address, if answer is No and there is no fromPage', () => {
     const requestBody = {
-      inCustody: 'NO',
+      inCustodyAtBooking: 'NO',
     }
     const { redirectToPage } = validateCustodyStatus({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/last-known-address')
@@ -35,7 +35,7 @@ describe('validateCustodyStatus', () => {
 
   it('sets redirectToPage to last known address, if answer is No and there is a fromPage', () => {
     const requestBody = {
-      inCustody: 'NO',
+      inCustodyAtBooking: 'NO',
     }
     const { redirectToPage } = validateCustodyStatus({
       requestBody,
@@ -46,7 +46,7 @@ describe('validateCustodyStatus', () => {
 
   it('sets redirectToPage to request received page, if answer is Yes and there is no fromPage', () => {
     const requestBody = {
-      inCustody: 'YES',
+      inCustodyAtBooking: 'YES',
     }
     const { redirectToPage } = validateCustodyStatus({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/request-received')
@@ -54,7 +54,7 @@ describe('validateCustodyStatus', () => {
 
   it('sets redirectToPage to the fromPage, if one is supplied and answer is Yes', () => {
     const requestBody = {
-      inCustody: 'YES',
+      inCustodyAtBooking: 'YES',
     }
     const { redirectToPage } = validateCustodyStatus({
       requestBody,
@@ -65,14 +65,14 @@ describe('validateCustodyStatus', () => {
 
   it('returns an error for the decision, if not set', () => {
     const requestBody = {
-      inCustody: '',
+      inCustodyAtBooking: '',
     }
     const { errors, valuesToSave } = validateCustodyStatus({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#inCustody',
-        name: 'inCustody',
+        href: '#inCustodyAtBooking',
+        name: 'inCustodyAtBooking',
         text: 'Is {{ recall.fullName }} in custody?',
       },
     ])

@@ -100,7 +100,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'contraband',
     'vulnerabilityDiversity',
     'arrestIssues',
-    'inCustody',
+    'inCustodyAtBooking',
+    'inCustodyAtAssessment',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? '' : unsavedValues[key] || booleanToYesNo(apiValues[key])
   })

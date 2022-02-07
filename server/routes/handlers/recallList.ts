@@ -6,6 +6,7 @@ import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallRes
 import logger from '../../../logger'
 import { sortCompletedList, sortNotInCustodyList, sortToDoList } from './helpers/dates/sort'
 import { formatName } from './helpers'
+import { isInCustody } from './helpers/recallStatus'
 
 export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
   try {
@@ -49,7 +50,7 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         completed.push(recall)
       } else if (
         recall.status === RecallResponse.status.AWAITING_RETURN_TO_CUSTODY ||
-        (recall.status === RecallResponse.status.RECALL_NOTIFICATION_ISSUED && recall.inCustody === false)
+        (recall.status === RecallResponse.status.RECALL_NOTIFICATION_ISSUED && !isInCustody(recall))
       ) {
         notInCustody.push(recall)
       } else {

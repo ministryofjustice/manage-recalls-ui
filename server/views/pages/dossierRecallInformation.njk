@@ -17,8 +17,8 @@
             {% endif %}
             <h1 class="govuk-heading-xl">
                 Create a dossier for {{ recall.fullName }} recall
-                {% include '../partials/recallInformationHeading.njk' %}
             </h1>
+            {% include '../partials/recallInformationHeading.njk' %}
             <div class="govuk-body-l" data-qa="dossierTargetDate">{{ recall.dossierDueText }} {{ recall.dossierTargetDate | dateTime }} </div>
         </div>
     </div>

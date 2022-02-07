@@ -2,17 +2,32 @@
 <dl class="govuk-summary-list">
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
-      Custody status
+      Custody status at booking
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='inCustody'>
-      {% if recall.inCustody == true %}In custody{% elseif recall.inCustody == false %}Not in custody{% else %}Not set{% endif %}
+    <dd class=" govuk-summary-list__value" data-qa='inCustodyAtBooking'>
+      {% if recall.inCustodyAtBooking == true %}In custody{% elseif recall.inCustodyAtBooking == false %}Not in custody{% else %}Not set{% endif %}
     </dd>
     <dd class=" govuk-summary-list__actions">
       {% if recall.status == 'BEING_BOOKED_ON' %}
-      <a href='{{ changeLinkUrl('custody-status', urlInfo, 'custody') }}' data-qa='inCustodyChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status</span></a>
+      <a href='{{ changeLinkUrl('custody-status', urlInfo, 'custody') }}' data-qa='inCustodyAtBookingChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status at booking</span></a>
       {% endif %}
     </dd>
   </div>
+  {% if isStatusAfterAssessComplete(recall.status) %}
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      Custody status at assessment
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='inCustodyAtAssessment'>
+      {% if recall.inCustodyAtAssessment == true %}In custody{% elseif recall.inCustodyAtBooking == false %}Not in custody{% else %}Not set{% endif %}
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      {% if recall.status == 'IN_ASSESSMENT' %}
+        <a href='{{ changeLinkUrl('assess-custody-status', urlInfo, 'custody') }}' data-qa='inCustodyAtAssessmentChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> custody status at assessment</span></a>
+      {% endif %}
+    </dd>
+  </div>
+  {% endif %}
   {% if recall.warrantReferenceNumber %}
     <div class="govuk-summary-list__row">
       <dt class=" govuk-summary-list__key">

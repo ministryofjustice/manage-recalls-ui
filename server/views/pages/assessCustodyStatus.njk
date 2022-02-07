@@ -28,8 +28,8 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukRadios({
-                        idPrefix: "inCustody",
-                        name: "inCustody",
+                        idPrefix: "inCustodyAtAssessment",
+                        name: "inCustodyAtAssessment",
                         fieldset: {
                             legend: {
                                 text: "Is " + recall.fullName + " in custody?",
@@ -41,15 +41,15 @@
                             {
                                 value: "YES",
                                 text: 'Yes',
-                                checked: formValues.inCustody == 'YES'
+                                checked: formValues.inCustodyAtAssessment == 'YES'
                             },
                             {
                                 value: "NO",
                                 text: 'No',
-                                checked: custodyStatusWasConfirmed and formValues.inCustody == 'NO'
+                                checked: formValues.inCustodyAtAssessment == 'NO'
                             }
                         ],
-                        errorMessage: errorMessage(errors.inCustody)
+                        errorMessage: errorMessage(errors.inCustodyAtAssessment)
                     }) }}
                 </div>
                 <div>

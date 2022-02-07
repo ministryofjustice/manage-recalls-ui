@@ -61,7 +61,7 @@
       <a href='{{ changeLinkUrl('pre-cons-name', urlInfo, 'personalDetails') }}' data-qa='previousConvictionMainNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> pre-cons main name</span></a>
     </dd>
   </div>
-  {% if recall.inCustody == false %}
+  {% if not isInCustody(recall) %}
     {% if recall.lastKnownAddressOption == "YES" %}
       {% if recall.lastKnownAddresses.length %}
         {% for address in recall.lastKnownAddresses %}

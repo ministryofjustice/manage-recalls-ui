@@ -256,7 +256,7 @@ describe('emailUploadForm', () => {
     ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
       recallId: '789',
     })
-    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustody: true })
+    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: true })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
@@ -296,7 +296,7 @@ describe('emailUploadForm', () => {
     ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
       recallId: '789',
     })
-    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustody: false })
+    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: false })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
@@ -334,7 +334,7 @@ describe('emailUploadForm', () => {
       documentId: '123',
     })
     ;(unassignUserFromRecall as jest.Mock).mockRejectedValue(new Error('test'))
-    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustody: true })
+    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: true })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: (httpStatus, path) => {

@@ -7,17 +7,17 @@ export const validateCustodyStatus = ({ requestBody, urlInfo }: ReqValidatorArgs
   let valuesToSave
   let redirectToPage
 
-  const { inCustody } = requestBody
-  if (!inCustody || !['YES', 'NO'].includes(inCustody)) {
+  const { inCustodyAtBooking } = requestBody
+  if (!inCustodyAtBooking || !['YES', 'NO'].includes(inCustodyAtBooking)) {
     errors = [
       makeErrorObject({
-        id: 'inCustody',
+        id: 'inCustodyAtBooking',
         text: 'Is {{ recall.fullName }} in custody?',
       }),
     ]
   }
   if (!errors) {
-    const isInCustody = inCustody === 'YES'
+    const isInCustody = inCustodyAtBooking === 'YES'
     if (isInCustody) {
       redirectToPage = urlInfo.fromPage
         ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
@@ -27,7 +27,7 @@ export const validateCustodyStatus = ({ requestBody, urlInfo }: ReqValidatorArgs
       redirectToPage = makeUrl('last-known-address', urlInfo)
     }
     valuesToSave = {
-      inCustody: isInCustody,
+      inCustodyAtBooking: isInCustody,
     }
   }
   return { errors, valuesToSave, redirectToPage }

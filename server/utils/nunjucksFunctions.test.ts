@@ -2,6 +2,7 @@ import {
   allowedDocumentFileExtensionList,
   allowedEmailFileExtensionList,
   backLinkUrl,
+  backLinkUrlAssessDownload,
   backLinkUrlRecallReceived,
   changeLinkUrl,
   checkboxItems,
@@ -347,31 +348,60 @@ describe('backLinkUrl', () => {
 })
 
 describe('backLinkUrlRecallReceived', () => {
-  it('returns to custody-status if inCustody is true', () => {
+  it('returns to custody-status if inCustodyAtBooking is true', () => {
     const url = backLinkUrlRecallReceived({
-      inCustody: true,
+      inCustodyAtBooking: true,
       lastKnownAddressOption: undefined,
       urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
     })
     expect(url).toEqual('/recalls/custody-status')
   })
 
-  it('returns to address-list if inCustody is false and lastKnownAddressOption is YES', () => {
+  it('returns to address-list if inCustodyAtBooking is false and lastKnownAddressOption is YES', () => {
     const url = backLinkUrlRecallReceived({
-      inCustody: false,
+      inCustodyAtBooking: false,
       lastKnownAddressOption: 'YES' as RecallResponse.lastKnownAddressOption,
       urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
     })
     expect(url).toEqual('/recalls/address-list')
   })
 
-  it('returns to last-known-address if inCustody is false and lastKnownAddressOption is not YES', () => {
+  it('returns to last-known-address if inCustodyAtBooking is false and lastKnownAddressOption is not YES', () => {
     const url = backLinkUrlRecallReceived({
-      inCustody: false,
+      inCustodyAtBooking: false,
       lastKnownAddressOption: 'NO_FIXED_ABODE' as RecallResponse.lastKnownAddressOption,
       urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
     })
     expect(url).toEqual('/recalls/last-known-address')
+  })
+})
+
+describe('backLinkUrlAssessDownload', () => {
+  it('returns to assess-licence if inCustodyAtBooking is true', () => {
+    const url = backLinkUrlAssessDownload({
+      inCustodyAtBooking: true,
+      inCustodyAtAssessment: false,
+      urlInfo: { basePath: '/recalls/', currentPage: 'assess-download' },
+    })
+    expect(url).toEqual('/recalls/assess-licence')
+  })
+
+  it('returns to assess-custody-status if inCustodyAtBooking is false and inCustodyAtAssessment is false', () => {
+    const url = backLinkUrlAssessDownload({
+      inCustodyAtBooking: false,
+      inCustodyAtAssessment: false,
+      urlInfo: { basePath: '/recalls/', currentPage: 'assess-download' },
+    })
+    expect(url).toEqual('/recalls/assess-custody-status')
+  })
+
+  it('returns to assess-prison if inCustodyAtBooking is false and inCustodyAtAssessment is true', () => {
+    const url = backLinkUrlAssessDownload({
+      inCustodyAtBooking: false,
+      inCustodyAtAssessment: true,
+      urlInfo: { basePath: '/recalls/', currentPage: 'assess-download' },
+    })
+    expect(url).toEqual('/recalls/assess-prison')
   })
 })
 

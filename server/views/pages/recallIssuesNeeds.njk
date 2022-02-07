@@ -74,7 +74,7 @@
                         errorMessage: errorMessage(errors.vulnerabilityDiversity)
                     }) }}
                 </div>
-                {% if recall.inCustody == false %}
+                {% if recall.inCustodyAtBooking == false %}
                     <input type='hidden' name='notInCustody' value='1' />
                     <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='arrestIssuesGroup'>
                     {% set arrestIssuesYesHtml %}

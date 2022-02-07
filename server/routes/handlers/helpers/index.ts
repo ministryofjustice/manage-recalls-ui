@@ -1,5 +1,4 @@
 import nunjucks from 'nunjucks'
-import { NextFunction, Request, Response } from 'express'
 import { FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
 import { UploadedFileMetadata } from '../../../@types/documents'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
@@ -130,19 +129,4 @@ export const formatName = ({
     return `${recall.firstName} ${recall.middleNames} ${recall.lastName}`
   }
   return `${recall.firstName} ${recall.lastName}`
-}
-
-export const setConfirmedCustodyStatus = (req: Request, res: Response, next: NextFunction) => {
-  res.cookie('custodyStatusWasConfirmed', '1', { httpOnly: true })
-  next()
-}
-
-export const readConfirmedCustodyStatus = (req: Request, res: Response, next: NextFunction) => {
-  res.locals.custodyStatusWasConfirmed = req.cookies.custodyStatusWasConfirmed
-  next()
-}
-
-export const clearConfirmedCustodyStatus = (req: Request, res: Response, next: NextFunction) => {
-  res.clearCookie('custodyStatusWasConfirmed')
-  next()
 }

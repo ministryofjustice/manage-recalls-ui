@@ -5,29 +5,29 @@ describe('validateConfirmCustodyStatus', () => {
 
   it('returns a value to save and no errors if No is submitted', () => {
     const requestBody = {
-      inCustody: 'NO',
+      inCustodyAtAssessment: 'NO',
     }
     const { errors, valuesToSave } = validateConfirmCustodyStatus({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      inCustody: false,
+      inCustodyAtAssessment: false,
     })
   })
 
   it('returns a value to save and no errors if Yes is submitted', () => {
     const requestBody = {
-      inCustody: 'YES',
+      inCustodyAtAssessment: 'YES',
     }
     const { errors, valuesToSave } = validateConfirmCustodyStatus({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      inCustody: true,
+      inCustodyAtAssessment: true,
     })
   })
 
   it('sets redirectToPage to download notification, if answer is No', () => {
     const requestBody = {
-      inCustody: 'NO',
+      inCustodyAtAssessment: 'NO',
     }
     const { redirectToPage } = validateConfirmCustodyStatus({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/assess-download')
@@ -35,7 +35,7 @@ describe('validateConfirmCustodyStatus', () => {
 
   it('sets redirectToPage to current prison page, if answer is Yes ', () => {
     const requestBody = {
-      inCustody: 'YES',
+      inCustodyAtAssessment: 'YES',
     }
     const { redirectToPage } = validateConfirmCustodyStatus({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/assess-prison')
@@ -43,14 +43,14 @@ describe('validateConfirmCustodyStatus', () => {
 
   it('returns an error for the decision, if not set', () => {
     const requestBody = {
-      inCustody: '',
+      inCustodyAtAssessment: '',
     }
     const { errors, valuesToSave } = validateConfirmCustodyStatus({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#inCustody',
-        name: 'inCustody',
+        href: '#inCustodyAtAssessment',
+        name: 'inCustodyAtAssessment',
         text: 'Is {{ recall.fullName }} in custody?',
       },
     ])

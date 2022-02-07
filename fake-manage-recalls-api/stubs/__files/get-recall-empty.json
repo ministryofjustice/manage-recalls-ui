@@ -6,5 +6,6 @@
   "middleNames": "Dave",
   "dateOfBirth": "1999-05-28",
   "croNumber": "1234/56A",
-  "documents": []
+  "documents": [],
+  "status": "BEING_BOOKED_ON"
 }

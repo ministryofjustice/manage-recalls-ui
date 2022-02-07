@@ -1,6 +1,5 @@
-import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
+import { getRecallResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
-import assessRecallPage from '../pages/assessRecall'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
 import userDetailsPage from '../pages/userDetails'
@@ -20,13 +19,13 @@ describe('To do (recalls) list', () => {
   beforeEach(() => {
     cy.login()
   })
-  it("user is redirected to user details page if they haven't entered any", () => {
+  it("redirected to user details page if they haven't entered any", () => {
     cy.task('expectGetCurrentUserDetails', { status: 404 })
     cy.visit('/')
     userDetailsPage.verifyOnPage()
   })
 
-  it('User can continue a previous booking if recall status is BEING_BOOKED_ON', () => {
+  it('continue a previous booking if recall status is BEING_BOOKED_ON', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -44,7 +43,7 @@ describe('To do (recalls) list', () => {
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
   })
 
-  it('User will continue a previous booking to pre-cons page if the user has no middle names', () => {
+  it('continue a previous booking to pre-cons page if the user has no middle names', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -66,7 +65,7 @@ describe('To do (recalls) list', () => {
     )
   })
 
-  it('User can move on to assessRecall if the recall has status BOOKED_ON', () => {
+  it('move on to assessRecall if the recall has status BOOKED_ON', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -85,10 +84,10 @@ describe('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '5 Nov at 13:12' })
     recallsList.assessRecall({ recallId })
-    assessRecallPage.verifyOnPage({ fullName: personName })
+    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
-  it('User can continue assessment if the recall has status IN_ASSESSMENT', () => {
+  it('continue assessment if the recall has status IN_ASSESSMENT', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -109,16 +108,17 @@ describe('To do (recalls) list', () => {
     recallsList.expectActionLinkText({ id: `continue-assess-${recallId}`, text: 'Continue assessment' })
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueAssessment({ recallId })
-    assessRecallPage.verifyOnPage({ fullName: personName })
+    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
-  it('User can move on to createDossier if the recall has status RECALL_NOTIFICATION_ISSUED', () => {
+  it('move on to createDossier if the recall has status RECALL_NOTIFICATION_ISSUED', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
           ...basicRecall,
           status: 'RECALL_NOTIFICATION_ISSUED',
           dossierTargetDate: '2021-10-13',
+          inCustodyAtBooking: true,
         },
       ],
     })
@@ -136,7 +136,7 @@ describe('To do (recalls) list', () => {
     dossierRecallInformationPage.verifyOnPage({ personName })
   })
 
-  it('User can continue dossier creation if the recall has status DOSSIER_IN_PROGRESS', () => {
+  it('continue dossier creation if the recall has status DOSSIER_IN_PROGRESS', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -161,7 +161,7 @@ describe('To do (recalls) list', () => {
     dossierRecallInfo.assertElementPresent({ qaAttr: 'assessedByUserName' })
   })
 
-  it('User can move on to view recall if the recall has status DOSSIER_ISSUED', () => {
+  it('move on to view recall if the recall has status DOSSIER_ISSUED', () => {
     const recalls = [
       {
         ...basicRecall,
@@ -195,7 +195,7 @@ describe('To do (recalls) list', () => {
     recallInfo.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'AC3408303' })
   })
 
-  it('User can see recalls are ordered by due date on the todo list', () => {
+  it('see recalls are ordered by due date on the todo list', () => {
     const recalls = [
       {
         ...basicRecall,
@@ -280,7 +280,8 @@ describe('To do (recalls) list', () => {
         firstName: 'Jack',
         lastName: 'Jones',
         status: 'BOOKED_ON',
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
         assignee: '123',
         assigneeUserName: 'Mary Badger',
       },
@@ -288,7 +289,8 @@ describe('To do (recalls) list', () => {
         ...getRecallResponse,
         recallId: '2',
         status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
       },
@@ -298,7 +300,8 @@ describe('To do (recalls) list', () => {
         firstName: 'Ben',
         lastName: 'Adams',
         status: 'AWAITING_RETURN_TO_CUSTODY',
-        inCustody: false,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
         warrantReferenceNumber: '04RC/6457367A74325',

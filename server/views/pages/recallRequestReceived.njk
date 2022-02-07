@@ -6,7 +6,7 @@
     {{ govukBackLink({
         text: "Back",
         href: backLinkUrlRecallReceived({
-            inCustody: recall.inCustody,
+            inCustodyAtBooking: recall.inCustodyAtBooking,
             lastKnownAddressOption: recall.lastKnownAddressOption,
             urlInfo: urlInfo
         })
@@ -80,8 +80,7 @@
                     }) }}
                 </div>
                 <div>
-                    <button class="govuk-button"
-                       data-qa='continueButton'>
+                    <button class="govuk-button" data-qa='continueButton'>
                         Continue
                     </button>
                 </div>

@@ -17,7 +17,7 @@ context('Book an "in-custody" recall', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
-  const newRecall = { ...getEmptyRecallResponse, recallId }
+  const newRecall = { ...getEmptyRecallResponse, recallId, status: 'BEING_BOOKED_ON' }
 
   beforeEach(() => {
     cy.login()
@@ -25,7 +25,7 @@ context('Book an "in-custody" recall', () => {
 
   it('book a recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectUpdateRecall', { recallId })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
     cy.task('expectSetDocumentCategory')
@@ -96,7 +96,7 @@ context('Book an "in-custody" recall', () => {
     cy.clickButton('Continue')
 
     // upload documents
-    cy.pageHeading('Upload documents')
+    cy.pageHeading().should('equal', 'Upload documents')
     cy.clickButton('Continue')
 
     // missing documents
@@ -118,7 +118,7 @@ context('Book an "in-custody" recall', () => {
         ...getRecallResponse,
         documents,
         status: RecallResponse.status.BEING_BOOKED_ON,
-        inCustody: true,
+        inCustodyAtBooking: true,
       },
     })
     stubRefData()
@@ -129,7 +129,7 @@ context('Book an "in-custody" recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
     checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
 
-    checkAnswers.assertElementHasText({ qaAttr: 'inCustody', textToFind: 'In custody' })
+    checkAnswers.assertElementHasText({ qaAttr: 'inCustodyAtBooking', textToFind: 'In custody' })
 
     // Recall request date and time
     checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
@@ -176,7 +176,7 @@ context('Book an "in-custody" recall', () => {
     checkAnswers.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
   })
 
-  it('User sees an error if the custody status question is not answered', () => {
+  it('error - the custody status question is not answered', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -186,12 +186,12 @@ context('Book an "in-custody" recall', () => {
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'custody-status' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
-      fieldName: 'inCustody',
+      fieldName: 'inCustodyAtBooking',
       summaryError: 'Is Bobby Badger in custody?',
     })
   })
 
-  it('User sees errors if address details are not entered or are invalid', () => {
+  it('errors - address details are not entered or are invalid', () => {
     cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/address-manual`)
     cy.fillInput('Postcode', '1234')
     cy.clickButton('Continue')
@@ -209,7 +209,7 @@ context('Book an "in-custody" recall', () => {
     })
   })
 
-  it('User sees an error if the licence name question is not answered', () => {
+  it('error - the licence name question is not answered', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -396,8 +396,8 @@ context('Book an "in-custody" recall', () => {
     })
   })
 
-  it('User sees errors if issues & needs questions not answered', () => {
-    cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustody: false } })
+  it('errors - issues & needs questions not answered', () => {
+    cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustodyAtBooking: false } })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'issues-needs' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
@@ -420,8 +420,8 @@ context('Book an "in-custody" recall', () => {
 
   it('issues & needs detail', () => {
     stubRefData()
-    cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustody: false } })
-    cy.task('expectUpdateRecall', recallId)
+    cy.task('expectGetRecall', { expectedResult: { ...newRecall, inCustodyAtBooking: false } })
+    cy.task('expectUpdateRecall', { recallId })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'issues-needs' })
     // errors if detail not provided
     cy.selectRadio('Are there any vulnerability issues or diversity needs?', 'Yes')
@@ -444,7 +444,7 @@ context('Book an "in-custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...newRecall,
-        inCustody: false,
+        inCustodyAtBooking: false,
         contraband: true,
         contrabandDetail: 'Detail',
         vulnerabilityDiversity: true,

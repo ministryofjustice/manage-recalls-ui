@@ -10,6 +10,7 @@ import { allowedEmailFileExtensions } from './helpers/allowedUploadExtensions'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { errorMsgEmailUpload } from '../../helpers/errorMessages'
 import { makeUrl, makeUrlToFromPage } from '../../helpers/makeUrl'
+import { isInCustody } from '../../helpers/recallStatus'
 
 interface Args {
   emailFieldName: string
@@ -81,7 +82,7 @@ export const uploadEmailFormHandler =
           return res.redirect(303, req.originalUrl)
         }
         const recall = await updateRecall(recallId, valuesToSave, user.token)
-        if (unassignUserFromRecall && recall.inCustody === true) {
+        if (unassignUserFromRecall && isInCustody(recall) === true) {
           try {
             await unassignUserFromRecall(recallId, user.uuid, user.token)
           } catch (e) {
