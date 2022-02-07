@@ -30,7 +30,8 @@
                     firstName: recall.firstName,
                     lastName: recall.lastName,
                     bookingNumber: recall.bookingNumber,
-                    category: 'RECALL_NOTIFICATION'
+                    category: 'RECALL_NOTIFICATION',
+                    inCustody: isInCustody(recall)
                 }),
                 url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=RECALL_NOTIFICATION',
                 dataQaLink: 'getRecallNotificationLink',
