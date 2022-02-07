@@ -24,40 +24,34 @@
                 </dd>
             </div>
         {% endif %}
-        {% if recall.status != 'RECALL_NOTIFICATION_ISSUED' %}
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Recall email received
-                </dt>
-                <dd class=" govuk-summary-list__value" data-qa='recallEmailReceivedDateTime'>
-                    {{ recall.recallEmailReceivedDateTime | dateTime }}
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                    {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
-                        <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}'
-                           data-qa='recallEmailReceivedDateTimeChange' class='govuk-link'>Change <span
-                                    class="govuk-visually-hidden"> recall email received date</span></a>
-                    {% endif %}
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Recall email uploaded
-                </dt>
-                <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
-                    <a href='{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.url }}' class='govuk-link'
-                       data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.category }}'
-                       download>{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.fileName }}</a>
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                    {% if recall.status == 'BEING_BOOKED_ON' or recall.status == 'BOOKED_ON' or recall.status == 'IN_ASSESSMENT' %}
-                        <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}'
-                           data-qa='recallRequestEmailFileNameChange' class='govuk-link'>Change <span
-                                    class="govuk-visually-hidden"> uploaded recall email</span></a>
-                    {% endif %}
-                </dd>
-            </div>
-        {% endif %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall email received
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallEmailReceivedDateTime'>
+                {{ recall.recallEmailReceivedDateTime | dateTime }}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}'
+                   data-qa='recallEmailReceivedDateTimeChange' class='govuk-link'>Change <span
+                            class="govuk-visually-hidden"> recall email received date</span></a>
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall email uploaded
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
+                <a href='{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.url }}' class='govuk-link'
+                   data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.category }}'
+                   download>{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.fileName }}</a>
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}'
+                       data-qa='recallRequestEmailFileNameChange' class='govuk-link'>Change <span
+                                class="govuk-visually-hidden"> uploaded recall email</span></a>
+            </dd>
+        </div>
 
         {% if recall.status != 'BEING_BOOKED_ON' %}
             <div class="govuk-summary-list__row">
@@ -82,6 +76,9 @@
                          data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
                     </dd>
                     <dd class=" govuk-summary-list__actions">
+                        <a href='{{ changeLinkUrl('assess-licence', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                            Change <span class="govuk-visually-hidden"> licence conditions breached</span>
+                        </a>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">
@@ -98,6 +95,9 @@
                         </ul>
                     </dd>
                     <dd class=" govuk-summary-list__actions">
+                        <a href='{{ changeLinkUrl('assess-licence', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                            Change <span class="govuk-visually-hidden"> reasons for recall</span>
+                        </a>
                     </dd>
                 </div>
             {% endif %}
@@ -122,11 +122,14 @@
                     <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('assess-decision', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> assessment notes</span>
+                    </a>
                 </dd>
             </div>
             {% endif %}
         {% endif %}
-        {% if recall.status == 'DOSSIER_ISSUED' %}
+        {% if recall.recallNotificationEmailSentDateTime %}
             <div class="govuk-summary-list__row">
                 <dt class=" govuk-summary-list__key">
                     Recall notification email sent
@@ -135,6 +138,9 @@
                     {{ recall.recallNotificationEmailSentDateTime | dateTime }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('assess-email', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> recall notification email sent date</span>
+                    </a>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -147,8 +153,13 @@
                        download>{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.fileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('assess-email', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> uploaded recall notification email</span>
+                    </a>
                 </dd>
             </div>
+        {% endif %}
+        {% if recall.status == 'DOSSIER_ISSUED' %}
             <div class="govuk-summary-list__row">
                 <dt class=" govuk-summary-list__key">
                     Dossier created by
@@ -167,6 +178,9 @@
                     {{ recall.dossierEmailSentDate | dateTime }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('dossier-email', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> dossier email sent date</span>
+                    </a>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -179,6 +193,9 @@
                        download>{{ recall.emailsUploaded.DOSSIER_EMAIL.fileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('dossier-email', urlInfo, 'recallDetails') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> uploaded dossier email</span>
+                    </a>
                 </dd>
             </div>
         {% endif %}

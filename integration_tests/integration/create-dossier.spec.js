@@ -1,6 +1,7 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
+import { stubRefData } from '../support/mock-api'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -40,10 +41,33 @@ context('Create a dossier', () => {
             category: 'REVOCATION_ORDER',
             documentId: '9876',
           },
+          {
+            category: 'RECALL_NOTIFICATION_EMAIL',
+            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+            fileName: 'notification.msg',
+            createdDateTime: '2020-12-05T18:33:57.000Z',
+            createdByUserName: 'Arnold Caseworker',
+          },
+          {
+            category: 'RECALL_REQUEST_EMAIL',
+            documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+            fileName: 'recall-request.eml',
+            createdDateTime: '2020-12-05T18:33:57.000Z',
+            createdByUserName: 'Arnold Caseworker',
+          },
         ],
       },
     })
+    stubRefData()
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
+
+    dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
+
+    dossierRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Assessment complete' })
+    dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
+    dossierRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+
+    // custody details
     dossierRecall.assertElementHasText({
       qaAttr: 'inCustodyAtBooking',
       textToFind: 'Not in custody',
@@ -52,14 +76,17 @@ context('Create a dossier', () => {
       qaAttr: 'inCustodyAtAssessment',
       textToFind: 'In custody',
     })
-    dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyAtBookingChange' })
-    dossierRecall.assertElementNotPresent({ qaAttr: 'inCustodyAtAssessmentChange' })
-    dossierRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Assessment complete' })
-    dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
-    dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
-    dossierRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+    dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
+    cy.getElement('Change custody status at booking').should('not.exist')
+    cy.getElement('Change custody status at assessment').should('not.exist')
+
+    // recall details
+    cy.recallInfo('Recall email received').should('equal', '5 December 2020 at 15:33')
+    cy.recallInfo('Recall email uploaded').should('equal', 'recall-request.eml')
     dossierRecall.assertElementHasText({ qaAttr: 'agreeWithRecallDetail', textToFind: 'Reasons...' })
     dossierRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
+    cy.getLinkHref('Change licence conditions breached').should('contain', '/assess-licence')
+    cy.getLinkHref('Change reasons for recall').should('contain', '/assess-licence')
     dossierRecall.assertElementHasText({
       qaAttr: 'reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY',
       textToFind: 'Electronic locking and monitoring (ELM) - Failure to charge battery',
@@ -68,14 +95,22 @@ context('Create a dossier', () => {
       qaAttr: 'reasonsForRecall-OTHER',
       textToFind: 'Other - other reason detail...',
     })
-    dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
-    dossierRecall.assertElementNotPresent({ qaAttr: 'recallNotificationEmailSentDateTime' })
+    cy.recallInfo('Assessment notes').should('equal', 'Reasons...')
+    cy.getLinkHref('Change assessment notes').should('contain', '/assess-decision')
+    cy.recallInfo('Recall notification email sent').should('equal', '15 August 2021 at 14:04')
+    cy.recallInfo('Recall notification email uploaded').should('equal', 'notification.msg')
+    cy.getLinkHref('Change recall notification email sent date').should('contain', '/assess-email')
+    cy.getLinkHref('Change uploaded recall notification email').should('contain', '/assess-email')
 
-    // generated document
-    dossierRecall.assertLinkHref({
-      qaAttr: 'generatedDocument-REVOCATION_ORDER',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/9876`,
-    })
+    // revocation order
+    cy.getLinkHref('BADGER BOBBY A123456 REVOCATION ORDER.pdf').should(
+      'contain',
+      `/persons/${nomsNumber}/recalls/${recallId}/documents/9876`
+    )
+    cy.getLinkHref('Change Revocation order').should(
+      'contain',
+      '/generated-document-version?fromPage=dossier-recall&fromHash=revocation-order&versionedCategoryName=REVOCATION_ORDER'
+    )
 
     // uploaded documents
     dossierRecall.assertLinkHref({

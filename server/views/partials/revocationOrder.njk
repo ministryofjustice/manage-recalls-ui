@@ -1,5 +1,5 @@
 
-  <h2 class='govuk-heading-m govuk-!-margin-top-9' id='documents'>Revocation order</h2>
+  <h2 class='govuk-heading-m govuk-!-margin-top-9' id='revocation-order'>Revocation order</h2>
   <dl class="govuk-summary-list">
       <div class="govuk-summary-list__row">
         <dt class=" govuk-summary-list__key">
@@ -7,12 +7,17 @@
         </dt>
         <dd class=" govuk-summary-list__value">
           {% if recall.documentsGenerated.REVOCATION_ORDER %}
-          <a class='govuk-link' href='{{ recall.documentsGenerated.REVOCATION_ORDER.url }}' download data-qa='generatedDocument-{{ recall.documentsGenerated.REVOCATION_ORDER.category }}'>{{ recall.documentsGenerated.REVOCATION_ORDER.fileName }}</a>
+          <a class='govuk-link' href='{{ recall.documentsGenerated.REVOCATION_ORDER.url }}' download data-qa='generatedDocument-REVOCATION_ORDER'>{{ recall.documentsGenerated.REVOCATION_ORDER.fileName }}</a>
           {% else %}
             <span data-qa='revocationOrderNotAvailable'>Not available</span>
           {% endif %}
         </dd>
         <dd class=" govuk-summary-list__actions">
+          {% if recall.documentsGenerated.REVOCATION_ORDER %}
+          <a href='{{ changeLinkUrl('generated-document-version', urlInfo, 'revocation-order', '', 'versionedCategoryName=REVOCATION_ORDER') }}'
+             data-qa='appGeneratedDocuments-REVOCATION_ORDER-Change' class='govuk-link'>Change <span
+                    class="govuk-visually-hidden"> {{ recall.documentsGenerated.REVOCATION_ORDER.label }}</span></a>
+          {% endif %}
         </dd>
       </div>
   </dl>

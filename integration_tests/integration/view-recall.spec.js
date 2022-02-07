@@ -44,6 +44,7 @@ context('View recall information', () => {
 
   it('User can view all recall information (after dossier issued)', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
     recallInformation.assertElementHasText({
       qaAttr: 'inCustodyAtBooking',
       textToFind: 'In custody',
@@ -61,12 +62,14 @@ context('View recall information', () => {
       qaAttr: 'dossierEmailSentDate',
       textToFind: '8 September 2021',
     })
-    recallInformation.assertElementHasText({ qaAttr: 'dossierEmailSentDate', textToFind: '8 September 2021' })
-    recallInformation.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bobby Badger' })
     recallInformation.assertElementHasText({ qaAttr: 'bookedByUserName', textToFind: 'Brenda Badger' })
     recallInformation.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+    recallInformation.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bobby Badger' })
 
-    recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
+    cy.recallInfo('Dossier sent').should('equal', '8 September 2021')
+    cy.recallInfo('Dossier email uploaded').should('equal', 'email.msg')
+    cy.getLinkHref('Change dossier email sent date').should('contain', '/dossier-email')
+    cy.getLinkHref('Change uploaded dossier email').should('contain', '/dossier-email')
 
     // missing documents detail
     recallInformation.assertElementHasText({
