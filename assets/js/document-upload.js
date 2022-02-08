@@ -18,16 +18,6 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
     this.setupDropzone()
     this.setupLabel()
     this.setupStatusBox()
-    this.setupOtherDocType()
-  }
-
-  DocumentUpload.prototype.setupOtherDocType = function () {
-    this.feedbackContainer.on('change', '.document-upload-select-type', evt => {
-      const $select = $(evt.currentTarget)
-      const fn = $select.val() === 'OTHER' ? 'removeClass' : 'addClass'
-      const id = $select.attr('data-id')
-      $(`#${id}-name`)[fn]('moj-hidden')
-    })
   }
 
   DocumentUpload.prototype.setupDropzone = function () {
@@ -129,6 +119,7 @@ if (MOJFrontend.dragAndDropSupported() && MOJFrontend.formDataSupported() && MOJ
         } else {
           feedback.html(response.success)
         }
+        this.params.container.find('#uploaded-documents-heading').focus()
       }, this),
       xhr: function () {
         var xhr = new XMLHttpRequest()
