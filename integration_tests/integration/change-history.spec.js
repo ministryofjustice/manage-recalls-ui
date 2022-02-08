@@ -8,8 +8,8 @@ import {
   getPrisonsResponse,
 } from '../mockApis/mockResponses'
 import { changeHistoryFieldList } from '../../server/routes/handlers/change-history/helpers/recallFieldList'
+import { stubRefData } from '../support/mock-api'
 
-const recallInformationPage = require('../pages/recallInformation')
 const changeHistoryPage = require('../pages/changeHistory')
 const changeHistoryDocumentPage = require('../pages/changeHistoryDocument')
 const changeHistoryFieldPage = require('../pages/changeHistoryField')
@@ -54,13 +54,6 @@ context('Change history', () => {
     cy.login()
   })
 
-  it('User can navigate to view change history for a recall, and re-sort the tables', () => {
-    cy.task('expectListRecalls', {
-      expectedResults: [],
-    })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: [] })
-  })
-
   it('User can navigate to view document change history for a recall, and resort the tables', () => {
     cy.task('expectGetAllFieldsChangeHistory', {
       expectedResult: getAllFieldsHistoryResponseJson,
@@ -74,8 +67,10 @@ context('Change history', () => {
         documents,
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
-    recallInformation.clickButton({ qaAttr: 'changeHistoryButton' })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.pageHeading().should('equal', `View the recall for ${personName}`)
+    cy.clickButton('Actions')
+    cy.clickLink('View change history')
     const changeHistory = changeHistoryPage.verifyOnPage()
     cy.get('#tab_documents').click()
     // UPLOADED DOCUMENTS
@@ -468,6 +463,7 @@ context('Change history', () => {
   })
 
   it('shows the change history of the reasons for recall field', () => {
+    stubRefData()
     cy.task('expectGetAllFieldsChangeHistory', {
       expectedResult: getAllFieldsHistoryResponseJson,
     })

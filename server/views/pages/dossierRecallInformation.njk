@@ -6,15 +6,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/recallInfoConfirmation.njk' %}
             <h1 class="govuk-heading-xl">
                 Create a dossier for {{ recall.fullName }} recall
             </h1>
