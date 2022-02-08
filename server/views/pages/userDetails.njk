@@ -107,7 +107,7 @@
                     {%  if user.signature %}
                         <div class='govuk-!-margin-top-4'>
                     <input data-qa='signature-image' name='signatureEncoded' type='hidden' value='{{ user.signature }}'>
-                    <img height='100' src="data:image/jpeg;base64,{{ user.signature }}"/>
+                    <img height='100' src="data:image/jpeg;base64,{{ user.signature }}" alt='User signature'/>
                         </div>
                     {% endif %}
                 </div>
