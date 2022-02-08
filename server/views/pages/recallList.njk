@@ -119,12 +119,14 @@
                                 <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'AWAITING_RETURN_TO_CUSTODY'%}Awaiting return to custody{% else %}Assessment complete{% endif %}</td>
                                 <td class="govuk-table__cell">
+                                    <div class='flex'>
                                     {% if not result.warrantReferenceNumber %}
                                     <span class='govuk-!-padding-right-2'>
                                         <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/warrant-reference' data-qa='warrant-reference-{{ result.recallId }}'>Add warrant reference</a>
                                     </span>
                                     {% endif %}
                                     <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
