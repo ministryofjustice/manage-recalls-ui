@@ -17,6 +17,7 @@
 {% from "govuk/components/tag/macro.njk"                import govukTag %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {%- from "moj/components/banner/macro.njk" import mojBanner -%}
+{%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
 {% from "components/document-download-link/macro.njk"   import documentDownloadLink %}
 {% from "components/autocomplete/macro.njk"   import autocomplete %}
 {% from "components/today-link/macro.njk"   import todayLink %}
@@ -39,6 +40,7 @@
   <script nonce='{{ cspNonce }}'>
     window.MOJFrontend = window.MOJFrontend || {};</script>
   <script src='/assets/moj/components/sortable-table/sortable-table.js'></script>
+  <script src='/assets/moj/components/button-menu/button-menu.js'></script>
   {% include "./analytics.njk" %}
 {% endblock %}
 

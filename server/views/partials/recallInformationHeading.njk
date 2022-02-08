@@ -6,8 +6,21 @@
     {{govukTag(recallStatusTagProperties(recall.status))}}
     </div>
     <div>
-        <a href="{{ makeUrl('change-history', { basePath: urlInfo.basePath }) }}" role='button' class="govuk-button govuk-button--secondary" data-module="govuk-button" data-qa='changeHistoryButton'>
-            View change history
-        </a>
+        <div>
+            {{ mojButtonMenu({
+                items: [{
+                    text: "View change history",
+                    href: makeUrl('change-history', { basePath: urlInfo.basePath })
+                }]
+            }) }}
+        </div>
+        <script nonce='{{ cspNonce }}'>
+          new MOJFrontend.ButtonMenu({
+            container: $(".moj-button-menu"),
+            mq: "(min-width: 200em)",
+            buttonText: "Actions",
+            menuClasses: "moj-button-menu__wrapper--right",
+          });
+        </script>
     </div>
 </div>

@@ -2,24 +2,11 @@
 
 {% set pageTitle = applicationName + " - View the recall" %}
 
-{% block beforeContent %}
-    {{ govukBackLink({
-        text: "Back",
-        href: backLinkUrl("/", urlInfo)
-    }) }}
-{% endblock %}
-
 {% block content %}
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if confirmationMessage %}
-                {{ mojBanner({
-                    type: confirmationMessage.type,
-                    html: '<span data-qa="confirmation">' + confirmationMessage.text + '</span>' + (' <a href="' + confirmationMessage.link.href + '" class="govuk-link"> '+ confirmationMessage.link.text + '</a>' if confirmationMessage.link),
-                    iconFallbackText: confirmationMessage.type
-                }) }}
-            {% endif %}
+            {% include '../partials/recallInfoConfirmation.njk' %}
             <h1 class="govuk-heading-xl">
                 View the recall for {{ recall.fullName }}
             </h1>
