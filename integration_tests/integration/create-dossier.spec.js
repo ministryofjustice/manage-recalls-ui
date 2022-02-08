@@ -134,6 +134,31 @@ context('Create a dossier', () => {
     dossierRecall.assertElementHasText({ qaAttr: 'createDossierDisabled', textToFind: 'Create dossier' })
   })
 
+  it('can verify recall details before creating a dossier (not in custody)', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        documents: [],
+      },
+    })
+    stubRefData()
+    const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
+    // custody details
+    dossierRecall.assertElementHasText({
+      qaAttr: 'inCustodyAtBooking',
+      textToFind: 'Not in custody',
+    })
+    dossierRecall.assertElementHasText({
+      qaAttr: 'inCustodyAtAssessment',
+      textToFind: 'Not in custody',
+    })
+    dossierRecall.assertElementNotPresent({ qaAttr: 'currentPrison' })
+  })
+
   it('can create a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
