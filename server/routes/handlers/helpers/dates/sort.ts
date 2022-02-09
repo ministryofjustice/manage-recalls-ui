@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { getProperty } from '../index'
-import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
+import { RecallResponseLite } from '../../../../@types/manage-recalls-api/models/RecallResponseLite'
 
 export const sortListByDateField = <T>({
   list,
@@ -42,8 +42,8 @@ const diffDatesForSort = (dateA: DateTime, dateB: DateTime, newestFirst = true) 
   return 0
 }
 
-export const sortCompletedList = (completedList: RecallResponse[]) =>
-  completedList.sort((a: RecallResponse, b: RecallResponse): number => {
+export const sortCompletedList = (completedList: RecallResponseLite[]) =>
+  completedList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
     const dossierEmailSentDateA = moveDateToEndOfDay(getDateProperty(a, 'dossierEmailSentDate'))
     const lastUpdatedDateTimeA = getDateProperty(a, 'lastUpdatedDateTime')
     const dossierEmailSentDateB = moveDateToEndOfDay(getDateProperty(b, 'dossierEmailSentDate'))
@@ -53,8 +53,8 @@ export const sortCompletedList = (completedList: RecallResponse[]) =>
     return diffDatesForSort(dateA, dateB, true)
   })
 
-export const sortToDoList = (toDoList: RecallResponse[]) =>
-  toDoList.sort((a: RecallResponse, b: RecallResponse): number => {
+export const sortToDoList = (toDoList: RecallResponseLite[]) =>
+  toDoList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
     const dossierTargetDateA = moveDateToEndOfDay(getDateProperty(a, 'dossierTargetDate'))
     const assessmentDueDateA = getDateProperty(a, 'recallAssessmentDueDateTime')
     const dossierTargetDateB = moveDateToEndOfDay(getDateProperty(b, 'dossierTargetDate'))
@@ -74,8 +74,8 @@ export const sortToDoList = (toDoList: RecallResponse[]) =>
     return diffDatesForSort(dateA, dateB, false)
   })
 
-export const sortNotInCustodyList = (notInCustodyList: RecallResponse[]) => {
-  return notInCustodyList.sort((a: RecallResponse, b: RecallResponse): number => {
+export const sortNotInCustodyList = (notInCustodyList: RecallResponseLite[]) => {
+  return notInCustodyList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
     if (a.status === 'RECALL_NOTIFICATION_ISSUED' && b.status !== 'RECALL_NOTIFICATION_ISSUED') {
       return -1
     }

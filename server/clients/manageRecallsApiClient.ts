@@ -25,6 +25,7 @@ import { FieldAuditEntry } from '../@types/manage-recalls-api/models/FieldAuditE
 import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAuditSummary'
 import { RecallReasonResponse } from '../@types/manage-recalls-api/models/RecallReasonResponse'
 import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
+import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -33,8 +34,8 @@ export async function getPrisonerByNomsNumber(nomsNumber: string, token: string)
   })
 }
 
-export async function getRecallList(token: string): Promise<Recall[]> {
-  return restClient(token).get<Recall[]>({ path: '/recalls' })
+export async function getRecallList(token: string): Promise<RecallResponseLite[]> {
+  return restClient(token).get<RecallResponseLite[]>({ path: '/recalls' })
 }
 
 export async function searchRecalls(searchParams: ObjectMap<string>, token: string): Promise<Recall[]> {
