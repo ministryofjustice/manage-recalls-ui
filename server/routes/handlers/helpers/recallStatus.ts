@@ -1,4 +1,5 @@
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
 
 const beforeAssessStartStatuses = [RecallResponse.status.BEING_BOOKED_ON, RecallResponse.status.BOOKED_ON]
 
@@ -30,7 +31,7 @@ export const isStatusAfterAssessComplete = (status: RecallResponse.status): bool
   return afterAssessCompleteStatuses.includes(status)
 }
 
-export const isInCustody = (recall: RecallResponse) => {
+export const isInCustody = (recall: RecallResponse | RecallResponseLite) => {
   if (isStatusAfterAssessStart(recall.status)) {
     if (recall.inCustodyAtBooking) {
       return true

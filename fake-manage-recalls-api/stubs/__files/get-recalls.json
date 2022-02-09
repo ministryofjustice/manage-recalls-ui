@@ -5,8 +5,13 @@
     "status": "BOOKED_ON",
     "firstName": "Bobby",
     "lastName": "Badger",
-    "dateOfBirth": "1999-05-28",
-    "croNumber": "1234/56A"
+    "inCustodyAtBooking": false,
+    "inCustodyAtAssessment": true,
+    "createdByUserId": "11111111-1111-1111-1111-111111111111",
+    "createdDateTime": "2020-12-05T16:33:57.000Z",
+    "dossierEmailSentDate": "2021-09-08",
+    "dossierTargetDate": "2020-12-14",
+    "licenceNameCategory": "FIRST_LAST"
   },
   {
     "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -14,16 +19,24 @@
     "status": "BEING_BOOKED_ON",
     "firstName": "Dave",
     "lastName": "Angel",
-    "dateOfBirth": "2020-01-09",
-    "croNumber": "64747/24G"
+    "inCustodyAtBooking": false,
+    "createdByUserId": "11111111-1111-1111-1111-111111111111",
+    "createdDateTime": "2020-12-05T16:33:57.000Z",
+    "licenceNameCategory": "FIRST_LAST",
+    "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z"
   },
   {
     "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
     "nomsNumber": "A1234AA",
     "status": "RECALL_NOTIFICATION_ISSUED",
     "firstName": "Bob",
+    "middleNames": "John",
     "lastName": "Monkfish",
-    "dateOfBirth": "1975-12-30",
-    "croNumber": "98765/67C"
+    "inCustodyAtBooking": false,
+    "inCustodyAtAssessment": false,
+    "createdByUserId": "11111111-1111-1111-1111-111111111111",
+    "createdDateTime": "2020-12-05T16:33:57.000Z",
+    "licenceNameCategory": "FIRST_MIDDLE_LAST",
+    "recallAssessmentDueDateTime": "2021-08-06T15:33:57.000Z"
   }
 ]

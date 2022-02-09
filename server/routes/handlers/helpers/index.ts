@@ -2,6 +2,7 @@ import nunjucks from 'nunjucks'
 import { FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../@types'
 import { UploadedFileMetadata } from '../../../@types/documents'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
 
 export const makeErrorObject = ({
   id,
@@ -120,7 +121,7 @@ export const formatName = ({
 }: {
   category: string
   otherName?: string
-  recall: RecallResponse
+  recall: RecallResponse | RecallResponseLite
 }) => {
   if (otherName) {
     return otherName
