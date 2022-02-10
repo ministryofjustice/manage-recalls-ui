@@ -1,0 +1,87 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Record a rescind request" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Rescind recall for {{ recall.fullName }}</span>
+            <h1 class="govuk-heading-l">
+                Record a rescind request
+            </h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form novalidate action="{{ makeUrl('rescind-request', urlInfo, csrfToken) }}"
+                  method="post" enctype="multipart/form-data">
+                {{ govukTextarea({
+                    name: "rescindRequestDetail",
+                    id: "rescindRequestDetail",
+                    label: {
+                        text: "Provide details about the rescind request",
+                        classes: "govuk-label--m"
+                    },
+                    value: formValues.rescindRequestDetail,
+                    errorMessage: errorMessage(errors.rescindRequestDetail)
+                }) }}
+                {{ govukDateInput({
+                    name: 'rescindRequestEmailReceivedDate',
+                    id: 'rescindRequestEmailReceivedDate',
+                    formGroup: {
+                        classes: 'govuk-!-margin-bottom-3'
+                    },
+                    fieldset: {
+                        legend: {
+                            text: 'When did you receive the rescind request email?',
+                            classes: 'govuk-fieldset__legend--m'
+                        }
+                    },
+                    items: dateTimeItems("rescindRequestEmailReceivedDate", formValues.rescindRequestEmailReceivedDateParts, false),
+                    errorMessage: errorMessage(errors.rescindRequestEmailReceivedDate),
+                    hint: {
+                        text: 'For example, 23 11 2021'
+                    }
+                }) }}
+                <div class='govuk-!-margin-bottom-4 govuk-body'>
+                    {{ todayLink({
+                        name: 'rescindRequestEmailReceivedDate',
+                        cspNonce: cspNonce
+                    }) }}
+                </div>
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                {% include '../partials/uploadedEmailLink.njk' %}
+
+                {{ govukFileUpload({
+                    id: "rescindRequestEmailFileName",
+                    name: "rescindRequestEmailFileName",
+                    label: {
+                        text: "Upload the email",
+                        classes: 'govuk-visually-hidden'
+                    },
+                    attributes: {
+                        accept: allowedEmailFileExtensionList()
+                    },
+                    errorMessage: errorMessage(errors.rescindRequestEmailFileName)
+                }) }}
+                <div class='govuk-!-margin-top-6'>
+                    <button class="govuk-button">
+                        Save and return
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

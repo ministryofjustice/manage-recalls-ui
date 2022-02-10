@@ -10,6 +10,7 @@
             <h1 class="govuk-heading-xl">
                 View the recall for {{ recall.fullName }}
             </h1>
+            {% set fromPage = 'view-recall' %}
             {% include '../partials/recallInformationHeading.njk' %}
         </div>
     </div>
@@ -27,6 +28,7 @@
             {% include '../partials/generatedDocuments.njk' %}
             {% include '../partials/uploadedDocuments.njk' %}
             {% include '../partials/missingDocuments.njk' %}
+            {% include '../partials/rescinds.njk' %}
         </div>
     </div>
 

@@ -10,6 +10,7 @@
             <h1 class="govuk-heading-xl">
                 Create a dossier for {{ recall.fullName }} recall
             </h1>
+            {% set fromPage = 'dossier-recall' %}
             {% include '../partials/recallInformationHeading.njk' %}
             <div class="govuk-body-l" data-qa="dossierTargetDate">{{ recall.dossierDueText }} {{ recall.dossierTargetDate | dateTime }} </div>
         </div>
@@ -26,6 +27,7 @@
             {% include '../partials/revocationOrder.njk' %}
             {% include '../partials/uploadedDocuments.njk' %}
             {% include '../partials/missingDocuments.njk' %}
+            {% include '../partials/rescinds.njk' %}
             <div class="govuk-form-group govuk-!-margin-top-4" >
                 {% if recall.requiredDocsMissing.length %}
                     <div class="govuk-inset-text govuk-!-margin-bottom-9">You cannot create a dossier without the

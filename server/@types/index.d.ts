@@ -90,6 +90,7 @@ export type ViewName =
   | 'changeHistoryForField'
   | 'newGeneratedDocumentVersion'
   | 'warrantReference'
+  | 'rescindRequest'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 

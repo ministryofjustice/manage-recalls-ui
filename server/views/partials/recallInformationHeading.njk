@@ -10,7 +10,11 @@
             {{ mojButtonMenu({
                 items: [{
                     text: "View change history",
-                    href: makeUrl('change-history', { basePath: urlInfo.basePath })
+                    href: makeUrl('change-history', { basePath: urlInfo.basePath, fromPage: fromPage })
+                },
+                    {
+                    text: "Rescind recall",
+                    href: makeUrl('rescind-request', { basePath: urlInfo.basePath, fromPage: fromPage })
                 }]
             }) }}
         </div>

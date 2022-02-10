@@ -106,7 +106,11 @@ describe('getFormValues', () => {
       text: 'An error occurred uploading the email',
       values: 'dossier.msg',
     },
+    rescindRequestDetail: {
+      text: 'Rescind request detail',
+    },
     recallNotificationEmailSentDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
+    rescindRequestEmailReceivedDate: { values: { year: '', month: '43', day: '' } },
     dossierEmailSentDate: { values: { year: '2016', month: '', day: '13' } },
     confirmRecallNotificationEmailSent: { text: 'Recall notification email sent' },
     confirmDossierEmailSent: { text: 'Dossier email sent' },
@@ -154,6 +158,7 @@ describe('getFormValues', () => {
     currentPrison: 'ACL',
     recallNotificationEmailFileName: 'recall.msg',
     recallNotificationEmailSentDateTimeParts: { year: '2019', month: '04', day: '23', hour: '6', minute: '34' },
+    rescindRequestEmailReceivedDateParts: { year: '2019', month: '04', day: '23', hour: '6', minute: '34' },
     dossierEmailFileName: 'dossier.msg',
     dossierEmailSentDateParts: { year: '2020', month: '11', day: '17' },
     confirmRecallNotificationEmailSent: 'YES',
@@ -161,6 +166,7 @@ describe('getFormValues', () => {
     previousConvictionMainNameCategory: 'FIRST_LAST',
     previousConvictionMainName: 'Wayne Holt',
     hasDossierBeenChecked: 'YES',
+    rescindRequestDetail: 'Detail...',
   }
 
   const apiValues = {
@@ -241,6 +247,12 @@ describe('getFormValues', () => {
         hour: '05',
         minute: '3',
         month: '',
+        year: '',
+      },
+      rescindRequestDetail: '',
+      rescindRequestEmailReceivedDateParts: {
+        day: '',
+        month: '43',
         year: '',
       },
       sentenceDateParts: {
@@ -332,6 +344,14 @@ describe('getFormValues', () => {
         month: '04',
         year: '2019',
       },
+      rescindRequestDetail: 'Detail...',
+      rescindRequestEmailReceivedDateParts: {
+        day: '23',
+        hour: '6',
+        minute: '34',
+        month: '04',
+        year: '2019',
+      },
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -415,6 +435,12 @@ describe('getFormValues', () => {
         hour: '05',
         minute: '3',
         month: '',
+        year: '',
+      },
+      rescindRequestDetail: '',
+      rescindRequestEmailReceivedDateParts: {
+        day: '',
+        month: '43',
         year: '',
       },
       sentenceDateParts: {

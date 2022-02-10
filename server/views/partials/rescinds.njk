@@ -1,0 +1,38 @@
+{% if recall.rescindRecords.length %}
+    <div id='rescinds'>
+        <h2 class='govuk-heading-m govuk-!-margin-top-9'>Rescind details</h2>
+        <dl class="govuk-summary-list">
+            {% for rescind in recall.rescindRecords %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Rescind request details
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                      <pre class='govuk-body'>
+                            {{ rescind.requestDetails }}
+                      </pre>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Rescind request received
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ rescind.requestEmailReceivedDate | dateTime }}
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Rescind request email
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                        <a href='{{ rescind.requestEmailUrl }}' class='govuk-link' download>{{ rescind.requestEmailFileName }}</a>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
+            {% endfor %}
+        </dl>
+    </div>
+{% endif %}
