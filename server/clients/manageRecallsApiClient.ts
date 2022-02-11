@@ -26,7 +26,8 @@ import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAudi
 import { RecallReasonResponse } from '../@types/manage-recalls-api/models/RecallReasonResponse'
 import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
 import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
-import { RescindRecordRequest } from '../@types/manage-recalls-api/models/RescindRecordRequest'
+import { RescindRequestRequest } from '../@types/manage-recalls-api/models/RescindRequestRequest'
+import { RescindDecisionRequest } from '../@types/manage-recalls-api/models/RescindDecisionRequest'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -128,12 +129,25 @@ export function addMissingDocumentRecord(
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
 }
 
-export function addRescindRequestRecord(
+export function addRescindRecord(
   recallId: string,
-  data: RescindRecordRequest,
+  data: RescindRequestRequest,
   token: string
 ): Promise<superagent.Response> {
   return restClient(token).post<superagent.Response>({ path: `/recalls/${recallId}/rescind-records`, data, raw: true })
+}
+
+export function updateRescindRecord(
+  recallId: string,
+  rescindRecordId: string,
+  data: RescindDecisionRequest,
+  token: string
+): Promise<superagent.Response> {
+  return restClient(token).patch<superagent.Response>({
+    path: `/recalls/${recallId}/rescind-records/${rescindRecordId}`,
+    data,
+    raw: true,
+  })
 }
 
 export function addLastKnownAddress(address: CreateLastKnownAddressRequest, token: string) {
