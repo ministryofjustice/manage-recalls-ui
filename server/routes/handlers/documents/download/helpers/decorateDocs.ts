@@ -1,21 +1,29 @@
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
 import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from '../../upload/helpers'
-import { decorateMissingDocumentsRecords, generatedDocMetaData, getDocHistoryStatus } from './index'
+import {
+  decorateMissingDocumentsRecords,
+  documentDownloadUrl,
+  generatedDocMetaData,
+  getDocHistoryStatus,
+} from './index'
 import { decorateAllDocTypes } from './decorateAllDocTypes'
 import { getVersionedUpload } from './getVersionedUpload'
 import { DocumentDecorations } from '../../../../../@types/documents'
 import { isInCustody } from '../../../helpers/recallStatus'
 import { RecallResponse } from '../../../../../@types/manage-recalls-api'
+import { RescindRecord } from '../../../../../@types/manage-recalls-api/models/RescindRecord'
 
 export const decorateDocs = ({
   docs,
   missingDocumentsRecords = [],
+  rescindRecords,
   versionedCategoryName,
   recall,
 }: {
   docs: RecallDocument[]
   missingDocumentsRecords?: MissingDocumentsRecord[]
+  rescindRecords?: RescindRecord[]
   versionedCategoryName?: string
   recall: RecallResponse
 }): DocumentDecorations => {
@@ -31,6 +39,11 @@ export const decorateDocs = ({
     nomsNumber,
     recallId,
   })
+  const decoratedRescindRecords = rescindRecords?.map(rec => ({
+    ...rec,
+    requestEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.requestEmailId }),
+    decisionEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.decisionEmailId }),
+  }))
   return decoratedDocs.reduce(
     (acc, doc) => {
       if (doc.type === 'document') {
@@ -60,6 +73,7 @@ export const decorateDocs = ({
     {
       documentsUploaded: [],
       missingDocumentsRecords: decoratedMissingDocumentsRecords,
+      rescindRecords: decoratedRescindRecords,
       docCategoriesWithUploads,
       requiredDocsMissing: requiredDocsList().filter(
         requiredDocCategory => !decoratedDocs.find(doc => doc.category === requiredDocCategory.name)

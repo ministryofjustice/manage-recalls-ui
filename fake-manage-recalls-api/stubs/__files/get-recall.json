@@ -180,5 +180,6 @@
   "status": "RECALL_NOTIFICATION_ISSUED",
   "assessedByUserName": "Bertie Badger",
   "bookedByUserName": "Brenda Badger",
-  "dossierCreatedByUserName": "Bobby Badger"
+  "dossierCreatedByUserName": "Bobby Badger",
+  "warrantReferenceNumber": "02RC/1234567C12345"
 }

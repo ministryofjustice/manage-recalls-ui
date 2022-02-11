@@ -3,6 +3,7 @@ import { FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../
 import { UploadedFileMetadata } from '../../../@types/documents'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
+import { MissingDocumentsRecord } from '../../../@types/manage-recalls-api'
 
 export const makeErrorObject = ({
   id,
@@ -48,6 +49,11 @@ export const sortList = <T>(list: T[], key: string, asc = true): T[] => {
     }
     return 0
   })
+}
+
+export const getLatestVersionFromList = <T>(list: T[]) => {
+  const sorted = sortList<T>(list, 'version', true)
+  return sorted[sorted.length - 1]
 }
 
 export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormErrors => {

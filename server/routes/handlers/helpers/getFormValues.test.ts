@@ -117,6 +117,7 @@ describe('getFormValues', () => {
     previousConvictionMainNameCategory: { text: 'What is the main name on the pre-cons?' },
     previousConvictionMainName: { text: 'What is the other main name used?' },
     hasDossierBeenChecked: { text: 'Has the dossier been checked for accuracy?' },
+    warrantReferenceNumber: { text: 'Warrant reference number' },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -167,6 +168,7 @@ describe('getFormValues', () => {
     previousConvictionMainName: 'Wayne Holt',
     hasDossierBeenChecked: 'YES',
     rescindRequestDetail: 'Detail...',
+    warrantReferenceNumber: '02RC/1234567C12345',
   }
 
   const apiValues = {
@@ -273,6 +275,7 @@ describe('getFormValues', () => {
       sentencingCourt: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
+      warrantReferenceNumber: '',
     })
   })
 
@@ -369,6 +372,7 @@ describe('getFormValues', () => {
       },
       sentencingCourt: 'Dorchester',
       vulnerabilityDiversity: 'NO',
+      warrantReferenceNumber: '02RC/1234567C12345',
     })
   })
 
@@ -461,6 +465,7 @@ describe('getFormValues', () => {
       sentencingCourt: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
+      warrantReferenceNumber: '',
     })
   })
 
@@ -555,6 +560,7 @@ describe('getFormValues', () => {
       sentencingCourt: 'ABDRCT',
       vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
+      warrantReferenceNumber: '02RC/1234567C12345',
     })
   })
 
@@ -653,6 +659,7 @@ describe('getFormValues', () => {
       sentencingCourt: 'ABDRCT',
       vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
+      warrantReferenceNumber: '02RC/1234567C12345',
     })
   })
 

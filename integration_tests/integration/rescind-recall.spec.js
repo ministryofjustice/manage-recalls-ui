@@ -29,18 +29,32 @@ context('Rescind a recall', () => {
     cy.uploadEmail({ field: 'rescindRequestEmailFileName' })
 
     // view rescind details
+    const requestEmailId = '789'
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
         recallId,
+        rescindRecords: [
+          {
+            requestEmailId,
+            requestEmailFileName: 'rescind-request.msg',
+            requestEmailReceivedDate: '2020-12-08',
+            requestDetails: 'Rescind was requested by email',
+          },
+        ],
       },
     })
     cy.clickButton('Save and return')
     cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
     cy.clickLink('View')
+    cy.getText('recallStatus').should('equal', 'Rescind in progress')
     cy.recallInfo('Rescind request details').should('equal', rescind.requestDetails)
     cy.recallInfo('Rescind request received').should('equal', formatIsoDate(rescind.requestEmailReceivedDate))
     cy.recallInfo('Rescind request email').should('equal', rescind.requestEmailFileName)
+    cy.getLinkHref(rescind.requestEmailFileName).should(
+      'contain',
+      `/persons/${nomsNumber}/recalls/${recallId}/documents/${requestEmailId}`
+    )
   })
 
   it('errors - rescind request', () => {

@@ -20,7 +20,6 @@ import {
   errorMessage,
   removeUndefinedFromObject,
   allowedImageFileTypeLabelList,
-  recallStatusTagProperties,
   selectDocCategory,
 } from './nunjucksFunctions'
 import { isDefined, listDocumentLabels, objectToArray, sortList } from '../routes/handlers/helpers'
@@ -34,6 +33,7 @@ import {
   isStatusAfterAssessStart,
   isInCustody,
   isStatusAfterAssessComplete,
+  recallStatusTagProperties,
 } from '../routes/handlers/helpers/recallStatus'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
