@@ -284,6 +284,7 @@ describe('To do (recalls) list', () => {
         inCustodyAtAssessment: false,
         assignee: '123',
         assigneeUserName: 'Mary Badger',
+        warrantReferenceNumber: undefined,
       },
       {
         ...getRecallResponse,
@@ -293,6 +294,7 @@ describe('To do (recalls) list', () => {
         inCustodyAtAssessment: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
+        warrantReferenceNumber: undefined,
       },
       {
         ...getRecallResponse,

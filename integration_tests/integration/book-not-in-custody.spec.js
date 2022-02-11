@@ -179,6 +179,7 @@ context('Book a "not in custody" recall', () => {
         inCustodyAtAssessment: false,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
+        warrantReferenceNumber: undefined,
       },
     ]
     const warrantReferenceNumber = '04RC/6457367A74325'
