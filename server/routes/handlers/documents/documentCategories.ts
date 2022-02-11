@@ -109,6 +109,11 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'email',
   },
   {
+    label: 'Rescind request email uploaded',
+    name: RecallDocument.category.RESCIND_REQUEST_EMAIL,
+    type: 'email',
+  },
+  {
     label: 'Missing documents email uploaded',
     name: RecallDocument.category.MISSING_DOCUMENTS_EMAIL,
     type: 'email',
