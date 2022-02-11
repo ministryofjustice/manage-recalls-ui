@@ -116,6 +116,23 @@
       "createdDateTime": "2021-03-11T12:24:03.000Z"
     }
   ],
+  "rescindRecords": [
+    {
+      "rescindRecordId": "123",
+      "requestEmailId": "123",
+      "requestEmailFileName": "rescind-request.msg",
+      "requestEmailReceivedDate": "2020-12-08",
+      "requestDetails": "Rescind was requested by email",
+      "decisionDetails": "Rescind was confirmed by email",
+      "decisionEmailId": "456",
+      "decisionEmailFileName": "rescind-confirm.msg",
+      "decisionEmailSentDate": "2020-13-08",
+      "version": 1,
+      "createdByUserName": "Bobby Badger",
+      "createdDateTime": "2020-12-09T12:24:03.000Z",
+      "lastUpdatedDateTime": "2020-12-09T12:24:03.000Z"
+    }
+  ],
   "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
   "lastReleasePrison": "KTI",
   "sentenceDate": "2019-08-03",
@@ -163,5 +180,6 @@
   "status": "RECALL_NOTIFICATION_ISSUED",
   "assessedByUserName": "Bertie Badger",
   "bookedByUserName": "Brenda Badger",
-  "dossierCreatedByUserName": "Bobby Badger"
+  "dossierCreatedByUserName": "Bobby Badger",
+  "warrantReferenceNumber": "02RC/1234567C12345"
 }

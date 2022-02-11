@@ -56,6 +56,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'recallNotificationEmailSentDateTime',
     'conditionalReleaseDate',
     'dossierEmailSentDate',
+    'rescindRequestEmailReceivedDate',
   ].forEach((key: string) => {
     values[`${key}Parts`] = errors[key]?.values || unsavedValues[`${key}Parts`] || splitIsoDateToParts(apiValues[key])
   })
@@ -88,6 +89,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'previousConvictionMainName',
     'previousConvictionMainNameCategory',
     'lastKnownAddressOption',
+    'rescindRequestDetail',
+    'warrantReferenceNumber',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })

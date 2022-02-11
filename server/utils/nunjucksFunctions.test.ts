@@ -9,7 +9,6 @@ import {
   dateTimeItems,
   filterSelectedItems,
   personOrPeopleFilter,
-  recallStatusTagProperties,
   removeUndefinedFromObject,
   selectItems,
   userNameFilter,
@@ -412,66 +411,5 @@ describe('removeUndefinedFromObject', () => {
       classNames: null,
     })
     expect(result).toEqual({ classNames: null })
-  })
-})
-
-describe('recallStatusTagProperties', () => {
-  it('returns the correct properties for a given status', () => {
-    expect(recallStatusTagProperties(RecallResponse.status.DOSSIER_ISSUED)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Dossier complete',
-      classes: `govuk-tag--green`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.RECALL_NOTIFICATION_ISSUED)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Assessment complete',
-      classes: `govuk-tag--orange`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.DOSSIER_IN_PROGRESS)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Dossier in progress',
-      classes: `govuk-tag--orange`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.BEING_BOOKED_ON)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Booking in progress',
-      classes: `govuk-tag--orange`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.BOOKED_ON)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Booking complete',
-      classes: `govuk-tag--orange`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.IN_ASSESSMENT)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Assessment in progress',
-      classes: `govuk-tag--orange`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.STOPPED)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Stopped',
-      classes: `govuk-tag--red`,
-    })
-    expect(recallStatusTagProperties(RecallResponse.status.AWAITING_RETURN_TO_CUSTODY)).toEqual({
-      attributes: {
-        'data-qa': 'recallStatus',
-      },
-      text: 'Awaiting return to custody',
-      classes: `govuk-tag--orange`,
-    })
   })
 })

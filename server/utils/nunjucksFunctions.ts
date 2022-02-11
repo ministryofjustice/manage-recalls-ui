@@ -206,63 +206,6 @@ export const removeUndefinedFromObject = (attributes: ObjectMap<unknown>) => {
   }, {})
 }
 
-export const recallStatusTagProperties = (status: RecallResponse.status) => {
-  const defaults = {
-    classes: `govuk-tag--orange`,
-    attributes: {
-      'data-qa': 'recallStatus',
-    },
-  }
-  switch (status) {
-    case RecallResponse.status.DOSSIER_ISSUED:
-      return {
-        ...defaults,
-        text: 'Dossier complete',
-        classes: `govuk-tag--green`,
-      }
-    case RecallResponse.status.BEING_BOOKED_ON:
-      return {
-        ...defaults,
-        text: 'Booking in progress',
-      }
-    case RecallResponse.status.BOOKED_ON:
-      return {
-        ...defaults,
-        text: 'Booking complete',
-      }
-    case RecallResponse.status.IN_ASSESSMENT:
-      return {
-        ...defaults,
-        text: 'Assessment in progress',
-      }
-    case RecallResponse.status.RECALL_NOTIFICATION_ISSUED:
-      return {
-        ...defaults,
-        text: 'Assessment complete',
-      }
-    case RecallResponse.status.AWAITING_RETURN_TO_CUSTODY:
-      return {
-        ...defaults,
-        text: 'Awaiting return to custody',
-      }
-    case RecallResponse.status.DOSSIER_IN_PROGRESS:
-      return {
-        ...defaults,
-        text: 'Dossier in progress',
-      }
-    case RecallResponse.status.STOPPED:
-      return {
-        ...defaults,
-        text: 'Stopped',
-        classes: `govuk-tag--red`,
-      }
-    default:
-      return {
-        text: 'Unknown status',
-      }
-  }
-}
-
 export const selectDocCategory = (
   error: FormError,
   file: DecoratedUploadedDoc,

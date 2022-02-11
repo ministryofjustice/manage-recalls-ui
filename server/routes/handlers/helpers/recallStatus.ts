@@ -1,5 +1,6 @@
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
+import { getLatestVersionFromList, isDefined } from './index'
 
 const beforeAssessStartStatuses = [RecallResponse.status.BEING_BOOKED_ON, RecallResponse.status.BOOKED_ON]
 
@@ -39,4 +40,75 @@ export const isInCustody = (recall: RecallResponse | RecallResponseLite) => {
     return recall.inCustodyAtAssessment
   }
   return recall.inCustodyAtBooking
+}
+
+export const isRescindInProgress = (recall: RecallResponse) => {
+  if (recall.rescindRecords) {
+    const latestRescind = getLatestVersionFromList(recall.rescindRecords)
+    return latestRescind && !isDefined(latestRescind.decisionDetails)
+  }
+  return false
+}
+
+export const recallStatusTagProperties = (recall: RecallResponse) => {
+  const defaults = {
+    classes: `govuk-tag--orange`,
+    attributes: {
+      'data-qa': 'recallStatus',
+    },
+  }
+  if (isRescindInProgress(recall)) {
+    return {
+      ...defaults,
+      text: 'Rescind in progress',
+    }
+  }
+  switch (recall.status) {
+    case RecallResponse.status.DOSSIER_ISSUED:
+      return {
+        ...defaults,
+        text: 'Dossier complete',
+        classes: `govuk-tag--green`,
+      }
+    case RecallResponse.status.BEING_BOOKED_ON:
+      return {
+        ...defaults,
+        text: 'Booking in progress',
+      }
+    case RecallResponse.status.BOOKED_ON:
+      return {
+        ...defaults,
+        text: 'Booking complete',
+      }
+    case RecallResponse.status.IN_ASSESSMENT:
+      return {
+        ...defaults,
+        text: 'Assessment in progress',
+      }
+    case RecallResponse.status.RECALL_NOTIFICATION_ISSUED:
+      return {
+        ...defaults,
+        text: 'Assessment complete',
+      }
+    case RecallResponse.status.AWAITING_RETURN_TO_CUSTODY:
+      return {
+        ...defaults,
+        text: 'Awaiting return to custody',
+      }
+    case RecallResponse.status.DOSSIER_IN_PROGRESS:
+      return {
+        ...defaults,
+        text: 'Dossier in progress',
+      }
+    case RecallResponse.status.STOPPED:
+      return {
+        ...defaults,
+        text: 'Stopped',
+        classes: `govuk-tag--red`,
+      }
+    default:
+      return {
+        text: 'Unknown status',
+      }
+  }
 }

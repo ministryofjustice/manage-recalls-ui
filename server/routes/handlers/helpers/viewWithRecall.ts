@@ -16,6 +16,7 @@ export const viewWithRecall =
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
       missingDocumentsRecords: recall.missingDocumentsRecords,
+      rescindRecords: recall.rescindRecords,
       recall,
       versionedCategoryName: req.query.versionedCategoryName as string,
     })

@@ -50,6 +50,11 @@ export const sortList = <T>(list: T[], key: string, asc = true): T[] => {
   })
 }
 
+export const getLatestVersionFromList = <T>(list: T[]) => {
+  const sorted = sortList<T>(list, 'version', true)
+  return sorted[sorted.length - 1]
+}
+
 export const transformErrorMessages = (errors: NamedFormError[]): KeyedFormErrors => {
   const errorMap = errors.filter(Boolean).reduce((acc: ObjectMap<FormError>, curr: NamedFormError) => {
     const { name, ...rest } = curr

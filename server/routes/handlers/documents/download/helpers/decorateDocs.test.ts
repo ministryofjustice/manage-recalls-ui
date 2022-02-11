@@ -50,6 +50,13 @@ describe('decorateDocs', () => {
       createdDateTime: '2020-04-01T12:00:00.000Z',
     },
     {
+      category: RecallDocument.category.RESCIND_REQUEST_EMAIL,
+      documentId: '1234-3455-8542-c3ac-543435',
+      fileName: 'rescind-request.eml',
+      createdByUserName: 'Arnold Caseworker',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+    },
+    {
       category: RecallDocument.category.DOSSIER_EMAIL,
       documentId: '37423-2389347-234',
       fileName: 'dossier.msg',
@@ -441,6 +448,16 @@ describe('decorateDocs', () => {
         url: '/persons/A123/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
         createdByUserName: 'Arnold Caseworker',
         createdDateTime: '2020-04-01T12:00:00.000Z',
+      },
+      RESCIND_REQUEST_EMAIL: {
+        category: 'RESCIND_REQUEST_EMAIL',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '1234-3455-8542-c3ac-543435',
+        fileName: 'rescind-request.eml',
+        label: 'Rescind request email uploaded',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/1234-3455-8542-c3ac-543435',
       },
     })
   })

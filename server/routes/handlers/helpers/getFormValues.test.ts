@@ -106,13 +106,18 @@ describe('getFormValues', () => {
       text: 'An error occurred uploading the email',
       values: 'dossier.msg',
     },
+    rescindRequestDetail: {
+      text: 'Rescind request detail',
+    },
     recallNotificationEmailSentDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
+    rescindRequestEmailReceivedDate: { values: { year: '', month: '43', day: '' } },
     dossierEmailSentDate: { values: { year: '2016', month: '', day: '13' } },
     confirmRecallNotificationEmailSent: { text: 'Recall notification email sent' },
     confirmDossierEmailSent: { text: 'Dossier email sent' },
     previousConvictionMainNameCategory: { text: 'What is the main name on the pre-cons?' },
     previousConvictionMainName: { text: 'What is the other main name used?' },
     hasDossierBeenChecked: { text: 'Has the dossier been checked for accuracy?' },
+    warrantReferenceNumber: { text: 'Warrant reference number' },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -154,6 +159,7 @@ describe('getFormValues', () => {
     currentPrison: 'ACL',
     recallNotificationEmailFileName: 'recall.msg',
     recallNotificationEmailSentDateTimeParts: { year: '2019', month: '04', day: '23', hour: '6', minute: '34' },
+    rescindRequestEmailReceivedDateParts: { year: '2019', month: '04', day: '23', hour: '6', minute: '34' },
     dossierEmailFileName: 'dossier.msg',
     dossierEmailSentDateParts: { year: '2020', month: '11', day: '17' },
     confirmRecallNotificationEmailSent: 'YES',
@@ -161,6 +167,8 @@ describe('getFormValues', () => {
     previousConvictionMainNameCategory: 'FIRST_LAST',
     previousConvictionMainName: 'Wayne Holt',
     hasDossierBeenChecked: 'YES',
+    rescindRequestDetail: 'Detail...',
+    warrantReferenceNumber: '02RC/1234567C12345',
   }
 
   const apiValues = {
@@ -243,6 +251,12 @@ describe('getFormValues', () => {
         month: '',
         year: '',
       },
+      rescindRequestDetail: '',
+      rescindRequestEmailReceivedDateParts: {
+        day: '',
+        month: '43',
+        year: '',
+      },
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -261,6 +275,7 @@ describe('getFormValues', () => {
       sentencingCourt: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
+      warrantReferenceNumber: '',
     })
   })
 
@@ -332,6 +347,14 @@ describe('getFormValues', () => {
         month: '04',
         year: '2019',
       },
+      rescindRequestDetail: 'Detail...',
+      rescindRequestEmailReceivedDateParts: {
+        day: '23',
+        hour: '6',
+        minute: '34',
+        month: '04',
+        year: '2019',
+      },
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -349,6 +372,7 @@ describe('getFormValues', () => {
       },
       sentencingCourt: 'Dorchester',
       vulnerabilityDiversity: 'NO',
+      warrantReferenceNumber: '02RC/1234567C12345',
     })
   })
 
@@ -417,6 +441,12 @@ describe('getFormValues', () => {
         month: '',
         year: '',
       },
+      rescindRequestDetail: '',
+      rescindRequestEmailReceivedDateParts: {
+        day: '',
+        month: '43',
+        year: '',
+      },
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -435,6 +465,7 @@ describe('getFormValues', () => {
       sentencingCourt: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
+      warrantReferenceNumber: '',
     })
   })
 
@@ -529,6 +560,7 @@ describe('getFormValues', () => {
       sentencingCourt: 'ABDRCT',
       vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
+      warrantReferenceNumber: '02RC/1234567C12345',
     })
   })
 
@@ -627,6 +659,7 @@ describe('getFormValues', () => {
       sentencingCourt: 'ABDRCT',
       vulnerabilityDiversity: 'YES',
       vulnerabilityDiversityDetail: 'Various...',
+      warrantReferenceNumber: '02RC/1234567C12345',
     })
   })
 
