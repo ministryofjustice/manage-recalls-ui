@@ -3,7 +3,6 @@ import { FormError, KeyedFormErrors, NamedFormError, ObjectMap } from '../../../
 import { UploadedFileMetadata } from '../../../@types/documents'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
-import { MissingDocumentsRecord } from '../../../@types/manage-recalls-api'
 
 export const makeErrorObject = ({
   id,
