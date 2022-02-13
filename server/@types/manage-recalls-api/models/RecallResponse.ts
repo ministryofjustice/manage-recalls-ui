@@ -5,8 +5,8 @@
 import type { LastKnownAddress } from './LastKnownAddress';
 import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
 import type { RecallDocument } from './RecallDocument';
+import type { RescindRecord } from './RescindRecord';
 import type { SentenceLengthRes } from './SentenceLengthRes';
-import { RescindRecord } from './RescindRecord'
 
 export type RecallResponse = {
     additionalLicenceConditions?: boolean;
@@ -40,7 +40,6 @@ export type RecallResponse = {
     dossierTargetDate?: string;
     firstName: string;
     hasDossierBeenChecked?: boolean;
-    inCustody?: boolean;
     inCustodyAtAssessment?: boolean;
     inCustodyAtBooking?: boolean;
     indexOffence?: string;
@@ -71,7 +70,7 @@ export type RecallResponse = {
     recallId: string;
     recallLength?: RecallResponse.recallLength;
     recallNotificationEmailSentDateTime?: string;
-    rescindRecords?: RescindRecord[];
+    rescindRecords: Array<RescindRecord>;
     sentenceDate?: string;
     sentenceExpiryDate?: string;
     sentenceLength?: SentenceLengthRes;

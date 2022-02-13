@@ -26,7 +26,7 @@ import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAudi
 import { RecallReasonResponse } from '../@types/manage-recalls-api/models/RecallReasonResponse'
 import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
 import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
-import { RescindRecordRequest } from '../@types/manage-recalls-api/models/RescindRecordRequest'
+import { RescindRequestRequest } from '../@types/manage-recalls-api/models/RescindRequestRequest'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -130,7 +130,7 @@ export function addMissingDocumentRecord(
 
 export function addRescindRequestRecord(
   recallId: string,
-  data: RescindRecordRequest,
+  data: RescindRequestRequest,
   token: string
 ): Promise<superagent.Response> {
   return restClient(token).post<superagent.Response>({ path: `/recalls/${recallId}/rescind-records`, data, raw: true })
