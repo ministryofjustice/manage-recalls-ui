@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { addRescindRequestRecord } from '../../../clients/manageRecallsApiClient'
+import { addRescindRecord } from '../../../clients/manageRecallsApiClient'
 import { mockPostRequest } from '../../testutils/mockRequestUtils'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
 import { addRescindRequestFormHandler } from './addRescindRequestFormHandler'
@@ -31,7 +31,7 @@ describe('addRescindRequestFormHandler', () => {
       }
       cb()
     })
-    ;(addRescindRequestRecord as jest.Mock).mockResolvedValue({
+    ;(addRescindRecord as jest.Mock).mockResolvedValue({
       status: 201,
     })
     const res = {
@@ -42,7 +42,7 @@ describe('addRescindRequestFormHandler', () => {
       redirect: jest.fn(),
     }
     await addRescindRequestFormHandler(req, res)
-    expect(addRescindRequestRecord.mock.calls[0][1]).toEqual({
+    expect(addRescindRecord.mock.calls[0][1]).toEqual({
       emailReceivedDate: '2021-05-10',
       details: 'Chased by email',
       emailFileContent: 'def',
@@ -58,7 +58,7 @@ describe('addRescindRequestFormHandler', () => {
       }
       cb()
     })
-    ;(addRescindRequestRecord as jest.Mock).mockResolvedValue({
+    ;(addRescindRecord as jest.Mock).mockResolvedValue({
       status: 201,
     })
     const res = {
@@ -84,7 +84,7 @@ describe('addRescindRequestFormHandler', () => {
       }
       cb()
     })
-    ;(addRescindRequestRecord as jest.Mock).mockRejectedValue({
+    ;(addRescindRecord as jest.Mock).mockRejectedValue({
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const res = {
@@ -114,7 +114,7 @@ describe('addRescindRequestFormHandler', () => {
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(addRescindRequestRecord).not.toHaveBeenCalled()
+        expect(addRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
             href: '#rescindRequestEmailFileName',
@@ -140,7 +140,7 @@ describe('addRescindRequestFormHandler', () => {
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(addRescindRequestRecord).not.toHaveBeenCalled()
+        expect(addRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
             href: '#rescindRequestDetail',
@@ -168,7 +168,7 @@ describe('addRescindRequestFormHandler', () => {
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(addRescindRequestRecord).not.toHaveBeenCalled()
+        expect(addRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
             href: '#rescindRequestEmailReceivedDate',

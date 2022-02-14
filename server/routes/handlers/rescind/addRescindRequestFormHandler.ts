@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { addRescindRequestRecord } from '../../../clients/manageRecallsApiClient'
+import { addRescindRecord } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
 import { makeErrorObject } from '../helpers'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
@@ -37,7 +37,7 @@ export const addRescindRequestFormHandler = async (req: Request, res: Response):
       const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
       if (shouldSaveToApi) {
         try {
-          const response = await addRescindRequestRecord(
+          const response = await addRescindRecord(
             recallId,
             {
               details: valuesToSave.details,
