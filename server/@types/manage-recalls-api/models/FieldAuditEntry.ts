@@ -8,4 +8,4 @@ export type FieldAuditEntry = {
     updatedByUserName: string;
     updatedDateTime: string;
     updatedValue: any;
-}
+};

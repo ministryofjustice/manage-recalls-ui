@@ -3,10 +3,10 @@
 /* eslint-disable */
 
 export type BookRecallRequest = {
+    nomsNumber: string;
+    firstName: string;
+    middleNames?: string;
+    lastName: string;
     croNumber: string;
     dateOfBirth: string;
-    firstName: string;
-    lastName: string;
-    middleNames?: string;
-    nomsNumber: string;
-}
+};

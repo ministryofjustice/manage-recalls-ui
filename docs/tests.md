@@ -20,7 +20,8 @@ npm run swagger-to-ts
 ```
 
 Types are output to `./server/@types/manage-recalls-api`.
-The online swagger, for comparison, is [here](https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/swagger-ui/)
+The online swagger, for comparison, is [here]
+(https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/swagger-ui/index.html)
 
 ## Run linter
 

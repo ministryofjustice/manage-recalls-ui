@@ -4,7 +4,7 @@
 
 export type RescindRequestRequest = {
     details: string;
+    emailReceivedDate: string;
     emailFileContent: string;
     emailFileName: string;
-    emailReceivedDate: string;
-}
+};

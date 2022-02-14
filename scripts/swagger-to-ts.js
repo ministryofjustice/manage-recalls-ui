@@ -2,7 +2,7 @@ const superagent = require('superagent')
 const OpenAPI = require('openapi-typescript-codegen')
 const fs = require('fs')
 
-const swaggerUrl = 'https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/v2/api-docs'
+const swaggerUrl = 'https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/v3/api-docs'
 
 superagent.get(swaggerUrl).then(({ body }) => {
   const outputPath = './server/@types/manage-recalls-api'

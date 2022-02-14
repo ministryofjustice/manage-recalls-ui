@@ -3,22 +3,22 @@
 /* eslint-disable */
 
 export type LastKnownAddress = {
-    createdByUserName: string;
-    createdDateTime: string;
-    index: number;
     lastKnownAddressId: string;
     line1: string;
     line2?: string;
+    town: string;
     postcode?: string;
     source: LastKnownAddress.source;
-    town: string;
-}
+    index: number;
+    createdByUserName: string;
+    createdDateTime: string;
+};
 
 export namespace LastKnownAddress {
 
     export enum source {
-        LOOKUP = 'LOOKUP',
         MANUAL = 'MANUAL',
+        LOOKUP = 'LOOKUP',
     }
 
 

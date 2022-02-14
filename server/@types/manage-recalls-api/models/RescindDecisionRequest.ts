@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 export type RescindDecisionRequest = {
-    approved?: boolean;
+    approved: boolean;
     details: string;
+    emailSentDate: string;
     emailFileContent: string;
     emailFileName: string;
-    emailSentDate: string;
-}
+};

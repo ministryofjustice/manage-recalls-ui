@@ -2,7 +2,7 @@ import { sortList } from '../../helpers'
 import { ObjectMap, RecallField } from '../../../../@types'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { FieldAuditSummary } from '../../../../@types/manage-recalls-api/models/FieldAuditSummary'
-import { FieldAuditEntry, SentenceLengthRes } from '../../../../@types/manage-recalls-api'
+import { FieldAuditEntry, SentenceLength } from '../../../../@types/manage-recalls-api'
 import { getReferenceDataItemLabel } from '../../../../referenceData'
 import { formatDateTimeFromIsoString } from '../../helpers/dates/format'
 import { findDocCategory } from '../../documents/upload/helpers'
@@ -240,7 +240,7 @@ export const formatRecallFieldValue = ({
   }
 }
 
-export const formatSentenceLength = (sentenceLength: SentenceLengthRes) => {
+export const formatSentenceLength = (sentenceLength: SentenceLength) => {
   const { years, months, days } = sentenceLength
   return `${years ? `${years} years ` : ''}${months ? `${months} months ` : ''}${days ? `${days} days ` : ''}`
 }

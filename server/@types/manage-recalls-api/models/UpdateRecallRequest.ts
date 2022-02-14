@@ -2,74 +2,73 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { SentenceLengthReq } from './SentenceLengthReq';
+import type { SentenceLength } from './SentenceLength';
 
 export type UpdateRecallRequest = {
-    additionalLicenceConditions?: boolean;
-    additionalLicenceConditionsDetail?: string;
-    agreeWithRecall?: UpdateRecallRequest.agreeWithRecall;
-    agreeWithRecallDetail?: string;
-    arrestIssues?: boolean;
-    arrestIssuesDetail?: string;
-    assessedByUserId?: string;
-    authorisingAssistantChiefOfficer?: string;
-    bookedByUserId?: string;
-    bookingNumber?: string;
-    conditionalReleaseDate?: string;
+    licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
+    lastReleasePrison?: string;
+    lastReleaseDate?: string;
+    recallEmailReceivedDateTime?: string;
+    localPoliceForceId?: string;
+    inCustodyAtBooking?: boolean;
+    inCustodyAtAssessment?: boolean;
     contraband?: boolean;
     contrabandDetail?: string;
-    currentPrison?: string;
-    differentNomsNumber?: boolean;
-    differentNomsNumberDetail?: string;
-    dossierCreatedByUserId?: string;
-    dossierEmailSentDate?: string;
-    hasDossierBeenChecked?: boolean;
-    inCustodyAtAssessment?: boolean;
-    inCustodyAtBooking?: boolean;
-    indexOffence?: string;
-    lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
-    lastReleaseDate?: string;
-    lastReleasePrison?: string;
-    licenceConditionsBreached?: string;
-    licenceExpiryDate?: string;
-    licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
-    localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit;
-    localPoliceForceId?: string;
-    mappaLevel?: UpdateRecallRequest.mappaLevel;
-    previousConvictionMainName?: string;
-    previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
-    probationOfficerEmail?: string;
-    probationOfficerName?: string;
-    probationOfficerPhoneNumber?: string;
-    reasonsForRecall?: Array<'BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_NON_CURFEW_CONDITION' | 'ELM_EQUIPMENT_TAMPER' | 'ELM_FAILURE_CHARGE_BATTERY' | 'ELM_FURTHER_OFFENCE' | 'FAILED_HOME_VISIT' | 'FAILED_KEEP_IN_TOUCH' | 'FAILED_RESIDE' | 'FAILED_WORK_AS_APPROVED' | 'OTHER' | 'POOR_BEHAVIOUR_ALCOHOL' | 'POOR_BEHAVIOUR_DRUGS' | 'POOR_BEHAVIOUR_FURTHER_OFFENCE' | 'POOR_BEHAVIOUR_NON_COMPLIANCE' | 'POOR_BEHAVIOUR_RELATIONSHIPS' | 'TRAVELLING_OUTSIDE_UK'>;
-    reasonsForRecallOtherDetail?: string;
-    recallEmailReceivedDateTime?: string;
-    recallNotificationEmailSentDateTime?: string;
-    sentenceDate?: string;
-    sentenceExpiryDate?: string;
-    sentenceLength?: SentenceLengthReq;
-    sentencingCourt?: string;
     vulnerabilityDiversity?: boolean;
     vulnerabilityDiversityDetail?: string;
+    mappaLevel?: UpdateRecallRequest.mappaLevel;
+    sentenceDate?: string;
+    licenceExpiryDate?: string;
+    sentenceExpiryDate?: string;
+    sentencingCourt?: string;
+    indexOffence?: string;
+    conditionalReleaseDate?: string;
+    sentenceLength?: SentenceLength;
+    bookingNumber?: string;
+    probationOfficerName?: string;
+    probationOfficerPhoneNumber?: string;
+    probationOfficerEmail?: string;
+    localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit;
+    authorisingAssistantChiefOfficer?: string;
+    licenceConditionsBreached?: string;
+    reasonsForRecall?: Array<'BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_NON_CURFEW_CONDITION' | 'ELM_FURTHER_OFFENCE' | 'ELM_EQUIPMENT_TAMPER' | 'ELM_FAILURE_CHARGE_BATTERY' | 'FAILED_HOME_VISIT' | 'FAILED_KEEP_IN_TOUCH' | 'FAILED_RESIDE' | 'FAILED_WORK_AS_APPROVED' | 'POOR_BEHAVIOUR_ALCOHOL' | 'POOR_BEHAVIOUR_FURTHER_OFFENCE' | 'POOR_BEHAVIOUR_DRUGS' | 'POOR_BEHAVIOUR_NON_COMPLIANCE' | 'POOR_BEHAVIOUR_RELATIONSHIPS' | 'TRAVELLING_OUTSIDE_UK' | 'OTHER'>;
+    reasonsForRecallOtherDetail?: string;
+    agreeWithRecall?: UpdateRecallRequest.agreeWithRecall;
+    agreeWithRecallDetail?: string;
+    currentPrison?: string;
+    additionalLicenceConditions?: boolean;
+    additionalLicenceConditionsDetail?: string;
+    differentNomsNumber?: boolean;
+    differentNomsNumberDetail?: string;
+    recallNotificationEmailSentDateTime?: string;
+    dossierEmailSentDate?: string;
+    previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
+    hasDossierBeenChecked?: boolean;
+    previousConvictionMainName?: string;
+    assessedByUserId?: string;
+    bookedByUserId?: string;
+    dossierCreatedByUserId?: string;
+    lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
+    arrestIssues?: boolean;
+    arrestIssuesDetail?: string;
     warrantReferenceNumber?: string;
-}
+};
 
 export namespace UpdateRecallRequest {
-
-    export enum agreeWithRecall {
-        NO_STOP = 'NO_STOP',
-        YES = 'YES',
-    }
-
-    export enum lastKnownAddressOption {
-        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
-        YES = 'YES',
-    }
 
     export enum licenceNameCategory {
         FIRST_LAST = 'FIRST_LAST',
         FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
         OTHER = 'OTHER',
+    }
+
+    export enum mappaLevel {
+        NA = 'NA',
+        LEVEL_1 = 'LEVEL_1',
+        LEVEL_2 = 'LEVEL_2',
+        LEVEL_3 = 'LEVEL_3',
+        NOT_KNOWN = 'NOT_KNOWN',
+        CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
     }
 
     export enum localDeliveryUnit {
@@ -113,8 +112,8 @@ export namespace UpdateRecallRequest {
         PS_CROYDON = 'PS_CROYDON',
         PS_CUMBRIA = 'PS_CUMBRIA',
         PS_CWM_TAF_MORGANNWG = 'PS_CWM_TAF_MORGANNWG',
-        PS_DERBYSHIRE = 'PS_DERBYSHIRE',
         PS_DERBY_CITY = 'PS_DERBY_CITY',
+        PS_DERBYSHIRE = 'PS_DERBYSHIRE',
         PS_DEVON_AND_TORBAY = 'PS_DEVON_AND_TORBAY',
         PS_DONCASTER = 'PS_DONCASTER',
         PS_DORSET = 'PS_DORSET',
@@ -169,15 +168,15 @@ export namespace UpdateRecallRequest {
         PS_NEWCASTLE_UPON_TYNE = 'PS_NEWCASTLE_UPON_TYNE',
         PS_NEWHAM = 'PS_NEWHAM',
         PS_NORFOLK = 'PS_NORFOLK',
-        PS_NORTHAMPTONSHIRE = 'PS_NORTHAMPTONSHIRE',
-        PS_NORTHUMBERLAND = 'PS_NORTHUMBERLAND',
-        PS_NORTHWICH = 'PS_NORTHWICH',
         PS_NORTH_DURHAM = 'PS_NORTH_DURHAM',
         PS_NORTH_EAST_LINCOLNSHIRE = 'PS_NORTH_EAST_LINCOLNSHIRE',
         PS_NORTH_LINCOLNSHIRE = 'PS_NORTH_LINCOLNSHIRE',
         PS_NORTH_TYNESIDE = 'PS_NORTH_TYNESIDE',
         PS_NORTH_WALES = 'PS_NORTH_WALES',
         PS_NORTH_YORKSHIRE = 'PS_NORTH_YORKSHIRE',
+        PS_NORTHAMPTONSHIRE = 'PS_NORTHAMPTONSHIRE',
+        PS_NORTHUMBERLAND = 'PS_NORTHUMBERLAND',
+        PS_NORTHWICH = 'PS_NORTHWICH',
         PS_NOTTINGHAM = 'PS_NOTTINGHAM',
         PS_NOTTINGHAMSHIRE = 'PS_NOTTINGHAMSHIRE',
         PS_OLDHAM = 'PS_OLDHAM',
@@ -198,15 +197,15 @@ export namespace UpdateRecallRequest {
         PS_SKELMERSDALE = 'PS_SKELMERSDALE',
         PS_SOLIHULL = 'PS_SOLIHULL',
         PS_SOMERSET = 'PS_SOMERSET',
-        PS_SOUTHAMPTON_EASTLEIGH_AND_NEW_FOREST = 'PS_SOUTHAMPTON_EASTLEIGH_AND_NEW_FOREST',
-        PS_SOUTHWARK = 'PS_SOUTHWARK',
         PS_SOUTH_DURHAM = 'PS_SOUTH_DURHAM',
         PS_SOUTH_TYNESIDE = 'PS_SOUTH_TYNESIDE',
+        PS_SOUTHAMPTON_EASTLEIGH_AND_NEW_FOREST = 'PS_SOUTHAMPTON_EASTLEIGH_AND_NEW_FOREST',
+        PS_SOUTHWARK = 'PS_SOUTHWARK',
+        PS_ST_HELENS = 'PS_ST_HELENS',
         PS_STAFFORDSHIRE = 'PS_STAFFORDSHIRE',
         PS_STOCKPORT = 'PS_STOCKPORT',
         PS_STOCKTON = 'PS_STOCKTON',
         PS_STOKE = 'PS_STOKE',
-        PS_ST_HELENS = 'PS_ST_HELENS',
         PS_SUFFOLK = 'PS_SUFFOLK',
         PS_SUNDERLAND = 'PS_SUNDERLAND',
         PS_SURREY = 'PS_SURREY',
@@ -238,19 +237,20 @@ export namespace UpdateRecallRequest {
         YOT_SEE_COMMENTS = 'YOT_SEE_COMMENTS',
     }
 
-    export enum mappaLevel {
-        CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
-        LEVEL_1 = 'LEVEL_1',
-        LEVEL_2 = 'LEVEL_2',
-        LEVEL_3 = 'LEVEL_3',
-        NA = 'NA',
-        NOT_KNOWN = 'NOT_KNOWN',
+    export enum agreeWithRecall {
+        YES = 'YES',
+        NO_STOP = 'NO_STOP',
     }
 
     export enum previousConvictionMainNameCategory {
         FIRST_LAST = 'FIRST_LAST',
         FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
         OTHER = 'OTHER',
+    }
+
+    export enum lastKnownAddressOption {
+        YES = 'YES',
+        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
     }
 
 

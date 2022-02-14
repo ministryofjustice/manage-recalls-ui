@@ -2,8 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type SentenceLengthRes = {
-    days: number;
-    months: number;
+export type SentenceLength = {
     years: number;
-}
+    months: number;
+    days: number;
+};

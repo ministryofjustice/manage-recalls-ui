@@ -4,4 +4,4 @@
 
 export type NewDocumentResponse = {
     documentId: string;
-}
+};
