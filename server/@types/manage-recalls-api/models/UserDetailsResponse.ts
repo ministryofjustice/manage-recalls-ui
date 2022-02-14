@@ -3,20 +3,20 @@
 /* eslint-disable */
 
 export type UserDetailsResponse = {
-    caseworkerBand: UserDetailsResponse.caseworkerBand;
-    email: string;
+    userId: string;
     firstName: string;
     lastName: string;
-    phoneNumber: string;
     signature: string;
-    userId: string;
-}
+    email: string;
+    phoneNumber: string;
+    caseworkerBand: UserDetailsResponse.caseworkerBand;
+};
 
 export namespace UserDetailsResponse {
 
     export enum caseworkerBand {
-        FOUR_PLUS = 'FOUR_PLUS',
         THREE = 'THREE',
+        FOUR_PLUS = 'FOUR_PLUS',
     }
 
 

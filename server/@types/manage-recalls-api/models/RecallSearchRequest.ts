@@ -4,4 +4,4 @@
 
 export type RecallSearchRequest = {
     nomsNumber: string;
-}
+};

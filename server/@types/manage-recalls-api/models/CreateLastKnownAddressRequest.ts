@@ -3,19 +3,19 @@
 /* eslint-disable */
 
 export type CreateLastKnownAddressRequest = {
+    recallId?: string;
     line1: string;
     line2?: string;
-    postcode?: string;
-    recallId?: string;
-    source: CreateLastKnownAddressRequest.source;
     town: string;
-}
+    postcode?: string;
+    source: CreateLastKnownAddressRequest.source;
+};
 
 export namespace CreateLastKnownAddressRequest {
 
     export enum source {
-        LOOKUP = 'LOOKUP',
         MANUAL = 'MANUAL',
+        LOOKUP = 'LOOKUP',
     }
 
 

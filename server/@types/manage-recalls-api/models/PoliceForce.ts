@@ -5,4 +5,4 @@
 export type PoliceForce = {
     id: string;
     name: string;
-}
+};

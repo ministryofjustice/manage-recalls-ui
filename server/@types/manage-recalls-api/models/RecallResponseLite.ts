@@ -3,23 +3,23 @@
 /* eslint-disable */
 
 export type RecallResponseLite = {
-    assigneeUserName?: string;
+    recallId: string;
+    nomsNumber: string;
     createdByUserId: string;
     createdDateTime: string;
+    lastUpdatedDateTime: string;
+    firstName: string;
+    middleNames?: string;
+    lastName: string;
+    licenceNameCategory: RecallResponseLite.licenceNameCategory;
+    status: RecallResponseLite.status;
+    inCustodyAtBooking?: boolean;
+    inCustodyAtAssessment?: boolean;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
-    firstName: string;
-    inCustodyAtAssessment?: boolean;
-    inCustodyAtBooking?: boolean;
-    lastName: string;
-    lastUpdatedDateTime: string;
-    licenceNameCategory: RecallResponseLite.licenceNameCategory;
-    middleNames?: string;
-    nomsNumber: string;
     recallAssessmentDueDateTime?: string;
-    recallId: string;
-    status: RecallResponseLite.status;
-}
+    assigneeUserName?: string;
+};
 
 export namespace RecallResponseLite {
 
@@ -30,13 +30,13 @@ export namespace RecallResponseLite {
     }
 
     export enum status {
-        AWAITING_RETURN_TO_CUSTODY = 'AWAITING_RETURN_TO_CUSTODY',
         BEING_BOOKED_ON = 'BEING_BOOKED_ON',
         BOOKED_ON = 'BOOKED_ON',
-        DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',
-        DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         RECALL_NOTIFICATION_ISSUED = 'RECALL_NOTIFICATION_ISSUED',
+        AWAITING_RETURN_TO_CUSTODY = 'AWAITING_RETURN_TO_CUSTODY',
+        DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',
+        DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         STOPPED = 'STOPPED',
     }
 

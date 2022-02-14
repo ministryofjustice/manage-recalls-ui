@@ -3,12 +3,12 @@
 /* eslint-disable */
 
 export type Prisoner = {
-    croNumber?: string;
-    dateOfBirth?: string;
     firstName?: string;
-    gender?: string;
-    lastName?: string;
     middleNames?: string;
+    lastName?: string;
+    dateOfBirth?: string;
+    gender?: string;
     nomsNumber?: string;
     pncNumber?: string;
-}
+    croNumber?: string;
+};

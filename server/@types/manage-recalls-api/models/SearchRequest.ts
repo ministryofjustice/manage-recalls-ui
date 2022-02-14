@@ -4,4 +4,4 @@
 
 export type SearchRequest = {
     nomsNumber: string;
-}
+};
