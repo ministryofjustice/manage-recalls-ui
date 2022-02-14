@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type RescindRecordRequest = {
+export type RescindRequestRequest = {
     details: string;
     emailFileContent: string;
     emailFileName: string;
