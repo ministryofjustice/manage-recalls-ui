@@ -7,7 +7,7 @@ import { allowedEmailFileExtensions } from '../documents/upload/helpers/allowedU
 import { errorMsgEmailUpload } from '../helpers/errorMessages'
 import { makeUrlToFromPage } from '../helpers/makeUrl'
 import { validateRescindRequest } from './validations/validateRescindRequest'
-import { validateRescindDecision } from './validations/validateRescindDecision'
+import { RescindDecisionValuesToSave, validateRescindDecision } from './validations/validateRescindDecision'
 import { RescindRequestRequest } from '../../../@types/manage-recalls-api/models/RescindRequestRequest'
 import { RescindDecisionRequest } from '../../../@types/manage-recalls-api/models/RescindDecisionRequest'
 
@@ -16,7 +16,7 @@ export const rescindFormHandler =
   async (req: Request, res: Response): Promise<void> => {
     const emailFieldName = action === 'add' ? 'rescindRequestEmailFileName' : 'rescindDecisionEmailFileName'
     const validator = action === 'add' ? validateRescindRequest : validateRescindDecision
-    const confirmationMessage = action === 'add' ? 'Rescind request added.' : 'Rescind request confirmed.'
+    let confirmationMessage: string
     const processUpload = uploadStorageField(emailFieldName)
     const { recallId } = req.params
     const { user, urlInfo } = res.locals
@@ -57,6 +57,7 @@ export const rescindFormHandler =
                 user.token
               )
               if (response.status === 201) {
+                confirmationMessage = 'Rescind request added.'
                 saveToApiSuccessful = true
               }
             } else {
@@ -71,6 +72,9 @@ export const rescindFormHandler =
                 user.token
               )
               if (response.status === 200) {
+                confirmationMessage = (valuesToSave as RescindDecisionValuesToSave).approved
+                  ? 'Recall rescinded.'
+                  : 'Rescind not approved.'
                 saveToApiSuccessful = true
               }
             }

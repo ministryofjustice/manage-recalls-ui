@@ -3,6 +3,12 @@ import { EmailUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } 
 import { errorMsgEmailUpload, errorMsgProvideDetail, errorMsgUserActionDateTime } from '../../helpers/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
 
+export interface RescindDecisionValuesToSave {
+  approved: boolean
+  details: string
+  emailSentDate: string
+}
+
 export const validateRescindDecision = ({
   requestBody,
   emailFileSelected,
@@ -10,7 +16,7 @@ export const validateRescindDecision = ({
   invalidFileFormat,
 }: EmailUploadValidatorArgs): {
   errors?: NamedFormError[]
-  valuesToSave?: { approved: boolean; details: string; emailSentDate: string }
+  valuesToSave?: RescindDecisionValuesToSave
   unsavedValues: ObjectMap<unknown>
 } => {
   let errors

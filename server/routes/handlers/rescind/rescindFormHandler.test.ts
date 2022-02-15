@@ -50,6 +50,37 @@ describe('rescindFormHandler - add', () => {
     })
   })
 
+  it('sets a confirmation message', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(addRescindRecord as jest.Mock).mockResolvedValue({
+      status: 201,
+    })
+    const res = {
+      locals: {
+        user: { token: 'token' },
+        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+      },
+      redirect: () => {
+        expect(req.session.confirmationMessage).toEqual({
+          link: {
+            href: '#rescinds',
+            text: 'View',
+          },
+          text: 'Rescind request added.',
+          type: 'success',
+        })
+        done()
+      },
+    }
+    rescindFormHandler({ action: 'add' })(req, res)
+  })
+
   it('returns no errors and redirects', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
@@ -357,6 +388,69 @@ describe('rescindFormHandler - update', () => {
             values: { day: '', month: '', year: '' },
           },
         ])
+        done()
+      },
+    }
+    rescindFormHandler({ action: 'update' })(req, res)
+  })
+
+  it('sets a confirmation message if the rescind is approved', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(updateRescindRecord as jest.Mock).mockResolvedValue({
+      status: 200,
+    })
+    const res = {
+      locals: {
+        user: { token: 'token' },
+        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+      },
+      redirect: () => {
+        expect(req.session.confirmationMessage).toEqual({
+          link: {
+            href: '#rescinds',
+            text: 'View',
+          },
+          text: 'Recall rescinded.',
+          type: 'success',
+        })
+        done()
+      },
+    }
+    rescindFormHandler({ action: 'update' })(req, res)
+  })
+
+  it('sets a confirmation message if the rescind is not approved', done => {
+    req.body.approveRescindDecision = 'NO'
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    ;(updateRescindRecord as jest.Mock).mockResolvedValue({
+      status: 200,
+    })
+    const res = {
+      locals: {
+        user: { token: 'token' },
+        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+      },
+      redirect: () => {
+        expect(req.session.confirmationMessage).toEqual({
+          link: {
+            href: '#rescinds',
+            text: 'View',
+          },
+          text: 'Rescind not approved.',
+          type: 'success',
+        })
         done()
       },
     }
