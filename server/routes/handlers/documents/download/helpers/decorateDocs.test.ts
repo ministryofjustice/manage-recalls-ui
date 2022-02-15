@@ -57,6 +57,13 @@ describe('decorateDocs', () => {
       createdDateTime: '2020-04-01T12:00:00.000Z',
     },
     {
+      category: RecallDocument.category.RESCIND_DECISION_EMAIL,
+      documentId: '6543',
+      fileName: 'rescind-decision.eml',
+      createdByUserName: 'Arnold Caseworker',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+    },
+    {
       category: RecallDocument.category.DOSSIER_EMAIL,
       documentId: '37423-2389347-234',
       fileName: 'dossier.msg',
@@ -504,6 +511,16 @@ describe('decorateDocs', () => {
         label: 'Missing documents email uploaded',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/845',
+      },
+      RESCIND_DECISION_EMAIL: {
+        category: 'RESCIND_DECISION_EMAIL',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '6543',
+        fileName: 'rescind-decision.eml',
+        label: 'Rescind decision email uploaded',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/6543',
       },
       RECALL_REQUEST_EMAIL: {
         category: 'RECALL_REQUEST_EMAIL',
