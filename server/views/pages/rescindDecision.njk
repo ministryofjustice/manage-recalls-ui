@@ -60,7 +60,17 @@
                     value: formValues.rescindDecisionDetail,
                     errorMessage: errorMessage(errors.rescindDecisionDetail)
                 }) }}
-
+                <p class="govuk-body">You must send to rescind decision to the relevant people. This may include:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>probation</li>
+                    <li>the police</li>
+                    <li>the prison</li>
+                    <li>the person's solicitor</li>
+                </ul>
+                {{ govukWarningText({
+                    text: "You must email the rescind decision using Microsoft Outlook",
+                    iconFallbackText: "Warning"
+                }) }}
                 {% set emailConfirmHtml %}
                 {{ govukDateInput({
                     name: 'rescindDecisionEmailSentDate',
