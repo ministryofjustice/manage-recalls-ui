@@ -177,7 +177,7 @@ describe('isRescindInProgress', () => {
     expect(isRescindInProgress(recall as RecallResponse)).toEqual(true)
   })
 
-  it('returns false if the latest rescind record has decision details', () => {
+  it('returns false if the latest rescind record was approved', () => {
     const recall = {
       rescindRecords: [
         {
@@ -186,6 +186,7 @@ describe('isRescindInProgress', () => {
           requestEmailReceivedDate: '2020-12-08',
           requestDetails: 'Rescind was requested by email',
           decisionDetails: 'Rescind was confirmed by email',
+          approved: true,
           version: 2,
         },
         {

@@ -7,7 +7,7 @@ import {
 import { isDefined, listToString } from '../routes/handlers/helpers'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 import { DecoratedUploadedDoc, DocumentCategoryMetadata } from '../@types/documents'
-import { isRescindInProgress } from '../routes/handlers/helpers/recallStatus'
+import { isRescindInProgress, wasLastRescindApproved } from '../routes/handlers/helpers/recallStatus'
 import { makeUrl } from '../routes/handlers/helpers/makeUrl'
 
 export function personOrPeopleFilter(count: number): string {
@@ -122,20 +122,28 @@ export const checkboxItems = (
 }
 
 export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlInfo, fromPage: string) => {
+  const changeHistory = {
+    text: 'View change history',
+    href: makeUrl('change-history', { ...urlInfo, fromPage }),
+  }
+  if (wasLastRescindApproved(recall) === true) {
+    return [changeHistory]
+  }
+  if (isRescindInProgress(recall)) {
+    return [
+      changeHistory,
+      {
+        text: 'Update rescind',
+        href: makeUrl('rescind-decision', { ...urlInfo, fromPage }),
+      },
+    ]
+  }
   return [
+    changeHistory,
     {
-      text: 'View change history',
-      href: makeUrl('change-history', { ...urlInfo, fromPage }),
+      text: 'Rescind recall',
+      href: makeUrl('rescind-request', { ...urlInfo, fromPage }),
     },
-    isRescindInProgress(recall)
-      ? {
-          text: 'Update rescind',
-          href: makeUrl('rescind-decision', { ...urlInfo, fromPage }),
-        }
-      : {
-          text: 'Rescind recall',
-          href: makeUrl('rescind-request', { ...urlInfo, fromPage }),
-        },
   ]
 }
 
