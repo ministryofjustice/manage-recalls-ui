@@ -46,6 +46,7 @@ module.exports = (on, config) => {
     expectUpdateRecall: manageRecallsApi.expectUpdateRecall,
     expectUploadRecallDocument: manageRecallsApi.expectUploadRecallDocument,
     expectAddRescindRequestRecord: manageRecallsApi.expectAddRescindRequestRecord,
+    expectUpdateRescindRequestRecord: manageRecallsApi.expectUpdateRescindRequestRecord,
     findApiRequests: wiremockApi.findApiRequests,
     getLoginUrl: authApi.getLoginUrl,
     lighthouse: lighthouse(),

@@ -2,12 +2,12 @@
 import { addRescindRecord } from '../../../clients/manageRecallsApiClient'
 import { mockPostRequest } from '../../testutils/mockRequestUtils'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
-import { addRescindRequestFormHandler } from './addRescindRequestFormHandler'
+import { rescindFormHandler } from './rescindFormHandler'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('../documents/upload/helpers/uploadStorage')
 
-describe('addRescindRequestFormHandler', () => {
+describe('rescindFormHandler', () => {
   let req
   beforeEach(() => {
     req = mockPostRequest({
@@ -41,7 +41,7 @@ describe('addRescindRequestFormHandler', () => {
       },
       redirect: jest.fn(),
     }
-    await addRescindRequestFormHandler(req, res)
+    await rescindFormHandler(req, res)
     expect(addRescindRecord.mock.calls[0][1]).toEqual({
       emailReceivedDate: '2021-05-10',
       details: 'Chased by email',
@@ -73,7 +73,7 @@ describe('addRescindRequestFormHandler', () => {
         done()
       },
     }
-    addRescindRequestFormHandler(req, res)
+    rescindFormHandler(req, res)
   })
 
   it('creates an error if the email has a virus', done => {
@@ -100,7 +100,7 @@ describe('addRescindRequestFormHandler', () => {
         done()
       },
     }
-    addRescindRequestFormHandler(req, res)
+    rescindFormHandler(req, res)
   })
 
   it("doesn't save to the API if the file extension is invalid", done => {
@@ -125,7 +125,7 @@ describe('addRescindRequestFormHandler', () => {
         done()
       },
     }
-    addRescindRequestFormHandler(req, res)
+    rescindFormHandler(req, res)
   })
 
   it("doesn't save to the API if the detail is missing", done => {
@@ -151,7 +151,7 @@ describe('addRescindRequestFormHandler', () => {
         done()
       },
     }
-    addRescindRequestFormHandler(req, res)
+    rescindFormHandler(req, res)
   })
 
   it("doesn't save to the API if the date is missing", done => {
@@ -180,6 +180,6 @@ describe('addRescindRequestFormHandler', () => {
         done()
       },
     }
-    addRescindRequestFormHandler(req, res)
+    rescindFormHandler(req, res)
   })
 })

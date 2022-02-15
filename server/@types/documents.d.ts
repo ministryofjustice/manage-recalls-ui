@@ -1,4 +1,4 @@
-import { RecallDocument } from './manage-recalls-api'
+import { RecallDocument, RescindRecord } from './manage-recalls-api'
 
 type DocumentType = 'document' | 'email' | 'generated'
 
@@ -62,12 +62,18 @@ export interface DecoratedMissingDocumentsRecord {
   url?: string
 }
 
+export interface DecoratedRescindRecord extends RescindRecord {
+  requestEmailUrl: string
+  decisionEmailUrl: string
+}
+
 export interface DocumentDecorations {
   documentsUploaded: DecoratedUploadedDoc[]
   docCategoriesWithUploads: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
   missingDocumentsRecords: DecoratedMissingDocumentsRecord[]
+  rescindRecords: DecoratedRescindRecord[]
   versionedUpload?: DecoratedUploadedDoc
   versionedGeneratedDoc?: DecoratedUploadedDoc
   emailsUploaded: {

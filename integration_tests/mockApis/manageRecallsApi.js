@@ -163,6 +163,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectUpdateRescindRequestRecord: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'PATCH',
+          urlPattern: '/recalls/(.*)/rescind-records/(.*)',
+        },
+        response: {
+          status: (expectation && expectation.statusCode) || 200,
+        },
+      })
+    },
     expectAddLastKnownAddress: expectation => {
       return wiremock.stubFor({
         request: {

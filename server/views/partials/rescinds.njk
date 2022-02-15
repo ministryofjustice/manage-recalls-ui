@@ -32,6 +32,47 @@
                     </dd>
                     <dd class=" govuk-summary-list__actions"></dd>
                 </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Recall rescinded
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                      <pre class='govuk-body'>
+                            {% if rescind.approved %}Yes{% else %}No{% endif %}
+                      </pre>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Rescind decision details
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                      <pre class='govuk-body'>
+                            {{ rescind.decisionDetails }}
+                      </pre>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Rescind decision sent
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ rescind.decisionEmailSentDate | dateTime }}
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Rescind decision email
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                        <a href='{{ rescind.decisionEmailUrl }}' class='govuk-link' download>{{ rescind.decisionEmailFileName }}</a>
+                    </dd>
+                    <dd class=" govuk-summary-list__actions"></dd>
+                </div>
             {% endfor %}
         </dl>
     </div>

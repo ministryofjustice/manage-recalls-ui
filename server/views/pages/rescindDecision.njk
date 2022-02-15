@@ -1,0 +1,137 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Record the rescind decision" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Rescind recall for {{ recall.fullName }}</span>
+            <h1 class="govuk-heading-l">
+                Record the rescind decision
+            </h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form novalidate action="{{ makeUrl('rescind-decision', urlInfo, csrfToken) }}"
+                  method="post" enctype="multipart/form-data">
+                <input type='hidden' name='rescindRecordId' value='{{ recall.rescindRecords[0].rescindRecordId }}' />
+                {{ govukRadios({
+                    idPrefix: "approveRescindDecision",
+                    name: "approveRescindDecision",
+                    fieldset: {
+                        legend: {
+                            text: "Do you want to rescind this recall?",
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+                    items: [
+                        {
+                            value: "YES",
+                            text: 'Yes',
+                            checked: formValues.approveRescindDecision == 'YES'
+                        },
+                        {
+                            value: "NO",
+                            text: 'No',
+                            checked: formValues.approveRescindDecision == 'NO'
+                        }
+                    ],
+                    errorMessage: errorMessage(errors.approveRescindDecision)
+                }) }}
+                {{ govukTextarea({
+                    name: "rescindDecisionDetail",
+                    id: "rescindDecisionDetail",
+                    label: {
+                        text: "Provide details about the decision",
+                        classes: "govuk-label--m"
+                    },
+                    value: formValues.rescindDecisionDetail,
+                    errorMessage: errorMessage(errors.rescindDecisionDetail)
+                }) }}
+
+                {% set emailConfirmHtml %}
+                {{ govukDateInput({
+                    name: 'rescindDecisionEmailSentDate',
+                    id: 'rescindDecisionEmailSentDate',
+                    formGroup: {
+                        classes: 'govuk-!-margin-bottom-3'
+                    },
+                    fieldset: {
+                        legend: {
+                            text: 'When did you send the email?',
+                            classes: 'govuk-fieldset__legend--m'
+                        }
+                    },
+                    items: dateTimeItems("rescindDecisionEmailSentDate", formValues.rescindDecisionEmailSentDateParts, false),
+                    errorMessage: errorMessage(errors.rescindDecisionEmailSentDate),
+                    hint: {
+                        text: 'For example, 23 11 2021'
+                    }
+                }) }}
+                <div class='govuk-!-margin-bottom-4 govuk-body'>
+                    {{ todayLink({
+                        name: 'rescindDecisionEmailSentDate',
+                        cspNonce: cspNonce
+                    }) }}
+                </div>
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                {% include '../partials/uploadedEmailLink.njk' %}
+
+                {{ govukFileUpload({
+                    id: "rescindDecisionEmailFileName",
+                    name: "rescindDecisionEmailFileName",
+                    label: {
+                        text: "Upload the email",
+                        classes: 'govuk-visually-hidden'
+                    },
+                    attributes: {
+                        accept: allowedEmailFileExtensionList()
+                    },
+                    errorMessage: errorMessage(errors.rescindDecisionEmailFileName)
+                }) }}
+
+                {% endset -%}
+
+                {{ govukCheckboxes({
+                    idPrefix: "confirmEmailSent",
+                    name: "confirmEmailSent",
+                    fieldset: {
+                        legend: {
+                            text: "I have sent the email to all relevant recipients",
+                            classes: "govuk-visually-hidden"
+                        }
+                    },
+                    items: [
+                        {
+                            value: "YES",
+                            text: "I have sent the email to all relevant recipients",
+                            conditional: {
+                            html: emailConfirmHtml
+                        },
+                            checked: true if formValues.confirmEmailSent == 'YES'
+                        }
+                    ],
+                    errorMessage: errorMessage(errors.confirmEmailSent)
+                }) }}
+                <div class='govuk-!-margin-top-6'>
+                    <button class="govuk-button">
+                        Save and return
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

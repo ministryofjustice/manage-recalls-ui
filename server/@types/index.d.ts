@@ -91,6 +91,7 @@ export type ViewName =
   | 'newGeneratedDocumentVersion'
   | 'warrantReference'
   | 'rescindRequest'
+  | 'rescindDecision'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 

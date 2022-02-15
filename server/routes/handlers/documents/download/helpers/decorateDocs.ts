@@ -3,7 +3,7 @@ import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api
 import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from '../../upload/helpers'
 import {
   decorateMissingDocumentsRecords,
-  documentDownloadUrl,
+  decorateRescindRecords,
   generatedDocMetaData,
   getDocHistoryStatus,
 } from './index'
@@ -39,11 +39,7 @@ export const decorateDocs = ({
     nomsNumber,
     recallId,
   })
-  const decoratedRescindRecords = rescindRecords?.map(rec => ({
-    ...rec,
-    requestEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.requestEmailId }),
-    decisionEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.decisionEmailId }),
-  }))
+  const decoratedRescindRecords = decorateRescindRecords({ rescindRecords, recallId, nomsNumber })
   return decoratedDocs.reduce(
     (acc, doc) => {
       if (doc.type === 'document') {

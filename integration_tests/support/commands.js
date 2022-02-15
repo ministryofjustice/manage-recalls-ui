@@ -9,6 +9,7 @@ import {
   getUserDetailsResponse,
 } from '../mockApis/mockResponses'
 import 'cypress-audit/commands'
+import { stubRefData } from './mock-api'
 
 Cypress.Commands.add('login', () => {
   cy.task('reset')
@@ -20,6 +21,7 @@ Cypress.Commands.add('login', () => {
   cy.task('expectGetRecall', {
     expectedResult: getRecallResponse,
   })
+  stubRefData()
   cy.request('/')
   cy.task('getLoginUrl').then(cy.visit)
 })

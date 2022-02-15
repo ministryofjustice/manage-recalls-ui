@@ -47,7 +47,7 @@ import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/Uploa
 import { validateConfirmCustodyStatus } from './handlers/assess/helpers/validateConfirmCustodyStatus'
 import { validateWarrantReference } from './handlers/assess/helpers/validateWarrantReference'
 import { afterWarrantReferenceSaved } from './handlers/assess/helpers/afterWarrantReferenceSaved'
-import { addRescindRequestFormHandler } from './handlers/rescind/addRescindRequestFormHandler'
+import { rescindFormHandler } from './handlers/rescind/rescindFormHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -175,7 +175,9 @@ export default function routes(router: Router): Router {
 
   // RESCIND RECALL
   get(`${basePath}/rescind-request`, viewWithRecall('rescindRequest'))
-  post(`${basePath}/rescind-request`, addRescindRequestFormHandler)
+  post(`${basePath}/rescind-request`, rescindFormHandler({ action: 'add' }))
+  get(`${basePath}/rescind-decision`, viewWithRecall('rescindDecision'))
+  post(`${basePath}/rescind-decision`, rescindFormHandler({ action: 'update' }))
 
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)

@@ -3,10 +3,11 @@ import {
   DecoratedMissingDocumentsRecord,
   DocumentCategoryMetadata,
   DecoratedGeneratedDoc,
+  DecoratedRescindRecord,
 } from '../../../../../@types/documents'
 import { documentCategories } from '../../documentCategories'
 import { RecallDocument } from '../../../../../@types/manage-recalls-api/models/RecallDocument'
-import { MissingDocumentsRecord } from '../../../../../@types/manage-recalls-api'
+import { MissingDocumentsRecord, RescindRecord } from '../../../../../@types/manage-recalls-api'
 import { sortList } from '../../../helpers'
 import { getRecall } from '../../../../../clients/manageRecallsApiClient'
 import { isInCustody } from '../../../helpers/recallStatus'
@@ -156,3 +157,20 @@ export const getDocHistoryStatus = ({
   missingDocumentsRecords: MissingDocumentsRecord[]
 }): boolean =>
   Boolean(doc.version > 1 || findCategoryInMissingDocumentsRecords(missingDocumentsRecords, doc.category).length)
+
+export const decorateRescindRecords = ({
+  rescindRecords,
+  recallId,
+  nomsNumber,
+}: {
+  rescindRecords: RescindRecord[]
+  recallId: string
+  nomsNumber: string
+}): DecoratedRescindRecord[] => {
+  const decorated = rescindRecords?.map(rec => ({
+    ...rec,
+    requestEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.requestEmailId }),
+    decisionEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.decisionEmailId }),
+  }))
+  return sortList(decorated, 'version', false)
+}
