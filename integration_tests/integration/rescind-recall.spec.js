@@ -76,8 +76,11 @@ context('Rescind a recall', () => {
         status: 'DOSSIER_ISSUED',
         rescindRecords: [
           {
-            ...rescind,
-            decisionDetails: undefined,
+            rescindRecordId: '123',
+            requestEmailId: '123',
+            requestEmailFileName: 'rescind-request.msg',
+            requestEmailReceivedDate: '2020-12-08',
+            requestDetails: 'Rescind was requested by email',
           },
         ],
       },
@@ -100,6 +103,7 @@ context('Rescind a recall', () => {
       expectedResult: {
         ...getRecallResponse,
         recallId,
+        status: 'STOPPED',
       },
     })
     cy.clickButton('Save and return')
