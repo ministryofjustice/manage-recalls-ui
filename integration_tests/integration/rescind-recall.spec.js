@@ -25,7 +25,7 @@ context('Rescind a recall', () => {
     cy.clickLink('Rescind recall')
     cy.pageHeading().should('equal', 'Record a rescind request')
     cy.fillInput('Provide details about the rescind request', rescind.requestDetails)
-    cy.clickButton('Today')
+    cy.enterDateTime(rescind.requestEmailReceivedDate)
     cy.uploadEmail({ field: 'rescindRequestEmailFileName' })
 
     // view rescind details
@@ -45,6 +45,16 @@ context('Rescind a recall', () => {
       },
     })
     cy.clickButton('Save and return')
+    cy.assertSaveToRecallsApi({
+      url: `/recalls/${recallId}/rescind-records`,
+      method: 'POST',
+      bodyValues: {
+        details: rescind.requestDetails,
+        emailReceivedDate: rescind.requestEmailReceivedDate,
+        emailFileName: 'email.msg',
+        // email content was also sent
+      },
+    })
     cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
     cy.clickLink('View')
     cy.getText('recallStatus').should('equal', 'Rescind in progress')
@@ -54,6 +64,70 @@ context('Rescind a recall', () => {
     cy.getLinkHref(rescind.requestEmailFileName).should(
       'contain',
       `/persons/${nomsNumber}/recalls/${recallId}/documents/${requestEmailId}`
+    )
+  })
+
+  it('record a rescind decision', () => {
+    const rescind = getRecallResponse.rescindRecords[0]
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+        status: 'DOSSIER_ISSUED',
+        rescindRecords: [
+          {
+            rescindRecordId: '123',
+            requestEmailId: '123',
+            requestEmailFileName: 'rescind-request.msg',
+            requestEmailReceivedDate: '2020-12-08',
+            requestDetails: 'Rescind was requested by email',
+          },
+        ],
+      },
+    })
+    cy.task('expectUpdateRescindRequestRecord')
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
+    cy.clickButton('Actions')
+    cy.clickLink('Update rescind')
+    cy.pageHeading().should('equal', 'Record the rescind decision')
+    cy.selectRadio('Do you want to rescind this recall?', 'Yes')
+    cy.fillInput('Provide details about the decision', rescind.decisionDetails)
+    cy.selectCheckboxes('I have sent the email to all relevant recipients', [
+      'I have sent the email to all relevant recipients',
+    ])
+    cy.enterDateTime(rescind.decisionEmailSentDate)
+    cy.uploadEmail({ field: 'rescindDecisionEmailFileName' })
+
+    // view rescind details
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status: 'STOPPED',
+      },
+    })
+    cy.clickButton('Save and return')
+    cy.assertSaveToRecallsApi({
+      url: `/recalls/${recallId}/rescind-records/${rescind.rescindRecordId}`,
+      method: 'PATCH',
+      bodyValues: {
+        approved: true,
+        details: rescind.decisionDetails,
+        emailSentDate: rescind.decisionEmailSentDate,
+        emailFileName: 'email.msg',
+        // email content was also sent
+      },
+    })
+    cy.pageHeading().should('equal', `Create a dossier for ${personName} recall`)
+    cy.clickLink('View')
+    cy.getText('recallStatus').should('equal', 'Stopped')
+    cy.recallInfo('Recall rescinded').should('equal', 'Yes')
+    cy.recallInfo('Rescind decision details').should('equal', rescind.decisionDetails)
+    cy.recallInfo('Rescind decision sent').should('equal', formatIsoDate(rescind.decisionEmailSentDate))
+    cy.recallInfo('Rescind decision email').should('equal', rescind.decisionEmailFileName)
+    cy.getLinkHref(rescind.decisionEmailFileName).should(
+      'contain',
+      `/persons/${nomsNumber}/recalls/${recallId}/documents/${rescind.decisionEmailId}`
     )
   })
 

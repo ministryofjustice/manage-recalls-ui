@@ -57,6 +57,13 @@ describe('decorateDocs', () => {
       createdDateTime: '2020-04-01T12:00:00.000Z',
     },
     {
+      category: RecallDocument.category.RESCIND_DECISION_EMAIL,
+      documentId: '6543',
+      fileName: 'rescind-decision.eml',
+      createdByUserName: 'Arnold Caseworker',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+    },
+    {
       category: RecallDocument.category.DOSSIER_EMAIL,
       documentId: '37423-2389347-234',
       fileName: 'dossier.msg',
@@ -128,6 +135,40 @@ describe('decorateDocs', () => {
       createdDateTime: '2021-10-12T13:43:00.000Z',
     },
   ]
+  const rescindRecords = [
+    {
+      rescindRecordId: '123',
+      requestEmailId: '888',
+      requestEmailFileName: 'rescind-request.msg',
+      requestEmailReceivedDate: '2020-12-08',
+      requestDetails: 'Rescind was requested by email',
+      approved: true,
+      decisionDetails: 'Rescind was confirmed by email',
+      decisionEmailId: '999',
+      decisionEmailFileName: 'rescind-confirm.msg',
+      decisionEmailSentDate: '2020-12-09',
+      version: 1,
+      createdByUserName: 'Bobby Badger',
+      createdDateTime: '2020-12-09T12:24:03.000Z',
+      lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
+    },
+    {
+      rescindRecordId: '456',
+      requestEmailId: '111',
+      requestEmailFileName: 'rescind-request.msg',
+      requestEmailReceivedDate: '2020-12-13',
+      requestDetails: 'Rescind was requested by email',
+      approved: false,
+      decisionDetails: 'Rescind was confirmed by email',
+      decisionEmailId: '000',
+      decisionEmailFileName: 'rescind-confirm.msg',
+      decisionEmailSentDate: '2020-12-14',
+      version: 2,
+      createdByUserName: 'Brent Badger',
+      createdDateTime: '2020-12-13T12:24:03.000Z',
+      lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
+    },
+  ]
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
   let results: DocumentDecorations
@@ -146,6 +187,7 @@ describe('decorateDocs', () => {
       recall,
       versionedCategoryName: 'LICENCE',
       missingDocumentsRecords,
+      rescindRecords,
     })
   })
 
@@ -352,6 +394,47 @@ describe('decorateDocs', () => {
     ])
   })
 
+  it('returns a list of rescind records', () => {
+    expect(results.rescindRecords).toEqual([
+      {
+        approved: false,
+        createdByUserName: 'Brent Badger',
+        createdDateTime: '2020-12-13T12:24:03.000Z',
+        decisionDetails: 'Rescind was confirmed by email',
+        decisionEmailFileName: 'rescind-confirm.msg',
+        decisionEmailId: '000',
+        decisionEmailSentDate: '2020-12-14',
+        decisionEmailUrl: '/persons/A123/recalls/abc-456/documents/000',
+        lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
+        requestDetails: 'Rescind was requested by email',
+        requestEmailFileName: 'rescind-request.msg',
+        requestEmailId: '111',
+        requestEmailReceivedDate: '2020-12-13',
+        requestEmailUrl: '/persons/A123/recalls/abc-456/documents/111',
+        rescindRecordId: '456',
+        version: 2,
+      },
+      {
+        approved: true,
+        createdByUserName: 'Bobby Badger',
+        createdDateTime: '2020-12-09T12:24:03.000Z',
+        decisionDetails: 'Rescind was confirmed by email',
+        decisionEmailFileName: 'rescind-confirm.msg',
+        decisionEmailId: '999',
+        decisionEmailSentDate: '2020-12-09',
+        decisionEmailUrl: '/persons/A123/recalls/abc-456/documents/999',
+        lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
+        requestDetails: 'Rescind was requested by email',
+        requestEmailFileName: 'rescind-request.msg',
+        requestEmailId: '888',
+        requestEmailReceivedDate: '2020-12-08',
+        requestEmailUrl: '/persons/A123/recalls/abc-456/documents/888',
+        rescindRecordId: '123',
+        version: 1,
+      },
+    ])
+  })
+
   it('returns data on generated documents', () => {
     expect(results.documentsGenerated).toEqual({
       DOSSIER: {
@@ -428,6 +511,16 @@ describe('decorateDocs', () => {
         label: 'Missing documents email uploaded',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/845',
+      },
+      RESCIND_DECISION_EMAIL: {
+        category: 'RESCIND_DECISION_EMAIL',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '6543',
+        fileName: 'rescind-decision.eml',
+        label: 'Rescind decision email uploaded',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/6543',
       },
       RECALL_REQUEST_EMAIL: {
         category: 'RECALL_REQUEST_EMAIL',

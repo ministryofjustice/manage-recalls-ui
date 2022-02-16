@@ -45,7 +45,15 @@ export const isInCustody = (recall: RecallResponse | RecallResponseLite) => {
 export const isRescindInProgress = (recall: RecallResponse) => {
   if (recall.rescindRecords) {
     const latestRescind = getLatestVersionFromList(recall.rescindRecords)
-    return latestRescind && !isDefined(latestRescind.decisionDetails)
+    return latestRescind && !isDefined(latestRescind.approved)
+  }
+  return false
+}
+
+export const wasLastRescindApproved = (recall: RecallResponse) => {
+  if (recall.rescindRecords) {
+    const latestRescind = getLatestVersionFromList(recall.rescindRecords)
+    return latestRescind && latestRescind.approved === true
   }
   return false
 }
