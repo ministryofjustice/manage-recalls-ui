@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { downloadDocumentOrEmail } from './downloadDocumentOrEmail'
 import { getDocumentWithContents, getRecall } from '../../../../clients/manageRecallsApiClient'
+import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 
 jest.mock('../../../../clients/manageRecallsApiClient')
 
@@ -19,7 +20,7 @@ describe('downloadDocumentOrEmail', () => {
     bookingNumber,
     firstName,
     lastName,
-    status: 'RECALL_NOTIFICATION_ISSUED',
+    status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
   }
 
   beforeEach(() => {

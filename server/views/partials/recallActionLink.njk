@@ -11,7 +11,7 @@
 </div>
 {% elif recall.status == 'IN_ASSESSMENT' %}
 <div><a href='/persons/{{recall.nomsNumber}}/recalls/{{recall.recallId}}/assess' data-qa='continue-assess-{{ recall.recallId }}'>Continue assessment</a></div>
-{% elif recall.status == 'RECALL_NOTIFICATION_ISSUED' %}
+{% elif recall.status == 'AWAITING_DOSSIER_CREATION' %}
 <div>
     <form novalidate action="/persons/{{ recall.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-assign" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />

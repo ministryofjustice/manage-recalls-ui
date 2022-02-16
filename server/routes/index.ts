@@ -118,7 +118,7 @@ export default function routes(router: Router): Router {
   post(`${basePath}/assess-custody-status`, handleRecallFormPost(validateConfirmCustodyStatus))
   get(`${basePath}/assess-prison`, viewWithRecall('assessPrison'))
   post(`${basePath}/assess-prison`, handleRecallFormPost(validatePrison))
-  get('/persons/:nomsNumber/recalls/:recallId/assess-download', viewWithRecall('assessDownload'))
+  get(`${basePath}/assess-download`, viewWithRecall('assessDownload'))
   get(`${basePath}/assess-email`, viewWithRecall('assessEmail'))
   post(
     `${basePath}/assess-email`,

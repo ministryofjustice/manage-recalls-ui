@@ -163,7 +163,7 @@ context('Book a "not in custody" recall', () => {
     const recalls = [
       {
         ...getRecallResponse,
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'AWAITING_RETURN_TO_CUSTODY',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
         assignee: '122',
@@ -174,7 +174,7 @@ context('Book a "not in custody" recall', () => {
         ...getRecallResponse,
         firstName: 'Ben',
         lastName: 'Adams',
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'ASSESSED_NOT_IN_CUSTODY',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
         assignee: '122',

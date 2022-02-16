@@ -103,7 +103,7 @@ context('Assess a recall', () => {
     })
     stubRefData()
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
-    cy.task('expectUpdateRecall', { recallId, status: 'RECALL_NOTIFICATION_ISSUED' })
+    cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.visitPage('/')
     cy.clickButton('Assess recall')

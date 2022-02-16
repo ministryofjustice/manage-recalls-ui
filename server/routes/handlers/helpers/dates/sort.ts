@@ -76,10 +76,10 @@ export const sortToDoList = (toDoList: RecallResponseLite[]) =>
 
 export const sortNotInCustodyList = (notInCustodyList: RecallResponseLite[]) => {
   return notInCustodyList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
-    if (a.status === 'RECALL_NOTIFICATION_ISSUED' && b.status !== 'RECALL_NOTIFICATION_ISSUED') {
+    if (a.status === 'ASSESSED_NOT_IN_CUSTODY' && b.status !== 'AWAITING_RETURN_TO_CUSTODY') {
       return -1
     }
-    if (a.status !== 'RECALL_NOTIFICATION_ISSUED' && b.status === 'RECALL_NOTIFICATION_ISSUED') {
+    if (a.status !== 'AWAITING_RETURN_TO_CUSTODY' && b.status === 'ASSESSED_NOT_IN_CUSTODY') {
       return 1
     }
     return 0

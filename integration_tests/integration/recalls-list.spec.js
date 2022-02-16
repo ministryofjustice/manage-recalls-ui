@@ -111,12 +111,12 @@ describe('To do (recalls) list', () => {
     cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
-  it('move on to createDossier if the recall has status RECALL_NOTIFICATION_ISSUED', () => {
+  it('move on to createDossier if the recall has status AWAITING_DOSSIER_CREATION', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
           ...basicRecall,
-          status: 'RECALL_NOTIFICATION_ISSUED',
+          status: 'AWAITING_DOSSIER_CREATION',
           dossierTargetDate: '2021-10-13',
           inCustodyAtBooking: true,
         },
@@ -124,7 +124,7 @@ describe('To do (recalls) list', () => {
     })
     cy.task('expectGetRecall', {
       recallId,
-      expectedResult: { ...getRecallResponse, status: 'RECALL_NOTIFICATION_ISSUED' },
+      expectedResult: { ...getRecallResponse, status: 'AWAITING_DOSSIER_CREATION' },
     })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.visit('/')
@@ -238,7 +238,7 @@ describe('To do (recalls) list', () => {
       {
         ...basicRecall,
         recallId: '6',
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'AWAITING_DOSSIER_CREATION',
         createdDateTime: '2021-08-05T16:33:57.000Z',
         lastUpdatedDateTime: '2021-08-16T18:33:57.000Z',
         recallAssessmentDueDateTime: '2021-08-14T15:33:57.000Z',
@@ -289,7 +289,7 @@ describe('To do (recalls) list', () => {
       {
         ...getRecallResponse,
         recallId: '2',
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'ASSESSED_NOT_IN_CUSTODY',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
         assignee: '122',

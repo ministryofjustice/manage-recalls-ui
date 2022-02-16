@@ -14,7 +14,7 @@ context('Create a dossier', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
-  const status = 'RECALL_NOTIFICATION_ISSUED'
+  const status = 'AWAITING_DOSSIER_CREATION'
   const emptyRecall = { ...getEmptyRecallResponse, recallId }
 
   beforeEach(() => {
