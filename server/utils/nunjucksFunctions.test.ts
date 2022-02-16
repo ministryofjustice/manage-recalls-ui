@@ -16,7 +16,6 @@ import {
 } from './nunjucksFunctions'
 import { reasonForRecall } from '../referenceData'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
-import { makeUrl } from '../routes/handlers/helpers/makeUrl'
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {
