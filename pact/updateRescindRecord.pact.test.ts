@@ -32,7 +32,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('update a rescind record', () => {
     test('can successfully add a record', async () => {
       await provider.addInteraction({
-        state: 'a user and a fully populated recall without documents exists',
+        state: 'a recall with open rescind record exists',
         ...pactPatchRequest('an update rescind record request', path, requestBody, accessToken),
         willRespondWith: { status: 200 },
       })
