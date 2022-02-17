@@ -296,7 +296,11 @@ describe('emailUploadForm', () => {
     ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
       recallId: '789',
     })
-    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: false })
+    ;(updateRecall as jest.Mock).mockResolvedValue({
+      ...getRecallResponse,
+      returnedToCustodyDateTime: undefined,
+      inCustodyAtAssessment: false,
+    })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {

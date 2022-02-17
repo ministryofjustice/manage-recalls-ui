@@ -1,5 +1,37 @@
 <h2 class='govuk-heading-m govuk-!-margin-top-9' id='custody'>Custody details</h2>
 <dl class="govuk-summary-list">
+  {% if recall.returnedToCustodyDateTime %}
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key">
+        Custody status
+      </dt>
+      <dd class=" govuk-summary-list__value">
+        Returned to custody (RTC)
+      </dd>
+      <dd class=" govuk-summary-list__actions">
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key">
+        RTC date and time
+      </dt>
+      <dd class=" govuk-summary-list__value">
+        {{ recall.returnedToCustodyDateTime | dateTime }}
+      </dd>
+      <dd class=" govuk-summary-list__actions">
+      </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key">
+        Found out RTC date and time
+      </dt>
+      <dd class=" govuk-summary-list__value">
+        {{ recall.returnedToCustodyNotificationDateTime | dateTime }}
+      </dd>
+      <dd class=" govuk-summary-list__actions">
+      </dd>
+    </div>
+  {% else %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
       Custody status at booking
@@ -42,6 +74,7 @@
         <a href='{{ changeLinkUrl('warrant-reference', urlInfo, 'custody') }}' data-qa='warrantReferenceNumberChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> warrant reference number</span></a>
       </dd>
     </div>
+  {% endif %}
   {% endif %}
   {% if isInCustody(recall) and recall.currentPrison %}
   <div class="govuk-summary-list__row">

@@ -53,12 +53,14 @@ describe('isInCustody', () => {
     expect(isInCustody(recall)).toEqual(true)
   })
 
-  it('uses AWAITING_RETURN_TO_CUSTODY status, if set', () => {
+  it('returns true if assessment complete and person returned to custody', () => {
     const recall = {
-      status: RecallResponse.status.AWAITING_RETURN_TO_CUSTODY,
+      inCustodyAtBooking: false,
       inCustodyAtAssessment: false,
+      status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
+      returnedToCustodyDateTime: '2021-12-10T13:45:33.000Z',
     } as RecallResponse
-    expect(isInCustody(recall)).toEqual(false)
+    expect(isInCustody(recall)).toEqual(true)
   })
 })
 

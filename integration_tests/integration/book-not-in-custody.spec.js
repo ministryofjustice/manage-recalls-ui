@@ -4,6 +4,7 @@ import {
   getOsPlacesAddresses,
   getOsPlacesAddress,
 } from '../mockApis/mockResponses'
+import { formatIsoDate } from '../support/utils'
 
 context('Book a "not in custody" recall', () => {
   const nomsNumber = 'A1234AA'
@@ -78,7 +79,7 @@ context('Book a "not in custody" recall', () => {
     cy.pageHeading().should('equal', 'When did you receive the recall request?')
   })
 
-  it('shows if person has last known addresses and arrest issues on the recall info page, after booking', () => {
+  it('shows if person has last known addresses, arrest issues and not in custody status on the recall info page, after booking', () => {
     const lastKnownAddresses = [
       {
         line1: '345 Porchester Road',
@@ -104,6 +105,8 @@ context('Book a "not in custody" recall', () => {
         lastKnownAddressOption: 'YES',
         lastKnownAddresses,
         status: 'BOOKED_ON',
+        returnedToCustodyDateTime: undefined,
+        returnedToCustodyNotificationDateTime: undefined,
       },
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
@@ -120,7 +123,11 @@ context('Book a "not in custody" recall', () => {
     cy.getText('line2', opts).should('equal', 'Southsea')
     cy.getText('town', opts).should('equal', 'Portsmouth')
     cy.getText('postcode', opts).should('equal', 'PO1 4OY')
+
     cy.recallInfo('Arrest issues').should('equal', 'Detail...')
+    cy.getLinkHref('Change arrest issues').should('contain', `/persons/${nomsNumber}/recalls/${recallId}/issues-needs`)
+    cy.getText('inCustodyAtBooking').should('equal', 'Not in custody')
+    cy.getElement('Change custody status at booking').should('not.exist')
   })
 
   it('shows if person has no fixed abode on the recall info page', () => {
@@ -141,10 +148,11 @@ context('Book a "not in custody" recall', () => {
     )
   })
 
-  it('shows if person has no last known addresses provided on the recall info page', () => {
+  it('shows if person has no last known addresses provided on the assess recall info page', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...newRecall,
+        status: 'BOOKED_ON',
         inCustodyAtBooking: false,
         lastKnownAddressOption: 'YES',
         lastKnownAddresses: [],
@@ -190,7 +198,7 @@ context('Book a "not in custody" recall', () => {
     cy.clickLink('Add warrant reference')
     cy.fillInput('What is the warrant reference number?', warrantReferenceNumber)
     cy.task('expectGetRecall', {
-      expectedResult: { ...getRecallResponse, warrantReferenceNumber },
+      expectedResult: { ...getRecallResponse, warrantReferenceNumber, returnedToCustodyDateTime: undefined },
     })
     cy.clickButton('Continue')
 
@@ -236,5 +244,20 @@ context('Book a "not in custody" recall', () => {
       fieldName: 'returnedToCustodyNotificationDateTime',
       summaryError: `Enter the date and time you found out ${personName} returned to custody`,
     })
+  })
+
+  it('shows if person has returned to custody on the recall info page', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: getRecallResponse,
+    })
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
+    cy.recallInfo('Custody status').should('equal', 'Returned to custody (RTC)')
+    cy.getElement({ qaAttr: 'inCustodyAtBooking' }).should('not.exist')
+    cy.getElement({ qaAttr: 'inCustodyAtAssessment' }).should('not.exist')
+    cy.recallInfo('RTC date and time').should('equal', formatIsoDate(getRecallResponse.returnedToCustodyDateTime))
+    cy.recallInfo('Found out RTC date and time').should(
+      'equal',
+      formatIsoDate(getRecallResponse.returnedToCustodyNotificationDateTime)
+    )
   })
 })

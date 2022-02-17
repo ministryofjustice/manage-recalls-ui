@@ -28,6 +28,7 @@ export type { RecallSearchRequest } from './models/RecallSearchRequest';
 export type { RescindDecisionRequest } from './models/RescindDecisionRequest';
 export type { RescindRecord } from './models/RescindRecord';
 export type { RescindRequestRequest } from './models/RescindRequestRequest';
+export type { ReturnedToCustodyRequest } from './models/ReturnedToCustodyRequest';
 export type { SearchRequest } from './models/SearchRequest';
 export type { SentenceLength } from './models/SentenceLength';
 export { UpdateDocumentRequest } from './models/UpdateDocumentRequest';
