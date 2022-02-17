@@ -222,7 +222,7 @@ context('Book a "not in custody" recall', () => {
       parent: '#returnToCustodyNotificationDateTime',
     })
     cy.clickButton('Save and return')
-    cy.getText('confirmation').should('equal', 'Recall updated and moved to "To do" list')
+    cy.getText('confirmation').should('equal', 'Recall updated and moved to the to do list')
   })
 
   it('errors - return to custody dates', () => {

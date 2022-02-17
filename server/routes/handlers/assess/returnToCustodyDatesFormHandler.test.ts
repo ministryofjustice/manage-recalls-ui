@@ -28,7 +28,7 @@ describe('returnToCustodyDatesFormHandler', () => {
 
   afterEach(() => jest.resetAllMocks())
 
-  it('should save to the API then redirect to recalls list', async () => {
+  it('should save to the API, set a confirmation message then redirect to recalls list', async () => {
     addReturnToCustodyDates.mockResolvedValue({ status: 200 })
     const req = mockReq({
       method: 'POST',
@@ -38,6 +38,10 @@ describe('returnToCustodyDatesFormHandler', () => {
 
     await returnToCustodyDatesFormHandler(req, res)
 
+    expect(req.session.confirmationMessage).toEqual({
+      text: 'Recall updated and moved to the to do list',
+      type: 'success',
+    })
     expect(res.redirect).toHaveBeenCalledWith(303, '/')
   })
 

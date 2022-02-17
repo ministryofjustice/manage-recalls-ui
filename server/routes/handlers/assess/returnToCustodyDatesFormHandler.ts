@@ -19,7 +19,7 @@ export const returnToCustodyDatesFormHandler = async (req: Request, res: Respons
   try {
     await addReturnToCustodyDates(recallId, valuesToSave, user.token)
     req.session.confirmationMessage = {
-      text: 'Recall updated and moved to "To do" list',
+      text: 'Recall updated and moved to the to do list',
       type: 'success',
     }
     res.redirect(303, redirectToPage)
