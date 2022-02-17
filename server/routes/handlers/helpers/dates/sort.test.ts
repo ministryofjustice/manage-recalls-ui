@@ -100,9 +100,9 @@ describe('sortCompletedList', () => {
 
 describe('sortNotInCustodyList', () => {
   it('sorts by assessment complete first', () => {
-    const recalls = [{ status: 'BOOKED_ON' }, { status: 'RECALL_NOTIFICATION_ISSUED' }]
+    const recalls = [{ status: 'ASSESSED_NOT_IN_CUSTODY' }, { status: 'AWAITING_RETURN_TO_CUSTODY' }]
     const sorted = sortNotInCustodyList(recalls as RecallResponse[])
-    expect(sorted).toEqual([{ status: 'RECALL_NOTIFICATION_ISSUED' }, { status: 'BOOKED_ON' }])
+    expect(sorted).toEqual([{ status: 'ASSESSED_NOT_IN_CUSTODY' }, { status: 'AWAITING_RETURN_TO_CUSTODY' }])
   })
 })
 

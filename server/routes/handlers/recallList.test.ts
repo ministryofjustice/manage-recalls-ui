@@ -37,10 +37,8 @@ describe('recallList', () => {
       lastName: 'Badger',
       recallId: '3',
       nomsNumber: '456',
-      status: 'RECALL_NOTIFICATION_ISSUED',
+      status: 'ASSESSED_NOT_IN_CUSTODY',
       dossierTargetDate: '2021-08-13',
-      inCustodyAtBooking: false,
-      inCustodyAtAssessment: false,
     },
     {
       firstName: 'Bartholomew',
@@ -59,8 +57,6 @@ describe('recallList', () => {
       nomsNumber: '123',
       status: 'AWAITING_RETURN_TO_CUSTODY',
       dossierTargetDate: '2021-08-13',
-      inCustodyAtBooking: false,
-      inCustodyAtAssessment: false,
     },
     {
       firstName: 'Beyonce',
@@ -141,9 +137,7 @@ describe('recallList', () => {
         lastName: 'Badger',
         nomsNumber: '456',
         recallId: '3',
-        status: 'RECALL_NOTIFICATION_ISSUED',
-        inCustodyAtBooking: false,
-        inCustodyAtAssessment: false,
+        status: 'ASSESSED_NOT_IN_CUSTODY',
       },
       {
         dossierTargetDate: '2021-08-13',
@@ -153,8 +147,6 @@ describe('recallList', () => {
         nomsNumber: '123',
         recallId: '12',
         status: 'AWAITING_RETURN_TO_CUSTODY',
-        inCustodyAtBooking: false,
-        inCustodyAtAssessment: false,
       },
     ])
     expect(resp.locals.results.completed).toEqual([

@@ -17,6 +17,7 @@ context('Find a person', () => {
   beforeEach(() => {
     cy.login()
   })
+
   it('can search for a person and create a booking', () => {
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     cy.task('expectGetRecall', { expectedResult: newRecall })

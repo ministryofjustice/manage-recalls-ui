@@ -15,7 +15,7 @@ context('Rescind a recall', () => {
       expectedResult: {
         ...getEmptyRecallResponse,
         recallId,
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'AWAITING_DOSSIER_CREATION',
       },
     })
     const rescind = getRecallResponse.rescindRecords[0]
@@ -136,7 +136,7 @@ context('Rescind a recall', () => {
       expectedResult: {
         ...getEmptyRecallResponse,
         recallId,
-        status: 'RECALL_NOTIFICATION_ISSUED',
+        status: 'AWAITING_DOSSIER_CREATION',
       },
     })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'rescind-request' })

@@ -31,7 +31,7 @@ describe('isInCustody', () => {
     const recall = {
       inCustodyAtBooking: false,
       inCustodyAtAssessment: true,
-      status: RecallResponse.status.RECALL_NOTIFICATION_ISSUED,
+      status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
     } as RecallResponse
     expect(isInCustody(recall)).toEqual(true)
   })
@@ -40,7 +40,7 @@ describe('isInCustody', () => {
     const recall = {
       inCustodyAtBooking: false,
       inCustodyAtAssessment: false,
-      status: RecallResponse.status.RECALL_NOTIFICATION_ISSUED,
+      status: RecallResponse.status.AWAITING_RETURN_TO_CUSTODY,
     } as RecallResponse
     expect(isInCustody(recall)).toEqual(false)
   })
@@ -48,7 +48,7 @@ describe('isInCustody', () => {
   it('returns true if assessment complete and in custody at booking', () => {
     const recall = {
       inCustodyAtBooking: true,
-      status: RecallResponse.status.RECALL_NOTIFICATION_ISSUED,
+      status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
     } as RecallResponse
     expect(isInCustody(recall)).toEqual(true)
   })
@@ -72,7 +72,7 @@ describe('recallStatusTagProperties', () => {
       classes: `govuk-tag--green`,
     })
     expect(
-      recallStatusTagProperties({ status: RecallResponse.status.RECALL_NOTIFICATION_ISSUED } as RecallResponse)
+      recallStatusTagProperties({ status: RecallResponse.status.AWAITING_DOSSIER_CREATION } as RecallResponse)
     ).toEqual({
       attributes: {
         'data-qa': 'recallStatus',

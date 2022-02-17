@@ -40,7 +40,7 @@
                             <td class="govuk-table__cell"
                                 data-qa="name">{{ result.fullName }}</td>
                             <td class="govuk-table__cell" data-qa="dueDate">
-                                {% if result.status == 'RECALL_NOTIFICATION_ISSUED' or result.status == 'DOSSIER_IN_PROGRESS' %}
+                                {% if result.status == 'AWAITING_DOSSIER_CREATION' or result.status == 'DOSSIER_IN_PROGRESS' %}
                                 {{ dueDateLabel({ dueIsoDateTime: result.dossierTargetDate, includeTime: false, shortFormat: true }) }}
 
                                 {% elseif result.recallAssessmentDueDateTime %}

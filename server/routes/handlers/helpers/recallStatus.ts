@@ -6,8 +6,9 @@ const beforeAssessStartStatuses = [RecallResponse.status.BEING_BOOKED_ON, Recall
 
 const afterAssessCompleteStatuses = [
   RecallResponse.status.STOPPED,
-  RecallResponse.status.RECALL_NOTIFICATION_ISSUED,
+  RecallResponse.status.ASSESSED_NOT_IN_CUSTODY,
   RecallResponse.status.AWAITING_RETURN_TO_CUSTODY,
+  RecallResponse.status.AWAITING_DOSSIER_CREATION,
   RecallResponse.status.DOSSIER_IN_PROGRESS,
   RecallResponse.status.DOSSIER_ISSUED,
 ]
@@ -93,7 +94,7 @@ export const recallStatusTagProperties = (recall: RecallResponse) => {
         ...defaults,
         text: 'Assessment in progress',
       }
-    case RecallResponse.status.RECALL_NOTIFICATION_ISSUED:
+    case RecallResponse.status.AWAITING_DOSSIER_CREATION:
       return {
         ...defaults,
         text: 'Assessment complete',
