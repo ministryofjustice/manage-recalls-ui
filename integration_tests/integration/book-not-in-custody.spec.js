@@ -152,9 +152,8 @@ context('Book a "not in custody" recall', () => {
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
     cy.recallInfo('Address').should('equal', 'Not provided')
-    cy.getElement({ qaAttr: 'lastKnownAddressOptionChange' }).should(
-      'have.attr',
-      'href',
+    cy.getLinkHref('Change or add addresses').should(
+      'contain',
       `/persons/${nomsNumber}/recalls/${recallId}/address-list?fromPage=view-recall&fromHash=personalDetails`
     )
   })
@@ -198,5 +197,44 @@ context('Book a "not in custody" recall', () => {
     cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
     cy.clickLink('View')
     cy.recallInfo('Warrant reference number').should('equal', warrantReferenceNumber)
+  })
+
+  it('lets the user enter a return to custody date/time', () => {
+    const recalls = [
+      {
+        ...getRecallResponse,
+        status: 'AWAITING_RETURN_TO_CUSTODY',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        returnedToCustodyDateTime: undefined,
+        returnedToCustodyNotificationDateTime: undefined,
+      },
+    ]
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.task('expectAddReturnToCustodyDates')
+    cy.visit('/')
+    cy.clickLink('Not in custody (1)')
+    cy.clickLink('Add RTC date')
+    cy.enterDateTimeFromRecall('returnedToCustodyDateTime', { parent: '#returnedToCustodyDateTime' })
+    cy.enterDateTimeFromRecall('returnedToCustodyNotificationDateTime', {
+      parent: '#returnedToCustodyNotificationDateTime',
+    })
+    cy.clickButton('Save and return')
+    cy.getText('confirmation').should('equal', 'Recall updated and moved to the to do list')
+  })
+
+  it('errors - return to custody dates', () => {
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'rtc-dates' })
+    cy.clickButton('Save and return')
+    cy.assertErrorMessage({
+      fieldName: 'returnedToCustodyDateTime',
+      summaryError: `Enter the date and time ${personName} returned to custody`,
+    })
+    cy.assertErrorMessage({
+      fieldName: 'returnedToCustodyNotificationDateTime',
+      summaryError: `Enter the date and time you found out ${personName} returned to custody`,
+    })
   })
 })

@@ -182,5 +182,7 @@
   "assessedByUserName": "Bertie Badger",
   "bookedByUserName": "Brenda Badger",
   "dossierCreatedByUserName": "Bobby Badger",
-  "warrantReferenceNumber": "02RC/1234567C12345"
+  "warrantReferenceNumber": "02RC/1234567C12345",
+  "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
+  "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z"
 }

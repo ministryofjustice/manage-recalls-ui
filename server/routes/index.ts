@@ -48,6 +48,7 @@ import { validateConfirmCustodyStatus } from './handlers/assess/helpers/validate
 import { validateWarrantReference } from './handlers/assess/helpers/validateWarrantReference'
 import { afterWarrantReferenceSaved } from './handlers/assess/helpers/afterWarrantReferenceSaved'
 import { rescindFormHandler } from './handlers/rescind/rescindFormHandler'
+import { returnToCustodyDatesFormHandler } from './handlers/assess/returnToCustodyDatesFormHandler'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -132,6 +133,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-confirmation`, viewWithRecall('assessConfirmation'))
   get(`${basePath}/warrant-reference`, viewWithRecall('warrantReference'))
   post(`${basePath}/warrant-reference`, handleRecallFormPost(validateWarrantReference, afterWarrantReferenceSaved))
+  get(`${basePath}/rtc-dates`, viewWithRecall('rtcDates'))
+  post(`${basePath}/rtc-dates`, returnToCustodyDatesFormHandler)
 
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))

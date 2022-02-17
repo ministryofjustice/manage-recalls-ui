@@ -1,0 +1,94 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - When did the person return to custody?" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("/#notInCustody", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            <h1 class="govuk-heading-l">
+                When did {{ recall.fullName }} return to custody?
+            </h1>
+            <form novalidate action="{{ makeUrl('rtc-dates', urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukDateInput({
+                        name: 'returnedToCustodyDateTime',
+                        id: 'returnedToCustodyDateTime',
+                        formGroup: {
+                            classes: 'govuk-!-margin-bottom-3'
+                        },
+                        fieldset: {
+                            legend: {
+                                text: 'Date and time ' + recall.fullName + ' returned to custody',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: dateTimeItems("returnedToCustodyDateTime", formValues.returnedToCustodyDateTimeParts, true),
+                        errorMessage: errorMessage(errors.returnedToCustodyDateTime),
+                        hint: {
+                            text: 'For example, 23 11 2021 at 15:46'
+                        }
+                    }) }}
+                    <div class='govuk-!-margin-bottom-6'>
+                        {{ todayLink({
+                            name: 'returnedToCustodyDateTime',
+                            cspNonce: cspNonce
+                        }) }}
+                    </div>
+                </div>
+
+                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                    {{ govukDateInput({
+                        name: 'returnedToCustodyNotificationDateTime',
+                        id: 'returnedToCustodyNotificationDateTime',
+                        formGroup: {
+                            classes: 'govuk-!-margin-bottom-3'
+                        },
+                        fieldset: {
+                            legend: {
+                                text: 'Date and time you found out ' + recall.fullName + ' returned to custody',
+                                classes: 'govuk-fieldset__legend--m'
+                            }
+                        },
+                        items: dateTimeItems("returnedToCustodyNotificationDateTime", formValues.returnedToCustodyNotificationDateTimeParts, true),
+                        errorMessage: errorMessage(errors.returnedToCustodyNotificationDateTime),
+                        hint: {
+                            text: 'For example, 23 11 2021 at 15:46'
+                        }
+                    }) }}
+                    <div class='govuk-!-margin-bottom-6'>
+                        {{ todayLink({
+                            name: 'returnedToCustodyNotificationDateTime',
+                            cspNonce: cspNonce
+                        }) }}
+                    </div>
+                </div>
+                <div>
+                    <button class="govuk-button">
+                        Save and return
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
