@@ -1,4 +1,4 @@
-import { requiredDocsList } from '../../server/routes/handlers/documents/upload/helpers'
+import { requiredDocsList } from '../../server/controllers/documents/upload/helpers'
 
 const page = require('./page')
 

@@ -1,6 +1,6 @@
 import { SessionData } from 'express-session'
 import { getStoredSessionData } from './getStoredSessionData'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../routes/testutils/mockRequestUtils'
+import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../controllers/testUtils/mockRequestUtils'
 
 describe('store flash errors on request session (middleware)', () => {
   it("doesn't set res.locals.errors if no errors on the request session", () => {

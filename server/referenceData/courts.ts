@@ -1,7 +1,7 @@
 import { getCourts } from '../clients/manageRecallsApiClient'
 import { Court } from '../@types/manage-recalls-api'
 import { RefDataBaseClass } from './refDataBaseClass'
-import { sortList } from '../routes/handlers/helpers'
+import { sortList } from '../controllers/utils/lists'
 
 class Courts extends RefDataBaseClass {
   constructor() {

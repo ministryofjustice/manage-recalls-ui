@@ -1,5 +1,5 @@
 import { parseUrlParams } from './parseUrlParams'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../routes/testutils/mockRequestUtils'
+import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../controllers/testUtils/mockRequestUtils'
 
 describe('parseUrlParams', () => {
   it('parses nomsNumber and recall ID from URL', () => {

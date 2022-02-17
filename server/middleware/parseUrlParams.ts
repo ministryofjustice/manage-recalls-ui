@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
-import { isString } from '../routes/handlers/helpers'
-import { isNomsNumberValid } from '../routes/handlers/helpers/validations'
+import { isNomsNumberValid } from '../controllers/utils/validate-formats'
 import logger from '../../logger'
+import { isString } from '../utils/utils'
 
 const isValidFromPage = (urlPathSegment: unknown) =>
   isString(urlPathSegment) &&
