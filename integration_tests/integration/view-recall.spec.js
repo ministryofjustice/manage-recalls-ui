@@ -34,6 +34,7 @@ context('View recall information', () => {
             fileName: 'chase-documents.msg',
           },
         ],
+        returnedToCustodyDateTime: undefined,
       },
     })
   })
@@ -107,6 +108,7 @@ context('View recall information', () => {
         status: 'DOSSIER_ISSUED',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
+        returnedToCustodyDateTime: undefined,
       },
     })
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })

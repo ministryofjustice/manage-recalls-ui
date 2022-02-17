@@ -79,6 +79,8 @@ export type RecallResponse = {
     arrestIssues?: boolean;
     arrestIssuesDetail?: string;
     warrantReferenceNumber?: string;
+    returnedToCustodyDateTime?: string;
+    returnedToCustodyNotificationDateTime?: string;
 };
 
 export namespace RecallResponse {

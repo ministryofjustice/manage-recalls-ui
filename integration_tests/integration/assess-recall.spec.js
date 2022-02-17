@@ -70,10 +70,6 @@ context('Assess a recall', () => {
       'contain',
       `/persons/${nomsNumber}/recalls/${recallId}/request-received`
     )
-    cy.getText('inCustodyAtBooking').should('equal', 'Not in custody')
-    cy.getElement('Change custody status at booking').should('not.exist')
-    cy.recallInfo('Arrest issues').should('equal', 'Detail...')
-    cy.getLinkHref('Change arrest issues').should('contain', `/persons/${nomsNumber}/recalls/${recallId}/issues-needs`)
 
     // change link for an uploaded document goes to the 'add new document version' page
     cy.getLinkHref('Change Part A recall report').should(

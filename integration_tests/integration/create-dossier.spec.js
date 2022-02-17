@@ -56,6 +56,7 @@ context('Create a dossier', () => {
             createdByUserName: 'Arnold Caseworker',
           },
         ],
+        returnedToCustodyDateTime: undefined,
       },
     })
     stubRefData()
@@ -143,6 +144,7 @@ context('Create a dossier', () => {
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
         documents: [],
+        returnedToCustodyDateTime: undefined,
       },
     })
     stubRefData()

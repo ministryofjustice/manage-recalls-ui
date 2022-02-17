@@ -39,8 +39,7 @@
                         firstName: recall.firstName,
                         lastName: recall.lastName,
                         bookingNumber: recall.bookingNumber,
-                        category: 'DOSSIER',
-                        inCustody: isInCustody(recall)
+                        category: 'DOSSIER'
                     }),
                     url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER',
                     dataQaLink: 'getDossierLink',
@@ -55,8 +54,7 @@
                         firstName: recall.firstName,
                         lastName: recall.lastName,
                         bookingNumber: recall.bookingNumber,
-                        category: 'LETTER_TO_PRISON',
-                        inCustody: isInCustody(recall)
+                        category: 'LETTER_TO_PRISON'
                     }),
                     url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',
                     dataQaLink: 'getLetterLink',

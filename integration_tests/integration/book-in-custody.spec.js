@@ -119,6 +119,7 @@ context('Book an "in-custody" recall', () => {
         documents,
         status: RecallResponse.status.BEING_BOOKED_ON,
         inCustodyAtBooking: true,
+        returnedToCustodyDateTime: undefined,
       },
     })
     stubRefData()
@@ -521,7 +522,12 @@ context('Book an "in-custody" recall', () => {
 
   it('can check and change their answers then navigate back to the check answers page', () => {
     cy.task('expectGetRecall', {
-      expectedResult: { recallId, ...getRecallResponse, status: RecallResponse.status.BEING_BOOKED_ON },
+      expectedResult: {
+        recallId,
+        ...getRecallResponse,
+        status: RecallResponse.status.BEING_BOOKED_ON,
+        returnedToCustodyDateTime: undefined,
+      },
     })
     const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
     checkAnswers.checkChangeLinks()

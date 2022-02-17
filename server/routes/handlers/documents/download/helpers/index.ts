@@ -26,7 +26,7 @@ export const getGeneratedDocFileName = ({
   lastName: string
   bookingNumber: string
   category: RecallDocument.category
-  inCustody: boolean
+  inCustody?: boolean
 }) => {
   const details = `${formatPersonName({ firstName, lastName })}${formatBookingNumber(bookingNumber)}`
   switch (category) {

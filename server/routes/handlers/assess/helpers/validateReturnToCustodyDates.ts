@@ -2,13 +2,13 @@ import { makeErrorObject } from '../../helpers'
 import { ValidationError, ReqValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { formatValidationErrorMessage } from '../../helpers/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../helpers/dates/convert'
-import { ReturnToCustodyDatesRequest } from '../../../../@types/manage-recalls-api/models/ReturnToCustodyDatesRequest'
+import { ReturnedToCustodyRequest } from '../../../../@types/manage-recalls-api/models/ReturnedToCustodyRequest'
 
 export const validateReturnToCustodyDates = ({
   requestBody,
 }: ReqValidatorArgs): {
   errors: NamedFormError[]
-  valuesToSave: ReturnToCustodyDatesRequest
+  valuesToSave: ReturnedToCustodyRequest
   unsavedValues: ObjectMap<unknown>
   redirectToPage: string
 } => {
@@ -71,7 +71,7 @@ export const validateReturnToCustodyDates = ({
     }
   }
   if (!errors) {
-    valuesToSave = { returnedToCustodyDateTime, returnedToCustodyNotificationDateTime } as ReturnToCustodyDatesRequest
+    valuesToSave = { returnedToCustodyDateTime, returnedToCustodyNotificationDateTime } as ReturnedToCustodyRequest
   }
   return { errors, valuesToSave, unsavedValues, redirectToPage: '/' }
 }
