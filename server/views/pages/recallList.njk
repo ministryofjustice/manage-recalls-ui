@@ -6,6 +6,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
+            {% include '../partials/recallInfoConfirmation.njk' %}
             {% if errors %}
                 {{ govukErrorSummary({
                     titleText: "There is a problem",
@@ -120,11 +121,13 @@
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'AWAITING_RETURN_TO_CUSTODY'%}Awaiting return to custody{% else %}Assessment complete{% endif %}</td>
                                 <td class="govuk-table__cell">
                                     <div class='flex'>
-                                    {% if not result.warrantReferenceNumber %}
                                     <span class='govuk-!-padding-right-2'>
-                                        <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/warrant-reference' data-qa='warrant-reference-{{ result.recallId }}'>Add warrant reference</a>
-                                    </span>
+                                    {% if result.warrantReferenceNumber %}
+                                        <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/rtc-dates'>Add RTC date</a>
+                                    {% else %}
+                                        <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/warrant-reference'>Add warrant reference</a>
                                     {% endif %}
+                                    </span>
                                     <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                     </div>
                                 </td>

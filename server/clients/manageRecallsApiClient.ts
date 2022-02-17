@@ -28,6 +28,7 @@ import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLev
 import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
 import { RescindRequestRequest } from '../@types/manage-recalls-api/models/RescindRequestRequest'
 import { RescindDecisionRequest } from '../@types/manage-recalls-api/models/RescindDecisionRequest'
+import { ReturnToCustodyDatesRequest } from '../@types/manage-recalls-api/models/ReturnToCustodyDatesRequest'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -135,6 +136,18 @@ export function addRescindRecord(
   token: string
 ): Promise<superagent.Response> {
   return restClient(token).post<superagent.Response>({ path: `/recalls/${recallId}/rescind-records`, data, raw: true })
+}
+
+export function addReturnToCustodyDates(
+  recallId: string,
+  data: ReturnToCustodyDatesRequest,
+  token: string
+): Promise<superagent.Response> {
+  return restClient(token).post<superagent.Response>({
+    path: `/recalls/${recallId}/returned-to-custody`,
+    data,
+    raw: true,
+  })
 }
 
 export function updateRescindRecord(

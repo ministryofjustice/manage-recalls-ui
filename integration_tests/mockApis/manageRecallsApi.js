@@ -174,6 +174,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectAddReturnToCustodyDates: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: '/recalls/(.*)/returned-to-custody',
+        },
+        response: {
+          status: (expectation && expectation.statusCode) || 200,
+        },
+      })
+    },
     expectAddLastKnownAddress: expectation => {
       return wiremock.stubFor({
         request: {

@@ -90,6 +90,7 @@ export type ViewName =
   | 'changeHistoryForField'
   | 'newGeneratedDocumentVersion'
   | 'warrantReference'
+  | 'rtcDates'
   | 'rescindRequest'
   | 'rescindDecision'
 

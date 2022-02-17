@@ -4,7 +4,7 @@ import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
 import userDetailsPage from '../pages/userDetails'
 
-describe('To do (recalls) list', () => {
+describe('Recalls list', () => {
   const recallId = '123'
   const nomsNumber = 'A1234AA'
   const basicRecall = {
@@ -273,6 +273,8 @@ describe('To do (recalls) list', () => {
   })
 
   it('lists "not in custody" recalls on a separate tab', () => {
+    const assessedRecallId = '2'
+    const awaitingReturnRecallId = '3'
     const recalls = [
       {
         ...getRecallResponse,
@@ -288,7 +290,7 @@ describe('To do (recalls) list', () => {
       },
       {
         ...getRecallResponse,
-        recallId: '2',
+        recallId: assessedRecallId,
         status: 'ASSESSED_NOT_IN_CUSTODY',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
@@ -298,7 +300,7 @@ describe('To do (recalls) list', () => {
       },
       {
         ...getRecallResponse,
-        recallId: '3',
+        recallId: awaitingReturnRecallId,
         firstName: 'Ben',
         lastName: 'Adams',
         status: 'AWAITING_RETURN_TO_CUSTODY',
@@ -320,10 +322,10 @@ describe('To do (recalls) list', () => {
       qaAttrCell: 'status',
       valuesToCompare: ['Assessment complete', 'Awaiting return to custody'],
     })
-    cy.getLinkHref({ qaAttr: 'warrant-reference-2' }).should(
+    cy.getLinkHref('Add warrant reference').should(
       'equal',
-      `/persons/${nomsNumber}/recalls/2/warrant-reference`
+      `/persons/${nomsNumber}/recalls/${assessedRecallId}/warrant-reference`
     )
-    cy.getElement({ qaAttr: 'warrant-reference-3' }).should('not.exist')
+    cy.getLinkHref('Add RTC date').should('equal', `/persons/${nomsNumber}/recalls/${awaitingReturnRecallId}/rtc-dates`)
   })
 })
