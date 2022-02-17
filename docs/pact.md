@@ -19,6 +19,13 @@ For local development you can run all the pact tests and generate the pact file 
 The resulting generated pact contract representation files will be found 
 in `pact/pacts`.  
 
+## Adding a PACT test
+When adding a PACT on the UI side, write an addInteraction
+
+The state string property needs to say what should be in place on the API side for the interaction to succeed. ie prerequisite like 'a recall exists'. We should reuse existing states from the API if possible, it will reduce the number of additions on the API side
+
+look at the API tests to see available states
+
 ## Verification in CI
 The contract files are published to the broker in CI as part of the `unit-test` job. 
 
