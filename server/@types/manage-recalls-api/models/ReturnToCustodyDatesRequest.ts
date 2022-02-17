@@ -3,6 +3,6 @@
 /* eslint-disable */
 
 export type ReturnToCustodyDatesRequest = {
-  returnToCustodyDateTime: string
-  returnToCustodyNotificationDateTime: string
+  returnedToCustodyDateTime: string
+  returnedToCustodyNotificationDateTime: string
 };

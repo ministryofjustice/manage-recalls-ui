@@ -206,8 +206,8 @@ context('Book a "not in custody" recall', () => {
         status: 'AWAITING_RETURN_TO_CUSTODY',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
-        returnToCustodyDateTime: undefined,
-        returnToCustodyNotificationDateTime: undefined,
+        returnedToCustodyDateTime: undefined,
+        returnedToCustodyNotificationDateTime: undefined,
       },
     ]
     cy.task('expectListRecalls', {
@@ -217,9 +217,9 @@ context('Book a "not in custody" recall', () => {
     cy.visit('/')
     cy.clickLink('Not in custody (1)')
     cy.clickLink('Add RTC date')
-    cy.enterDateTimeFromRecall('returnToCustodyDateTime', { parent: '#returnToCustodyDateTime' })
-    cy.enterDateTimeFromRecall('returnToCustodyNotificationDateTime', {
-      parent: '#returnToCustodyNotificationDateTime',
+    cy.enterDateTimeFromRecall('returnedToCustodyDateTime', { parent: '#returnedToCustodyDateTime' })
+    cy.enterDateTimeFromRecall('returnedToCustodyNotificationDateTime', {
+      parent: '#returnedToCustodyNotificationDateTime',
     })
     cy.clickButton('Save and return')
     cy.getText('confirmation').should('equal', 'Recall updated and moved to the to do list')
@@ -229,11 +229,11 @@ context('Book a "not in custody" recall', () => {
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'rtc-dates' })
     cy.clickButton('Save and return')
     cy.assertErrorMessage({
-      fieldName: 'returnToCustodyDateTime',
+      fieldName: 'returnedToCustodyDateTime',
       summaryError: `Enter the date and time ${personName} returned to custody`,
     })
     cy.assertErrorMessage({
-      fieldName: 'returnToCustodyNotificationDateTime',
+      fieldName: 'returnedToCustodyNotificationDateTime',
       summaryError: `Enter the date and time you found out ${personName} returned to custody`,
     })
   })

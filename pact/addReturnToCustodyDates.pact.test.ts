@@ -9,8 +9,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   const recallId = '00000000-0000-0000-0000-000000000000'
 
   const requestBody = {
-    returnToCustodyDateTime: '2022-01-22T13:45:33.000Z',
-    returnToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z',
+    returnedToCustodyDateTime: '2022-01-22T13:45:33.000Z',
+    returnedToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z',
   }
 
   const path = `/recalls/${recallId}/returned-to-custody`

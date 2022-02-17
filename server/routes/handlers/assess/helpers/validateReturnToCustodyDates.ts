@@ -15,63 +15,63 @@ export const validateReturnToCustodyDates = ({
   let errors
   let unsavedValues
   let valuesToSave
-  const returnToCustodyDateTimeParts = {
-    year: requestBody.returnToCustodyDateTimeYear,
-    month: requestBody.returnToCustodyDateTimeMonth,
-    day: requestBody.returnToCustodyDateTimeDay,
-    hour: requestBody.returnToCustodyDateTimeHour,
-    minute: requestBody.returnToCustodyDateTimeMinute,
+  const returnedToCustodyDateTimeParts = {
+    year: requestBody.returnedToCustodyDateTimeYear,
+    month: requestBody.returnedToCustodyDateTimeMonth,
+    day: requestBody.returnedToCustodyDateTimeDay,
+    hour: requestBody.returnedToCustodyDateTimeHour,
+    minute: requestBody.returnedToCustodyDateTimeMinute,
   }
-  const returnToCustodyDateTime = convertGmtDatePartsToUtc(returnToCustodyDateTimeParts, {
+  const returnedToCustodyDateTime = convertGmtDatePartsToUtc(returnedToCustodyDateTimeParts, {
     dateMustBeInPast: true,
     includeTime: true,
   })
 
-  const returnToCustodyNotificationDateTimeParts = {
-    year: requestBody.returnToCustodyNotificationDateTimeYear,
-    month: requestBody.returnToCustodyNotificationDateTimeMonth,
-    day: requestBody.returnToCustodyNotificationDateTimeDay,
-    hour: requestBody.returnToCustodyNotificationDateTimeHour,
-    minute: requestBody.returnToCustodyNotificationDateTimeMinute,
+  const returnedToCustodyNotificationDateTimeParts = {
+    year: requestBody.returnedToCustodyNotificationDateTimeYear,
+    month: requestBody.returnedToCustodyNotificationDateTimeMonth,
+    day: requestBody.returnedToCustodyNotificationDateTimeDay,
+    hour: requestBody.returnedToCustodyNotificationDateTimeHour,
+    minute: requestBody.returnedToCustodyNotificationDateTimeMinute,
   }
-  const returnToCustodyNotificationDateTime = convertGmtDatePartsToUtc(returnToCustodyNotificationDateTimeParts, {
+  const returnedToCustodyNotificationDateTime = convertGmtDatePartsToUtc(returnedToCustodyNotificationDateTimeParts, {
     dateMustBeInPast: true,
     includeTime: true,
   })
-  if (dateHasError(returnToCustodyDateTime) || dateHasError(returnToCustodyNotificationDateTime)) {
+  if (dateHasError(returnedToCustodyDateTime) || dateHasError(returnedToCustodyNotificationDateTime)) {
     errors = []
-    if (dateHasError(returnToCustodyDateTime)) {
+    if (dateHasError(returnedToCustodyDateTime)) {
       errors.push(
         makeErrorObject({
-          id: 'returnToCustodyDateTime',
+          id: 'returnedToCustodyDateTime',
           text: formatValidationErrorMessage(
-            returnToCustodyDateTime as ValidationError,
+            returnedToCustodyDateTime as ValidationError,
             'date and time {{ recall.fullName }} returned to custody'
           ),
-          values: returnToCustodyDateTimeParts,
+          values: returnedToCustodyDateTimeParts,
         })
       )
     }
-    if (dateHasError(returnToCustodyNotificationDateTime)) {
+    if (dateHasError(returnedToCustodyNotificationDateTime)) {
       errors.push(
         makeErrorObject({
-          id: 'returnToCustodyNotificationDateTime',
+          id: 'returnedToCustodyNotificationDateTime',
           text: formatValidationErrorMessage(
-            returnToCustodyNotificationDateTime as ValidationError,
+            returnedToCustodyNotificationDateTime as ValidationError,
             'date and time you found out {{ recall.fullName }} returned to custody'
           ),
-          values: returnToCustodyNotificationDateTimeParts,
+          values: returnedToCustodyNotificationDateTimeParts,
         })
       )
     }
 
     unsavedValues = {
-      returnToCustodyDateTimeParts,
-      returnToCustodyNotificationDateTimeParts,
+      returnedToCustodyDateTimeParts,
+      returnedToCustodyNotificationDateTimeParts,
     }
   }
   if (!errors) {
-    valuesToSave = { returnToCustodyDateTime, returnToCustodyNotificationDateTime } as ReturnToCustodyDatesRequest
+    valuesToSave = { returnedToCustodyDateTime, returnedToCustodyNotificationDateTime } as ReturnToCustodyDatesRequest
   }
   return { errors, valuesToSave, unsavedValues, redirectToPage: '/' }
 }

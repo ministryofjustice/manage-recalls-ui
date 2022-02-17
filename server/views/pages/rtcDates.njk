@@ -30,8 +30,8 @@
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukDateInput({
-                        name: 'returnToCustodyDateTime',
-                        id: 'returnToCustodyDateTime',
+                        name: 'returnedToCustodyDateTime',
+                        id: 'returnedToCustodyDateTime',
                         formGroup: {
                             classes: 'govuk-!-margin-bottom-3'
                         },
@@ -41,15 +41,15 @@
                                 classes: 'govuk-fieldset__legend--m'
                             }
                         },
-                        items: dateTimeItems("returnToCustodyDateTime", formValues.returnToCustodyDateTimeParts, true),
-                        errorMessage: errorMessage(errors.returnToCustodyDateTime),
+                        items: dateTimeItems("returnedToCustodyDateTime", formValues.returnedToCustodyDateTimeParts, true),
+                        errorMessage: errorMessage(errors.returnedToCustodyDateTime),
                         hint: {
                             text: 'For example, 23 11 2021 at 15:46'
                         }
                     }) }}
                     <div class='govuk-!-margin-bottom-6'>
                         {{ todayLink({
-                            name: 'returnToCustodyDateTime',
+                            name: 'returnedToCustodyDateTime',
                             cspNonce: cspNonce
                         }) }}
                     </div>
@@ -57,8 +57,8 @@
 
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukDateInput({
-                        name: 'returnToCustodyNotificationDateTime',
-                        id: 'returnToCustodyNotificationDateTime',
+                        name: 'returnedToCustodyNotificationDateTime',
+                        id: 'returnedToCustodyNotificationDateTime',
                         formGroup: {
                             classes: 'govuk-!-margin-bottom-3'
                         },
@@ -68,15 +68,15 @@
                                 classes: 'govuk-fieldset__legend--m'
                             }
                         },
-                        items: dateTimeItems("returnToCustodyNotificationDateTime", formValues.returnToCustodyNotificationDateTimeParts, true),
-                        errorMessage: errorMessage(errors.returnToCustodyNotificationDateTime),
+                        items: dateTimeItems("returnedToCustodyNotificationDateTime", formValues.returnedToCustodyNotificationDateTimeParts, true),
+                        errorMessage: errorMessage(errors.returnedToCustodyNotificationDateTime),
                         hint: {
                             text: 'For example, 23 11 2021 at 15:46'
                         }
                     }) }}
                     <div class='govuk-!-margin-bottom-6'>
                         {{ todayLink({
-                            name: 'returnToCustodyNotificationDateTime',
+                            name: 'returnedToCustodyNotificationDateTime',
                             cspNonce: cspNonce
                         }) }}
                     </div>

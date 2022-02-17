@@ -56,6 +56,6 @@ export const recall = {
   hasDossierBeenChecked: true,
   recallAssessmentDueDateTime: '2020-08-06T15:33:57.000Z',
   dossierTargetDate: tomorrow.toISODate(),
-  returnToCustodyDateTime: '2022-01-22T13:45:33.000Z',
-  returnToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z',
+  returnedToCustodyDateTime: '2022-01-22T13:45:33.000Z',
+  returnedToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z',
 }

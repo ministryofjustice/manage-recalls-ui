@@ -9,16 +9,16 @@ describe('returnToCustodyDatesFormHandler', () => {
   const nomsNumber = 'A1234AB'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const requestBody = {
-    returnToCustodyDateTimeDay: '10',
-    returnToCustodyDateTimeMonth: '05',
-    returnToCustodyDateTimeYear: '2021',
-    returnToCustodyDateTimeHour: '05',
-    returnToCustodyDateTimeMinute: '03',
-    returnToCustodyNotificationDateTimeDay: '15',
-    returnToCustodyNotificationDateTimeMonth: '07',
-    returnToCustodyNotificationDateTimeYear: '2020',
-    returnToCustodyNotificationDateTimeHour: '15',
-    returnToCustodyNotificationDateTimeMinute: '45',
+    returnedToCustodyDateTimeDay: '10',
+    returnedToCustodyDateTimeMonth: '05',
+    returnedToCustodyDateTimeYear: '2021',
+    returnedToCustodyDateTimeHour: '05',
+    returnedToCustodyDateTimeMinute: '03',
+    returnedToCustodyNotificationDateTimeDay: '15',
+    returnedToCustodyNotificationDateTimeMonth: '07',
+    returnedToCustodyNotificationDateTimeYear: '2020',
+    returnedToCustodyNotificationDateTimeHour: '15',
+    returnedToCustodyNotificationDateTimeMinute: '45',
   }
   let res
 
