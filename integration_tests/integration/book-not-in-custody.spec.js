@@ -234,6 +234,9 @@ context('Book a "not in custody" recall', () => {
   })
 
   it('errors - return to custody dates', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: getEmptyRecallResponse,
+    })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'rtc-dates' })
     cy.clickButton('Save and return')
     cy.assertErrorMessage({

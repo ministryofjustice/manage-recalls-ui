@@ -127,7 +127,7 @@ describe('Error messages', () => {
     })
   })
 
-  describe('errorMsgDate', () => {
+  describe('formatValidationErrorMessage', () => {
     it('renders "blankDateTime" error', () => {
       const error = formatValidationErrorMessage({ errorId: 'blankDateTime' }, 'date of sentence')
       expect(error).toEqual('Enter the date of sentence')
@@ -154,6 +154,16 @@ describe('Error messages', () => {
         'date of sentence'
       )
       expect(error).toEqual('The date of sentence must include a month')
+    })
+
+    it('renders "missingDate" error', () => {
+      const error = formatValidationErrorMessage({ errorId: 'missingDate' }, 'date and time of email')
+      expect(error).toEqual('The date and time of email must include a date')
+    })
+
+    it('renders "missingTime" error', () => {
+      const error = formatValidationErrorMessage({ errorId: 'missingTime' }, 'date and time of email')
+      expect(error).toEqual('The date and time of email must include a time')
     })
 
     it('renders "minLengthDateTimeParts" error', () => {

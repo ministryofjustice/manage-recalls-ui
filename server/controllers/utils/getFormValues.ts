@@ -57,6 +57,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'conditionalReleaseDate',
     'dossierEmailSentDate',
     'rescindRequestEmailReceivedDate',
+    'returnedToCustodyDateTime',
+    'returnedToCustodyNotificationDateTime',
   ].forEach((key: string) => {
     values[`${key}Parts`] = errors[key]?.values || unsavedValues[`${key}Parts`] || splitIsoDateToParts(apiValues[key])
   })
