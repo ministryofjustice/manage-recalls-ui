@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { transformErrorMessages } from '../routes/handlers/helpers'
+import { transformErrorMessages } from '../controllers/utils/errorMessages'
 
 export const getStoredSessionData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { errors, unsavedValues, confirmationMessage } = req.session

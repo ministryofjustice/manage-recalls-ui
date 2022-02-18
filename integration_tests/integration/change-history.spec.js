@@ -7,13 +7,13 @@ import {
   getAllFieldsHistoryResponseJson,
   getPrisonsResponse,
 } from '../mockApis/mockResponses'
-import { changeHistoryFieldList } from '../../server/routes/handlers/change-history/helpers/recallFieldList'
+import { changeHistoryFieldList } from '../../server/controllers/changeHistory/helpers/recallFieldList'
 import { stubRefData } from '../support/mock-api'
 
 const changeHistoryPage = require('../pages/changeHistory')
 const changeHistoryDocumentPage = require('../pages/changeHistoryDocument')
 const changeHistoryFieldPage = require('../pages/changeHistoryField')
-const { formatDateTimeFromIsoString } = require('../../server/routes/handlers/helpers/dates/format')
+const { formatDateTimeFromIsoString } = require('../../server/controllers/utils/dates/format')
 
 context('Change history', () => {
   const nomsNumber = 'A1234AA'

@@ -1,6 +1,6 @@
 import superagent from 'superagent'
 import { manageRecallsApiConfig } from '../config'
-import RestClient from '../data/restClient'
+import RestClient from './restClient'
 import { RecallResponse as Recall } from '../@types/manage-recalls-api/models/RecallResponse'
 import { NewDocumentResponse } from '../@types/manage-recalls-api/models/NewDocumentResponse'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'

@@ -1,8 +1,8 @@
 import { getAddressByUprn, getAddressesByPostcode } from './osPlacesApiClient'
-import RestClient, { GetRequest } from '../data/restClient'
+import RestClient, { GetRequest } from './restClient'
 import config from '../config'
 
-jest.mock('../data/restClient')
+jest.mock('./restClient')
 
 const fakeGet = jest.fn()
 

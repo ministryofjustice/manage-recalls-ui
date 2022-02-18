@@ -2,9 +2,9 @@ import { Router } from 'express'
 import cookieParser from 'cookie-parser'
 
 import auth from '../authentication/auth'
-import tokenVerifier from '../data/tokenVerification'
+import tokenVerifier from '../clients/tokenVerification'
 import populateCurrentUser from '../middleware/populateCurrentUser'
-import type UserService from '../services/userService'
+import type UserService from '../clients/userService'
 import { requestLogging } from '../middleware/requestLogging'
 
 export default function standardRouter(userService: UserService): Router {

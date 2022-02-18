@@ -119,7 +119,7 @@ Please see [Confluence](https://dsdmoj.atlassian.net/wiki/spaces/PUD/pages/36228
 
 `/health` (i.e. <https://manage-recalls.hmpps.service.justice.gov.uk/health>) checks and reports the health of all services and components that the application depends upon. A HTTP 200 response code indicates that everything is healthy.
 
-You can see the services that this application depends on within the [healthcheck file](server/services/healthCheck.ts#L58-L70).
+You can see the services that this application depends on within the [healthcheck file](server/healthChecks/healthCheck.ts#L58-L70).
 
 #### Health of service
 

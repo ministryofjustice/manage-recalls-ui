@@ -1,5 +1,5 @@
 import config from '../config'
-import RestClient from '../data/restClient'
+import RestClient from './restClient'
 import { Address } from '../@types'
 import { OsPlacesApiAddress, OsPlacesLookupResponse } from '../@types/os-places-api'
 

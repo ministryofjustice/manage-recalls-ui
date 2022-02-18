@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node'
 import { NextFunction, Request, Response } from 'express'
 import { getCorrelationContext } from 'applicationinsights'
-import { buildAppInsightsClient } from '../utils/azureAppInsights'
+import { buildAppInsightsClient } from '../monitoring/azureAppInsights'
 
 export const appInsightsOperationId = (req: Request, res: Response, next: NextFunction) => {
   const appInsightsClient = buildAppInsightsClient()
