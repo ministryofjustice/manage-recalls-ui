@@ -118,6 +118,8 @@ describe('getFormValues', () => {
     previousConvictionMainName: { text: 'What is the other main name used?' },
     hasDossierBeenChecked: { text: 'Has the dossier been checked for accuracy?' },
     warrantReferenceNumber: { text: 'Warrant reference number' },
+    returnedToCustodyDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
+    returnedToCustodyNotificationDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -169,6 +171,10 @@ describe('getFormValues', () => {
     hasDossierBeenChecked: 'YES',
     rescindRequestDetail: 'Detail...',
     warrantReferenceNumber: '02RC/1234567C12345',
+    returnedToCustodyDateTimeParts: { values: { year: '2021', month: '12', day: '05', hour: '05', minute: '3' } },
+    returnedToCustodyNotificationDateTimeParts: {
+      values: { year: '2021', month: '12', day: '05', hour: '05', minute: '2' },
+    },
   }
 
   const apiValues = {
@@ -255,6 +261,20 @@ describe('getFormValues', () => {
       rescindRequestEmailReceivedDateParts: {
         day: '',
         month: '43',
+        year: '',
+      },
+      returnedToCustodyDateTimeParts: {
+        day: '05',
+        hour: '05',
+        minute: '3',
+        month: '',
+        year: '',
+      },
+      returnedToCustodyNotificationDateTimeParts: {
+        day: '05',
+        hour: '05',
+        minute: '3',
+        month: '',
         year: '',
       },
       sentenceDateParts: {
@@ -355,6 +375,24 @@ describe('getFormValues', () => {
         month: '04',
         year: '2019',
       },
+      returnedToCustodyDateTimeParts: {
+        values: {
+          day: '05',
+          hour: '05',
+          minute: '3',
+          month: '12',
+          year: '2021',
+        },
+      },
+      returnedToCustodyNotificationDateTimeParts: {
+        values: {
+          day: '05',
+          hour: '05',
+          minute: '2',
+          month: '12',
+          year: '2021',
+        },
+      },
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -445,6 +483,20 @@ describe('getFormValues', () => {
       rescindRequestEmailReceivedDateParts: {
         day: '',
         month: '43',
+        year: '',
+      },
+      returnedToCustodyDateTimeParts: {
+        day: '05',
+        hour: '05',
+        minute: '3',
+        month: '',
+        year: '',
+      },
+      returnedToCustodyNotificationDateTimeParts: {
+        day: '05',
+        hour: '05',
+        minute: '3',
+        month: '',
         year: '',
       },
       sentenceDateParts: {
@@ -541,6 +593,20 @@ describe('getFormValues', () => {
         minute: '04',
         month: '08',
         year: '2021',
+      },
+      returnedToCustodyDateTimeParts: {
+        day: '22',
+        hour: '13',
+        minute: '45',
+        month: '01',
+        year: '2022',
+      },
+      returnedToCustodyNotificationDateTimeParts: {
+        day: '23',
+        hour: '08',
+        minute: '22',
+        month: '01',
+        year: '2022',
       },
       sentenceDateParts: {
         day: '03',
@@ -640,6 +706,20 @@ describe('getFormValues', () => {
         minute: '04',
         month: '08',
         year: '2021',
+      },
+      returnedToCustodyDateTimeParts: {
+        day: '22',
+        hour: '13',
+        minute: '45',
+        month: '01',
+        year: '2022',
+      },
+      returnedToCustodyNotificationDateTimeParts: {
+        day: '23',
+        hour: '08',
+        minute: '22',
+        month: '01',
+        year: '2022',
       },
       sentenceDateParts: {
         day: '03',

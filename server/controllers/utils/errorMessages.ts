@@ -51,6 +51,10 @@ export const formatValidationErrorMessage = (validationError: ValidationError, f
       return `The ${fieldLabel} must be a real date`
     case 'invalidTime':
       return `The ${fieldLabel} must be a real time`
+    case 'missingDate':
+      return `The ${fieldLabel} must include a date`
+    case 'missingTime':
+      return `The ${fieldLabel} must include a time`
     case 'missingDateParts':
       return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts, 'and')}`
     case 'minLengthDateTimeParts':
