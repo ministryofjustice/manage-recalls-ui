@@ -16,6 +16,7 @@ import {
 } from './nunjucksFunctions'
 import { reasonForRecall } from '../referenceData'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
+import status = RecallResponse.status
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {
@@ -419,17 +420,32 @@ describe('recallInfoActionMenuItems', () => {
   it('adds a "Rescind recall" link if there are no rescind records', () => {
     const actionItems = recallInfoActionMenuItems(
       {
+        status: RecallResponse.status.BOOKED_ON,
         rescindRecords: [],
       } as RecallResponse,
       { basePath: '/recalls/', currentPage: 'recall-info' },
       'view-recall'
     )
-    expect(actionItems[1]).toEqual({ href: '/recalls/rescind-request?fromPage=view-recall', text: 'Rescind recall' })
+    expect(actionItems).toEqual([
+      {
+        href: '/recalls/change-history?fromPage=view-recall',
+        text: 'View change history',
+      },
+      {
+        href: '/recalls/rescind-request?fromPage=view-recall',
+        text: 'Rescind recall',
+      },
+      {
+        href: '/recalls/stop-recall?fromPage=view-recall',
+        text: 'Stop recall',
+      },
+    ])
   })
 
   it('does not add a rescind link if the last rescind was approved', () => {
     const actionItems = recallInfoActionMenuItems(
       {
+        status: RecallResponse.status.BOOKED_ON,
         rescindRecords: [
           {
             approved: true,
@@ -441,8 +457,12 @@ describe('recallInfoActionMenuItems', () => {
     )
     expect(actionItems).toEqual([
       {
-        text: 'View change history',
         href: '/recalls/change-history?fromPage=view-recall',
+        text: 'View change history',
+      },
+      {
+        href: '/recalls/stop-recall?fromPage=view-recall',
+        text: 'Stop recall',
       },
     ])
   })
@@ -450,6 +470,7 @@ describe('recallInfoActionMenuItems', () => {
   it('adds a "Rescind recall" link if the last rescind was not approved', () => {
     const actionItems = recallInfoActionMenuItems(
       {
+        status: RecallResponse.status.ASSESSED_NOT_IN_CUSTODY,
         rescindRecords: [
           {
             approved: false,
@@ -459,12 +480,26 @@ describe('recallInfoActionMenuItems', () => {
       { basePath: '/recalls/', currentPage: 'recall-info' },
       'view-recall'
     )
-    expect(actionItems[1]).toEqual({ href: '/recalls/rescind-request?fromPage=view-recall', text: 'Rescind recall' })
+    expect(actionItems).toEqual([
+      {
+        href: '/recalls/change-history?fromPage=view-recall',
+        text: 'View change history',
+      },
+      {
+        href: '/recalls/rescind-request?fromPage=view-recall',
+        text: 'Rescind recall',
+      },
+      {
+        href: '/recalls/stop-recall?fromPage=view-recall',
+        text: 'Stop recall',
+      },
+    ])
   })
 
   it('adds a "Update rescind" link if the last rescind is in progress', () => {
     const actionItems = recallInfoActionMenuItems(
       {
+        status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
         rescindRecords: [
           {
             requestDetails: 'requested',
@@ -474,6 +509,39 @@ describe('recallInfoActionMenuItems', () => {
       { basePath: '/recalls/', currentPage: 'recall-info' },
       'view-recall'
     )
-    expect(actionItems[1]).toEqual({ href: '/recalls/rescind-decision?fromPage=view-recall', text: 'Update rescind' })
+    expect(actionItems).toEqual([
+      {
+        href: '/recalls/change-history?fromPage=view-recall',
+        text: 'View change history',
+      },
+      {
+        href: '/recalls/rescind-decision?fromPage=view-recall',
+        text: 'Update rescind',
+      },
+      {
+        href: '/recalls/stop-recall?fromPage=view-recall',
+        text: 'Stop recall',
+      },
+    ])
+  })
+
+  it('does not add a "Stop recall" link if recall status is stopped', () => {
+    const actionItems = recallInfoActionMenuItems(
+      {
+        status: status.STOPPED,
+      } as RecallResponse,
+      { basePath: '/recalls/', currentPage: 'recall-info' },
+      'view-recall'
+    )
+    expect(actionItems).toEqual([
+      {
+        href: '/recalls/change-history?fromPage=view-recall',
+        text: 'View change history',
+      },
+      {
+        href: '/recalls/rescind-request?fromPage=view-recall',
+        text: 'Rescind recall',
+      },
+    ])
   })
 })

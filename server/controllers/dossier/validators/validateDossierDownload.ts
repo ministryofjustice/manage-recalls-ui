@@ -1,8 +1,12 @@
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { makeUrl } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
-export const validateDossierDownload = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateDossierDownload = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

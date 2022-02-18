@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ALTERNATIVE_INTERVENTION",
+    "name": "Alternative intervention",
+    "validForStopCall": true
+  },
+  {
+    "id": "DECEASED",
+    "name": "Deceased",
+    "validForStopCall": true
+  },
+  {
+    "id": "HDC_WARNING_LETTER",
+    "name": "HDC warning letter",
+    "validForStopCall": true
+  },
+  {
+    "id": "INCORRECT_LICENCE",
+    "name": "Incorrect licence",
+    "validForStopCall": true
+  },
+  {
+    "id": "LEGAL_REASON",
+    "name": "Legal reason",
+    "validForStopCall": true
+  },
+  {
+    "id": "NO_ACTION",
+    "name": "No action",
+    "validForStopCall": true
+  },
+  {
+    "id": "NOT_APPLICABLE",
+    "name": "Not applicable",
+    "validForStopCall": true
+  },
+  {
+    "id": "NOT_SPECIFIED",
+    "name": "Not specified",
+    "validForStopCall": true
+  },
+  {
+    "id": "RAISED_IN_ERROR",
+    "name": "Raise in error",
+    "validForStopCall": true
+  },
+  {
+    "id": "SOS_WARNING_LETTER",
+    "name": "SoS warning letter",
+    "validForStopCall": true
+  },
+  {
+    "id": "UO_28DAY_AND_DEEMED_NOTIFIED",
+    "name": "UO 28 day & deemed notified",
+    "validForStopCall": true
+  },
+  {
+    "id": "WITHDRAWAL_BY_ACO",
+    "name": "Withdrawal by ACO",
+    "validForStopCall": true
+  },
+  {
+    "id": "RESCINDED",
+    "name": "Rescinded",
+    "validForStopCall": false
+  },
+  {
+    "id": "POOR_BEHAVIOUR_DRUGS",
+    "name": "Poor behaviour - Drugs",
+    "validForStopCall": true
+  },
+  {
+    "id": "POOR_BEHAVIOUR_NON_COMPLIANCE",
+    "name": "Poor behaviour - Non-compliance",
+    "validForStopCall": true
+  },
+  {
+    "id": "POOR_BEHAVIOUR_RELATIONSHIPS",
+    "name": "Poor behaviour - Relationships",
+    "validForStopCall": true
+  },
+  {
+    "id": "TRAVELLING_OUTSIDE_UK",
+    "name": "Travelling outside the UK",
+    "validForStopCall": true
+  },
+  {
+    "id": "OTHER",
+    "name": "Other",
+    "validForStopCall": true
+  }
+]

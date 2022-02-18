@@ -5,7 +5,10 @@ import { isStringValidReferenceData } from '../../../referenceData'
 import { formatValidationErrorMessage, makeErrorObject } from '../../utils/errorMessages'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 
-export const validateProbationOfficer = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateProbationOfficer = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

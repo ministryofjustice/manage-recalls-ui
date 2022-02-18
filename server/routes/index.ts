@@ -26,7 +26,7 @@ import { getUser, postUser } from '../controllers/userDetails/userDetails'
 import { parseUrlParams } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from '../controllers/assignUser/assignUser'
-import { unassignUserFromRecall } from '../clients/manageRecallsApiClient'
+import { addReturnToCustodyDates, stopRecall, unassignUserFromRecall } from '../clients/manageRecallsApiClient'
 import { addMissingDocumentRecordFormHandler } from '../controllers/documents/missing-documents/addMissingDocumentRecordFormHandler'
 import { validateLicenceName } from '../controllers/book/validators/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
@@ -46,9 +46,10 @@ import { deleteAddressHandler } from '../controllers/book/deleteAddressHandler'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateConfirmCustodyStatus } from '../controllers/assess/validators/validateConfirmCustodyStatus'
 import { validateWarrantReference } from '../controllers/assess/validators/validateWarrantReference'
-import { afterWarrantReferenceSaved } from '../controllers/assess/helpers/afterWarrantReferenceSaved'
+import { saveWarrantReference } from '../controllers/assess/helpers/saveWarrantReference'
 import { rescindFormHandler } from '../controllers/rescind/rescindFormHandler'
-import { returnToCustodyDatesFormHandler } from '../controllers/assess/returnToCustodyDatesFormHandler'
+import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
+import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -132,9 +133,9 @@ export default function routes(router: Router): Router {
   )
   get(`${basePath}/assess-confirmation`, recallPageGet('assessConfirmation'))
   get(`${basePath}/warrant-reference`, recallPageGet('warrantReference'))
-  post(`${basePath}/warrant-reference`, recallFormPost(validateWarrantReference, afterWarrantReferenceSaved))
+  post(`${basePath}/warrant-reference`, recallFormPost(validateWarrantReference, saveWarrantReference))
   get(`${basePath}/rtc-dates`, recallPageGet('rtcDates'))
-  post(`${basePath}/rtc-dates`, returnToCustodyDatesFormHandler)
+  post(`${basePath}/rtc-dates`, recallFormPost(validateReturnToCustodyDates, addReturnToCustodyDates))
 
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
@@ -177,6 +178,10 @@ export default function routes(router: Router): Router {
   post(`${basePath}/rescind-request`, rescindFormHandler({ action: 'add' }))
   get(`${basePath}/rescind-decision`, recallPageGet('rescindDecision'))
   post(`${basePath}/rescind-decision`, rescindFormHandler({ action: 'update' }))
+
+  // STOP RECALL
+  get(`${basePath}/stop-recall`, recallPageGet('stopRecall'))
+  post(`${basePath}/stop-recall`, recallFormPost(validateStopReason, stopRecall))
 
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)

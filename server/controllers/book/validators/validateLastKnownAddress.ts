@@ -3,7 +3,10 @@ import { UpdateRecallRequest } from '../../../@types/manage-recalls-api'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
 
-export const validateLastKnownAddress = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateLastKnownAddress = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
   let redirectToPage

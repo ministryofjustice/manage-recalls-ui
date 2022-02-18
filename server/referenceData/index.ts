@@ -8,6 +8,7 @@ import { policeForces } from './policeForces'
 import { UiListItem } from '../@types'
 import { localDeliveryUnits } from './localDeliveryUnits'
 import { courts } from './courts'
+import { stopReasons } from './stopReasons'
 
 export const referenceData = () => ({
   mappaLevels: mappaLevels.data,
@@ -18,6 +19,7 @@ export const referenceData = () => ({
   policeForces: policeForces.data,
   localDeliveryUnits: localDeliveryUnits.data,
   courts: courts.data,
+  stopReasons: stopReasons.data,
 })
 
 export type ReferenceDataCategories =
@@ -28,6 +30,7 @@ export type ReferenceDataCategories =
   | 'policeForces'
   | 'localDeliveryUnits'
   | 'courts'
+  | 'stopReasons'
 
 export const fetchRemoteRefData = async (req: Request, res: Response, next: NextFunction) => {
   await Promise.allSettled([
@@ -37,6 +40,7 @@ export const fetchRemoteRefData = async (req: Request, res: Response, next: Next
     courts.data ? undefined : courts.updateData(),
     reasonsForRecall.data ? undefined : reasonsForRecall.updateData(),
     mappaLevels.data ? undefined : mappaLevels.updateData(),
+    stopReasons.data ? undefined : stopReasons.updateData(),
   ])
   next()
 }

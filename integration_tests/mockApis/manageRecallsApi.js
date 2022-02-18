@@ -174,6 +174,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectStopRecall: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: '/recalls/(.*)/stop',
+        },
+        response: {
+          status: (expectation && expectation.statusCode) || 200,
+        },
+      })
+    },
     expectAddReturnToCustodyDates: expectation => {
       return wiremock.stubFor({
         request: {
@@ -343,7 +354,7 @@ export default function manageRecallsApi(wiremock) {
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },
-          jsonBody: expectation.expectedResult,
+          jsonBody: expectation ? expectation.expectedResult : {},
         },
       })
     },

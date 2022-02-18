@@ -1,6 +1,7 @@
-import { RecallDocument, RecallResponse, UpdateRecallRequest } from './manage-recalls-api'
+import { RecallDocument, RecallResponse } from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 import { ReferenceDataCategories } from '../referenceData'
+import { UserDetails } from '../clients/userService'
 
 export interface FormError {
   text: string
@@ -93,6 +94,7 @@ export type ViewName =
   | 'rtcDates'
   | 'rescindRequest'
   | 'rescindDecision'
+  | 'stopRecall'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 
@@ -104,11 +106,16 @@ export interface ReqValidatorArgs {
 
 export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn
 
-export interface ReqValidatorReturn {
+export interface ReqValidatorReturn<T> {
   errors?: NamedFormError[]
-  valuesToSave?: UpdateRecallRequest
+  valuesToSave?: T
   unsavedValues?: ObjectMap<unknown>
   redirectToPage: string
+  confirmationMessage?: ConfirmationMessage
+}
+
+export interface User extends UserDetails {
+  token: string
 }
 
 export interface EmailUploadValidatorArgs {
@@ -157,7 +164,7 @@ export interface UrlInfo {
 
 export interface ConfirmationMessage {
   text: string
-  type: 'success'
+  type: string
   link?: {
     text: string
     href: string

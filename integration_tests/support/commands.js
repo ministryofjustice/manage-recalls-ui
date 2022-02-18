@@ -1,4 +1,4 @@
-import { exactMatchIgnoreWhitespace, splitIsoDateToParts } from './utils'
+import { exactMatchIgnoreWhitespace, isDefined, splitIsoDateToParts } from './utils'
 import { recall } from '../fixtures/recall'
 import {
   getAllFieldsHistoryResponseJson,
@@ -291,6 +291,9 @@ Cypress.Commands.add('assertSaveToRecallsApi', ({ url, method, bodyValues }) => 
           return Object.entries(bodyValues).every(([key, value]) => {
             if (Array.isArray(value)) {
               return JSON.stringify(value) === JSON.stringify(requestBody[key])
+            }
+            if (value === '*') {
+              return isDefined(requestBody[key])
             }
             return requestBody[key] === value
           })

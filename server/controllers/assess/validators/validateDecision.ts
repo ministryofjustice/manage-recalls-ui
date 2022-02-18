@@ -3,7 +3,10 @@ import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { errorMsgProvideDetail, makeErrorObject } from '../../utils/errorMessages'
 import { makeUrl } from '../../utils/makeUrl'
 
-export const validateDecision = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateDecision = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

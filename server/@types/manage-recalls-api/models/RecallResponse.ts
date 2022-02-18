@@ -22,65 +22,68 @@ export type RecallResponse = {
     licenceNameCategory: RecallResponse.licenceNameCategory;
     status: RecallResponse.status;
     documents: Array<RecallDocument>;
-    missingDocumentsRecords: Array<MissingDocumentsRecord>;
     lastKnownAddresses: Array<LastKnownAddress>;
-    rescindRecords: Array<RescindRecord>;
-    recallLength?: RecallResponse.recallLength;
-    lastReleasePrison?: string;
-    lastReleaseDate?: string;
-    recallEmailReceivedDateTime?: string;
-    localPoliceForceId?: string;
-    inCustodyAtBooking?: boolean;
-    inCustodyAtAssessment?: boolean;
-    contraband?: boolean;
-    contrabandDetail?: string;
-    vulnerabilityDiversity?: boolean;
-    vulnerabilityDiversityDetail?: string;
-    mappaLevel?: RecallResponse.mappaLevel;
-    sentenceDate?: string;
-    licenceExpiryDate?: string;
-    sentenceExpiryDate?: string;
-    sentencingCourt?: string;
-    indexOffence?: string;
-    conditionalReleaseDate?: string;
-    sentenceLength?: SentenceLength;
-    bookingNumber?: string;
-    probationOfficerName?: string;
-    probationOfficerPhoneNumber?: string;
-    probationOfficerEmail?: string;
-    localDeliveryUnit?: RecallResponse.localDeliveryUnit;
-    authorisingAssistantChiefOfficer?: string;
-    licenceConditionsBreached?: string;
+    missingDocumentsRecords: Array<MissingDocumentsRecord>;
     reasonsForRecall: Array<'BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_NON_CURFEW_CONDITION' | 'ELM_FURTHER_OFFENCE' | 'ELM_EQUIPMENT_TAMPER' | 'ELM_FAILURE_CHARGE_BATTERY' | 'FAILED_HOME_VISIT' | 'FAILED_KEEP_IN_TOUCH' | 'FAILED_RESIDE' | 'FAILED_WORK_AS_APPROVED' | 'POOR_BEHAVIOUR_ALCOHOL' | 'POOR_BEHAVIOUR_FURTHER_OFFENCE' | 'POOR_BEHAVIOUR_DRUGS' | 'POOR_BEHAVIOUR_NON_COMPLIANCE' | 'POOR_BEHAVIOUR_RELATIONSHIPS' | 'TRAVELLING_OUTSIDE_UK' | 'OTHER'>;
-    reasonsForRecallOtherDetail?: string;
-    agreeWithRecall?: RecallResponse.agreeWithRecall;
-    agreeWithRecallDetail?: string;
-    currentPrison?: string;
+    rescindRecords: Array<RescindRecord>;
     additionalLicenceConditions?: boolean;
     additionalLicenceConditionsDetail?: string;
-    differentNomsNumber?: boolean;
-    differentNomsNumberDetail?: string;
-    recallNotificationEmailSentDateTime?: string;
-    dossierEmailSentDate?: string;
-    previousConvictionMainNameCategory?: RecallResponse.previousConvictionMainNameCategory;
-    hasDossierBeenChecked?: boolean;
-    previousConvictionMainName?: string;
-    assessedByUserId?: string;
-    bookedByUserId?: string;
-    dossierCreatedByUserId?: string;
-    dossierTargetDate?: string;
-    assignee?: string;
-    assigneeUserName?: string;
-    recallAssessmentDueDateTime?: string;
-    assessedByUserName?: string;
-    bookedByUserName?: string;
-    dossierCreatedByUserName?: string;
-    lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
+    agreeWithRecall?: RecallResponse.agreeWithRecall;
+    agreeWithRecallDetail?: string;
     arrestIssues?: boolean;
     arrestIssuesDetail?: string;
-    warrantReferenceNumber?: string;
+    assessedByUserId?: string;
+    assessedByUserName?: string;
+    assignee?: string;
+    assigneeUserName?: string;
+    authorisingAssistantChiefOfficer?: string;
+    bookedByUserId?: string;
+    bookedByUserName?: string;
+    bookingNumber?: string;
+    conditionalReleaseDate?: string;
+    contraband?: boolean;
+    contrabandDetail?: string;
+    currentPrison?: string;
+    differentNomsNumber?: boolean;
+    differentNomsNumberDetail?: string;
+    dossierCreatedByUserId?: string;
+    dossierCreatedByUserName?: string;
+    dossierEmailSentDate?: string;
+    dossierTargetDate?: string;
+    hasDossierBeenChecked?: boolean;
+    inCustodyAtAssessment?: boolean;
+    inCustodyAtBooking?: boolean;
+    indexOffence?: string;
+    lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
+    lastReleaseDate?: string;
+    lastReleasePrison?: string;
+    licenceConditionsBreached?: string;
+    licenceExpiryDate?: string;
+    localDeliveryUnit?: RecallResponse.localDeliveryUnit;
+    localPoliceForceId?: string;
+    mappaLevel?: RecallResponse.mappaLevel;
+    previousConvictionMainName?: string;
+    previousConvictionMainNameCategory?: RecallResponse.previousConvictionMainNameCategory;
+    probationOfficerEmail?: string;
+    probationOfficerName?: string;
+    probationOfficerPhoneNumber?: string;
+    reasonsForRecallOtherDetail?: string;
+    recallAssessmentDueDateTime?: string;
+    recallEmailReceivedDateTime?: string;
+    recallLength?: RecallResponse.recallLength;
+    recallNotificationEmailSentDateTime?: string;
     returnedToCustodyDateTime?: string;
     returnedToCustodyNotificationDateTime?: string;
+    sentenceDate?: string;
+    sentenceExpiryDate?: string;
+    sentenceLength?: SentenceLength;
+    sentencingCourt?: string;
+    stopByUserName?: string;
+    stopDateTime?: string;
+    stopReason?: RecallResponse.stopReason;
+    vulnerabilityDiversity?: boolean;
+    vulnerabilityDiversityDetail?: string;
+    warrantReferenceNumber?: string;
 };
 
 export namespace RecallResponse {
@@ -103,18 +106,14 @@ export namespace RecallResponse {
         STOPPED = 'STOPPED',
     }
 
-    export enum recallLength {
-        FOURTEEN_DAYS = 'FOURTEEN_DAYS',
-        TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
+    export enum agreeWithRecall {
+        YES = 'YES',
+        NO_STOP = 'NO_STOP',
     }
 
-    export enum mappaLevel {
-        NA = 'NA',
-        LEVEL_1 = 'LEVEL_1',
-        LEVEL_2 = 'LEVEL_2',
-        LEVEL_3 = 'LEVEL_3',
-        NOT_KNOWN = 'NOT_KNOWN',
-        CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
+    export enum lastKnownAddressOption {
+        YES = 'YES',
+        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
     }
 
     export enum localDeliveryUnit {
@@ -283,9 +282,13 @@ export namespace RecallResponse {
         YOT_SEE_COMMENTS = 'YOT_SEE_COMMENTS',
     }
 
-    export enum agreeWithRecall {
-        YES = 'YES',
-        NO_STOP = 'NO_STOP',
+    export enum mappaLevel {
+        NA = 'NA',
+        LEVEL_1 = 'LEVEL_1',
+        LEVEL_2 = 'LEVEL_2',
+        LEVEL_3 = 'LEVEL_3',
+        NOT_KNOWN = 'NOT_KNOWN',
+        CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
     }
 
     export enum previousConvictionMainNameCategory {
@@ -294,9 +297,13 @@ export namespace RecallResponse {
         OTHER = 'OTHER',
     }
 
-    export enum lastKnownAddressOption {
-        YES = 'YES',
-        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
+    export enum recallLength {
+        FOURTEEN_DAYS = 'FOURTEEN_DAYS',
+        TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
+    }
+
+    export enum stopReason {
+        RESCINDED = 'RESCINDED',
     }
 
 

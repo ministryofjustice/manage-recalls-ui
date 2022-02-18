@@ -2,8 +2,12 @@ import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { isNomsNumberValid } from '../../utils/validate-formats'
 import { makeUrl } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
-export const validateDossierLetter = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateDossierLetter = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

@@ -33,6 +33,11 @@ export const isStatusAfterAssessComplete = (status: RecallResponse.status): bool
   return afterAssessCompleteStatuses.includes(status)
 }
 
+export const isStatusNotStopped = (status: RecallResponse.status): boolean => {
+  throwIfStatusInvalid(status)
+  return status !== RecallResponse.status.STOPPED
+}
+
 export const isInCustody = (recall: RecallResponse) => {
   if (isStatusAfterAssessStart(recall.status)) {
     if (recall.inCustodyAtBooking) {

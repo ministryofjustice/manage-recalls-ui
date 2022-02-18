@@ -9,7 +9,7 @@ export const validateRecallRequestReceived = ({
   emailFileSelected,
   uploadFailed,
   invalidFileFormat,
-}: EmailUploadValidatorArgs): ReqValidatorReturn => {
+}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

@@ -1,6 +1,7 @@
 import { ReqValidatorReturn, UrlInfo } from '../../../@types'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
 export const validateAddAnotherAddress = ({
   addAnotherAddressOption,
@@ -8,7 +9,7 @@ export const validateAddAnotherAddress = ({
 }: {
   addAnotherAddressOption: string
   urlInfo: UrlInfo
-}): ReqValidatorReturn => {
+}): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let redirectToPage
 

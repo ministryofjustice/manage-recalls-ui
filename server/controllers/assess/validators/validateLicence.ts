@@ -2,6 +2,7 @@ import { ObjectMap, ReqValidatorReturn, UrlInfo } from '../../../@types'
 import { errorMsgProvideDetail, makeErrorObject } from '../../utils/errorMessages'
 import { reasonForRecall } from '../../../referenceData'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
 export const validateLicence = ({
   requestBody,
@@ -9,7 +10,7 @@ export const validateLicence = ({
 }: {
   requestBody?: ObjectMap<string | string[]>
   urlInfo?: UrlInfo
-}): ReqValidatorReturn => {
+}): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

@@ -3,7 +3,10 @@ import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
 
-export const validateLicenceName = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateLicenceName = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
 

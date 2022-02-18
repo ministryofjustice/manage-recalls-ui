@@ -1,23 +1,38 @@
-import { Handler, NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { updateRecall } from '../clients/manageRecallsApiClient'
 import logger from '../../logger'
-import { ReqValidatorFn } from '../@types'
+import { ReqValidatorFn, User } from '../@types'
+
+export interface SaveToApiFnArgs {
+  recallId: string
+  valuesToSave: unknown
+  user: User
+}
+export type SaveToApiFn = ({ recallId, valuesToSave, user }: SaveToApiFnArgs) => Promise<unknown>
 
 export const recallFormPost =
-  (validator: ReqValidatorFn, afterRecallUpdate?: Handler) =>
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  (validator: ReqValidatorFn, saveToApiFn?: SaveToApiFn) =>
+  async (req: Request, res: Response): Promise<void> => {
     const { recallId } = req.params
     const { user, urlInfo } = res.locals
-    const { errors, unsavedValues, valuesToSave, redirectToPage } = validator({ requestBody: req.body, urlInfo, user })
+    const { errors, unsavedValues, valuesToSave, redirectToPage, confirmationMessage } = validator({
+      requestBody: req.body,
+      urlInfo,
+      user,
+    })
     if (errors) {
       req.session.errors = errors
       req.session.unsavedValues = unsavedValues
       return res.redirect(303, req.originalUrl)
     }
     try {
-      await updateRecall(recallId, valuesToSave, user.token)
-      if (afterRecallUpdate) {
-        await afterRecallUpdate(req, res, next)
+      if (saveToApiFn) {
+        await saveToApiFn({ recallId, valuesToSave, user })
+      } else {
+        await updateRecall(recallId, valuesToSave, user.token)
+      }
+      if (confirmationMessage) {
+        req.session.confirmationMessage = confirmationMessage
       }
       res.redirect(303, redirectToPage)
     } catch (err) {

@@ -3,6 +3,7 @@ import { allowedEmailFileExtensions } from '../../documents/upload/helpers/allow
 import { errorMsgEmailUpload, errorMsgUserActionDateTime, makeErrorObject } from '../../utils/errorMessages'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
 export const validateDossierEmail = ({
   requestBody,
@@ -11,7 +12,7 @@ export const validateDossierEmail = ({
   uploadFailed,
   invalidFileFormat,
   actionedByUserId,
-}: EmailUploadValidatorArgs): ReqValidatorReturn => {
+}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

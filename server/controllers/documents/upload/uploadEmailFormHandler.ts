@@ -4,7 +4,7 @@ import logger from '../../../../logger'
 import { uploadStorageField } from './helpers/uploadStorage'
 
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { ReqEmailUploadValidatorFn } from '../../../@types'
+import { NamedFormError, ReqEmailUploadValidatorFn } from '../../../@types'
 import { allowedEmailFileExtensions } from './helpers/allowedUploadExtensions'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 import { errorMsgEmailUpload, makeErrorObject } from '../../utils/errorMessages'
@@ -47,7 +47,8 @@ export const uploadEmailFormHandler =
           invalidFileFormat,
           actionedByUserId: user.uuid,
         })
-        const uploadHasErrors = errors && errors.find(uploadError => uploadError.name === emailFieldName)
+        const uploadHasErrors =
+          errors && errors.find((uploadError: NamedFormError) => uploadError.name === emailFieldName)
         const shouldSaveToApi = !uploadHasErrors && emailFileSelected && !uploadFailed
         if (shouldSaveToApi) {
           try {

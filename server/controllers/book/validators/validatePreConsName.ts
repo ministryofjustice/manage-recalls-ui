@@ -3,7 +3,10 @@ import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
 
-export const validatePreConsName = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validatePreConsName = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

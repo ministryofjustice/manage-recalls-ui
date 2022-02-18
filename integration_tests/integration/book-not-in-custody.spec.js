@@ -193,6 +193,7 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectListRecalls', {
       expectedResults: recalls,
     })
+    cy.task('expectUnassignAssessment')
     cy.visit('/')
     cy.clickLink('Not in custody (2)')
     cy.clickLink('Add warrant reference')

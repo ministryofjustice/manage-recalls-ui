@@ -28,7 +28,8 @@ import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLev
 import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
 import { RescindRequestRequest } from '../@types/manage-recalls-api/models/RescindRequestRequest'
 import { RescindDecisionRequest } from '../@types/manage-recalls-api/models/RescindDecisionRequest'
-import { ReturnedToCustodyRequest } from '../@types/manage-recalls-api/models/ReturnedToCustodyRequest'
+import { StopReasonResponse } from '../@types/manage-recalls-api/models/StopReasonResponse'
+import { SaveToApiFnArgs } from '../controllers/recallFormPost'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -138,14 +139,22 @@ export function addRescindRecord(
   return restClient(token).post<superagent.Response>({ path: `/recalls/${recallId}/rescind-records`, data, raw: true })
 }
 
-export function addReturnToCustodyDates(
-  recallId: string,
-  data: ReturnedToCustodyRequest,
-  token: string
-): Promise<superagent.Response> {
-  return restClient(token).post<superagent.Response>({
+export function stopRecall({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post<superagent.Response>({
+    path: `/recalls/${recallId}/stop`,
+    data: valuesToSave as Record<string, unknown>,
+    raw: true,
+  })
+}
+
+export function addReturnToCustodyDates({
+  recallId,
+  valuesToSave,
+  user,
+}: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post<superagent.Response>({
     path: `/recalls/${recallId}/returned-to-custody`,
-    data,
+    data: valuesToSave as Record<string, unknown>,
     raw: true,
   })
 }
@@ -208,6 +217,10 @@ export function getReasonsForRecall(): Promise<RecallReasonResponse[]> {
 
 export function getMappaLevels(): Promise<MappaLevelResponse[]> {
   return restClient().get<MappaLevelResponse[]>({ path: '/reference-data/mappa-levels' })
+}
+
+export function getStopReasons(): Promise<StopReasonResponse[]> {
+  return restClient().get<StopReasonResponse[]>({ path: '/reference-data/stop-reasons' })
 }
 
 export function assignUserToRecall(recallId: string, assignee: string, token: string): Promise<Recall> {

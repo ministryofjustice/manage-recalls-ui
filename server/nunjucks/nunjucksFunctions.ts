@@ -7,7 +7,7 @@ import {
 } from '../controllers/documents/upload/helpers/allowedUploadExtensions'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 import { DecoratedUploadedDoc, DocumentCategoryMetadata } from '../@types/documents'
-import { isRescindInProgress, wasLastRescindApproved } from '../controllers/utils/recallStatus'
+import { isRescindInProgress, isStatusNotStopped, wasLastRescindApproved } from '../controllers/utils/recallStatus'
 import { makeUrl } from '../controllers/utils/makeUrl'
 import { listToString } from '../controllers/utils/lists'
 import { isDefined } from '../utils/utils'
@@ -128,8 +128,16 @@ export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlIn
     text: 'View change history',
     href: makeUrl('change-history', { ...urlInfo, fromPage }),
   }
+  const stopRecall = isStatusNotStopped(recall.status)
+    ? [
+        {
+          text: 'Stop recall',
+          href: makeUrl('stop-recall', { ...urlInfo, fromPage }),
+        },
+      ]
+    : []
   if (wasLastRescindApproved(recall) === true) {
-    return [changeHistory]
+    return [changeHistory, ...stopRecall]
   }
   if (isRescindInProgress(recall)) {
     return [
@@ -138,6 +146,7 @@ export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlIn
         text: 'Update rescind',
         href: makeUrl('rescind-decision', { ...urlInfo, fromPage }),
       },
+      ...stopRecall,
     ]
   }
   return [
@@ -146,6 +155,7 @@ export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlIn
       text: 'Rescind recall',
       href: makeUrl('rescind-request', { ...urlInfo, fromPage }),
     },
+    ...stopRecall,
   ]
 }
 
