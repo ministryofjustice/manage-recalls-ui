@@ -124,8 +124,8 @@ jobs:
       - checkout
       - node/install-packages
       - run:
-          name: Check version
-          command: npm --version
+          name: Update NPM to match package.json
+          command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
       - run:
           name: Run check
           command: npm outdated typescript govuk-frontend
