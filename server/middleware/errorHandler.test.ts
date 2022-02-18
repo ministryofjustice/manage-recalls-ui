@@ -3,7 +3,7 @@ import request from 'supertest'
 import appWithAllRoutes from '../controllers/testUtils/appSetup'
 import { findPerson } from '../controllers/findPerson/findPerson'
 
-jest.mock('../controllers/person/findPerson')
+jest.mock('../controllers/findPerson/findPerson')
 
 let app: Express
 
