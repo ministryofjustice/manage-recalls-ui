@@ -5,6 +5,7 @@ import recall from '../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 import { getRecall } from '../clients/manageRecallsApiClient'
 import * as decorateDocsExports from './documents/download/helpers/decorateDocs'
+import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
 
 jest.mock('../clients/manageRecallsApiClient')
 
@@ -133,9 +134,6 @@ describe('recallPageGet', () => {
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
     expect(decorateDocsExports.decorateDocs.mock.calls[0][0].docs).toEqual(recall.documents)
-    expect(decorateDocsExports.decorateDocs.mock.calls[0][0].missingDocumentsRecords).toEqual(
-      recall.missingDocumentsRecords
-    )
   })
 
   it('should pass document category query string to decorateDocs', async () => {
@@ -160,5 +158,139 @@ describe('recallPageGet', () => {
     res.locals.urlInfo = {}
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.lastKnownAddresses.map(a => a.index)).toEqual([1, 2])
+  })
+
+  it('returns a list of decorated missing documents records', async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      missingDocumentsRecords: [
+        {
+          missingDocumentsRecordId: '1234',
+          emailId: '845',
+          emailFileName: 'email.msg',
+          categories: [RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET],
+          details: 'Email sent 12/10/2021',
+          version: 1,
+          createdByUserName: 'Maria Badger',
+          createdDateTime: '2021-10-12T13:43:00.000Z',
+        },
+        {
+          missingDocumentsRecordId: '1234',
+          emailId: '845',
+          emailFileName: 'email.msg',
+          categories: [RecallDocument.category.OASYS_RISK_ASSESSMENT],
+          details: 'Email sent 12/10/2021',
+          version: 1,
+          createdByUserName: 'Maria Badger',
+          createdDateTime: '2021-10-12T13:43:00.000Z',
+        },
+      ],
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await recallPageGet('recallIssuesNeeds')(req, res)
+    expect(res.locals.recall.missingDocumentsRecords).toEqual([
+      {
+        categories: ['PREVIOUS_CONVICTIONS_SHEET'],
+        createdByUserName: 'Maria Badger',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+        details: 'Email sent 12/10/2021',
+        version: 1,
+        fileName: 'email.msg',
+        emailId: '845',
+        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/845`,
+      },
+      {
+        categories: ['OASYS_RISK_ASSESSMENT'],
+        createdByUserName: 'Maria Badger',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+        details: 'Email sent 12/10/2021',
+        version: 1,
+        fileName: 'email.msg',
+        emailId: '845',
+        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/845`,
+      },
+    ])
+  })
+
+  it('returns a list of rescind records', async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      ...recall,
+      rescindRecords: [
+        {
+          rescindRecordId: '123',
+          requestEmailId: '888',
+          requestEmailFileName: 'rescind-request.msg',
+          requestEmailReceivedDate: '2020-12-08',
+          requestDetails: 'Rescind was requested by email',
+          approved: true,
+          decisionDetails: 'Rescind was confirmed by email',
+          decisionEmailId: '999',
+          decisionEmailFileName: 'rescind-confirm.msg',
+          decisionEmailSentDate: '2020-12-09',
+          version: 1,
+          createdByUserName: 'Bobby Badger',
+          createdDateTime: '2020-12-09T12:24:03.000Z',
+          lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
+        },
+        {
+          rescindRecordId: '456',
+          requestEmailId: '111',
+          requestEmailFileName: 'rescind-request.msg',
+          requestEmailReceivedDate: '2020-12-13',
+          requestDetails: 'Rescind was requested by email',
+          approved: false,
+          decisionDetails: 'Rescind was confirmed by email',
+          decisionEmailId: '000',
+          decisionEmailFileName: 'rescind-confirm.msg',
+          decisionEmailSentDate: '2020-12-14',
+          version: 2,
+          createdByUserName: 'Brent Badger',
+          createdDateTime: '2020-12-13T12:24:03.000Z',
+          lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
+        },
+      ],
+    })
+    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const { res } = mockResponseWithAuthenticatedUser(accessToken)
+    await recallPageGet('recallIssuesNeeds')(req, res)
+    expect(res.locals.recall.rescindRecords).toEqual([
+      {
+        approved: false,
+        createdByUserName: 'Brent Badger',
+        createdDateTime: '2020-12-13T12:24:03.000Z',
+        decisionDetails: 'Rescind was confirmed by email',
+        decisionEmailFileName: 'rescind-confirm.msg',
+        decisionEmailId: '000',
+        decisionEmailSentDate: '2020-12-14',
+        decisionEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/000`,
+        lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
+        requestDetails: 'Rescind was requested by email',
+        requestEmailFileName: 'rescind-request.msg',
+        requestEmailId: '111',
+        requestEmailReceivedDate: '2020-12-13',
+        requestEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/111`,
+        rescindRecordId: '456',
+        version: 2,
+      },
+      {
+        approved: true,
+        createdByUserName: 'Bobby Badger',
+        createdDateTime: '2020-12-09T12:24:03.000Z',
+        decisionDetails: 'Rescind was confirmed by email',
+        decisionEmailFileName: 'rescind-confirm.msg',
+        decisionEmailId: '999',
+        decisionEmailSentDate: '2020-12-09',
+        decisionEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/999`,
+        lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
+        requestDetails: 'Rescind was requested by email',
+        requestEmailFileName: 'rescind-request.msg',
+        requestEmailId: '888',
+        requestEmailReceivedDate: '2020-12-08',
+        requestEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/888`,
+        rescindRecordId: '123',
+        version: 1,
+      },
+    ])
   })
 })

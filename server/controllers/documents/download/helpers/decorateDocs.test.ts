@@ -113,62 +113,7 @@ describe('decorateDocs', () => {
       fileName: 'REVOCATION_ORDER.pdf',
     },
   ] as RecallDocument[]
-  const missingDocumentsRecords = [
-    {
-      missingDocumentsRecordId: '1234',
-      emailId: '845',
-      emailFileName: 'email.msg',
-      categories: [RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET],
-      details: 'Email sent 12/10/2021',
-      version: 1,
-      createdByUserName: 'Maria Badger',
-      createdDateTime: '2021-10-12T13:43:00.000Z',
-    },
-    {
-      missingDocumentsRecordId: '1234',
-      emailId: '845',
-      emailFileName: 'email.msg',
-      categories: [RecallDocument.category.OASYS_RISK_ASSESSMENT],
-      details: 'Email sent 12/10/2021',
-      version: 1,
-      createdByUserName: 'Maria Badger',
-      createdDateTime: '2021-10-12T13:43:00.000Z',
-    },
-  ]
-  const rescindRecords = [
-    {
-      rescindRecordId: '123',
-      requestEmailId: '888',
-      requestEmailFileName: 'rescind-request.msg',
-      requestEmailReceivedDate: '2020-12-08',
-      requestDetails: 'Rescind was requested by email',
-      approved: true,
-      decisionDetails: 'Rescind was confirmed by email',
-      decisionEmailId: '999',
-      decisionEmailFileName: 'rescind-confirm.msg',
-      decisionEmailSentDate: '2020-12-09',
-      version: 1,
-      createdByUserName: 'Bobby Badger',
-      createdDateTime: '2020-12-09T12:24:03.000Z',
-      lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
-    },
-    {
-      rescindRecordId: '456',
-      requestEmailId: '111',
-      requestEmailFileName: 'rescind-request.msg',
-      requestEmailReceivedDate: '2020-12-13',
-      requestDetails: 'Rescind was requested by email',
-      approved: false,
-      decisionDetails: 'Rescind was confirmed by email',
-      decisionEmailId: '000',
-      decisionEmailFileName: 'rescind-confirm.msg',
-      decisionEmailSentDate: '2020-12-14',
-      version: 2,
-      createdByUserName: 'Brent Badger',
-      createdDateTime: '2020-12-13T12:24:03.000Z',
-      lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
-    },
-  ]
+
   const nomsNumber = 'A123'
   const recallId = 'abc-456'
   let results: DocumentDecorations
@@ -179,6 +124,28 @@ describe('decorateDocs', () => {
     lastName: 'Badger',
     bookingNumber: '123',
     status: 'DOSSIER_ISSUED',
+    missingDocumentsRecords: [
+      {
+        missingDocumentsRecordId: '1234',
+        emailId: '845',
+        emailFileName: 'email.msg',
+        categories: [RecallDocument.category.PREVIOUS_CONVICTIONS_SHEET],
+        details: 'Email sent 12/10/2021',
+        version: 1,
+        createdByUserName: 'Maria Badger',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+      },
+      {
+        missingDocumentsRecordId: '1234',
+        emailId: '845',
+        emailFileName: 'email.msg',
+        categories: [RecallDocument.category.OASYS_RISK_ASSESSMENT],
+        details: 'Email sent 12/10/2021',
+        version: 1,
+        createdByUserName: 'Maria Badger',
+        createdDateTime: '2021-10-12T13:43:00.000Z',
+      },
+    ],
   } as RecallResponse
 
   beforeEach(() => {
@@ -186,8 +153,6 @@ describe('decorateDocs', () => {
       docs,
       recall,
       versionedCategoryName: 'LICENCE',
-      missingDocumentsRecords,
-      rescindRecords,
     })
   })
 
@@ -369,72 +334,6 @@ describe('decorateDocs', () => {
     expect(results.missingNotRequiredDocs).toEqual([findDocCategory(RecallDocument.category.OASYS_RISK_ASSESSMENT)])
   })
 
-  it('returns a list of decorated missing documents records', () => {
-    expect(results.missingDocumentsRecords).toEqual([
-      {
-        categories: ['PREVIOUS_CONVICTIONS_SHEET'],
-        createdByUserName: 'Maria Badger',
-        createdDateTime: '2021-10-12T13:43:00.000Z',
-        details: 'Email sent 12/10/2021',
-        version: 1,
-        fileName: 'email.msg',
-        emailId: '845',
-        url: '/persons/A123/recalls/abc-456/documents/845',
-      },
-      {
-        categories: ['OASYS_RISK_ASSESSMENT'],
-        createdByUserName: 'Maria Badger',
-        createdDateTime: '2021-10-12T13:43:00.000Z',
-        details: 'Email sent 12/10/2021',
-        version: 1,
-        fileName: 'email.msg',
-        emailId: '845',
-        url: '/persons/A123/recalls/abc-456/documents/845',
-      },
-    ])
-  })
-
-  it('returns a list of rescind records', () => {
-    expect(results.rescindRecords).toEqual([
-      {
-        approved: false,
-        createdByUserName: 'Brent Badger',
-        createdDateTime: '2020-12-13T12:24:03.000Z',
-        decisionDetails: 'Rescind was confirmed by email',
-        decisionEmailFileName: 'rescind-confirm.msg',
-        decisionEmailId: '000',
-        decisionEmailSentDate: '2020-12-14',
-        decisionEmailUrl: '/persons/A123/recalls/abc-456/documents/000',
-        lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
-        requestDetails: 'Rescind was requested by email',
-        requestEmailFileName: 'rescind-request.msg',
-        requestEmailId: '111',
-        requestEmailReceivedDate: '2020-12-13',
-        requestEmailUrl: '/persons/A123/recalls/abc-456/documents/111',
-        rescindRecordId: '456',
-        version: 2,
-      },
-      {
-        approved: true,
-        createdByUserName: 'Bobby Badger',
-        createdDateTime: '2020-12-09T12:24:03.000Z',
-        decisionDetails: 'Rescind was confirmed by email',
-        decisionEmailFileName: 'rescind-confirm.msg',
-        decisionEmailId: '999',
-        decisionEmailSentDate: '2020-12-09',
-        decisionEmailUrl: '/persons/A123/recalls/abc-456/documents/999',
-        lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
-        requestDetails: 'Rescind was requested by email',
-        requestEmailFileName: 'rescind-request.msg',
-        requestEmailId: '888',
-        requestEmailReceivedDate: '2020-12-08',
-        requestEmailUrl: '/persons/A123/recalls/abc-456/documents/888',
-        rescindRecordId: '123',
-        version: 1,
-      },
-    ])
-  })
-
   it('returns data on generated documents', () => {
     expect(results.documentsGenerated).toEqual({
       DOSSIER: {
@@ -569,7 +468,6 @@ describe('decorateDocs', () => {
       ],
       recall,
       versionedCategoryName: 'LICENCE',
-      missingDocumentsRecords,
     })
     expect(result.documentsUploaded[0].suggestedCategory).toEqual('LICENCE')
   })
@@ -588,7 +486,6 @@ describe('decorateDocs', () => {
       ],
       recall,
       versionedCategoryName: 'LICENCE',
-      missingDocumentsRecords,
     })
     expect(result.documentsUploaded[0].suggestedCategory).toEqual('UNCATEGORISED')
   })
