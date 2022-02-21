@@ -12,6 +12,7 @@ generic-service:
     HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     MANAGE_RECALLS_API_URL: "https://manage-recalls-api.hmpps.service.justice.gov.uk"
+    MANAGE_RECALLS_API_HEALTHCHECK_URL: http://manage-recalls-api.manage-recalls-prod:81
     SENTRY_DSN: https://4eb36239d29c4114b9d90b810063261c@o345774.ingest.sentry.io/5939012
     SENTRY_ENVIRONMENT: "PROD"
     ENVIRONMENT: "PRODUCTION"

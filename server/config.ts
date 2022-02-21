@@ -60,6 +60,7 @@ const config = {
     },
     manageRecallsApi: {
       url: get('MANAGE_RECALLS_API_URL', 'http://localhost:9091', requiredInProduction),
+      healthCheckUrl: get('MANAGE_RECALLS_API_HEALTHCHECK_URL', 'http://localhost:9097', requiredInProduction),
       timeout: {
         response: Number(get('MANAGE_RECALLS_API_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('MANAGE_RECALLS_API_TIMEOUT_DEADLINE', 10000)),
