@@ -72,8 +72,6 @@ export interface DocumentDecorations {
   docCategoriesWithUploads: DocumentCategoryMetadata[]
   requiredDocsMissing: DocumentCategoryMetadata[]
   missingNotRequiredDocs: DocumentCategoryMetadata[]
-  missingDocumentsRecords: DecoratedMissingDocumentsRecord[]
-  rescindRecords: DecoratedRescindRecord[]
   versionedUpload?: DecoratedUploadedDoc
   versionedGeneratedDoc?: DecoratedUploadedDoc
   emailsUploaded: {

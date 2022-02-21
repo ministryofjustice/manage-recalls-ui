@@ -9,22 +9,28 @@ import { enableDeleteDocuments } from './documents/upload/helpers'
 import { decorateDocs } from './documents/download/helpers/decorateDocs'
 import { renderErrorMessages } from './utils/errorMessages'
 import { sortList } from './utils/lists'
+import { decorateMissingDocumentsRecords, decorateRescindRecords } from './documents/download/helpers'
 
 export const recallPageGet =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
-    const { recallId } = req.params
+    const { nomsNumber, recallId } = req.params
     const recall = await getRecall(recallId, res.locals.user.token)
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
-      missingDocumentsRecords: recall.missingDocumentsRecords,
-      rescindRecords: recall.rescindRecords,
       recall,
       versionedCategoryName: req.query.versionedCategoryName as string,
     })
+
     res.locals.recall = {
       ...recall,
       ...decoratedDocs,
+      missingDocumentsRecords: decorateMissingDocumentsRecords({
+        missingDocumentsRecords: recall.missingDocumentsRecords,
+        nomsNumber,
+        recallId,
+      }),
+      rescindRecords: decorateRescindRecords({ rescindRecords: recall.rescindRecords, recallId, nomsNumber }),
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
     }
     // get values to preload into form inputs

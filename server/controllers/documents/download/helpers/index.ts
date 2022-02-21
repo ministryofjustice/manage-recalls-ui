@@ -115,7 +115,7 @@ export const generatedDocumentFileName = async ({
 }
 
 export const decorateMissingDocumentsRecords = ({
-  missingDocumentsRecords,
+  missingDocumentsRecords = [],
   nomsNumber,
   recallId,
 }: {

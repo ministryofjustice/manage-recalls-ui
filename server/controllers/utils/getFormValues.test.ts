@@ -187,8 +187,8 @@ describe('getFormValues', () => {
         bookingNumber: updateRecallResponse.bookingNumber,
         firstName: 'Bobby',
         lastName: 'Badger',
+        missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecord[],
       } as RecallResponse,
-      missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecord[],
     }),
     enableDeleteDocuments: false,
   }
