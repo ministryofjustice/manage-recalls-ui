@@ -94,6 +94,34 @@ describe('uploadMultipleNewDocuments', () => {
     uploadMultipleNewDocuments(req, res)
   })
 
+  it('reloads the page after successful upload (non-XHR request)', done => {
+    req.xhr = false
+    req.originalUrl = '/upload-documents'
+    req.files = [
+      {
+        originalname: 'PreCons Wesley Holt.pdf',
+        buffer: 'def',
+        mimetype: 'application/pdf',
+      },
+    ]
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      bookingNumber: '123',
+      documents: [
+        {
+          category: 'PREVIOUS_CONVICTIONS_SHEET',
+          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
+          fileName: 'PreCons Wesley Holt.pdf',
+        },
+      ],
+    })
+    ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
+    res.redirect = (code, url) => {
+      expect(url).toEqual(req.originalUrl)
+      done()
+    }
+    uploadMultipleNewDocuments(req, res)
+  })
+
   it("doesn't try to save to the API if there are no uploaded files", async () => {
     req.files = []
     await uploadMultipleNewDocuments(req, res)
