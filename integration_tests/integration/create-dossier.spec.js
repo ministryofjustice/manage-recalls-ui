@@ -1,7 +1,6 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
-import { stubRefData } from '../support/mock-api'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -57,9 +56,9 @@ context('Create a dossier', () => {
           },
         ],
         returnedToCustodyDateTime: undefined,
+        returnedToCustodyNotificationDateTime: undefined,
       },
     })
-    stubRefData()
     const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
 
     dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
@@ -147,18 +146,10 @@ context('Create a dossier', () => {
         returnedToCustodyDateTime: undefined,
       },
     })
-    stubRefData()
-    const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
-    // custody details
-    dossierRecall.assertElementHasText({
-      qaAttr: 'inCustodyAtBooking',
-      textToFind: 'Not in custody',
-    })
-    dossierRecall.assertElementHasText({
-      qaAttr: 'inCustodyAtAssessment',
-      textToFind: 'Not in custody',
-    })
-    dossierRecall.assertElementNotPresent({ qaAttr: 'currentPrison' })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
+    cy.getText('inCustodyAtBooking').should('equal', 'Not in custody')
+    cy.getText('inCustodyAtAssessment').should('equal', 'Not in custody')
+    cy.getElement({ qaAttr: 'currentPrison' }).should('not.exist')
   })
 
   it('can create a dossier', () => {
@@ -167,6 +158,8 @@ context('Create a dossier', () => {
         ...getRecallResponse,
         recallId,
         status,
+        returnedToCustodyDateTime: undefined,
+        returnedToCustodyNotificationDateTime: undefined,
         documents: [
           {
             category: 'PART_A_RECALL_REPORT',
@@ -246,6 +239,23 @@ context('Create a dossier', () => {
     dossierEmail.uploadFile({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
     dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()
+  })
+
+  it('asks for current prison if the person has returned to custody', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status,
+        currentPrison: undefined,
+      },
+    })
+    cy.task('expectUpdateRecall', { recallId, status })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
+    cy.clickLink('Create dossier')
+    cy.pageHeading().should('equal', `Which prison is ${personName} in?`)
+    cy.selectFromAutocomplete(`Which prison is ${personName} in?`, 'Vern')
+    cy.clickButton('Continue')
   })
 
   it('errors - download the dossier', () => {

@@ -17,21 +17,21 @@ describe('prisons refdata', () => {
     },
   ])
 
-  it('fetches and formats a list of prisons', async () => {
+  it('fetches and formats a list of prisons, sorted alphabetically', async () => {
     jest.useFakeTimers()
     const promise = prisons.updateData()
     jest.advanceTimersByTime(5000)
     await promise.then(() => {
       expect(prisons.data).toEqual([
         {
-          value: 'ALI',
-          text: 'Albany (HMP)',
-          active: false,
-        },
-        {
           value: 'AKI',
           text: 'Acklington (HMP)',
           active: true,
+        },
+        {
+          value: 'ALI',
+          text: 'Albany (HMP)',
+          active: false,
         },
       ])
       jest.useRealTimers()

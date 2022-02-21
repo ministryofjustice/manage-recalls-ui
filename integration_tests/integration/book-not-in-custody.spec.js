@@ -4,7 +4,7 @@ import {
   getOsPlacesAddresses,
   getOsPlacesAddress,
 } from '../mockApis/mockResponses'
-import { formatIsoDate } from '../support/utils'
+import { formatIsoDate, getReferenceDataItemLabel } from '../support/utils'
 
 context('Book a "not in custody" recall', () => {
   const nomsNumber = 'A1234AA'
@@ -263,5 +263,10 @@ context('Book a "not in custody" recall', () => {
       'equal',
       formatIsoDate(getRecallResponse.returnedToCustodyNotificationDateTime)
     )
+    cy.recallInfo('Prison held in').should(
+      'equal',
+      getReferenceDataItemLabel('prisons', getRecallResponse.currentPrison)
+    )
+    cy.getLinkHref('Change current prison').should('contain', `/assess-prison?fromPage=view-recall&fromHash=custody`)
   })
 })

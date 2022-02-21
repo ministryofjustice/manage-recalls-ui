@@ -122,7 +122,7 @@ const refData = {
   courts: getCourtsResponse,
   localDeliveryUnits: getLocalDeliveryUnitsResponse,
   policeForces: getPoliceForcesResponse,
-  prisons: getPrisonsResponse,
+  prisons: getPrisonsResponse.map(({ prisonId, prisonName }) => ({ id: prisonId, name: prisonName })),
   mappaLevels: getMappaLevelsResponse,
   reasonsForRecall: getReasonsForRecallResponse,
   stopReasons: getStopReasonsResponse,

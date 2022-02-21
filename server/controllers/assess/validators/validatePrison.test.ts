@@ -1,4 +1,4 @@
-import { validatePrison } from './validatePrison'
+import { validateAssessPrison } from './validatePrison'
 import * as referenceDataExports from '../../../referenceData'
 
 describe('validatePrison', () => {
@@ -22,7 +22,7 @@ describe('validatePrison', () => {
       currentPrison: 'BEL',
       currentPrisonInput: 'Belmarsh (HMP)',
     }
-    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
+    const { errors, valuesToSave } = validateAssessPrison({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       currentPrison: 'BEL',
@@ -34,7 +34,7 @@ describe('validatePrison', () => {
       currentPrison: 'BEL',
       currentPrisonInput: 'Belmarsh (HMP)',
     }
-    const { redirectToPage } = validatePrison({ requestBody, urlInfo })
+    const { redirectToPage } = validateAssessPrison({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/assess-download')
   })
 
@@ -43,7 +43,7 @@ describe('validatePrison', () => {
       currentPrison: 'BEL',
       currentPrisonInput: 'Belmarsh (HMP)',
     }
-    const { redirectToPage } = validatePrison({
+    const { redirectToPage } = validateAssessPrison({
       requestBody,
       urlInfo: { ...urlInfo, fromPage: 'view-recall', fromHash: 'prisonDetails' },
     })
@@ -52,7 +52,7 @@ describe('validatePrison', () => {
 
   it('returns no valuesToSave and an error if nothing is submitted', () => {
     const requestBody = {}
-    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
+    const { errors, valuesToSave } = validateAssessPrison({ requestBody, urlInfo })
     expect(errors).toEqual([
       {
         href: '#currentPrison',
@@ -68,7 +68,7 @@ describe('validatePrison', () => {
       currentPrison: 'BAI',
       currentPrisonInput: '1235',
     }
-    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
+    const { errors, valuesToSave } = validateAssessPrison({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -85,7 +85,7 @@ describe('validatePrison', () => {
       currentPrison: '',
       currentPrisonInput: '1235',
     }
-    const { errors, valuesToSave } = validatePrison({ requestBody, urlInfo })
+    const { errors, valuesToSave } = validateAssessPrison({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {

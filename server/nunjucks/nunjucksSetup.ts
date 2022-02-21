@@ -13,10 +13,6 @@ import {
   allowedEmailFileExtensionList,
   allowedDocumentFileExtensionList,
   allowedImageFileExtensionList,
-  backLinkUrl,
-  backLinkUrlRecallReceived,
-  backLinkUrlAssessDownload,
-  changeLinkUrl,
   errorMessage,
   removeUndefinedFromObject,
   allowedImageFileTypeLabelList,
@@ -37,6 +33,7 @@ import {
 } from '../controllers/utils/recallStatus'
 import { listDocumentLabels, objectToArray, sortList } from '../controllers/utils/lists'
 import { isDefined } from '../utils/utils'
+import { backLinkUrl, backLinkUrlAssessDownload, backLinkUrlRecallReceived, changeLinkUrl } from './urls'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
