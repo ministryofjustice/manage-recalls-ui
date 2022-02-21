@@ -31,6 +31,8 @@ export type { RescindRequestRequest } from './models/RescindRequestRequest';
 export type { ReturnedToCustodyRequest } from './models/ReturnedToCustodyRequest';
 export type { SearchRequest } from './models/SearchRequest';
 export type { SentenceLength } from './models/SentenceLength';
+export type { StopReasonResponse } from './models/StopReasonResponse';
+export { StopRecallRequest } from './models/StopRecallRequest';
 export { UpdateDocumentRequest } from './models/UpdateDocumentRequest';
 export { UpdateDocumentResponse } from './models/UpdateDocumentResponse';
 export { UpdateRecallRequest } from './models/UpdateRecallRequest';
