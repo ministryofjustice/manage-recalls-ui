@@ -49,8 +49,8 @@ context('Stop a recall', () => {
     cy.getText('confirmation').should('equal', 'Recall stopped.')
     cy.clickLink('View')
     cy.recallInfo('Reason recall stopped').should('equal', getReferenceDataItemLabel('stopReasons', recall.stopReason))
-    cy.recallInfo('Recall stopped by').should('equal', getRecallResponse.stoppedByUserName)
-    cy.recallInfo('Recall stopped on').should('equal', formatIsoDate(getRecallResponse.stoppedDateTime))
+    cy.recallInfo('Recall stopped by').should('equal', getRecallResponse.stopByUserName)
+    cy.recallInfo('Recall stopped on').should('equal', formatIsoDate(getRecallResponse.stopDateTime))
   })
 
   it('errors - stop recall', () => {
