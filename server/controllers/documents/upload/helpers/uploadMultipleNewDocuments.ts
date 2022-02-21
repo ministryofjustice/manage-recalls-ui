@@ -43,11 +43,12 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
     return res.redirect(303, req.originalUrl)
   }
 
-  const recall = await getRecall(recallId, token)
   // only render a response for XHR if there were no errors
   if (req.xhr) {
+    const recall = await getRecall(recallId, token)
     const { existingDocIds } = body
     const parsed = JSON.parse(existingDocIds)
     return renderXhrResponse({ res, existingDocIds: parsed, urlInfo, recall })
   }
+  return res.redirect(303, req.originalUrl)
 }
