@@ -1,17 +1,17 @@
 {% extends "../partials/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Assess a recall - In which prison is the person?" %}
+{% set pageTitle = applicationName + " - Create a dossier - In which prison is the person?" %}
 
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("assess-custody-status" if isDefined(recall.inCustodyAtAssessment) else "assess-licence", urlInfo)
+        href: backLinkUrl("dossier-recall", urlInfo)
     }) }}
 {% endblock %}
 
 {% block content %}
-    {%  set titlePrefix = "Assess a recall for " %}
+    {%  set titlePrefix = "Create a dossier for " %}
     {% include '../partials/currentPrison.njk' %}
 {% endblock %}
 

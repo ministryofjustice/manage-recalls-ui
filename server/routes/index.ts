@@ -10,7 +10,7 @@ import { recallFormPost } from '../controllers/recallFormPost'
 import { validateDecision } from '../controllers/assess/validators/validateDecision'
 import { validateDossierLetter } from '../controllers/dossier/validators/validateDossierLetter'
 import { validateLicence } from '../controllers/assess/validators/validateLicence'
-import { validatePrison } from '../controllers/assess/validators/validatePrison'
+import { validateAssessPrison } from '../controllers/assess/validators/validatePrison'
 import { validateRecallRequestReceived } from '../controllers/book/validators/validateRecallRequestReceived'
 import { validateSentenceDetails } from '../controllers/book/validators/validateSentenceDetails'
 import { validatePolice } from '../controllers/book/validators/validatePolice'
@@ -50,6 +50,7 @@ import { saveWarrantReference } from '../controllers/assess/helpers/saveWarrantR
 import { rescindFormHandler } from '../controllers/rescind/rescindFormHandler'
 import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
+import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -119,7 +120,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-custody-status`, recallPageGet('assessCustodyStatus'))
   post(`${basePath}/assess-custody-status`, recallFormPost(validateConfirmCustodyStatus))
   get(`${basePath}/assess-prison`, recallPageGet('assessPrison'))
-  post(`${basePath}/assess-prison`, recallFormPost(validatePrison))
+  post(`${basePath}/assess-prison`, recallFormPost(validateAssessPrison))
   get(`${basePath}/assess-download`, recallPageGet('assessDownload'))
   get(`${basePath}/assess-email`, recallPageGet('assessEmail'))
   post(
@@ -140,6 +141,8 @@ export default function routes(router: Router): Router {
   // CREATE DOSSIER
   post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
   get(`${basePath}/dossier-recall`, recallPageGet('dossierRecallInformation'))
+  get(`${basePath}/dossier-prison`, recallPageGet('dossierPrison'))
+  post(`${basePath}/dossier-prison`, recallFormPost(validateDossierPrison))
   get(`${basePath}/dossier-letter`, recallPageGet('dossierLetter'))
   post(`${basePath}/dossier-letter`, recallFormPost(validateDossierLetter))
   get(`${basePath}/dossier-check`, recallPageGet('dossierCheck'))

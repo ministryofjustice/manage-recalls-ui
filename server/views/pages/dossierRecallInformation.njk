@@ -37,7 +37,7 @@
                         Create dossier
                     </button>
                 {% else %}
-                <a class="govuk-button" data-qa='continueButton' href='/persons/{{ recall.nomsNumber }}/recalls/{{ recall.recallId }}/dossier-letter'>
+                <a class="govuk-button" data-qa='continueButton' href='/persons/{{ recall.nomsNumber }}/recalls/{{ recall.recallId }}/{% if recall.returnedToCustodyDateTime %}dossier-prison{% else %}dossier-letter{% endif %}'>
                     Create dossier
                 </a>
                 {% endif %}

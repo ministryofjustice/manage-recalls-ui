@@ -80,6 +80,7 @@ export type ViewName =
   | 'recallCheckAnswers'
   | 'recallConfirmation'
   | 'dossierRecallInformation'
+  | 'dossierPrison'
   | 'dossierLetter'
   | 'dossierCheck'
   | 'dossierEmail'
