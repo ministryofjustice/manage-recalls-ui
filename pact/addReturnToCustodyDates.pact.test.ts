@@ -35,7 +35,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
 
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
-        state: 'an unauthorized user token',
+        state: 'an unauthorized user accessToken',
         ...pactPostRequest('an unauthorized add return to custody dates request', path, valuesToSave, token),
         willRespondWith: { status: 401 },
       })
