@@ -11,7 +11,7 @@ export const validateRecallNotificationEmail = ({
   uploadFailed,
   invalidFileFormat,
   actionedByUserId,
-}: EmailUploadValidatorArgs): ReqValidatorReturn => {
+}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let unsavedValues
   let valuesToSave

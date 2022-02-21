@@ -14,6 +14,7 @@ import getOsPlacesAddresses from '../../fake-os-places-api/stubs/__files/get-add
 import getOsPlacesAddress from '../../fake-os-places-api/stubs/__files/get-addresses-by-uprn.json'
 import getMappaLevelsResponse from '../../fake-manage-recalls-api/stubs/__files/get-mappa-levels.json'
 import getReasonsForRecallResponse from '../../fake-manage-recalls-api/stubs/__files/get-reasons-for-recall.json'
+import getStopReasonsResponse from '../../fake-manage-recalls-api/stubs/__files/get-stop-reasons.json'
 
 export {
   getPrisonerResponse,
@@ -32,4 +33,5 @@ export {
   getOsPlacesAddress,
   getMappaLevelsResponse,
   getReasonsForRecallResponse,
+  getStopReasonsResponse,
 }

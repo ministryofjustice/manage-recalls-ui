@@ -1,0 +1,40 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Stop a recall" %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <form novalidate action="{{ makeUrl('stop-recall', urlInfo, csrfToken) }}" method="post">
+                <span class="govuk-caption-l">Stop recall for {{ recall.fullName }}</span>
+                {{ govukSelect({
+                    id: "stopReason",
+                    name: "stopReason",
+                    label: {
+                        text: "Why are you stopping this recall?",
+                        classes: "govuk-label--l",
+                        isPageHeading: true
+                    },
+                    items: selectItems(filterActiveItems(referenceData.stopReasons)),
+                    errorMessage: errorMessage(errors.stopReason)
+                }) }}
+                <div class='govuk-!-margin-top-6'>
+                    <button class="govuk-button">
+                        Save and return
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

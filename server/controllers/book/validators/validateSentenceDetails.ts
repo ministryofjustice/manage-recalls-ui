@@ -6,7 +6,10 @@ import { isStringValidReferenceData } from '../../../referenceData'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 
-export const validateSentenceDetails = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateSentenceDetails = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
   let unsavedValues

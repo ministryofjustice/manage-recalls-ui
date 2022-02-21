@@ -2,8 +2,9 @@ import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { isStringValidReferenceData } from '../../../referenceData'
 import { formatValidationErrorMessage, makeErrorObject } from '../../utils/errorMessages'
 import { makeUrlToFromPage } from '../../utils/makeUrl'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
-export const validatePrison = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validatePrison = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
 

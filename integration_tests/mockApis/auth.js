@@ -136,6 +136,7 @@ const stubUser = wiremock =>
         username: 'USER1',
         active: true,
         name: 'john smith',
+        uuid: '1223',
       },
     },
   })

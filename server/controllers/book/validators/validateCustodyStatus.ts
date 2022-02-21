@@ -1,8 +1,12 @@
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
+import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 
-export const validateCustodyStatus = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validateCustodyStatus = ({
+  requestBody,
+  urlInfo,
+}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
   let redirectToPage

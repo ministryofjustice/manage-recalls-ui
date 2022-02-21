@@ -1,4 +1,13 @@
 import { DateTime, Settings } from 'luxon'
+import {
+  getCourtsResponse,
+  getLocalDeliveryUnitsResponse,
+  getPoliceForcesResponse,
+  getPrisonsResponse,
+  getMappaLevelsResponse,
+  getReasonsForRecallResponse,
+  getStopReasonsResponse,
+} from '../mockApis/mockResponses'
 
 Settings.throwOnInvalid = true
 
@@ -107,4 +116,19 @@ export const splitFullName = fullName => {
     firstName: split[0],
     lastName: split[1],
   }
+}
+
+const refData = {
+  courts: getCourtsResponse,
+  localDeliveryUnits: getLocalDeliveryUnitsResponse,
+  policeForces: getPoliceForcesResponse,
+  prisons: getPrisonsResponse,
+  mappaLevels: getMappaLevelsResponse,
+  reasonsForRecall: getReasonsForRecallResponse,
+  stopReasons: getStopReasonsResponse,
+}
+
+export const getReferenceDataItemLabel = (refDataCategory, itemId) => {
+  const list = refData[refDataCategory] || []
+  return list ? list.find(item => item.id === itemId).name || undefined : undefined
 }

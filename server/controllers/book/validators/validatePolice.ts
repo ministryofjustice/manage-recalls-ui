@@ -4,7 +4,7 @@ import { isStringValidReferenceData } from '../../../referenceData'
 import { formatValidationErrorMessage, makeErrorObject } from '../../utils/errorMessages'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 
-export const validatePolice = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn => {
+export const validatePolice = ({ requestBody, urlInfo }: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
 

@@ -1,19 +1,15 @@
-import { ValidationError, ReqValidatorArgs, NamedFormError, ObjectMap } from '../../../@types'
+import { ValidationError, ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { formatValidationErrorMessage, makeErrorObject } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { ReturnedToCustodyRequest } from '../../../@types/manage-recalls-api/models/ReturnedToCustodyRequest'
 
 export const validateReturnToCustodyDates = ({
   requestBody,
-}: ReqValidatorArgs): {
-  errors: NamedFormError[]
-  valuesToSave: ReturnedToCustodyRequest
-  unsavedValues: ObjectMap<unknown>
-  redirectToPage: string
-} => {
+}: ReqValidatorArgs): ReqValidatorReturn<ReturnedToCustodyRequest> => {
   let errors
   let unsavedValues
   let valuesToSave
+  let confirmationMessage
   const returnedToCustodyDateTimeParts = {
     year: requestBody.returnedToCustodyDateTimeYear,
     month: requestBody.returnedToCustodyDateTimeMonth,
@@ -63,7 +59,6 @@ export const validateReturnToCustodyDates = ({
         })
       )
     }
-
     unsavedValues = {
       returnedToCustodyDateTimeParts,
       returnedToCustodyNotificationDateTimeParts,
@@ -71,6 +66,10 @@ export const validateReturnToCustodyDates = ({
   }
   if (!errors) {
     valuesToSave = { returnedToCustodyDateTime, returnedToCustodyNotificationDateTime } as ReturnedToCustodyRequest
+    confirmationMessage = {
+      text: 'Recall updated and moved to the to do list',
+      type: 'success',
+    }
   }
-  return { errors, valuesToSave, unsavedValues, redirectToPage: '/' }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: '/', confirmationMessage }
 }
