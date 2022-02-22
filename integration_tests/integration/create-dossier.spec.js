@@ -269,7 +269,7 @@ context('Create a dossier', () => {
     cy.pageHeading().should('equal', 'Email New Scotland Yard')
     cy.getLinkHref('Email New Scotland Yard', { parent: 'form' }).should(
       'contain',
-      `mailto:[nsy_pnc_email]?subject=RTC%20-%20Bobby%20Badger%20-%20A123456&body=Please%20note%20that%20Bobby%20Badger%20-%2028%20May%201999%2C%201234%2F56A%2C%20A123456%20-%20was%20returned%20to%20Kennet%20(HMP)%20on%2022%20January%202022%20at%2013%3A45.%20Please%20remove%20them%20from%20the%20PNC%20if%20this%20has%20not%20already%20been%20done`
+      `mailto:[nsy_pnc_email]?subject=RTC%20-%20Bobby%20Badger%20-%20A123456&body=Please%20note%20that%20Bobby%20Badger%20-%2028%20May%201999%2C%201234%2F56A%2C%20A123456%20-%20was%20returned%20to%20Kennet%20(HMP)%20on%2022%20January%202022%20at%2013%3A45.%20Please%20remove%20them%20from%20the%20PNC%20if%20this%20has%20not%20already%20been%20done.`
     )
     cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
     cy.uploadEmail({ field: 'nsyEmailFileName' })

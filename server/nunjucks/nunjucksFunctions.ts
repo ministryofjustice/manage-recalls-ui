@@ -213,7 +213,7 @@ export const formatNsyWarrantEmailLink = (recall: RecallResponse) => {
       recall.croNumber
     }, ${recall.bookingNumber} - was returned to ${prisonLabel} on ${formatDateTimeFromIsoString(
       recall.returnedToCustodyDateTime
-    )}. Please remove them from the PNC if this has not already been done`
+    )}. Please remove them from the PNC if this has not already been done.`
   )
   return `mailto:${email}?subject=${subject}&body=${body}`
 }
