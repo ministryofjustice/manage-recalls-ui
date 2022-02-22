@@ -11,6 +11,9 @@ import { isRescindInProgress, isStatusNotStopped, wasLastRescindApproved } from 
 import { makeUrl } from '../controllers/utils/makeUrl'
 import { listToString } from '../controllers/utils/lists'
 import { isDefined } from '../utils/utils'
+import { sensitiveInfo } from '../referenceData/sensitiveInfo'
+import { getReferenceDataItemLabel } from '../referenceData'
+import { formatDateTimeFromIsoString } from '../controllers/utils/dates/format'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -200,3 +203,17 @@ export const selectDocCategory = (
 }
 
 export const renderTemplateString = (str: string, data: ObjectMap<unknown>): string => nunjucks.renderString(str, data)
+
+export const formatNsyWarrantEmailLink = (recall: RecallResponse) => {
+  const email = sensitiveInfo.newScotlandYardPncEmail
+  const prisonLabel = getReferenceDataItemLabel('prisons', recall.currentPrison)
+  const subject = encodeURIComponent(`RTC - ${recall.firstName} ${recall.lastName} - ${recall.bookingNumber}`)
+  const body = encodeURIComponent(
+    `Please note that ${recall.firstName} ${recall.lastName} - ${formatDateTimeFromIsoString(recall.dateOfBirth)}, ${
+      recall.croNumber
+    }, ${recall.bookingNumber} - was returned to ${prisonLabel} on ${formatDateTimeFromIsoString(
+      recall.returnedToCustodyDateTime
+    )}. Please remove them from the PNC if this has not already been done`
+  )
+  return `mailto:${email}?subject=${subject}&body=${body}`
+}

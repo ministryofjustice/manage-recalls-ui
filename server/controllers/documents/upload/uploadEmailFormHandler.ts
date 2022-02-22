@@ -81,12 +81,14 @@ export const uploadEmailFormHandler =
           req.session.unsavedValues = unsavedValues
           return res.redirect(303, req.originalUrl)
         }
-        const recall = await updateRecall(recallId, valuesToSave, user.token)
-        if (unassignUserFromRecall && isInCustody(recall) === true) {
-          try {
-            await unassignUserFromRecall(recallId, user.uuid, user.token)
-          } catch (e) {
-            logger.error(`User ${user.uuid} could not be unassigned from recall ${recallId}`)
+        if (valuesToSave) {
+          const recall = await updateRecall(recallId, valuesToSave, user.token)
+          if (unassignUserFromRecall && isInCustody(recall) === true) {
+            try {
+              await unassignUserFromRecall(recallId, user.uuid, user.token)
+            } catch (e) {
+              logger.error(`User ${user.uuid} could not be unassigned from recall ${recallId}`)
+            }
           }
         }
         return res.redirect(

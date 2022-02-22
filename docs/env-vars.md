@@ -7,8 +7,9 @@ Env vars in use include:
 - API_CLIENT_ID - Created add added by the HMPPS tech team when they create the ClientId for your app
 - API_CLIENT_SECRET - Created add added by the HMPPS tech team when they create the ClientId for your app
 - APPINSIGHTS_INSTRUMENTATIONKEY - Can be found from the relevant Application Insights instance for your environment in azure.portal.com
-- MANAGER_NAME
-- MANAGER_PHONE
+- MANAGER_NAME - name of the PPCS manager of the "Manage a recall" service
+- MANAGER_PHONE - for the PPCS manager
+- NSY_PNC_EMAIL - email address for the New Scotland Yard email account to send notification of return to custody
 - OS_PLACES_API_KEY - API key for Ordnance Survey Places API
 - SESSION_SECRET
 - SYSTEM_CLIENT_ID - If required, created add added by the HMPPS tech team

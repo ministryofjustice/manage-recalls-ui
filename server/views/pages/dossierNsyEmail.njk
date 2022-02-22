@@ -1,0 +1,88 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Email New Scotland Yard" %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("dossier-prison", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <span class="govuk-caption-l"
+                  data-qa="addRecallTypeCaption">Create a dossier for {{ recall.fullName }}</span>
+            <h1 class='govuk-heading-l'>Email New Scotland Yard</h1>
+
+            <div class="govuk-!-margin-top-4">
+
+                <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
+                      method="post" enctype="multipart/form-data">
+                    <p class='govuk-body'>
+                        <a href="{{ formatNsyWarrantEmailLink(recall) }}">Email New Scotland Yard</a> (opens an email).
+                    </p>
+                    {% set emailConfirmHtml %}
+                        <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
+                            <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                            {%  set emailField = recall.emailsUploaded.NSY_REMOVE_WARRANT_EMAIL %}
+                            {%  include '../partials/uploadedEmailLink.njk' %}
+                            {{ govukFileUpload({
+                                id: "nsyEmailFileName",
+                                name: "nsyEmailFileName",
+                                label: {
+                                    text: "Upload the email",
+                                    classes: 'govuk-visually-hidden'
+                                },
+                                attributes: {
+                                    accept: allowedEmailFileExtensionList()
+                                },
+                                errorMessage: errorMessage(errors.nsyEmailFileName)
+                            }) }}
+                        </div>
+                    {% endset -%}
+
+                    {{ govukCheckboxes({
+                        idPrefix: "confirmNsyEmailSent",
+                        name: "confirmNsyEmailSent",
+                        fieldset: {
+                            legend: {
+                                text: "I have sent the email",
+                                classes: "govuk-visually-hidden"
+                            }
+                        },
+                        items: [
+                            {
+                                value: "YES",
+                                text: "I have sent the email",
+                                conditional: {
+                                    html: emailConfirmHtml
+                                },
+                                checked: true if formValues.confirmNsyEmailSent == 'YES'
+                            }
+                        ],
+                        errorMessage: errorMessage(errors.confirmNsyEmailSent)
+                    }) }}
+                    <div class="govuk-!-margin-top-6">
+                        <button class="govuk-button">Continue</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

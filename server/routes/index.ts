@@ -51,6 +51,7 @@ import { rescindFormHandler } from '../controllers/rescind/rescindFormHandler'
 import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
 import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
+import { validateNsyEmail } from '../controllers/dossier/validators/validateNsyEmail'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -143,6 +144,15 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-recall`, recallPageGet('dossierRecallInformation'))
   get(`${basePath}/dossier-prison`, recallPageGet('dossierPrison'))
   post(`${basePath}/dossier-prison`, recallFormPost(validateDossierPrison))
+  get(`${basePath}/dossier-nsy-email`, recallPageGet('dossierNsyEmail'))
+  post(
+    `${basePath}/dossier-nsy-email`,
+    uploadEmailFormHandler({
+      emailFieldName: 'nsyEmailFileName',
+      validator: validateNsyEmail,
+      documentCategory: UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL,
+    })
+  )
   get(`${basePath}/dossier-letter`, recallPageGet('dossierLetter'))
   post(`${basePath}/dossier-letter`, recallFormPost(validateDossierLetter))
   get(`${basePath}/dossier-check`, recallPageGet('dossierCheck'))

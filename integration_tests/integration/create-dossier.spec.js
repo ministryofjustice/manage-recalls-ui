@@ -1,6 +1,7 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 import recallsListPage from '../pages/recallsList'
+import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
@@ -241,7 +242,7 @@ context('Create a dossier', () => {
     dossierConfirmationPage.verifyOnPage()
   })
 
-  it('asks for current prison if the person has returned to custody', () => {
+  it.only('asks for current prison then NSY email confirmation, if the person has returned to custody', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
@@ -251,11 +252,48 @@ context('Create a dossier', () => {
       },
     })
     cy.task('expectUpdateRecall', { recallId, status })
+    cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
     cy.clickLink('Create dossier')
     cy.pageHeading().should('equal', `Which prison is ${personName} in?`)
-    cy.selectFromAutocomplete(`Which prison is ${personName} in?`, 'Vern')
+    cy.selectFromAutocomplete(`Which prison is ${personName} in?`, 'Kenn')
+    // reset the stub so it includes current prison, ready for the next page render
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status,
+      },
+    })
     cy.clickButton('Continue')
+    cy.pageHeading().should('equal', 'Email New Scotland Yard')
+    cy.getLinkHref('Email New Scotland Yard', { parent: 'form' }).should(
+      'contain',
+      `mailto:[nsy_pnc_email]?subject=RTC%20-%20Bobby%20Badger%20-%20A123456&body=Please%20note%20that%20Bobby%20Badger%20-%2028%20May%201999%2C%201234%2F56A%2C%20A123456%20-%20was%20returned%20to%20Kennet%20(HMP)%20on%2022%20January%202022%20at%2013%3A45.%20Please%20remove%20them%20from%20the%20PNC%20if%20this%20has%20not%20already%20been%20done`
+    )
+    cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
+    cy.uploadEmail({ field: 'nsyEmailFileName' })
+    cy.clickButton('Continue')
+    cy.getLinkHref('Back').should('contain', '/dossier-nsy-email')
+    // NSY email visible on recall info page
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        status,
+        documents: [
+          {
+            category: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+            documentId: '639',
+            fileName: 'nsy.msg',
+            createdByUserName: 'Arnold Caseworker',
+            createdDateTime: '2020-04-01T12:00:00.000Z',
+          },
+        ],
+      },
+    })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.recallInfo('NSY email uploaded').should('contain', 'nsy.msg')
   })
 
   it('errors - download the dossier', () => {

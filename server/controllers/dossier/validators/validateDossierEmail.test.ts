@@ -1,6 +1,6 @@
 import { validateDossierEmail } from './validateDossierEmail'
 
-describe('validateEmail', () => {
+describe('validateDossierEmail', () => {
   const requestBody = {
     confirmDossierEmailSent: 'YES',
     dossierEmailSentDateYear: '2021',

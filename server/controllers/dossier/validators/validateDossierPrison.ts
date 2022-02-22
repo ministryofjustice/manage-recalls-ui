@@ -8,7 +8,7 @@ export const validateDossierPrison = ({
   requestBody,
   urlInfo,
 }: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
-  return validatePrison({ requestBody, urlInfo, pageSuffix: 'dossier-letter' })
+  return validatePrison({ requestBody, urlInfo, pageSuffix: 'dossier-nsy-email' })
 }
 
 export const validatePrison = ({

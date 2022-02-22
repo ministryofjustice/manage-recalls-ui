@@ -8,6 +8,7 @@ import { RecallDocument } from '../../../@types/manage-recalls-api/models/Recall
 import { validateRecallNotificationEmail } from '../../assess/validators/validateRecallNotificationEmail'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import getRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import { validateNsyEmail } from '../../dossier/validators/validateNsyEmail'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
@@ -62,6 +63,40 @@ describe('emailUploadForm', () => {
       },
     }
     handler(req, res)
+  })
+
+  it('does not update the recall if there are no valuesToSave', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    req.body = {
+      confirmNsyEmailSent: 'YES',
+    }
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: { basePath: '/persons/456/recalls/789/' },
+      },
+      redirect: () => {
+        expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
+        expect(updateRecall).not.toHaveBeenCalled()
+        expect(req.session.errors).toBeUndefined()
+        done()
+      },
+    }
+    uploadEmailFormHandler({
+      emailFieldName: 'recallNsyEmailFileName',
+      validator: validateNsyEmail,
+      documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+      nextPageUrlSuffix: 'dossier-letter',
+    })(req, res)
   })
 
   it('redirects to the fromPage if supplied eg check answers', done => {

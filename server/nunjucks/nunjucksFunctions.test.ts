@@ -4,15 +4,18 @@ import {
   checkboxItems,
   dateTimeItems,
   filterSelectedItems,
+  formatNsyWarrantEmailLink,
   personOrPeopleFilter,
   recallInfoActionMenuItems,
   removeUndefinedFromObject,
   selectItems,
   userNameFilter,
 } from './nunjucksFunctions'
-import { reasonForRecall } from '../referenceData'
+import { getReferenceDataItemLabel, reasonForRecall } from '../referenceData'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 import status = RecallResponse.status
+
+jest.mock('../referenceData')
 
 describe('personOrPeopleFilter', () => {
   it('count is 0', () => {
@@ -392,5 +395,24 @@ describe('recallInfoActionMenuItems', () => {
         text: 'Rescind recall',
       },
     ])
+  })
+})
+
+describe('formatNsyWarrantEmailLink', () => {
+  it('returns a formatted link', () => {
+    const recall = {
+      firstName: 'Dave',
+      lastName: 'Smith',
+      dateOfBirth: '1999-05-28',
+      croNumber: '345345',
+      bookingNumber: 'A123456',
+      returnedToCustodyDateTime: '2022-01-22T13:45:33.000Z',
+      currentPrison: 'KTI',
+    } as RecallResponse
+    ;(getReferenceDataItemLabel as jest.Mock).mockReturnValue('Kennet (HMP)')
+    const link = formatNsyWarrantEmailLink(recall)
+    expect(link).toEqual(
+      'mailto:[nsy_pnc_email]?subject=RTC%20-%20Dave%20Smith%20-%20A123456&body=Please%20note%20that%20Dave%20Smith%20-%2028%20May%201999%2C%20345345%2C%20A123456%20-%20was%20returned%20to%20Kennet%20(HMP)%20on%2022%20January%202022%20at%2013%3A45.%20Please%20remove%20them%20from%20the%20PNC%20if%20this%20has%20not%20already%20been%20done'
+    )
   })
 })

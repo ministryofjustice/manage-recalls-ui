@@ -91,6 +91,22 @@
     </dd>
   </div>
   {% endif %}
+  {% if recall.emailsUploaded.NSY_REMOVE_WARRANT_EMAIL %}
+  <div class="govuk-summary-list__row">
+    <dt class=" govuk-summary-list__key">
+      NSY email uploaded
+    </dt>
+    <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
+      <a href='{{ recall.emailsUploaded.NSY_REMOVE_WARRANT_EMAIL.url }}' class='govuk-link'
+         data-qa='uploadedDocument-NSY_REMOVE_WARRANT_EMAIL'
+         download>{{ recall.emailsUploaded.NSY_REMOVE_WARRANT_EMAIL.fileName }}</a>
+    </dd>
+    <dd class=" govuk-summary-list__actions">
+      <a href='{{ changeLinkUrl('dossier-nsy-email', urlInfo, 'custodyDetails') }}' class='govuk-link'>Change <span
+                class="govuk-visually-hidden"> uploaded New Scotland Yard email</span></a>
+    </dd>
+  </div>
+  {% endif %}
   {% if recall.status == 'DOSSIER_ISSUED' %}
   <div class="govuk-summary-list__row">
     <dt class=" govuk-summary-list__key">
