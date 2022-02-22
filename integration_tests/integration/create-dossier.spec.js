@@ -242,7 +242,7 @@ context('Create a dossier', () => {
     dossierConfirmationPage.verifyOnPage()
   })
 
-  it.only('asks for current prison then NSY email confirmation, if the person has returned to custody', () => {
+  it('asks for current prison then NSY email confirmation, if the person has returned to custody', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
@@ -294,6 +294,27 @@ context('Create a dossier', () => {
     })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('NSY email uploaded').should('contain', 'nsy.msg')
+  })
+
+  it('errors - email New Scotland Yard', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: emptyRecall,
+    })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-nsy-email' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'confirmNsyEmailSent',
+      summaryError: "Confirm you've sent the email to all recipients",
+    })
+
+    // confirm sending but don't enter a send date or upload an email
+    cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'nsyEmailFileName',
+      summaryError: 'Select an email',
+    })
   })
 
   it('errors - download the dossier', () => {
