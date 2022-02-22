@@ -15,7 +15,7 @@ export const validateNsyEmail = ({
   let unsavedValues
 
   const { confirmNsyEmailSent } = requestBody
-  const existingUpload = requestBody[UploadDocumentRequest.category.DOSSIER_EMAIL] === 'existingUpload'
+  const existingUpload = requestBody[UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL] === 'existingUpload'
   if ((!emailFileSelected && !existingUpload) || uploadFailed || invalidFileFormat || !confirmNsyEmailSent) {
     errors = []
     if (!confirmNsyEmailSent) {

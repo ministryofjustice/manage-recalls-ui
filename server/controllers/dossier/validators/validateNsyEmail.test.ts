@@ -20,7 +20,7 @@ describe('validateNsyEmail', () => {
 
   it("returns no errors if an email wasn't uploaded, but there is an existing upload", () => {
     const { errors } = validateNsyEmail({
-      requestBody: { ...requestBody, DOSSIER_EMAIL: 'existingUpload' },
+      requestBody: { ...requestBody, NSY_REMOVE_WARRANT_EMAIL: 'existingUpload' },
       emailFileSelected: false,
       uploadFailed: false,
       invalidFileFormat: false,
