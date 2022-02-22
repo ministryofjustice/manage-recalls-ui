@@ -209,9 +209,11 @@ export const formatNsyWarrantEmailLink = (recall: RecallResponse) => {
   const prisonLabel = getReferenceDataItemLabel('prisons', recall.currentPrison)
   const subject = encodeURIComponent(`RTC - ${recall.firstName} ${recall.lastName} - ${recall.bookingNumber}`)
   const body = encodeURIComponent(
-    `Please note that ${recall.firstName} ${recall.lastName} - ${formatDateTimeFromIsoString(recall.dateOfBirth)}, ${
-      recall.croNumber
-    }, ${recall.bookingNumber} - was returned to ${prisonLabel} on ${formatDateTimeFromIsoString(
+    `Please note that ${recall.firstName} ${recall.lastName} - ${formatDateTimeFromIsoString(
+      recall.dateOfBirth
+    )}, CRO - ${recall.croNumber}, Booking number - ${
+      recall.bookingNumber
+    } - was returned to ${prisonLabel} on ${formatDateTimeFromIsoString(
       recall.returnedToCustodyDateTime
     )}. Please remove them from the PNC if this has not already been done.`
   )
