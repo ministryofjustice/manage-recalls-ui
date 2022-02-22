@@ -362,7 +362,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'GET',
-          urlPattern: '/health/ping',
+          urlPattern: '/health',
         },
         response: {
           status: 200,
