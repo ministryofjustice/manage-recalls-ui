@@ -124,6 +124,11 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     type: 'email',
   },
   {
+    label: 'New Scotland Yard warrant email sent',
+    name: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+    type: 'email',
+  },
+  {
     label: 'Recall notification',
     name: RecallDocument.category.RECALL_NOTIFICATION,
     type: 'generated',

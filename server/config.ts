@@ -91,6 +91,7 @@ const config = {
       name: get('MANAGER_NAME', '[name]'),
       phone: get('MANAGER_PHONE', '[phone]'),
     },
+    newScotlandYardPncEmail: get('NSY_PNC_EMAIL', '[nsy_pnc_email]'),
   },
   personCache: {
     ttl: Number(get('PERSON_CACHE_TTL', 60 * 60 * 4)),

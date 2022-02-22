@@ -8,7 +8,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("dossier-prison" if recall.returnedToCustodyDateTime else "dossier-recall", urlInfo)
+        href: backLinkUrl("dossier-nsy-email" if recall.returnedToCustodyDateTime else "dossier-recall", urlInfo)
     }) }}
 {% endblock %}
 

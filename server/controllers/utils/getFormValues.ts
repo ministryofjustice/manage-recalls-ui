@@ -87,6 +87,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'additionalLicenceConditionsDetail',
     'confirmRecallNotificationEmailSent',
     'confirmDossierEmailSent',
+    'confirmNsyEmailSent',
     'differentNomsNumberDetail',
     'previousConvictionMainName',
     'previousConvictionMainNameCategory',

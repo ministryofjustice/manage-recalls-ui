@@ -78,6 +78,13 @@ describe('decorateDocs', () => {
       createdDateTime: '2020-04-01T12:00:00.000Z',
     },
     {
+      category: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+      documentId: '639',
+      fileName: 'nsy.msg',
+      createdByUserName: 'Arnold Caseworker',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+    },
+    {
       category: RecallDocument.category.RECALL_NOTIFICATION,
       documentId: '828',
       createdByUserName: 'Arnold Caseworker',
@@ -410,6 +417,16 @@ describe('decorateDocs', () => {
         label: 'Missing documents email uploaded',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/845',
+      },
+      NSY_REMOVE_WARRANT_EMAIL: {
+        category: 'NSY_REMOVE_WARRANT_EMAIL',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '639',
+        fileName: 'nsy.msg',
+        label: 'New Scotland Yard warrant email sent',
+        type: 'email',
+        url: '/persons/A123/recalls/abc-456/documents/639',
       },
       RESCIND_DECISION_EMAIL: {
         category: 'RESCIND_DECISION_EMAIL',
