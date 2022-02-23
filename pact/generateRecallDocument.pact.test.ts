@@ -12,7 +12,8 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   const category = 'REVOCATION_ORDER'
   const details = 'Details changed.'
   const url = `/recalls/${recallId}/documents/generated`
-  const requestBody = { category, details }
+  const fileName = 'BADGER BOBBY 12345C RECALL DOSSIER.pdf'
+  const requestBody = { category, details, fileName }
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
