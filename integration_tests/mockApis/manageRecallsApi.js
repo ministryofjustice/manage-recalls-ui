@@ -152,6 +152,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectAddNote: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: '/recalls/(.*)/notes',
+        },
+        response: {
+          status: (expectation && expectation.statusCode) || 201,
+        },
+      })
+    },
     expectAddRescindRequestRecord: expectation => {
       return wiremock.stubFor({
         request: {

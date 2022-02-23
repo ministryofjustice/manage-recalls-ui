@@ -4,6 +4,7 @@ import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
   allowedImageFileExtensions,
+  allowedNoteFileExtensions,
 } from '../controllers/documents/upload/helpers/allowedUploadExtensions'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 import { DecoratedUploadedDoc, DocumentCategoryMetadata } from '../@types/documents'
@@ -131,6 +132,10 @@ export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlIn
     text: 'View change history',
     href: makeUrl('change-history', { ...urlInfo, fromPage }),
   }
+  const addNote = {
+    text: 'Add a note',
+    href: makeUrl('add-note', { ...urlInfo, fromPage }),
+  }
   const stopRecall = isStatusNotStopped(recall.status)
     ? [
         {
@@ -140,11 +145,12 @@ export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlIn
       ]
     : []
   if (wasLastRescindApproved(recall) === true) {
-    return [changeHistory, ...stopRecall]
+    return [changeHistory, addNote, ...stopRecall]
   }
   if (isRescindInProgress(recall)) {
     return [
       changeHistory,
+      addNote,
       {
         text: 'Update rescind',
         href: makeUrl('rescind-decision', { ...urlInfo, fromPage }),
@@ -154,6 +160,7 @@ export const recallInfoActionMenuItems = (recall: RecallResponse, urlInfo: UrlIn
   }
   return [
     changeHistory,
+    addNote,
     {
       text: 'Rescind recall',
       href: makeUrl('rescind-request', { ...urlInfo, fromPage }),
@@ -174,6 +181,12 @@ export const allowedImageFileExtensionList = () => allowedImageFileExtensions.ma
 export const allowedImageFileTypeLabelList = () =>
   listToString(
     allowedImageFileExtensions.map(ext => ext.label),
+    'or'
+  )
+export const allowedNoteFileExtensionList = () => allowedNoteFileExtensions.map(ext => ext.extension).join(',')
+export const allowedNoteFileTypeLabelList = () =>
+  listToString(
+    allowedNoteFileExtensions.map(ext => ext.label),
     'or'
   )
 

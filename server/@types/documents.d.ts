@@ -1,6 +1,6 @@
 import { RecallDocument, RescindRecord } from './manage-recalls-api'
 
-type DocumentType = 'document' | 'email' | 'generated'
+type DocumentType = 'document' | 'email' | 'generated' | 'note_document'
 
 export interface DocumentCategoryMetadata {
   label: string
