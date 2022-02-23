@@ -64,6 +64,18 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       expect(actual).toEqual(getRecallResponseJson)
     })
 
+    test('can successfully retrieve a recall with notes', async () => {
+      await provider.addInteraction({
+        state: 'a recall with notes exists',
+        ...pactGetRequest('a get recall request', `/recalls/${matchedRecallId}`, accessToken),
+        willRespondWith: pactJsonResponse(Matchers.like(getRecallResponseJson), 200),
+      })
+
+      const actual = await getRecall(matchedRecallId, accessToken)
+
+      expect(actual).toEqual(getRecallResponseJson)
+    })
+
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',

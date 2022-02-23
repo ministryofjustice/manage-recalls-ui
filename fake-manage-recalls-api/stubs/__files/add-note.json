@@ -1,0 +1,6 @@
+{
+  "subject": "Some note subject",
+  "details": "Some note details text",
+  "fileName": "file.doc",
+  "fileContent": "1234"
+}

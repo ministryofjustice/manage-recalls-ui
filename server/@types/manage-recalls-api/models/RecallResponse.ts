@@ -4,6 +4,7 @@
 
 import type { LastKnownAddress } from './LastKnownAddress';
 import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
+import type { Note } from './Note';
 import type { RecallDocument } from './RecallDocument';
 import type { RescindRecord } from './RescindRecord';
 import type { SentenceLength } from './SentenceLength';
@@ -24,6 +25,7 @@ export type RecallResponse = {
     documents: Array<RecallDocument>;
     lastKnownAddresses: Array<LastKnownAddress>;
     missingDocumentsRecords: Array<MissingDocumentsRecord>;
+    notes: Array<Note>;
     reasonsForRecall: Array<'BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_NON_CURFEW_CONDITION' | 'ELM_FURTHER_OFFENCE' | 'ELM_EQUIPMENT_TAMPER' | 'ELM_FAILURE_CHARGE_BATTERY' | 'FAILED_HOME_VISIT' | 'FAILED_KEEP_IN_TOUCH' | 'FAILED_RESIDE' | 'FAILED_WORK_AS_APPROVED' | 'POOR_BEHAVIOUR_ALCOHOL' | 'POOR_BEHAVIOUR_FURTHER_OFFENCE' | 'POOR_BEHAVIOUR_DRUGS' | 'POOR_BEHAVIOUR_NON_COMPLIANCE' | 'POOR_BEHAVIOUR_RELATIONSHIPS' | 'TRAVELLING_OUTSIDE_UK' | 'OTHER'>;
     rescindRecords: Array<RescindRecord>;
     additionalLicenceConditions?: boolean;

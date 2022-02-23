@@ -1,6 +1,6 @@
 import { RecallDocument, RescindRecord } from './manage-recalls-api'
 
-type DocumentType = 'document' | 'email' | 'generated'
+type DocumentType = 'document' | 'email' | 'generated' // TODO: PUD-1489: add a new value for documents attached to notes?
 
 export interface DocumentCategoryMetadata {
   label: string

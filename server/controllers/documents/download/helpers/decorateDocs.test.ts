@@ -259,6 +259,10 @@ describe('decorateDocs', () => {
           },
         ],
       },
+      {
+        ...findDocCategory(RecallDocument.category.NOTE_DOCUMENT),
+        uploaded: [],
+      },
     ])
   })
 
