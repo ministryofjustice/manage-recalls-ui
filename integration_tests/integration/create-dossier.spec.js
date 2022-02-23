@@ -40,6 +40,7 @@ context('Create a dossier', () => {
           {
             category: 'REVOCATION_ORDER',
             documentId: '9876',
+            fileName: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
           },
           {
             category: 'RECALL_NOTIFICATION_EMAIL',

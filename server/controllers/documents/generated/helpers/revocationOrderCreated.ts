@@ -2,6 +2,7 @@ import { Request } from 'express'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { GenerateDocumentRequest } from '../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
 import { generateRecallDocument } from '../../../../clients/manageRecallsApiClient'
+import { getGeneratedDocumentFileName } from './index'
 
 export const revocationOrderCreated = async ({
   recallId,
@@ -16,10 +17,28 @@ export const revocationOrderCreated = async ({
   req: Request
   token: string
 }) => {
+  const recallNotificationFileName = await getGeneratedDocumentFileName({
+    category: RecallDocument.category.RECALL_NOTIFICATION,
+    recallId,
+    token,
+  })
+  const dossierFileName = await getGeneratedDocumentFileName({
+    category: RecallDocument.category.DOSSIER,
+    recallId,
+    token,
+  })
   const [recallNotificationResponse, dossierResponse] = await Promise.allSettled([
-    generateRecallDocument(recallId, { ...valuesToSave, category: RecallDocument.category.RECALL_NOTIFICATION }, token),
+    generateRecallDocument(
+      recallId,
+      { ...valuesToSave, category: RecallDocument.category.RECALL_NOTIFICATION, fileName: recallNotificationFileName },
+      token
+    ),
     dossierExists
-      ? generateRecallDocument(recallId, { ...valuesToSave, category: RecallDocument.category.DOSSIER }, token)
+      ? generateRecallDocument(
+          recallId,
+          { ...valuesToSave, category: RecallDocument.category.DOSSIER, fileName: dossierFileName },
+          token
+        )
       : undefined,
   ])
   if (recallNotificationResponse.status === 'rejected') {

@@ -1,7 +1,8 @@
 // @ts-nocheck
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testUtils/mockRequestUtils'
 import { newGeneratedDocumentVersion } from './newGeneratedDocumentVersion'
-import { generateRecallDocument } from '../../../clients/manageRecallsApiClient'
+import { generateRecallDocument, getRecall } from '../../../clients/manageRecallsApiClient'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 
@@ -11,6 +12,16 @@ describe('generatedDocumentVersionFormHandler', () => {
   const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
   const originalUrl = `${basePath}generated-document-version?fromPage=view-recall`
 
+  beforeEach(() => {
+    // used to form the fileName
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      firstName: 'John',
+      lastName: 'Smith',
+      bookingNumber: '4567',
+      inCustodyAtBooking: true,
+      status: RecallResponse.status.BOOKED_ON,
+    })
+  })
   afterEach(() => {
     jest.resetAllMocks()
   })
@@ -162,13 +173,17 @@ describe('generatedDocumentVersionFormHandler', () => {
     expect(generateRecallDocument).toHaveBeenNthCalledWith(
       1,
       '00000000-0000-0000-0000-000000000000',
-      { category: 'REVOCATION_ORDER', details: 'Details changed' },
+      { category: 'REVOCATION_ORDER', details: 'Details changed', fileName: 'SMITH JOHN 4567 REVOCATION ORDER.pdf' },
       'token'
     )
     expect(generateRecallDocument).toHaveBeenNthCalledWith(
       2,
       '00000000-0000-0000-0000-000000000000',
-      { category: 'RECALL_NOTIFICATION', details: 'Details changed' },
+      {
+        category: 'RECALL_NOTIFICATION',
+        details: 'Details changed',
+        fileName: 'IN CUSTODY RECALL SMITH JOHN 4567.pdf',
+      },
       'token'
     )
     // dossier didn't already exist, so should not be recreated
@@ -204,7 +219,7 @@ describe('generatedDocumentVersionFormHandler', () => {
     expect(generateRecallDocument).toHaveBeenNthCalledWith(
       3,
       '00000000-0000-0000-0000-000000000000',
-      { category: 'DOSSIER', details: 'Details changed' },
+      { category: 'DOSSIER', details: 'Details changed', fileName: 'SMITH JOHN 4567 RECALL DOSSIER.pdf' },
       'token'
     )
     expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall`)

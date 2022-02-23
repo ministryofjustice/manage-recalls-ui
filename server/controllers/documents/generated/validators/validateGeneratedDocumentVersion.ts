@@ -1,16 +1,21 @@
 import { NamedFormError, ObjectMap } from '../../../../@types'
 import { errorMsgProvideDetail, makeErrorObject } from '../../../utils/errorMessages'
 import { GenerateDocumentRequest } from '../../../../@types/manage-recalls-api/models/GenerateDocumentRequest'
+import { getGeneratedDocumentFileName } from '../helpers'
 
-export const validateGeneratedDocumentVersion = ({
+export const validateGeneratedDocumentVersion = async ({
   requestBody,
+  recallId,
+  token,
 }: {
   requestBody: ObjectMap<string>
-}): {
+  recallId: string
+  token: string
+}): Promise<{
   errors?: NamedFormError[]
   valuesToSave: GenerateDocumentRequest
   unsavedValues: ObjectMap<unknown>
-} => {
+}> => {
   let errors
   let valuesToSave
   let unsavedValues
@@ -32,7 +37,9 @@ export const validateGeneratedDocumentVersion = ({
       details,
     }
   } else {
-    valuesToSave = { details, category: category as GenerateDocumentRequest.category }
+    const cat = category as GenerateDocumentRequest.category
+    const fileName = await getGeneratedDocumentFileName({ category: cat, recallId, token })
+    valuesToSave = { details, category: cat, fileName }
   }
   return { errors, valuesToSave, unsavedValues }
 }

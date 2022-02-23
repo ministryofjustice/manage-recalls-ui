@@ -4,10 +4,9 @@ import {
   decorateMissingDocumentsRecords,
   documentDownloadUrl,
   findCategoryInMissingDocumentsRecords,
-  generatedDocMetaData,
 } from '../../documents/download/helpers'
 import { DecoratedGeneratedDoc } from '../../../@types/documents'
-import { isInCustody } from '../../utils/recallStatus'
+import { generatedDocMetaData } from '../../documents/generated/helpers'
 
 export const uploaded = ({
   sortedHistory,
@@ -44,16 +43,10 @@ export const generated = ({
   sortedHistory: RecallDocument[]
   recall: RecallResponse
 }): DecoratedGeneratedDoc[] => {
-  const { recallId, nomsNumber, bookingNumber, firstName, lastName } = recall
   return sortedHistory.map((document: RecallDocument) =>
     generatedDocMetaData({
-      recallId,
-      nomsNumber,
+      recall,
       document,
-      firstName,
-      lastName,
-      bookingNumber,
-      inCustody: isInCustody(recall),
     })
   )
 }

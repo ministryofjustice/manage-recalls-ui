@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { createGeneratedDocument } from './createGeneratedDocument'
-import { generateRecallDocument, getDocumentCategoryHistory } from '../../../clients/manageRecallsApiClient'
+import { generateRecallDocument, getDocumentCategoryHistory, getRecall } from '../../../clients/manageRecallsApiClient'
+import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 
@@ -28,6 +29,13 @@ describe('createGeneratedDocument', () => {
   afterEach(() => jest.resetAllMocks())
 
   it("creates a new document if one doesn't already exist", async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      firstName: 'John',
+      lastName: 'Smith',
+      bookingNumber: '4567',
+      inCustodyAtBooking: true,
+      status: RecallResponse.status.BOOKED_ON,
+    })
     req.query.category = 'DOSSIER'
     ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
     ;(generateRecallDocument as jest.Mock).mockResolvedValue({ documentId })
