@@ -59,8 +59,10 @@ Or run tests with the cypress UI:
 
 In case you change the application code while running Cypress, you will need to restart the app:
 
-`npm run kill
-npm run start:feature`
+```
+npm run kill
+npm run start:feature
+```
 
 To get debug output when running cypress:
 

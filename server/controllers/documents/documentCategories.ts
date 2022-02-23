@@ -94,6 +94,11 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     multiple: true,
   },
   {
+    label: 'Note document uploaded',
+    name: RecallDocument.category.NOTE_DOCUMENT,
+    type: 'note_document',
+  },
+  {
     label: 'Recall request email uploaded',
     name: RecallDocument.category.RECALL_REQUEST_EMAIL,
     type: 'email',

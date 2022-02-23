@@ -52,6 +52,7 @@ import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/Uploa
 import { validateConfirmCustodyStatus } from '../controllers/assess/validators/validateConfirmCustodyStatus'
 import { validateWarrantReference } from '../controllers/assess/validators/validateWarrantReference'
 import { saveWarrantReference } from '../controllers/assess/helpers/saveWarrantReference'
+import { addNoteHandler } from '../controllers/note/addNoteHandler'
 import { rescindFormHandler } from '../controllers/rescind/rescindFormHandler'
 import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
@@ -193,6 +194,10 @@ export default function routes(router: Router): Router {
   router.get(`${basePath}/change-history/document`, getDocumentChangeHistory, recallPageGet('changeHistoryForDocument'))
   router.get(`${basePath}/change-history/field`, getSingleFieldChangeHistory, recallPageGet('changeHistoryForField'))
   router.get(`${basePath}/change-history`, getAllFieldsChangeHistory, recallPageGet('changeHistory'))
+
+  // ADD NOTE
+  get(`${basePath}/add-note`, recallPageGet('addNote'))
+  post(`${basePath}/add-note`, addNoteHandler)
 
   // RESCIND RECALL
   get(`${basePath}/rescind-request`, recallPageGet('rescindRequest'))

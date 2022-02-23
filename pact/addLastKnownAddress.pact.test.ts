@@ -14,7 +14,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('add user details', () => {
+  describe('add last known address', () => {
     test('can successfully add a last known address', async () => {
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
