@@ -35,10 +35,8 @@
             <div class="govuk-form-group govuk-!-margin-bottom-7">
                 {{ documentDownloadLink({
                     linkText: "Dossier",
-                    fileName: getGeneratedDocFileName({
-                        firstName: recall.firstName,
-                        lastName: recall.lastName,
-                        bookingNumber: recall.bookingNumber,
+                    fileName: formatGeneratedDocFileName({
+                        recall: recall,
                         category: 'DOSSIER'
                     }),
                     url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER',
@@ -50,10 +48,8 @@
             <div class="govuk-form-group govuk-!-margin-bottom-8">
                 {{ documentDownloadLink({
                     linkText: "Letter to prison",
-                    fileName: getGeneratedDocFileName({
-                        firstName: recall.firstName,
-                        lastName: recall.lastName,
-                        bookingNumber: recall.bookingNumber,
+                    fileName: formatGeneratedDocFileName({
+                        recall: recall,
                         category: 'LETTER_TO_PRISON'
                     }),
                     url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',

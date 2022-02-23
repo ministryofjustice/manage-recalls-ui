@@ -2,10 +2,10 @@ import { Request, Response } from 'express'
 import { validateGeneratedDocumentVersion } from './validators/validateGeneratedDocumentVersion'
 import { generateRecallDocument } from '../../../clients/manageRecallsApiClient'
 import logger from '../../../../logger'
-import { generatedDocCategoriesList } from '../download/helpers'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { revocationOrderCreated } from './helpers/revocationOrderCreated'
 import { makeUrlToFromPage } from '../../utils/makeUrl'
+import { generatedDocCategoriesList } from './helpers'
 
 export const newGeneratedDocumentVersion = async (req: Request, res: Response) => {
   const { recallId } = req.params
@@ -26,7 +26,11 @@ export const newGeneratedDocumentVersion = async (req: Request, res: Response) =
   if (invalidCategory) {
     throw new Error('Invalid category')
   }
-  const { errors, unsavedValues, valuesToSave } = validateGeneratedDocumentVersion({ requestBody: body })
+  const { errors, unsavedValues, valuesToSave } = await validateGeneratedDocumentVersion({
+    requestBody: body,
+    recallId,
+    token,
+  })
   if (errors) {
     req.session.errors = errors
     req.session.unsavedValues = unsavedValues

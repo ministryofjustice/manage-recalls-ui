@@ -4,6 +4,7 @@
 
 export type GenerateDocumentRequest = {
     category: GenerateDocumentRequest.category;
+    fileName: string;
     details?: string;
 };
 

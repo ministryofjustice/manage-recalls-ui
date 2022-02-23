@@ -151,7 +151,7 @@ describe('getDocumentChangeHistory', () => {
         createdByUserName: 'Debra Smith',
         createdDateTime: '2021-11-19T12:40:50.000Z',
         documentId: '456',
-        fileName: 'recall.pdf',
+        fileName: 'HOLT WESLEY A1234AB RECALL DOSSIER.pdf',
         version: 1,
       },
       {
@@ -159,7 +159,7 @@ describe('getDocumentChangeHistory', () => {
         createdByUserName: 'Dave Wiley',
         createdDateTime: '2021-10-22T09:34:45.000Z',
         documentId: '123',
-        fileName: 'Licence Wesley Holt version 2.pdf',
+        fileName: 'HOLT WESLEY A1234AB RECALL DOSSIER.pdf',
         version: 2,
       },
     ])

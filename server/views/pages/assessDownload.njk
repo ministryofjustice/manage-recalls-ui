@@ -26,12 +26,9 @@
             <p class='govuk-body-l'>Review the document and check the information is correct.</p>
             {{ documentDownloadLink({
                 linkText: "Recall notification",
-                fileName: getGeneratedDocFileName({
-                    firstName: recall.firstName,
-                    lastName: recall.lastName,
-                    bookingNumber: recall.bookingNumber,
-                    category: 'RECALL_NOTIFICATION',
-                    inCustody: isInCustody(recall)
+                fileName: formatGeneratedDocFileName({
+                    recall: recall,
+                    category: 'RECALL_NOTIFICATION'
                 }),
                 url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=RECALL_NOTIFICATION',
                 dataQaLink: 'getRecallNotificationLink',

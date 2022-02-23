@@ -19,6 +19,7 @@ context('Generated document versions', () => {
         version: 2,
         createdDateTime: '2021-11-21T12:34:30.000Z',
         details: 'Sentencing info changed',
+        fileName: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
       },
       {
         category: 'REVOCATION_ORDER',
@@ -26,6 +27,7 @@ context('Generated document versions', () => {
         version: 1,
         createdDateTime: '2021-11-19T14:14:30.000Z',
         details: 'Details / info changed',
+        fileName: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
       },
       {
         category: 'LETTER_TO_PRISON',
@@ -33,6 +35,7 @@ context('Generated document versions', () => {
         version: 5,
         createdDateTime: '2021-11-19T14:14:30.000Z',
         details: 'Details / info changed',
+        fileName: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
       },
       {
         category: 'DOSSIER',
@@ -40,6 +43,7 @@ context('Generated document versions', () => {
         version: 4,
         createdDateTime: '2021-11-19T14:14:30.000Z',
         details: 'Details / info changed',
+        fileName: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
       },
       {
         category: 'REASONS_FOR_RECALL',
@@ -47,6 +51,7 @@ context('Generated document versions', () => {
         version: 3,
         createdDateTime: '2021-11-19T14:14:30.000Z',
         details: 'Details / info changed',
+        fileName: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
       },
     ],
   }
