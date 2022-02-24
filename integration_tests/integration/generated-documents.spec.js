@@ -1,17 +1,19 @@
-import { getRecallResponse } from '../mockApis/mockResponses'
+import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
 import newGeneratedDocumentVersionPage from '../pages/newGeneratedDocumentVersion'
+import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
+import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
 
 const recallInformationPage = require('../pages/recallInformation')
 
 context('Generated document versions', () => {
   const nomsNumber = 'A1234AA'
-  const recallId = '123'
+  const recallId = '3456345664356'
   const personName = 'Bobby Badger'
   const documentId = '123'
   const recall = {
     ...getRecallResponse,
     recallId,
-    status: 'DOSSIER_ISSUED',
+    status: RecallResponse.status.DOSSIER_ISSUED,
     documents: [
       {
         category: 'RECALL_NOTIFICATION',
@@ -63,7 +65,6 @@ context('Generated document versions', () => {
 
   it("if a document hasn't been generated, it won't be listed on recall info", () => {
     cy.task('expectGetRecall', {
-      recallId,
       expectedResult: {
         ...recall,
         documents: [],
@@ -189,5 +190,46 @@ context('Generated document versions', () => {
       errorMessage: 'Provide more detail',
       summaryError: 'Provide more detail',
     })
+  })
+
+  it("recall notification filename reflects custody status, if it hasn't been created before", () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+        bookingNumber: '12345C',
+        status: RecallResponse.status.IN_ASSESSMENT,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        documents: [],
+      },
+    })
+    const fileName = 'NOT IN CUSTODY RECALL BADGER BOBBY 12345C.pdf'
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-download' })
+    cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${fileName}`)
+  })
+
+  it('recall notification uses existing filename if one has been created', () => {
+    const docId = '999'
+    const fileName = 'IN CUSTODY RECALL BADGER BOBBY 12345C.pdf'
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+        bookingNumber: '12345C',
+        status: RecallResponse.status.IN_ASSESSMENT,
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        documents: [
+          {
+            category: RecallDocument.category.RECALL_NOTIFICATION,
+            fileName,
+            documentId: docId,
+          },
+        ],
+      },
+    })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-download' })
+    cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${fileName}`)
   })
 })
