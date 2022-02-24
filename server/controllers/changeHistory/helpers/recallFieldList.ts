@@ -42,6 +42,14 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Conditional release date',
     fieldType: 'ISO_DATE',
   },
+  returnedToCustodyDateTime: {
+    label: 'RTC date and time',
+    fieldType: 'ISO_DATE_TIME',
+  },
+  returnedToCustodyNotificationDateTime: {
+    label: 'Found out RTC date and time',
+    fieldType: 'ISO_DATE_TIME',
+  },
 
   // booleans
   hasDossierBeenChecked: {
@@ -49,15 +57,23 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'BOOLEAN',
   },
   additionalLicenceConditions: {
+    label: 'Licence conditions breached',
     fieldType: 'BOOLEAN',
   },
   differentNomsNumber: {
+    label: 'Different NOMIS number',
     fieldType: 'BOOLEAN',
   },
   contraband: {
+    label: 'Contraband',
     fieldType: 'BOOLEAN',
   },
   vulnerabilityDiversity: {
+    label: 'Vulnerability and diversity',
+    fieldType: 'BOOLEAN',
+  },
+  arrestIssues: {
+    label: 'Arrest issues',
     fieldType: 'BOOLEAN',
   },
 
@@ -68,7 +84,16 @@ export const recallFieldList: ObjectMap<RecallField> = {
     refDataCategory: 'prisons',
   },
   agreeWithRecall: {
-    fieldType: 'ENUM',
+    label: 'Agree with recall recommendation',
+    fieldType: 'ENUM', // YES / NO_STOP
+    enumValues: {
+      YES: 'Yes',
+      NO_STOP: 'No, stop the recall',
+    },
+  },
+  agreeWithRecallDetail: {
+    label: 'Agree with recall recommendation detail',
+    fieldType: 'TEXT',
   },
   lastReleasePrison: {
     label: 'Releasing prison',
@@ -120,15 +145,19 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'TEXT',
   },
   contrabandDetail: {
-    label: 'Contraband',
+    label: 'Contraband detail',
     fieldType: 'TEXT',
   },
   vulnerabilityDiversityDetail: {
-    label: 'Vulnerability and diversity',
+    label: 'Vulnerability and diversity detail',
+    fieldType: 'TEXT',
+  },
+  arrestIssuesDetail: {
+    label: 'Arrest issues detail',
     fieldType: 'TEXT',
   },
   licenceConditionsBreached: {
-    label: 'Licence conditions breached',
+    label: 'Licence conditions breached detail',
     fieldType: 'TEXT',
   },
   reasonsForRecall: {
@@ -151,7 +180,7 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'ENUM', // YES / NO
   },
   differentNomsNumberDetail: {
-    label: 'Different NOMIS number',
+    label: 'Different NOMIS number detail',
     fieldType: 'TEXT',
   },
   previousConvictionMainName: {
@@ -164,6 +193,14 @@ export const recallFieldList: ObjectMap<RecallField> = {
     enumValues: {
       FIRST_LAST: 'First & last name',
       FIRST_MIDDLE_LAST: 'First, middle & last name',
+    },
+  },
+  lastKnownAddressOption: {
+    label: 'Has last known address',
+    fieldType: 'ENUM',
+    enumValues: {
+      YES: 'Yes',
+      NO_FIXED_ABODE: 'No fixed abode',
     },
   },
   previousConvictionMainNameCategory: {
@@ -188,6 +225,10 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Length of sentence (days)',
     fieldType: 'TEXT',
   },
+  warrantReferenceNumber: {
+    label: 'Warrant reference number',
+    fieldType: 'TEXT',
+  },
   // uploaded emails
   recallRequestEmailUploaded: {
     fieldType: 'UPLOADED_EMAIL',
@@ -200,6 +241,10 @@ export const recallFieldList: ObjectMap<RecallField> = {
   dossierSentEmailUploaded: {
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.DOSSIER_EMAIL,
+  },
+  nsySentEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
   },
 }
 

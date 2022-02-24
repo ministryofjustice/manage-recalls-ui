@@ -37,6 +37,13 @@ describe('changeHistoryFieldList', () => {
         createdDateTime: '2020-12-05T18:33:57.000Z',
         createdByUserName: 'Arnold Caseworker',
       },
+      {
+        category: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+        documentId: '845',
+        fileName: 'nsy.msg',
+        createdDateTime: '2020-12-05T18:33:57.000Z',
+        createdByUserName: 'Arnold Caseworker',
+      },
     ]
     const list = changeHistoryFieldList({ changedFields, uploadedDocuments })
     // filter out the list entries for fields that have history
@@ -49,6 +56,16 @@ describe('changeHistoryFieldList', () => {
         hasHistory: true,
         id: 'dossierSentEmailUploaded',
         label: 'Dossier and letter email uploaded',
+        updatedByUserName: 'Arnold Caseworker',
+        updatedDateTime: '2020-12-05T18:33:57.000Z',
+      },
+      {
+        documentCategory: 'NSY_REMOVE_WARRANT_EMAIL',
+        fieldPath: 'nsySentEmailUploaded',
+        fieldType: 'UPLOADED_EMAIL',
+        hasHistory: true,
+        id: 'nsySentEmailUploaded',
+        label: 'New Scotland Yard warrant email sent',
         updatedByUserName: 'Arnold Caseworker',
         updatedDateTime: '2020-12-05T18:33:57.000Z',
       },

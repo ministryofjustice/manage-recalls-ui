@@ -374,11 +374,15 @@ context('Change history', () => {
         category: 'RECALL_REQUEST_EMAIL',
         documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
         fileName: 'recall-request.eml',
+        createdByUserName: 'Barry Caseworker',
+        createdDateTime: '2021-10-05T12:34:23.000Z',
       },
       {
         category: 'RECALL_NOTIFICATION_EMAIL',
         documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
         fileName: '2021-07-03 Phil Jones recall.msg',
+        createdByUserName: 'Barry Caseworker',
+        createdDateTime: '2021-10-05T12:34:23.000Z',
       },
       {
         category: 'DOSSIER_EMAIL',
@@ -388,9 +392,11 @@ context('Change history', () => {
         createdDateTime: '2021-10-05T12:34:23.000Z',
       },
       {
-        category: 'MISSING_DOCUMENTS_EMAIL',
-        documentId: '123',
-        fileName: 'chase-documents.msg',
+        category: 'NSY_REMOVE_WARRANT_EMAIL',
+        documentId: '234-3455-8542-c3ac-8c963f66afa6',
+        fileName: 'email.msg',
+        createdByUserName: 'Barry Caseworker',
+        createdDateTime: '2021-10-05T12:34:23.000Z',
       },
     ]
     cy.task('expectGetRecall', {
@@ -417,7 +423,7 @@ context('Change history', () => {
     })
     // check user and date for one field
     cy.getRowValuesFromTable({ parent: '#table-info-entered', rowQaAttr: 'currentPrison' }).then(rowValues =>
-      expect(rowValues).to.include.members(['Prison held in', '14 January 2022 at 13:57', 'Maria Badger'])
+      expect(rowValues).to.include.members(['Prison held in', '24 February 2022 at 16:45', 'Maria Badger'])
     )
     // check user and date for one email
     cy.getRowValuesFromTable({ parent: '#table-info-entered', rowQaAttr: 'dossierSentEmailUploaded' }).then(rowValues =>
