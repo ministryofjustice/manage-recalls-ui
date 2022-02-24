@@ -26,7 +26,7 @@
             <p class='govuk-body-l'>Review the document and check the information is correct.</p>
             {{ documentDownloadLink({
                 linkText: "Recall notification",
-                fileName: formatGeneratedDocFileName({
+                fileName: getGeneratedDocFileName({
                     recall: recall,
                     category: 'RECALL_NOTIFICATION'
                 }),

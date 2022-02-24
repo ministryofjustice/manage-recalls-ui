@@ -34,7 +34,7 @@ import {
 import { listDocumentLabels, objectToArray, sortList } from '../controllers/utils/lists'
 import { isDefined } from '../utils/utils'
 import { backLinkUrl, backLinkUrlAssessDownload, backLinkUrlRecallReceived, changeLinkUrl } from './urls'
-import { generatedDocCategoriesList, formatGeneratedDocFileName } from '../controllers/documents/generated/helpers'
+import { generatedDocCategoriesList, getGeneratedDocFileName } from '../controllers/documents/generated/helpers'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
   const njkEnv = nunjucks.configure(
@@ -78,7 +78,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('dueDateLabel', dueDateLabel)
   njkEnv.addGlobal('recallStatusTagProperties', recallStatusTagProperties)
   njkEnv.addGlobal('formatDocLabel', formatDocLabel)
-  njkEnv.addGlobal('formatGeneratedDocFileName', formatGeneratedDocFileName)
+  njkEnv.addGlobal('getGeneratedDocFileName', getGeneratedDocFileName)
   njkEnv.addGlobal('generatedDocCategoriesList', generatedDocCategoriesList)
   njkEnv.addGlobal('sortList', sortList)
   njkEnv.addGlobal('selectDocCategory', selectDocCategory)
