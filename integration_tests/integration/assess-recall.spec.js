@@ -44,6 +44,7 @@ context('Assess a recall', () => {
     recallLength: 'FOURTEEN_DAYS',
     bookingNumber: 'A123456',
     status: 'IN_ASSESSMENT',
+    inCustodyAtBooking: false,
   }
 
   beforeEach(() => {
@@ -125,8 +126,8 @@ context('Assess a recall', () => {
     cy.pageHeading().should('equal', 'Download recall notification')
     cy.clickLink('Recall notification')
     cy.getText('getRecallNotificationFileName').should(
-      'contain',
-      'Filename: IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
+      'equal',
+      'Filename: NOT IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
     )
     cy.clickLink('Continue')
 

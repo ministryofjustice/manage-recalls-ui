@@ -25,6 +25,21 @@ export const getGeneratedDocumentFileName = async ({
   })
 }
 
+// see if the doc has already been generated, if so use that filename, if not create a filename
+export const getGeneratedDocFileName = ({
+  recall,
+  category,
+}: {
+  recall: RecallResponse
+  category: RecallDocument.category
+}) => {
+  const existing = recall.documents.find(doc => doc.category === category)
+  if (existing) {
+    return existing.fileName
+  }
+  return formatGeneratedDocFileName({ recall, category })
+}
+
 export const formatGeneratedDocFileName = ({
   recall,
   category,
@@ -61,7 +76,6 @@ export const generatedDocMetaData = ({
   return {
     ...document,
     type: 'generated',
-    fileName: formatGeneratedDocFileName({ recall, category: document.category }),
     url: documentDownloadUrl({
       recallId: recall.recallId,
       nomsNumber: recall.nomsNumber,

@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express'
 import { getDocumentWithContents } from '../../../clients/manageRecallsApiClient'
-import { getGeneratedDocumentFileName } from '../generated/helpers'
 import { documentCategories } from '../documentCategories'
 
 export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
@@ -12,11 +11,7 @@ export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
   const { category, fileName, content } = await getDocumentWithContents({ recallId, documentId }, token)
   const documentCategory = documentCategories.find(type => type.name === category)
   if (['generated', 'document'].includes(documentCategory.type)) {
-    const formattedFileName =
-      documentCategory.type === 'document'
-        ? documentCategory.standardFileName || fileName
-        : await getGeneratedDocumentFileName({ recallId, category, token })
-
+    const formattedFileName = documentCategory.standardFileName || fileName
     res.contentType('application/pdf')
     res.header('Content-Disposition', `attachment; filename="${formattedFileName}"`)
   }

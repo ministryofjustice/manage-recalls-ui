@@ -38,7 +38,7 @@ export const isStatusNotStopped = (status: RecallResponse.status): boolean => {
   return status !== RecallResponse.status.STOPPED
 }
 
-export const isInCustody = (recall: RecallResponse) => {
+export const isInCustody = (recall: RecallResponse): boolean => {
   if (isStatusAfterAssessStart(recall.status)) {
     if (recall.inCustodyAtBooking) {
       return true
@@ -46,9 +46,9 @@ export const isInCustody = (recall: RecallResponse) => {
     if (recall.returnedToCustodyDateTime) {
       return true
     }
-    return recall.inCustodyAtAssessment
+    return recall.inCustodyAtAssessment === true
   }
-  return recall.inCustodyAtBooking
+  return recall.inCustodyAtBooking === true
 }
 
 export const isRescindInProgress = (recall: RecallResponse) => {
