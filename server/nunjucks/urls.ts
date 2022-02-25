@@ -31,7 +31,7 @@ export const backLinkUrlAssessDownload = ({
   }
 }
 
-export const backLinkUrlRecallReceived = ({
+export const backLinkUrlRecallType = ({
   inCustodyAtBooking,
   lastKnownAddressOption,
   urlInfo,

@@ -68,7 +68,9 @@ context('Book a "not in custody" recall', () => {
     cy.pageHeading().should('equal', 'Address added')
     cy.selectRadio('Do you want to add another address?', 'No')
     cy.clickButton('Continue')
-    cy.pageHeading().should('equal', 'When did you receive the recall request?')
+
+    // recall type - fixed or standard
+    cy.pageHeading().should('equal', 'What type of recall is being recommended?')
   })
 
   it('no fixed abode', () => {
@@ -76,7 +78,7 @@ context('Book a "not in custody" recall', () => {
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'last-known-address' })
     cy.selectRadio(`Does ${personName} have a last known address?`, 'No')
     cy.clickButton('Continue')
-    cy.pageHeading().should('equal', 'When did you receive the recall request?')
+    cy.pageHeading().should('equal', 'What type of recall is being recommended?')
   })
 
   it('shows if person has last known addresses, arrest issues and not in custody status on the recall info page, after booking', () => {

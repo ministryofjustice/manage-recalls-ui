@@ -14,6 +14,10 @@ const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
         '/custody-status?fromPage=check-answers&fromHash=custody'
       )
       checkLink('previousConvictionMainNameChange', '/pre-cons-name?fromPage=check-answers&fromHash=personalDetails')
+      cy.getLinkHref('Change recall type').should(
+        'contain',
+        '/recall-type?fromPage=check-answers&fromHash=recallDetails'
+      )
       checkLink('recallEmailReceivedDateTimeChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
       checkLink('recallRequestEmailFileNameChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
       checkLink('sentenceDateChange', '/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceDateGroup')

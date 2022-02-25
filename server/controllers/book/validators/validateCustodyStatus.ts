@@ -23,9 +23,7 @@ export const validateCustodyStatus = ({
   if (!errors) {
     const isInCustody = inCustodyAtBooking === 'YES'
     if (isInCustody) {
-      redirectToPage = urlInfo.fromPage
-        ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
-        : makeUrl('request-received', urlInfo)
+      redirectToPage = urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('recall-type', urlInfo)
     } else {
       // if not in custody, proceed to last known address question, even if user arrived from a recall info page (ie change link)
       redirectToPage = makeUrl('last-known-address', urlInfo)

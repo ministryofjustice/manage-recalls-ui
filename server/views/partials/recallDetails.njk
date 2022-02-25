@@ -32,27 +32,31 @@
                 <dd class=" govuk-summary-list__actions"></dd>
             </div>
         {% endif %}
-        {% if recall.status != 'BEING_BOOKED_ON' %}
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Recall type
-                </dt>
-                <dd class=" govuk-summary-list__value" data-qa='recallLength'>
-                    Fixed term
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Recall length
-                </dt>
-                <dd class=" govuk-summary-list__value" data-qa='recallLength'>
-                    {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall type
+            </dt>
+            <dd class=" govuk-summary-list__value">
+                {% if recall.recallType === 'FIXED' %}Fixed term{% elseif recall.recallType === 'STANDARD' %}Standard{% else %}Not provided{% endif %}
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+                {% if recall.status == 'BEING_BOOKED_ON' %}
+                <a href='{{ changeLinkUrl('recall-type', urlInfo, 'recallDetails') }}' class='govuk-link'>Change <span
+                            class="govuk-visually-hidden"> recall type</span></a>
+                {% endif %}
+            </dd>
+        </div>
+        {% if recall.recallType === 'FIXED' %}
+        <div class="govuk-summary-list__row">
+            <dt class=" govuk-summary-list__key">
+                Recall length
+            </dt>
+            <dd class=" govuk-summary-list__value" data-qa='recallLength'>
+                {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
+            </dd>
+            <dd class=" govuk-summary-list__actions">
+            </dd>
+        </div>
         {% endif %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">

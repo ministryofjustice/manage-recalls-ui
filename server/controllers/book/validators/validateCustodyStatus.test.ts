@@ -44,12 +44,12 @@ describe('validateCustodyStatus', () => {
     expect(redirectToPage).toEqual('/recalls/last-known-address?fromPage=check-answers&fromHash=custodyDetails')
   })
 
-  it('sets redirectToPage to request received page, if answer is Yes and there is no fromPage', () => {
+  it('sets redirectToPage to recall type page, if answer is Yes and there is no fromPage', () => {
     const requestBody = {
       inCustodyAtBooking: 'YES',
     }
     const { redirectToPage } = validateCustodyStatus({ requestBody, urlInfo })
-    expect(redirectToPage).toEqual('/recalls/request-received')
+    expect(redirectToPage).toEqual('/recalls/recall-type')
   })
 
   it('sets redirectToPage to the fromPage, if one is supplied and answer is Yes', () => {

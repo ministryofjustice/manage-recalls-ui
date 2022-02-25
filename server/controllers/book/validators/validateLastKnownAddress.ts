@@ -22,9 +22,7 @@ export const validateLastKnownAddress = ({
   }
   if (!errors) {
     if (lastKnownAddressOption === 'NO_FIXED_ABODE') {
-      redirectToPage = urlInfo.fromPage
-        ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
-        : makeUrl('request-received', urlInfo)
+      redirectToPage = urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('recall-type', urlInfo)
     } else {
       // if they have an address, proceed to postcode lookup, even if user arrived from a recall info page (ie change link)
       redirectToPage = makeUrl('postcode-lookup', urlInfo)

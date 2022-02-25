@@ -20,6 +20,9 @@ describe('getFormValues', () => {
     agreeWithRecallDetailYes: {
       text: 'Provide more detail',
     },
+    recallType: {
+      text: 'Type of recall',
+    },
     recallEmailReceivedDateTime: { values: { year: '', month: '12', day: '05', hour: '15', minute: '33' } },
     lastReleasePrison: {
       text: 'Releasing prison',
@@ -127,6 +130,7 @@ describe('getFormValues', () => {
     inCustodyAtAssessment: 'YES',
     agreeWithRecall: 'NO',
     agreeWithRecallDetail: 'Reasons for no...',
+    recallType: 'STANDARD',
     recallEmailReceivedDateTimeParts: { year: '2020', month: '12', day: '05', hour: '15', minute: '33' },
     sentenceDateParts: { year: '2020', month: '12', day: '05' },
     sentenceExpiryDateParts: { year: '2020', month: '12', day: '05' },
@@ -257,6 +261,7 @@ describe('getFormValues', () => {
         month: '',
         year: '',
       },
+      recallType: '',
       rescindRequestDetail: '',
       rescindRequestEmailReceivedDateParts: {
         day: '',
@@ -367,6 +372,7 @@ describe('getFormValues', () => {
         month: '04',
         year: '2019',
       },
+      recallType: 'STANDARD',
       rescindRequestDetail: 'Detail...',
       rescindRequestEmailReceivedDateParts: {
         day: '23',
@@ -479,6 +485,7 @@ describe('getFormValues', () => {
         month: '',
         year: '',
       },
+      recallType: '',
       rescindRequestDetail: '',
       rescindRequestEmailReceivedDateParts: {
         day: '',
@@ -594,6 +601,7 @@ describe('getFormValues', () => {
         month: '08',
         year: '2021',
       },
+      recallType: 'FIXED',
       returnedToCustodyDateTimeParts: {
         day: '22',
         hour: '13',
@@ -707,6 +715,7 @@ describe('getFormValues', () => {
         month: '08',
         year: '2021',
       },
+      recallType: 'FIXED',
       returnedToCustodyDateTimeParts: {
         day: '22',
         hour: '13',

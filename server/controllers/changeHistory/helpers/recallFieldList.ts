@@ -238,6 +238,14 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
   },
+  recallType: {
+    label: 'Name',
+    fieldType: 'ENUM',
+    enumValues: {
+      STANDARD: 'Standard',
+      FIXED: 'Fixed',
+    },
+  },
   dossierSentEmailUploaded: {
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.DOSSIER_EMAIL,

@@ -51,12 +51,12 @@ describe('validateLastKnownAddress', () => {
     expect(redirectToPage).toEqual('/recalls/postcode-lookup?fromPage=check-answers&fromHash=custodyDetails')
   })
 
-  it('sets redirectToPage to request received, if answer is No, and no fromPage supplied', () => {
+  it('sets redirectToPage to recall type, if answer is No, and no fromPage supplied', () => {
     const requestBody = {
       lastKnownAddressOption: 'NO_FIXED_ABODE',
     }
     const { redirectToPage } = validateLastKnownAddress({ requestBody, urlInfo })
-    expect(redirectToPage).toEqual('/recalls/request-received')
+    expect(redirectToPage).toEqual('/recalls/recall-type')
   })
 
   it('sets redirectToPage to fromPage if supplied and answer is No', () => {

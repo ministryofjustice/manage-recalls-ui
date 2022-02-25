@@ -1,4 +1,4 @@
-import { backLinkUrl, backLinkUrlAssessDownload, backLinkUrlRecallReceived, changeLinkUrl } from './urls'
+import { backLinkUrl, backLinkUrlAssessDownload, backLinkUrlRecallType, changeLinkUrl } from './urls'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
 
 describe('changeLinkUrl', () => {
@@ -90,9 +90,9 @@ describe('backLinkUrl', () => {
   })
 })
 
-describe('backLinkUrlRecallReceived', () => {
+describe('backLinkUrlRecallType', () => {
   it('returns to custody-status if inCustodyAtBooking is true', () => {
-    const url = backLinkUrlRecallReceived({
+    const url = backLinkUrlRecallType({
       inCustodyAtBooking: true,
       lastKnownAddressOption: undefined,
       urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
@@ -101,7 +101,7 @@ describe('backLinkUrlRecallReceived', () => {
   })
 
   it('returns to address-list if inCustodyAtBooking is false and lastKnownAddressOption is YES', () => {
-    const url = backLinkUrlRecallReceived({
+    const url = backLinkUrlRecallType({
       inCustodyAtBooking: false,
       lastKnownAddressOption: 'YES' as RecallResponse.lastKnownAddressOption,
       urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },
@@ -110,7 +110,7 @@ describe('backLinkUrlRecallReceived', () => {
   })
 
   it('returns to last-known-address if inCustodyAtBooking is false and lastKnownAddressOption is not YES', () => {
-    const url = backLinkUrlRecallReceived({
+    const url = backLinkUrlRecallType({
       inCustodyAtBooking: false,
       lastKnownAddressOption: 'NO_FIXED_ABODE' as RecallResponse.lastKnownAddressOption,
       urlInfo: { basePath: '/recalls/', currentPage: 'request-received' },

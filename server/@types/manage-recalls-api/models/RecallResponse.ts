@@ -72,6 +72,7 @@ export type RecallResponse = {
     recallEmailReceivedDateTime?: string;
     recallLength?: RecallResponse.recallLength;
     recallNotificationEmailSentDateTime?: string;
+    recallType?: RecallResponse.recallType;
     returnedToCustodyDateTime?: string;
     returnedToCustodyNotificationDateTime?: string;
     sentenceDate?: string;
@@ -295,6 +296,11 @@ export namespace RecallResponse {
         FIRST_LAST = 'FIRST_LAST',
         FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
         OTHER = 'OTHER',
+    }
+
+    export enum recallType {
+        STANDARD = 'STANDARD',
+        FIXED = 'FIXED'
     }
 
     export enum recallLength {

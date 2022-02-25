@@ -1,4 +1,5 @@
 import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
+import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 
 const recallInformationPage = require('../pages/recallInformation')
 
@@ -12,6 +13,7 @@ context('View recall information', () => {
         inCustodyAtBooking: true,
         recallId,
         status: 'DOSSIER_ISSUED',
+        recallType: RecallResponse.recallType.STANDARD,
         documents: [
           {
             category: 'RECALL_REQUEST_EMAIL',
@@ -46,6 +48,10 @@ context('View recall information', () => {
   it('User can view all recall information (after dossier issued)', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
+
+    cy.recallInfo('Recall type').should('equal', 'Standard')
+    cy.getElement('Change recall type').should('not.exist')
+    cy.getElement('recallLength').should('not.exist')
     recallInformation.assertElementHasText({
       qaAttr: 'inCustodyAtBooking',
       textToFind: 'In custody',
