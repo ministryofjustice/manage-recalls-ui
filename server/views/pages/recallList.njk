@@ -51,6 +51,7 @@
                             <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
                             <td class="govuk-table__cell">
                                 {% set recall = result %}
+                                {% set returnToRecallList = '1' %}
                                 {% include "../partials/recallActionLink.njk" %}
                             </td>
                             <td class="govuk-table__cell">

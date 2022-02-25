@@ -41,6 +41,7 @@ describe('Recalls list', () => {
     recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
     recallsList.continueBooking({ recallId })
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
+    cy.getLinkHref('Back').should('equal', '/')
   })
 
   it('continue a previous booking to pre-cons page if the user has no middle names', () => {
@@ -53,7 +54,7 @@ describe('Recalls list', () => {
         },
       ],
     })
-    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'BEING_BOOKED_ON' } })
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, middleNames: '', status: 'BEING_BOOKED_ON' } })
     cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
@@ -63,6 +64,7 @@ describe('Recalls list', () => {
       'equal',
       `How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`
     )
+    cy.getLinkHref('Back').should('equal', '/')
   })
 
   it('move on to assessRecall if the recall has status BOOKED_ON', () => {

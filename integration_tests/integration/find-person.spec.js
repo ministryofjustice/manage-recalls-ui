@@ -54,6 +54,7 @@ context('Find a person', () => {
     firstResult.get(`[data-qa=create-dossier-${existingRecall3.recallId}]`)
     firstResult.get('[data-qa=bookRecallButton]').click()
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
+    cy.getLinkHref('Back').should('contain', '/find-person')
   })
 
   it('can assess a recall', () => {
