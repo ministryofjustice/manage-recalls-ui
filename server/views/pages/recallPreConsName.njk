@@ -1,3 +1,4 @@
+
 {% extends "../partials/layout.njk" %}
 
 {% set pageTitle = applicationName + " - Book a recall - How does the name appear on the previous convictions sheet (pre-cons)?" %}
@@ -5,7 +6,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrl("licence-name", urlInfo) if recall.middleNames else backLinkUrl("/find-person?nomsNumber=" + recall.nomsNumber, urlInfo)
+        href: backLinkUrl("licence-name", urlInfo) if recall.middleNames else backLinkUrl("/" if returnToRecallList else "/find-person?nomsNumber=" + recall.nomsNumber, urlInfo)
     }) }}
 {% endblock %}
 

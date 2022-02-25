@@ -33,3 +33,10 @@ export const parseUrlParams = (req: Request, res: Response, next: NextFunction) 
   }
   next()
 }
+
+export const returnToRecallListParam = (req: Request, res: Response, next: NextFunction) => {
+  if (req.query.returnToRecallList === '1') {
+    res.locals.returnToRecallList = '1'
+  }
+  next()
+}

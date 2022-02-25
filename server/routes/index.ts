@@ -23,7 +23,7 @@ import { validatePreConsName } from '../controllers/book/validators/validatePreC
 import { validateDossierDownload } from '../controllers/dossier/validators/validateDossierDownload'
 import { validateCheckAnswers } from '../controllers/book/validators/validateCheckAnswers'
 import { getUser, postUser } from '../controllers/userDetails/userDetails'
-import { parseUrlParams } from '../middleware/parseUrlParams'
+import { parseUrlParams, returnToRecallListParam } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from '../controllers/assignUser/assignUser'
 import { addReturnToCustodyDates, stopRecall, unassignUserFromRecall } from '../clients/manageRecallsApiClient'
@@ -67,9 +67,9 @@ export default function routes(router: Router): Router {
   router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
 
   // BOOK A RECALL
-  get(`${basePath}/licence-name`, recallPageGet('recallLicenceName'))
+  router.get(`${basePath}/licence-name`, returnToRecallListParam, recallPageGet('recallLicenceName'))
   post(`${basePath}/licence-name`, recallFormPost(validateLicenceName))
-  get(`${basePath}/pre-cons-name`, recallPageGet('recallPreConsName'))
+  router.get(`${basePath}/pre-cons-name`, returnToRecallListParam, recallPageGet('recallPreConsName'))
   post(`${basePath}/pre-cons-name`, recallFormPost(validatePreConsName))
   get(`${basePath}/custody-status`, recallPageGet('recallCustodyStatus'))
   post(`${basePath}/custody-status`, recallFormPost(validateCustodyStatus))
