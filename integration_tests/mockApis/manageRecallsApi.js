@@ -272,6 +272,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectSetRecallType: () => {
+      return wiremock.stubFor({
+        request: {
+          method: 'PATCH',
+          urlPattern: `/recalls/([^/]+)/recall-type$`,
+        },
+        response: {
+          status: 200,
+        },
+      })
+    },
     expectSetDocumentCategory: () => {
       return wiremock.stubFor({
         request: {

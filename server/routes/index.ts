@@ -26,7 +26,12 @@ import { getUser, postUser } from '../controllers/userDetails/userDetails'
 import { parseUrlParams, returnToRecallListParam } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from '../controllers/assignUser/assignUser'
-import { addReturnToCustodyDates, stopRecall, unassignUserFromRecall } from '../clients/manageRecallsApiClient'
+import {
+  addReturnToCustodyDates,
+  setRecallType,
+  stopRecall,
+  unassignUserFromRecall,
+} from '../clients/manageRecallsApiClient'
 import { addMissingDocumentRecordFormHandler } from '../controllers/documents/missing-documents/addMissingDocumentRecordFormHandler'
 import { validateLicenceName } from '../controllers/book/validators/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
@@ -85,7 +90,7 @@ export default function routes(router: Router): Router {
   post(`${basePath}/address-list`, addAnotherAddressHandler)
   post(`${basePath}/address-list-delete`, deleteAddressHandler)
   get(`${basePath}/recall-type`, recallPageGet('recallType'))
-  post(`${basePath}/recall-type`, recallFormPost(validateRecallType))
+  post(`${basePath}/recall-type`, recallFormPost(validateRecallType, setRecallType))
   get(`${basePath}/request-received`, recallPageGet('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
