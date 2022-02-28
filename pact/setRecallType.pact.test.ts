@@ -3,7 +3,7 @@ import { pactWith } from 'jest-pact'
 import { Matchers } from '@pact-foundation/pact'
 import { setRecallType } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
-import setRecallTypeJson from '../fake-manage-recalls-api/stubs/__files/set-recall-type.json'
+import setRecallTypeJson from '../fake-manage-recalls-api/stubs/__files/set-recommended-recall-type.json'
 import { pactJsonResponse, pactPatchRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
@@ -18,12 +18,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
   })
 
-  describe('set the recall type', () => {
-    test('can successfully change the recall type', async () => {
+  describe('set the recommended recall type', () => {
+    test('can successfully change the recommended recall type', async () => {
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
         ...pactPatchRequest(
-          'an update recall type request',
+          'an update recommended recall type request',
           `/recalls/${recallId}/recommended-recall-type`,
           valuesToSave,
           accessToken
@@ -38,7 +38,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
         ...pactPatchRequest(
-          'an unauthorized update recall type request',
+          'an unauthorized update recommended recall type request',
           `/recalls/${recallId}/recommended-recall-type`,
           valuesToSave,
           accessToken
