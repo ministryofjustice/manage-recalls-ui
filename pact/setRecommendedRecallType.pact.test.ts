@@ -10,9 +10,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   const accessToken = 'accessToken-1'
   const user = { token: accessToken }
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const valuesToSave = {
-    recommendedRecallType: 'STANDARD',
-  }
+  const valuesToSave = setRecallTypeJson
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
@@ -31,7 +29,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: pactJsonResponse(Matchers.like(setRecallTypeJson), 200),
       })
       const actual = await setRecallType({ recallId, valuesToSave, user })
-      expect(actual).toEqual(setRecallTypeJson)
+      expect(actual.status).toEqual(200)
     })
 
     test('returns 401 if invalid user', async () => {
