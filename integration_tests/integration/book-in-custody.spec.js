@@ -29,6 +29,7 @@ context('Book an "in-custody" recall', () => {
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
     cy.task('expectSetDocumentCategory')
+    cy.task('expectSetRecallType')
     cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     stubRefData()
