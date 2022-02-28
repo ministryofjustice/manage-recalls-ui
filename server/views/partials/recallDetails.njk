@@ -37,7 +37,7 @@
                 Recall type
             </dt>
             <dd class=" govuk-summary-list__value">
-                {% if recall.recallType === 'FIXED' %}Fixed term{% elseif recall.recallType === 'STANDARD' %}Standard{% else %}Not provided{% endif %}
+                {% if recall.recommendedRecallType === 'FIXED' %}Fixed term{% elseif recall.recommendedRecallType === 'STANDARD' %}Standard{% else %}Not provided{% endif %}
             </dd>
             <dd class=" govuk-summary-list__actions">
                 {% if recall.status == 'BEING_BOOKED_ON' %}
@@ -46,7 +46,7 @@
                 {% endif %}
             </dd>
         </div>
-        {% if recall.recallType === 'FIXED' %}
+        {% if recall.recommendedRecallType === 'FIXED' %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
                 Recall length

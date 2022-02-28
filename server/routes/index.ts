@@ -89,7 +89,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/address-list`, recallPageGet('recallAddressList'))
   post(`${basePath}/address-list`, addAnotherAddressHandler)
   post(`${basePath}/address-list-delete`, deleteAddressHandler)
-  get(`${basePath}/recall-type`, recallPageGet('recallType'))
+  get(`${basePath}/recall-type`, recallPageGet('recommendedRecallType'))
   post(`${basePath}/recall-type`, recallFormPost(validateRecallType, setRecallType))
   get(`${basePath}/request-received`, recallPageGet('recallRequestReceived'))
   post(

@@ -32,8 +32,8 @@
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
 
                     {{ govukRadios({
-                        idPrefix: "recallType",
-                        name: "recallType",
+                        idPrefix: "recommendedRecallType",
+                        name: "recommendedRecallType",
                         fieldset: {
                             legend: {
                                 text: "What type of recall is being recommended?",
@@ -45,15 +45,15 @@
                             {
                                 value: "STANDARD",
                                 text: 'Standard',
-                                checked: formValues.recallType == 'STANDARD'
+                                checked: formValues.recommendedRecallType == 'STANDARD'
                             },
                             {
                                 value: "FIXED",
                                 text: 'Fixed term',
-                                checked: formValues.recallType == 'FIXED'
+                                checked: formValues.recommendedRecallType == 'FIXED'
                             }
                         ],
-                        errorMessage: errorMessage(errors.recallType)
+                        errorMessage: errorMessage(errors.recommendedRecallType)
                     }) }}
                 </div>
                 <div>

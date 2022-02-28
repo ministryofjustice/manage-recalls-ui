@@ -11,7 +11,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   const user = { token: accessToken }
   const recallId = '00000000-0000-0000-0000-000000000000'
   const valuesToSave = {
-    recallType: 'STANDARD',
+    recommendedRecallType: 'STANDARD',
   }
 
   beforeEach(() => {
@@ -24,7 +24,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         state: 'a user and a fully populated recall without documents exists',
         ...pactPatchRequest(
           'an update recall type request',
-          `/recalls/${recallId}/recall-type`,
+          `/recalls/${recallId}/recommended-recall-type`,
           valuesToSave,
           accessToken
         ),
@@ -39,7 +39,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         state: 'an unauthorized user accessToken',
         ...pactPatchRequest(
           'an unauthorized update recall type request',
-          `/recalls/${recallId}/recall-type`,
+          `/recalls/${recallId}/recommended-recall-type`,
           valuesToSave,
           accessToken
         ),

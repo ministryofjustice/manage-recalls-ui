@@ -13,7 +13,7 @@ context('View recall information', () => {
         inCustodyAtBooking: true,
         recallId,
         status: 'DOSSIER_ISSUED',
-        recallType: RecallResponse.recallType.STANDARD,
+        recommendedRecallType: RecallResponse.recallType.STANDARD,
         documents: [
           {
             category: 'RECALL_REQUEST_EMAIL',

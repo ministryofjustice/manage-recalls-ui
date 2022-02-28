@@ -41,7 +41,7 @@ export type UpdateRecallRequest = {
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     recallNotificationEmailSentDateTime?: string;
-    recallType?: UpdateRecallRequest.recallType;
+    recommendedRecallType?: UpdateRecallRequest.recallType;
     dossierEmailSentDate?: string;
     previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
     hasDossierBeenChecked?: boolean;

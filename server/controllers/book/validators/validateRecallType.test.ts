@@ -5,18 +5,18 @@ describe('validateRecallType', () => {
 
   it('returns valuesToSave and no errors if Other is submitted', () => {
     const requestBody = {
-      recallType: 'FIXED',
+      recommendedRecallType: 'FIXED',
     }
     const { errors, valuesToSave } = validateRecallType({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      recallType: 'FIXED',
+      recommendedRecallType: 'FIXED',
     })
   })
 
   it('redirects to request-received if fromPage not supplied', () => {
     const requestBody = {
-      recallType: 'FIXED',
+      recommendedRecallType: 'FIXED',
     }
     const { redirectToPage } = validateRecallType({ requestBody, urlInfo })
     expect(redirectToPage).toEqual('/recalls/request-received')
@@ -24,7 +24,7 @@ describe('validateRecallType', () => {
 
   it('redirects to fromPage if supplied', () => {
     const requestBody = {
-      recallType: 'FIXED',
+      recommendedRecallType: 'FIXED',
     }
     const { redirectToPage } = validateRecallType({ requestBody, urlInfo: { ...urlInfo, fromPage: 'view-recall' } })
     expect(redirectToPage).toEqual('/recalls/view-recall')
@@ -32,14 +32,14 @@ describe('validateRecallType', () => {
 
   it('returns an error for the decision, if not set, and no valuesToSave', () => {
     const requestBody = {
-      recallType: '',
+      recommendedRecallType: '',
     }
     const { errors, valuesToSave } = validateRecallType({ requestBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#recallType',
-        name: 'recallType',
+        href: '#recommendedRecallType',
+        name: 'recommendedRecallType',
         text: 'What type of recall is being recommended?',
       },
     ])

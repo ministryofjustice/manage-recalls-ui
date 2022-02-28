@@ -125,7 +125,7 @@ context('Book an "in-custody" recall', () => {
         status: RecallResponse.status.BEING_BOOKED_ON,
         inCustodyAtBooking: true,
         returnedToCustodyDateTime: undefined,
-        recallType: RecallResponse.recallType.FIXED,
+        recommendedRecallType: RecallResponse.recallType.FIXED,
       },
     })
     stubRefData()
@@ -211,7 +211,7 @@ context('Book an "in-custody" recall', () => {
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'recall-type' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
-      fieldName: 'recallType',
+      fieldName: 'recommendedRecallType',
       summaryError: 'What type of recall is being recommended?',
     })
   })

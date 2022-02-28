@@ -95,7 +95,7 @@ export function updateRecall(recallId: string, updatedFields: UpdateRecallReques
 
 export function setRecallType({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
   return restClient(user.token).patch<superagent.Response>({
-    path: `/recalls/${recallId}/recall-type`,
+    path: `/recalls/${recallId}/recommended-recall-type`,
     data: valuesToSave as Record<string, unknown>,
   })
 }

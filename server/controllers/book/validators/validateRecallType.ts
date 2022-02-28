@@ -10,18 +10,18 @@ export const validateRecallType = ({
   let errors
   let valuesToSave
 
-  const { recallType } = requestBody
-  if (!recallType) {
+  const { recommendedRecallType } = requestBody
+  if (!recommendedRecallType) {
     errors = [
       makeErrorObject({
-        id: 'recallType',
+        id: 'recommendedRecallType',
         text: 'What type of recall is being recommended?',
       }),
     ]
   }
   if (!errors) {
     valuesToSave = {
-      recallType: recallType as UpdateRecallRequest.recallType,
+      recommendedRecallType: recommendedRecallType as UpdateRecallRequest.recallType,
     }
   }
   return {

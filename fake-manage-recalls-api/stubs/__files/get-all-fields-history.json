@@ -481,8 +481,8 @@
   },
   {
     "auditId": 36,
-    "fieldName": "recallType",
-    "fieldPath": "recallType",
+    "fieldName": "recommendedRecallType",
+    "fieldPath": "recommendedRecallType",
     "updatedByUserName": "Maria Badger",
     "updatedDateTime": "2022-02-23T13:56:37.769799Z",
     "auditCount": 1

@@ -248,7 +248,7 @@ context('Create a dossier', () => {
       expectedResult: {
         ...getRecallResponse,
         recallId,
-        recallType: 'STANDARD',
+        recommendedRecallType: 'STANDARD',
       },
     })
     cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-check' })

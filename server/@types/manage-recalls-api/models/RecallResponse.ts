@@ -72,7 +72,7 @@ export type RecallResponse = {
     recallEmailReceivedDateTime?: string;
     recallLength?: RecallResponse.recallLength;
     recallNotificationEmailSentDateTime?: string;
-    recallType?: RecallResponse.recallType;
+    recommendedRecallType?: RecallResponse.recallType;
     returnedToCustodyDateTime?: string;
     returnedToCustodyNotificationDateTime?: string;
     sentenceDate?: string;

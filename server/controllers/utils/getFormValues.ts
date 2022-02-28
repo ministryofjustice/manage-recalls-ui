@@ -94,7 +94,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
     'lastKnownAddressOption',
     'rescindRequestDetail',
     'warrantReferenceNumber',
-    'recallType',
+    'recommendedRecallType',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })
