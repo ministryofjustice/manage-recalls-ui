@@ -1,10 +1,9 @@
 // @ts-nocheck
 import { pactWith } from 'jest-pact'
-import { Matchers } from '@pact-foundation/pact'
 import { setRecallType } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
 import setRecallTypeJson from '../fake-manage-recalls-api/stubs/__files/set-recommended-recall-type.json'
-import { pactJsonResponse, pactPatchRequest } from './pactTestUtils'
+import { pactPatchRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
@@ -26,7 +25,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
           valuesToSave,
           accessToken
         ),
-        willRespondWith: pactJsonResponse(Matchers.like(setRecallTypeJson), 200),
+        willRespondWith: { status: 200 },
       })
       const actual = await setRecallType({ recallId, valuesToSave, user })
       expect(actual.status).toEqual(200)
