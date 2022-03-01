@@ -2,6 +2,7 @@ import { FormError, KeyedFormErrors, NamedFormError, ObjectMap, ValidationError 
 import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
+  allowedNoteFileExtensions,
 } from '../documents/upload/helpers/allowedUploadExtensions'
 import { listToString } from './lists'
 import { renderTemplateString } from '../../nunjucks/nunjucksFunctions'
@@ -92,6 +93,19 @@ export const errorMsgDocumentUpload = {
   invalidFileFormat: (fileName: string) =>
     `The selected file '${fileName}' must be a ${listToString(
       allowedDocumentFileExtensions.map(ext => ext.label),
+      'or'
+    )}`,
+}
+
+// TODO: look into re-use per https://github.com/ministryofjustice/manage-recalls-ui/pull/608#discussion_r816564961
+export const errorMsgNoteFileUpload = {
+  noFile: 'Select a file',
+  saveError: 'An error occurred saving your changes',
+  containsVirus: (fileName: string) => `${fileName} contains a virus`,
+  uploadFailed: (fileName: string) => `${fileName} could not be uploaded - try again`,
+  invalidFileFormat: (fileName: string) =>
+    `The selected file '${fileName}' must be an ${listToString(
+      allowedNoteFileExtensions.map(ext => ext.label),
       'or'
     )}`,
 }

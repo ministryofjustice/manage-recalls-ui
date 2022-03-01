@@ -95,6 +95,7 @@ export type ViewName =
   | 'newGeneratedDocumentVersion'
   | 'warrantReference'
   | 'rtcDates'
+  | 'addNote'
   | 'rescindRequest'
   | 'rescindDecision'
   | 'stopRecall'
@@ -125,6 +126,15 @@ export interface EmailUploadValidatorArgs {
   requestBody: ObjectMap<string>
   fileName?: string
   emailFileSelected: boolean
+  uploadFailed: boolean
+  invalidFileFormat: boolean
+  actionedByUserId?: string
+}
+
+// TODO: look into re-use per https://github.com/ministryofjustice/manage-recalls-ui/pull/608#discussion_r816562439
+export interface NoteDocumentUploadValidatorArgs {
+  requestBody: ObjectMap<string>
+  fileName?: string
   uploadFailed: boolean
   invalidFileFormat: boolean
   actionedByUserId?: string

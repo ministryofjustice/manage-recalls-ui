@@ -13,9 +13,11 @@ import {
   allowedEmailFileExtensionList,
   allowedDocumentFileExtensionList,
   allowedImageFileExtensionList,
+  allowedNoteFileExtensionList,
   errorMessage,
   removeUndefinedFromObject,
   allowedImageFileTypeLabelList,
+  allowedNoteFileTypeLabelList,
   selectDocCategory,
   recallInfoActionMenuItems,
   formatNsyWarrantEmailLink,
@@ -65,6 +67,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('allowedDocumentFileExtensionList', allowedDocumentFileExtensionList)
   njkEnv.addGlobal('allowedImageFileExtensionList', allowedImageFileExtensionList)
   njkEnv.addGlobal('allowedImageFileTypeLabelList', allowedImageFileTypeLabelList)
+  njkEnv.addGlobal('allowedNoteFileExtensionList', allowedNoteFileExtensionList)
+  njkEnv.addGlobal('allowedNoteFileTypeLabelList', allowedNoteFileTypeLabelList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
   njkEnv.addGlobal('backLinkUrlRecallType', backLinkUrlRecallType)
   njkEnv.addGlobal('backLinkUrlAssessDownload', backLinkUrlAssessDownload)

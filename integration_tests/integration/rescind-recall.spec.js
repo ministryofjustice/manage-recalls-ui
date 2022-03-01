@@ -52,7 +52,7 @@ context('Rescind a recall', () => {
         details: rescind.requestDetails,
         emailReceivedDate: rescind.requestEmailReceivedDate,
         emailFileName: 'email.msg',
-        // email content was also sent
+        emailFileContent: '*',
       },
     })
     cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
@@ -115,7 +115,7 @@ context('Rescind a recall', () => {
         details: rescind.decisionDetails,
         emailSentDate: rescind.decisionEmailSentDate,
         emailFileName: 'email.msg',
-        // email content was also sent
+        emailFileContent: '*',
       },
     })
     cy.pageHeading().should('equal', `Create a dossier for ${personName} recall`)

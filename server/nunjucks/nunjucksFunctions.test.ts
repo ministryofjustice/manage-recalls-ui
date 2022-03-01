@@ -284,6 +284,10 @@ describe('recallInfoActionMenuItems', () => {
         text: 'View change history',
       },
       {
+        text: 'Add a note',
+        href: '/recalls/add-note?fromPage=view-recall',
+      },
+      {
         href: '/recalls/rescind-request?fromPage=view-recall',
         text: 'Rescind recall',
       },
@@ -313,6 +317,10 @@ describe('recallInfoActionMenuItems', () => {
         text: 'View change history',
       },
       {
+        text: 'Add a note',
+        href: '/recalls/add-note?fromPage=view-recall',
+      },
+      {
         href: '/recalls/stop-recall?fromPage=view-recall',
         text: 'Stop recall',
       },
@@ -338,6 +346,10 @@ describe('recallInfoActionMenuItems', () => {
         text: 'View change history',
       },
       {
+        text: 'Add a note',
+        href: '/recalls/add-note?fromPage=view-recall',
+      },
+      {
         href: '/recalls/rescind-request?fromPage=view-recall',
         text: 'Rescind recall',
       },
@@ -348,7 +360,7 @@ describe('recallInfoActionMenuItems', () => {
     ])
   })
 
-  it('adds a "Update rescind" link if the last rescind is in progress', () => {
+  it('adds an "Update rescind" link if the last rescind is in progress', () => {
     const actionItems = recallInfoActionMenuItems(
       {
         status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
@@ -365,6 +377,10 @@ describe('recallInfoActionMenuItems', () => {
       {
         href: '/recalls/change-history?fromPage=view-recall',
         text: 'View change history',
+      },
+      {
+        text: 'Add a note',
+        href: '/recalls/add-note?fromPage=view-recall',
       },
       {
         href: '/recalls/rescind-decision?fromPage=view-recall',
@@ -389,6 +405,10 @@ describe('recallInfoActionMenuItems', () => {
       {
         href: '/recalls/change-history?fromPage=view-recall',
         text: 'View change history',
+      },
+      {
+        text: 'Add a note',
+        href: '/recalls/add-note?fromPage=view-recall',
       },
       {
         href: '/recalls/rescind-request?fromPage=view-recall',

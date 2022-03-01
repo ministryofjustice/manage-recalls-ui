@@ -1,6 +1,6 @@
-import { RecallDocument, RescindRecord } from './manage-recalls-api'
+import { RecallDocument, RescindRecord, Note } from './manage-recalls-api'
 
-type DocumentType = 'document' | 'email' | 'generated'
+type DocumentType = 'document' | 'email' | 'generated' | 'note_document'
 
 export interface DocumentCategoryMetadata {
   label: string
@@ -65,6 +65,10 @@ export interface DecoratedMissingDocumentsRecord {
 export interface DecoratedRescindRecord extends RescindRecord {
   requestEmailUrl: string
   decisionEmailUrl: string
+}
+
+export interface DecoratedNote extends Note {
+  documentUrl: string
 }
 
 export interface DocumentDecorations {

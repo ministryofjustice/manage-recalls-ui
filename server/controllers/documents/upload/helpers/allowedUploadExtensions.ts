@@ -31,3 +31,22 @@ export const allowedImageFileExtensions: AllowedUploadFileType[] = [
     mimeType: 'image/jpeg',
   },
 ]
+
+export const allowedWordDocumentFileExtensions: AllowedUploadFileType[] = [
+  {
+    extension: '.doc',
+    label: 'DOC',
+    mimeType: 'application/msword',
+  },
+  {
+    extension: '.docx',
+    label: 'DOCX',
+    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  },
+]
+
+export const allowedNoteFileExtensions: AllowedUploadFileType[] = [
+  ...allowedEmailFileExtensions,
+  ...allowedWordDocumentFileExtensions,
+  ...allowedDocumentFileExtensions,
+]
