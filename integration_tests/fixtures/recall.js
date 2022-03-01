@@ -5,7 +5,7 @@ const sixMonthsTime = tomorrow.plus({ months: 6 })
 const nineMonthsTime = tomorrow.plus({ months: 9 })
 
 export const recall = {
-  recallType: 'Fixed term',
+  recommendedRecallType: 'Fixed term',
   agreeWithRecall: 'YES',
   agreeWithRecallDetail: 'Reasons...',
   previousConvictionMainName: 'Walter Holt',

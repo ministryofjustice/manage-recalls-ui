@@ -29,6 +29,7 @@ context('Book an "in-custody" recall', () => {
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
     cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
     cy.task('expectSetDocumentCategory')
+    cy.task('expectSetRecommendedRecallType')
     cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.task('expectCreateRecall', { expectedResults: { recallId } })
     stubRefData()
@@ -48,6 +49,10 @@ context('Book an "in-custody" recall', () => {
 
     // custody status
     cy.selectRadio('Is Bobby Badger in custody?', 'Yes')
+    cy.clickButton('Continue')
+
+    // recall type - fixed or standard
+    cy.selectRadio('What type of recall is being recommended?', 'Fixed term')
     cy.clickButton('Continue')
 
     // recall request
@@ -120,6 +125,7 @@ context('Book an "in-custody" recall', () => {
         status: RecallResponse.status.BEING_BOOKED_ON,
         inCustodyAtBooking: true,
         returnedToCustodyDateTime: undefined,
+        recommendedRecallType: RecallResponse.recallType.FIXED,
       },
     })
     stubRefData()
@@ -132,8 +138,11 @@ context('Book an "in-custody" recall', () => {
 
     checkAnswers.assertElementHasText({ qaAttr: 'inCustodyAtBooking', textToFind: 'In custody' })
 
-    // Recall request date and time
+    // Recall details
+    cy.recallInfo('Recall type').should('equal', 'Fixed term')
+    cy.recallInfo('Recall length').should('equal', '14 days')
     checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
+
     // Sentence, offence and release details
     checkAnswers.assertElementHasText({ qaAttr: 'sentenceType', textToFind: 'Determinate' })
     checkAnswers.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
@@ -189,6 +198,21 @@ context('Book an "in-custody" recall', () => {
     cy.assertErrorMessage({
       fieldName: 'inCustodyAtBooking',
       summaryError: 'Is Bobby Badger in custody?',
+    })
+  })
+
+  it('error - recall type question is not answered', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        recallId,
+        ...getEmptyRecallResponse,
+      },
+    })
+    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'recall-type' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'recommendedRecallType',
+      summaryError: 'What type of recall is being recommended?',
     })
   })
 

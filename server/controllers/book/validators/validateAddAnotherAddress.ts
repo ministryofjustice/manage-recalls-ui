@@ -25,9 +25,7 @@ export const validateAddAnotherAddress = ({
     if (addAnotherAddressOption === 'YES') {
       redirectToPage = makeUrl('postcode-lookup', urlInfo)
     } else {
-      redirectToPage = urlInfo.fromPage
-        ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
-        : makeUrl('request-received', urlInfo)
+      redirectToPage = urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('recall-type', urlInfo)
     }
   }
   return { errors, redirectToPage }

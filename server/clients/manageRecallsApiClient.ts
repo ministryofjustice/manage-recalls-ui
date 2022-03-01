@@ -93,6 +93,14 @@ export function updateRecall(recallId: string, updatedFields: UpdateRecallReques
   return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: updatedFields })
 }
 
+export function setRecallType({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).patch<superagent.Response>({
+    path: `/recalls/${recallId}/recommended-recall-type`,
+    data: valuesToSave as Record<string, unknown>,
+    raw: true,
+  })
+}
+
 export function uploadRecallDocument(
   recallId: string,
   document: UploadDocumentRequest,

@@ -5,11 +5,7 @@
 {% block beforeContent %}
     {{ govukBackLink({
         text: "Back",
-        href: backLinkUrlRecallReceived({
-            inCustodyAtBooking: recall.inCustodyAtBooking,
-            lastKnownAddressOption: recall.lastKnownAddressOption,
-            urlInfo: urlInfo
-        })
+        href: backLinkUrl('recall-type', urlInfo)
     }) }}
 {% endblock %}
 
@@ -35,7 +31,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="{{ makeUrl('request-received', urlInfo, csrfToken) }}"
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
                   method="post" enctype="multipart/form-data">
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukDateInput({

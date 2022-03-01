@@ -57,7 +57,7 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'BOOLEAN',
   },
   additionalLicenceConditions: {
-    label: 'Licence conditions breached',
+    label: 'Additional licence conditions',
     fieldType: 'BOOLEAN',
   },
   differentNomsNumber: {
@@ -157,7 +157,7 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'TEXT',
   },
   licenceConditionsBreached: {
-    label: 'Licence conditions breached detail',
+    label: 'Licence conditions breached',
     fieldType: 'TEXT',
   },
   reasonsForRecall: {
@@ -170,7 +170,7 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'TEXT',
   },
   additionalLicenceConditionsDetail: {
-    label: 'Additional licence conditions',
+    label: 'Additional licence conditions detail',
     fieldType: 'TEXT',
   },
   confirmRecallNotificationEmailSent: {
@@ -237,6 +237,14 @@ export const recallFieldList: ObjectMap<RecallField> = {
   recallNotificationSentEmailUploaded: {
     fieldType: 'UPLOADED_EMAIL',
     documentCategory: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+  },
+  recommendedRecallType: {
+    label: 'Name',
+    fieldType: 'ENUM',
+    enumValues: {
+      STANDARD: 'Standard',
+      FIXED: 'Fixed',
+    },
   },
   dossierSentEmailUploaded: {
     fieldType: 'UPLOADED_EMAIL',

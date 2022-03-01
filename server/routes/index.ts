@@ -26,7 +26,12 @@ import { getUser, postUser } from '../controllers/userDetails/userDetails'
 import { parseUrlParams, returnToRecallListParam } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from '../controllers/assignUser/assignUser'
-import { addReturnToCustodyDates, stopRecall, unassignUserFromRecall } from '../clients/manageRecallsApiClient'
+import {
+  addReturnToCustodyDates,
+  setRecallType,
+  stopRecall,
+  unassignUserFromRecall,
+} from '../clients/manageRecallsApiClient'
 import { addMissingDocumentRecordFormHandler } from '../controllers/documents/missing-documents/addMissingDocumentRecordFormHandler'
 import { validateLicenceName } from '../controllers/book/validators/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
@@ -52,6 +57,7 @@ import { validateStopReason } from '../controllers/stop/validators/validateStopR
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
 import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
 import { validateNsyEmail } from '../controllers/dossier/validators/validateNsyEmail'
+import { validateRecallType } from '../controllers/book/validators/validateRecallType'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -83,6 +89,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/address-list`, recallPageGet('recallAddressList'))
   post(`${basePath}/address-list`, addAnotherAddressHandler)
   post(`${basePath}/address-list-delete`, deleteAddressHandler)
+  get(`${basePath}/recall-type`, recallPageGet('recommendedRecallType'))
+  post(`${basePath}/recall-type`, recallFormPost(validateRecallType, setRecallType))
   get(`${basePath}/request-received`, recallPageGet('recallRequestReceived'))
   post(
     `${basePath}/request-received`,

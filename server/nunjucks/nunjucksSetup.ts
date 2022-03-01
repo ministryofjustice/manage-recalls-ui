@@ -33,7 +33,7 @@ import {
 } from '../controllers/utils/recallStatus'
 import { listDocumentLabels, objectToArray, sortList } from '../controllers/utils/lists'
 import { isDefined } from '../utils/utils'
-import { backLinkUrl, backLinkUrlAssessDownload, backLinkUrlRecallReceived, changeLinkUrl } from './urls'
+import { backLinkUrl, backLinkUrlAssessDownload, backLinkUrlRecallType, changeLinkUrl } from './urls'
 import { generatedDocCategoriesList, getGeneratedDocFileName } from '../controllers/documents/generated/helpers'
 
 export default function nunjucksSetup(app: express.Application, path: pathModule.PlatformPath): void {
@@ -66,7 +66,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('allowedImageFileExtensionList', allowedImageFileExtensionList)
   njkEnv.addGlobal('allowedImageFileTypeLabelList', allowedImageFileTypeLabelList)
   njkEnv.addGlobal('backLinkUrl', backLinkUrl)
-  njkEnv.addGlobal('backLinkUrlRecallReceived', backLinkUrlRecallReceived)
+  njkEnv.addGlobal('backLinkUrlRecallType', backLinkUrlRecallType)
   njkEnv.addGlobal('backLinkUrlAssessDownload', backLinkUrlAssessDownload)
   njkEnv.addGlobal('makeUrl', makeUrl)
   njkEnv.addGlobal('changeLinkUrl', changeLinkUrl)

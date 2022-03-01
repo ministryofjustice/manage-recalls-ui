@@ -41,6 +41,7 @@ export type UpdateRecallRequest = {
     differentNomsNumber?: boolean;
     differentNomsNumberDetail?: string;
     recallNotificationEmailSentDateTime?: string;
+    recommendedRecallType?: UpdateRecallRequest.recallType;
     dossierEmailSentDate?: string;
     previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
     hasDossierBeenChecked?: boolean;
@@ -235,6 +236,11 @@ export namespace UpdateRecallRequest {
         REPUBLIC_OF_IRELAND = 'REPUBLIC_OF_IRELAND',
         SCOTLAND = 'SCOTLAND',
         YOT_SEE_COMMENTS = 'YOT_SEE_COMMENTS',
+    }
+
+    export enum recallType {
+        STANDARD = 'STANDARD',
+        FIXED = 'FIXED'
     }
 
     export enum agreeWithRecall {

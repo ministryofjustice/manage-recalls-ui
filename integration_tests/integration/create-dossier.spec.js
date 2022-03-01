@@ -243,6 +243,20 @@ context('Create a dossier', () => {
     dossierConfirmationPage.verifyOnPage()
   })
 
+  it('shows recall type of standard on check page, and hides recall length', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...getRecallResponse,
+        recallId,
+        recommendedRecallType: 'STANDARD',
+      },
+    })
+    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-check' })
+    cy.recallInfo('Recall type').should('equal', 'Standard')
+    cy.getElement('Change recall type').should('not.exist')
+    cy.getElement('recallLength').should('not.exist')
+  })
+
   it('asks for current prison then NSY email confirmation, if the person has returned to custody', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
