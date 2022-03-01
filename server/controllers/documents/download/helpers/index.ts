@@ -1,10 +1,11 @@
 import {
   DecoratedMissingDocumentsRecord,
+  DecoratedNote,
   DecoratedRescindRecord,
   DecoratedUploadedDoc,
 } from '../../../../@types/documents'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { MissingDocumentsRecord, RescindRecord } from '../../../../@types/manage-recalls-api'
+import { MissingDocumentsRecord, Note, RescindRecord } from '../../../../@types/manage-recalls-api'
 import { sortList } from '../../../utils/lists'
 
 export const documentDownloadUrl = ({
@@ -81,4 +82,20 @@ export const decorateRescindRecords = ({
     decisionEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.decisionEmailId }),
   }))
   return sortList(decorated, 'version', false)
+}
+
+export const decorateNotes = ({
+  notes,
+  recallId,
+  nomsNumber,
+}: {
+  notes: Note[]
+  recallId: string
+  nomsNumber: string
+}): DecoratedNote[] => {
+  const decorated = notes?.map(note => ({
+    ...note,
+    documentUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: note.documentId }),
+  }))
+  return sortList(decorated, 'index', false)
 }

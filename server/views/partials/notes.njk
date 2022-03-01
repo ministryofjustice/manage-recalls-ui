@@ -1,0 +1,54 @@
+<div id='notes'>
+    <h2 class='govuk-heading-m govuk-!-margin-top-9'>Notes</h2>
+    {% if recall.notes.length %}
+        <dl class="govuk-summary-list">
+            {% for note in recall.notes %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                      <pre class='govuk-body' data-qa='noteSubject{{ loop.index }}'>
+                            {{ note.subject }}
+                      </pre>
+                    </dt>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Details
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                      <pre class='govuk-body' data-qa='noteDetails{{ loop.index }}'>
+                            {{ note.details }}
+                      </pre>
+                    </dd>
+                </div>
+                {% if isDefined(note.fileName) %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Document
+                    </dt>
+                    <dd class=" govuk-summary-list__value">
+                        <a href='{{ note.documentUrl }}' class='govuk-link' download>{{ note.fileName }}</a>
+                    </dd>
+                </div>
+                {% endif %}
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Date and time of note
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ note.createdDateTime | dateTime }}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class=" govuk-summary-list__key">
+                        Note made by
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                        {{ note.createdByUserName }}
+                    </dd>
+                </div>
+            {% endfor %}
+        </dl>
+    {% else %}
+    <span>No notes have been added to this recall.</span>
+    {% endif %}
+</div>

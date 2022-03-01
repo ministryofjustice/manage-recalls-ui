@@ -97,6 +97,7 @@ export const errorMsgDocumentUpload = {
     )}`,
 }
 
+// TODO: look into re-use per https://github.com/ministryofjustice/manage-recalls-ui/pull/608#discussion_r816564961
 export const errorMsgNoteFileUpload = {
   noFile: 'Select a file',
   saveError: 'An error occurred saving your changes',
