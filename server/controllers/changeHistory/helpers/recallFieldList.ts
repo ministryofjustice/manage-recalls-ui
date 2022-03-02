@@ -83,17 +83,21 @@ export const recallFieldList: ObjectMap<RecallField> = {
     fieldType: 'REF_DATA',
     refDataCategory: 'prisons',
   },
-  agreeWithRecall: {
-    label: 'Agree with recall recommendation',
-    fieldType: 'ENUM', // YES / NO_STOP
+  confirmedRecallType: {
+    label: 'Recall type - confirmed',
+    fieldType: 'ENUM', // FIXED / STANDARD
     enumValues: {
-      YES: 'Yes',
-      NO_STOP: 'No, stop the recall',
+      FIXED: 'Fixed term',
+      STANDARD: 'Standard',
     },
   },
-  agreeWithRecallDetail: {
-    label: 'Agree with recall recommendation detail',
+  confirmedRecallTypeDetail: {
+    label: 'Recall type - confirmed detail',
     fieldType: 'TEXT',
+  },
+  confirmedRecallTypeEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.CHANGE_RECALL_TYPE_EMAIL,
   },
   lastReleasePrison: {
     label: 'Releasing prison',

@@ -1,12 +1,12 @@
-import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { makeErrorObject } from '../../utils/errorMessages'
+import { RecommendedRecallTypeRequest } from '../../../@types/manage-recalls-api/models/RecommendedRecallTypeRequest'
 
 export const validateRecallType = ({
   requestBody,
   urlInfo,
-}: ReqValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
+}: ReqValidatorArgs): ReqValidatorReturn<RecommendedRecallTypeRequest> => {
   let errors
   let valuesToSave
 
@@ -21,7 +21,7 @@ export const validateRecallType = ({
   }
   if (!errors) {
     valuesToSave = {
-      recommendedRecallType: recommendedRecallType as UpdateRecallRequest.recallType,
+      recommendedRecallType: recommendedRecallType as RecommendedRecallTypeRequest.recommendedRecallType,
     }
   }
   return {

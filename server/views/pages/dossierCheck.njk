@@ -57,11 +57,11 @@
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Recall type
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='recommendedRecallType'>
-                        {% if recall.recommendedRecallType === 'FIXED' %}Fixed term{% elseif recall.recommendedRecallType === 'STANDARD' %}Standard{% endif %}
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half">
+                        {% if recall.confirmedRecallType === 'FIXED' %}Fixed term{% elseif recall.confirmedRecallType === 'STANDARD' %}Standard{% endif %}
                     </dd>
                 </div>
-                {% if recall.recommendedRecallType === 'FIXED' %}
+                {% if recall.confirmedRecallType === 'FIXED' %}
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Recall length

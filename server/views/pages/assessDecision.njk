@@ -27,59 +27,77 @@
             {% endif %}
             <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
 
-            <form novalidate action="{{ makeUrl('assess-decision', urlInfo) }}" method="post">
-                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
+                  method="post" enctype="multipart/form-data">
+                <input type="hidden" name="recommendedRecallType" value="{{ recall.recommendedRecallType }}" />
                 {% set yesHtml %}
+                    {% set id = "confirmedRecallTypeDetailFixed" if recall.recommendedRecallType === 'FIXED' else "confirmedRecallTypeDetailStandard" %}
                     {{ govukTextarea({
-                        name: "agreeWithRecallDetailYes",
-                        id: "agreeWithRecallDetailYes",
+                        name: id,
+                        id: id,
                         label: {
                             text: "Provide more detail"
                         },
-                        value: formValues.agreeWithRecallDetailYes,
-                        errorMessage: errorMessage(errors.agreeWithRecallDetailYes)
+                        value: formValues[id],
+                        errorMessage: errorMessage(errors[id])
                     }) }}
                 {% endset -%}
                 {% set noHtml %}
+                    {% set id = "confirmedRecallTypeDetailStandard" if recall.recommendedRecallType === 'FIXED' else "confirmedRecallTypeDetailFixed" %}
                     {{ govukTextarea({
-                        name: "agreeWithRecallDetailNo",
-                        id: "agreeWithRecallDetailNo",
+                        name: id,
+                        id: id,
                         label: {
                             text: "Provide more detail"
                         },
-                        value: formValues.agreeWithRecallDetailNo ,
-                        errorMessage: errorMessage(errors.agreeWithRecallDetailNo)
+                        value: formValues[id],
+                        errorMessage: errorMessage(errors[id])
+                    }) }}
+                    <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                    {%  set emailField = recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL %}
+                    {%  include '../partials/uploadedEmailLink.njk' %}
+                    {{ govukFileUpload({
+                        id: "confirmedRecallTypeEmailFileName",
+                        name: "confirmedRecallTypeEmailFileName",
+                        label: {
+                            text: "Upload the email",
+                            classes: 'govuk-visually-hidden'
+                        },
+                        attributes: {
+                            accept: allowedEmailFileExtensionList()
+                        },
+                        errorMessage: errorMessage(errors.confirmedRecallTypeEmailFileName)
                     }) }}
                 {% endset -%}
                 {{ govukRadios({
-                    idPrefix: "agreeWithRecall",
-                    name: "agreeWithRecall",
+                    idPrefix: "confirmedRecallType",
+                    name: "confirmedRecallType",
                     fieldset: {
                         legend: {
-                            html: "<span data-qa='recommended-recall-length-text'>Do you agree with the fixed term " + getReferenceDataItemLabel('recallLengths', recall.recallLength) + " day recall recommendation?</span>",
+                            html: "Do you agree with the " + ("fixed term " + getReferenceDataItemLabel('recallLengths', recall.recallLength) + " day" if recall.recommendedRecallType === 'FIXED' else "standard") + " recall recommendation?",
                             classes: "govuk-fieldset__legend--l",
                             isPageHeading: true
                         }
                     },
                     items: [
                         {
-                            value: "YES",
-                            text: "Yes, proceed with the recommended fixed recall type",
-                            checked: formValues.agreeWithRecall == 'YES',
+                            value: "FIXED" if recall.recommendedRecallType === 'FIXED' else "STANDARD",
+                            text: "Yes, proceed with the recommended " + ("fixed term" if recall.recommendedRecallType === 'FIXED' else "standard") + " recall",
+                            checked: formValues.confirmedRecallType == ("FIXED" if recall.recommendedRecallType === 'FIXED' else "STANDARD"),
                             conditional: {
                                 html: yesHtml
                             }
                         },
                         {
-                            value: "NO_STOP",
-                            text: "No, stop the recall",
-                            checked: formValues.agreeWithRecall == 'NO_STOP',
+                            value: "STANDARD" if recall.recommendedRecallType === 'FIXED' else "FIXED",
+                            text: "No, " + ("upgrade to a standard recall" if recall.recommendedRecallType === 'FIXED' else "downgrade to a fixed term recall"),
+                            checked: formValues.confirmedRecallType == ("STANDARD" if recall.recommendedRecallType === 'FIXED' else "FIXED"),
                             conditional: {
                                 html: noHtml
                             }
                         }
                     ],
-                    errorMessage: errorMessage(errors.agreeWithRecall)
+                    errorMessage: errorMessage(errors.confirmedRecallType)
                 }) }}
 
                 <div class="govuk-!-margin-top-4">

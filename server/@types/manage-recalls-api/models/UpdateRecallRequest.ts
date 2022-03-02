@@ -5,71 +5,71 @@
 import type { SentenceLength } from './SentenceLength';
 
 export type UpdateRecallRequest = {
-    licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
-    lastReleasePrison?: string;
-    lastReleaseDate?: string;
-    recallEmailReceivedDateTime?: string;
-    localPoliceForceId?: string;
-    inCustodyAtBooking?: boolean;
-    inCustodyAtAssessment?: boolean;
-    contraband?: boolean;
-    contrabandDetail?: string;
-    vulnerabilityDiversity?: boolean;
-    vulnerabilityDiversityDetail?: string;
-    mappaLevel?: UpdateRecallRequest.mappaLevel;
-    sentenceDate?: string;
-    licenceExpiryDate?: string;
-    sentenceExpiryDate?: string;
-    sentencingCourt?: string;
-    indexOffence?: string;
-    conditionalReleaseDate?: string;
-    sentenceLength?: SentenceLength;
-    bookingNumber?: string;
-    probationOfficerName?: string;
-    probationOfficerPhoneNumber?: string;
-    probationOfficerEmail?: string;
-    localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit;
-    authorisingAssistantChiefOfficer?: string;
-    licenceConditionsBreached?: string;
-    reasonsForRecall?: Array<'BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_NON_CURFEW_CONDITION' | 'ELM_FURTHER_OFFENCE' | 'ELM_EQUIPMENT_TAMPER' | 'ELM_FAILURE_CHARGE_BATTERY' | 'FAILED_HOME_VISIT' | 'FAILED_KEEP_IN_TOUCH' | 'FAILED_RESIDE' | 'FAILED_WORK_AS_APPROVED' | 'POOR_BEHAVIOUR_ALCOHOL' | 'POOR_BEHAVIOUR_FURTHER_OFFENCE' | 'POOR_BEHAVIOUR_DRUGS' | 'POOR_BEHAVIOUR_NON_COMPLIANCE' | 'POOR_BEHAVIOUR_RELATIONSHIPS' | 'TRAVELLING_OUTSIDE_UK' | 'OTHER'>;
-    reasonsForRecallOtherDetail?: string;
-    agreeWithRecall?: UpdateRecallRequest.agreeWithRecall;
-    agreeWithRecallDetail?: string;
-    currentPrison?: string;
     additionalLicenceConditions?: boolean;
     additionalLicenceConditionsDetail?: string;
-    differentNomsNumber?: boolean;
-    differentNomsNumberDetail?: string;
-    recallNotificationEmailSentDateTime?: string;
-    recommendedRecallType?: UpdateRecallRequest.recallType;
-    dossierEmailSentDate?: string;
-    previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
-    hasDossierBeenChecked?: boolean;
-    previousConvictionMainName?: string;
-    assessedByUserId?: string;
-    bookedByUserId?: string;
-    dossierCreatedByUserId?: string;
-    lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
+    agreeWithRecall?: UpdateRecallRequest.agreeWithRecall;
+    agreeWithRecallDetail?: string;
     arrestIssues?: boolean;
     arrestIssuesDetail?: string;
+    assessedByUserId?: string;
+    authorisingAssistantChiefOfficer?: string;
+    bookedByUserId?: string;
+    bookingNumber?: string;
+    conditionalReleaseDate?: string;
+    contraband?: boolean;
+    contrabandDetail?: string;
+    currentPrison?: string;
+    differentNomsNumber?: boolean;
+    differentNomsNumberDetail?: string;
+    dossierCreatedByUserId?: string;
+    dossierEmailSentDate?: string;
+    hasDossierBeenChecked?: boolean;
+    inCustodyAtAssessment?: boolean;
+    inCustodyAtBooking?: boolean;
+    indexOffence?: string;
+    lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
+    lastReleaseDate?: string;
+    lastReleasePrison?: string;
+    licenceConditionsBreached?: string;
+    licenceExpiryDate?: string;
+    licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
+    localDeliveryUnit?: UpdateRecallRequest.localDeliveryUnit;
+    localPoliceForceId?: string;
+    mappaLevel?: UpdateRecallRequest.mappaLevel;
+    previousConvictionMainName?: string;
+    previousConvictionMainNameCategory?: UpdateRecallRequest.previousConvictionMainNameCategory;
+    probationOfficerEmail?: string;
+    probationOfficerName?: string;
+    probationOfficerPhoneNumber?: string;
+    reasonsForRecall?: Array<'BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_EXCLUSION_ZONE' | 'ELM_BREACH_NON_CURFEW_CONDITION' | 'ELM_FURTHER_OFFENCE' | 'ELM_EQUIPMENT_TAMPER' | 'ELM_FAILURE_CHARGE_BATTERY' | 'FAILED_HOME_VISIT' | 'FAILED_KEEP_IN_TOUCH' | 'FAILED_RESIDE' | 'FAILED_WORK_AS_APPROVED' | 'POOR_BEHAVIOUR_ALCOHOL' | 'POOR_BEHAVIOUR_FURTHER_OFFENCE' | 'POOR_BEHAVIOUR_DRUGS' | 'POOR_BEHAVIOUR_NON_COMPLIANCE' | 'POOR_BEHAVIOUR_RELATIONSHIPS' | 'TRAVELLING_OUTSIDE_UK' | 'OTHER'>;
+    reasonsForRecallOtherDetail?: string;
+    recallEmailReceivedDateTime?: string;
+    recallNotificationEmailSentDateTime?: string;
+    sentenceDate?: string;
+    sentenceExpiryDate?: string;
+    sentenceLength?: SentenceLength;
+    sentencingCourt?: string;
+    vulnerabilityDiversity?: boolean;
+    vulnerabilityDiversityDetail?: string;
     warrantReferenceNumber?: string;
 };
 
 export namespace UpdateRecallRequest {
 
+    export enum agreeWithRecall {
+        YES = 'YES',
+        NO_STOP = 'NO_STOP',
+    }
+
+    export enum lastKnownAddressOption {
+        YES = 'YES',
+        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
+    }
+
     export enum licenceNameCategory {
         FIRST_LAST = 'FIRST_LAST',
         FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
         OTHER = 'OTHER',
-    }
-
-    export enum mappaLevel {
-        NA = 'NA',
-        LEVEL_1 = 'LEVEL_1',
-        LEVEL_2 = 'LEVEL_2',
-        LEVEL_3 = 'LEVEL_3',
-        NOT_KNOWN = 'NOT_KNOWN',
-        CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
     }
 
     export enum localDeliveryUnit {
@@ -238,25 +238,19 @@ export namespace UpdateRecallRequest {
         YOT_SEE_COMMENTS = 'YOT_SEE_COMMENTS',
     }
 
-    export enum recallType {
-        STANDARD = 'STANDARD',
-        FIXED = 'FIXED'
-    }
-
-    export enum agreeWithRecall {
-        YES = 'YES',
-        NO_STOP = 'NO_STOP',
+    export enum mappaLevel {
+        NA = 'NA',
+        LEVEL_1 = 'LEVEL_1',
+        LEVEL_2 = 'LEVEL_2',
+        LEVEL_3 = 'LEVEL_3',
+        NOT_KNOWN = 'NOT_KNOWN',
+        CONFIRMATION_REQUIRED = 'CONFIRMATION_REQUIRED',
     }
 
     export enum previousConvictionMainNameCategory {
         FIRST_LAST = 'FIRST_LAST',
         FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
         OTHER = 'OTHER',
-    }
-
-    export enum lastKnownAddressOption {
-        YES = 'YES',
-        NO_FIXED_ABODE = 'NO_FIXED_ABODE',
     }
 
 

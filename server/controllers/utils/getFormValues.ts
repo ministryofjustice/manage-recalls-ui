@@ -1,13 +1,11 @@
 import { DecoratedRecall, FormError, ObjectMap } from '../../@types'
-import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import { splitIsoDateToParts } from './dates/convert'
 import { isDefined } from '../../utils/utils'
+import { confirmRecallTypeDetailFields } from './confirmRecallTypeDetailFields'
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-interface Args {
-  agreeWithRecall?: RecallResponse.agreeWithRecall
+export interface GetFormValuesArgs {
   errors: ObjectMap<FormError>
-  unsavedValues: ObjectMap<any>
+  unsavedValues: ObjectMap<unknown>
   apiValues: DecoratedRecall
 }
 
@@ -17,23 +15,8 @@ const booleanToYesNo = (val: boolean) => {
   return undefined
 }
 
-// special case with Yes / No options, each with a detail field in the front end
-// whichever option is selected, its detail field is stored as agreeWithRecallDetail in the API
-export const recallRecommendation = ({ agreeWithRecall, errors = {}, unsavedValues = {}, apiValues }: Args) => {
-  const vals = {} as any
-  if (agreeWithRecall === 'YES') {
-    vals.agreeWithRecallDetailYes = isDefined(errors.agreeWithRecallDetailYes)
-      ? ''
-      : unsavedValues.agreeWithRecallDetailYes || (apiValues.agreeWithRecall && apiValues.agreeWithRecallDetail)
-  } else if (agreeWithRecall === 'NO_STOP') {
-    vals.agreeWithRecallDetailNo = isDefined(errors.agreeWithRecallDetailNo)
-      ? ''
-      : unsavedValues.agreeWithRecallDetailNo || apiValues.agreeWithRecallDetail
-  }
-  return vals
-}
-
-export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Args) => {
+export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: GetFormValuesArgs) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let values = {
     sentenceLengthParts: errors.sentenceLength?.values || unsavedValues.sentenceLengthParts || apiValues.sentenceLength,
     recallNotificationEmailFileName:
@@ -65,7 +48,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
 
   // Text / radio / checkbox fields
   ;[
-    'agreeWithRecall',
+    'confirmedRecallType',
     'lastReleasePrison',
     'mappaLevel',
     'sentencingCourt',
@@ -114,7 +97,12 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ar
   })
   values = {
     ...values,
-    ...recallRecommendation({ agreeWithRecall: values.agreeWithRecall, errors, unsavedValues, apiValues }),
+    ...confirmRecallTypeDetailFields({
+      confirmedRecallType: values.confirmedRecallType,
+      errors,
+      unsavedValues,
+      apiValues,
+    }),
   }
   // missing documents detail
   values.missingDocumentsDetail = isDefined(errors.missingDocumentsDetail)

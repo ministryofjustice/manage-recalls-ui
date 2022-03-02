@@ -1,14 +1,7 @@
 import { Request, Response } from 'express'
 import { updateRecall } from '../clients/manageRecallsApiClient'
 import logger from '../../logger'
-import { ReqValidatorFn, User } from '../@types'
-
-export interface SaveToApiFnArgs {
-  recallId: string
-  valuesToSave: unknown
-  user: User
-}
-export type SaveToApiFn = ({ recallId, valuesToSave, user }: SaveToApiFnArgs) => Promise<unknown>
+import { ReqValidatorFn, SaveToApiFn } from '../@types'
 
 export const recallFormPost =
   (validator: ReqValidatorFn, saveToApiFn?: SaveToApiFn) =>

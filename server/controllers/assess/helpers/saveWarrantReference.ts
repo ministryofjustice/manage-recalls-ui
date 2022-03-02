@@ -1,5 +1,5 @@
 import { unassignUserFromRecall, updateRecall } from '../../../clients/manageRecallsApiClient'
-import { SaveToApiFnArgs } from '../../recallFormPost'
+import { SaveToApiFnArgs } from '../../../@types'
 
 export const saveWarrantReference = async ({ recallId, valuesToSave, user }: SaveToApiFnArgs) => {
   await updateRecall(recallId, valuesToSave, user.token)

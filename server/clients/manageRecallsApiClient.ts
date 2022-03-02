@@ -6,7 +6,7 @@ import { NewDocumentResponse } from '../@types/manage-recalls-api/models/NewDocu
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
 import { Prisoner } from '../@types/manage-recalls-api/models/Prisoner'
-import { ObjectMap } from '../@types'
+import { ObjectMap, SaveToApiFnArgs } from '../@types'
 import {
   Court,
   GetDocumentResponse,
@@ -30,7 +30,6 @@ import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallRe
 import { RescindRequestRequest } from '../@types/manage-recalls-api/models/RescindRequestRequest'
 import { RescindDecisionRequest } from '../@types/manage-recalls-api/models/RescindDecisionRequest'
 import { StopReasonResponse } from '../@types/manage-recalls-api/models/StopReasonResponse'
-import { SaveToApiFnArgs } from '../controllers/recallFormPost'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -94,9 +93,25 @@ export function updateRecall(recallId: string, updatedFields: UpdateRecallReques
   return restClient(token).patch<Recall>({ path: `/recalls/${recallId}`, data: updatedFields })
 }
 
-export function setRecallType({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+export function setRecommendedRecallType({
+  recallId,
+  valuesToSave,
+  user,
+}: SaveToApiFnArgs): Promise<superagent.Response> {
   return restClient(user.token).patch<superagent.Response>({
     path: `/recalls/${recallId}/recommended-recall-type`,
+    data: valuesToSave as Record<string, unknown>,
+    raw: true,
+  })
+}
+
+export function setConfirmedRecallType({
+  recallId,
+  valuesToSave,
+  user,
+}: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).patch<superagent.Response>({
+    path: `/recalls/${recallId}/confirmed-recall-type`,
     data: valuesToSave as Record<string, unknown>,
     raw: true,
   })

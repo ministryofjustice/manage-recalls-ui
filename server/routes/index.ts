@@ -28,9 +28,9 @@ import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from '../controllers/assignUser/assignUser'
 import {
   addReturnToCustodyDates,
-  setRecallType,
+  setConfirmedRecallType,
+  setRecommendedRecallType,
   stopRecall,
-  unassignUserFromRecall,
 } from '../clients/manageRecallsApiClient'
 import { addMissingDocumentRecordFormHandler } from '../controllers/documents/missing-documents/addMissingDocumentRecordFormHandler'
 import { validateLicenceName } from '../controllers/book/validators/validateLicenceName'
@@ -59,6 +59,7 @@ import { validateReturnToCustodyDates } from '../controllers/assess/validators/v
 import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
 import { validateNsyEmail } from '../controllers/dossier/validators/validateNsyEmail'
 import { validateRecallType } from '../controllers/book/validators/validateRecallType'
+import { saveRecallAndUnassignUser } from '../controllers/documents/upload/helpers/saveRecallAndUnassignUser'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -91,7 +92,7 @@ export default function routes(router: Router): Router {
   post(`${basePath}/address-list`, addAnotherAddressHandler)
   post(`${basePath}/address-list-delete`, deleteAddressHandler)
   get(`${basePath}/recall-type`, recallPageGet('recommendedRecallType'))
-  post(`${basePath}/recall-type`, recallFormPost(validateRecallType, setRecallType))
+  post(`${basePath}/recall-type`, recallFormPost(validateRecallType, setRecommendedRecallType))
   get(`${basePath}/request-received`, recallPageGet('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
@@ -123,8 +124,16 @@ export default function routes(router: Router): Router {
   post(`${basePath}/assess-assign`, assignUser({ nextPageUrlSuffix: 'assess' }))
   get(`${basePath}/assess`, recallPageGet('assessRecall'))
   get(`${basePath}/assess-decision`, recallPageGet('assessDecision'))
-  post(`${basePath}/assess-decision`, recallFormPost(validateDecision))
-  get(`${basePath}/assess-stop`, recallPageGet('assessStop'))
+
+  post(
+    `${basePath}/assess-decision`,
+    uploadEmailFormHandler({
+      emailFieldName: 'confirmedRecallTypeEmailFileName',
+      validator: validateDecision,
+      saveToApiFn: setConfirmedRecallType,
+      documentCategory: UploadDocumentRequest.category.CHANGE_RECALL_TYPE_EMAIL,
+    })
+  )
   get(`${basePath}/assess-licence`, recallPageGet('assessLicence'))
   post(`${basePath}/assess-licence`, recallFormPost(validateLicence))
   get(`${basePath}/assess-custody-status`, recallPageGet('assessCustodyStatus'))
@@ -138,7 +147,7 @@ export default function routes(router: Router): Router {
     uploadEmailFormHandler({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      unassignUserFromRecall,
+      saveToApiFn: saveRecallAndUnassignUser,
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
     })
   )
@@ -173,7 +182,7 @@ export default function routes(router: Router): Router {
     uploadEmailFormHandler({
       emailFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
-      unassignUserFromRecall,
+      saveToApiFn: saveRecallAndUnassignUser,
       documentCategory: UploadDocumentRequest.category.DOSSIER_EMAIL,
     })
   )

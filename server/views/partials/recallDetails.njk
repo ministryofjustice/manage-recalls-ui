@@ -34,10 +34,14 @@
         {% endif %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
-                Recall type
+                {% if not recall.confirmedRecallType or recall.confirmedRecallType == recall.recommendedRecallType %}
+                    Recall type
+                {% else %}Recommended recall type{% endif %}
             </dt>
             <dd class=" govuk-summary-list__value">
-                {% if recall.recommendedRecallType === 'FIXED' %}Fixed term{% elseif recall.recommendedRecallType === 'STANDARD' %}Standard{% else %}Not provided{% endif %}
+                {% if recall.recommendedRecallType === 'FIXED' %}Fixed term{% elseif recall.recommendedRecallType === 'STANDARD' %}
+                    Standard
+                {% else %}Not provided{% endif %}
             </dd>
             <dd class=" govuk-summary-list__actions">
                 {% if recall.status == 'BEING_BOOKED_ON' %}
@@ -49,7 +53,9 @@
         {% if recall.recommendedRecallType === 'FIXED' %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
-                Recall length
+                {% if not recall.confirmedRecallType or recall.confirmedRecallType == recall.recommendedRecallType %}
+                    Recall length
+                {% else %}Recommended recall length{% endif %}
             </dt>
             <dd class=" govuk-summary-list__value" data-qa='recallLength'>
                 {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
@@ -57,6 +63,50 @@
             <dd class=" govuk-summary-list__actions">
             </dd>
         </div>
+        {% endif %}
+        {% if recall.confirmedRecallType and recall.confirmedRecallType != recall.recommendedRecallType %}
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    {% if recall.confirmedRecallType === 'FIXED' %}Downgraded{% else %}Upgraded{% endif %} recall type
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                    {% if recall.confirmedRecallType === 'FIXED' %}Fixed term{% elseif recall.confirmedRecallType === 'STANDARD' %}
+                        Standard
+                    {% else %}Not provided{% endif %}
+                </dd>
+                <dd class=" govuk-summary-list__actions"></dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    {% if recall.confirmedRecallType === 'FIXED' %}Downgraded{% else %}Upgraded{% endif %} recall detail
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                    <pre class='govuk-body'>{{ recall.confirmedRecallTypeDetail }}</pre>
+                </dd>
+                <dd class=" govuk-summary-list__actions"></dd>
+            </div>
+            {% if recall.recommendedRecallType === 'STANDARD' and recall.confirmedRecallType === 'FIXED'%}
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Downgraded recall length
+                </dt>
+                <dd class=" govuk-summary-list__value" data-qa='recallLength'>
+                    {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
+                </dd>
+                <dd class=" govuk-summary-list__actions"></dd>
+            </div>
+            {% endif %}
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    {% if recall.confirmedRecallType === 'FIXED' %}Downgraded{% else %}Upgraded{% endif %} recall email
+                </dt>
+                <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
+                    <a href='{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.url }}' class='govuk-link'
+                       data-qa='uploadedDocument-{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.category }}'
+                       download>{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.fileName }}</a>
+                </dd>
+                <dd class=" govuk-summary-list__actions"></dd>
+            </div>
         {% endif %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
@@ -144,21 +194,6 @@
                     {{ recall.assessedByUserName }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
-                </dd>
-            </div>
-            {% endif %}
-            {% if recall.agreeWithRecallDetail %}
-            <div class="govuk-summary-list__row">
-                <dt class=" govuk-summary-list__key">
-                    Assessment notes
-                </dt>
-                <dd class=" govuk-summary-list__value">
-                    <pre class='govuk-body' data-qa='agreeWithRecallDetail'>{{ recall.agreeWithRecallDetail }}</pre>
-                </dd>
-                <dd class=" govuk-summary-list__actions">
-                    <a href='{{ changeLinkUrl('assess-decision', urlInfo, 'recallDetails') }}' class='govuk-link'>
-                        Change <span class="govuk-visually-hidden"> assessment notes</span>
-                    </a>
                 </dd>
             </div>
             {% endif %}

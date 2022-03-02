@@ -65,7 +65,7 @@ describe('changeHistoryFieldList', () => {
         fieldType: 'UPLOADED_EMAIL',
         hasHistory: true,
         id: 'nsySentEmailUploaded',
-        label: 'New Scotland Yard warrant email sent',
+        label: 'New Scotland Yard warrant email uploaded',
         updatedByUserName: 'Arnold Caseworker',
         updatedDateTime: '2020-12-05T18:33:57.000Z',
       },

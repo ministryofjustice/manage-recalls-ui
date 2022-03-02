@@ -424,7 +424,7 @@ describe('decorateDocs', () => {
         createdDateTime: '2020-04-01T12:00:00.000Z',
         documentId: '639',
         fileName: 'nsy.msg',
-        label: 'New Scotland Yard warrant email sent',
+        label: 'New Scotland Yard warrant email uploaded',
         type: 'email',
         url: '/persons/A123/recalls/abc-456/documents/639',
       },

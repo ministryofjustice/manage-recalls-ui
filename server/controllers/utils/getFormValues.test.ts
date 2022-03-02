@@ -5,6 +5,7 @@ import { RecallDocument } from '../../@types/manage-recalls-api/models/RecallDoc
 import updateRecallResponse from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
 import { MissingDocumentsRecord } from '../../@types/manage-recalls-api/models/MissingDocumentsRecord'
+import { ConfirmedRecallTypeRequest } from '../../@types/manage-recalls-api/models/ConfirmedRecallTypeRequest'
 
 describe('getFormValues', () => {
   const errors = {
@@ -14,14 +15,14 @@ describe('getFormValues', () => {
     inCustodyAtAssessment: {
       text: 'Custody status',
     },
-    agreeWithRecall: {
-      text: 'Decision on recall',
-    },
-    agreeWithRecallDetailYes: {
-      text: 'Provide more detail',
-    },
     recommendedRecallType: {
-      text: 'Type of recall',
+      text: 'Recommended recall type',
+    },
+    confirmedRecallType: {
+      text: 'Confirmed recall type',
+    },
+    confirmedRecallTypeDetail: {
+      text: 'Confirmed recall type detail',
     },
     recallEmailReceivedDateTime: { values: { year: '', month: '12', day: '05', hour: '15', minute: '33' } },
     lastReleasePrison: {
@@ -128,8 +129,8 @@ describe('getFormValues', () => {
   const unsavedValues = {
     inCustodyAtBooking: 'NO',
     inCustodyAtAssessment: 'YES',
-    agreeWithRecall: 'NO',
-    agreeWithRecallDetail: 'Reasons for no...',
+    confirmedRecallType: 'NO',
+    confirmedRecallTypeDetail: 'Reasons for no...',
     recommendedRecallType: 'STANDARD',
     recallEmailReceivedDateTimeParts: { year: '2020', month: '12', day: '05', hour: '15', minute: '33' },
     sentenceDateParts: { year: '2020', month: '12', day: '05' },
@@ -199,7 +200,7 @@ describe('getFormValues', () => {
   it('uses errors if no unsaved or API values', () => {
     const formValues = getFormValues({ errors, unsavedValues: {}, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({
-      agreeWithRecall: '',
+      confirmedRecallType: '',
       arrestIssues: '',
       arrestIssuesDetail: '',
       authorisingAssistantChiefOfficer: '',
@@ -311,7 +312,7 @@ describe('getFormValues', () => {
       apiValues: {} as DecoratedRecall,
     })
     expect(formValues).toEqual({
-      agreeWithRecall: 'NO',
+      confirmedRecallType: 'NO',
       arrestIssues: 'YES',
       arrestIssuesDetail: 'Detail..',
       authorisingAssistantChiefOfficer: 'Carrie Grant',
@@ -423,7 +424,7 @@ describe('getFormValues', () => {
   it('uses all error values over unsaved values', () => {
     const formValues = getFormValues({ errors, unsavedValues, apiValues: {} as DecoratedRecall })
     expect(formValues).toEqual({
-      agreeWithRecall: '',
+      confirmedRecallType: '',
       arrestIssues: '',
       arrestIssuesDetail: '',
       authorisingAssistantChiefOfficer: '',
@@ -537,8 +538,8 @@ describe('getFormValues', () => {
     expect(formValues).toEqual({
       additionalLicenceConditions: 'YES',
       additionalLicenceConditionsDetail: 'one, two',
-      agreeWithRecall: 'YES',
-      agreeWithRecallDetailYes: 'Reasons...',
+      confirmedRecallType: 'FIXED',
+      confirmedRecallTypeDetailFixed: 'Agree with fixed term recall recommendation',
       arrestIssues: 'YES',
       arrestIssuesDetail: 'Detail...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
@@ -644,15 +645,15 @@ describe('getFormValues', () => {
       unsavedValues: {},
       apiValues: {
         ...(apiValues as DecoratedRecall),
-        agreeWithRecall: RecallResponse.agreeWithRecall.NO_STOP,
-        agreeWithRecallDetail: 'Reasons for no...',
+        confirmedRecallType: ConfirmedRecallTypeRequest.confirmedRecallType.STANDARD,
+        confirmedRecallTypeDetail: 'Upgrade to standard recall recommendation',
       },
     })
     expect(formValues).toEqual({
       additionalLicenceConditions: 'YES',
       additionalLicenceConditionsDetail: 'one, two',
-      agreeWithRecall: 'NO_STOP',
-      agreeWithRecallDetailNo: 'Reasons for no...',
+      confirmedRecallType: 'STANDARD',
+      confirmedRecallTypeDetailStandard: 'Upgrade to standard recall recommendation',
       arrestIssues: 'YES',
       arrestIssuesDetail: 'Detail...',
       authorisingAssistantChiefOfficer: 'Bob Monkfish',
