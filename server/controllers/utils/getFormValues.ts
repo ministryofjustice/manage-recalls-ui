@@ -2,6 +2,7 @@ import { DecoratedRecall, FormError, ObjectMap } from '../../@types'
 import { splitIsoDateToParts } from './dates/convert'
 import { isDefined } from '../../utils/utils'
 import { confirmRecallTypeDetailFields } from './confirmRecallTypeDetailFields'
+import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 
 export interface GetFormValuesArgs {
   errors: ObjectMap<FormError>
@@ -27,7 +28,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
       errors.dossierEmailFileName?.values ||
       unsavedValues.dossierEmailFileName ||
       apiValues.emailsUploaded?.DOSSIER_EMAIL?.fileName,
-  } as any
+  } as ObjectMap<unknown>
 
   // dates / times
   ;[
@@ -98,7 +99,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
   values = {
     ...values,
     ...confirmRecallTypeDetailFields({
-      confirmedRecallType: values.confirmedRecallType,
+      confirmedRecallType: values.confirmedRecallType as RecallResponse.recommendedRecallType,
       errors,
       unsavedValues,
       apiValues,
