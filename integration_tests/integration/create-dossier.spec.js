@@ -85,7 +85,6 @@ context('Create a dossier', () => {
     // recall details
     cy.recallInfo('Recall email received').should('equal', '5 December 2020 at 15:33')
     cy.recallInfo('Recall email uploaded').should('equal', 'recall-request.eml')
-    dossierRecall.assertElementHasText({ qaAttr: 'agreeWithRecallDetail', textToFind: 'Reasons...' })
     dossierRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
     cy.getLinkHref('Change licence conditions breached').should('contain', '/assess-licence')
     cy.getLinkHref('Change reasons for recall').should('contain', '/assess-licence')

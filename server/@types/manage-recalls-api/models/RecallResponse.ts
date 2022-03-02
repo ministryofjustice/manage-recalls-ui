@@ -30,8 +30,6 @@ export type RecallResponse = {
     rescindRecords: Array<RescindRecord>;
     additionalLicenceConditions?: boolean;
     additionalLicenceConditionsDetail?: string;
-    agreeWithRecall?: RecallResponse.agreeWithRecall;
-    agreeWithRecallDetail?: string;
     arrestIssues?: boolean;
     arrestIssuesDetail?: string;
     assessedByUserId?: string;
@@ -109,11 +107,6 @@ export namespace RecallResponse {
         DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         STOPPED = 'STOPPED',
-    }
-
-    export enum agreeWithRecall {
-        YES = 'YES',
-        NO_STOP = 'NO_STOP',
     }
 
     export enum confirmedRecallType {

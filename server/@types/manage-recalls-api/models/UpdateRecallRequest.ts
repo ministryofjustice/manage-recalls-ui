@@ -7,8 +7,6 @@ import type { SentenceLength } from './SentenceLength';
 export type UpdateRecallRequest = {
     additionalLicenceConditions?: boolean;
     additionalLicenceConditionsDetail?: string;
-    agreeWithRecall?: UpdateRecallRequest.agreeWithRecall;
-    agreeWithRecallDetail?: string;
     arrestIssues?: boolean;
     arrestIssuesDetail?: string;
     assessedByUserId?: string;
@@ -55,11 +53,6 @@ export type UpdateRecallRequest = {
 };
 
 export namespace UpdateRecallRequest {
-
-    export enum agreeWithRecall {
-        YES = 'YES',
-        NO_STOP = 'NO_STOP',
-    }
 
     export enum lastKnownAddressOption {
         YES = 'YES',
