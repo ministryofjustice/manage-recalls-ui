@@ -96,8 +96,6 @@ context('Create a dossier', () => {
       qaAttr: 'reasonsForRecall-OTHER',
       textToFind: 'Other - other reason detail...',
     })
-    cy.recallInfo('Assessment notes').should('equal', 'Reasons...')
-    cy.getLinkHref('Change assessment notes').should('contain', '/assess-decision')
     cy.recallInfo('Recall notification email sent').should('equal', '15 August 2021 at 14:04')
     cy.recallInfo('Recall notification email uploaded').should('equal', 'notification.msg')
     cy.getLinkHref('Change recall notification email sent date').should('contain', '/assess-email')

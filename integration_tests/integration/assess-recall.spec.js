@@ -101,6 +101,7 @@ context('Assess a recall', () => {
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
     cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
+    cy.task('expectSetConfirmedRecallType')
     cy.visitPage('/')
     cy.clickButton('Assess recall')
     cy.pageHeading().should('equal', `Assess a recall for ${firstLastName}`)
