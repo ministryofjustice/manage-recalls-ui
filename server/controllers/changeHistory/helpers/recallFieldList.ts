@@ -239,7 +239,7 @@ export const recallFieldList: ObjectMap<RecallField> = {
     documentCategory: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
   },
   recommendedRecallType: {
-    label: 'Name',
+    label: 'Recall type - recommended',
     fieldType: 'ENUM',
     enumValues: {
       STANDARD: 'Standard',
