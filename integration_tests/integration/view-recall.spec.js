@@ -9,6 +9,7 @@ context('View recall information', () => {
       recallId,
       expectedResult: {
         ...getRecallResponse,
+        middleNames: '',
         inCustodyAtBooking: true,
         recallId,
         status: 'DOSSIER_ISSUED',
@@ -47,7 +48,9 @@ context('View recall information', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
 
-    cy.getElement('recallLength').should('not.exist')
+    // as person doesn't have middle names, don't offer a change link for name
+    cy.getElement('Change licence name').should('not.exist')
+
     recallInformation.assertElementHasText({
       qaAttr: 'inCustodyAtBooking',
       textToFind: 'In custody',

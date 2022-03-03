@@ -9,7 +9,9 @@
       {{ recall.fullName }}
     </dd>
     <dd class=" govuk-summary-list__actions">
+      {% if recall.middleNames %}
       <a href='{{ changeLinkUrl('licence-name', urlInfo, 'personalDetails') }}' data-qa='licenceNameChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> licence name</span></a>
+      {% endif %}
     </dd>
   </div>
   <div class="govuk-summary-list__row">
