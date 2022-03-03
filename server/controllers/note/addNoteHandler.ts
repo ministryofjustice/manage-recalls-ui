@@ -24,30 +24,30 @@ export const addNoteHandler = async (req: Request, res: Response): Promise<void>
     try {
       const uploadFailed = Boolean(err)
       const { file } = req
-      const documentFileSelected = Boolean(file)
-      const fileName = file.originalname
-      const invalidFileFormat = documentFileSelected
+      const fileSelected = Boolean(file)
+      const fileName = fileSelected ? file.originalname : undefined
+      const invalidFileFormat = fileSelected
         ? !allowedNoteFileExtensions.some(ext => file.originalname.endsWith(ext.extension))
         : false
       const { errors, valuesToSave, unsavedValues } = validateAddNote({
         requestBody: req.body,
+        fileSelected,
         fileName,
         uploadFailed,
         invalidFileFormat,
       })
-      const shouldSaveToApi = !errors && documentFileSelected && !uploadFailed
+      const shouldSaveToApi = !errors && !uploadFailed
       if (shouldSaveToApi) {
         try {
-          const response = await addNote(
-            recallId,
-            {
-              subject: valuesToSave.subject,
-              details: valuesToSave.details,
-              fileName: file.originalname,
-              fileContent: file.buffer.toString('base64'),
-            },
-            user.token
-          )
+          const fileNameOrUndefined = fileSelected ? file.originalname : undefined
+          const fileContentOrUndefined = fileSelected ? file.buffer.toString('base64') : undefined
+          const request = {
+            subject: valuesToSave.subject,
+            details: valuesToSave.details,
+            fileName: fileNameOrUndefined,
+            fileContent: fileContentOrUndefined,
+          }
+          const response = await addNote(recallId, request, user.token)
           if (response.status === 201) {
             confirmationMessage = 'Note added.'
             saveToApiSuccessful = true

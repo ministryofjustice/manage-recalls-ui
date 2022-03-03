@@ -79,6 +79,9 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
     'rescindRequestDetail',
     'warrantReferenceNumber',
     'recommendedRecallType',
+    'subject',
+    'details',
+    'fileName',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })

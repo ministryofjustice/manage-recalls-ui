@@ -131,10 +131,11 @@ export interface EmailUploadValidatorArgs {
   actionedByUserId?: string
 }
 
-// TODO: look into re-use per https://github.com/ministryofjustice/manage-recalls-ui/pull/608#discussion_r816562439
+// TODO: PUD-1489: merge with `EmailUploadValidatorArgs`, i.e. look into re-use per https://github.com/ministryofjustice/manage-recalls-ui/pull/608#discussion_r816562439
 export interface NoteDocumentUploadValidatorArgs {
   requestBody: ObjectMap<string>
   fileName?: string
+  fileSelected: boolean
   uploadFailed: boolean
   invalidFileFormat: boolean
   actionedByUserId?: string

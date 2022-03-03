@@ -4,6 +4,7 @@ import { errorMsgNoteFileUpload, errorMsgProvideDetail, makeErrorObject } from '
 export const validateAddNote = ({
   requestBody,
   fileName,
+  fileSelected,
   uploadFailed,
   invalidFileFormat,
 }: NoteDocumentUploadValidatorArgs): {
@@ -12,9 +13,11 @@ export const validateAddNote = ({
   unsavedValues: ObjectMap<unknown>
 } => {
   let errors
+  let unsavedValues
   let valuesToSave
   const { subject, details } = requestBody
-  if (uploadFailed || invalidFileFormat || !subject || !details) {
+  const fileError = fileSelected && (uploadFailed || invalidFileFormat)
+  if (fileError || !subject || !details) {
     errors = []
     if (!subject) {
       errors.push(
@@ -48,10 +51,10 @@ export const validateAddNote = ({
         })
       )
     }
-  }
-  const unsavedValues = {
-    subject,
-    details,
+    unsavedValues = {
+      subject,
+      details,
+    }
   }
   if (!errors) {
     valuesToSave = { subject, details }
