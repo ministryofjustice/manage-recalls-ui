@@ -88,7 +88,7 @@ describe('validateDossierEmail', () => {
   })
 
   it("returns an error if an email wasn't uploaded", () => {
-    const { errors, valuesToSave } = validateDossierEmail({
+    const { errors, unsavedValues, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: false,
@@ -97,6 +97,15 @@ describe('validateDossierEmail', () => {
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      confirmDossierEmailSent: 'YES',
+      dossierEmailFileName: 'test.msg',
+      dossierEmailSentDateParts: {
+        day: '04',
+        month: '09',
+        year: '2021',
+      },
+    })
     expect(errors).toEqual([
       {
         href: '#dossierEmailFileName',

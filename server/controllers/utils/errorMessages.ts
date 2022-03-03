@@ -1,3 +1,4 @@
+import { Response } from 'express'
 import { FormError, KeyedFormErrors, NamedFormError, ObjectMap, ValidationError } from '../../@types'
 import {
   allowedDocumentFileExtensions,
@@ -163,4 +164,19 @@ export const renderErrorMessages = (
     },
     { list: [] }
   ) as KeyedFormErrors
+}
+
+export const saveErrorWithDetails = ({ err, res }: { err: Error; res: Response }) => {
+  return [
+    {
+      name: 'saveError',
+      text:
+        res.locals.env === 'PRODUCTION'
+          ? 'An error occurred saving your changes'
+          : `Error thrown:
+                ${err?.message}
+                ${err?.stack}
+              `,
+    },
+  ]
 }

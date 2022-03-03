@@ -10,7 +10,6 @@ export const validateDecision = ({
   invalidFileFormat,
 }: EmailUploadValidatorArgs): ReqValidatorReturn<ConfirmedRecallTypeRequest> => {
   let errors
-  let unsavedValues
   let valuesToSave
 
   const {
@@ -78,11 +77,11 @@ export const validateDecision = ({
         })
       )
     }
-    unsavedValues = {
-      confirmedRecallType,
-      confirmedRecallTypeDetailFixed,
-      confirmedRecallTypeDetailStandard,
-    }
+  }
+  const unsavedValues = {
+    confirmedRecallType,
+    confirmedRecallTypeDetailFixed,
+    confirmedRecallTypeDetailStandard,
   }
   if (!errors) {
     const detail = isFixed ? confirmedRecallTypeDetailFixed : confirmedRecallTypeDetailStandard

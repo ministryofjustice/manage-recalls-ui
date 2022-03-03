@@ -11,7 +11,6 @@ export const validateRecallRequestReceived = ({
   invalidFileFormat,
 }: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
-  let unsavedValues
   let valuesToSave
   const recallEmailReceivedDateTimeParts = {
     year: requestBody.recallEmailReceivedDateTimeYear,
@@ -43,7 +42,7 @@ export const validateRecallRequestReceived = ({
       )
     }
 
-    if (!emailFileSelected && !existingUpload) {
+    if (!uploadFailed && !emailFileSelected && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
@@ -67,9 +66,9 @@ export const validateRecallRequestReceived = ({
         })
       )
     }
-    unsavedValues = {
-      recallEmailReceivedDateTimeParts,
-    }
+  }
+  const unsavedValues = {
+    recallEmailReceivedDateTimeParts,
   }
   if (!errors) {
     valuesToSave = { recallEmailReceivedDateTime } as UpdateRecallRequest

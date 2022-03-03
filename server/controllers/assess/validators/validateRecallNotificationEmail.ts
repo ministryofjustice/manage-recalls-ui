@@ -13,7 +13,6 @@ export const validateRecallNotificationEmail = ({
   actionedByUserId,
 }: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
-  let unsavedValues
   let valuesToSave
 
   const { confirmRecallNotificationEmailSent } = requestBody
@@ -80,11 +79,11 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    unsavedValues = {
-      recallNotificationEmailFileName: fileName,
-      confirmRecallNotificationEmailSent,
-      recallNotificationEmailSentDateTimeParts,
-    }
+  }
+  const unsavedValues = {
+    recallNotificationEmailFileName: fileName,
+    confirmRecallNotificationEmailSent,
+    recallNotificationEmailSentDateTimeParts,
   }
   if (!errors) {
     valuesToSave = { recallNotificationEmailSentDateTime, assessedByUserId: actionedByUserId } as UpdateRecallRequest

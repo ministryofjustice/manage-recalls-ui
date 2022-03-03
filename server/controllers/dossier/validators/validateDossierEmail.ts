@@ -14,7 +14,6 @@ export const validateDossierEmail = ({
   actionedByUserId,
 }: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
-  let unsavedValues
   let valuesToSave
 
   const { confirmDossierEmailSent } = requestBody
@@ -74,11 +73,11 @@ export const validateDossierEmail = ({
         })
       )
     }
-    unsavedValues = {
-      dossierEmailFileName: fileName,
-      confirmDossierEmailSent,
-      dossierEmailSentDateParts,
-    }
+  }
+  const unsavedValues = {
+    dossierEmailFileName: fileName,
+    confirmDossierEmailSent,
+    dossierEmailSentDateParts,
   }
   if (!errors) {
     valuesToSave = { dossierEmailSentDate: dossierEmailSentDate as string, dossierCreatedByUserId: actionedByUserId }

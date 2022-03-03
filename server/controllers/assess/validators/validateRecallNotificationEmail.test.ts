@@ -88,7 +88,7 @@ describe('validateEmail', () => {
   })
 
   it("returns an error if an email wasn't uploaded", () => {
-    const { errors, valuesToSave } = validateRecallNotificationEmail({
+    const { errors, unsavedValues, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: false,
@@ -97,6 +97,17 @@ describe('validateEmail', () => {
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      confirmRecallNotificationEmailSent: 'YES',
+      recallNotificationEmailFileName: 'test.msg',
+      recallNotificationEmailSentDateTimeParts: {
+        day: '04',
+        hour: '14',
+        minute: '47',
+        month: '09',
+        year: '2021',
+      },
+    })
     expect(errors).toEqual([
       {
         href: '#recallNotificationEmailFileName',

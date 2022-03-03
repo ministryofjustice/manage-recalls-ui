@@ -112,13 +112,17 @@ describe('validateDecision', () => {
       confirmedRecallType: 'FIXED',
       confirmedRecallTypeDetailFixed: 'reason 1; reason 2',
     }
-    const { errors, valuesToSave } = validateDecision({
+    const { errors, unsavedValues, valuesToSave } = validateDecision({
       requestBody,
       emailFileSelected: false,
       uploadFailed: false,
       invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      confirmedRecallType: 'FIXED',
+      confirmedRecallTypeDetailFixed: 'reason 1; reason 2',
+    })
     expect(errors).toEqual([
       {
         href: '#confirmedRecallTypeEmailFileName',

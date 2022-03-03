@@ -12,7 +12,6 @@ export const validateNsyEmail = ({
   invalidFileFormat,
 }: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
-  let unsavedValues
 
   const { confirmNsyEmailSent } = requestBody
   const existingUpload = requestBody[UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL] === 'existingUpload'
@@ -50,10 +49,10 @@ export const validateNsyEmail = ({
         })
       )
     }
-    unsavedValues = {
-      nsyEmailFileName: fileName,
-      confirmNsyEmailSent,
-    }
+  }
+  const unsavedValues = {
+    nsyEmailFileName: fileName,
+    confirmNsyEmailSent,
   }
   return { errors, unsavedValues, redirectToPage: 'dossier-letter' }
 }

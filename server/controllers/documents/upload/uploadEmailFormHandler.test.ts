@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { uploadEmailFormHandler } from './uploadEmailFormHandler'
 import { uploadRecallDocument, updateRecall } from '../../../clients/manageRecallsApiClient'
-import { mockPostRequest } from '../../testUtils/mockRequestUtils'
+import { mockReq } from '../../testUtils/mockRequestUtils'
 import { uploadStorageField } from './helpers/uploadStorage'
 import { validateRecallRequestReceived } from '../../book/validators/validateRecallRequestReceived'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
@@ -23,7 +23,8 @@ const handler = uploadEmailFormHandler({
 describe('emailUploadForm', () => {
   let req
   beforeEach(() => {
-    req = mockPostRequest({
+    req = mockReq({
+      method: 'POST',
       params: { nomsNumber: '456', recallId: '789' },
       body: {
         recallEmailReceivedDateTimeYear: '2021',
@@ -32,6 +33,7 @@ describe('emailUploadForm', () => {
         recallEmailReceivedDateTimeHour: '00',
         recallEmailReceivedDateTimeMinute: '30',
       },
+      originalUrl: '/upload-page',
     })
   })
 
@@ -65,40 +67,6 @@ describe('emailUploadForm', () => {
     handler(req, res)
   })
 
-  it('does not update the recall if there are no valuesToSave', done => {
-    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
-      cb()
-    })
-    req.body = {
-      confirmNsyEmailSent: 'YES',
-    }
-    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
-      documentId: '123',
-    })
-    const res = {
-      locals: {
-        user: {},
-        urlInfo: { basePath: '/persons/456/recalls/789/' },
-      },
-      redirect: () => {
-        expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
-        expect(updateRecall).not.toHaveBeenCalled()
-        expect(req.session.errors).toBeUndefined()
-        done()
-      },
-    }
-    uploadEmailFormHandler({
-      emailFieldName: 'recallNsyEmailFileName',
-      validator: validateNsyEmail,
-      documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
-      nextPageUrlSuffix: 'dossier-letter',
-    })(req, res)
-  })
-
   it('redirects to the fromPage if supplied eg check answers', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
@@ -124,7 +92,43 @@ describe('emailUploadForm', () => {
     handler(req, res)
   })
 
-  it("doesn't update the recall if the document save fails", done => {
+  it("doesn't update the recall if there are no recall properties to save (only the uploaded email)", done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'email.msg',
+        buffer: 'def',
+      }
+      cb()
+    })
+    req.body = {
+      confirmNsyEmailSent: 'YES',
+    }
+    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
+      documentId: '123',
+    })
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: { basePath: '/persons/456/recalls/789/' },
+      },
+      redirect: (httpStatus, path) => {
+        expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
+        expect(updateRecall).not.toHaveBeenCalled()
+        expect(req.session.errors).toBeUndefined()
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/persons/456/recalls/789/dossier-letter')
+        done()
+      },
+    }
+    uploadEmailFormHandler({
+      emailFieldName: 'recallNsyEmailFileName',
+      validator: validateNsyEmail,
+      documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+      nextPageUrlSuffix: 'dossier-letter',
+    })(req, res)
+  })
+
+  it("creates an error, doesn't update the recall, and reloads the page if the document save fails", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'report.msg',
@@ -135,7 +139,7 @@ describe('emailUploadForm', () => {
     ;(uploadRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
+      redirect: (httpStatus, path) => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
@@ -144,13 +148,39 @@ describe('emailUploadForm', () => {
             text: 'The selected file could not be uploaded – try again',
           },
         ])
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/upload-page')
         done()
       },
     }
     handler(req, res)
   })
 
-  it('creates an error if the email has a virus', done => {
+  it("creates an error, doesn't update the recall and reloads the page if the upload from the browser to the app fails", done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      cb(req, res, new Error('Upload failed'))
+    })
+    const res = {
+      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      redirect: (httpStatus, path) => {
+        expect(updateRecall).not.toHaveBeenCalled()
+        expect(uploadRecallDocument).not.toHaveBeenCalled()
+        expect(req.session.errors).toEqual([
+          {
+            href: '#recallRequestEmailFileName',
+            name: 'recallRequestEmailFileName',
+            text: 'The selected file could not be uploaded – try again',
+          },
+        ])
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/upload-page')
+        done()
+      },
+    }
+    handler(req, res)
+  })
+
+  it('creates an error and reloads the page if the email has a virus', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'report.msg',
@@ -163,7 +193,7 @@ describe('emailUploadForm', () => {
     })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
+      redirect: (httpStatus, path) => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
           {
@@ -172,13 +202,15 @@ describe('emailUploadForm', () => {
             text: 'report.msg contains a virus',
           },
         ])
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/upload-page')
         done()
       },
     }
     handler(req, res)
   })
 
-  it("doesn't save the email to the API if the file extension is invalid", done => {
+  it("doesn't save the email to the API and reloads the page if the file extension is invalid", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'email.pdf',
@@ -188,7 +220,7 @@ describe('emailUploadForm', () => {
     })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
+      redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -198,6 +230,8 @@ describe('emailUploadForm', () => {
             text: 'The selected file must be an MSG or EML',
           },
         ])
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/upload-page')
         done()
       },
     }
@@ -211,7 +245,7 @@ describe('emailUploadForm', () => {
     })
     const res = {
       locals: { user: { token: 'TOKEN' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
+      redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).toHaveBeenCalledWith(
           '789',
@@ -219,13 +253,15 @@ describe('emailUploadForm', () => {
           'TOKEN'
         )
         expect(req.session.errors).toBeUndefined()
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/persons/456/recalls/789/last-release')
         done()
       },
     }
     handler(req, res)
   })
 
-  it("saves the email to the API if it's valid but there are validation errors for the date", done => {
+  it("saves the email to the API if it's valid, even if there are validation errors for other form fields, and reloads the page", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'email.msg',
@@ -239,7 +275,7 @@ describe('emailUploadForm', () => {
     })
     const res = {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
+      redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -256,6 +292,8 @@ describe('emailUploadForm', () => {
             },
           },
         ])
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/upload-page')
         done()
       },
     }
@@ -292,7 +330,7 @@ describe('emailUploadForm', () => {
     ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: true })
     const res = {
       locals: { user: { uuid: '000' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
+      redirect: (httpStatus, path) => {
         expect(saveToApiFn).toHaveBeenCalledWith({
           recallId: '789',
           user: { uuid: '000' },
@@ -301,6 +339,8 @@ describe('emailUploadForm', () => {
             recallNotificationEmailSentDateTime: '2021-09-04T13:47:00.000Z',
           },
         })
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/persons/456/recalls/789/assess-confirmation')
         done()
       },
     }

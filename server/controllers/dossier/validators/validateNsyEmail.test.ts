@@ -51,7 +51,7 @@ describe('validateNsyEmail', () => {
   })
 
   it("returns an error if an email wasn't uploaded", () => {
-    const { errors, valuesToSave } = validateNsyEmail({
+    const { errors, unsavedValues, valuesToSave } = validateNsyEmail({
       requestBody,
       fileName: 'test.msg',
       emailFileSelected: false,
@@ -59,6 +59,10 @@ describe('validateNsyEmail', () => {
       invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      confirmNsyEmailSent: 'YES',
+      nsyEmailFileName: 'test.msg',
+    })
     expect(errors).toEqual([
       {
         href: '#nsyEmailFileName',
