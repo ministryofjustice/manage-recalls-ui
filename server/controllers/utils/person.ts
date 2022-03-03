@@ -13,8 +13,9 @@ export const formatPersonName = ({
   if (otherName) {
     return otherName
   }
+  const { firstName, middleNames, lastName } = recall
   if (category === 'FIRST_MIDDLE_LAST') {
-    return `${recall.firstName} ${recall.middleNames} ${recall.lastName}`
+    return `${firstName} ${middleNames ? `${middleNames} ` : ''}${lastName}`
   }
-  return `${recall.firstName} ${recall.lastName}`
+  return `${firstName} ${lastName}`
 }
