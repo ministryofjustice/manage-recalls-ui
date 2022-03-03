@@ -85,7 +85,6 @@ context('Create a dossier', () => {
     // recall details
     cy.recallInfo('Recall email received').should('equal', '5 December 2020 at 15:33')
     cy.recallInfo('Recall email uploaded').should('equal', 'recall-request.eml')
-    dossierRecall.assertElementHasText({ qaAttr: 'agreeWithRecallDetail', textToFind: 'Reasons...' })
     dossierRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
     cy.getLinkHref('Change licence conditions breached').should('contain', '/assess-licence')
     cy.getLinkHref('Change reasons for recall').should('contain', '/assess-licence')
@@ -97,8 +96,6 @@ context('Create a dossier', () => {
       qaAttr: 'reasonsForRecall-OTHER',
       textToFind: 'Other - other reason detail...',
     })
-    cy.recallInfo('Assessment notes').should('equal', 'Reasons...')
-    cy.getLinkHref('Change assessment notes').should('contain', '/assess-decision')
     cy.recallInfo('Recall notification email sent').should('equal', '15 August 2021 at 14:04')
     cy.recallInfo('Recall notification email uploaded').should('equal', 'notification.msg')
     cy.getLinkHref('Change recall notification email sent date').should('contain', '/assess-email')
@@ -241,20 +238,6 @@ context('Create a dossier', () => {
     dossierEmail.uploadFile({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
     dossierEmail.clickContinue()
     dossierConfirmationPage.verifyOnPage()
-  })
-
-  it('shows recall type of standard on check page, and hides recall length', () => {
-    cy.task('expectGetRecall', {
-      expectedResult: {
-        ...getRecallResponse,
-        recallId,
-        recommendedRecallType: 'STANDARD',
-      },
-    })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-check' })
-    cy.recallInfo('Recall type').should('equal', 'Standard')
-    cy.getElement('Change recall type').should('not.exist')
-    cy.getElement('recallLength').should('not.exist')
   })
 
   it('asks for current prison then NSY email confirmation, if the person has returned to custody', () => {

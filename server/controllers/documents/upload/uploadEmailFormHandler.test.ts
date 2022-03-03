@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { uploadEmailFormHandler } from './uploadEmailFormHandler'
-import { uploadRecallDocument, unassignUserFromRecall, updateRecall } from '../../../clients/manageRecallsApiClient'
+import { uploadRecallDocument, updateRecall } from '../../../clients/manageRecallsApiClient'
 import { mockPostRequest } from '../../testUtils/mockRequestUtils'
 import { uploadStorageField } from './helpers/uploadStorage'
 import { validateRecallRequestReceived } from '../../book/validators/validateRecallRequestReceived'
@@ -262,11 +262,12 @@ describe('emailUploadForm', () => {
     handler(req, res)
   })
 
-  it("unassigns the user from the recall if they're in custody", done => {
-    const handlerWithUnassign = uploadEmailFormHandler({
+  it('calls a saveToApiFn function if passed', done => {
+    const saveToApiFn = jest.fn()
+    const handlerWithSaveFn = uploadEmailFormHandler({
       emailFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      unassignUserFromRecall,
+      saveToApiFn,
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
       nextPageUrlSuffix: 'assess-confirmation',
     })
@@ -287,100 +288,22 @@ describe('emailUploadForm', () => {
     })
     ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
-    })
-    ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
-      recallId: '789',
     })
     ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: true })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: { uuid: '000' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
-        expect(unassignUserFromRecall).toHaveBeenCalledTimes(1)
+        expect(saveToApiFn).toHaveBeenCalledWith({
+          recallId: '789',
+          user: { uuid: '000' },
+          valuesToSave: {
+            assessedByUserId: '000',
+            recallNotificationEmailSentDateTime: '2021-09-04T13:47:00.000Z',
+          },
+        })
         done()
       },
     }
-    handlerWithUnassign(req, res)
-  })
-
-  it("does not unassign the user from the recall if they're not in custody", done => {
-    const handlerWithUnassign = uploadEmailFormHandler({
-      emailFieldName: 'recallNotificationEmailFileName',
-      validator: validateRecallNotificationEmail,
-      unassignUserFromRecall,
-      documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
-      nextPageUrlSuffix: 'assess-confirmation',
-    })
-    req.body = {
-      confirmRecallNotificationEmailSent: 'YES',
-      recallNotificationEmailSentDateTimeYear: '2021',
-      recallNotificationEmailSentDateTimeMonth: '09',
-      recallNotificationEmailSentDateTimeDay: '04',
-      recallNotificationEmailSentDateTimeHour: '14',
-      recallNotificationEmailSentDateTimeMinute: '47',
-    }
-    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
-      cb()
-    })
-    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
-      documentId: '123',
-    })
-    ;(unassignUserFromRecall as jest.Mock).mockResolvedValue({
-      recallId: '789',
-    })
-    ;(updateRecall as jest.Mock).mockResolvedValue({
-      ...getRecallResponse,
-      returnedToCustodyDateTime: undefined,
-      inCustodyAtAssessment: false,
-    })
-    const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: () => {
-        expect(unassignUserFromRecall).not.toHaveBeenCalled()
-        done()
-      },
-    }
-    handlerWithUnassign(req, res)
-  })
-
-  it('redirects even if the user unassignment fails', done => {
-    const handlerWithUnassign = uploadEmailFormHandler({
-      emailFieldName: 'recallNotificationEmailFileName',
-      validator: validateRecallNotificationEmail,
-      unassignUserFromRecall,
-      documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
-      nextPageUrlSuffix: 'assess-confirmation',
-    })
-    req.body = {
-      confirmRecallNotificationEmailSent: 'YES',
-      recallNotificationEmailSentDateTimeYear: '2021',
-      recallNotificationEmailSentDateTimeMonth: '09',
-      recallNotificationEmailSentDateTimeDay: '04',
-      recallNotificationEmailSentDateTimeHour: '14',
-      recallNotificationEmailSentDateTimeMinute: '47',
-    }
-    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
-      cb()
-    })
-    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
-      documentId: '123',
-    })
-    ;(unassignUserFromRecall as jest.Mock).mockRejectedValue(new Error('test'))
-    ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: true })
-    const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-      redirect: (httpStatus, path) => {
-        expect(path).toEqual('/persons/456/recalls/789/assess-confirmation')
-        done()
-      },
-    }
-    handlerWithUnassign(req, res)
+    handlerWithSaveFn(req, res)
   })
 })

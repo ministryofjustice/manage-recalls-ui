@@ -177,8 +177,8 @@
   },
   {
     "auditId": 217,
-    "fieldName": "agreeWithRecall",
-    "fieldPath": "agreeWithRecall",
+    "fieldName": "confirmedRecallType",
+    "fieldPath": "confirmedRecallType",
     "updatedByUserName": "Maria Badger",
     "updatedDateTime": "2022-02-24T16:56:26.79499Z",
     "auditCount": 2
@@ -209,8 +209,8 @@
   },
   {
     "auditId": 217,
-    "fieldName": "agreeWithRecallDetail",
-    "fieldPath": "agreeWithRecallDetail",
+    "fieldName": "confirmedRecallTypeDetail",
+    "fieldPath": "confirmedRecallTypeDetail",
     "updatedByUserName": "Maria Badger",
     "updatedDateTime": "2022-02-24T16:56:26.79499Z",
     "auditCount": 2

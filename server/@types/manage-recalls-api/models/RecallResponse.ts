@@ -30,8 +30,6 @@ export type RecallResponse = {
     rescindRecords: Array<RescindRecord>;
     additionalLicenceConditions?: boolean;
     additionalLicenceConditionsDetail?: string;
-    agreeWithRecall?: RecallResponse.agreeWithRecall;
-    agreeWithRecallDetail?: string;
     arrestIssues?: boolean;
     arrestIssuesDetail?: string;
     assessedByUserId?: string;
@@ -42,6 +40,8 @@ export type RecallResponse = {
     bookedByUserId?: string;
     bookedByUserName?: string;
     bookingNumber?: string;
+    confirmedRecallType?: RecallResponse.confirmedRecallType;
+    confirmedRecallTypeDetail?: string;
     conditionalReleaseDate?: string;
     contraband?: boolean;
     contrabandDetail?: string;
@@ -74,7 +74,7 @@ export type RecallResponse = {
     recallEmailReceivedDateTime?: string;
     recallLength?: RecallResponse.recallLength;
     recallNotificationEmailSentDateTime?: string;
-    recommendedRecallType?: RecallResponse.recallType;
+    recommendedRecallType?: RecallResponse.recommendedRecallType;
     returnedToCustodyDateTime?: string;
     returnedToCustodyNotificationDateTime?: string;
     sentenceDate?: string;
@@ -109,9 +109,9 @@ export namespace RecallResponse {
         STOPPED = 'STOPPED',
     }
 
-    export enum agreeWithRecall {
-        YES = 'YES',
-        NO_STOP = 'NO_STOP',
+    export enum confirmedRecallType {
+        FIXED = 'FIXED',
+        STANDARD = 'STANDARD',
     }
 
     export enum lastKnownAddressOption {
@@ -300,14 +300,14 @@ export namespace RecallResponse {
         OTHER = 'OTHER',
     }
 
-    export enum recallType {
-        STANDARD = 'STANDARD',
-        FIXED = 'FIXED'
-    }
-
     export enum recallLength {
         FOURTEEN_DAYS = 'FOURTEEN_DAYS',
         TWENTY_EIGHT_DAYS = 'TWENTY_EIGHT_DAYS',
+    }
+
+    export enum recommendedRecallType {
+        FIXED = 'FIXED',
+        STANDARD = 'STANDARD',
     }
 
     export enum stopReason {
@@ -324,11 +324,6 @@ export namespace RecallResponse {
         UO_28DAY_AND_DEEMED_NOTIFIED = 'UO_28DAY_AND_DEEMED_NOTIFIED',
         WITHDRAWAL_BY_ACO = 'WITHDRAWAL_BY_ACO',
         RESCINDED = 'RESCINDED',
-        POOR_BEHAVIOUR_DRUGS = 'POOR_BEHAVIOUR_DRUGS',
-        POOR_BEHAVIOUR_NON_COMPLIANCE = 'POOR_BEHAVIOUR_NON_COMPLIANCE',
-        POOR_BEHAVIOUR_RELATIONSHIPS = 'POOR_BEHAVIOUR_RELATIONSHIPS',
-        TRAVELLING_OUTSIDE_UK = 'TRAVELLING_OUTSIDE_UK',
-        OTHER = 'OTHER',
     }
 
 

@@ -4,6 +4,7 @@
 
 export { AddUserDetailsRequest } from './models/AddUserDetailsRequest';
 export type { BookRecallRequest } from './models/BookRecallRequest';
+export { ConfirmedRecallTypeRequest } from './models/ConfirmedRecallTypeRequest';
 export type { Court } from './models/Court';
 export { CreateLastKnownAddressRequest } from './models/CreateLastKnownAddressRequest';
 export type { CreateNoteRequest } from './models/CreateNoteRequest';
@@ -27,6 +28,7 @@ export type { RecallReasonResponse } from './models/RecallReasonResponse';
 export { RecallResponse } from './models/RecallResponse';
 export { RecallResponseLite } from './models/RecallResponseLite';
 export type { RecallSearchRequest } from './models/RecallSearchRequest';
+export { RecommendedRecallTypeRequest } from './models/RecommendedRecallTypeRequest';
 export type { RescindDecisionRequest } from './models/RescindDecisionRequest';
 export type { RescindRecord } from './models/RescindRecord';
 export type { RescindRequestRequest } from './models/RescindRequestRequest';

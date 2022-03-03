@@ -20,8 +20,9 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('update a recall', () => {
     test('can successfully add all properties to a recall', async () => {
       const request = {
-        agreeWithRecall: 'YES',
-        agreeWithRecallDetail: 'Reasons...',
+        recommendedRecallType: 'FIXED',
+        confirmedRecallType: 'FIXED',
+        confirmedRecallTypeDetail: 'Agree with fixed term recall recommendation',
         lastReleaseDate: '2020-08-03',
         contraband: true,
         contrabandDetail: 'Likely to bring in contraband because...',

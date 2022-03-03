@@ -3,7 +3,7 @@ import { mockPostRequest, mockResponseWithAuthenticatedUser, mockReq, mockRes } 
 import { recallFormPost } from './recallFormPost'
 import { updateRecall } from '../clients/manageRecallsApiClient'
 import { validatePolice } from './book/validators/validatePolice'
-import { validateDecision } from './assess/validators/validateDecision'
+import { validateAssessPrison } from './assess/validators/validatePrison'
 import * as referenceDataExports from '../referenceData'
 import { validateWarrantReference } from './assess/validators/validateWarrantReference'
 import { saveWarrantReference } from './assess/helpers/saveWarrantReference'
@@ -105,15 +105,14 @@ describe('recallFormPost', () => {
 
   it('should use redirectToPage if one is returned from the validator function', async () => {
     const recallDetails = { recallId, nomsNumber }
-    const requestHandler = recallFormPost(validateDecision)
+    const requestHandler = recallFormPost(validateAssessPrison)
 
     updateRecall.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
       params: { nomsNumber, recallId },
       body: {
-        agreeWithRecall: 'NO_STOP',
-        agreeWithRecallDetailNo: 'Reasons',
+        currentPrison: 'KTI',
       },
     })
     const { res } = mockResponseWithAuthenticatedUser('')
@@ -123,7 +122,7 @@ describe('recallFormPost', () => {
 
     await requestHandler(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-stop`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-download`)
   })
 
   it('calls an afterRecallUpdate function, if supplied', async () => {

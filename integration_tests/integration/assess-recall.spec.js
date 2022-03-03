@@ -2,10 +2,8 @@ import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockRespo
 import { stubRefData } from '../support/mock-api'
 import { getIsoDateForMinutesAgo } from '../support/utils'
 
-const assessRecallDecisionPage = require('../pages/assessRecallDecision')
 const assessRecallPrisonPage = require('../pages/assessRecallPrison')
 const assessRecallEmailPage = require('../pages/assessRecallEmail')
-const assessRecallStopPage = require('../pages/assessRecallStop')
 
 context('Assess a recall', () => {
   const recall = getRecallResponse
@@ -41,6 +39,7 @@ context('Assess a recall', () => {
   const emptyRecall = {
     ...getEmptyRecallResponse,
     recallId,
+    recommendedRecallType: 'FIXED',
     recallLength: 'FOURTEEN_DAYS',
     bookingNumber: 'A123456',
     status: 'IN_ASSESSMENT',
@@ -102,12 +101,16 @@ context('Assess a recall', () => {
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
     cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
+    cy.task('expectSetConfirmedRecallType')
     cy.visitPage('/')
     cy.clickButton('Assess recall')
     cy.pageHeading().should('equal', `Assess a recall for ${firstLastName}`)
     cy.clickLink('Assess recall')
 
-    cy.selectRadio('Do you agree with the fixed term 14 day recall recommendation?', 'Yes')
+    cy.selectRadio(
+      'Do you agree with the fixed term 14 day recall recommendation?',
+      'Yes, proceed with the recommended fixed term recall'
+    )
     cy.fillInput('Provide more detail', 'No evidence that the recommendation was wrong')
     cy.clickButton('Continue')
 
@@ -201,40 +204,6 @@ context('Assess a recall', () => {
     })
     cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-download' })
     cy.getLinkHref('Back').should('contain', '/assess-custody-status')
-  })
-
-  it('errors - recall recommendation', () => {
-    cy.task('expectGetRecall', {
-      expectedResult: emptyRecall,
-    })
-    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
-    assessRecallDecision.clickContinue()
-    assessRecallDecision.assertErrorMessage({
-      fieldName: 'agreeWithRecall',
-      summaryError: 'Do you agree with the recall recommendation?',
-    })
-
-    // if they don't add detail on their decision
-    assessRecallDecision.makeYesDecision()
-    assessRecallDecision.clickContinue()
-    assessRecallDecision.assertErrorMessage({
-      fieldName: 'agreeWithRecallDetailYes',
-      summaryError: 'Provide more detail',
-    })
-  })
-
-  it('can stop a recall', () => {
-    cy.task('expectGetRecall', {
-      expectedResult: emptyRecall,
-    })
-    cy.task('expectUpdateRecall', { recallId })
-    const assessRecallDecision = assessRecallDecisionPage.verifyOnPage({ nomsNumber, recallId })
-    assessRecallDecision.makeNoDecision()
-    assessRecallDecision.addNoDetail()
-    assessRecallDecision.clickContinue()
-    const assessRecallStop = assessRecallStopPage.verifyOnPage({ personName: firstLastName })
-    assessRecallStop.assertElementHasText({ qaAttr: 'managerName', textToFind: '[name]' })
-    assessRecallStop.assertElementHasText({ qaAttr: 'managerPhone', textToFind: '[phone]' })
   })
 
   it('licence details', () => {

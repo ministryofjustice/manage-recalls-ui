@@ -214,3 +214,11 @@ export interface Address {
   town: string
   postcode?: string
 }
+
+export interface SaveToApiFnArgs {
+  recallId: string
+  valuesToSave: unknown
+  user: User
+}
+
+export type SaveToApiFn = ({ recallId, valuesToSave, user }: SaveToApiFnArgs) => Promise<unknown>

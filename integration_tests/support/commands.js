@@ -107,6 +107,15 @@ Cypress.Commands.add('fillInput', (label, text, opts = {}) => {
     )
 })
 
+Cypress.Commands.add('getTextInputValue', (label, text, opts = {}) => {
+  cy.get(opts.parent || 'body')
+    .contains('label', label)
+    .invoke('attr', 'for')
+    .then(id => cy.get(`#${id}`))
+    .invoke('val')
+    .then(textVal => textVal.trim())
+})
+
 Cypress.Commands.add('fillInputGroup', (values, opts = { parent: 'body' }) => {
   Object.entries(values).forEach(([label, text]) => cy.fillInput(label, text, opts))
 })

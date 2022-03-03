@@ -125,7 +125,7 @@ context('Book an "in-custody" recall', () => {
         status: RecallResponse.status.BEING_BOOKED_ON,
         inCustodyAtBooking: true,
         returnedToCustodyDateTime: undefined,
-        recommendedRecallType: RecallResponse.recallType.FIXED,
+        recommendedRecallType: 'FIXED',
       },
     })
     stubRefData()
