@@ -1,7 +1,7 @@
 import { validateAddNote } from './validateAddNote'
 
 describe('validateAddNote', () => {
-  it('returns valuesToSave with subject and details, and no errors if both fields are submitted', () => {
+  it('returns valuesToSave with subject and details, and no errors if all fields are submitted and file is valid', () => {
     const requestBody = {
       subject: 'subject text',
       details: 'details text',
@@ -9,6 +9,7 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
+      fileSelected: true,
       uploadFailed: false,
       invalidFileFormat: false,
     })
@@ -19,11 +20,32 @@ describe('validateAddNote', () => {
     })
   })
 
-  it('returns errors if both fields are missing, and no valuesToSave', () => {
+  // TODO: PUD-1489: here or in re-work fileName has also to be returned
+  it('returns valuesToSave with subject and details, and no errors if subject and details are submitted without a file', () => {
+    const requestBody = {
+      subject: 'subject text',
+      details: 'details text',
+    }
+    const { errors, valuesToSave } = validateAddNote({
+      requestBody,
+      fileName: 'test.docx',
+      fileSelected: false,
+      uploadFailed: undefined,
+      invalidFileFormat: undefined,
+    })
+    expect(errors).toBeUndefined()
+    expect(valuesToSave).toEqual({
+      subject: 'subject text',
+      details: 'details text',
+    })
+  })
+
+  it('returns errors if subject and details are missing, and no valuesToSave', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
+      fileSelected: true,
       uploadFailed: false,
       invalidFileFormat: false,
     })
@@ -53,6 +75,7 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
+      fileSelected: true,
       uploadFailed: false,
       invalidFileFormat: false,
     })
@@ -74,6 +97,7 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
+      fileSelected: true,
       uploadFailed: false,
       invalidFileFormat: false,
     })
@@ -88,7 +112,7 @@ describe('validateAddNote', () => {
     ])
   })
 
-  it('returns an error if the email upload failed', () => {
+  it('returns an error if the file upload was tried and failed', () => {
     const requestBody = {
       subject: 'subject text',
       details: 'details text',
@@ -96,6 +120,7 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
+      fileSelected: true,
       uploadFailed: true,
       invalidFileFormat: false,
     })
@@ -110,7 +135,7 @@ describe('validateAddNote', () => {
     ])
   })
 
-  it('returns an error if an invalid note file format was uploaded', () => {
+  it('returns an error if the file upload was tried and an invalid note file format was uploaded', () => {
     const requestBody = {
       subject: 'subject text',
       details: 'details text',
@@ -118,6 +143,7 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave } = validateAddNote({
       requestBody,
       fileName: 'whatever.ext',
+      fileSelected: true,
       uploadFailed: false,
       invalidFileFormat: true,
     })

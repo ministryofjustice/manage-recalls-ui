@@ -22,27 +22,30 @@ describe('addNoteForm', () => {
 
   afterEach(() => jest.resetAllMocks())
 
-  // TODO: PUD-1489: open issue here - handler needs re-work for document to be optional
-  // it('with no uploaded document saves subject and details to the API then redirects', done => {
-  //   ;(getRecall as jest.Mock).mockResolvedValue(getRecallResponse)
-  //   ;(addNote as jest.Mock).mockResolvedValue({
-  //     status: 201,
-  //   })
-  //   const res = {
-  //     locals: {
-  //       user: {},
-  //       urlInfo: { basePath: '/persons/456/recalls/789/' },
-  //     },
-  //     redirect: (httpStatus, path) => {
-  //       expect(addNote).toHaveBeenCalledTimes(1)
-  //       expect(req.session.errors).toBeUndefined()
-  //       expect(httpStatus).toEqual(303)
-  //       expect(path).toEqual('/persons/456/recalls/789/check-answers')
-  //       done()
-  //     },
-  //   }
-  //   addNoteHandler(req, res)
-  // })
+  it('with no uploaded document saves subject and details to the API then redirects', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = undefined
+      cb()
+    })
+    ;(getRecall as jest.Mock).mockResolvedValue(getRecallResponse)
+    ;(addNote as jest.Mock).mockResolvedValue({
+      status: 201,
+    })
+    const res = {
+      locals: {
+        user: {},
+        urlInfo: { basePath: '/persons/456/recalls/789/' },
+      },
+      redirect: (httpStatus, path) => {
+        expect(addNote).toHaveBeenCalledTimes(1)
+        expect(req.session.errors).toBeUndefined()
+        expect(httpStatus).toEqual(303)
+        expect(path).toEqual('/persons/456/recalls/789/check-answers')
+        done()
+      },
+    }
+    addNoteHandler(req, res)
+  })
 
   it('with uploaded document saves subject and details to the API then redirects', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
@@ -163,32 +166,6 @@ describe('addNoteForm', () => {
     addNoteHandler(req, res)
   })
 
-  // TODO: PUD-1489: open issue here
-  // it("doesn't save to the API if the file extension is invalid", done => {
-  //   ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-  //     req.file = {
-  //       originalname: 'document.inv',
-  //       buffer: 'def',
-  //     }
-  //     cb()
-  //   })
-  //   const res = {
-  //     locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
-  //     redirect: () => {
-  //       expect(addNote).not.toHaveBeenCalled()
-  //       expect(req.session.errors).toEqual([
-  //         {
-  //           href: '#fileName',
-  //           name: 'fileName',
-  //           text: 'The selected file must be .... list to correct',
-  //         },
-  //       ])
-  //       done()
-  //     },
-  //   }
-  //   addNoteHandler(req, res)
-  // })
-
   it("doesn't save to the API if the detail is missing", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
@@ -202,10 +179,7 @@ describe('addNoteForm', () => {
       locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
       redirect: () => {
         expect(addNote).not.toHaveBeenCalled()
-        // TODO: PUD-1489: should return unsaved values for re-display
-        // expect(req.session.unsavedValues).toEqual({
-        //   subject: 'subject text',
-        // })
+        expect(req.session.unsavedValues).toEqual(req.body)
         expect(req.session.errors).toEqual([
           {
             href: '#details',

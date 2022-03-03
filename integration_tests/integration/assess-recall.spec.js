@@ -137,7 +137,7 @@ context('Assess a recall', () => {
     cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
     const fiveMinutesAgo = getIsoDateForMinutesAgo(5)
     cy.enterDateTime(fiveMinutesAgo)
-    cy.uploadEmail({ field: 'recallNotificationEmailFileName', file: 'email.msg' })
+    cy.uploadEmail({ field: 'recallNotificationEmailFileName' })
     cy.clickButton('Complete assessment')
 
     cy.pageHeading().should('equal', `Recall assessed for ${firstLastName}`)
