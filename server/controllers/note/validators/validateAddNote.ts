@@ -23,7 +23,7 @@ export const validateAddNote = ({
       errors.push(
         makeErrorObject({
           id: 'subject',
-          text: errorMsgProvideDetail,
+          text: 'Enter a subject',
         })
       )
     }

@@ -58,7 +58,7 @@ describe('validateAddNote', () => {
       {
         href: '#subject',
         name: 'subject',
-        text: 'Provide more detail',
+        text: 'Enter a subject',
       },
       {
         href: '#details',
@@ -107,7 +107,7 @@ describe('validateAddNote', () => {
       {
         href: '#subject',
         name: 'subject',
-        text: 'Provide more detail',
+        text: 'Enter a subject',
       },
     ])
   })
