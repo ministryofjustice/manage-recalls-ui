@@ -424,13 +424,16 @@ describe('formWithDocumentUploadHandler', () => {
       })(req, res)
     })
 
-    it('returns errors if subject / detail are missing', done => {
+    it('returns errors if upload errors', done => {
       ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
         req.file = {
-          originalname: 'email.msg',
+          originalname: 'email.ppt',
           buffer: 'def',
         }
-        req.body = {}
+        req.body = {
+          subject: 'Note',
+          details: 'Details',
+        }
         cb()
       })
       ;(addNote as jest.Mock).mockResolvedValue({})
@@ -445,14 +448,9 @@ describe('formWithDocumentUploadHandler', () => {
           expect(updateRecall).toHaveBeenCalledTimes(0)
           expect(req.session.errors).toEqual([
             {
-              href: '#subject',
-              name: 'subject',
-              text: 'Enter a subject',
-            },
-            {
-              href: '#details',
-              name: 'details',
-              text: 'Provide more detail',
+              href: '#fileName',
+              name: 'fileName',
+              text: "The selected file 'email.ppt' must be an MSG, EML, DOC, DOCX or PDF",
             },
           ])
           expect(httpStatus).toEqual(303)
