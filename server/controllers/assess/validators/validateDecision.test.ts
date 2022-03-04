@@ -8,9 +8,9 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave, redirectToPage } = validateDecision({
       requestBody,
-      emailFileSelected: true,
+      fileName: 'test.msg',
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -27,9 +27,9 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave } = validateDecision({
       requestBody,
-      emailFileSelected: true,
+      fileName: 'test.msg',
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -41,9 +41,9 @@ describe('validateDecision', () => {
   it('returns an error for the Fixed / Standard decision, if not set', () => {
     const { errors, valuesToSave } = validateDecision({
       requestBody: {},
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
+      fileName: 'test.msg',
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -58,9 +58,9 @@ describe('validateDecision', () => {
   it('returns an error for Fixed detail, if not set', () => {
     const { errors, valuesToSave } = validateDecision({
       requestBody: { confirmedRecallType: 'FIXED' },
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
+      fileName: 'test.msg',
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -75,9 +75,9 @@ describe('validateDecision', () => {
   it('returns an error for Standard detail, if not set', () => {
     const { errors, valuesToSave } = validateDecision({
       requestBody: { confirmedRecallType: 'STANDARD' },
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
+      fileName: 'test.msg',
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -96,9 +96,9 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave } = validateDecision({
       requestBody: { ...requestBody, CHANGE_RECALL_TYPE_EMAIL: 'existingUpload' },
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
+      fileName: 'test.msg',
     })
     expect(valuesToSave).toEqual({
       confirmedRecallType: 'FIXED',
@@ -114,9 +114,9 @@ describe('validateDecision', () => {
     }
     const { errors, unsavedValues, valuesToSave } = validateDecision({
       requestBody,
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
+      fileName: 'test.msg',
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -139,9 +139,9 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave } = validateDecision({
       requestBody,
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
+      fileName: 'test.msg',
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -160,9 +160,9 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave } = validateDecision({
       requestBody,
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
+      fileName: 'test.ppt',
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

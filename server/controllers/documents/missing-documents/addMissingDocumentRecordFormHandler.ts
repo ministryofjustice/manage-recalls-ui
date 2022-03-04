@@ -3,7 +3,6 @@ import { addMissingDocumentRecord, getRecall } from '../../../clients/manageReca
 import logger from '../../../../logger'
 import { uploadStorageField } from '../upload/helpers/uploadStorage'
 import { validateMissingDocuments } from './validators/validateMissingDocuments'
-import { allowedEmailFileExtensions } from '../upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, makeErrorObject } from '../../utils/errorMessages'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { listMissingRequiredDocs } from '../upload/helpers'
@@ -26,14 +25,11 @@ export const addMissingDocumentRecordFormHandler = async (req: Request, res: Res
       const uploadFailed = Boolean(err)
       const { file } = req
       const emailFileSelected = Boolean(file)
-      const invalidFileFormat = emailFileSelected
-        ? !allowedEmailFileExtensions.some(ext => file.originalname.endsWith(ext.extension))
-        : false
       const { errors, valuesToSave, unsavedValues } = validateMissingDocuments({
         requestBody: req.body,
-        emailFileSelected,
+        wasUploadFileReceived: emailFileSelected,
         uploadFailed,
-        invalidFileFormat,
+        fileName: file?.originalname,
       })
       const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
       if (shouldSaveToApi) {

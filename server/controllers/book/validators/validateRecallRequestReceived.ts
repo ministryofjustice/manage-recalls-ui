@@ -1,17 +1,19 @@
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { ValidationError, EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
+import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { errorMsgUserActionDateTime, errorMsgEmailUpload, makeErrorObject } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
+import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateRecallRequestReceived = ({
   requestBody,
-  emailFileSelected,
+  fileName,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
+}: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const recallEmailReceivedDateTimeParts = {
     year: requestBody.recallEmailReceivedDateTimeYear,
     month: requestBody.recallEmailReceivedDateTimeMonth,
@@ -26,9 +28,9 @@ export const validateRecallRequestReceived = ({
 
   const existingUpload = requestBody[UploadDocumentRequest.category.RECALL_REQUEST_EMAIL] === 'existingUpload'
   if (
-    (!emailFileSelected && !existingUpload) ||
+    (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
-    invalidFileFormat ||
+    invalidFileName ||
     dateHasError(recallEmailReceivedDateTime)
   ) {
     errors = []
@@ -42,7 +44,7 @@ export const validateRecallRequestReceived = ({
       )
     }
 
-    if (!uploadFailed && !emailFileSelected && !existingUpload) {
+    if (!uploadFailed && !wasUploadFileReceived && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
@@ -58,7 +60,7 @@ export const validateRecallRequestReceived = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileFormat) {
+    if (!uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',

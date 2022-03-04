@@ -1,23 +1,25 @@
-import { EmailUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
+import { FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../../utils/errorMessages'
+import { isInvalidEmailFileName } from '../../upload/helpers/allowedUploadExtensions'
 
 export const validateMissingDocuments = ({
   requestBody,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: EmailUploadValidatorArgs): {
+  fileName,
+}: FormWithDocumentUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave: { missingDocumentsDetail: string }
   unsavedValues: ObjectMap<unknown>
 } => {
   let errors
   let valuesToSave
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const { missingDocumentsDetail } = requestBody
 
-  if (!emailFileSelected || uploadFailed || invalidFileFormat || !missingDocumentsDetail) {
+  if (!wasUploadFileReceived || uploadFailed || invalidFileName || !missingDocumentsDetail) {
     errors = []
-    if (!emailFileSelected) {
+    if (!wasUploadFileReceived) {
       errors.push(
         makeErrorObject({
           id: 'missingDocumentsEmailFileName',
@@ -33,7 +35,7 @@ export const validateMissingDocuments = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileFormat) {
+    if (!uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'missingDocumentsEmailFileName',

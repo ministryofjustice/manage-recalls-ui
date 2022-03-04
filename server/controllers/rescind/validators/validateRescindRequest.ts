@@ -1,4 +1,4 @@
-import { EmailUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } from '../../../@types'
+import { FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } from '../../../@types'
 import {
   errorMsgEmailUpload,
   errorMsgProvideDetail,
@@ -6,19 +6,21 @@ import {
   makeErrorObject,
 } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
+import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateRescindRequest = ({
   requestBody,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: EmailUploadValidatorArgs): {
+  fileName,
+}: FormWithDocumentUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave?: { details: string; emailReceivedDate: string }
   unsavedValues: ObjectMap<unknown>
 } => {
   let errors
   let valuesToSave
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const { rescindRequestDetail } = requestBody
   const rescindRequestEmailReceivedDateParts = {
     year: requestBody.rescindRequestEmailReceivedDateYear,
@@ -31,9 +33,9 @@ export const validateRescindRequest = ({
   })
 
   if (
-    !emailFileSelected ||
+    !wasUploadFileReceived ||
     uploadFailed ||
-    invalidFileFormat ||
+    invalidFileName ||
     !rescindRequestDetail ||
     dateHasError(rescindRequestEmailReceivedDate)
   ) {
@@ -59,7 +61,7 @@ export const validateRescindRequest = ({
         })
       )
     }
-    if (!emailFileSelected) {
+    if (!wasUploadFileReceived) {
       errors.push(
         makeErrorObject({
           id: 'rescindRequestEmailFileName',
@@ -75,7 +77,7 @@ export const validateRescindRequest = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileFormat) {
+    if (!uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'rescindRequestEmailFileName',

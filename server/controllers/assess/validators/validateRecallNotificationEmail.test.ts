@@ -15,9 +15,8 @@ describe('validateEmail', () => {
     const { errors, valuesToSave, redirectToPage } = validateRecallNotificationEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(errors).toBeUndefined()
@@ -31,9 +30,8 @@ describe('validateEmail', () => {
   it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody: { ...requestBody, RECALL_NOTIFICATION_EMAIL: 'existingUpload' },
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toEqual({
       recallNotificationEmailSentDateTime: '2021-09-04T13:47:00.000Z',
@@ -49,9 +47,8 @@ describe('validateEmail', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody: emptyBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -71,9 +68,8 @@ describe('validateEmail', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody: body,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -91,9 +87,8 @@ describe('validateEmail', () => {
     const { errors, unsavedValues, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -121,9 +116,8 @@ describe('validateEmail', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -141,9 +135,8 @@ describe('validateEmail', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()

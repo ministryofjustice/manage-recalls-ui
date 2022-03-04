@@ -1,5 +1,5 @@
-import { EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import { allowedEmailFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
+import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, makeErrorObject } from '../../utils/errorMessages'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
@@ -7,15 +7,15 @@ import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/U
 export const validateNsyEmail = ({
   requestBody,
   fileName,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
+}: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
 
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const { confirmNsyEmailSent } = requestBody
   const existingUpload = requestBody[UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL] === 'existingUpload'
-  if ((!emailFileSelected && !existingUpload) || uploadFailed || invalidFileFormat || !confirmNsyEmailSent) {
+  if ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileName || !confirmNsyEmailSent) {
     errors = []
     if (!confirmNsyEmailSent) {
       errors.push(
@@ -25,7 +25,7 @@ export const validateNsyEmail = ({
         })
       )
     }
-    if (confirmNsyEmailSent && !emailFileSelected && !existingUpload) {
+    if (confirmNsyEmailSent && !wasUploadFileReceived && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'nsyEmailFileName',
@@ -41,11 +41,11 @@ export const validateNsyEmail = ({
         })
       )
     }
-    if (confirmNsyEmailSent && !uploadFailed && invalidFileFormat) {
+    if (confirmNsyEmailSent && !uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'nsyEmailFileName',
-          text: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
+          text: errorMsgEmailUpload.invalidFileFormat,
         })
       )
     }

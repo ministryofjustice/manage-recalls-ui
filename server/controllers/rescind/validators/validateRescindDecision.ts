@@ -1,4 +1,4 @@
-import { EmailUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } from '../../../@types'
+import { FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } from '../../../@types'
 import {
   errorMsgEmailUpload,
   errorMsgProvideDetail,
@@ -6,6 +6,7 @@ import {
   makeErrorObject,
 } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
+import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export interface RescindDecisionValuesToSave {
   approved: boolean
@@ -15,16 +16,17 @@ export interface RescindDecisionValuesToSave {
 
 export const validateRescindDecision = ({
   requestBody,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: EmailUploadValidatorArgs): {
+  fileName,
+}: FormWithDocumentUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave?: RescindDecisionValuesToSave
   unsavedValues: ObjectMap<unknown>
 } => {
   let errors
   let valuesToSave
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const { approveRescindDecision, rescindDecisionDetail, confirmEmailSent } = requestBody
   const rescindDecisionEmailSentDateParts = {
     year: requestBody.rescindDecisionEmailSentDateYear,
@@ -38,9 +40,9 @@ export const validateRescindDecision = ({
 
   if (
     !approveRescindDecision ||
-    !emailFileSelected ||
+    !wasUploadFileReceived ||
     uploadFailed ||
-    invalidFileFormat ||
+    invalidFileName ||
     !rescindDecisionDetail ||
     !confirmEmailSent ||
     dateHasError(rescindDecisionEmailSentDate)
@@ -83,7 +85,7 @@ export const validateRescindDecision = ({
         })
       )
     }
-    if (confirmEmailSent && !emailFileSelected) {
+    if (confirmEmailSent && !wasUploadFileReceived) {
       errors.push(
         makeErrorObject({
           id: 'rescindDecisionEmailFileName',
@@ -99,7 +101,7 @@ export const validateRescindDecision = ({
         })
       )
     }
-    if (confirmEmailSent && !uploadFailed && invalidFileFormat) {
+    if (confirmEmailSent && !uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'rescindDecisionEmailFileName',
