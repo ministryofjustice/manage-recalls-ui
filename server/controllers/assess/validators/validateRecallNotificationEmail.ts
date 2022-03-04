@@ -1,20 +1,21 @@
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { ValidationError, EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
+import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime, makeErrorObject } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
+import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateRecallNotificationEmail = ({
   requestBody,
   fileName,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
   actionedByUserId,
-}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
+}: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
 
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const { confirmRecallNotificationEmailSent } = requestBody
   const recallNotificationEmailSentDateTimeParts = {
     year: requestBody.recallNotificationEmailSentDateTimeYear,
@@ -29,9 +30,9 @@ export const validateRecallNotificationEmail = ({
   })
   const existingUpload = requestBody[UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL] === 'existingUpload'
   if (
-    (!emailFileSelected && !existingUpload) ||
+    (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
-    invalidFileFormat ||
+    invalidFileName ||
     !confirmRecallNotificationEmailSent ||
     dateHasError(recallNotificationEmailSentDateTime)
   ) {
@@ -53,7 +54,7 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !emailFileSelected && !existingUpload) {
+    if (confirmRecallNotificationEmailSent && !wasUploadFileReceived && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
@@ -70,7 +71,7 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileFormat) {
+    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',

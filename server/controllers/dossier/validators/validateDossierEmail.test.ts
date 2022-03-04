@@ -13,9 +13,8 @@ describe('validateDossierEmail', () => {
     const { errors, valuesToSave, redirectToPage } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(errors).toBeUndefined()
@@ -29,9 +28,8 @@ describe('validateDossierEmail', () => {
   it("returns valuesToSave if an email wasn't uploaded, but there is an existing upload", () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody: { ...requestBody, DOSSIER_EMAIL: 'existingUpload' },
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toEqual({
@@ -49,9 +47,8 @@ describe('validateDossierEmail', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody: emptyBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -71,9 +68,8 @@ describe('validateDossierEmail', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody: body,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -91,9 +87,8 @@ describe('validateDossierEmail', () => {
     const { errors, unsavedValues, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -119,9 +114,8 @@ describe('validateDossierEmail', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()
@@ -138,9 +132,8 @@ describe('validateDossierEmail', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
       actionedByUserId,
     })
     expect(valuesToSave).toBeUndefined()

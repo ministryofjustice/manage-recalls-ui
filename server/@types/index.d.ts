@@ -108,7 +108,7 @@ export interface ReqValidatorArgs {
   urlInfo?: UrlInfo
 }
 
-export type ReqEmailUploadValidatorFn = (EmailUploadValidatorArgs) => ReqValidatorReturn
+export type FormWithDocumentUploadValidatorFn = (FormWithDocumentUploadValidatorArgs) => ReqValidatorReturn
 
 export interface ReqValidatorReturn<T> {
   errors?: NamedFormError[]
@@ -122,12 +122,11 @@ export interface User extends UserDetails {
   token: string
 }
 
-export interface EmailUploadValidatorArgs {
+export interface FormWithDocumentUploadValidatorArgs {
   requestBody: ObjectMap<string>
   fileName?: string
-  emailFileSelected: boolean
+  wasUploadFileReceived: boolean
   uploadFailed: boolean
-  invalidFileFormat: boolean
   actionedByUserId?: string
 }
 

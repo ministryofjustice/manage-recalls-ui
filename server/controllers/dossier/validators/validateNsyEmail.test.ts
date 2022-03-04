@@ -9,9 +9,8 @@ describe('validateNsyEmail', () => {
     const { errors, valuesToSave, redirectToPage } = validateNsyEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toBeUndefined()
@@ -21,9 +20,8 @@ describe('validateNsyEmail', () => {
   it("returns no errors if an email wasn't uploaded, but there is an existing upload", () => {
     const { errors } = validateNsyEmail({
       requestBody: { ...requestBody, NSY_REMOVE_WARRANT_EMAIL: 'existingUpload' },
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
   })
@@ -36,9 +34,8 @@ describe('validateNsyEmail', () => {
     const { errors, valuesToSave } = validateNsyEmail({
       requestBody: emptyBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -54,9 +51,8 @@ describe('validateNsyEmail', () => {
     const { errors, unsavedValues, valuesToSave } = validateNsyEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -76,9 +72,8 @@ describe('validateNsyEmail', () => {
     const { errors, valuesToSave } = validateNsyEmail({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -94,9 +89,8 @@ describe('validateNsyEmail', () => {
     const { errors, valuesToSave } = validateNsyEmail({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

@@ -2,7 +2,6 @@ import { Request, Response } from 'express'
 import { addRescindRecord, updateRescindRecord } from '../../clients/manageRecallsApiClient'
 import logger from '../../../logger'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
-import { allowedEmailFileExtensions } from '../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, makeErrorObject } from '../utils/errorMessages'
 import { makeUrlToFromPage } from '../utils/makeUrl'
 import { validateRescindRequest } from './validators/validateRescindRequest'
@@ -31,14 +30,11 @@ export const rescindFormHandler =
         const uploadFailed = Boolean(err)
         const { file } = req
         const emailFileSelected = Boolean(file)
-        const invalidFileFormat = emailFileSelected
-          ? !allowedEmailFileExtensions.some(ext => file.originalname.endsWith(ext.extension))
-          : false
         const { errors, valuesToSave, unsavedValues } = validator({
           requestBody: req.body,
-          emailFileSelected,
+          wasUploadFileReceived: emailFileSelected,
           uploadFailed,
-          invalidFileFormat,
+          fileName: file?.originalname,
         })
         const shouldSaveToApi = !errors && emailFileSelected && !uploadFailed
         if (shouldSaveToApi) {

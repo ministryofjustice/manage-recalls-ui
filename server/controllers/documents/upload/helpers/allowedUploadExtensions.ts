@@ -57,3 +57,6 @@ export const allFileExtensions = [
   ...allowedDocumentFileExtensions,
   ...allowedImageFileExtensions,
 ]
+
+export const isInvalidEmailFileName = (fileName: string) =>
+  fileName ? !allowedEmailFileExtensions.some(ext => fileName.endsWith(ext.extension)) : false

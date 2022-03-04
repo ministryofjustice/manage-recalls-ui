@@ -14,9 +14,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave, redirectToPage } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -36,9 +35,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -58,9 +56,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.eml',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toEqual({
       recallEmailReceivedDateTime: '2021-09-12T21:14:00.000Z',
@@ -73,9 +70,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -102,9 +98,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -144,9 +139,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The time you received the recall email must be today or in the past')
   })
@@ -162,9 +156,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you received the recall email must be a real date')
   })
@@ -180,9 +173,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The time you received the recall email must be a real time')
   })
@@ -198,9 +190,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, unsavedValues, valuesToSave } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.eml',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -232,9 +223,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -257,9 +247,8 @@ describe('validateRecallRequestReceived', () => {
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

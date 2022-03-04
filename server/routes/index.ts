@@ -5,7 +5,7 @@ import { createRecall } from '../controllers/book/createRecall'
 import { recallList } from '../controllers/recallsList/recallList'
 import { uploadDocumentsFormHandler } from '../controllers/documents/upload/uploadDocumentsFormHandler'
 import { recallPageGet } from '../controllers/recallPageGet'
-import { uploadEmailFormHandler } from '../controllers/documents/upload/uploadEmailFormHandler'
+import { formWithDocumentUploadHandler } from '../controllers/documents/upload/formWithDocumentUploadHandler'
 import { recallFormPost } from '../controllers/recallFormPost'
 import { validateDecision } from '../controllers/assess/validators/validateDecision'
 import { validateDossierLetter } from '../controllers/dossier/validators/validateDossierLetter'
@@ -96,8 +96,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/request-received`, recallPageGet('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
-    uploadEmailFormHandler({
-      emailFieldName: 'recallRequestEmailFileName',
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'recallRequestEmailFileName',
       validator: validateRecallRequestReceived,
       documentCategory: UploadDocumentRequest.category.RECALL_REQUEST_EMAIL,
     })
@@ -127,8 +127,8 @@ export default function routes(router: Router): Router {
 
   post(
     `${basePath}/assess-decision`,
-    uploadEmailFormHandler({
-      emailFieldName: 'confirmedRecallTypeEmailFileName',
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'confirmedRecallTypeEmailFileName',
       validator: validateDecision,
       saveToApiFn: setConfirmedRecallType,
       documentCategory: UploadDocumentRequest.category.CHANGE_RECALL_TYPE_EMAIL,
@@ -144,8 +144,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-email`, recallPageGet('assessEmail'))
   post(
     `${basePath}/assess-email`,
-    uploadEmailFormHandler({
-      emailFieldName: 'recallNotificationEmailFileName',
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       saveToApiFn: saveRecallAndUnassignUser,
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
@@ -165,8 +165,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-nsy-email`, recallPageGet('dossierNsyEmail'))
   post(
     `${basePath}/dossier-nsy-email`,
-    uploadEmailFormHandler({
-      emailFieldName: 'nsyEmailFileName',
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'nsyEmailFileName',
       validator: validateNsyEmail,
       documentCategory: UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL,
     })
@@ -179,8 +179,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-email`, recallPageGet('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
-    uploadEmailFormHandler({
-      emailFieldName: 'dossierEmailFileName',
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
       saveToApiFn: saveRecallAndUnassignUser,
       documentCategory: UploadDocumentRequest.category.DOSSIER_EMAIL,

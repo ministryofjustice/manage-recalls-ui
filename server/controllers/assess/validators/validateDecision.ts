@@ -1,17 +1,19 @@
-import { EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
+import { FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../utils/errorMessages'
 import { ConfirmedRecallTypeRequest } from '../../../@types/manage-recalls-api/models/ConfirmedRecallTypeRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateDecision = ({
+  fileName,
   requestBody,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: EmailUploadValidatorArgs): ReqValidatorReturn<ConfirmedRecallTypeRequest> => {
+}: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<ConfirmedRecallTypeRequest> => {
   let errors
   let valuesToSave
 
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const {
     recommendedRecallType,
     confirmedRecallType,
@@ -26,7 +28,7 @@ export const validateDecision = ({
   const standardDetailMissing = isStandard && !confirmedRecallTypeDetailStandard
   const existingUpload = requestBody[UploadDocumentRequest.category.CHANGE_RECALL_TYPE_EMAIL] === 'existingUpload'
   const uploadFailedValidation =
-    userDisagreedWithRecommendation && ((!emailFileSelected && !existingUpload) || uploadFailed || invalidFileFormat)
+    userDisagreedWithRecommendation && ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileName)
   if (uploadFailedValidation || !isAgreeValueValid || fixedDetailMissing || standardDetailMissing) {
     errors = []
     if (!isAgreeValueValid) {
@@ -53,7 +55,7 @@ export const validateDecision = ({
         })
       )
     }
-    if (!emailFileSelected && !existingUpload) {
+    if (!wasUploadFileReceived && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'confirmedRecallTypeEmailFileName',
@@ -69,7 +71,7 @@ export const validateDecision = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileFormat) {
+    if (!uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'confirmedRecallTypeEmailFileName',

@@ -13,9 +13,8 @@ describe('validateRescindRequest', () => {
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -29,9 +28,8 @@ describe('validateRescindRequest', () => {
     const { errors, valuesToSave, unsavedValues } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -62,9 +60,8 @@ describe('validateRescindRequest', () => {
     const { errors, valuesToSave, unsavedValues } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -100,9 +97,8 @@ describe('validateRescindRequest', () => {
     const { errors } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you received the rescind request email must be today or in the past')
   })
@@ -117,9 +113,8 @@ describe('validateRescindRequest', () => {
     const { errors } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you received the rescind request email must be a real date')
   })
@@ -134,9 +129,8 @@ describe('validateRescindRequest', () => {
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
       fileName: 'test.eml',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -158,9 +152,8 @@ describe('validateRescindRequest', () => {
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -182,9 +175,8 @@ describe('validateRescindRequest', () => {
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

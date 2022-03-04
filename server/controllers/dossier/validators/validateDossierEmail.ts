@@ -1,5 +1,8 @@
-import { ValidationError, EmailUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import { allowedEmailFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
+import {
+  allowedEmailFileExtensions,
+  isInvalidEmailFileName,
+} from '../../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime, makeErrorObject } from '../../utils/errorMessages'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
@@ -8,14 +11,13 @@ import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/U
 export const validateDossierEmail = ({
   requestBody,
   fileName,
-  emailFileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
   actionedByUserId,
-}: EmailUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
+}: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
-
+  const invalidFileName = isInvalidEmailFileName(fileName)
   const { confirmDossierEmailSent } = requestBody
   const dossierEmailSentDateParts = {
     year: requestBody.dossierEmailSentDateYear,
@@ -25,9 +27,9 @@ export const validateDossierEmail = ({
   const dossierEmailSentDate = convertGmtDatePartsToUtc(dossierEmailSentDateParts, { dateMustBeInPast: true })
   const existingUpload = requestBody[UploadDocumentRequest.category.DOSSIER_EMAIL] === 'existingUpload'
   if (
-    (!emailFileSelected && !existingUpload) ||
+    (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
-    invalidFileFormat ||
+    invalidFileName ||
     !confirmDossierEmailSent ||
     dateHasError(dossierEmailSentDate)
   ) {
@@ -49,7 +51,7 @@ export const validateDossierEmail = ({
         })
       )
     }
-    if (confirmDossierEmailSent && !emailFileSelected && !existingUpload) {
+    if (confirmDossierEmailSent && !wasUploadFileReceived && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',
@@ -65,7 +67,7 @@ export const validateDossierEmail = ({
         })
       )
     }
-    if (confirmDossierEmailSent && !uploadFailed && invalidFileFormat) {
+    if (confirmDossierEmailSent && !uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',

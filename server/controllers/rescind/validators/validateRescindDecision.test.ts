@@ -15,9 +15,8 @@ describe('validateRescindDecision', () => {
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -32,9 +31,8 @@ describe('validateRescindDecision', () => {
     const { errors, valuesToSave, unsavedValues } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -71,9 +69,8 @@ describe('validateRescindDecision', () => {
     const { errors, valuesToSave, unsavedValues } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -113,9 +110,8 @@ describe('validateRescindDecision', () => {
     const { errors } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you sent the rescind decision email must be today or in the past')
   })
@@ -132,9 +128,8 @@ describe('validateRescindDecision', () => {
     const { errors } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors[0].text).toEqual('The date you sent the rescind decision email must be a real date')
   })
@@ -151,9 +146,8 @@ describe('validateRescindDecision', () => {
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
       fileName: 'test.eml',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -177,9 +171,8 @@ describe('validateRescindDecision', () => {
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -203,9 +196,8 @@ describe('validateRescindDecision', () => {
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

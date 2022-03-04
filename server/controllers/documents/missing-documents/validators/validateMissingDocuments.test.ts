@@ -6,9 +6,8 @@ describe('validateMissingDocuments', () => {
     const { errors, valuesToSave, unsavedValues } = validateMissingDocuments({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -30,9 +29,8 @@ describe('validateMissingDocuments', () => {
     const { errors, valuesToSave } = validateMissingDocuments({
       requestBody,
       fileName: 'test.eml',
-      emailFileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -51,9 +49,8 @@ describe('validateMissingDocuments', () => {
     const { errors, valuesToSave } = validateMissingDocuments({
       requestBody,
       fileName: 'test.msg',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -72,9 +69,8 @@ describe('validateMissingDocuments', () => {
     const { errors, valuesToSave } = validateMissingDocuments({
       requestBody,
       fileName: 'test.msl',
-      emailFileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

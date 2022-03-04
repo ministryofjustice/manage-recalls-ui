@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { uploadEmailFormHandler } from './uploadEmailFormHandler'
+import { formWithDocumentUploadHandler } from './formWithDocumentUploadHandler'
 import { uploadRecallDocument, updateRecall } from '../../../clients/manageRecallsApiClient'
 import { mockReq } from '../../testUtils/mockRequestUtils'
 import { uploadStorageField } from './helpers/uploadStorage'
@@ -13,14 +13,14 @@ import { validateNsyEmail } from '../../dossier/validators/validateNsyEmail'
 jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
 
-const handler = uploadEmailFormHandler({
-  emailFieldName: 'recallRequestEmailFileName',
+const handler = formWithDocumentUploadHandler({
+  uploadFormFieldName: 'recallRequestEmailFileName',
   validator: validateRecallRequestReceived,
   documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
   nextPageUrlSuffix: 'last-release',
 })
 
-describe('emailUploadForm', () => {
+describe('formWithDocumentUploadHandler', () => {
   let req
   beforeEach(() => {
     req = mockReq({
@@ -120,8 +120,8 @@ describe('emailUploadForm', () => {
         done()
       },
     }
-    uploadEmailFormHandler({
-      emailFieldName: 'recallNsyEmailFileName',
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'recallNsyEmailFileName',
       validator: validateNsyEmail,
       documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
       nextPageUrlSuffix: 'dossier-letter',
@@ -145,7 +145,7 @@ describe('emailUploadForm', () => {
           {
             href: '#recallRequestEmailFileName',
             name: 'recallRequestEmailFileName',
-            text: 'The selected file could not be uploaded – try again',
+            text: 'report.msg could not be uploaded - try again',
           },
         ])
         expect(httpStatus).toEqual(303)
@@ -302,8 +302,8 @@ describe('emailUploadForm', () => {
 
   it('calls a saveToApiFn function if passed', done => {
     const saveToApiFn = jest.fn()
-    const handlerWithSaveFn = uploadEmailFormHandler({
-      emailFieldName: 'recallNotificationEmailFileName',
+    const handlerWithSaveFn = formWithDocumentUploadHandler({
+      uploadFormFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       saveToApiFn,
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
