@@ -6,14 +6,17 @@ describe('validateAddNote', () => {
       subject: 'subject text',
       details: 'details text',
     }
-    const { errors, valuesToSave } = validateAddNote({
+    const { errors, unsavedValues, valuesToSave } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
-      fileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(errors).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      details: 'details text',
+      subject: 'subject text',
+    })
     expect(valuesToSave).toEqual({
       subject: 'subject text',
       details: 'details text',
@@ -29,9 +32,8 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
-      fileSelected: false,
+      wasUploadFileReceived: false,
       uploadFailed: undefined,
-      invalidFileFormat: undefined,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -45,9 +47,8 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
-      fileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -75,9 +76,8 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
-      fileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual(requestBody)
@@ -97,9 +97,8 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
-      fileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual(requestBody)
@@ -120,9 +119,8 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
       fileName: 'test.docx',
-      fileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: true,
-      invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual(requestBody)
@@ -143,9 +141,8 @@ describe('validateAddNote', () => {
     const { errors, valuesToSave } = validateAddNote({
       requestBody,
       fileName: 'whatever.ext',
-      fileSelected: true,
+      wasUploadFileReceived: true,
       uploadFailed: false,
-      invalidFileFormat: true,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([

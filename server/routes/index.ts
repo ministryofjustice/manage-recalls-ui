@@ -48,11 +48,9 @@ import { validateLastKnownAddress } from '../controllers/book/validators/validat
 import { selectLookupAddressHandler } from '../controllers/book/selectLookupAddressHandler'
 import { addAnotherAddressHandler } from '../controllers/book/addAnotherAddressHandler'
 import { deleteAddressHandler } from '../controllers/book/deleteAddressHandler'
-import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateConfirmCustodyStatus } from '../controllers/assess/validators/validateConfirmCustodyStatus'
 import { validateWarrantReference } from '../controllers/assess/validators/validateWarrantReference'
 import { saveWarrantReference } from '../controllers/assess/helpers/saveWarrantReference'
-import { addNoteHandler } from '../controllers/note/addNoteHandler'
 import { rescindFormHandler } from '../controllers/rescind/rescindFormHandler'
 import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
@@ -60,6 +58,8 @@ import { validateDossierPrison } from '../controllers/dossier/validators/validat
 import { validateNsyEmail } from '../controllers/dossier/validators/validateNsyEmail'
 import { validateRecallType } from '../controllers/book/validators/validateRecallType'
 import { saveRecallAndUnassignUser } from '../controllers/documents/upload/helpers/saveRecallAndUnassignUser'
+import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { validateAddNote } from '../controllers/note/validators/validateAddNote'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -206,7 +206,14 @@ export default function routes(router: Router): Router {
 
   // ADD NOTE
   get(`${basePath}/add-note`, recallPageGet('addNote'))
-  post(`${basePath}/add-note`, addNoteHandler)
+  post(
+    `${basePath}/add-note`,
+    formWithDocumentUploadHandler({
+      uploadFormFieldName: 'fileName',
+      validator: validateAddNote,
+      documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
+    })
+  )
 
   // RESCIND RECALL
   get(`${basePath}/rescind-request`, recallPageGet('rescindRequest'))
