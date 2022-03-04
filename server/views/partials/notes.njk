@@ -3,11 +3,8 @@
     {% if recall.notes.length %}
         <dl class="govuk-summary-list">
             {% for note in recall.notes %}
-                <div class="govuk-summary-list__row">
-                    <span class="govuk-summary-list__key" data-qa='noteSubject{{ loop.index }}'>
-                        {{ note.subject }}
-                    </span>
-                </div>
+                <div class='govuk-!-margin-bottom-8'>
+                <h3 class='govuk-heading-s' data-qa='noteSubject{{ loop.index }}'>{{ note.subject }}</h3>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
                         Details
@@ -43,6 +40,7 @@
                     <dd class="govuk-summary-list__value">
                         {{ note.createdByUserName }}
                     </dd>
+                </div>
                 </div>
             {% endfor %}
         </dl>
