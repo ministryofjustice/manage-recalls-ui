@@ -9,7 +9,7 @@ const recallId = '123'
 const documentId = '88'
 
 describe('downloadDocumentOrEmail', () => {
-  const expectedPdfContents = 'pdf contents'
+  const downloadFileContents = 'file contents'
   let req: Request
   let res: Response
 
@@ -29,99 +29,111 @@ describe('downloadDocumentOrEmail', () => {
     const fileName = 'IN CUSTODY RECALL BADGER BOBBY A1234AB.pdf'
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'RECALL_NOTIFICATION',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName,
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('should serve a dossier', async () => {
     const fileName = 'BADGER BOBBY A1234AB RECALL DOSSIER.pdf'
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'DOSSIER',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName,
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('should serve a letter to prison', async () => {
     const fileName = 'BADGER BOBBY A1234AB LETTER TO PRISON.pdf'
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'LETTER_TO_PRISON',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName,
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('should serve a revocation order', async () => {
     const fileName = 'BADGER BOBBY A1234AB REVOCATION ORDER.pdf'
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'REVOCATION_ORDER',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName,
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('should serve reasons for recall', async () => {
     const fileName = 'BADGER BOBBY A1234AB REASONS FOR RECALL.pdf'
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'REASONS_FOR_RECALL',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName,
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('should serve an uploaded Part A', async () => {
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'PART_A_RECALL_REPORT',
-      content: expectedPdfContents,
+      content: downloadFileContents,
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="Part A.pdf"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('uses original filename for uploaded Other documents', async () => {
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'OTHER',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName: 'report.pdf',
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="report.pdf"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
   it('should serve an uploaded recall request email', async () => {
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'RECALL_REQUEST_EMAIL',
-      content: expectedPdfContents,
+      content: downloadFileContents,
       fileName: 'email.eml',
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/octet-stream')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="email.eml"`)
-    expect(res.send).toHaveBeenCalledWith(Buffer.from(expectedPdfContents, 'base64'))
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
+  })
+
+  it('should serve a note document', async () => {
+    ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
+      category: 'NOTE_DOCUMENT',
+      content: downloadFileContents,
+      fileName: 'note.doc',
+    })
+    await downloadDocumentOrEmail(req, res)
+    expect(res.contentType).toHaveBeenCalledWith('application/msword')
+    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.pdf"`)
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 })

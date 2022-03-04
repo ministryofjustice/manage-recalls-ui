@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 import { getDocumentWithContents } from '../../../clients/manageRecallsApiClient'
 import { documentCategories } from '../documentCategories'
+import { getMimeTypeForFileName } from './helpers/getMimeTypeForFileName'
 
 export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
   const { recallId } = req.params
@@ -17,6 +18,11 @@ export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
   }
   if (documentCategory.type === 'email') {
     res.contentType('application/octet-stream')
+    res.header('Content-Disposition', `attachment; filename="${fileName}"`)
+  }
+  if (documentCategory.type === 'note_document') {
+    const mimeType = getMimeTypeForFileName(fileName)
+    res.contentType(mimeType)
     res.header('Content-Disposition', `attachment; filename="${fileName}"`)
   }
   res.send(Buffer.from(content, 'base64'))
