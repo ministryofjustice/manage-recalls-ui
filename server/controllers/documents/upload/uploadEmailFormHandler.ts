@@ -3,7 +3,7 @@ import { updateRecall, uploadRecallDocument } from '../../../clients/manageRecal
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { NamedFormError, ReqEmailUploadValidatorFn, SaveToApiFn } from '../../../@types'
 import { allowedEmailFileExtensions } from './helpers/allowedUploadExtensions'
-import { errorMsgEmailUpload, makeErrorObject, saveErrorWithDetails } from '../../utils/errorMessages'
+import { errorMsgEmailUpload, makeErrorObject, saveErrorObject } from '../../utils/errorMessages'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 import { processUpload } from './helpers/processUpload'
 
@@ -22,7 +22,6 @@ export const uploadEmailFormHandler =
   async (req: Request, res: Response): Promise<void> => {
     const { recallId } = req.params
     const { user, urlInfo } = res.locals
-    let emailSavedToApi = false
     const { request, uploadFailed } = await processUpload(emailFieldName, req, res)
     const { file } = request
     const emailFileSelected = Boolean(file)
@@ -45,7 +44,7 @@ export const uploadEmailFormHandler =
     // save email to api
     if (shouldSaveEmailToApi) {
       try {
-        const response = await uploadRecallDocument(
+        await uploadRecallDocument(
           recallId,
           {
             fileName: file.originalname,
@@ -54,35 +53,27 @@ export const uploadEmailFormHandler =
           },
           user.token
         )
-        if (response.documentId) {
-          emailSavedToApi = true
-        }
       } catch (e) {
-        emailSavedToApi = false
-        if (e.data?.message === 'VirusFoundException') {
-          // add to any existing validation errors
-          errorList = [
-            ...(errors || []),
-            makeErrorObject({
-              id: emailFieldName,
-              text: `${file.originalname} contains a virus`,
-            }),
-          ]
-        }
+        // add upload error to any existing validation errors
+        errorList = [
+          ...(errors || []),
+          makeErrorObject({
+            id: emailFieldName,
+            text:
+              e.data?.message === 'VirusFoundException'
+                ? errorMsgEmailUpload.containsVirus(file.originalname)
+                : errorMsgEmailUpload.uploadFailed,
+          }),
+        ]
       }
     }
     // either saving email to api failed, or other field(s) had validation errors
-    if (errorList || (shouldSaveEmailToApi && !emailSavedToApi)) {
-      req.session.errors = errorList || [
-        makeErrorObject({
-          id: emailFieldName,
-          text: errorMsgEmailUpload.uploadFailed,
-        }),
-      ]
+    if (errorList) {
+      req.session.errors = errorList
       req.session.unsavedValues = unsavedValues
       return res.redirect(303, req.originalUrl)
     }
-    // form field values other than the uploaded email
+    // upload succeeded - are there form field values other than the uploaded email
     if (valuesToSave) {
       try {
         if (saveToApiFn) {
@@ -92,7 +83,7 @@ export const uploadEmailFormHandler =
         }
       } catch (e) {
         req.session.unsavedValues = unsavedValues
-        req.session.errors = saveErrorWithDetails({ err: e, res })
+        req.session.errors = [saveErrorObject]
         res.redirect(303, req.originalUrl)
       }
     }
