@@ -1,4 +1,3 @@
-import { Response } from 'express'
 import { FormError, KeyedFormErrors, NamedFormError, ObjectMap, ValidationError } from '../../@types'
 import {
   allowedDocumentFileExtensions,
