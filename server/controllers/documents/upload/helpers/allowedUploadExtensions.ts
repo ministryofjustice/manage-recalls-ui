@@ -50,3 +50,10 @@ export const allowedNoteFileExtensions: AllowedUploadFileType[] = [
   ...allowedWordDocumentFileExtensions,
   ...allowedDocumentFileExtensions,
 ]
+
+export const allFileExtensions = [
+  ...allowedEmailFileExtensions,
+  ...allowedWordDocumentFileExtensions,
+  ...allowedDocumentFileExtensions,
+  ...allowedImageFileExtensions,
+]
