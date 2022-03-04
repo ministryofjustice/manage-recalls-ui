@@ -199,7 +199,7 @@ context('Add a note to a recall', () => {
     cy.clickButton('Add note')
     cy.assertErrorMessage({
       fieldName: 'subject',
-      summaryError: 'Provide more detail',
+      summaryError: 'Enter a subject',
     })
     cy.assertErrorMessage({
       fieldName: 'details',
