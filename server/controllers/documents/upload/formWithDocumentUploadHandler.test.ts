@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { formWithDocumentUploadHandler } from './formWithDocumentUploadHandler'
-import { uploadRecallDocument, updateRecall } from '../../../clients/manageRecallsApiClient'
+import { uploadRecallDocument, updateRecall, addNote } from '../../../clients/manageRecallsApiClient'
 import { mockReq } from '../../testUtils/mockRequestUtils'
 import { uploadStorageField } from './helpers/uploadStorage'
 import { validateRecallRequestReceived } from '../../book/validators/validateRecallRequestReceived'
@@ -9,6 +9,7 @@ import { validateRecallNotificationEmail } from '../../assess/validators/validat
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import getRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { validateNsyEmail } from '../../dossier/validators/validateNsyEmail'
+import { validateAddNote } from '../../note/validators/validateAddNote'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
@@ -17,7 +18,6 @@ const handler = formWithDocumentUploadHandler({
   uploadFormFieldName: 'recallRequestEmailFileName',
   validator: validateRecallRequestReceived,
   documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
-  nextPageUrlSuffix: 'last-release',
 })
 
 describe('formWithDocumentUploadHandler', () => {
@@ -124,7 +124,6 @@ describe('formWithDocumentUploadHandler', () => {
       uploadFormFieldName: 'recallNsyEmailFileName',
       validator: validateNsyEmail,
       documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
-      nextPageUrlSuffix: 'dossier-letter',
     })(req, res)
   })
 
@@ -307,7 +306,6 @@ describe('formWithDocumentUploadHandler', () => {
       validator: validateRecallNotificationEmail,
       saveToApiFn,
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
-      nextPageUrlSuffix: 'assess-confirmation',
     })
     req.body = {
       confirmRecallNotificationEmailSent: 'YES',
@@ -345,5 +343,126 @@ describe('formWithDocumentUploadHandler', () => {
       },
     }
     handlerWithSaveFn(req, res)
+  })
+
+  describe('Notes', () => {
+    it('saves the note to the API then redirects', done => {
+      ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+        req.file = {
+          originalname: 'email.msg',
+          buffer: 'def',
+        }
+        req.body = {
+          subject: 'Note',
+          details: 'Details',
+        }
+        cb()
+      })
+      ;(addNote as jest.Mock).mockResolvedValue({})
+      const res = {
+        locals: {
+          user: {},
+          urlInfo: { basePath: '/persons/456/recalls/789/' },
+        },
+        redirect: (httpStatus, path) => {
+          expect(addNote).toHaveBeenCalledTimes(1)
+          expect(uploadRecallDocument).toHaveBeenCalledTimes(0)
+          expect(updateRecall).toHaveBeenCalledTimes(0)
+          expect(req.session.errors).toBeUndefined()
+          expect(httpStatus).toEqual(303)
+          expect(path).toEqual('/persons/456/recalls/789/view-recall')
+          done()
+        },
+      }
+      formWithDocumentUploadHandler({
+        uploadFormFieldName: 'fileName',
+        validator: validateAddNote,
+        documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
+      })(req, res)
+    })
+
+    it('returns errors if subject / detail are missing', done => {
+      ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+        req.file = {
+          originalname: 'email.msg',
+          buffer: 'def',
+        }
+        req.body = {}
+        cb()
+      })
+      ;(addNote as jest.Mock).mockResolvedValue({})
+      const res = {
+        locals: {
+          user: {},
+          urlInfo: { basePath: '/persons/456/recalls/789/' },
+        },
+        redirect: (httpStatus, path) => {
+          expect(addNote).toHaveBeenCalledTimes(0)
+          expect(uploadRecallDocument).toHaveBeenCalledTimes(0)
+          expect(updateRecall).toHaveBeenCalledTimes(0)
+          expect(req.session.errors).toEqual([
+            {
+              href: '#subject',
+              name: 'subject',
+              text: 'Enter a subject',
+            },
+            {
+              href: '#details',
+              name: 'details',
+              text: 'Provide more detail',
+            },
+          ])
+          expect(httpStatus).toEqual(303)
+          expect(path).toEqual('/upload-page')
+          done()
+        },
+      }
+      formWithDocumentUploadHandler({
+        uploadFormFieldName: 'fileName',
+        validator: validateAddNote,
+        documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
+      })(req, res)
+    })
+
+    it('returns errors if upload errors', done => {
+      ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+        req.file = {
+          originalname: 'email.ppt',
+          buffer: 'def',
+        }
+        req.body = {
+          subject: 'Note',
+          details: 'Details',
+        }
+        cb()
+      })
+      ;(addNote as jest.Mock).mockResolvedValue({})
+      const res = {
+        locals: {
+          user: {},
+          urlInfo: { basePath: '/persons/456/recalls/789/' },
+        },
+        redirect: (httpStatus, path) => {
+          expect(addNote).toHaveBeenCalledTimes(0)
+          expect(uploadRecallDocument).toHaveBeenCalledTimes(0)
+          expect(updateRecall).toHaveBeenCalledTimes(0)
+          expect(req.session.errors).toEqual([
+            {
+              href: '#fileName',
+              name: 'fileName',
+              text: "The selected file 'email.ppt' must be an MSG, EML, DOC, DOCX or PDF",
+            },
+          ])
+          expect(httpStatus).toEqual(303)
+          expect(path).toEqual('/upload-page')
+          done()
+        },
+      }
+      formWithDocumentUploadHandler({
+        uploadFormFieldName: 'fileName',
+        validator: validateAddNote,
+        documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
+      })(req, res)
+    })
   })
 })

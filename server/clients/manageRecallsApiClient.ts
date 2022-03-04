@@ -17,7 +17,6 @@ import {
   BookRecallRequest,
   AddUserDetailsRequest,
   CreateLastKnownAddressRequest,
-  CreateNoteRequest,
 } from '../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../@types/manage-recalls-api/models/PoliceForce'
@@ -148,8 +147,12 @@ export function setDocumentCategory(
   })
 }
 
-export function addNote(recallId: string, data: CreateNoteRequest, token: string): Promise<superagent.Response> {
-  return restClient(token).post<superagent.Response>({ path: `/recalls/${recallId}/notes`, data, raw: true })
+export function addNote({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post<superagent.Response>({
+    path: `/recalls/${recallId}/notes`,
+    data: valuesToSave as Record<string, unknown>,
+    raw: true,
+  })
 }
 
 export function addMissingDocumentRecord(

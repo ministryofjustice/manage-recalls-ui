@@ -1,22 +1,27 @@
-import { NoteDocumentUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../@types'
-import { errorMsgNoteFileUpload, errorMsgProvideDetail, makeErrorObject } from '../../utils/errorMessages'
+import { FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
+import {
+  errorMsgDocumentUpload,
+  errorMsgNoteFileUpload,
+  errorMsgProvideDetail,
+  makeErrorObject,
+} from '../../utils/errorMessages'
+import { CreateNoteRequest } from '../../../@types/manage-recalls-api'
+import { allowedNoteFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateAddNote = ({
   requestBody,
   fileName,
-  fileSelected,
+  wasUploadFileReceived,
   uploadFailed,
-  invalidFileFormat,
-}: NoteDocumentUploadValidatorArgs): {
-  errors?: NamedFormError[]
-  valuesToSave: { subject: string; details: string }
-  unsavedValues: ObjectMap<unknown>
-} => {
+}: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<CreateNoteRequest> => {
   let errors
-  let unsavedValues
   let valuesToSave
+  let confirmationMessage
+  const invalidFileName = wasUploadFileReceived
+    ? !allowedNoteFileExtensions.some(ext => fileName.endsWith(ext.extension))
+    : false
   const { subject, details } = requestBody
-  const fileError = fileSelected && (uploadFailed || invalidFileFormat)
+  const fileError = wasUploadFileReceived && (uploadFailed || invalidFileName)
   if (fileError || !subject || !details) {
     errors = []
     if (!subject) {
@@ -39,11 +44,11 @@ export const validateAddNote = ({
       errors.push(
         makeErrorObject({
           id: 'fileName',
-          text: errorMsgNoteFileUpload.uploadFailed(fileName),
+          text: errorMsgDocumentUpload.uploadFailed(fileName),
         })
       )
     }
-    if (!uploadFailed && invalidFileFormat) {
+    if (!uploadFailed && invalidFileName) {
       errors.push(
         makeErrorObject({
           id: 'fileName',
@@ -51,13 +56,21 @@ export const validateAddNote = ({
         })
       )
     }
-    unsavedValues = {
-      subject,
-      details,
-    }
+  }
+  const unsavedValues = {
+    subject,
+    details,
   }
   if (!errors) {
+    confirmationMessage = {
+      text: 'Note added.',
+      link: {
+        text: 'View',
+        href: '#notes',
+      },
+      type: 'success',
+    }
     valuesToSave = { subject, details }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, confirmationMessage, redirectToPage: 'view-recall' }
 }
