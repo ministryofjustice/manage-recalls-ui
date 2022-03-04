@@ -133,7 +133,7 @@ describe('downloadDocumentOrEmail', () => {
     })
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/msword')
-    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.pdf"`)
+    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.doc"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 })
