@@ -187,7 +187,7 @@ describe('validateRecallRequestReceived', () => {
     expect(errors[0].text).toEqual('The time you received the recall email must be a real time')
   })
 
-  it("returns an error if an email wasn't uploaded", () => {
+  it("returns an error and unsaved values if an email wasn't uploaded", () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '12',
       recallEmailReceivedDateTimeMonth: '09',
@@ -195,7 +195,7 @@ describe('validateRecallRequestReceived', () => {
       recallEmailReceivedDateTimeHour: '22',
       recallEmailReceivedDateTimeMinute: '14',
     }
-    const { errors, valuesToSave } = validateRecallRequestReceived({
+    const { errors, unsavedValues, valuesToSave } = validateRecallRequestReceived({
       requestBody,
       fileName: 'test.eml',
       emailFileSelected: false,
@@ -203,6 +203,15 @@ describe('validateRecallRequestReceived', () => {
       invalidFileFormat: false,
     })
     expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      recallEmailReceivedDateTimeParts: {
+        day: '12',
+        hour: '22',
+        minute: '14',
+        month: '09',
+        year: '2021',
+      },
+    })
     expect(errors).toEqual([
       {
         href: '#recallRequestEmailFileName',
