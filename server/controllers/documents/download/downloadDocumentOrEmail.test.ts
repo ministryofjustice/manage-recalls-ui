@@ -137,6 +137,21 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
+  it('should serve an example note document where the filename includes a non-ISO-8859-1 character with adapted and encoded filename in Content-Disposition', async () => {
+    ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
+      category: 'NOTE_DOCUMENT',
+      content: downloadFileContents,
+      fileName: 'Weeknote 42 – Friday 4 March 2022.pdf',
+    })
+    await downloadDocumentOrEmail(req, res)
+    expect(res.contentType).toHaveBeenCalledWith('application/pdf')
+    expect(res.header).toHaveBeenCalledWith(
+      'Content-Disposition',
+      `attachment; filename="Weeknote 42 ? Friday 4 March 2022.pdf"; filename*=UTF-8''Weeknote%2042%20%E2%80%93%20Friday%204%20March%202022.pdf`
+    )
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
+  })
+
   it('should serve an email note document with contentType application/octet-stream', async () => {
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'NOTE_DOCUMENT',
