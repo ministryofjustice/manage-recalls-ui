@@ -125,7 +125,7 @@ describe('downloadDocumentOrEmail', () => {
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 
-  it('should serve a note document', async () => {
+  it('should serve an example note document with valid contentType, Content-Disposition and encoded contents', async () => {
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
       category: 'NOTE_DOCUMENT',
       content: downloadFileContents,
@@ -134,6 +134,18 @@ describe('downloadDocumentOrEmail', () => {
     await downloadDocumentOrEmail(req, res)
     expect(res.contentType).toHaveBeenCalledWith('application/msword')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.doc"`)
+    expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
+  })
+
+  it('should serve an email note document with contentType application/octet-stream', async () => {
+    ;(getDocumentWithContents as jest.Mock).mockResolvedValue({
+      category: 'NOTE_DOCUMENT',
+      content: downloadFileContents,
+      fileName: 'note.eml',
+    })
+    await downloadDocumentOrEmail(req, res)
+    expect(res.contentType).toHaveBeenCalledWith('application/octet-stream')
+    expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.eml"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
   })
 })
