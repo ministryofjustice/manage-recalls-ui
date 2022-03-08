@@ -1,4 +1,6 @@
 import type { Request, Response } from 'express'
+import contentDisposition from 'content-disposition'
+
 import { getDocumentWithContents } from '../../../clients/manageRecallsApiClient'
 import { documentCategories } from '../documentCategories'
 import { getMimeTypeForFileName } from './helpers/getMimeTypeForFileName'
@@ -14,16 +16,16 @@ export const downloadDocumentOrEmail = async (req: Request, res: Response) => {
   if (['generated', 'document'].includes(documentCategory.type)) {
     const formattedFileName = documentCategory.standardFileName || fileName
     res.contentType('application/pdf')
-    res.header('Content-Disposition', `attachment; filename="${formattedFileName}"`)
+    res.header('Content-Disposition', contentDisposition(formattedFileName))
   }
   if (documentCategory.type === 'email') {
     res.contentType('application/octet-stream')
-    res.header('Content-Disposition', `attachment; filename="${fileName}"`)
+    res.header('Content-Disposition', contentDisposition(fileName))
   }
   if (documentCategory.type === 'note_document') {
     const mimeType = getMimeTypeForFileName(fileName)
     res.contentType(mimeType)
-    res.header('Content-Disposition', `attachment; filename="${fileName}"`)
+    res.header('Content-Disposition', contentDisposition(fileName))
   }
   res.send(Buffer.from(content, 'base64'))
 }
