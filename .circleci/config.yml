@@ -122,10 +122,10 @@ jobs:
       tag: 16.13-browsers
     steps:
       - checkout
-      - node/install-packages
       - run:
           name: Update NPM to match package.json
           command: sudo npm install -g npm@$(jq -r '.engines.npm' < package.json)
+      - node/install-packages
       - run:
           name: Run check
           command: npm outdated typescript govuk-frontend
