@@ -85,3 +85,11 @@ export const sortNotInCustodyList = (notInCustodyList: RecallResponseLite[]) => 
     return 0
   })
 }
+
+export const sortAwaitingPartBList = (awaitingPartBList: RecallResponseLite[]) => {
+  return awaitingPartBList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
+    const partBDueDateA = getDateProperty(a, 'partBDueDate')
+    const partBDueDateB = getDateProperty(b, 'partBDueDate')
+    return diffDatesForSort(partBDueDateA, partBDueDateB, false)
+  })
+}

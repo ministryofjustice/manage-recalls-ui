@@ -87,6 +87,16 @@ describe('recallList', () => {
       dossierTargetDate: '2021-08-13',
       inCustodyAtBooking: false,
     },
+    {
+      firstName: 'Barnaby',
+      lastName: 'Badger',
+      recallId: '13',
+      nomsNumber: '987',
+      status: 'AWAITING_PART_B',
+      dossierTargetDate: '2021-08-13',
+      partBDueDate: '2022-08-13',
+      inCustodyAtBooking: false,
+    },
   ]
 
   beforeEach(() => {
@@ -182,6 +192,19 @@ describe('recallList', () => {
         nomsNumber: '456',
         recallId: '6',
         status: 'DOSSIER_ISSUED',
+      },
+    ])
+    expect(resp.locals.results.awaitingPartB).toEqual([
+      {
+        dossierTargetDate: '2021-08-13',
+        firstName: 'Barnaby',
+        fullName: 'Barnaby Badger',
+        inCustodyAtBooking: false,
+        lastName: 'Badger',
+        nomsNumber: '987',
+        partBDueDate: '2022-08-13',
+        recallId: '13',
+        status: 'AWAITING_PART_B',
       },
     ])
   })

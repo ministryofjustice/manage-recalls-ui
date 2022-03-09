@@ -123,6 +123,24 @@ export const dueDateLabel = ({
   return `${dueItemLabel} due today${dueTimeOfDay}`
 }
 
+export const partBDueDateLabel = ({ partBDueDate }: { partBDueDate: string }): string => {
+  const dueDateTime = getDateTimeUTC(partBDueDate)
+  const now = DateTime.now()
+  const overdue = now.diff(dueDateTime, 'days').days >= 1
+  const startOfToday = now.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+  const isDueToday = startOfToday.diff(dueDateTime, 'days').days === 0
+  const dueForPresentation = dueDateTime.setZone(europeLondon)
+  const dueDate = dueForPresentation.toFormat(datePresentationFormat)
+
+  if (isDueToday) {
+    return `Today`
+  }
+  if (overdue) {
+    return `Overdue`
+  }
+  return dueDate
+}
+
 export const padWithZeroes = (value?: number): string => {
   if (!isDefined(value)) {
     return ''
