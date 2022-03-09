@@ -228,7 +228,7 @@
                 </dd>
             </div>
         {% endif %}
-        {% if recall.status == 'DOSSIER_ISSUED' %}
+        {% if recall.dossierCreatedByUserId %}
             <div class="govuk-summary-list__row">
                 <dt class=" govuk-summary-list__key">
                     Dossier created by

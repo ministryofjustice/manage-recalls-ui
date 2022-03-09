@@ -327,4 +327,55 @@ describe('Recalls list', () => {
     )
     cy.getLinkHref('Add RTC date').should('equal', `/persons/${nomsNumber}/recalls/${awaitingReturnRecallId}/rtc-dates`)
   })
+
+  it('lists "awaiting part B" recalls on a separate tab', () => {
+    const assessedRecallId = '2'
+    const awaitingReturnRecallId = '3'
+    const recalls = [
+      {
+        ...getRecallResponse,
+        recallId: '1',
+        firstName: 'Jack',
+        lastName: 'Jones',
+        status: 'BOOKED_ON',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        assignee: '123',
+        assigneeUserName: 'Mary Badger',
+      },
+      {
+        ...getRecallResponse,
+        recallId: assessedRecallId,
+        status: 'AWAITING_PART_B',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        partBDueDate: '2025-03-08',
+        assignee: '122',
+        assigneeUserName: 'Jimmy Pud',
+      },
+      {
+        ...getRecallResponse,
+        recallId: awaitingReturnRecallId,
+        firstName: 'Ben',
+        lastName: 'Adams',
+        status: 'AWAITING_PART_B',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        partBDueDate: '2022-03-07',
+        assignee: '122',
+        assigneeUserName: 'Jimmy Pud',
+      },
+    ]
+
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.visit('/')
+    cy.clickLink('Awaiting part B (2)')
+    cy.assertTableColumnValues({
+      qaAttrTable: 'awaitingPartB',
+      qaAttrCell: 'due',
+      valuesToCompare: ['Overdue', '8 March 2025'],
+    })
+  })
 })

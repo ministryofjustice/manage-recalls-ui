@@ -1,10 +1,10 @@
-import { sortListByDateField, sortNotInCustodyList, sortToDoList } from './sort'
-import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { sortAwaitingPartBList, sortListByDateField, sortNotInCustodyList, sortToDoList } from './sort'
+import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
 
 describe('sortToDoList', () => {
   it('places recalls with no due date at the top, earliest created first', () => {
     const recalls = [{ createdDateTime: '2020-12-05T16:33:57.000Z' }, { createdDateTime: '2020-12-04T16:33:57.000Z' }]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { createdDateTime: '2020-12-04T16:33:57.000Z' },
       { createdDateTime: '2020-12-05T16:33:57.000Z' },
@@ -16,7 +16,7 @@ describe('sortToDoList', () => {
       { dossierTargetDate: '2021-08-14', recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' },
       { dossierTargetDate: '2021-08-13', recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' },
     ]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { dossierTargetDate: '2021-08-13', recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' },
       { dossierTargetDate: '2021-08-14', recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' },
@@ -28,7 +28,7 @@ describe('sortToDoList', () => {
       { recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' },
       { recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' },
     ]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' },
       { recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' },
@@ -40,7 +40,7 @@ describe('sortToDoList', () => {
       { dossierTargetDate: '2021-08-15T15:33:57.000Z' },
       { recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' },
     ]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z' },
       { dossierTargetDate: '2021-08-15T15:33:57.000Z' },
@@ -49,13 +49,13 @@ describe('sortToDoList', () => {
 
   it('places a recall with no due date before one with a dossierTargetDate', () => {
     const recalls = [{ dossierTargetDate: '2021-08-15T15:33:57.000Z' }, {}]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([{}, { dossierTargetDate: '2021-08-15T15:33:57.000Z' }])
   })
 
   it('places a recall with no due date before one with a recallAssessmentDueDateTime', () => {
     const recalls = [{ recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' }, {}]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([{}, { recallAssessmentDueDateTime: '2021-08-15T15:33:57.000Z' }])
   })
 })
@@ -66,7 +66,7 @@ describe('sortCompletedList', () => {
       { dossierEmailSentDate: '2021-08-14', lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' },
       { dossierEmailSentDate: '2021-08-13', lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
     ]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { dossierEmailSentDate: '2021-08-14', lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' },
       { dossierEmailSentDate: '2021-08-13', lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
@@ -78,7 +78,7 @@ describe('sortCompletedList', () => {
       { lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' },
       { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
     ]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { lastUpdatedDateTime: '2021-08-15T15:33:57.000Z' },
       { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
@@ -90,7 +90,7 @@ describe('sortCompletedList', () => {
       { dossierEmailSentDate: '2021-08-15T15:33:57.000Z' },
       { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
     ]
-    const sorted = sortToDoList(recalls as RecallResponse[])
+    const sorted = sortToDoList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([
       { dossierEmailSentDate: '2021-08-15T15:33:57.000Z' },
       { lastUpdatedDateTime: '2021-08-14T10:22:05.000Z' },
@@ -101,8 +101,20 @@ describe('sortCompletedList', () => {
 describe('sortNotInCustodyList', () => {
   it('sorts by assessment complete first', () => {
     const recalls = [{ status: 'ASSESSED_NOT_IN_CUSTODY' }, { status: 'AWAITING_RETURN_TO_CUSTODY' }]
-    const sorted = sortNotInCustodyList(recalls as RecallResponse[])
+    const sorted = sortNotInCustodyList(recalls as RecallResponseLite[])
     expect(sorted).toEqual([{ status: 'ASSESSED_NOT_IN_CUSTODY' }, { status: 'AWAITING_RETURN_TO_CUSTODY' }])
+  })
+})
+
+describe('sortAwaitingPartBList', () => {
+  it('sorts by partBDueDate', () => {
+    const recalls = [{ partBDueDate: '2022-03-08' }, { partBDueDate: '2022-03-07' }, { partBDueDate: '2022-03-09' }]
+    const sorted = sortAwaitingPartBList(recalls as RecallResponseLite[])
+    expect(sorted).toEqual([
+      { partBDueDate: '2022-03-07' },
+      { partBDueDate: '2022-03-08' },
+      { partBDueDate: '2022-03-09' },
+    ])
   })
 })
 

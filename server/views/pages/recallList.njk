@@ -141,6 +141,42 @@
                 {% endif %}
             {% endset -%}
 
+            {% set awaitingPartBHtml %}
+                {% if results and results.awaitingPartB.length > 0 %}
+                    <table class="govuk-table" data-qa='awaitingPartB'>
+                        <caption class="govuk-table__caption govuk-table__caption--l" data-qa="awaitingPartB-list-heading">
+                            Awaiting part B
+                        </caption>
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header">Name</th>
+                            <th scope="col" class="govuk-table__header">Due</th>
+                            <th scope="col" class="govuk-table__header">Assigned to</th>
+                            <th scope="col" class="govuk-table__header">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="govuk-table__body" data-qa="search-results">
+                        {% for result in results.awaitingPartB %}
+                            <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
+                                <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
+                                <td class="govuk-table__cell" data-qa="due">
+                                    {{ partBDueDateLabel({ partBDueDate: result.partBDueDate }) }}
+                                </td>
+                                <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
+                                <td class="govuk-table__cell">
+                                    <div class='flex'>
+                                    <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class='govuk-body'>No recalls</p>
+                {% endif %}
+            {% endset -%}
+
             {{ govukTabs({
                 items: [
                     {
@@ -162,6 +198,13 @@
                         id: "notInCustody",
                         panel: {
                             html: notInCustodyHtml
+                        }
+                    },
+                    {
+                        label: "Awaiting part B (" + results.awaitingPartB.length + ")",
+                        id: "awaitingPartB",
+                        panel: {
+                            html: awaitingPartBHtml
                         }
                     }
                 ]
