@@ -50,7 +50,7 @@
                 {% endif %}
             </dd>
         </div>
-        {% if recall.recommendedRecallType === 'FIXED' and recall.confirmedRecallType == 'FIXED' %}
+        {% if recall.recommendedRecallType === 'FIXED' and recall.confirmedRecallType !== 'STANDARD' %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
                 Recall length
