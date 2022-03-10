@@ -153,6 +153,32 @@ describe('validateDecision', () => {
     expect(errors).toBeUndefined()
   })
 
+  it("doesn't return an error about missing email if user hasn't chosen an answer", () => {
+    const requestBody = {
+      recommendedRecallType: 'STANDARD',
+      confirmedRecallType: '',
+      confirmedRecallTypeDetailStandard: '',
+    }
+    const { errors, unsavedValues, valuesToSave } = validateDecision({
+      requestBody,
+      wasUploadFileReceived: false,
+      uploadFailed: false,
+      fileName: 'test.msg',
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      confirmedRecallType: '',
+      confirmedRecallTypeDetailStandard: '',
+    })
+    expect(errors).toEqual([
+      {
+        href: '#confirmedRecallType',
+        name: 'confirmedRecallType',
+        text: 'Do you agree with the recall recommendation?',
+      },
+    ])
+  })
+
   it('returns an error if the email upload failed', () => {
     const requestBody = {
       confirmedRecallType: 'FIXED',
