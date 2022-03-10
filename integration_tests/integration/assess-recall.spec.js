@@ -55,26 +55,20 @@ context('Assess a recall', () => {
       expectedResult: fullRecall,
     })
     stubRefData()
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
     cy.pageHeading().should('equal', `Assess a recall for ${firstLastName}`)
     cy.getText('recallStatus').should('equal', 'Booking complete')
     cy.getText('recallAssessmentDueText').should(
       'equal',
       'Overdue: recall assessment was due on 6 August 2020 by 16:33'
     )
-    cy.getLinkHref('Change recall email received date').should(
-      'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/request-received`
-    )
-    cy.getLinkHref('Change uploaded recall email').should(
-      'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/request-received`
-    )
+    cy.getLinkHref('Change recall email received date').should('contain', `/recalls/${recallId}/request-received`)
+    cy.getLinkHref('Change uploaded recall email').should('contain', `/recalls/${recallId}/request-received`)
 
     // change link for an uploaded document goes to the 'add new document version' page
     cy.getLinkHref('Change Part A recall report').should(
       'equal',
-      '/persons/A1234AA/recalls/123/upload-document-version?fromPage=assess&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT'
+      '/recalls/123/upload-document-version?fromPage=assess&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT'
     )
 
     // missing documents
@@ -148,7 +142,7 @@ context('Assess a recall', () => {
       expectedResult: { ...fullRecall, inCustodyAtAssessment: false },
     })
     cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-custody-status' })
     cy.selectRadio('Is Bobby Badger in custody?', 'No')
     cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'Download recall notification')
@@ -164,7 +158,7 @@ context('Assess a recall', () => {
         ...emptyRecall,
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-custody-status' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-custody-status' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'inCustodyAtAssessment',
@@ -181,7 +175,7 @@ context('Assess a recall', () => {
         inCustodyAtAssessment: true,
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-prison' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-prison' })
     cy.getLinkHref('Back').should('contain', '/assess-custody-status')
 
     // back link from current prison page goes to licence page if user was in custody at booking
@@ -191,7 +185,7 @@ context('Assess a recall', () => {
         inCustodyAtBooking: true,
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-prison' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-prison' })
     cy.getLinkHref('Back').should('contain', '/assess-licence')
 
     // back link from download notification page goes to custody status if user is not in custody
@@ -202,7 +196,7 @@ context('Assess a recall', () => {
         inCustodyAtAssessment: false,
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-download' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-download' })
     cy.getLinkHref('Back').should('contain', '/assess-custody-status')
   })
 
@@ -210,7 +204,7 @@ context('Assess a recall', () => {
     // errors if fields not completed
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
     cy.task('expectUpdateRecall', { recallId })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-licence' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-licence' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'licenceConditionsBreached',
@@ -246,7 +240,7 @@ context('Assess a recall', () => {
 
   it('errors - current prison', () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ nomsNumber, recallId, personName: firstLastName })
+    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ recallId, personName: firstLastName })
     assessRecallPrison.clickContinue()
     assessRecallPrison.assertErrorMessage({
       fieldName: 'currentPrison',
@@ -264,7 +258,7 @@ context('Assess a recall', () => {
 
   it("error - if they don't upload the recall notification email or enter a sent date", () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ recallId })
     assessRecallEmail.confirmEmailSent()
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
@@ -327,7 +321,7 @@ context('Assess a recall', () => {
         ],
       },
     })
-    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ nomsNumber, recallId })
+    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ recallId })
     assessRecallEmail.assertElementHasText({
       qaAttr: 'uploadedDocument-RECALL_NOTIFICATION_EMAIL',
       textToFind: 'email.msg',

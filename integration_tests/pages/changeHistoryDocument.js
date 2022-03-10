@@ -12,9 +12,9 @@ const getHeading = type => {
       throw new Error(`Unknown type: ${type}`)
   }
 }
-const changeHistoryDocumentPage = ({ nomsNumber, recallId, category, type } = {}) =>
+const changeHistoryDocumentPage = ({ recallId, category, type } = {}) =>
   page(getHeading(type), {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/change-history/document?category=${category}` : null,
+    url: recallId ? `/recalls/${recallId}/change-history/document?category=${category}` : null,
   })
 
 module.exports = { verifyOnPage: changeHistoryDocumentPage }

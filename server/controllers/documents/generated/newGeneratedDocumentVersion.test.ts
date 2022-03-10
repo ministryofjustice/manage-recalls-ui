@@ -7,9 +7,8 @@ import { RecallResponse } from '../../../@types/manage-recalls-api/models/Recall
 jest.mock('../../../clients/manageRecallsApiClient')
 
 describe('generatedDocumentVersionFormHandler', () => {
-  const nomsNumber = 'A1234AB'
   const recallId = '00000000-0000-0000-0000-000000000000'
-  const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
+  const basePath = `/recalls/${recallId}/`
   const originalUrl = `${basePath}generated-document-version?fromPage=view-recall`
 
   beforeEach(() => {
@@ -32,7 +31,7 @@ describe('generatedDocumentVersionFormHandler', () => {
       category: 'RECALL_NOTIFICATION',
     }
     const req = mockPostRequest({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
       originalUrl,
     })
@@ -49,7 +48,7 @@ describe('generatedDocumentVersionFormHandler', () => {
   })
 
   it('should reload the page if detail is missing', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     const requestBody = {
       category: 'RECALL_NOTIFICATION',
     }
@@ -58,7 +57,7 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     const req = mockPostRequest({
       originalUrl,
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
@@ -73,7 +72,7 @@ describe('generatedDocumentVersionFormHandler', () => {
   })
 
   it('should throw an error if category is invalid', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     const requestBody = {
       category: 'LICENCE',
     }
@@ -82,7 +81,7 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     const req = mockPostRequest({
       originalUrl,
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
@@ -105,7 +104,7 @@ describe('generatedDocumentVersionFormHandler', () => {
     generateRecallDocument.mockRejectedValueOnce(new Error('API error'))
     const req = mockPostRequest({
       originalUrl,
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
@@ -126,7 +125,7 @@ describe('generatedDocumentVersionFormHandler', () => {
   })
 
   it('should redirect to fromPage if one is supplied in res.locals', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     const requestBody = {
       details: 'Details changed',
       category: 'RECALL_NOTIFICATION',
@@ -135,12 +134,12 @@ describe('generatedDocumentVersionFormHandler', () => {
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
       fromPage: 'dossier-recall',
       fromHash: 'generated-documents',
     }
@@ -151,7 +150,7 @@ describe('generatedDocumentVersionFormHandler', () => {
   })
 
   it('should recreate the recall notification if the revocation order is generated', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     const requestBody = {
       details: 'Details changed',
       category: 'REVOCATION_ORDER',
@@ -160,12 +159,12 @@ describe('generatedDocumentVersionFormHandler', () => {
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('token')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
       fromPage: 'dossier-recall',
     }
 
@@ -196,7 +195,7 @@ describe('generatedDocumentVersionFormHandler', () => {
   })
 
   it('should recreate the dossier if one already exists and the revocation order is generated', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     const requestBody = {
       details: 'Details changed',
       category: 'REVOCATION_ORDER',
@@ -206,12 +205,12 @@ describe('generatedDocumentVersionFormHandler', () => {
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('token')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
       fromPage: 'dossier-recall',
     }
 

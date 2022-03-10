@@ -78,7 +78,6 @@ export const generatedDocMetaData = ({
     type: 'generated',
     url: documentDownloadUrl({
       recallId: recall.recallId,
-      nomsNumber: recall.nomsNumber,
       documentId: document.documentId,
     }),
   }

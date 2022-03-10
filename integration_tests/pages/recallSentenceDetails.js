@@ -4,9 +4,9 @@ const page = require('./page')
 
 const { year, month, day } = DateTime.now().plus({ months: 1 })
 
-const recallSentenceDetailsPage = ({ nomsNumber, recallId } = {}) =>
+const recallSentenceDetailsPage = ({ recallId } = {}) =>
   page('What are the sentence, offence and release details?', {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/last-release` : null,
+    url: recallId ? `/recalls/${recallId}/last-release` : null,
     setSentenceDate: () => {
       cy.get('[name="sentenceDateYear"]').clear().type('2019')
       cy.get('[name="sentenceDateMonth"]').clear().type('01')

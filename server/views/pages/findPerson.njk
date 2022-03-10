@@ -69,7 +69,7 @@
                             <td class="govuk-table__cell" data-qa="name">{{ person.firstName }} {{ person.lastName }}</td>
                             <td class="govuk-table__cell" data-qa="dateOfBirth">{{ person.dateOfBirth | dateTime }}</td>
                             <td class="govuk-table__cell">
-                                <form novalidate action="/persons/{{ person.nomsNumber }}/recalls" method="post">
+                                <form novalidate action="/recalls/{{ person.nomsNumber }}" method="post">
                                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                                     <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="bookRecallButton">
                                         Book a recall

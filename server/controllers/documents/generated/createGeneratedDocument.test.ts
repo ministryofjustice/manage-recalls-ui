@@ -5,7 +5,6 @@ import { RecallResponse } from '../../../@types/manage-recalls-api/models/Recall
 
 jest.mock('../../../clients/manageRecallsApiClient')
 
-const nomsNumber = 'AA123AA'
 const recallId = '123'
 const documentId = '123'
 
@@ -15,7 +14,7 @@ describe('createGeneratedDocument', () => {
   let next: NextFunction
 
   beforeEach(() => {
-    req = { params: { nomsNumber, recallId, documentId }, query: {} } as unknown as Request
+    req = { params: { recallId, documentId }, query: {} } as unknown as Request
     res = {
       locals: { user: { token: '000' } },
       contentType: jest.fn(),

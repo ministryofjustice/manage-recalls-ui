@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const assessRecallPrisonPage = ({ nomsNumber, recallId, personName } = {}) =>
+const assessRecallPrisonPage = ({ recallId, personName } = {}) =>
   page(`Which prison is ${personName} in?`, {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/assess-prison` : null,
+    url: recallId ? `/recalls/${recallId}/assess-prison` : null,
     enterPrison: () => {
       cy.get('[id="currentPrison"]').clear().type('Kenn')
       cy.contains('Kennet (HMP)').click()

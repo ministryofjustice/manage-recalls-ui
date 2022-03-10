@@ -68,9 +68,9 @@ export default function routes(router: Router): Router {
   router.get('/', checkUserDetailsExist, recallList)
   get('/find-person', findPerson)
 
-  post('/persons/:nomsNumber/recalls', createRecall)
+  post('/recalls/:nomsNumber', createRecall)
 
-  const basePath = '/persons/:nomsNumber/recalls/:recallId'
+  const basePath = '/recalls/:recallId'
 
   router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
 

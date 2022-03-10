@@ -31,14 +31,14 @@ context('Uploaded document versions', () => {
       },
     })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
-    let recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    let recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
       documentCategoryLabel: 'part A recall report',
     })
     uploadDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: `/persons/A1234AA/recalls/${recallId}/documents/123`,
+      href: `/recalls/${recallId}/documents/123`,
     })
     uploadDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionNumber',

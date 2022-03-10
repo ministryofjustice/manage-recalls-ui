@@ -70,7 +70,7 @@ context('Generated document versions', () => {
         documents: [],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-not-available',
       textToFind: 'Not available',
@@ -81,8 +81,8 @@ context('Generated document versions', () => {
   it('all generated documents are listed and user can generate a new document version', () => {
     const recallId2 = '83472929'
     cy.task('expectGetRecall', { expectedResult: { ...recall, recallId: recallId2 } })
-    const changeLinkHref = `/persons/A1234AA/recalls/${recallId2}/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName=`
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId: recallId2, personName })
+    const changeLinkHref = `/recalls/${recallId2}/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName=`
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId: recallId2, personName })
     // show link, version number, detail for a document with verion > 1
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
@@ -140,7 +140,7 @@ context('Generated document versions', () => {
     })
     newGeneratedDocumentVersion.assertLinkHref({
       qaAttr: 'previousVersionFileName',
-      href: `/persons/A1234AA/recalls/${recallId2}/documents/2123`,
+      href: `/recalls/${recallId2}/documents/2123`,
     })
     newGeneratedDocumentVersion.assertElementHasText({
       qaAttr: 'previousVersionCreatedDateTime',
@@ -205,7 +205,7 @@ context('Generated document versions', () => {
       },
     })
     const fileName = 'NOT IN CUSTODY RECALL BADGER BOBBY 12345C.pdf'
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-download' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-download' })
     cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${fileName}`)
   })
 
@@ -229,7 +229,7 @@ context('Generated document versions', () => {
         ],
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess-download' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-download' })
     cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${fileName}`)
   })
 })

@@ -7,7 +7,6 @@ import {
 import { formatIsoDate, getReferenceDataItemLabel } from '../support/utils'
 
 context('Book a "not in custody" recall', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '86954'
   const personName = `${getRecallResponse.firstName} ${getRecallResponse.lastName}`
   const status = 'BEING_BOOKED_ON'
@@ -18,12 +17,12 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectUpdateRecall', { recallId })
   })
 
-  it('user can book a not in custody recall', () => {
+  it('user can complete booking of a not in custody recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectAddLastKnownAddress')
     cy.task('osPlacesPostcodeLookup', { expectedResult: getOsPlacesAddresses })
     cy.task('osPlacesUprnLookup', { expectedResult: getOsPlacesAddress })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'custody-status' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'custody-status' })
     cy.selectRadio('Is Bobby Badger in custody?', 'No')
     cy.clickButton('Continue')
     cy.selectRadio(`Does ${personName} have a last known address?`, 'Yes')
@@ -75,7 +74,7 @@ context('Book a "not in custody" recall', () => {
 
   it('no fixed abode', () => {
     cy.task('expectGetRecall', { expectedResult: getRecallResponse })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'last-known-address' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'last-known-address' })
     cy.selectRadio(`Does ${personName} have a last known address?`, 'No')
     cy.clickButton('Continue')
     cy.pageHeading().should('equal', 'What type of recall is being recommended?')
@@ -111,7 +110,7 @@ context('Book a "not in custody" recall', () => {
         returnedToCustodyNotificationDateTime: undefined,
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     const addressId = lastKnownAddresses[1].lastKnownAddressId
     let opts = { parent: `[data-qa="address-${addressId}"]` }
     cy.recallInfo('Address 1').should('contain', 'The Oaks, Amblin Road')
@@ -127,7 +126,7 @@ context('Book a "not in custody" recall', () => {
     cy.getText('postcode', opts).should('equal', 'PO1 4OY')
 
     cy.recallInfo('Arrest issues').should('equal', 'Detail...')
-    cy.getLinkHref('Change arrest issues').should('contain', `/persons/${nomsNumber}/recalls/${recallId}/issues-needs`)
+    cy.getLinkHref('Change arrest issues').should('contain', `/recalls/${recallId}/issues-needs`)
     cy.getText('inCustodyAtBooking').should('equal', 'Not in custody')
     cy.getElement('Change custody status at booking').should('not.exist')
   })
@@ -141,12 +140,12 @@ context('Book a "not in custody" recall', () => {
         lastKnownAddressOption: 'NO_FIXED_ABODE',
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Address').should('equal', 'No fixed abode')
     cy.getElement({ qaAttr: 'lastKnownAddressOptionChange' }).should(
       'have.attr',
       'href',
-      `/persons/${nomsNumber}/recalls/${recallId}/last-known-address?fromPage=view-recall&fromHash=personalDetails`
+      `/recalls/${recallId}/last-known-address?fromPage=view-recall&fromHash=personalDetails`
     )
   })
 
@@ -160,11 +159,11 @@ context('Book a "not in custody" recall', () => {
         lastKnownAddresses: [],
       },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Address').should('equal', 'Not provided')
     cy.getLinkHref('Change or add addresses').should(
       'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/address-list?fromPage=view-recall&fromHash=personalDetails`
+      `/recalls/${recallId}/address-list?fromPage=view-recall&fromHash=personalDetails`
     )
   })
 
@@ -240,7 +239,7 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: getEmptyRecallResponse,
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'rtc-dates' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'rtc-dates' })
     cy.clickButton('Save and return')
     cy.assertErrorMessage({
       fieldName: 'returnedToCustodyDateTime',
@@ -256,7 +255,7 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: getRecallResponse,
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Custody status').should('equal', 'Returned to custody (RTC)')
     cy.getElement({ qaAttr: 'inCustodyAtBooking' }).should('not.exist')
     cy.getElement({ qaAttr: 'inCustodyAtAssessment' }).should('not.exist')

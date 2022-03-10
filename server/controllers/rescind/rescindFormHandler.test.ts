@@ -37,7 +37,7 @@ describe('rescindFormHandler - add', () => {
     const res = {
       locals: {
         user: { token: 'token' },
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: jest.fn(),
     }
@@ -64,7 +64,7 @@ describe('rescindFormHandler - add', () => {
     const res = {
       locals: {
         user: { token: 'token' },
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: () => {
         expect(req.session.confirmationMessage).toEqual({
@@ -95,12 +95,12 @@ describe('rescindFormHandler - add', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: (httpStatus, path) => {
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/view-recall')
+        expect(path).toEqual('/recalls/789/view-recall')
         done()
       },
     }
@@ -119,7 +119,7 @@ describe('rescindFormHandler - add', () => {
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(req.session.errors).toEqual([
           {
@@ -143,7 +143,7 @@ describe('rescindFormHandler - add', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(addRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -169,7 +169,7 @@ describe('rescindFormHandler - add', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(addRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -197,7 +197,7 @@ describe('rescindFormHandler - add', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(addRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -247,7 +247,7 @@ describe('rescindFormHandler - update', () => {
     const res = {
       locals: {
         user: { token: 'token' },
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: jest.fn(),
     }
@@ -275,12 +275,12 @@ describe('rescindFormHandler - update', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: (httpStatus, path) => {
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/view-recall')
+        expect(path).toEqual('/recalls/789/view-recall')
         done()
       },
     }
@@ -299,7 +299,7 @@ describe('rescindFormHandler - update', () => {
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(req.session.errors).toEqual([
           {
@@ -323,7 +323,7 @@ describe('rescindFormHandler - update', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(updateRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -349,7 +349,7 @@ describe('rescindFormHandler - update', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(updateRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -377,7 +377,7 @@ describe('rescindFormHandler - update', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(updateRescindRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -408,7 +408,7 @@ describe('rescindFormHandler - update', () => {
     const res = {
       locals: {
         user: { token: 'token' },
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: () => {
         expect(req.session.confirmationMessage).toEqual({
@@ -440,7 +440,7 @@ describe('rescindFormHandler - update', () => {
     const res = {
       locals: {
         user: { token: 'token' },
-        urlInfo: { basePath: '/persons/456/recalls/789/', fromPage: 'view-recall' },
+        urlInfo: { basePath: '/recalls/789/', fromPage: 'view-recall' },
       },
       redirect: () => {
         expect(req.session.confirmationMessage).toEqual({

@@ -36,13 +36,13 @@ describe('addMissingDocumentRecordForm', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { basePath: '/persons/456/recalls/789/' },
+        urlInfo: { basePath: '/recalls/789/' },
       },
       redirect: (httpStatus, path) => {
         expect(addMissingDocumentRecord).toHaveBeenCalledTimes(1)
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/check-answers')
+        expect(path).toEqual('/recalls/789/check-answers')
         done()
       },
     }
@@ -73,7 +73,7 @@ describe('addMissingDocumentRecordForm', () => {
     const res = {
       locals: {
         user: { token: 'token' },
-        urlInfo: { basePath: '/persons/456/recalls/789/' },
+        urlInfo: { basePath: '/recalls/789/' },
       },
       redirect: () => {
         expect(addMissingDocumentRecord.mock.calls[0][0].categories).toEqual([
@@ -102,11 +102,11 @@ describe('addMissingDocumentRecordForm', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { fromPage: 'assess-recall', basePath: '/persons/456/recalls/789/', fromHash: 'missing-documents' },
+        urlInfo: { fromPage: 'assess-recall', basePath: '/recalls/789/', fromHash: 'missing-documents' },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/assess-recall#missing-documents')
+        expect(path).toEqual('/recalls/789/assess-recall#missing-documents')
         done()
       },
     }
@@ -126,7 +126,7 @@ describe('addMissingDocumentRecordForm', () => {
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(req.session.errors).toEqual([
           {
@@ -150,7 +150,7 @@ describe('addMissingDocumentRecordForm', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(addMissingDocumentRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -176,7 +176,7 @@ describe('addMissingDocumentRecordForm', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: () => {
         expect(addMissingDocumentRecord).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([

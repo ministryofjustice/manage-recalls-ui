@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const dossierDownloadPage = ({ nomsNumber, recallId } = {}) =>
+const dossierDownloadPage = ({ recallId } = {}) =>
   page('Download the dossier and letter', {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/dossier-download` : null,
+    url: recallId ? `/recalls/${recallId}/dossier-download` : null,
     confirmDossierChecked: () => cy.get(`[value="${'YES'}"]`).check(),
   })
 

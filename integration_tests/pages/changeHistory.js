@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const changeHistoryPage = ({ nomsNumber, recallId } = {}) =>
+const changeHistoryPage = ({ recallId } = {}) =>
   page('Change history', {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/change-history` : null,
+    url: recallId ? `/recalls/${recallId}/change-history` : null,
   })
 
 module.exports = { verifyOnPage: changeHistoryPage }

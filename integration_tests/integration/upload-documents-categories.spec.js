@@ -31,7 +31,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.selectFromDropdown({
       fieldName: `category-${documentId}`,
       value: 'OASys report',
@@ -63,7 +63,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.selectFromDropdown({
       fieldName: `category-${documentId}`,
       value: 'OASys report',
@@ -95,7 +95,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.clickContinue()
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: '123',
@@ -116,7 +116,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.assertElementHasText({
       qaAttr: `link-${documentId}`,
       textToFind: 'Pre Cons.pdf',
@@ -141,7 +141,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
 
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -199,7 +199,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
 
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -255,7 +255,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId, personName })
     checkAnswers.assertElementHasText({
       qaAttr: 'uploadedDocument-UNCATEGORISED-label',
       textToFind: 'Uncategorised',
@@ -267,7 +267,7 @@ context('Upload documents', () => {
     // change link for an uploaded document goes to the 'upload documents' page
     checkAnswers.assertLinkHref({
       qaAttr: 'uploadedDocument-UNCATEGORISED-Change',
-      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
+      href: '/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
     })
   })
 
@@ -287,7 +287,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-UNCATEGORISED-label',
       textToFind: 'Uncategorised',
@@ -319,7 +319,7 @@ context('Upload documents', () => {
       },
     })
 
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.uploadFile({
       fieldName: 'documents',
       fileName: 'test.pdf',
@@ -331,7 +331,7 @@ context('Upload documents', () => {
     })
     uploadDocuments.assertLinkHref({
       qaAttr: `link-${documentId}`,
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`,
+      href: `/recalls/${recallId}/documents/${documentId}`,
     })
     uploadDocuments.assertSelectValue({
       fieldName: `category-${documentId}`,
@@ -355,7 +355,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.uploadFile({
       fieldName: 'documents',
       fileName: 'test.pdf',
@@ -367,7 +367,7 @@ context('Upload documents', () => {
     })
     uploadDocuments.assertLinkHref({
       qaAttr: `link-${documentId}`,
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`,
+      href: `/recalls/${recallId}/documents/${documentId}`,
     })
     uploadDocuments.assertSelectValue({
       fieldName: `category-${documentId}`,

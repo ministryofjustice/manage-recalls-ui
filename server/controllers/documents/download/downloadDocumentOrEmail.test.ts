@@ -4,7 +4,6 @@ import { getDocumentWithContents } from '../../../clients/manageRecallsApiClient
 
 jest.mock('../../../clients/manageRecallsApiClient')
 
-const nomsNumber = 'AA123AA'
 const recallId = '123'
 const documentId = '88'
 
@@ -14,7 +13,7 @@ describe('downloadDocumentOrEmail', () => {
   let res: Response
 
   beforeEach(() => {
-    req = { params: { nomsNumber, recallId, documentId } } as unknown as Request
+    req = { params: { recallId, documentId } } as unknown as Request
     res = {
       locals: { documentId, user: { token: '000' } },
       contentType: jest.fn(),

@@ -59,12 +59,6 @@ describe('getDocumentChangeHistory', () => {
     expect(next).toHaveBeenCalledWith(new Error('Invalid recallId'))
   })
 
-  it('returns 400 if nomsNumber missing', () => {
-    req.params.recallId = '456'
-    getDocumentChangeHistory(req, res, next)
-    expect(next).toHaveBeenCalledWith(new Error('Invalid nomsNumber'))
-  })
-
   it('returns 400 if category missing', () => {
     req.params.recallId = '456'
     req.params.nomsNumber = '123'
@@ -114,7 +108,7 @@ describe('getDocumentChangeHistory', () => {
           createdDateTime: '2021-11-24T10:40:50.000Z',
           documentId: '123',
           fileName: 'Licence.pdf',
-          url: '/persons/123/recalls/456/documents/123',
+          url: '/recalls/456/documents/123',
           version: 2,
         },
         {
@@ -123,7 +117,7 @@ describe('getDocumentChangeHistory', () => {
           createdDateTime: '2021-12-09T13:40:50.000Z',
           documentId: 'd4539cd4-c410-408a-b0c3-f91ba97b6e84',
           fileName: 'Licence.pdf',
-          url: '/persons/123/recalls/456/documents/d4539cd4-c410-408a-b0c3-f91ba97b6e84',
+          url: '/recalls/456/documents/d4539cd4-c410-408a-b0c3-f91ba97b6e84',
           version: 1,
         },
         {
@@ -134,7 +128,7 @@ describe('getDocumentChangeHistory', () => {
           fileName: 'email.msg',
           isMissingRecord: true,
           emailId: '123',
-          url: '/persons/123/recalls/456/documents/123',
+          url: '/recalls/456/documents/123',
           version: 2,
         },
       ],
@@ -175,7 +169,7 @@ describe('getDocumentChangeHistory', () => {
           createdDateTime: '2021-10-22T09:34:45.000Z',
           documentId: '123',
           fileName: 'HOLT WESLEY A1234AB RECALL DOSSIER.pdf',
-          url: '/persons/123/recalls/456/documents/123',
+          url: '/recalls/456/documents/123',
           version: 2,
           type: 'generated',
         },
@@ -185,7 +179,7 @@ describe('getDocumentChangeHistory', () => {
           createdDateTime: '2021-11-19T12:40:50.000Z',
           documentId: '456',
           fileName: 'HOLT WESLEY A1234AB RECALL DOSSIER.pdf',
-          url: '/persons/123/recalls/456/documents/456',
+          url: '/recalls/456/documents/456',
           version: 1,
           type: 'generated',
         },

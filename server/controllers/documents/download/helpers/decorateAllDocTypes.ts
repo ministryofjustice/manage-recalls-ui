@@ -7,11 +7,9 @@ import { documentDownloadUrl } from './index'
 
 export const decorateAllDocTypes = ({
   docs,
-  nomsNumber,
   recallId,
 }: {
   docs: RecallDocument[]
-  nomsNumber: string
   recallId: string
 }): DecoratedUploadedDoc[] => {
   const categoryNamesForSorting = documentCategories.map(d => d.name)
@@ -32,7 +30,7 @@ export const decorateAllDocTypes = ({
         labelLowerCase: documentCategory.labelLowerCase,
         category: documentCategory.name,
         suggestedCategory,
-        url: documentDownloadUrl({ recallId, nomsNumber, documentId: doc.documentId }),
+        url: documentDownloadUrl({ recallId, documentId: doc.documentId }),
       }
     })
     .sort((a, b) => {

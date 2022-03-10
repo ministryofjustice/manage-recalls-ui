@@ -321,11 +321,8 @@ describe('Recalls list', () => {
       qaAttrCell: 'status',
       valuesToCompare: ['Assessment complete', 'Awaiting return to custody'],
     })
-    cy.getLinkHref('Add warrant reference').should(
-      'equal',
-      `/persons/${nomsNumber}/recalls/${assessedRecallId}/warrant-reference`
-    )
-    cy.getLinkHref('Add RTC date').should('equal', `/persons/${nomsNumber}/recalls/${awaitingReturnRecallId}/rtc-dates`)
+    cy.getLinkHref('Add warrant reference').should('equal', `/recalls/${assessedRecallId}/warrant-reference`)
+    cy.getLinkHref('Add RTC date').should('equal', `/recalls/${awaitingReturnRecallId}/rtc-dates`)
   })
 
   it('lists "awaiting part B" recalls on a separate tab', () => {

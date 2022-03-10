@@ -20,7 +20,7 @@ context('Rescind a recall', () => {
     })
     const rescind = getRecallResponse.rescindRecords[0]
     cy.task('expectAddRescindRequestRecord')
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
     cy.clickButton('Actions')
     cy.clickLink('Rescind recall')
     cy.pageHeading().should('equal', 'Record a rescind request')
@@ -61,10 +61,7 @@ context('Rescind a recall', () => {
     cy.recallInfo('Rescind request details').should('equal', rescind.requestDetails)
     cy.recallInfo('Rescind request received').should('equal', formatIsoDate(rescind.requestEmailReceivedDate))
     cy.recallInfo('Rescind request email').should('equal', rescind.requestEmailFileName)
-    cy.getLinkHref(rescind.requestEmailFileName).should(
-      'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/documents/${requestEmailId}`
-    )
+    cy.getLinkHref(rescind.requestEmailFileName).should('contain', `/recalls/${recallId}/documents/${requestEmailId}`)
   })
 
   it('record a rescind decision', () => {
@@ -86,7 +83,7 @@ context('Rescind a recall', () => {
       },
     })
     cy.task('expectUpdateRescindRequestRecord')
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-recall' })
     cy.clickButton('Actions')
     cy.clickLink('Update rescind')
     cy.pageHeading().should('equal', 'Record the rescind decision')
@@ -127,7 +124,7 @@ context('Rescind a recall', () => {
     cy.recallInfo('Rescind decision email').should('equal', rescind.decisionEmailFileName)
     cy.getLinkHref(rescind.decisionEmailFileName).should(
       'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/documents/${rescind.decisionEmailId}`
+      `/recalls/${recallId}/documents/${rescind.decisionEmailId}`
     )
   })
 
@@ -139,7 +136,7 @@ context('Rescind a recall', () => {
         status: 'AWAITING_DOSSIER_CREATION',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'rescind-request' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'rescind-request' })
     cy.clickButton('Save and return')
     cy.assertErrorMessage({
       fieldName: 'rescindRequestDetail',
