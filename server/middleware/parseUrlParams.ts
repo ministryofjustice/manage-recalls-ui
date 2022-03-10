@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { isNomsNumberValid } from '../controllers/utils/validate-formats'
 import logger from '../../logger'
 import { isString } from '../utils/utils'
 
@@ -10,9 +9,9 @@ const isValidFromPage = (urlPathSegment: unknown) =>
   )
 
 export const parseUrlParams = (req: Request, res: Response, next: NextFunction) => {
-  const { nomsNumber, recallId, pageSlug } = req.params
-  if (!isString(nomsNumber) || !isNomsNumberValid(nomsNumber) || !isString(recallId) || !isString(pageSlug)) {
-    logger.error('Invalid nomsNumber or recallId')
+  const { recallId, pageSlug } = req.params
+  if (!isString(recallId) || !isString(pageSlug)) {
+    logger.error('Invalid recallId')
     return res.sendStatus(400)
   }
   const { fromPage, fromHash } = req.query
@@ -28,8 +27,7 @@ export const parseUrlParams = (req: Request, res: Response, next: NextFunction) 
     fromPage,
     fromHash,
     currentPage: pageSlug,
-    basePath:
-      isString(fromPage) && (fromPage as string).startsWith('/') ? '' : `/persons/${nomsNumber}/recalls/${recallId}/`,
+    basePath: isString(fromPage) && (fromPage as string).startsWith('/') ? '' : `/recalls/${recallId}/`,
   }
   next()
 }

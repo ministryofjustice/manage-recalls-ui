@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const recallInformationPage = ({ nomsNumber, recallId, personName } = {}) =>
+const recallInformationPage = ({ recallId, personName } = {}) =>
   page(`View the recall for ${personName}`, {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/view-recall` : null,
+    url: recallId ? `/recalls/${recallId}/view-recall` : null,
   })
 
 module.exports = { verifyOnPage: recallInformationPage }

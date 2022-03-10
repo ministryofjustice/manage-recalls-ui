@@ -17,5 +17,5 @@ export const createRecall = async (req: Request, res: Response): Promise<void> =
     user.token
   )
   const nextPageSuffix = middleNames ? 'licence-name' : 'pre-cons-name'
-  res.redirect(303, `/persons/${nomsNumber}/recalls/${recallId}/${nextPageSuffix}`)
+  res.redirect(303, `/recalls/${recallId}/${nextPageSuffix}`)
 }

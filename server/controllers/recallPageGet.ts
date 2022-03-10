@@ -14,7 +14,7 @@ import { decorateMissingDocumentsRecords, decorateRescindRecords, decorateNotes 
 export const recallPageGet =
   (viewName: ViewName) =>
   async (req: Request, res: Response): Promise<void> => {
-    const { nomsNumber, recallId } = req.params
+    const { recallId } = req.params
     const recall = await getRecall(recallId, res.locals.user.token)
     const decoratedDocs = decorateDocs({
       docs: recall.documents,
@@ -27,11 +27,10 @@ export const recallPageGet =
       ...decoratedDocs,
       missingDocumentsRecords: decorateMissingDocumentsRecords({
         missingDocumentsRecords: recall.missingDocumentsRecords,
-        nomsNumber,
         recallId,
       }),
-      rescindRecords: decorateRescindRecords({ rescindRecords: recall.rescindRecords, recallId, nomsNumber }),
-      notes: decorateNotes({ notes: recall.notes, recallId, nomsNumber }),
+      rescindRecords: decorateRescindRecords({ rescindRecords: recall.rescindRecords, recallId }),
+      notes: decorateNotes({ notes: recall.notes, recallId }),
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
     }
     // get values to preload into form inputs

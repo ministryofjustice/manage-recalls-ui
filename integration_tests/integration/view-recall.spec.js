@@ -45,7 +45,7 @@ context('View recall information', () => {
   const personName = 'Bobby Badger'
 
   it('User can view all recall information (after dossier issued)', () => {
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
 
     // as person doesn't have middle names, don't offer a change link for name
@@ -94,7 +94,7 @@ context('View recall information', () => {
         status: 'DOSSIER_ISSUED',
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Not available' })
     recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'Not available' })
@@ -116,7 +116,7 @@ context('View recall information', () => {
         returnedToCustodyDateTime: undefined,
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'None' })
     recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'No' })
     recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'No' })
@@ -125,7 +125,7 @@ context('View recall information', () => {
 
   // TODO - just check hrefs and move the check of downloaded files to E2E
   it('user can download all uploaded emails', () => {
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     const mockFileDownload = ({ fileName, category }) => {
       cy.task('expectGetRecallDocument', {
         category,

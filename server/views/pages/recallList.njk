@@ -55,7 +55,7 @@
                                 {% include "../partials/recallActionLink.njk" %}
                             </td>
                             <td class="govuk-table__cell">
-                                <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -89,7 +89,7 @@
                                 </td>
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
                                 <td class="govuk-table__cell">
-                                    <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=completed' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=completed' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -124,12 +124,12 @@
                                     <div class='flex'>
                                     <span class='govuk-!-padding-right-2'>
                                     {% if result.status == 'AWAITING_RETURN_TO_CUSTODY' %}
-                                        <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/rtc-dates'>Add RTC date</a>
+                                        <a href='/recalls/{{result.recallId}}/rtc-dates'>Add RTC date</a>
                                     {% else %}
-                                        <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/warrant-reference'>Add warrant reference</a>
+                                        <a href='/recalls/{{result.recallId}}/warrant-reference'>Add warrant reference</a>
                                     {% endif %}
                                     </span>
-                                    <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                     </div>
                                 </td>
                             </tr>
@@ -165,7 +165,7 @@
                                 <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell">
                                     <div class='flex'>
-                                    <a href='/persons/{{result.nomsNumber}}/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                     </div>
                                 </td>
                             </tr>

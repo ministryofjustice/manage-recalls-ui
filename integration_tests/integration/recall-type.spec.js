@@ -20,7 +20,7 @@ context('Standard / fixed term recall type', () => {
     })
     cy.task('expectSetConfirmedRecallType')
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-decision' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-decision' })
     cy.selectRadio(
       'Do you agree with the standard recall recommendation?',
       'Yes, proceed with the recommended standard recall'
@@ -35,7 +35,7 @@ context('Standard / fixed term recall type', () => {
     })
     cy.clickLink('Back')
     cy.task('expectSetConfirmedRecallType')
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-decision' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-decision' })
     cy.selectRadio('Do you agree with the fixed term 14 day recall recommendation?', 'No, upgrade to a standard recall')
     cy.fillInput('Provide more detail', 'Disagree', {
       parent: '#conditional-confirmedRecallType-2',
@@ -50,7 +50,7 @@ context('Standard / fixed term recall type', () => {
     })
     cy.clickLink('Back')
     cy.task('expectSetConfirmedRecallType')
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-decision' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-decision' })
     cy.selectRadio('Do you agree with the standard recall recommendation?', 'No, downgrade to a fixed term recall')
     cy.fillInput('Provide more detail', 'Disagree', {
       parent: '#conditional-confirmedRecallType-2',
@@ -64,7 +64,7 @@ context('Standard / fixed term recall type', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...emptyRecall, recommendedRecallType: 'FIXED', recallLength: 'FOURTEEN_DAYS' },
     })
-    cy.visitRecallPage({ recallId, nomsNumber, pageSuffix: 'assess-decision' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-decision' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'confirmedRecallType',
@@ -92,7 +92,7 @@ context('Standard / fixed term recall type', () => {
         confirmedRecallType: 'STANDARD',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-check' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-check' })
     cy.recallInfo('Recall type').should('equal', 'Standard')
     cy.getElement('recallLength').should('not.exist')
   })
@@ -106,7 +106,7 @@ context('Standard / fixed term recall type', () => {
         recallLength: 'TWENTY_EIGHT_DAYS',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-check' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-check' })
     cy.recallInfo('Recall type').should('equal', 'Fixed term')
     cy.recallInfo('Recall length').should('equal', '28 days')
   })
@@ -119,7 +119,7 @@ context('Standard / fixed term recall type', () => {
         recommendedRecallType: 'STANDARD',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Recall type').should('equal', 'Standard')
     cy.getElement('Recall length').should('not.exist')
     cy.getElement('Change recall type').should('not.exist')
@@ -134,7 +134,7 @@ context('Standard / fixed term recall type', () => {
         confirmedRecallType: 'STANDARD',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Recall type').should('equal', 'Standard')
     cy.getElement('Recall length').should('not.exist')
     cy.getElement('Change recall type').should('not.exist')
@@ -150,7 +150,7 @@ context('Standard / fixed term recall type', () => {
         recallLength: 'TWENTY_EIGHT_DAYS',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Recall type').should('equal', 'Fixed term')
     cy.recallInfo('Recall length').should('equal', '28 days')
   })
@@ -173,7 +173,7 @@ context('Standard / fixed term recall type', () => {
         ],
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Recommended recall type').should('equal', 'Standard')
     cy.recallInfo('Downgraded recall type').should('equal', 'Fixed term')
     cy.recallInfo('Downgraded recall length').should('equal', '14 days')
@@ -199,7 +199,7 @@ context('Standard / fixed term recall type', () => {
         ],
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Recommended recall type').should('equal', 'Fixed term')
     cy.recallInfo('Recommended recall length').should('equal', '14 days')
     cy.recallInfo('Upgraded recall type').should('equal', 'Standard')

@@ -23,7 +23,7 @@ context('Upload documents', () => {
       },
     })
     cy.task('expectUploadRecallDocument', { statusCode: 500 })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
     uploadDocuments.uploadFile({
       fieldName: 'documents',
       fileName: 'test.pdf',
@@ -67,7 +67,7 @@ context('Upload documents', () => {
     })
     cy.task('expectDeleteRecallDocument')
     cy.task('expectSetDocumentCategory')
-    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
+    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId })
     checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.clickElement({ qaAttr: `delete-${documentId}` })
@@ -95,7 +95,7 @@ context('Upload documents', () => {
       },
     })
     cy.task('expectDeleteRecallDocument')
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
@@ -127,7 +127,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
       textToFind: 'Part A.pdf',
@@ -139,7 +139,7 @@ context('Upload documents', () => {
     // change link for an uploaded document goes to the 'add new document version' page
     recallInformation.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=view-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
+      href: '/recalls/123/upload-document-version?fromPage=view-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
     recallInformation.assertElementHasText({
       qaAttr: 'uploadedDocument-OTHER',
@@ -167,7 +167,7 @@ context('Upload documents', () => {
         ],
       },
     })
-    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId, personName })
     // change link for an uploaded document goes to the 'upload documents' page
     checkAnswers.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
@@ -175,7 +175,7 @@ context('Upload documents', () => {
     })
     checkAnswers.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
+      href: '/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
     })
   })
 })

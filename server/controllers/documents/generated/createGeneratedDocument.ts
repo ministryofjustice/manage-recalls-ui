@@ -10,14 +10,10 @@ import { getGeneratedDocumentFileName } from './helpers'
 
 // for the initial creation only of recall notification / letter / dossier, not for creating further versions
 export const createGeneratedDocument = async (req: Request, res: Response, next: NextFunction) => {
-  const { nomsNumber, recallId } = req.params
+  const { recallId } = req.params
   const { category } = req.query
   const { token } = res.locals.user
-  if (
-    isInvalid(nomsNumber) ||
-    isInvalid(recallId) ||
-    !['DOSSIER', 'LETTER_TO_PRISON', 'RECALL_NOTIFICATION'].includes(category as string)
-  ) {
+  if (isInvalid(recallId) || !['DOSSIER', 'LETTER_TO_PRISON', 'RECALL_NOTIFICATION'].includes(category as string)) {
     return res.sendStatus(400)
   }
   const cat = category as RecallDocument.category

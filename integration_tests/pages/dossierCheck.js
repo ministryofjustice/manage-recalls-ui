@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const dossierCheckPage = ({ nomsNumber, recallId } = {}) =>
+const dossierCheckPage = ({ recallId } = {}) =>
   page('Check and create the reasons for recall document', {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/dossier-check` : null,
+    url: recallId ? `/recalls/${recallId}/dossier-check` : null,
   })
 
 module.exports = { verifyOnPage: dossierCheckPage }

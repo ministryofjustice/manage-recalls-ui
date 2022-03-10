@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const recallIssuesNeedsPage = ({ nomsNumber, recallId } = {}) =>
+const recallIssuesNeedsPage = ({ recallId } = {}) =>
   page('Are there any issues or needs?', {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/issues-needs` : null,
+    url: recallId ? `/recalls/${recallId}/issues-needs` : null,
     setVulnerabilityDiversityNo: () => {
       cy.get('[id="vulnerabilityDiversity-2"]').click()
     },

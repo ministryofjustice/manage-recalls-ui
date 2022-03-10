@@ -46,8 +46,8 @@ Cypress.Commands.add('visitPage', url => {
   cy.visit(url, { headers: { 'Accept-Encoding': 'gzip, deflate', Connection: 'Keep-Alive' } })
 })
 
-Cypress.Commands.add('visitRecallPage', ({ nomsNumber, recallId, pageSuffix }) => {
-  cy.visit(`/persons/${nomsNumber}/recalls/${recallId}/${pageSuffix}`)
+Cypress.Commands.add('visitRecallPage', ({ recallId, pageSuffix }) => {
+  cy.visit(`/recalls/${recallId}/${pageSuffix}`)
 })
 
 Cypress.Commands.add('pageHeading', () =>

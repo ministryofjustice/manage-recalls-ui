@@ -13,12 +13,11 @@ describe('categoriseFiles', () => {
   let req
   let res
 
-  const nomsNumber = '456'
   const recallId = '789'
   const person = { firstName: 'Bobby', lastName: 'Badger' }
 
   beforeEach(() => {
-    req = { params: { nomsNumber, recallId }, body: { continue: 'continue' }, session: {} }
+    req = { params: { recallId }, body: { continue: 'continue' }, session: {} }
     res = {
       locals: { user: {}, urlInfo: {} },
       redirect: jest.fn(),
@@ -116,12 +115,12 @@ describe('categoriseFiles', () => {
       locals: {
         user: {},
         urlInfo: {
-          basePath: `/persons/123/recalls/456/`,
+          basePath: `/recalls/456/`,
         },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual(`/persons/123/recalls/456/check-answers`)
+        expect(path).toEqual(`/recalls/456/check-answers`)
         done()
       },
     }
@@ -137,13 +136,13 @@ describe('categoriseFiles', () => {
       locals: {
         user: {},
         urlInfo: {
-          basePath: `/persons/123/recalls/456/`,
+          basePath: `/recalls/456/`,
           fromPage: 'dossier-recall',
         },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual(`/persons/123/recalls/456/dossier-recall`)
+        expect(path).toEqual(`/recalls/456/dossier-recall`)
         done()
       },
     }
@@ -205,12 +204,12 @@ describe('categoriseFiles', () => {
       locals: {
         user: {},
         urlInfo: {
-          basePath: `/persons/123/recalls/456/`,
+          basePath: `/recalls/456/`,
         },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual(`/persons/123/recalls/456/missing-documents`)
+        expect(path).toEqual(`/recalls/456/missing-documents`)
         done()
       },
     }
@@ -247,14 +246,14 @@ describe('categoriseFiles', () => {
       locals: {
         user: {},
         urlInfo: {
-          basePath: `/persons/123/recalls/456/`,
+          basePath: `/recalls/456/`,
           fromPage: 'assess',
           fromHash: 'documents',
         },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual(`/persons/123/recalls/456/missing-documents?fromPage=assess&fromHash=documents`)
+        expect(path).toEqual(`/recalls/456/missing-documents?fromPage=assess&fromHash=documents`)
         done()
       },
     }

@@ -67,7 +67,7 @@ context('Change history', () => {
         documents,
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.pageHeading().should('equal', `View the recall for ${personName}`)
     cy.clickButton('Actions')
     cy.clickLink('View change history')
@@ -76,11 +76,11 @@ context('Change history', () => {
     // UPLOADED DOCUMENTS
     changeHistory.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      href: '/persons/A1234AA/recalls/123/documents/123',
+      href: '/recalls/123/documents/123',
     })
     changeHistory.assertLinkHref({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
-      href: '/persons/A1234AA/recalls/123/documents/456',
+      href: '/recalls/123/documents/456',
     })
     changeHistory.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
@@ -108,11 +108,11 @@ context('Change history', () => {
     // GENERATED DOCUMENTS
     changeHistory.assertLinkHref({
       qaAttr: 'generatedDocument-RECALL_NOTIFICATION',
-      href: '/persons/A1234AA/recalls/123/documents/789',
+      href: '/recalls/123/documents/789',
     })
     changeHistory.assertLinkHref({
       qaAttr: 'generatedDocument-DOSSIER',
-      href: '/persons/A1234AA/recalls/123/documents/012',
+      href: '/recalls/123/documents/012',
     })
     changeHistory.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
@@ -158,7 +158,7 @@ context('Change history', () => {
         documents: [document],
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     cy.get('#tab_documents').click()
     changeHistory.assertElementHasText({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
@@ -210,7 +210,7 @@ context('Change history', () => {
         ],
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     cy.get('#tab_documents').click()
     cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
     changeHistory.clickLink({ qaAttr: 'viewHistory-LICENCE' })
@@ -225,7 +225,7 @@ context('Change history', () => {
       })
       uploadedDocumentHistory.assertLinkHref({
         qaAttr: `document-${docId}-link`,
-        href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${docId}`,
+        href: `/recalls/${recallId}/documents/${docId}`,
       })
       if (doc.version === 1) {
         uploadedDocumentHistory.assertElementHasText({
@@ -265,7 +265,7 @@ context('Change history', () => {
     })
     uploadedDocumentHistory.assertLinkHref({
       qaAttr: 'missingDocumentsEmail',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/845`,
+      href: `/recalls/${recallId}/documents/845`,
     })
     uploadedDocumentHistory.assertElementHasText({
       qaAttr: 'document-845-uploaded-by',
@@ -296,7 +296,7 @@ context('Change history', () => {
       },
     })
     cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     cy.get('#tab_documents').click()
     cy.task('expectGetRecallDocumentHistory', {
       expectedResult: [
@@ -338,7 +338,7 @@ context('Change history', () => {
       })
       uploadedDocumentHistory.assertLinkHref({
         qaAttr: `document-${docId}-link`,
-        href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${docId}`,
+        href: `/recalls/${recallId}/documents/${docId}`,
       })
       if (doc.version === 1) {
         uploadedDocumentHistory.assertElementHasText({
@@ -407,9 +407,9 @@ context('Change history', () => {
       },
     })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     const fieldList = changeHistoryFieldList({ changedFields: getAllFieldsHistoryResponseJson, uploadedDocuments })
-    const baseHref = `/persons/${nomsNumber}/recalls/${recallId}/change-history`
+    const baseHref = `/recalls/${recallId}/change-history`
     fieldList.forEach(field => {
       changeHistory.assertElementHasText({ qaAttr: `label-${field.id}`, textToFind: field.label })
       const href =
@@ -447,7 +447,7 @@ context('Change history', () => {
     })
     cy.task('expectGetSingleFieldChangeHistory', { expectedResult: getSingleFieldHistoryResponseJson })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     changeHistory.clickLink({ qaAttr: 'viewHistory-currentPrison' })
     const fieldHistory = changeHistoryFieldPage.verifyOnPage()
     getSingleFieldHistoryResponseJson.forEach(() => {
@@ -499,7 +499,7 @@ context('Change history', () => {
       ],
     })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     changeHistory.clickLink({ qaAttr: 'viewHistory-reasonsForRecall' })
     const fieldHistory = changeHistoryFieldPage.verifyOnPage()
     getSingleFieldHistoryResponseJson.forEach(() => {
@@ -564,7 +564,7 @@ context('Change history', () => {
         },
       ],
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     changeHistory.clickLink({ qaAttr: 'viewHistory-recallRequestEmailUploaded' })
     const emailHistory = changeHistoryDocumentPage.verifyOnPage({ type: 'email' })
     emailHistory.assertElementHasText({
@@ -577,7 +577,7 @@ context('Change history', () => {
     })
     emailHistory.assertLinkHref({
       qaAttr: `document-${documentId}-link`,
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`,
+      href: `/recalls/${recallId}/documents/${documentId}`,
     })
   })
 
@@ -591,7 +591,7 @@ context('Change history', () => {
         recallId,
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ nomsNumber, recallId })
+    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
     changeHistory.assertElementNotPresent({ qaAttr: 'viewHistory-currentPrison' })
   })
 })

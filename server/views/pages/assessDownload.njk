@@ -30,14 +30,14 @@
                     recall: recall,
                     category: 'RECALL_NOTIFICATION'
                 }),
-                url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=RECALL_NOTIFICATION',
+                url: '/recalls/' + recall.recallId + '/documents/create?category=RECALL_NOTIFICATION',
                 dataQaLink: 'getRecallNotificationLink',
                 dataQaFileName: 'getRecallNotificationFileName'
             })
             }}
 
             <div class="govuk-!-margin-top-8">
-                <a class="govuk-button" data-qa="continueButton" href="/persons/{{recall.nomsNumber}}/recalls/{{ recall.recallId}}/assess-email">Continue</a>
+                <a class="govuk-button" data-qa="continueButton" href="/recalls/{{ recall.recallId}}/assess-email">Continue</a>
             </div>
         </div>
     </div>

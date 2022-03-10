@@ -20,7 +20,7 @@ context('Stop a recall', () => {
       },
     })
     cy.task('expectStopRecall')
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.clickButton('Actions')
     cy.clickLink('Stop recall')
     cy.pageHeading().should('equal', 'Why are you stopping this recall?')
@@ -61,7 +61,7 @@ context('Stop a recall', () => {
         status: 'AWAITING_DOSSIER_CREATION',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'stop-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'stop-recall' })
     cy.clickButton('Save and return')
     cy.assertErrorMessage({
       fieldName: 'stopReason',
