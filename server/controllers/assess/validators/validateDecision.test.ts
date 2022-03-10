@@ -107,8 +107,9 @@ describe('validateDecision', () => {
     expect(errors).toBeUndefined()
   })
 
-  it("returns an error if an email wasn't uploaded", () => {
+  it("returns an error if user disagreed and an email wasn't uploaded", () => {
     const requestBody = {
+      recommendedRecallType: 'STANDARD',
       confirmedRecallType: 'FIXED',
       confirmedRecallTypeDetailFixed: 'reason 1; reason 2',
     }
@@ -130,6 +131,26 @@ describe('validateDecision', () => {
         text: 'Select an email',
       },
     ])
+  })
+
+  it("doesn't return an error if user agreed and an email wasn't uploaded", () => {
+    const requestBody = {
+      recommendedRecallType: 'STANDARD',
+      confirmedRecallType: 'STANDARD',
+      confirmedRecallTypeDetailStandard: 'reason 1; reason 2',
+    }
+    const { errors, unsavedValues, valuesToSave } = validateDecision({
+      requestBody,
+      wasUploadFileReceived: false,
+      uploadFailed: false,
+      fileName: 'test.msg',
+    })
+    expect(valuesToSave).toEqual({ confirmedRecallType: 'STANDARD', confirmedRecallTypeDetail: 'reason 1; reason 2' })
+    expect(unsavedValues).toEqual({
+      confirmedRecallType: 'STANDARD',
+      confirmedRecallTypeDetailStandard: 'reason 1; reason 2',
+    })
+    expect(errors).toBeUndefined()
   })
 
   it('returns an error if the email upload failed', () => {
