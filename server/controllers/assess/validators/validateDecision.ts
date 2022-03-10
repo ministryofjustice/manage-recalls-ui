@@ -21,7 +21,7 @@ export const validateDecision = ({
     confirmedRecallTypeDetailStandard,
   } = requestBody
   const isAgreeValueValid = ['FIXED', 'STANDARD'].includes(confirmedRecallType)
-  const userDisagreedWithRecommendation = recommendedRecallType !== confirmedRecallType
+  const userDisagreedWithRecommendation = confirmedRecallType && recommendedRecallType !== confirmedRecallType
   const isFixed = confirmedRecallType === 'FIXED'
   const isStandard = confirmedRecallType === 'STANDARD'
   const fixedDetailMissing = isFixed && !confirmedRecallTypeDetailFixed
