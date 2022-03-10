@@ -1,5 +1,11 @@
 import { DateTime, Duration } from 'luxon'
-import { dossierDueDateString, formatDateTimeFromIsoString, dueDateLabel, recallAssessmentDueText } from './format'
+import {
+  dossierDueDateString,
+  formatDateTimeFromIsoString,
+  dueDateLabel,
+  recallAssessmentDueText,
+  partBDueDateLabel,
+} from './format'
 
 describe('Date helpers', () => {
   describe('formatDateTimeFromIsoString', () => {
@@ -273,6 +279,44 @@ describe('Date helpers', () => {
           shortFormat: true,
         })
         expect(formatted).toEqual('17 Mar')
+      })
+    })
+
+    describe('partBDueDateLabel for dates only', () => {
+      const fixedNow = '2020-03-15'
+      const yesterday = '2020-03-14'
+      const dayBeforeYesterday = '2020-03-13'
+      const tomorrow = '2020-03-16'
+      const dayAfterTomorrow = '2020-03-17'
+
+      beforeAll(() => {
+        // Lock Time
+        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+      })
+
+      it('due date today shows today', () => {
+        const formatted = partBDueDateLabel({ partBDueDate: fixedNow })
+        expect(formatted).toEqual('Today')
+      })
+
+      it('due date yesterday shows overdue', () => {
+        const formatted = partBDueDateLabel({ partBDueDate: yesterday })
+        expect(formatted).toEqual('Overdue')
+      })
+
+      it('due date before yesterday shows overdue', () => {
+        const formatted = partBDueDateLabel({ partBDueDate: dayBeforeYesterday })
+        expect(formatted).toEqual('Overdue')
+      })
+
+      it('due date tomorrow shows date', () => {
+        const formatted = partBDueDateLabel({ partBDueDate: tomorrow })
+        expect(formatted).toEqual('16 March 2020')
+      })
+
+      it('due date after tomorrow shows date', () => {
+        const formatted = partBDueDateLabel({ partBDueDate: dayAfterTomorrow })
+        expect(formatted).toEqual('17 March 2020')
       })
     })
     function asUtcDateTime(isoDateTimeStr: string) {
