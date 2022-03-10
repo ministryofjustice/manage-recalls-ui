@@ -8,13 +8,12 @@ describe('uploadMultipleNewDocuments', () => {
   let req
   let res
 
-  const nomsNumber = '456'
   const recallId = '789'
   const person = { firstName: 'Bobby', lastName: 'Badger' }
 
   beforeEach(() => {
     req = {
-      params: { nomsNumber, recallId },
+      params: { recallId },
       xhr: true,
       body: {
         existingDocIds: '[]',

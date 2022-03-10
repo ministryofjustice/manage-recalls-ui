@@ -14,7 +14,6 @@ jest.mock('./assess/helpers/saveWarrantReference')
 const handler = recallFormPost(validatePolice)
 
 describe('recallFormPost', () => {
-  const nomsNumber = 'A1234AB'
   const recallId = '00000000-0000-0000-0000-000000000000'
   const requestBody = {
     localPoliceForceId: 'metropolitan',
@@ -39,38 +38,38 @@ describe('recallFormPost', () => {
   })
 
   it('should update recall and redirect to recall view', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
 
     updateRecall.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
     }
 
     await handler(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/issues-needs`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/issues-needs`)
   })
 
   it('should reload the page if the request body is invalid', async () => {
-    const recallDetails = { recallId, nomsNumber }
-    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/prison-police`
+    const recallDetails = { recallId }
+    const currentPageUrl = `/recalls/${recallId}/prison-police`
 
     updateRecall.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
       originalUrl: currentPageUrl,
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: {},
     })
     const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
     }
 
     await handler(req, res)
@@ -79,17 +78,17 @@ describe('recallFormPost', () => {
   })
 
   it('should reload the page if the API errors', async () => {
-    const currentPageUrl = `/persons/${nomsNumber}/recalls/${recallId}/prison-police`
+    const currentPageUrl = `/recalls/${recallId}/prison-police`
 
     updateRecall.mockRejectedValueOnce(new Error('API error'))
     const req = mockPostRequest({
       originalUrl: currentPageUrl,
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
     }
 
     await handler(req, res)
@@ -104,32 +103,32 @@ describe('recallFormPost', () => {
   })
 
   it('should use redirectToPage if one is returned from the validator function', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     const requestHandler = recallFormPost(validateAssessPrison)
 
     updateRecall.mockResolvedValueOnce(recallDetails)
 
     const req = mockPostRequest({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: {
         currentPrison: 'KTI',
       },
     })
     const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
     }
 
     await requestHandler(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess-download`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/assess-download`)
   })
 
   it('calls an afterRecallUpdate function, if supplied', async () => {
-    const recallDetails = { recallId, nomsNumber }
+    const recallDetails = { recallId }
     updateRecall.mockResolvedValueOnce(recallDetails)
     const req = mockReq({
-      params: { nomsNumber, recallId },
+      params: { recallId },
       body: {
         warrantReferenceNumber: '04RC/6457367A74325',
       },
@@ -138,7 +137,7 @@ describe('recallFormPost', () => {
     const res = mockRes({
       locals: {
         urlInfo: {
-          basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+          basePath: `/recalls/${recallId}/`,
         },
       },
     })

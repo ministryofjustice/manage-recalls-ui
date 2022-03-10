@@ -23,7 +23,7 @@ describe('createRecall', () => {
 
     await createRecall(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/pre-cons-name`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/pre-cons-name`)
   })
 
   it('redirects to licence name if the person does have a middle name', async () => {
@@ -36,7 +36,7 @@ describe('createRecall', () => {
 
     await createRecall(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/licence-name`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/licence-name`)
   })
 
   it("doesn't catch an error thrown if createRecall fails", async () => {

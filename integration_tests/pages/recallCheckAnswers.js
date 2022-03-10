@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const checkAnswersPage = ({ nomsNumber, recallId } = {}) =>
+const checkAnswersPage = ({ recallId } = {}) =>
   page('Check the details before booking this recall', {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/check-answers` : null,
+    url: recallId ? `/recalls/${recallId}/check-answers` : null,
     checkChangeLinks: () => {
       const checkLink = (qaAttr, href) => cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
       cy.getLinkHref('Change licence name').should(

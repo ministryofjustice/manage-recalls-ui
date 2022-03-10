@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const recallPreConsNamePage = ({ nomsNumber, recallId, personName } = {}) =>
+const recallPreConsNamePage = ({ recallId, personName } = {}) =>
   page(`How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`, {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/pre-cons-name` : null,
+    url: recallId ? `/recalls/${recallId}/pre-cons-name` : null,
     selectOtherName: () => {
       cy.get('[id="previousConvictionMainNameCategory-3"]').click()
     },

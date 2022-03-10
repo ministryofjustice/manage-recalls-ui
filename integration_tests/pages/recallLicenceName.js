@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const recallLicenceNamePage = ({ nomsNumber, recallId, personName } = {}) =>
+const recallLicenceNamePage = ({ recallId, personName } = {}) =>
   page(`How does ${personName}'s name appear on the licence?`, {
-    url: nomsNumber ? `/persons/${nomsNumber}/recalls/${recallId}/licence-name` : null,
+    url: recallId ? `/recalls/${recallId}/licence-name` : null,
     selectMiddleName: () => {
       cy.get('[id="licenceNameCategory-2"]').click()
     },

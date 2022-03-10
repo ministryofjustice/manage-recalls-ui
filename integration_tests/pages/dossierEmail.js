@@ -1,8 +1,8 @@
 const page = require('./page')
 
-const assessDossierEmailPage = ({ nomsNumber, recallId } = {}) =>
+const assessDossierEmailPage = ({ recallId } = {}) =>
   page('Email the dossier and letter', {
-    url: recallId ? `/persons/${nomsNumber}/recalls/${recallId}/dossier-email` : null,
+    url: recallId ? `/recalls/${recallId}/dossier-email` : null,
     confirmEmailSent: () => cy.get('[value="YES"]').click(),
   })
 

@@ -39,7 +39,7 @@
                         recall: recall,
                         category: 'DOSSIER'
                     }),
-                    url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER',
+                    url: '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER',
                     dataQaLink: 'getDossierLink',
                     dataQaFileName: 'getDossierFileName'
                 })
@@ -52,7 +52,7 @@
                         recall: recall,
                         category: 'LETTER_TO_PRISON'
                     }),
-                    url: '/persons/' + recall.nomsNumber + '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',
+                    url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',
                     dataQaLink: 'getLetterLink',
                     dataQaFileName: 'getLetterFileName'
                 })

@@ -61,7 +61,7 @@ context('Create a dossier', () => {
         returnedToCustodyNotificationDateTime: undefined,
       },
     })
-    const dossierRecall = dossierRecallPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const dossierRecall = dossierRecallPage.verifyOnPage({ recallId, personName })
 
     dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
 
@@ -102,10 +102,7 @@ context('Create a dossier', () => {
     cy.getLinkHref('Change uploaded recall notification email').should('contain', '/assess-email')
 
     // revocation order
-    cy.getLinkHref('BADGER BOBBY A123456 REVOCATION ORDER.pdf').should(
-      'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/documents/9876`
-    )
+    cy.getLinkHref('BADGER BOBBY A123456 REVOCATION ORDER.pdf').should('contain', `/recalls/${recallId}/documents/9876`)
     cy.getLinkHref('Change Revocation order').should(
       'contain',
       '/generated-document-version?fromPage=dossier-recall&fromHash=revocation-order&versionedCategoryName=REVOCATION_ORDER'
@@ -114,17 +111,17 @@ context('Create a dossier', () => {
     // uploaded documents
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/123`,
+      href: `/recalls/${recallId}/documents/123`,
     })
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
+      href: `/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
     })
 
     // change link for an uploaded document goes to the 'add new document version' page
     dossierRecall.assertLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/persons/A1234AA/recalls/123/upload-document-version?fromPage=dossier-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
+      href: '/recalls/123/upload-document-version?fromPage=dossier-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
     })
     // missing documents
     dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
@@ -145,7 +142,7 @@ context('Create a dossier', () => {
         returnedToCustodyDateTime: undefined,
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-recall' })
     cy.getText('inCustodyAtBooking').should('equal', 'Not in custody')
     cy.getText('inCustodyAtAssessment').should('equal', 'Not in custody')
     cy.getElement({ qaAttr: 'currentPrison' }).should('not.exist')
@@ -216,7 +213,7 @@ context('Create a dossier', () => {
     const dossierDownload = dossierDownloadPage.verifyOnPage()
     dossierDownload.assertLinkHref({
       qaAttr: 'getDossierLink',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/create?category=DOSSIER`,
+      href: `/recalls/${recallId}/documents/create?category=DOSSIER`,
     })
     dossierDownload.assertElementHasText({
       qaAttr: 'getDossierFileName',
@@ -224,7 +221,7 @@ context('Create a dossier', () => {
     })
     dossierDownload.assertLinkHref({
       qaAttr: 'getLetterLink',
-      href: `/persons/${nomsNumber}/recalls/${recallId}/documents/create?category=LETTER`,
+      href: `/recalls/${recallId}/documents/create?category=LETTER`,
     })
     dossierDownload.assertElementHasText({
       qaAttr: 'getLetterFileName',
@@ -251,7 +248,7 @@ context('Create a dossier', () => {
     })
     cy.task('expectUpdateRecall', { recallId, status })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-recall' })
     cy.clickLink('Create dossier')
     cy.pageHeading().should('equal', `Which prison is ${personName} in?`)
     cy.selectFromAutocomplete(`Which prison is ${personName} in?`, 'Kenn')
@@ -290,7 +287,7 @@ context('Create a dossier', () => {
         ],
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'view-recall' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('NSY email uploaded').should('contain', 'nsy.msg')
   })
 
@@ -299,7 +296,7 @@ context('Create a dossier', () => {
       recallId,
       expectedResult: emptyRecall,
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-nsy-email' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-nsy-email' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'confirmNsyEmailSent',
@@ -319,7 +316,7 @@ context('Create a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: emptyRecall,
     })
-    const dossierDownload = dossierDownloadPage.verifyOnPage({ nomsNumber, recallId })
+    const dossierDownload = dossierDownloadPage.verifyOnPage({ recallId })
     dossierDownload.clickContinue()
     dossierDownload.assertErrorMessage({
       fieldName: 'hasDossierBeenChecked',
@@ -332,7 +329,7 @@ context('Create a dossier', () => {
       recallId,
       expectedResult: emptyRecall,
     })
-    const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
+    const dossierEmail = dossierEmailPage.verifyOnPage({ recallId })
     dossierEmail.clickContinue()
     dossierEmail.assertErrorMessage({
       fieldName: 'confirmDossierEmailSent',
@@ -365,7 +362,7 @@ context('Create a dossier', () => {
         ],
       },
     })
-    const dossierEmail = dossierEmailPage.verifyOnPage({ nomsNumber, recallId })
+    const dossierEmail = dossierEmailPage.verifyOnPage({ recallId })
     dossierEmail.assertElementHasText({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL', textToFind: 'email.msg' })
   })
 
@@ -380,7 +377,7 @@ context('Create a dossier', () => {
       },
     })
     cy.task('expectUpdateRecall', { recallId })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'dossier-letter' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-letter' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'additionalLicenceConditions',

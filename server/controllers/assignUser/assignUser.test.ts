@@ -19,7 +19,6 @@ describe('assignAssessment', () => {
 
   it('should redirect to the assess recall page', async () => {
     const recallId = '123'
-    const nomsNumber = '123ABC'
     const userId = '123'
 
     fakeManageRecallsApi
@@ -27,21 +26,20 @@ describe('assignAssessment', () => {
       .matchHeader('authorization', `Bearer ${userToken.access_token}`)
       .reply(200, { recallId })
 
-    const req = mockPostRequest({ params: { nomsNumber, recallId } })
+    const req = mockPostRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
     res.locals.user.uuid = userId
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
     }
 
     await assignUser({ nextPageUrlSuffix: 'assess' })(req, res)
 
-    expect(res.redirect).toHaveBeenCalledWith(303, `/persons/${nomsNumber}/recalls/${recallId}/assess`)
+    expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/assess`)
   })
 
   it('should reload the page if the assignment fails', async () => {
     const recallId = '123'
-    const nomsNumber = '123ABC'
     const userId = '123'
     jest.spyOn(config, 'manageRecallsApiConfig').mockReturnValue({ timeout: { response: 1, deadline: 1 } } as ApiConfig)
     fakeManageRecallsApi
@@ -49,11 +47,11 @@ describe('assignAssessment', () => {
       .matchHeader('authorization', `Bearer ${userToken.access_token}`)
       .reply(500)
 
-    const req = mockPostRequest({ params: { nomsNumber, recallId } })
+    const req = mockPostRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
     res.locals.user.uuid = userId
     res.locals.urlInfo = {
-      basePath: `/persons/${nomsNumber}/recalls/${recallId}/`,
+      basePath: `/recalls/${recallId}/`,
     }
 
     await assignUser({ nextPageUrlSuffix: 'assess' })(req, res)

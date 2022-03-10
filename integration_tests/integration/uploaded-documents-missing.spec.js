@@ -52,7 +52,7 @@ context('Missing uploaded documents', () => {
         ],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     // missing documents
     recallInformation.assertElementHasText({
       qaAttr: 'required-LICENCE',
@@ -77,7 +77,7 @@ context('Missing uploaded documents', () => {
     })
     cy.task('expectDeleteRecallDocument')
     cy.task('expectSetDocumentCategory')
-    const checkAnswers = checkAnswersPage.verifyOnPage({ nomsNumber, recallId })
+    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId })
     checkAnswers.clickLink({ label: 'Add documents' })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertListValues({
@@ -110,7 +110,7 @@ context('Missing uploaded documents', () => {
         ],
       },
     })
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
     recallMissingDocuments.assertInputValue({
       fieldName: 'missingDocumentsDetail',
       value: 'Chased up, see attached',
@@ -119,7 +119,7 @@ context('Missing uploaded documents', () => {
 
   it("an error is shown if the missing documents email and detail aren't submitted", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ nomsNumber, recallId })
+    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
     recallMissingDocuments.clickContinue()
     recallMissingDocuments.assertErrorMessage({
       fieldName: 'missingDocumentsEmailFileName',

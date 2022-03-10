@@ -9,7 +9,6 @@ import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocume
 
 jest.mock('../clients/manageRecallsApiClient')
 
-const nomsNumber = 'AA123AA'
 const accessToken = 'abc'
 const recallId = '123'
 
@@ -20,7 +19,7 @@ describe('recallPageGet', () => {
 
   it('should attach uploaded documents to res locals', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.documentsUploaded.map(doc => doc.category)).toEqual([
@@ -35,7 +34,7 @@ describe('recallPageGet', () => {
   it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', done => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
 
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.render = view => {
       expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
@@ -49,7 +48,7 @@ describe('recallPageGet', () => {
 
   it('should make reference data available to render', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.referenceData).toHaveProperty('reasonsForRecall')
@@ -62,7 +61,7 @@ describe('recallPageGet', () => {
 
   it('should set previousConvictionMainName to Other value if specified', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, previousConvictionMainName: 'Barry Badger' })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Barry Badger')
@@ -74,7 +73,7 @@ describe('recallPageGet', () => {
       previousConvictionMainNameCategory: 'FIRST_LAST',
       previousConvictionMainName: '',
     })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Badger')
@@ -86,7 +85,7 @@ describe('recallPageGet', () => {
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
       previousConvictionMainName: '',
     })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby John Badger')
@@ -97,7 +96,7 @@ describe('recallPageGet', () => {
       ...recall,
       licenceNameCategory: 'FIRST_LAST',
     })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.fullName).toEqual('Bobby Badger')
@@ -108,7 +107,7 @@ describe('recallPageGet', () => {
       ...recall,
       licenceNameCategory: 'FIRST_MIDDLE_LAST',
     })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.fullName).toEqual('Bobby John Badger')
@@ -116,7 +115,7 @@ describe('recallPageGet', () => {
 
   it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.recallAssessmentDueText).toEqual(
@@ -128,7 +127,7 @@ describe('recallPageGet', () => {
   it('should make document data available to render', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.locals.urlInfo = {}
     await recallPageGet('assessRecall')(req, res)
@@ -139,7 +138,7 @@ describe('recallPageGet', () => {
   it('should pass document category query string to decorateDocs', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
-    const req = mockGetRequest({ params: { recallId, nomsNumber }, query: { versionedCategoryName: 'LICENCE' } })
+    const req = mockGetRequest({ params: { recallId }, query: { versionedCategoryName: 'LICENCE' } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.locals.urlInfo = {}
     await recallPageGet('assessRecall')(req, res)
@@ -153,7 +152,7 @@ describe('recallPageGet', () => {
       lastKnownAddresses: [{ index: 2 }, { index: 1 }],
     })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.locals.urlInfo = {}
     await recallPageGet('assessRecall')(req, res)
@@ -186,7 +185,7 @@ describe('recallPageGet', () => {
         },
       ],
     })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.missingDocumentsRecords).toEqual([
@@ -198,7 +197,7 @@ describe('recallPageGet', () => {
         version: 1,
         fileName: 'email.msg',
         emailId: '845',
-        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/845`,
+        url: `/recalls/${recallId}/documents/845`,
       },
       {
         categories: ['OASYS_RISK_ASSESSMENT'],
@@ -208,7 +207,7 @@ describe('recallPageGet', () => {
         version: 1,
         fileName: 'email.msg',
         emailId: '845',
-        url: `/persons/${nomsNumber}/recalls/${recallId}/documents/845`,
+        url: `/recalls/${recallId}/documents/845`,
       },
     ])
   })
@@ -251,7 +250,7 @@ describe('recallPageGet', () => {
         },
       ],
     })
-    const req = mockGetRequest({ params: { recallId, nomsNumber } })
+    const req = mockGetRequest({ params: { recallId } })
     const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.rescindRecords).toEqual([
@@ -263,13 +262,13 @@ describe('recallPageGet', () => {
         decisionEmailFileName: 'rescind-confirm.msg',
         decisionEmailId: '000',
         decisionEmailSentDate: '2020-12-14',
-        decisionEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/000`,
+        decisionEmailUrl: `/recalls/${recallId}/documents/000`,
         lastUpdatedDateTime: '2020-12-14T12:24:03.000Z',
         requestDetails: 'Rescind was requested by email',
         requestEmailFileName: 'rescind-request.msg',
         requestEmailId: '111',
         requestEmailReceivedDate: '2020-12-13',
-        requestEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/111`,
+        requestEmailUrl: `/recalls/${recallId}/documents/111`,
         rescindRecordId: '456',
         version: 2,
       },
@@ -281,13 +280,13 @@ describe('recallPageGet', () => {
         decisionEmailFileName: 'rescind-confirm.msg',
         decisionEmailId: '999',
         decisionEmailSentDate: '2020-12-09',
-        decisionEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/999`,
+        decisionEmailUrl: `/recalls/${recallId}/documents/999`,
         lastUpdatedDateTime: '2020-12-09T12:24:03.000Z',
         requestDetails: 'Rescind was requested by email',
         requestEmailFileName: 'rescind-request.msg',
         requestEmailId: '888',
         requestEmailReceivedDate: '2020-12-08',
-        requestEmailUrl: `/persons/${nomsNumber}/recalls/${recallId}/documents/888`,
+        requestEmailUrl: `/recalls/${recallId}/documents/888`,
         rescindRecordId: '123',
         version: 1,
       },

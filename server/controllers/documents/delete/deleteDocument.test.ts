@@ -8,11 +8,10 @@ jest.mock('../../../clients/manageRecallsApiClient')
 
 describe('deleteDocument', () => {
   let req
-  const nomsNumber = '456'
   const recallId = '789'
 
   beforeEach(() => {
-    req = { params: { nomsNumber, recallId }, session: {} }
+    req = { params: { recallId }, session: {} }
   })
 
   afterEach(() => jest.resetAllMocks())
@@ -22,7 +21,7 @@ describe('deleteDocument', () => {
     const fromPage = 'check-answers'
     const userToken = '000'
     const fileName = 'licence.pdf'
-    const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
+    const basePath = `/recalls/${recallId}/`
     ;(getRecall as jest.Mock).mockResolvedValue({
       status: RecallResponse.status.BEING_BOOKED_ON,
       documents: [
@@ -67,7 +66,7 @@ describe('deleteDocument', () => {
     const fromPage = 'view-recall'
     const userToken = '000'
     const fileName = 'licence.pdf'
-    const basePath = `/persons/${nomsNumber}/recalls/${recallId}/`
+    const basePath = `/recalls/${recallId}/`
     ;(getRecall as jest.Mock).mockResolvedValue({
       status: RecallResponse.status.BEING_BOOKED_ON,
       documents: [

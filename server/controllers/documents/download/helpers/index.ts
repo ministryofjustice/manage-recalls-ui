@@ -8,15 +8,8 @@ import { RecallDocument } from '../../../../@types/manage-recalls-api/models/Rec
 import { MissingDocumentsRecord, Note, RescindRecord } from '../../../../@types/manage-recalls-api'
 import { sortList } from '../../../utils/lists'
 
-export const documentDownloadUrl = ({
-  recallId,
-  nomsNumber,
-  documentId,
-}: {
-  recallId: string
-  nomsNumber: string
-  documentId?: string
-}) => `/persons/${nomsNumber}/recalls/${recallId}/documents/${documentId}`
+export const documentDownloadUrl = ({ recallId, documentId }: { recallId: string; documentId?: string }) =>
+  `/recalls/${recallId}/documents/${documentId}`
 
 export const formatPersonName = ({ firstName = '', lastName = '' }: { firstName?: string; lastName?: string }) =>
   `${lastName?.toUpperCase()} ${firstName?.toUpperCase()}`
@@ -25,11 +18,9 @@ export const formatBookingNumber = (bookingNumber: string) => (bookingNumber ? `
 
 export const decorateMissingDocumentsRecords = ({
   missingDocumentsRecords = [],
-  nomsNumber,
   recallId,
 }: {
   missingDocumentsRecords: MissingDocumentsRecord[]
-  nomsNumber: string
   recallId: string
 }): DecoratedMissingDocumentsRecord[] => {
   if (!missingDocumentsRecords.length) {
@@ -46,7 +37,7 @@ export const decorateMissingDocumentsRecords = ({
         version,
         emailId,
         fileName: emailFileName || 'Email',
-        url: documentDownloadUrl({ recallId, nomsNumber, documentId: emailId }),
+        url: documentDownloadUrl({ recallId, documentId: emailId }),
       }
     }
   )
@@ -70,32 +61,22 @@ export const getDocHistoryStatus = ({
 export const decorateRescindRecords = ({
   rescindRecords,
   recallId,
-  nomsNumber,
 }: {
   rescindRecords: RescindRecord[]
   recallId: string
-  nomsNumber: string
 }): DecoratedRescindRecord[] => {
   const decorated = rescindRecords?.map(rec => ({
     ...rec,
-    requestEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.requestEmailId }),
-    decisionEmailUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: rec.decisionEmailId }),
+    requestEmailUrl: documentDownloadUrl({ recallId, documentId: rec.requestEmailId }),
+    decisionEmailUrl: documentDownloadUrl({ recallId, documentId: rec.decisionEmailId }),
   }))
   return sortList(decorated, 'version', false)
 }
 
-export const decorateNotes = ({
-  notes,
-  recallId,
-  nomsNumber,
-}: {
-  notes: Note[]
-  recallId: string
-  nomsNumber: string
-}): DecoratedNote[] => {
+export const decorateNotes = ({ notes, recallId }: { notes: Note[]; recallId: string }): DecoratedNote[] => {
   const decorated = notes?.map(note => ({
     ...note,
-    documentUrl: documentDownloadUrl({ recallId, nomsNumber, documentId: note.documentId }),
+    documentUrl: documentDownloadUrl({ recallId, documentId: note.documentId }),
   }))
   return sortList(decorated, 'index', false)
 }

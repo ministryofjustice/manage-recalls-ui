@@ -53,14 +53,14 @@ describe('formWithDocumentUploadHandler', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { basePath: '/persons/456/recalls/789/' },
+        urlInfo: { basePath: '/recalls/789/' },
       },
       redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).toHaveBeenCalledTimes(1)
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/last-release')
+        expect(path).toEqual('/recalls/789/last-release')
         done()
       },
     }
@@ -81,11 +81,11 @@ describe('formWithDocumentUploadHandler', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { fromPage: 'check-answers', basePath: '/persons/456/recalls/789/', fromHash: 'recall-details' },
+        urlInfo: { fromPage: 'check-answers', basePath: '/recalls/789/', fromHash: 'recall-details' },
       },
       redirect: (httpStatus, path) => {
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/check-answers#recall-details')
+        expect(path).toEqual('/recalls/789/check-answers#recall-details')
         done()
       },
     }
@@ -109,14 +109,14 @@ describe('formWithDocumentUploadHandler', () => {
     const res = {
       locals: {
         user: {},
-        urlInfo: { basePath: '/persons/456/recalls/789/' },
+        urlInfo: { basePath: '/recalls/789/' },
       },
       redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/dossier-letter')
+        expect(path).toEqual('/recalls/789/dossier-letter')
         done()
       },
     }
@@ -137,7 +137,7 @@ describe('formWithDocumentUploadHandler', () => {
     })
     ;(uploadRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -160,7 +160,7 @@ describe('formWithDocumentUploadHandler', () => {
       cb(req, res, new Error('Upload failed'))
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(uploadRecallDocument).not.toHaveBeenCalled()
@@ -191,7 +191,7 @@ describe('formWithDocumentUploadHandler', () => {
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(updateRecall).not.toHaveBeenCalled()
         expect(req.session.errors).toEqual([
@@ -218,7 +218,7 @@ describe('formWithDocumentUploadHandler', () => {
       cb()
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).not.toHaveBeenCalled()
@@ -243,7 +243,7 @@ describe('formWithDocumentUploadHandler', () => {
       cb()
     })
     const res = {
-      locals: { user: { token: 'TOKEN' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: { token: 'TOKEN' }, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).not.toHaveBeenCalled()
         expect(updateRecall).toHaveBeenCalledWith(
@@ -253,7 +253,7 @@ describe('formWithDocumentUploadHandler', () => {
         )
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/last-release')
+        expect(path).toEqual('/recalls/789/last-release')
         done()
       },
     }
@@ -273,7 +273,7 @@ describe('formWithDocumentUploadHandler', () => {
       documentId: '123',
     })
     const res = {
-      locals: { user: {}, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: {}, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(uploadRecallDocument).toHaveBeenCalledTimes(1)
         expect(updateRecall).not.toHaveBeenCalled()
@@ -327,7 +327,7 @@ describe('formWithDocumentUploadHandler', () => {
     })
     ;(updateRecall as jest.Mock).mockResolvedValue({ ...getRecallResponse, inCustodyAtAssessment: true })
     const res = {
-      locals: { user: { uuid: '000' }, urlInfo: { basePath: '/persons/456/recalls/789/' } },
+      locals: { user: { uuid: '000' }, urlInfo: { basePath: '/recalls/789/' } },
       redirect: (httpStatus, path) => {
         expect(saveToApiFn).toHaveBeenCalledWith({
           recallId: '789',
@@ -338,7 +338,7 @@ describe('formWithDocumentUploadHandler', () => {
           },
         })
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/persons/456/recalls/789/assess-confirmation')
+        expect(path).toEqual('/recalls/789/assess-confirmation')
         done()
       },
     }
@@ -362,7 +362,7 @@ describe('formWithDocumentUploadHandler', () => {
       const res = {
         locals: {
           user: {},
-          urlInfo: { basePath: '/persons/456/recalls/789/' },
+          urlInfo: { basePath: '/recalls/789/' },
         },
         redirect: (httpStatus, path) => {
           expect(addNote).toHaveBeenCalledTimes(1)
@@ -370,7 +370,7 @@ describe('formWithDocumentUploadHandler', () => {
           expect(updateRecall).toHaveBeenCalledTimes(0)
           expect(req.session.errors).toBeUndefined()
           expect(httpStatus).toEqual(303)
-          expect(path).toEqual('/persons/456/recalls/789/view-recall')
+          expect(path).toEqual('/recalls/789/view-recall')
           done()
         },
       }
@@ -394,7 +394,7 @@ describe('formWithDocumentUploadHandler', () => {
       const res = {
         locals: {
           user: {},
-          urlInfo: { basePath: '/persons/456/recalls/789/' },
+          urlInfo: { basePath: '/recalls/789/' },
         },
         redirect: (httpStatus, path) => {
           expect(addNote).toHaveBeenCalledTimes(0)
@@ -440,7 +440,7 @@ describe('formWithDocumentUploadHandler', () => {
       const res = {
         locals: {
           user: {},
-          urlInfo: { basePath: '/persons/456/recalls/789/' },
+          urlInfo: { basePath: '/recalls/789/' },
         },
         redirect: (httpStatus, path) => {
           expect(addNote).toHaveBeenCalledTimes(0)

@@ -16,8 +16,8 @@ export const decorateDocs = ({
   versionedCategoryName?: string
   recall: RecallResponse
 }): DocumentDecorations => {
-  const { nomsNumber, recallId, missingDocumentsRecords = [] } = recall
-  const decoratedDocs = decorateAllDocTypes({ docs, nomsNumber, recallId })
+  const { recallId, missingDocumentsRecords = [] } = recall
+  const decoratedDocs = decorateAllDocTypes({ docs, recallId })
   const docCategoriesWithUploads = uploadedDocCategoriesList().map(docType => ({
     ...docType,
     uploaded: decoratedDocs.filter(d => d.suggestedCategory === docType.name),

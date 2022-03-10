@@ -7,7 +7,7 @@ import { sortList } from '../utils/lists'
 import { isString } from '../../utils/utils'
 
 export const getDocumentChangeHistory = async (req: Request, res: Response, next: NextFunction) => {
-  const { nomsNumber, recallId } = req.params
+  const { recallId } = req.params
   const { category } = req.query
   const {
     user: { token },
@@ -15,9 +15,6 @@ export const getDocumentChangeHistory = async (req: Request, res: Response, next
   try {
     if (!isString(recallId)) {
       throw new Error('Invalid recallId')
-    }
-    if (!isString(nomsNumber)) {
-      throw new Error('Invalid nomsNumber')
     }
     if (!isString(category) || !findDocCategory(category as RecallDocument.category)) {
       throw new Error('Invalid category')

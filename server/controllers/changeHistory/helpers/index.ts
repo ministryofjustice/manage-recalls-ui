@@ -19,19 +19,18 @@ export const uploaded = ({
   category: RecallDocument.category
   standardFileName: string
 }) => {
-  const { recallId, nomsNumber } = recall
+  const { recallId } = recall
   const missingDocumentsRecords = decorateMissingDocumentsRecords({
     missingDocumentsRecords: findCategoryInMissingDocumentsRecords(
       recall.missingDocumentsRecords,
       category as RecallDocument.category
     ),
-    nomsNumber,
     recallId,
   }).map(record => ({ ...record, isMissingRecord: true }))
   const decoratedHistory = sortedHistory.map((document: RecallDocument) => ({
     ...document,
     fileName: standardFileName || document.fileName,
-    url: documentDownloadUrl({ recallId, nomsNumber, documentId: document.documentId }),
+    url: documentDownloadUrl({ recallId, documentId: document.documentId }),
   }))
   return [...decoratedHistory, ...missingDocumentsRecords]
 }

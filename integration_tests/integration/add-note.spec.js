@@ -19,7 +19,7 @@ context('Add a note to a recall', () => {
     })
     const note = getRecallResponse.notes[0]
     cy.task('expectAddNote')
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
     cy.clickButton('Actions')
     cy.clickLink('Add a note')
     cy.pageHeading().should('equal', 'Add a note to the recall')
@@ -62,7 +62,7 @@ context('Add a note to a recall', () => {
     cy.clickLink('View')
 
     const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
 
     recallInformation.assertElementHasText({ qaAttr: 'noteSubject1', textToFind: note.subject })
     recallInformation.assertElementHasText({ qaAttr: 'noteDetails1', textToFind: note.details })
@@ -70,10 +70,7 @@ context('Add a note to a recall', () => {
     cy.recallInfo('Date and time of note').should('equal', '5 December 2020 at 18:33')
     cy.recallInfo('Note made by').should('equal', 'Arnold Caseworker')
     cy.recallInfo('Document').should('equal', wordDocFixtureFileName)
-    cy.getLinkHref(wordDocFixtureFileName).should(
-      'contain',
-      `/persons/${nomsNumber}/recalls/${recallId}/documents/${generatedDocumentId}`
-    )
+    cy.getLinkHref(wordDocFixtureFileName).should('contain', `/recalls/${recallId}/documents/${generatedDocumentId}`)
   })
 
   it('can add a note without a document', () => {
@@ -86,7 +83,7 @@ context('Add a note to a recall', () => {
     })
     const note = getRecallResponse.notes[0]
     cy.task('expectAddNote')
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
     cy.getText('notesHeading').should('equal', 'Notes')
     cy.clickButton('Actions')
     cy.clickLink('Add a note')
@@ -167,7 +164,7 @@ context('Add a note to a recall', () => {
     })
 
     const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
-    const recallInformation = recallInformationPage.verifyOnPage({ nomsNumber, recallId, personName })
+    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
 
     recallInformation.assertElementHasText({ qaAttr: 'noteSubject1', textToFind: 'index 4 subject' })
     recallInformation.assertElementHasText({ qaAttr: 'noteSubject2', textToFind: 'index 2 subject' })
@@ -182,7 +179,7 @@ context('Add a note to a recall', () => {
         notes: undefined,
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'assess' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
     cy.getText('notesHeading').should('equal', 'Notes')
     cy.getText('noNotesText').should('equal', 'No notes have been added to this recall.')
   })
@@ -195,7 +192,7 @@ context('Add a note to a recall', () => {
         status: 'AWAITING_DOSSIER_CREATION',
       },
     })
-    cy.visitRecallPage({ nomsNumber, recallId, pageSuffix: 'add-note' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'add-note' })
     cy.clickButton('Add note')
     cy.assertErrorMessage({
       fieldName: 'subject',
