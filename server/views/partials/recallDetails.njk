@@ -50,12 +50,10 @@
                 {% endif %}
             </dd>
         </div>
-        {% if recall.recommendedRecallType === 'FIXED' %}
+        {% if recall.recommendedRecallType === 'FIXED' and recall.confirmedRecallType == 'FIXED' %}
         <div class="govuk-summary-list__row">
             <dt class=" govuk-summary-list__key">
-                {% if not recall.confirmedRecallType or recall.confirmedRecallType == recall.recommendedRecallType %}
-                    Recall length
-                {% else %}Recommended recall length{% endif %}
+                Recall length
             </dt>
             <dd class=" govuk-summary-list__value" data-qa='recallLength'>
                 {{ getReferenceDataItemLabel('recallLengths', recall.recallLength) }} days
