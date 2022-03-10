@@ -201,7 +201,7 @@ context('Standard / fixed term recall type', () => {
     })
     cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     cy.recallInfo('Recommended recall type').should('equal', 'Fixed term')
-    cy.recallInfo('Recommended recall length').should('equal', '14 days')
+    cy.getElement('Recommended recall length').should('not.exist')
     cy.recallInfo('Upgraded recall type').should('equal', 'Standard')
     cy.recallInfo('Upgraded recall detail').should('equal', 'Disagree with fixed')
     cy.recallInfo('Upgraded recall email').should('equal', 'email.msg')

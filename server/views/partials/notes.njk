@@ -1,54 +1,54 @@
 <div id='notes'>
     <h2 class='govuk-heading-m govuk-!-margin-top-9' data-qa='notesHeading'>Notes</h2>
     {% if recall.notes.length %}
-        <dl class="govuk-summary-list">
-            {% for note in recall.notes %}
-                <div class='govuk-!-margin-bottom-8'>
+        {% for note in recall.notes %}
+            <div class='govuk-!-margin-bottom-8'>
                 <h3 class='govuk-heading-s' data-qa='noteSubject{{ loop.index }}'>{{ note.subject }}</h3>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Details
-                    </dt>
-                    <dd class=" govuk-summary-list__value">
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Details
+                        </dt>
+                        <dd class=" govuk-summary-list__value">
                       <pre class='govuk-body' data-qa='noteDetails{{ loop.index }}'>
                             {{ note.details }}
                       </pre>
-                    </dd>
-                </div>
-                {% if isDefined(note.fileName) %}
-                    <div class="govuk-summary-list__row" data-qa='noteDocumentRow{{ loop.index }}'>
-                        <dt class="govuk-summary-list__key">
-                            Document
-                        </dt>
-                        <dd class=" govuk-summary-list__value">
-                            <a href='{{ note.documentUrl }}' class='govuk-link' download>{{ note.fileName }}</a>
                         </dd>
+                        <dd class=" govuk-summary-list__actions"></dd>
                     </div>
-                {% endif %}
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Date and time of note
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ note.createdDateTime | dateTime }}
-                    </dd>
-                </div>
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Note made by
-                    </dt>
-                    <dd class="govuk-summary-list__value">
-                        {{ note.createdByUserName }}
-                    </dd>
-                </div>
-                </div>
-            {% endfor %}
-        </dl>
+                    {% if isDefined(note.fileName) %}
+                        <div class="govuk-summary-list__row" data-qa='noteDocumentRow{{ loop.index }}'>
+                            <dt class="govuk-summary-list__key">
+                                Document
+                            </dt>
+                            <dd class=" govuk-summary-list__value">
+                                <a href='{{ note.documentUrl }}' class='govuk-link' download>{{ note.fileName }}</a>
+                            </dd>
+                            <dd class=" govuk-summary-list__actions"></dd>
+                        </div>
+                    {% endif %}
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Date and time of note
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            {{ note.createdDateTime | dateTime }}
+                        </dd>
+                        <dd class=" govuk-summary-list__actions"></dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                            Note made by
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                            {{ note.createdByUserName }}
+                        </dd>
+                        <dd class=" govuk-summary-list__actions"></dd>
+                    </div>
+                </dl>
+            </div>
+        {% endfor %}
     {% else %}
-        <div class="govuk-summary-list__row">
-            <dd class="govuk-summary-list__value" data-qa='noNotesText'>
-                <p class='govuk-body'>No notes have been added to this recall.</p>
-            </dd>
-        </div>
+        <p class='govuk-body' data-qa='noNotesText'>No notes have been added to this recall.</p>
     {% endif %}
 </div>

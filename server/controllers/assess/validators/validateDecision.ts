@@ -55,7 +55,7 @@ export const validateDecision = ({
         })
       )
     }
-    if (!wasUploadFileReceived && !existingUpload) {
+    if (userDisagreedWithRecommendation && !wasUploadFileReceived && !existingUpload) {
       errors.push(
         makeErrorObject({
           id: 'confirmedRecallTypeEmailFileName',
