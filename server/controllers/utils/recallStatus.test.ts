@@ -82,6 +82,15 @@ describe('recallStatusTagProperties', () => {
       text: 'Assessment complete',
       classes: `govuk-tag--orange`,
     })
+    expect(
+      recallStatusTagProperties({ status: RecallResponse.status.ASSESSED_NOT_IN_CUSTODY } as RecallResponse)
+    ).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Assessment complete',
+      classes: `govuk-tag--orange`,
+    })
     expect(recallStatusTagProperties({ status: RecallResponse.status.DOSSIER_IN_PROGRESS } as RecallResponse)).toEqual({
       attributes: {
         'data-qa': 'recallStatus',
@@ -131,7 +140,7 @@ describe('recallStatusTagProperties', () => {
         'data-qa': 'recallStatus',
       },
       text: 'Awaiting part B',
-      classes: `govuk-tag--green`,
+      classes: `govuk-tag--orange`,
     })
     expect(
       recallStatusTagProperties({

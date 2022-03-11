@@ -92,7 +92,7 @@ export const recallStatusTagProperties = (recall: RecallResponse) => {
       return {
         ...defaults,
         text: 'Awaiting part B',
-        classes: `govuk-tag--green`,
+        classes: `govuk-tag--orange`,
       }
     case RecallResponse.status.BEING_BOOKED_ON:
       return {
@@ -110,6 +110,11 @@ export const recallStatusTagProperties = (recall: RecallResponse) => {
         text: 'Assessment in progress',
       }
     case RecallResponse.status.AWAITING_DOSSIER_CREATION:
+      return {
+        ...defaults,
+        text: 'Assessment complete',
+      }
+    case RecallResponse.status.ASSESSED_NOT_IN_CUSTODY:
       return {
         ...defaults,
         text: 'Assessment complete',
