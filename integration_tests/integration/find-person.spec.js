@@ -48,15 +48,20 @@ context('Find a person', () => {
     // no results
     const nomsNumber2 = 'B1234CD'
     cy.task('expectPrisonerResult', { status: 404 })
-    const homePage = findOffenderPage.verifyOnPage()
-    homePage.searchFor(nomsNumber2)
-    homePage.expectSearchResultsCountText('0 people found')
+    cy.visitPage('/find-person')
+    cy.fillInput('NOMIS number', nomsNumber2)
+    cy.clickButton('Search')
+    cy.getText('search-results-count').should('equal', '0 people found')
+    cy.getTextInputValue('NOMIS number').should('equal', nomsNumber2)
 
     // invalid NOMIS number
-    homePage.searchFor('A123')
-    homePage.assertErrorMessage({
+    const invalidNoms = 'A123'
+    cy.fillInput('NOMIS number', invalidNoms, { clearExistingText: true })
+    cy.clickButton('Search')
+    cy.assertErrorMessage({
       fieldName: 'nomsNumber',
       summaryError: 'Enter a NOMIS number in the correct format',
     })
+    cy.getTextInputValue('NOMIS number').should('equal', invalidNoms)
   })
 })
