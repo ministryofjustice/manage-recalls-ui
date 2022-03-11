@@ -75,14 +75,6 @@
                                         Book a recall
                                     </button>
                                 </form>
-                                {% if person.recalls.length %}
-                                <div class='govuk-!-margin-top-4'>Existing recalls:</div>
-                                {% for recall in person.recalls %}
-                                    {% set recall = recall %}
-                                    {% set person = person %}
-                                    {% include "../partials/recallActionLink.njk" %}
-                                {% endfor %}
-                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
