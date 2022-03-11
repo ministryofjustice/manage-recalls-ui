@@ -11,24 +11,18 @@ export type RecallResponseLite = {
     firstName: string;
     middleNames?: string;
     lastName: string;
-    licenceNameCategory: RecallResponseLite.licenceNameCategory;
     status: RecallResponseLite.status;
     inCustodyAtBooking?: boolean;
     inCustodyAtAssessment?: boolean;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
+    licenceNameCategory?: RecallResponseLite.licenceNameCategory;
     recallAssessmentDueDateTime?: string;
     assigneeUserName?: string;
     partBDueDate?: string;
 };
 
 export namespace RecallResponseLite {
-
-    export enum licenceNameCategory {
-        FIRST_LAST = 'FIRST_LAST',
-        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
-        OTHER = 'OTHER',
-    }
 
     export enum status {
         ASSESSED_NOT_IN_CUSTODY = 'ASSESSED_NOT_IN_CUSTODY',
@@ -41,6 +35,12 @@ export namespace RecallResponseLite {
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         STOPPED = 'STOPPED',
+    }
+
+    export enum licenceNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER',
     }
 
 

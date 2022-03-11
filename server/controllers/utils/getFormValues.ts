@@ -75,6 +75,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
     'differentNomsNumberDetail',
     'previousConvictionMainName',
     'previousConvictionMainNameCategory',
+    'licenceNameCategory',
     'lastKnownAddressOption',
     'rescindRequestDetail',
     'warrantReferenceNumber',
