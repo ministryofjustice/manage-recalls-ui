@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { getPrisonerByNomsNumber, searchRecalls } from '../../clients/manageRecallsApiClient'
+import { getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
 import logger from '../../../logger'
 import { validateFindPerson } from './validators/validateFindPerson'
 import { makeErrorObject, transformErrorMessages } from '../utils/errorMessages'
@@ -12,23 +12,10 @@ export const findPerson = async (req: Request, res: Response, _next: NextFunctio
     errors = validateFindPerson(nomsNumber as string)
     if (isDefined(nomsNumber) && !errors) {
       const trimmedNoms = (nomsNumber as string).trim()
-      const [personResult, recallsResult] = await Promise.allSettled([
-        getPrisonerByNomsNumber((trimmedNoms as string).trim(), res.locals.user.token),
-        searchRecalls({ nomsNumber: trimmedNoms }, res.locals.user.token),
-      ])
-
-      let person
-      if (personResult.status === 'rejected') {
-        if (personResult.reason.status !== 404) {
-          throw new Error(`getPerson failed`)
-        }
-      } else {
-        person = personResult.value
-      }
+      const person = await getPrisonerByNomsNumber((trimmedNoms as string).trim(), res.locals.user.token)
       res.locals.persons = []
       if (person) {
         res.locals.persons = [person]
-        res.locals.persons[0].recalls = recallsResult.status === 'fulfilled' ? recallsResult.value : []
       }
     }
     res.locals.isFindPersonPage = true
