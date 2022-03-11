@@ -3,7 +3,6 @@ import { getEmptyRecallResponse, getPrisonerResponse } from '../mockApis/mockRes
 const findOffenderPage = require('../pages/findOffender')
 
 context('Find a person', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const newRecall = { ...getEmptyRecallResponse, recallId }
   const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
@@ -13,46 +12,14 @@ context('Find a person', () => {
   })
 
   it('can search for a person and create a booking', () => {
-    cy.task('expectCreateRecall', { expectedResults: { recallId } })
-    cy.task('expectGetRecall', { expectedResult: newRecall })
-    const homePage = findOffenderPage.verifyOnPage()
-
     // no results
-    const nomsNumber2 = 'B1234CD'
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: null })
-    homePage.searchFor(nomsNumber2)
-    homePage.expectSearchResultsCountText('0 people found')
-
-    // invalid NOMIS number returns an error
-    homePage.searchFor('A123')
-    homePage.assertErrorMessage({
-      fieldName: 'nomsNumber',
-      summaryError: 'Enter a NOMIS number in the correct format',
-    })
-
-    // Expect a single result returned
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    homePage.searchFor(nomsNumber)
-    homePage.expectSearchResultsCountText('1 person found')
-    homePage.searchResults().find('tr').should('have.length', 1)
-    const firstResult = homePage.searchResults().first()
-    firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
-    firstResult.get('[data-qa=name]').should('contain.text', personName)
-    firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
-    firstResult.get('[data-qa=bookRecallButton]').click()
-    cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
-    cy.getLinkHref('Back').should('contain', '/find-person')
-  })
-
-  it('person search errors', () => {
-    // no results
-    const nomsNumber2 = 'B1234CD'
+    const nomsNumber = 'A1234AA'
     cy.task('expectPrisonerResult', { status: 404 })
     cy.visitPage('/find-person')
-    cy.fillInput('NOMIS number', nomsNumber2)
+    cy.fillInput('NOMIS number', nomsNumber)
     cy.clickButton('Search')
     cy.getText('search-results-count').should('equal', '0 people found')
-    cy.getTextInputValue('NOMIS number').should('equal', nomsNumber2)
+    cy.getTextInputValue('NOMIS number').should('equal', nomsNumber)
 
     // invalid NOMIS number
     const invalidNoms = 'A123'
@@ -63,5 +30,22 @@ context('Find a person', () => {
       summaryError: 'Enter a NOMIS number in the correct format',
     })
     cy.getTextInputValue('NOMIS number').should('equal', invalidNoms)
+
+    // Expect a single result returned
+    cy.task('expectCreateRecall', { expectedResults: { recallId } })
+    cy.task('expectGetRecall', { expectedResult: newRecall })
+    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
+    cy.visitPage('/find-person')
+    cy.fillInput('NOMIS number', nomsNumber, { clearExistingText: true })
+    cy.clickButton('Search')
+    cy.getText('search-results-count').should('equal', '1 person found')
+    cy.get('[data-qa=search-results]').find('tr').should('have.length', 1)
+    const firstResult = cy.get('[data-qa=search-results]').find('tr').first()
+    firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
+    firstResult.get('[data-qa=name]').should('contain.text', personName)
+    firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
+    firstResult.get('[data-qa=bookRecallButton]').click()
+    cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
+    cy.getLinkHref('Back').should('contain', '/find-person')
   })
 })
