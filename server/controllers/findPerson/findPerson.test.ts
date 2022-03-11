@@ -1,7 +1,6 @@
 import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testUtils/mockRequestUtils'
 import { findPerson } from './findPerson'
-import { getPrisonerByNomsNumber, searchRecalls } from '../../clients/manageRecallsApiClient'
-import getRecallsResponse from '../../../fake-manage-recalls-api/stubs/__files/get-recalls.json'
+import { getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
 
 jest.mock('../../clients/manageRecallsApiClient')
 const nomsNumber = ' A1234AB '
@@ -11,7 +10,7 @@ describe('findPerson', () => {
     jest.clearAllMocks()
   })
 
-  it('should return data from api for a valid noms number, including recalls', async () => {
+  it('should return data from api for a valid noms number', async () => {
     const person = {
       firstName: 'Bertie',
       lastName: 'Badger',
@@ -19,34 +18,16 @@ describe('findPerson', () => {
       dateOfBirth: '1990-10-30',
     }
     ;(getPrisonerByNomsNumber as jest.Mock).mockReturnValueOnce(person)
-    ;(searchRecalls as jest.Mock).mockReturnValueOnce(getRecallsResponse)
     const req = mockGetRequest({ query: { nomsNumber } })
     const { res, next } = mockResponseWithAuthenticatedUser('token')
     await findPerson(req, res, next)
     expect(getPrisonerByNomsNumber).toHaveBeenCalledWith(nomsNumber.trim(), 'token')
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.persons).toEqual([person])
-    expect(res.locals.persons[0].recalls).toEqual(getRecallsResponse)
-  })
-
-  it('should person data without recalls, if the recalls request fails', async () => {
-    const person = {
-      firstName: 'Bertie',
-      lastName: 'Badger',
-      nomsNumber,
-      dateOfBirth: '1990-10-30',
-    }
-    ;(getPrisonerByNomsNumber as jest.Mock).mockReturnValueOnce(person)
-    ;(searchRecalls as jest.Mock).mockRejectedValue(new Error('test'))
-    const req = mockGetRequest({ query: { nomsNumber } })
-    const { res, next } = mockResponseWithAuthenticatedUser('token')
-    await findPerson(req, res, next)
-    expect(res.locals.persons[0].recalls).toEqual([])
   })
 
   it('should render an error, if the person request fails', async () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockRejectedValue(new Error('test'))
-    ;(searchRecalls as jest.Mock).mockReturnValueOnce(getRecallsResponse)
     const req = mockGetRequest({ query: { nomsNumber } })
     const { res, next } = mockResponseWithAuthenticatedUser('token')
     await findPerson(req, res, next)
