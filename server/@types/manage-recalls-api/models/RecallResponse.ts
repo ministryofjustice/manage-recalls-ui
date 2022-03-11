@@ -20,7 +20,6 @@ export type RecallResponse = {
     lastName: string;
     croNumber: string;
     dateOfBirth: string;
-    licenceNameCategory: RecallResponse.licenceNameCategory;
     status: RecallResponse.status;
     documents: Array<RecallDocument>;
     lastKnownAddresses: Array<LastKnownAddress>;
@@ -40,9 +39,9 @@ export type RecallResponse = {
     bookedByUserId?: string;
     bookedByUserName?: string;
     bookingNumber?: string;
+    conditionalReleaseDate?: string;
     confirmedRecallType?: RecallResponse.confirmedRecallType;
     confirmedRecallTypeDetail?: string;
-    conditionalReleaseDate?: string;
     contraband?: boolean;
     contrabandDetail?: string;
     currentPrison?: string;
@@ -61,6 +60,7 @@ export type RecallResponse = {
     lastReleasePrison?: string;
     licenceConditionsBreached?: string;
     licenceExpiryDate?: string;
+    licenceNameCategory?: RecallResponse.licenceNameCategory;
     localDeliveryUnit?: RecallResponse.localDeliveryUnit;
     localPoliceForceId?: string;
     mappaLevel?: RecallResponse.mappaLevel;
@@ -92,12 +92,6 @@ export type RecallResponse = {
 
 export namespace RecallResponse {
 
-    export enum licenceNameCategory {
-        FIRST_LAST = 'FIRST_LAST',
-        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
-        OTHER = 'OTHER',
-    }
-
     export enum status {
         ASSESSED_NOT_IN_CUSTODY = 'ASSESSED_NOT_IN_CUSTODY',
         AWAITING_DOSSIER_CREATION = 'AWAITING_DOSSIER_CREATION',
@@ -119,6 +113,12 @@ export namespace RecallResponse {
     export enum lastKnownAddressOption {
         YES = 'YES',
         NO_FIXED_ABODE = 'NO_FIXED_ABODE',
+    }
+
+    export enum licenceNameCategory {
+        FIRST_LAST = 'FIRST_LAST',
+        FIRST_MIDDLE_LAST = 'FIRST_MIDDLE_LAST',
+        OTHER = 'OTHER',
     }
 
     export enum localDeliveryUnit {

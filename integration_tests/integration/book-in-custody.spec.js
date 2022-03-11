@@ -296,6 +296,14 @@ context('Book an "in-custody" recall', () => {
     })
   })
 
+  it('licence name radio is selected if populated', () => {
+    cy.task('expectGetRecall', { expectedResult: { ...newRecall, licenceNameCategory: 'FIRST_LAST' } })
+    cy.visitRecallPage({ recallId, pageSuffix: 'licence-name' })
+    cy.getRadioOptionByLabel(`How does ${personName}'s name appear on the licence?`, `${personName}`).should(
+      'be.checked'
+    )
+  })
+
   it('errors - email request received', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ recallId })
