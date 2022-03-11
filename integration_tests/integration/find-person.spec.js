@@ -48,7 +48,6 @@ context('Find a person', () => {
     // no results
     const nomsNumber2 = 'B1234CD'
     cy.task('expectPrisonerResult', { status: 404 })
-    cy.task('expectSearchRecalls', { expectedSearchTerm: nomsNumber2, expectedResults: [] })
     const homePage = findOffenderPage.verifyOnPage()
     homePage.searchFor(nomsNumber2)
     homePage.expectSearchResultsCountText('0 people found')
