@@ -13,8 +13,7 @@ docker compose -f "${DOCKER_COMPOSE_FILE}" up hmpps-auth redis -d --remove-orpha
 source "${SCRIPT_DIR}/restart-fake-manage-recalls-api.sh"
 
 printf "\nChecking hmpps-auth is running..."
-docker run --network container:hmpps-auth \
-    appropriate/curl -s -4 --retry 120 --retry-delay 1 --retry-connrefused http://localhost:8080/auth/health/ping || (echo "...FAILED, please check 'docker logs hmpps-auth'"; exit 1)
+curl -s -4 --retry 120 --retry-delay 1 --retry-all-errors http://localhost:8080/auth/health/ping || (echo "...FAILED, please check 'docker logs hmpps-auth'"; exit 1)
 
 echo
 echo "Logs can be found by running:"
