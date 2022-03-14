@@ -42,11 +42,14 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
       }
     }
   } finally {
-    res.locals.user = getFormValues({
-      apiValues: user,
-      unsavedValues: res.locals.unsavedValues,
-      errors: res.locals.errors,
-    })
+    res.locals.user = {
+      ...res.locals.user,
+      ...getFormValues({
+        apiValues: user,
+        unsavedValues: res.locals.unsavedValues,
+        errors: res.locals.errors,
+      }),
+    }
     res.render(`pages/userDetails`)
   }
 }

@@ -19,6 +19,7 @@ describe('getUser', () => {
     signature: 'def',
     userId: '123',
   }
+
   it('renders the user if found', done => {
     ;(getCurrentUserDetails as jest.Mock).mockResolvedValue(userDetails)
     const req = mockGetRequest({ originalUrl: '/user-details' })
@@ -26,10 +27,15 @@ describe('getUser', () => {
       locals: {
         user: {
           token: userToken,
+          displayName: 'Barry Badger',
         },
       },
       render: view => {
         expect(view).toEqual(`pages/userDetails`)
+        expect(res.locals.user).toEqual({
+          ...userDetails,
+          displayName: 'Barry Badger',
+        })
         done()
       },
     }
