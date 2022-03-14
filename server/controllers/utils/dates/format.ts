@@ -124,6 +124,9 @@ export const dueDateLabel = ({
 }
 
 export const partBDueDateLabel = ({ partBDueDate }: { partBDueDate: string }): string => {
+  if (!partBDueDate) {
+    return 'MISSING DUE DATE'
+  }
   const dueDateTime = getDateTimeUTC(partBDueDate)
   const now = DateTime.now()
   const overdue = now.diff(dueDateTime, 'days').days >= 1
@@ -131,7 +134,6 @@ export const partBDueDateLabel = ({ partBDueDate }: { partBDueDate: string }): s
   const isDueToday = startOfToday.diff(dueDateTime, 'days').days === 0
   const dueForPresentation = dueDateTime.setZone(europeLondon)
   const dueDate = dueForPresentation.toFormat(datePresentationFormat)
-
   if (isDueToday) {
     return `Today`
   }
