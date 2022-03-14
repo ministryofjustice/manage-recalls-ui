@@ -6,7 +6,6 @@ import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
 import recallInformationPage from '../pages/recallInformation'
 
 context('Missing uploaded documents', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const documentId = '123'
   const personName = 'Bobby Badger'

@@ -2,7 +2,6 @@ import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockRespo
 import recallInformationPage from '../pages/recallInformation'
 
 context('Add a note to a recall', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
 
   beforeEach(() => {
@@ -184,7 +183,8 @@ context('Add a note to a recall', () => {
     cy.getText('noNotesText').should('equal', 'No notes have been added to this recall.')
   })
 
-  it('errors - add a note', () => {
+  it('errors', () => {
+    // no fields entered when adding a note
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getEmptyRecallResponse,
@@ -202,5 +202,13 @@ context('Add a note to a recall', () => {
       fieldName: 'details',
       summaryError: 'Provide more detail',
     })
+    // API error
+    const note = getRecallResponse.notes[0]
+    cy.task('expectAddNote', { statusCode: 500, body: 'API error' })
+    cy.fillInput('Subject', note.subject)
+    cy.fillInput('Details', note.details)
+    cy.uploadDocx({ field: 'fileName' })
+    cy.clickButton('Add note')
+    cy.get('.govuk-error-summary__list').invoke('text').should('contain', 'API error')
   })
 })

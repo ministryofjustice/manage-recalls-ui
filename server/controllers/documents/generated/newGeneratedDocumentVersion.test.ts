@@ -108,6 +108,7 @@ describe('generatedDocumentVersionFormHandler', () => {
       body: requestBody,
     })
     const { res } = mockResponseWithAuthenticatedUser('')
+    res.locals.env = 'PRODUCTION'
     res.locals.urlInfo = {
       basePath,
       fromPage: 'view-recall',

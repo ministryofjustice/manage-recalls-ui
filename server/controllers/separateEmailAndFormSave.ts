@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { addNote, updateRecall, uploadRecallDocument } from '../../../clients/manageRecallsApiClient'
-import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { NamedFormError, FormWithDocumentUploadValidatorFn, SaveToApiFn } from '../../../@types'
-import { errorMsgDocumentUpload, makeErrorObject, saveErrorObject } from '../../utils/errorMessages'
-import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
-import { processUpload } from './helpers/processUpload'
+import { updateRecall, uploadRecallDocument } from '../clients/manageRecallsApiClient'
+import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { NamedFormError, FormWithDocumentUploadValidatorFn, SaveToApiFn } from '../@types'
+import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from './utils/errorMessages'
+import { makeUrl, makeUrlToFromPage } from './utils/makeUrl'
+import { processUpload } from './documents/upload/helpers/processUpload'
 
-export const formWithDocumentUploadHandler =
+export const separateEmailAndFormSave =
   ({
     uploadFormFieldName,
     validator,
@@ -23,7 +23,6 @@ export const formWithDocumentUploadHandler =
     const { user, urlInfo } = res.locals
     const { request, uploadFailed } = await processUpload(uploadFormFieldName, req, res)
     const { file } = request
-    const isNote = documentCategory === UploadDocumentRequest.category.NOTE_DOCUMENT
     const wasUploadFileReceived = Boolean(file)
     const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
       requestBody: request.body,
@@ -42,11 +41,7 @@ export const formWithDocumentUploadHandler =
             fileContent: file.buffer.toString('base64'),
           }
         : {}
-      if (isNote) {
-        if (!errorList && !uploadHasErrors) {
-          await addNote({ recallId, valuesToSave: { ...valuesToSave, ...fileData }, user })
-        }
-      } else if (wasUploadFileReceived && !uploadHasErrors && !uploadFailed) {
+      if (wasUploadFileReceived && !uploadHasErrors && !uploadFailed) {
         await uploadRecallDocument(
           recallId,
           {
@@ -76,17 +71,20 @@ export const formWithDocumentUploadHandler =
       return res.redirect(303, req.originalUrl)
     }
     // upload succeeded - are there form field values other than the uploaded file
-    if (valuesToSave && !isNote) {
+    if (valuesToSave) {
       try {
         if (saveToApiFn) {
           await saveToApiFn({ recallId, valuesToSave, user })
         } else {
           await updateRecall(recallId, valuesToSave, user.token)
         }
-      } catch (e) {
+      } catch (err) {
         req.session.unsavedValues = unsavedValues
-        req.session.errors = [saveErrorObject]
-        res.redirect(303, req.originalUrl)
+        req.session.errors = [
+          ...(errors || []),
+          saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
+        ]
+        return res.redirect(303, req.originalUrl)
       }
     }
     if (confirmationMessage) {

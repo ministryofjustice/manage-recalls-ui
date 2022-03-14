@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { updateRecall } from '../clients/manageRecallsApiClient'
 import logger from '../../logger'
 import { ReqValidatorFn, SaveToApiFn } from '../@types'
+import { saveErrorWithDetails } from './utils/errorMessages'
 
 export const recallFormPost =
   (validator: ReqValidatorFn, saveToApiFn?: SaveToApiFn) =>
@@ -31,10 +32,8 @@ export const recallFormPost =
     } catch (err) {
       logger.error(err)
       req.session.errors = [
-        {
-          name: 'saveError',
-          text: 'An error occurred saving your changes',
-        },
+        ...(errors || []),
+        saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
       ]
       res.redirect(303, req.originalUrl)
     }

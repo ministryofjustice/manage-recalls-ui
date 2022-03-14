@@ -1,4 +1,10 @@
-import { FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } from '../../../@types'
+import {
+  ConfirmationMessage,
+  FormWithDocumentUploadValidatorArgs,
+  NamedFormError,
+  ObjectMap,
+  ValidationError,
+} from '../../../@types'
 import {
   errorMsgEmailUpload,
   errorMsgProvideDetail,
@@ -12,6 +18,7 @@ export interface RescindDecisionValuesToSave {
   approved: boolean
   details: string
   emailSentDate: string
+  rescindRecordId: string
 }
 
 export const validateRescindDecision = ({
@@ -23,9 +30,11 @@ export const validateRescindDecision = ({
   errors?: NamedFormError[]
   valuesToSave?: RescindDecisionValuesToSave
   unsavedValues: ObjectMap<unknown>
+  confirmationMessage?: ConfirmationMessage
 } => {
   let errors
   let valuesToSave
+  let confirmationMessage
   const invalidFileName = isInvalidEmailFileName(fileName)
   const { approveRescindDecision, rescindDecisionDetail, confirmEmailSent } = requestBody
   const rescindDecisionEmailSentDateParts = {
@@ -118,10 +127,19 @@ export const validateRescindDecision = ({
   }
   if (!errors) {
     valuesToSave = {
+      rescindRecordId: requestBody.rescindRecordId,
       approved: approveRescindDecision === 'YES',
       details: rescindDecisionDetail,
       emailSentDate: rescindDecisionEmailSentDate as string,
     }
+    confirmationMessage = {
+      text: valuesToSave.approved ? 'Recall rescinded.' : 'Rescind not approved.',
+      link: {
+        text: 'View',
+        href: '#rescinds',
+      },
+      type: 'success',
+    }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, confirmationMessage }
 }

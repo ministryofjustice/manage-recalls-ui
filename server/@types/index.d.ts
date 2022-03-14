@@ -206,8 +206,8 @@ export interface Address {
 }
 
 export interface SaveToApiFnArgs {
-  recallId: string
-  valuesToSave: unknown
+  recallId?: string
+  valuesToSave: ObjectMap<unknown>
   user: User
 }
 

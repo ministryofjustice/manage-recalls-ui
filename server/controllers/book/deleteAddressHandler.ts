@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { deleteLastKnownAddress } from '../../clients/manageRecallsApiClient'
-import { saveErrorObject } from '../utils/errorMessages'
+import { saveErrorWithDetails } from '../utils/errorMessages'
 import { makeUrl } from '../utils/makeUrl'
 import { isString } from '../../utils/utils'
 
@@ -22,7 +22,7 @@ export const deleteAddressHandler = async (req: Request, res: Response): Promise
     }
     res.redirect(303, makeUrl('address-list', urlInfo))
   } catch (err) {
-    req.session.errors = [saveErrorObject]
+    req.session.errors = [saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' })]
     res.redirect(303, makeUrl('address-list', urlInfo))
   }
 }

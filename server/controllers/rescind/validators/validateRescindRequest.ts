@@ -1,4 +1,10 @@
-import { FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap, ValidationError } from '../../../@types'
+import {
+  ConfirmationMessage,
+  FormWithDocumentUploadValidatorArgs,
+  NamedFormError,
+  ObjectMap,
+  ValidationError,
+} from '../../../@types'
 import {
   errorMsgEmailUpload,
   errorMsgProvideDetail,
@@ -17,9 +23,11 @@ export const validateRescindRequest = ({
   errors?: NamedFormError[]
   valuesToSave?: { details: string; emailReceivedDate: string }
   unsavedValues: ObjectMap<unknown>
+  confirmationMessage?: ConfirmationMessage
 } => {
   let errors
   let valuesToSave
+  let confirmationMessage
   const invalidFileName = isInvalidEmailFileName(fileName)
   const { rescindRequestDetail } = requestBody
   const rescindRequestEmailReceivedDateParts = {
@@ -91,7 +99,15 @@ export const validateRescindRequest = ({
     rescindRequestEmailReceivedDateParts,
   }
   if (!errors) {
+    confirmationMessage = {
+      text: 'Rescind request added.',
+      link: {
+        text: 'View',
+        href: '#rescinds',
+      },
+      type: 'success',
+    }
     valuesToSave = { details: rescindRequestDetail, emailReceivedDate: rescindRequestEmailReceivedDate as string }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, confirmationMessage }
 }

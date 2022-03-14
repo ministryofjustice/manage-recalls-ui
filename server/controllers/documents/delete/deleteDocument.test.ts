@@ -92,6 +92,7 @@ describe('deleteDocument', () => {
           fromPage,
         },
       },
+      redirect: jest.fn(),
     }
     try {
       await deleteDocument(req, res)

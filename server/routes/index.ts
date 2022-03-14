@@ -5,7 +5,7 @@ import { createRecall } from '../controllers/book/createRecall'
 import { recallList } from '../controllers/recallsList/recallList'
 import { uploadDocumentsFormHandler } from '../controllers/documents/upload/uploadDocumentsFormHandler'
 import { recallPageGet } from '../controllers/recallPageGet'
-import { formWithDocumentUploadHandler } from '../controllers/documents/upload/formWithDocumentUploadHandler'
+import { separateEmailAndFormSave } from '../controllers/separateEmailAndFormSave'
 import { recallFormPost } from '../controllers/recallFormPost'
 import { validateDecision } from '../controllers/assess/validators/validateDecision'
 import { validateDossierLetter } from '../controllers/dossier/validators/validateDossierLetter'
@@ -27,12 +27,16 @@ import { parseUrlParams, returnToRecallListParam } from '../middleware/parseUrlP
 import { fetchRemoteRefData } from '../referenceData'
 import { assignUser } from '../controllers/assignUser/assignUser'
 import {
+  addLastKnownAddress,
+  addNote,
+  addRescindRecord,
   addReturnToCustodyDates,
   setConfirmedRecallType,
   setRecommendedRecallType,
   stopRecall,
+  updateRescindRecord,
 } from '../clients/manageRecallsApiClient'
-import { addMissingDocumentRecordFormHandler } from '../controllers/documents/missing-documents/addMissingDocumentRecordFormHandler'
+import { createMissingDocumentRecord } from '../controllers/documents/missing-documents/createMissingDocumentRecord'
 import { validateLicenceName } from '../controllers/book/validators/validateLicenceName'
 import { checkUserDetailsExist } from '../middleware/checkUserDetailsExist'
 import { uploadDocumentVersionFormHandler } from '../controllers/documents/upload/uploadDocumentVersionFormHandler'
@@ -42,7 +46,6 @@ import { createGeneratedDocument } from '../controllers/documents/generated/crea
 import { getSingleFieldChangeHistory } from '../controllers/changeHistory/getSingleFieldChangeHistory'
 import { getAllFieldsChangeHistory } from '../controllers/changeHistory/getAllFieldsChangeHistory'
 import { validateCustodyStatus } from '../controllers/book/validators/validateCustodyStatus'
-import { addLastKnownAddressHandler } from '../controllers/book/addLastKnownAddressHandler'
 import { findAddressHandler } from '../controllers/book/findAddressHandler'
 import { validateLastKnownAddress } from '../controllers/book/validators/validateLastKnownAddress'
 import { selectLookupAddressHandler } from '../controllers/book/selectLookupAddressHandler'
@@ -51,7 +54,6 @@ import { deleteAddressHandler } from '../controllers/book/deleteAddressHandler'
 import { validateConfirmCustodyStatus } from '../controllers/assess/validators/validateConfirmCustodyStatus'
 import { validateWarrantReference } from '../controllers/assess/validators/validateWarrantReference'
 import { saveWarrantReference } from '../controllers/assess/helpers/saveWarrantReference'
-import { rescindFormHandler } from '../controllers/rescind/rescindFormHandler'
 import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
 import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
@@ -60,6 +62,11 @@ import { validateRecallType } from '../controllers/book/validators/validateRecal
 import { saveRecallAndUnassignUser } from '../controllers/documents/upload/helpers/saveRecallAndUnassignUser'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateAddNote } from '../controllers/note/validators/validateAddNote'
+import { combinedDocumentAndFormSave } from '../controllers/combinedDocumentAndFormSave'
+import { validateMissingDocuments } from '../controllers/documents/missing-documents/validators/validateMissingDocuments'
+import { validateRescindRequest } from '../controllers/rescind/validators/validateRescindRequest'
+import { validateRescindDecision } from '../controllers/rescind/validators/validateRescindDecision'
+import { validateAddressManual } from '../controllers/book/validators/validateAddressManual'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -87,7 +94,7 @@ export default function routes(router: Router): Router {
   router.get(`${basePath}/postcode-results`, findAddressHandler, recallPageGet('recallFindAddressResults'))
   post(`${basePath}/postcode-results`, selectLookupAddressHandler)
   get(`${basePath}/address-manual`, recallPageGet('recallAddressManual'))
-  post(`${basePath}/address-manual`, addLastKnownAddressHandler)
+  post(`${basePath}/address-manual`, recallFormPost(validateAddressManual, addLastKnownAddress))
   get(`${basePath}/address-list`, recallPageGet('recallAddressList'))
   post(`${basePath}/address-list`, addAnotherAddressHandler)
   post(`${basePath}/address-list-delete`, deleteAddressHandler)
@@ -96,7 +103,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/request-received`, recallPageGet('recallRequestReceived'))
   post(
     `${basePath}/request-received`,
-    formWithDocumentUploadHandler({
+    separateEmailAndFormSave({
       uploadFormFieldName: 'recallRequestEmailFileName',
       validator: validateRecallRequestReceived,
       documentCategory: UploadDocumentRequest.category.RECALL_REQUEST_EMAIL,
@@ -113,7 +120,14 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-documents`, recallPageGet('recallDocuments'))
   post(`${basePath}/upload-documents`, uploadDocumentsFormHandler)
   get(`${basePath}/missing-documents`, recallPageGet('recallMissingDocuments'))
-  post(`${basePath}/missing-documents`, addMissingDocumentRecordFormHandler)
+  post(
+    `${basePath}/missing-documents`,
+    combinedDocumentAndFormSave({
+      uploadFormFieldName: 'missingDocumentsEmailFileName',
+      validator: validateMissingDocuments,
+      saveToApiFn: createMissingDocumentRecord,
+    })
+  )
   get(`${basePath}/upload-document-version`, recallPageGet('recallUploadDocumentVersion'))
   post(`${basePath}/upload-document-version`, uploadDocumentVersionFormHandler)
   get(`${basePath}/check-answers`, recallPageGet('recallCheckAnswers'))
@@ -127,7 +141,7 @@ export default function routes(router: Router): Router {
 
   post(
     `${basePath}/assess-decision`,
-    formWithDocumentUploadHandler({
+    separateEmailAndFormSave({
       uploadFormFieldName: 'confirmedRecallTypeEmailFileName',
       validator: validateDecision,
       saveToApiFn: setConfirmedRecallType,
@@ -144,7 +158,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/assess-email`, recallPageGet('assessEmail'))
   post(
     `${basePath}/assess-email`,
-    formWithDocumentUploadHandler({
+    separateEmailAndFormSave({
       uploadFormFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       saveToApiFn: saveRecallAndUnassignUser,
@@ -165,7 +179,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-nsy-email`, recallPageGet('dossierNsyEmail'))
   post(
     `${basePath}/dossier-nsy-email`,
-    formWithDocumentUploadHandler({
+    separateEmailAndFormSave({
       uploadFormFieldName: 'nsyEmailFileName',
       validator: validateNsyEmail,
       documentCategory: UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL,
@@ -179,7 +193,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/dossier-email`, recallPageGet('dossierEmail'))
   post(
     `${basePath}/dossier-email`,
-    formWithDocumentUploadHandler({
+    separateEmailAndFormSave({
       uploadFormFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
       saveToApiFn: saveRecallAndUnassignUser,
@@ -208,18 +222,32 @@ export default function routes(router: Router): Router {
   get(`${basePath}/add-note`, recallPageGet('addNote'))
   post(
     `${basePath}/add-note`,
-    formWithDocumentUploadHandler({
+    combinedDocumentAndFormSave({
       uploadFormFieldName: 'fileName',
       validator: validateAddNote,
-      documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
+      saveToApiFn: addNote,
     })
   )
 
   // RESCIND RECALL
   get(`${basePath}/rescind-request`, recallPageGet('rescindRequest'))
-  post(`${basePath}/rescind-request`, rescindFormHandler({ action: 'add' }))
+  post(
+    `${basePath}/rescind-request`,
+    combinedDocumentAndFormSave({
+      uploadFormFieldName: 'rescindRequestEmailFileName',
+      validator: validateRescindRequest,
+      saveToApiFn: addRescindRecord,
+    })
+  )
   get(`${basePath}/rescind-decision`, recallPageGet('rescindDecision'))
-  post(`${basePath}/rescind-decision`, rescindFormHandler({ action: 'update' }))
+  post(
+    `${basePath}/rescind-decision`,
+    combinedDocumentAndFormSave({
+      uploadFormFieldName: 'rescindDecisionEmailFileName',
+      validator: validateRescindDecision,
+      saveToApiFn: updateRescindRecord,
+    })
+  )
 
   // STOP RECALL
   get(`${basePath}/stop-recall`, recallPageGet('stopRecall'))

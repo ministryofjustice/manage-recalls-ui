@@ -6,6 +6,7 @@ import {
 } from '../documents/upload/helpers/allowedUploadExtensions'
 import { listToString } from './lists'
 import { renderTemplateString } from '../../nunjucks/nunjucksFunctions'
+import { SanitisedError } from '../../utils/sanitisedError'
 
 export const errorMsgUserActionDateTime = (
   validationError: ValidationError,
@@ -108,6 +109,16 @@ export const errorMsgNoteFileUpload = {
 export const saveErrorObject = {
   name: 'saveError',
   text: 'An error occurred saving your changes',
+}
+
+export const saveErrorWithDetails = ({ err, isProduction }: { err: SanitisedError; isProduction: boolean }) => {
+  if (isProduction) {
+    return saveErrorObject
+  }
+  return {
+    name: 'saveError',
+    text: err.text || err.stack,
+  }
 }
 
 export const makeErrorObject = ({

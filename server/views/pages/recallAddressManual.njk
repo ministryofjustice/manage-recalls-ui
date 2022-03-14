@@ -23,6 +23,7 @@
             {% endif %}
             <form novalidate action="{{ makeUrl('address-manual', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                <input type="hidden" name="recallId" value="{{ recall.recallId }}" />
                 <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
                 {% call govukFieldset({
                     legend: {

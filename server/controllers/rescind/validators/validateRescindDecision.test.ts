@@ -3,8 +3,9 @@ import { validateRescindDecision } from './validateRescindDecision'
 import { padWithZeroes } from '../../utils/dates/format'
 
 describe('validateRescindDecision', () => {
-  it('returns valuesToSave with a date, and no errors if all fields are submitted', () => {
+  it('returns valuesToSave with a date, confirmation message and no errors if all fields are submitted', () => {
     const requestBody = {
+      rescindRecordId: '1234',
       approveRescindDecision: 'YES',
       confirmEmailSent: 'YES',
       rescindDecisionEmailSentDateDay: '23',
@@ -12,7 +13,7 @@ describe('validateRescindDecision', () => {
       rescindDecisionEmailSentDateYear: '2019',
       rescindDecisionDetail: 'Details..',
     }
-    const { errors, valuesToSave } = validateRescindDecision({
+    const { errors, valuesToSave, confirmationMessage } = validateRescindDecision({
       requestBody,
       fileName: 'test.msg',
       wasUploadFileReceived: true,
@@ -20,9 +21,18 @@ describe('validateRescindDecision', () => {
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
+      rescindRecordId: '1234',
       approved: true,
       details: 'Details..',
       emailSentDate: '2019-12-23',
+    })
+    expect(confirmationMessage).toEqual({
+      link: {
+        href: '#rescinds',
+        text: 'View',
+      },
+      text: 'Recall rescinded.',
+      type: 'success',
     })
   })
 

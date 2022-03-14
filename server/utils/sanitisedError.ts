@@ -1,10 +1,11 @@
 import type { ResponseError } from 'superagent'
+import { ObjectMap } from '../@types'
 
-interface SanitisedError {
+export interface SanitisedError {
   text?: string
   status?: number
   headers?: unknown
-  data?: unknown
+  data?: ObjectMap<unknown>
   stack: string
   message: string
 }

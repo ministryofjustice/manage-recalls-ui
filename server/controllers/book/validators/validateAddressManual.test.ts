@@ -3,14 +3,16 @@ import { validateAddressManual } from './validateAddressManual'
 describe('validateAddressManual', () => {
   const recallId = '123'
   const requestBody = {
+    recallId,
     line1: '345 PORCHESTER ROAD ',
     line2: ' SOUTHSEA',
     town: 'PORTSMOUTH ',
     postcode: 'PO14OY',
   }
+  const urlInfo = { basePath: '/recalls/', currentPage: 'address-manual' }
 
   it('returns valuesToSave and no errors if all fields are submitted', () => {
-    const { errors, valuesToSave } = validateAddressManual(recallId, requestBody)
+    const { errors, valuesToSave } = validateAddressManual({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallId: '123',
@@ -23,7 +25,7 @@ describe('validateAddressManual', () => {
   })
 
   it('returns valuesToSave and no errors if address line 2 is omitted', () => {
-    const { errors, valuesToSave } = validateAddressManual(recallId, { ...requestBody, line2: '' })
+    const { errors, valuesToSave } = validateAddressManual({ requestBody: { ...requestBody, line2: '' }, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallId: '123',
@@ -36,7 +38,7 @@ describe('validateAddressManual', () => {
   })
 
   it('returns valuesToSave and no errors if postcode is omitted', () => {
-    const { errors, valuesToSave } = validateAddressManual(recallId, { ...requestBody, postcode: '' })
+    const { errors, valuesToSave } = validateAddressManual({ requestBody: { ...requestBody, postcode: '' }, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
       recallId: '123',
@@ -50,7 +52,7 @@ describe('validateAddressManual', () => {
 
   it('returns errors for missing fields, and no valuesToSave', () => {
     const emptyBody = {}
-    const { errors, valuesToSave } = validateAddressManual(recallId, emptyBody)
+    const { errors, valuesToSave } = validateAddressManual({ requestBody: emptyBody, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -71,7 +73,7 @@ describe('validateAddressManual', () => {
       line1: '   ',
       town: '  ',
     }
-    const { errors, valuesToSave } = validateAddressManual(recallId, body)
+    const { errors, valuesToSave } = validateAddressManual({ requestBody: body, urlInfo })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
@@ -88,7 +90,7 @@ describe('validateAddressManual', () => {
   })
 
   it('returns unsavedValues when there are errors', () => {
-    const { errors, unsavedValues } = validateAddressManual(recallId, { ...requestBody, town: '' })
+    const { errors, unsavedValues } = validateAddressManual({ requestBody: { ...requestBody, town: '' }, urlInfo })
     expect(unsavedValues).toEqual({
       line1: '345 PORCHESTER ROAD',
       line2: 'SOUTHSEA',
@@ -105,9 +107,12 @@ describe('validateAddressManual', () => {
   })
 
   it('returns an error for invalid postcode, and no valuesToSave', () => {
-    const { errors, valuesToSave } = validateAddressManual(recallId, {
-      ...requestBody,
-      postcode: 'A123 45',
+    const { errors, valuesToSave } = validateAddressManual({
+      requestBody: {
+        ...requestBody,
+        postcode: 'A123 45',
+      },
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
