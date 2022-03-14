@@ -19,8 +19,7 @@ docker compose -f "${DOCKER_COMPOSE_FILE}" pull fake-manage-recalls-api redis
 docker compose -f "${DOCKER_COMPOSE_FILE}" up fake-manage-recalls-api redis -d --remove-orphans
 
 echo "Checking wiremock is running..."
-docker run --network container:fake-manage-recalls-api \
-    appropriate/curl -s -4 -o /dev/null --retry 120 --retry-delay 1 --retry-connrefused http://localhost:8080/__admin/docs
+curl -s -4 -o /dev/null --retry 120 --retry-delay 1 --retry-all-errors http://localhost:8080/__admin/docs
 
 echo "Installing ${MANAGE_RECALLS_UI_NAME}"
 npm install
@@ -36,7 +35,7 @@ sleep 5
 
 echo
 echo "Checking ${MANAGE_RECALLS_UI_NAME} is running..."
-curl -s -4 --retry 20 -o /dev/null --retry-delay 2 --retry-connrefused http://localhost:3000/ping || (
+curl -s -4 --retry 20 -o /dev/null --retry-delay 2 --retry-all-errors http://localhost:3000/ping || (
     echo "...FAILED, please check ${LOG_FILE}"
     exit 1
 )
