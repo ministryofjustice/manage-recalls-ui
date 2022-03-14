@@ -6,6 +6,7 @@ import { FormError, ObjectMap } from '../../@types'
 import { validateUserDetails } from './validators/validateUserDetails'
 import { UserDetailsResponse } from '../../@types/manage-recalls-api/models/UserDetailsResponse'
 import { isDefined } from '../../utils/utils'
+import { saveErrorWithDetails } from '../utils/errorMessages'
 
 const getFormValues = ({
   errors = {},
@@ -67,11 +68,9 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       }
     } catch (err) {
       logger.error(err)
-      req.session.errors = req.session.errors || [
-        {
-          name: 'error',
-          text: 'An error occurred saving your changes',
-        },
+      req.session.errors = [
+        ...(req.session.errors || []),
+        saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
       ]
     } finally {
       res.redirect(303, req.originalUrl)

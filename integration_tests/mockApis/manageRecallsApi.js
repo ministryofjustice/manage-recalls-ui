@@ -160,6 +160,7 @@ export default function manageRecallsApi(wiremock) {
         },
         response: {
           status: (expectation && expectation.statusCode) || 201,
+          body: (expectation && expectation.body) || '',
         },
       })
     },

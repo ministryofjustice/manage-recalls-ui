@@ -1,6 +1,23 @@
 import { validateMissingDocuments } from './validateMissingDocuments'
 
 describe('validateMissingDocuments', () => {
+  it('returns valuesToSave if everything is valid', () => {
+    const requestBody = {
+      missingDocumentsDetail: 'Email sent on 12/10/2021',
+    }
+    const { errors, valuesToSave, unsavedValues } = validateMissingDocuments({
+      requestBody,
+      fileName: 'test.msg',
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toEqual({ missingDocumentsDetail: 'Email sent on 12/10/2021' })
+    expect(unsavedValues).toEqual({
+      missingDocumentsDetail: 'Email sent on 12/10/2021',
+    })
+    expect(errors).toBeUndefined()
+  })
+
   it('returns an error if detail is missing, and no valuesToSave', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateMissingDocuments({

@@ -16,7 +16,6 @@ import {
   RecallDocument,
   BookRecallRequest,
   AddUserDetailsRequest,
-  CreateLastKnownAddressRequest,
 } from '../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../@types/manage-recalls-api/models/PoliceForce'
@@ -26,8 +25,6 @@ import { FieldAuditSummary } from '../@types/manage-recalls-api/models/FieldAudi
 import { RecallReasonResponse } from '../@types/manage-recalls-api/models/RecallReasonResponse'
 import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
 import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
-import { RescindRequestRequest } from '../@types/manage-recalls-api/models/RescindRequestRequest'
-import { RescindDecisionRequest } from '../@types/manage-recalls-api/models/RescindDecisionRequest'
 import { StopReasonResponse } from '../@types/manage-recalls-api/models/StopReasonResponse'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
@@ -162,12 +159,17 @@ export function addMissingDocumentRecord(
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
 }
 
-export function addRescindRecord(
-  recallId: string,
-  data: RescindRequestRequest,
-  token: string
-): Promise<superagent.Response> {
-  return restClient(token).post<superagent.Response>({ path: `/recalls/${recallId}/rescind-records`, data, raw: true })
+export function addRescindRecord({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post<superagent.Response>({
+    path: `/recalls/${recallId}/rescind-records`,
+    data: {
+      details: valuesToSave.details,
+      emailReceivedDate: valuesToSave.emailReceivedDate,
+      emailFileContent: valuesToSave.fileContent,
+      emailFileName: valuesToSave.fileName,
+    },
+    raw: true,
+  })
 }
 
 export function stopRecall({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
@@ -190,23 +192,32 @@ export function addReturnToCustodyDates({
   })
 }
 
-export function updateRescindRecord(
-  recallId: string,
-  rescindRecordId: string,
-  data: RescindDecisionRequest,
-  token: string
-): Promise<superagent.Response> {
-  return restClient(token).patch<superagent.Response>({
+export function updateRescindRecord({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  const {
+    rescindRecordId,
+    approved,
+    details,
+    emailSentDate,
+    fileContent: emailFileContent,
+    fileName: emailFileName,
+  } = valuesToSave as Record<string, unknown>
+  return restClient(user.token).patch<superagent.Response>({
     path: `/recalls/${recallId}/rescind-records/${rescindRecordId}`,
-    data,
+    data: {
+      approved,
+      details,
+      emailSentDate,
+      emailFileContent,
+      emailFileName,
+    },
     raw: true,
   })
 }
 
-export function addLastKnownAddress(address: CreateLastKnownAddressRequest, token: string) {
-  return restClient(token).post({
+export function addLastKnownAddress({ valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post({
     path: '/last-known-addresses',
-    data: address,
+    data: valuesToSave,
     raw: true,
   })
 }

@@ -3,14 +3,14 @@ import { validateRescindRequest } from './validateRescindRequest'
 import { padWithZeroes } from '../../utils/dates/format'
 
 describe('validateRescindRequest', () => {
-  it('returns valuesToSave with a date, and no errors if all fields are submitted', () => {
+  it('returns valuesToSave with a date, a confirmation message, and no errors if all fields are submitted', () => {
     const requestBody = {
       rescindRequestEmailReceivedDateDay: '23',
       rescindRequestEmailReceivedDateMonth: '12',
       rescindRequestEmailReceivedDateYear: '2019',
       rescindRequestDetail: 'Details..',
     }
-    const { errors, valuesToSave } = validateRescindRequest({
+    const { errors, valuesToSave, confirmationMessage } = validateRescindRequest({
       requestBody,
       fileName: 'test.msg',
       wasUploadFileReceived: true,
@@ -20,6 +20,14 @@ describe('validateRescindRequest', () => {
     expect(valuesToSave).toEqual({
       details: 'Details..',
       emailReceivedDate: '2019-12-23',
+    })
+    expect(confirmationMessage).toEqual({
+      link: {
+        href: '#rescinds',
+        text: 'View',
+      },
+      text: 'Rescind request added.',
+      type: 'success',
     })
   })
 

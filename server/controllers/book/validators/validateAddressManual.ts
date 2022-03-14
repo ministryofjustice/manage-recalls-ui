@@ -1,16 +1,21 @@
-import { NamedFormError, ObjectMap } from '../../../@types'
+import { NamedFormError, ObjectMap, UrlInfo } from '../../../@types'
 import { isPostcodeValid, normalisePostcode } from '../../utils/validate-formats'
 import { CreateLastKnownAddressRequest } from '../../../@types/manage-recalls-api/models/CreateLastKnownAddressRequest'
 import { makeErrorObject } from '../../utils/errorMessages'
 import { isEmptyString, isString } from '../../../utils/utils'
+import { makeUrl } from '../../utils/makeUrl'
 
-export const validateAddressManual = (
-  recallId: string,
+export const validateAddressManual = ({
+  requestBody,
+  urlInfo,
+}: {
   requestBody: ObjectMap<string>
-): {
+  urlInfo: UrlInfo
+}): {
   errors?: NamedFormError[]
   valuesToSave?: CreateLastKnownAddressRequest
   unsavedValues?: ObjectMap<unknown>
+  redirectToPage: string
 } => {
   let errors: NamedFormError[]
   let valuesToSave
@@ -21,6 +26,7 @@ export const validateAddressManual = (
     line2: line2Unprocessed,
     town: townUnprocessed,
     postcode: postcodeUnprocessed,
+    recallId,
   } = requestBody
   const line1 = line1Unprocessed?.trim().toUpperCase()
   const line2 = line2Unprocessed?.trim().toUpperCase()
@@ -72,5 +78,5 @@ export const validateAddressManual = (
       source: CreateLastKnownAddressRequest.source.MANUAL,
     }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: makeUrl('address-list', urlInfo) }
 }

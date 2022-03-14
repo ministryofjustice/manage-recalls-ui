@@ -11,6 +11,7 @@ export const validateMissingDocuments = ({
   errors?: NamedFormError[]
   valuesToSave: { missingDocumentsDetail: string }
   unsavedValues: ObjectMap<unknown>
+  redirectToPage: string
 } => {
   let errors
   let valuesToSave
@@ -58,5 +59,5 @@ export const validateMissingDocuments = ({
   if (!errors) {
     valuesToSave = { missingDocumentsDetail }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: 'check-answers' }
 }

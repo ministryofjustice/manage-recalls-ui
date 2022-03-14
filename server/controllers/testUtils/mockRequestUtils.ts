@@ -51,6 +51,7 @@ export const mockRes = ({
         ...((locals.user as object) || {}),
         token,
       },
+      env: locals.env || 'PRODUCTION',
     },
     redirect,
   } as unknown as Response

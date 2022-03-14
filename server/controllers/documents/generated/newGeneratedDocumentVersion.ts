@@ -6,6 +6,7 @@ import { RecallDocument } from '../../../@types/manage-recalls-api/models/Recall
 import { revocationOrderCreated } from './helpers/revocationOrderCreated'
 import { makeUrlToFromPage } from '../../utils/makeUrl'
 import { generatedDocCategoriesList } from './helpers'
+import { saveErrorWithDetails } from '../../utils/errorMessages'
 
 export const newGeneratedDocumentVersion = async (req: Request, res: Response) => {
   const { recallId } = req.params
@@ -45,11 +46,9 @@ export const newGeneratedDocumentVersion = async (req: Request, res: Response) =
     res.redirect(303, makeUrlToFromPage(urlInfo.fromPage, urlInfo))
   } catch (err) {
     logger.error(err)
-    req.session.errors = req.session.errors || [
-      {
-        name: 'saveError',
-        text: 'An error occurred saving your changes',
-      },
+    req.session.errors = [
+      ...(req.session.errors || []),
+      saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
     ]
     return reload()
   }

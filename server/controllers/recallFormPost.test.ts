@@ -81,15 +81,19 @@ describe('recallFormPost', () => {
     const currentPageUrl = `/recalls/${recallId}/prison-police`
 
     updateRecall.mockRejectedValueOnce(new Error('API error'))
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       originalUrl: currentPageUrl,
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-    }
+    const res = mockRes({
+      locals: {
+        urlInfo: {
+          basePath: `/recalls/${recallId}/`,
+        },
+      },
+    })
 
     await handler(req, res)
 

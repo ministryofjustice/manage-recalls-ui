@@ -1,26 +1,25 @@
 // @ts-nocheck
-import { formWithDocumentUploadHandler } from './formWithDocumentUploadHandler'
-import { uploadRecallDocument, updateRecall, addNote } from '../../../clients/manageRecallsApiClient'
-import { mockReq } from '../../testUtils/mockRequestUtils'
-import { uploadStorageField } from './helpers/uploadStorage'
-import { validateRecallRequestReceived } from '../../book/validators/validateRecallRequestReceived'
-import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
-import { validateRecallNotificationEmail } from '../../assess/validators/validateRecallNotificationEmail'
-import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import getRecallResponse from '../../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
-import { validateNsyEmail } from '../../dossier/validators/validateNsyEmail'
-import { validateAddNote } from '../../note/validators/validateAddNote'
+import { separateEmailAndFormSave } from './separateEmailAndFormSave'
+import { uploadRecallDocument, updateRecall } from '../clients/manageRecallsApiClient'
+import { mockReq } from './testUtils/mockRequestUtils'
+import { uploadStorageField } from './documents/upload/helpers/uploadStorage'
+import { validateRecallRequestReceived } from './book/validators/validateRecallRequestReceived'
+import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
+import { validateRecallNotificationEmail } from './assess/validators/validateRecallNotificationEmail'
+import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
+import getRecallResponse from '../../fake-manage-recalls-api/stubs/__files/get-recall.json'
+import { validateNsyEmail } from './dossier/validators/validateNsyEmail'
 
-jest.mock('../../../clients/manageRecallsApiClient')
-jest.mock('./helpers/uploadStorage')
+jest.mock('../clients/manageRecallsApiClient')
+jest.mock('./documents/upload/helpers/uploadStorage')
 
-const handler = formWithDocumentUploadHandler({
+const handler = separateEmailAndFormSave({
   uploadFormFieldName: 'recallRequestEmailFileName',
   validator: validateRecallRequestReceived,
   documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
 })
 
-describe('formWithDocumentUploadHandler', () => {
+describe('separateEmailAndFormSave', () => {
   let req
   beforeEach(() => {
     req = mockReq({
@@ -120,7 +119,7 @@ describe('formWithDocumentUploadHandler', () => {
         done()
       },
     }
-    formWithDocumentUploadHandler({
+    separateEmailAndFormSave({
       uploadFormFieldName: 'recallNsyEmailFileName',
       validator: validateNsyEmail,
       documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
@@ -301,7 +300,7 @@ describe('formWithDocumentUploadHandler', () => {
 
   it('calls a saveToApiFn function if passed', done => {
     const saveToApiFn = jest.fn()
-    const handlerWithSaveFn = formWithDocumentUploadHandler({
+    const handlerWithSaveFn = separateEmailAndFormSave({
       uploadFormFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
       saveToApiFn,
@@ -343,126 +342,5 @@ describe('formWithDocumentUploadHandler', () => {
       },
     }
     handlerWithSaveFn(req, res)
-  })
-
-  describe('Notes', () => {
-    it('saves the note to the API then redirects', done => {
-      ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-        req.file = {
-          originalname: 'email.msg',
-          buffer: 'def',
-        }
-        req.body = {
-          subject: 'Note',
-          details: 'Details',
-        }
-        cb()
-      })
-      ;(addNote as jest.Mock).mockResolvedValue({})
-      const res = {
-        locals: {
-          user: {},
-          urlInfo: { basePath: '/recalls/789/' },
-        },
-        redirect: (httpStatus, path) => {
-          expect(addNote).toHaveBeenCalledTimes(1)
-          expect(uploadRecallDocument).toHaveBeenCalledTimes(0)
-          expect(updateRecall).toHaveBeenCalledTimes(0)
-          expect(req.session.errors).toBeUndefined()
-          expect(httpStatus).toEqual(303)
-          expect(path).toEqual('/recalls/789/view-recall')
-          done()
-        },
-      }
-      formWithDocumentUploadHandler({
-        uploadFormFieldName: 'fileName',
-        validator: validateAddNote,
-        documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
-      })(req, res)
-    })
-
-    it('returns errors if subject / detail are missing', done => {
-      ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-        req.file = {
-          originalname: 'email.msg',
-          buffer: 'def',
-        }
-        req.body = {}
-        cb()
-      })
-      ;(addNote as jest.Mock).mockResolvedValue({})
-      const res = {
-        locals: {
-          user: {},
-          urlInfo: { basePath: '/recalls/789/' },
-        },
-        redirect: (httpStatus, path) => {
-          expect(addNote).toHaveBeenCalledTimes(0)
-          expect(uploadRecallDocument).toHaveBeenCalledTimes(0)
-          expect(updateRecall).toHaveBeenCalledTimes(0)
-          expect(req.session.errors).toEqual([
-            {
-              href: '#subject',
-              name: 'subject',
-              text: 'Enter a subject',
-            },
-            {
-              href: '#details',
-              name: 'details',
-              text: 'Provide more detail',
-            },
-          ])
-          expect(httpStatus).toEqual(303)
-          expect(path).toEqual('/upload-page')
-          done()
-        },
-      }
-      formWithDocumentUploadHandler({
-        uploadFormFieldName: 'fileName',
-        validator: validateAddNote,
-        documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
-      })(req, res)
-    })
-
-    it('returns errors if upload errors', done => {
-      ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-        req.file = {
-          originalname: 'email.ppt',
-          buffer: 'def',
-        }
-        req.body = {
-          subject: 'Note',
-          details: 'Details',
-        }
-        cb()
-      })
-      ;(addNote as jest.Mock).mockResolvedValue({})
-      const res = {
-        locals: {
-          user: {},
-          urlInfo: { basePath: '/recalls/789/' },
-        },
-        redirect: (httpStatus, path) => {
-          expect(addNote).toHaveBeenCalledTimes(0)
-          expect(uploadRecallDocument).toHaveBeenCalledTimes(0)
-          expect(updateRecall).toHaveBeenCalledTimes(0)
-          expect(req.session.errors).toEqual([
-            {
-              href: '#fileName',
-              name: 'fileName',
-              text: "The selected file 'email.ppt' must be an MSG, EML, DOC, DOCX or PDF",
-            },
-          ])
-          expect(httpStatus).toEqual(303)
-          expect(path).toEqual('/upload-page')
-          done()
-        },
-      }
-      formWithDocumentUploadHandler({
-        uploadFormFieldName: 'fileName',
-        validator: validateAddNote,
-        documentCategory: UploadDocumentRequest.category.NOTE_DOCUMENT,
-      })(req, res)
-    })
   })
 })
