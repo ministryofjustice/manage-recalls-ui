@@ -22,7 +22,7 @@
                         {% if record.isMissingRecord == true %}
                             <span data-qa='missingDocumentsLabel'>Missing</span>
                         {% else %}
-                            <a href="{{ record.url }}" class="govuk-link govuk-!-margin-right-2" target="_blank" data-qa='document-{{ documentId }}-link'>
+                            <a href="{{ record.url }}" class="govuk-link govuk-!-margin-right-2" target="_blank" rel="noopener" data-qa='document-{{ documentId }}-link'>
                                 {{ record.fileName }}
                             </a>
                             {% if record.version > 1 %}
