@@ -84,6 +84,7 @@ export const validateRescindDecision = ({
     if (confirmEmailSent && dateHasError(rescindDecisionEmailSentDate)) {
       errors.push(
         makeErrorObject({
+          name: 'rescindDecisionEmailSentDate',
           id: 'rescindDecisionEmailSentDate-rescindDecisionEmailSentDateDay',
           text: errorMsgUserActionDateTime(
             rescindDecisionEmailSentDate as ValidationError,

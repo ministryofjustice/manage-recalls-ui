@@ -51,7 +51,7 @@ describe('validateRescindRequest', () => {
       },
       {
         href: '#rescindRequestEmailReceivedDate-rescindRequestEmailReceivedDateDay',
-        name: 'rescindRequestEmailReceivedDate-rescindRequestEmailReceivedDateDay',
+        name: 'rescindRequestEmailReceivedDate',
         text: 'Enter the date you received the rescind request email',
         values: {},
       },
@@ -83,7 +83,7 @@ describe('validateRescindRequest', () => {
     expect(errors).toEqual([
       {
         href: '#rescindRequestEmailReceivedDate-rescindRequestEmailReceivedDateDay',
-        name: 'rescindRequestEmailReceivedDate-rescindRequestEmailReceivedDateDay',
+        name: 'rescindRequestEmailReceivedDate',
         text: 'The date you received the rescind request email must include a month',
         values: {
           day: '23',

@@ -265,7 +265,8 @@ context('Assess a recall', () => {
       fieldName: 'recallNotificationEmailFileName',
       summaryError: 'Select an email',
     })
-    assessRecallEmail.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'recallNotificationEmailSentDateTime-recallNotificationEmailSentDateTimeDay',
       fieldName: 'recallNotificationEmailSentDateTime',
       summaryError: 'Enter the date and time you sent the email',
     })
