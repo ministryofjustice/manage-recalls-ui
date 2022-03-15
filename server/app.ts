@@ -2,18 +2,19 @@ import express, { Response } from 'express'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 
+import { randomBytes } from 'crypto'
 import addRequestId from 'express-request-id'
+import compression from 'compression'
+import connectRedis from 'connect-redis'
+import createError from 'http-errors'
+import csurf from 'csurf'
+import flash from 'connect-flash'
 import helmet from 'helmet'
 import noCache from 'nocache'
-import csurf from 'csurf'
-import path from 'path'
-import compression from 'compression'
-import createError from 'http-errors'
-import flash from 'connect-flash'
 import passport from 'passport'
+import path from 'path'
+import rateLimit from 'express-rate-limit'
 import session from 'express-session'
-import connectRedis from 'connect-redis'
-import { randomBytes } from 'crypto'
 
 import auth from './authentication/auth'
 import indexRoutes from './routes'
@@ -228,6 +229,18 @@ export default function createApp(userService: UserService): express.Application
     req.session.nowInMinutes = Math.floor(Date.now() / 60e3)
     next()
   })
+
+  // Security recommendation - add rate limiting to prevent DOS attacks
+  // ref: https://github.com/ministryofjustice/manage-recalls-ui/security/code-scanning/21?query=ref%3Arefs%2Fpull%2F638%2Fmerge
+
+  const RateLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 1000, // Limit each IP to 1000 requests per `window` (here, per 5 minutes)
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  })
+
+  app.use(RateLimiter)
 
   app.get('/autherror', (req, res) => {
     res.status(401)
