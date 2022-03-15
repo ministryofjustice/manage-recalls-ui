@@ -1,9 +1,10 @@
-import { NamedFormError, ObjectMap } from '../../../@types'
+import { ConfirmationMessage, NamedFormError, ObjectMap } from '../../../@types'
 import { allowedImageFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { AddUserDetailsRequest } from '../../../@types/manage-recalls-api/models/AddUserDetailsRequest'
 import { AllowedUploadFileType } from '../../../@types/documents'
-import { makeErrorObject } from '../../utils/errorMessages'
+import { errorMsgInvalidEmail, errorMsgInvalidPhoneNumber, makeErrorObject } from '../../utils/errorMessages'
 import { listToString } from '../../utils/lists'
+import { isEmailValid, isPhoneValid } from '../../utils/validate-formats'
 
 export const isInvalidFileType = (file: Express.Multer.File, allowedExtensions: AllowedUploadFileType[]) => {
   return !allowedExtensions.some(ext => file.originalname.endsWith(ext.extension) && file.mimetype === ext.mimeType)
@@ -12,17 +13,25 @@ export const isInvalidFileType = (file: Express.Multer.File, allowedExtensions: 
 export const validateUserDetails = (
   requestBody: ObjectMap<string>,
   file?: Express.Multer.File
-): { errors?: NamedFormError[]; valuesToSave: AddUserDetailsRequest; unsavedValues: ObjectMap<string> } => {
+): {
+  errors?: NamedFormError[]
+  valuesToSave: AddUserDetailsRequest
+  unsavedValues: ObjectMap<string>
+  confirmationMessage?: ConfirmationMessage
+} => {
   let errors
   let valuesToSave
   let unsavedValues
+  let confirmationMessage
 
-  const { firstName, lastName, signatureEncoded, email, phoneNumber, caseworkerBand } = requestBody
+  const { firstName, lastName, existingSignature, email, phoneNumber, caseworkerBand } = requestBody
   const isFieldMissing =
-    !firstName || !lastName || !email || !phoneNumber || !caseworkerBand || (!signatureEncoded && !file)
+    !firstName || !lastName || !email || !phoneNumber || !caseworkerBand || (!existingSignature && !file)
   const isInvalidSignatureUpload = file && isInvalidFileType(file, allowedImageFileExtensions)
+  const emailValid = isEmailValid(email)
+  const phoneValid = isPhoneValid(phoneNumber)
 
-  if (isFieldMissing || isInvalidSignatureUpload) {
+  if (isFieldMissing || isInvalidSignatureUpload || !emailValid || !phoneValid) {
     errors = []
     if (!firstName) {
       errors.push(
@@ -48,11 +57,29 @@ export const validateUserDetails = (
         })
       )
     }
+    if (email && !emailValid) {
+      errors.push(
+        makeErrorObject({
+          id: 'email',
+          text: errorMsgInvalidEmail,
+          values: email,
+        })
+      )
+    }
     if (!phoneNumber) {
       errors.push(
         makeErrorObject({
           id: 'phoneNumber',
           text: 'Enter a phone number',
+        })
+      )
+    }
+    if (phoneNumber && !phoneValid) {
+      errors.push(
+        makeErrorObject({
+          id: 'phoneNumber',
+          text: errorMsgInvalidPhoneNumber,
+          values: phoneNumber,
         })
       )
     }
@@ -64,7 +91,7 @@ export const validateUserDetails = (
         })
       )
     }
-    if (!signatureEncoded && !file) {
+    if (!existingSignature && !file) {
       errors.push(
         makeErrorObject({
           id: 'signature',
@@ -89,7 +116,7 @@ export const validateUserDetails = (
       email,
       phoneNumber,
       caseworkerBand: caseworkerBand as AddUserDetailsRequest.caseworkerBand,
-      signatureEncoded,
+      existingSignature,
     }
   }
   if (!errors) {
@@ -97,7 +124,7 @@ export const validateUserDetails = (
     if (file) {
       signature = file.buffer.toString('base64')
     } else {
-      signature = signatureEncoded
+      signature = existingSignature
     }
     valuesToSave = {
       firstName,
@@ -107,6 +134,10 @@ export const validateUserDetails = (
       phoneNumber,
       caseworkerBand: caseworkerBand as AddUserDetailsRequest.caseworkerBand,
     }
+    confirmationMessage = {
+      text: 'User details have been updated.',
+      type: 'success',
+    }
   }
-  return { errors, valuesToSave, unsavedValues }
+  return { errors, valuesToSave, unsavedValues, confirmationMessage }
 }

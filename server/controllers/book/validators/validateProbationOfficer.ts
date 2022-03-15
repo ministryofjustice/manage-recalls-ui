@@ -2,7 +2,12 @@ import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/U
 import { ReqValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { isEmailValid, isPhoneValid } from '../../utils/validate-formats'
 import { isStringValidReferenceData } from '../../../referenceData'
-import { formatValidationErrorMessage, makeErrorObject } from '../../utils/errorMessages'
+import {
+  errorMsgInvalidEmail,
+  errorMsgInvalidPhoneNumber,
+  formatValidationErrorMessage,
+  makeErrorObject,
+} from '../../utils/errorMessages'
 import { makeUrl, makeUrlToFromPage } from '../../utils/makeUrl'
 
 export const validateProbationOfficer = ({
@@ -59,7 +64,7 @@ export const validateProbationOfficer = ({
       errors.push(
         makeErrorObject({
           id: 'probationOfficerEmail',
-          text: 'Enter an email address in the correct format, like name@example.com',
+          text: errorMsgInvalidEmail,
           values: probationOfficerEmail,
         })
       )
@@ -76,7 +81,7 @@ export const validateProbationOfficer = ({
       errors.push(
         makeErrorObject({
           id: 'probationOfficerPhoneNumber',
-          text: 'Enter a phone number in the correct format, like 01277 960901',
+          text: errorMsgInvalidPhoneNumber,
           values: probationOfficerPhoneNumber,
         })
       )

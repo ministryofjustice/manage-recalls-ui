@@ -62,12 +62,13 @@ export const postUser = async (req: Request, res: Response): Promise<void> => {
       if (error) {
         throw error
       }
-      const { errors, valuesToSave, unsavedValues } = validateUserDetails(req.body, req.file)
+      const { errors, valuesToSave, unsavedValues, confirmationMessage } = validateUserDetails(req.body, req.file)
       if (errors) {
         req.session.errors = errors
         req.session.unsavedValues = unsavedValues
       } else {
         await addUserDetails(valuesToSave, token)
+        req.session.confirmationMessage = confirmationMessage
       }
     } catch (err) {
       logger.error(err)

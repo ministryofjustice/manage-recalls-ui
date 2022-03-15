@@ -86,6 +86,9 @@ export const errorMsgEmailUpload = {
 
 export const errorMsgProvideDetail = 'Provide more detail'
 
+export const errorMsgInvalidPhoneNumber = 'Enter a phone number in the correct format, like 01277 960901'
+export const errorMsgInvalidEmail = 'Enter an email address in the correct format, like name@example.com'
+
 export const errorMsgDocumentUpload = {
   noFile: 'Select a file',
   saveError: 'An error occurred saving your changes',

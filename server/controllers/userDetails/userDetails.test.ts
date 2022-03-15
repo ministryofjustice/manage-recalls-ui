@@ -127,7 +127,7 @@ describe('postUser', () => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       cb()
     })
-    const req = mockPostRequest({ body: { signatureEncoded: signature }, originalUrl: '/user-details' })
+    const req = mockPostRequest({ body: { existingSignature: signature }, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -164,7 +164,7 @@ describe('postUser', () => {
           },
         ])
         expect(req.session.unsavedValues).toEqual({
-          signatureEncoded: signature,
+          existingSignature: signature,
         })
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/user-details')
@@ -211,7 +211,7 @@ describe('postUser', () => {
       userId,
     })
     const req = mockPostRequest({
-      body: { ...requestBody, signatureEncoded: signature },
+      body: { ...requestBody, existingSignature: signature },
       originalUrl: '/user-details',
     })
     const res = {
