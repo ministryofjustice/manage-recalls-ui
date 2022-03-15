@@ -54,7 +54,7 @@ describe('postUser', () => {
     firstName: 'Barry',
     lastName: 'Badger',
     email: 'barry@badger.com',
-    phoneNumber: '0739378378',
+    phoneNumber: '07393783789',
     caseworkerBand: 'THREE',
   }
   const signature = 'def'

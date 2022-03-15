@@ -279,7 +279,7 @@ describe('separateEmailAndFormSave', () => {
         expect(req.session.errors).toEqual([
           {
             href: '#recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
-            name: 'recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
+            name: 'recallEmailReceivedDateTime',
             text: 'The date and time you received the recall email must include a year',
             values: {
               year: '',

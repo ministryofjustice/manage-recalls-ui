@@ -69,7 +69,7 @@ describe('validateReturnToCustodyDates', () => {
       },
       {
         href: '#returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
-        name: 'returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
+        name: 'returnedToCustodyNotificationDateTime',
         text: 'Enter the date and time you found out {{ recall.fullName }} returned to custody',
         values: {},
       },
