@@ -95,8 +95,8 @@ describe('validateRescindDecision', () => {
     })
     expect(errors).toEqual([
       {
-        href: '#rescindDecisionEmailSentDate',
-        name: 'rescindDecisionEmailSentDate',
+        href: '#rescindDecisionEmailSentDate-rescindDecisionEmailSentDateDay',
+        name: 'rescindDecisionEmailSentDate-rescindDecisionEmailSentDateDay',
         text: 'The date you sent the rescind decision email must include a month',
         values: {
           day: '23',

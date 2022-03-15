@@ -90,8 +90,8 @@ describe('validateSentenceDetails', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#sentenceDate',
-        name: 'sentenceDate',
+        href: '#sentenceDate-sentenceDateDay',
+        name: 'sentenceDate-sentenceDateDay',
         text: 'Enter the date of sentence',
         values: {
           day: '',
@@ -100,8 +100,8 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
-        href: '#licenceExpiryDate',
-        name: 'licenceExpiryDate',
+        href: '#licenceExpiryDate-licenceExpiryDateDay',
+        name: 'licenceExpiryDate-licenceExpiryDateDay',
         text: 'Enter the licence expiry date',
         values: {
           day: '',
@@ -110,8 +110,8 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
-        href: '#sentenceExpiryDate',
-        name: 'sentenceExpiryDate',
+        href: '#sentenceExpiryDate-sentenceExpiryDateDay',
+        name: 'sentenceExpiryDate-sentenceExpiryDateDay',
         text: 'Enter the sentence expiry date',
         values: {
           day: '',
@@ -120,8 +120,8 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
-        href: '#sentenceLength',
-        name: 'sentenceLength',
+        href: '#sentenceLength-sentenceLengthYears',
+        name: 'sentenceLength-sentenceLengthYears',
         text: 'Enter the length of sentence',
         values: {
           days: '',
@@ -150,8 +150,8 @@ describe('validateSentenceDetails', () => {
         text: 'Enter a booking number',
       },
       {
-        href: '#lastReleaseDate',
-        name: 'lastReleaseDate',
+        href: '#lastReleaseDate-lastReleaseDateDay',
+        name: 'lastReleaseDate-lastReleaseDateDay',
         text: 'Enter the latest release date',
         values: {
           day: '',

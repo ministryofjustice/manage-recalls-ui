@@ -102,7 +102,7 @@ export const validateSentenceDetails = ({
     if (dateHasError(sentenceDate)) {
       errors.push(
         makeErrorObject({
-          id: 'sentenceDate',
+          id: 'sentenceDate-sentenceDateDay',
           text: formatValidationErrorMessage(sentenceDate as ValidationError, 'date of sentence'),
           values: sentenceDateParts,
         })
@@ -111,7 +111,7 @@ export const validateSentenceDetails = ({
     if (dateHasError(licenceExpiryDate)) {
       errors.push(
         makeErrorObject({
-          id: 'licenceExpiryDate',
+          id: 'licenceExpiryDate-licenceExpiryDateDay',
           text: formatValidationErrorMessage(licenceExpiryDate as ValidationError, 'licence expiry date'),
           values: licenceExpiryDateParts,
         })
@@ -120,7 +120,7 @@ export const validateSentenceDetails = ({
     if (dateHasError(sentenceExpiryDate)) {
       errors.push(
         makeErrorObject({
-          id: 'sentenceExpiryDate',
+          id: 'sentenceExpiryDate-sentenceExpiryDateDay',
           text: formatValidationErrorMessage(sentenceExpiryDate as ValidationError, 'sentence expiry date'),
           values: sentenceExpiryDateParts,
         })
@@ -129,7 +129,7 @@ export const validateSentenceDetails = ({
     if (!sentenceLengthEntered) {
       errors.push(
         makeErrorObject({
-          id: 'sentenceLength',
+          id: 'sentenceLength-sentenceLengthYears',
           text: 'Enter the length of sentence',
           values: sentenceLengthParts,
         })
@@ -195,7 +195,7 @@ export const validateSentenceDetails = ({
     if (dateHasError(lastReleaseDate)) {
       errors.push(
         makeErrorObject({
-          id: 'lastReleaseDate',
+          id: 'lastReleaseDate-lastReleaseDateDay',
           text: formatValidationErrorMessage(lastReleaseDate as ValidationError, 'latest release date'),
           values: lastReleaseDateParts,
         })
@@ -213,7 +213,7 @@ export const validateSentenceDetails = ({
       errors = errors || []
       errors.push(
         makeErrorObject({
-          id: 'conditionalReleaseDate',
+          id: 'conditionalReleaseDate-conditionalReleaseDateDay',
           text: formatValidationErrorMessage(conditionalReleaseDate as ValidationError, 'conditional release date'),
           values: conditionalReleaseDateParts,
         })

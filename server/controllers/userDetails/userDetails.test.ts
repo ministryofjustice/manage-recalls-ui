@@ -33,8 +33,14 @@ describe('getUser', () => {
       render: view => {
         expect(view).toEqual(`pages/userDetails`)
         expect(res.locals.user).toEqual({
-          ...userDetails,
+          firstName: 'Barry',
+          lastName: 'Badger',
+          email: 'barry@badger.com',
+          phoneNumber: '0739378378',
+          caseworkerBand: 'FOUR_PLUS',
+          signature: 'def',
           displayName: 'Barry Badger',
+          token: userToken,
         })
         done()
       },

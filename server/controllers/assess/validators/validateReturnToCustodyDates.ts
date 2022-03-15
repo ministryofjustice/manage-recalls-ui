@@ -38,7 +38,7 @@ export const validateReturnToCustodyDates = ({
     if (dateHasError(returnedToCustodyDateTime)) {
       errors.push(
         makeErrorObject({
-          id: 'returnedToCustodyDateTime',
+          id: 'returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
           text: formatValidationErrorMessage(
             returnedToCustodyDateTime as ValidationError,
             'date and time {{ recall.fullName }} returned to custody'
@@ -50,7 +50,7 @@ export const validateReturnToCustodyDates = ({
     if (dateHasError(returnedToCustodyNotificationDateTime)) {
       errors.push(
         makeErrorObject({
-          id: 'returnedToCustodyNotificationDateTime',
+          id: 'returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
           text: formatValidationErrorMessage(
             returnedToCustodyNotificationDateTime as ValidationError,
             'date and time you found out {{ recall.fullName }} returned to custody'
