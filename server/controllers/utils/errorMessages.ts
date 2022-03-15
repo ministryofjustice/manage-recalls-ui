@@ -61,7 +61,7 @@ export const formatValidationErrorMessage = (validationError: ValidationError, f
     case 'missingDateParts':
       return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts, 'and')}`
     case 'minValueDateYear':
-      return `The year must be later than ${MIN_VALUE_YEAR}`
+      return `The ${fieldLabel} must include a year later than ${MIN_VALUE_YEAR}`
     case 'minLengthDateTimeParts':
       return `The ${fieldLabel} must be in the correct format, like 06 05 2021 09:03`
     case 'minLengthDateParts':
@@ -127,14 +127,16 @@ export const saveErrorWithDetails = ({ err, isProduction }: { err: SanitisedErro
 
 export const makeErrorObject = ({
   id,
+  name,
   text,
   values,
 }: {
   id: string
+  name?: string
   text: string
   values?: ObjectMap<string> | string
 }): NamedFormError => ({
-  name: id,
+  name: name || id,
   text,
   href: `#${id}`,
   values,

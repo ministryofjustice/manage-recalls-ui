@@ -37,6 +37,7 @@ export const validateRecallRequestReceived = ({
     if (dateHasError(recallEmailReceivedDateTime)) {
       errors.push(
         makeErrorObject({
+          name: 'recallEmailReceivedDateTime',
           id: 'recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
           text: errorMsgUserActionDateTime(recallEmailReceivedDateTime as ValidationError, 'received the recall email'),
           values: recallEmailReceivedDateTimeParts,

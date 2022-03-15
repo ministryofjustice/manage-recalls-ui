@@ -91,7 +91,7 @@ describe('validateSentenceDetails', () => {
     expect(errors).toEqual([
       {
         href: '#sentenceDate-sentenceDateDay',
-        name: 'sentenceDate-sentenceDateDay',
+        name: 'sentenceDate',
         text: 'Enter the date of sentence',
         values: {
           day: '',
@@ -101,7 +101,7 @@ describe('validateSentenceDetails', () => {
       },
       {
         href: '#licenceExpiryDate-licenceExpiryDateDay',
-        name: 'licenceExpiryDate-licenceExpiryDateDay',
+        name: 'licenceExpiryDate',
         text: 'Enter the licence expiry date',
         values: {
           day: '',
@@ -111,7 +111,7 @@ describe('validateSentenceDetails', () => {
       },
       {
         href: '#sentenceExpiryDate-sentenceExpiryDateDay',
-        name: 'sentenceExpiryDate-sentenceExpiryDateDay',
+        name: 'sentenceExpiryDate',
         text: 'Enter the sentence expiry date',
         values: {
           day: '',
@@ -121,7 +121,7 @@ describe('validateSentenceDetails', () => {
       },
       {
         href: '#sentenceLength-sentenceLengthYears',
-        name: 'sentenceLength-sentenceLengthYears',
+        name: 'sentenceLength',
         text: 'Enter the length of sentence',
         values: {
           days: '',
@@ -151,7 +151,7 @@ describe('validateSentenceDetails', () => {
       },
       {
         href: '#lastReleaseDate-lastReleaseDateDay',
-        name: 'lastReleaseDate-lastReleaseDateDay',
+        name: 'lastReleaseDate',
         text: 'Enter the latest release date',
         values: {
           day: '',

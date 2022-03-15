@@ -76,7 +76,7 @@ describe('validateEmail', () => {
     expect(errors).toEqual([
       {
         href: '#recallNotificationEmailSentDateTime-recallNotificationEmailSentDateTimeDay',
-        name: 'recallNotificationEmailSentDateTime-recallNotificationEmailSentDateTimeDay',
+        name: 'recallNotificationEmailSentDateTime',
         text: 'Enter the date and time you sent the email',
         values: {},
       },
