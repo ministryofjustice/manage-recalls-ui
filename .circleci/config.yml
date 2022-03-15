@@ -325,7 +325,7 @@ workflows:
           name: build_docker
           publish: false
           persist_container_image: true
-          additional_docker_build_args: --build-arg BUILD_URL=${CIRCLE_BUILD_URL}
+          additional_docker_build_args: --build-arg BUILD_URL=${CIRCLE_BUILD_URL} --no-cache
           context:
             - hmpps-common-vars
           <<: *slack-fail-post-step
