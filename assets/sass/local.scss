@@ -13,6 +13,7 @@
   cursor: pointer;
 }
 .link-button {
+  @extend %govuk-link;
   color: $govuk-link-colour;
 }
 
