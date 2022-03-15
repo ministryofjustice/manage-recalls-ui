@@ -29,7 +29,7 @@
             <div class="govuk-inset-text">
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Current {{ formatDocLabel(recall.versionedUpload.category) }}</h2>
                 <p>
-                    <a href="{{ recall.versionedUpload.url }}" class="govuk-link" target="_blank" data-qa='previousVersionFileName'>{{ recall.versionedUpload.standardFileName }}</a>
+                    <a href="{{ recall.versionedUpload.url }}" class="govuk-link" target="_blank" rel="noopener" data-qa='previousVersionFileName'>{{ recall.versionedUpload.standardFileName }}</a>
                     (<span data-qa='previousVersionNumber'>version {{ recall.versionedUpload.version }}</span>)
                 </p>
                 <p class="govuk-body-s" data-qa='previousVersionUploadedDateTime'>Uploaded on {{ recall.versionedUpload.createdDateTime | dateTime }}</p>

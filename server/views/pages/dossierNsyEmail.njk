@@ -34,7 +34,7 @@
                 <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     <p class='govuk-body'>
-                        <a href="{{ formatNsyWarrantEmailLink(recall) }}" target='_blank'>Email New Scotland Yard</a> (opens an email).
+                        <a href="{{ formatNsyWarrantEmailLink(recall) }}" target="_blank" rel="noopener">Email New Scotland Yard</a> (opens an email).
                     </p>
                     {% set emailConfirmHtml %}
                         <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
