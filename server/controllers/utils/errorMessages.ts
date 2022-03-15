@@ -7,6 +7,7 @@ import {
 import { listToString } from './lists'
 import { renderTemplateString } from '../../nunjucks/nunjucksFunctions'
 import { SanitisedError } from '../../utils/sanitisedError'
+import { MIN_VALUE_YEAR } from './dates/convert'
 
 export const errorMsgUserActionDateTime = (
   validationError: ValidationError,
@@ -30,10 +31,10 @@ export const errorMsgUserActionDateTime = (
     case 'missingDateParts':
       return `The ${noun} you ${userAction} must include a ${listToString(validationError.invalidParts, 'and')}`
     case 'minLengthDateTimeParts':
-    case 'minValueDateTimeParts':
-      return `The date and time you ${userAction} must be in the correct format, like 06 05 2021 09:03`
+      return `The ${noun} you ${userAction} must be in the correct format, like 06 05 2021 09:03`
+    case 'minValueDateYear':
+      return `The year you ${userAction} must be later than ${MIN_VALUE_YEAR}`
     case 'minLengthDateParts':
-    case 'minValueDateParts':
       return `The date you ${userAction} must be in the correct format, like 06 05 2021`
     default:
       return `Error with the ${noun} ${userAction}`
@@ -59,11 +60,11 @@ export const formatValidationErrorMessage = (validationError: ValidationError, f
       return `The ${fieldLabel} must include a time`
     case 'missingDateParts':
       return `The ${fieldLabel} must include a ${listToString(validationError.invalidParts, 'and')}`
+    case 'minValueDateYear':
+      return `The year must be later than ${MIN_VALUE_YEAR}`
     case 'minLengthDateTimeParts':
-    case 'minValueDateTimeParts':
       return `The ${fieldLabel} must be in the correct format, like 06 05 2021 09:03`
     case 'minLengthDateParts':
-    case 'minValueDateParts':
       return `The ${fieldLabel} must be in the correct format, like 06 05 2021`
     // autocompletes and dropdowns
     case 'noSelectionFromList':

@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Email New Scotland Yard" %}
+{% set pageTitle = makePageTitle("Email New Scotland Yard", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

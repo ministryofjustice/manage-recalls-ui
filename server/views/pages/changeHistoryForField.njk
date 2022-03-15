@@ -1,7 +1,7 @@
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Field change history - " + fieldHistory.label %}
+{% set pageTitle = makePageTitle("Field change history - " + fieldHistory.label, errors) %}
 
 {% block content %}
     <div class="govuk-grid-row">

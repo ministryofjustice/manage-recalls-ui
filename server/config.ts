@@ -33,6 +33,7 @@ export interface ApiConfig {
 
 const config = {
   https: production,
+  applicationName: 'Manage a recall',
   staticResourceCacheDuration: 20,
   redis: {
     host: process.env.REDIS_HOST,

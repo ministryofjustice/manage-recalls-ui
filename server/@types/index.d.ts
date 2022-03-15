@@ -140,7 +140,7 @@ export type ValidationErrorType =
   | 'missingTime'
   | 'missingDateParts'
   | 'minLengthDateParts'
-  | 'minValueDateParts'
+  | 'minValueDateYear'
   | 'minLengthDateTimeParts'
   | 'minValueDateTimeParts'
   | 'noSelectionFromList'

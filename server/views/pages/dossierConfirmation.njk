@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Dossier created and sent" %}
+{% set pageTitle = makePageTitle("Dossier created and sent", errors) %}
 
 {% block content %}
     <div class="govuk-grid-row">

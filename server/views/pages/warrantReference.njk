@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - What is the warrant reference number?" %}
+{% set pageTitle = makePageTitle("What is the warrant reference number?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

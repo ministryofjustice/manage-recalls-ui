@@ -108,22 +108,19 @@ describe('Error messages', () => {
     })
 
     it('renders "minLengthDateTimeParts" error for date and time', () => {
-      const error = errorMsgUserActionDateTime({ errorId: 'minLengthDateTimeParts' }, 'received the recall email', true)
+      const error = errorMsgUserActionDateTime(
+        { errorId: 'minLengthDateTimeParts' },
+        'received the recall email',
+        false
+      )
       expect(error).toEqual(
         'The date and time you received the recall email must be in the correct format, like 06 05 2021 09:03'
       )
     })
 
-    it('renders "minValueDateParts" error for date only', () => {
-      const error = errorMsgUserActionDateTime({ errorId: 'minValueDateParts' }, 'sent the dossier', true)
-      expect(error).toEqual('The date you sent the dossier must be in the correct format, like 06 05 2021')
-    })
-
-    it('renders "minValueDateTimeParts" error for date and time', () => {
-      const error = errorMsgUserActionDateTime({ errorId: 'minValueDateTimeParts' }, 'sent the dossier')
-      expect(error).toEqual(
-        'The date and time you sent the dossier must be in the correct format, like 06 05 2021 09:03'
-      )
+    it('renders "minValueDateYear" error for date only', () => {
+      const error = errorMsgUserActionDateTime({ errorId: 'minValueDateYear' }, 'sent the dossier', true)
+      expect(error).toEqual('The year you sent the dossier must be later than 1900')
     })
   })
 

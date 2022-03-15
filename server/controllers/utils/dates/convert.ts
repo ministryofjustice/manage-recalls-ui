@@ -20,8 +20,7 @@ const filterPartsForEmptyStrings = (parts: unknown[]): DatePartNames[] =>
 const filterPartsForMinimumLength = (parts: unknown[]): DatePartNames[] =>
   parts.map(({ name, value, minLength }) => (value.length < (minLength || 2) ? name : undefined)).filter(Boolean)
 
-const filterPartsForMinimumValue = (parts: unknown[]): DatePartNames[] =>
-  parts.map(({ name, value, minValue }) => (value < minValue ? name : undefined)).filter(Boolean)
+export const MIN_VALUE_YEAR = 1900
 
 export const convertGmtDatePartsToUtc = (
   { year, month, day, hour, minute }: ObjectMap<string>,
@@ -35,7 +34,7 @@ export const convertGmtDatePartsToUtc = (
   const dateParts = [
     { name: 'day', value: day },
     { name: 'month', value: month },
-    { name: 'year', value: year, minLength: 4, minValue: 1900 },
+    { name: 'year', value: year, minLength: 4 },
   ]
   let timeParts = [] as DateTimePart[]
   if (options.includeTime) {
@@ -67,13 +66,6 @@ export const convertGmtDatePartsToUtc = (
         invalidParts: dateTimePartErrors,
       }
     }
-    dateTimePartErrors = filterPartsForMinimumValue([...dateParts, ...timeParts])
-    if (dateTimePartErrors.length) {
-      return {
-        errorId: 'minValueDateTimeParts',
-        invalidParts: dateTimePartErrors,
-      }
-    }
   }
   let datePartErrors = filterPartsForEmptyStrings(dateParts)
   if (datePartErrors.length) {
@@ -91,16 +83,14 @@ export const convertGmtDatePartsToUtc = (
     }
   }
 
-  datePartErrors = filterPartsForMinimumValue(dateParts)
-  if (datePartErrors.length) {
-    return {
-      errorId: 'minValueDateParts',
-      invalidParts: datePartErrors,
-    }
-  }
   const [d, m, y, h, min] = [...dateParts, ...timeParts].map(({ value }) => {
     return parseInt(value, 10)
   })
+  if (y < MIN_VALUE_YEAR) {
+    return {
+      errorId: 'minValueDateYear',
+    }
+  }
   try {
     DateTime.fromObject(
       {

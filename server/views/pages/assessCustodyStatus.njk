@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Assess a recall - Is the person in custody?" %}
+{% set pageTitle = makePageTitle("Is the person in custody?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

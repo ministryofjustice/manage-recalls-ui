@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - Does the person have a last known address?" %}
+{% set pageTitle = makePageTitle("Does the person have a last known address?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

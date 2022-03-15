@@ -21,6 +21,7 @@ import {
   selectDocCategory,
   recallInfoActionMenuItems,
   formatNsyWarrantEmailLink,
+  makePageTitle,
 } from './nunjucksFunctions'
 import { formatDateTimeFromIsoString, dueDateLabel, partBDueDateLabel } from '../controllers/utils/dates/format'
 import { isoDateToMillis } from '../controllers/utils/dates/convert'
@@ -93,6 +94,7 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('isInCustody', isInCustody)
   njkEnv.addGlobal('recallInfoActionMenuItems', recallInfoActionMenuItems)
   njkEnv.addGlobal('formatNsyWarrantEmailLink', formatNsyWarrantEmailLink)
+  njkEnv.addGlobal('makePageTitle', makePageTitle)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)

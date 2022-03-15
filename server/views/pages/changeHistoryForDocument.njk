@@ -3,7 +3,7 @@
 
 {% set heading = ("Generated document" if documentHistory.type == 'generated' else ("Uploaded email" if documentHistory.type == 'email' else "Uploaded document")) +  " change history" %}
 
-{% set pageTitle = applicationName + " - " + heading %}
+{% set pageTitle = makePageTitle(heading, errors) %}
 
 {% block content %}
     <div class="govuk-grid-row">

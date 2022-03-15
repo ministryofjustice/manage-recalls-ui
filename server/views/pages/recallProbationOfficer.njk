@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - Who recommended the recall?" %}
+{% set pageTitle = makePageTitle("Who recommended the recall?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

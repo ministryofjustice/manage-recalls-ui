@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Assess a recall - Download recall notification" %}
+{% set pageTitle = makePageTitle("Download recall notification", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

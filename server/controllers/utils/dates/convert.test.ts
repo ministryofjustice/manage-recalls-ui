@@ -67,7 +67,7 @@ describe('convertGmtDatePartsToUtc', () => {
 
   it('returns an error for a date with the year below the minimum value', () => {
     const result = convertGmtDatePartsToUtc({ year: '1899', month: '10', day: '12' })
-    expect(result).toEqual({ errorId: 'minValueDateParts', invalidParts: ['year'] })
+    expect(result).toEqual({ errorId: 'minValueDateYear', invalidParts: ['year'] })
   })
 
   it('returns undefined for a 29 Feb date not in a leap year', () => {
