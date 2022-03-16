@@ -152,6 +152,7 @@ context('Create a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
+        hasDossierBeenChecked: undefined,
         recallId,
         status,
         returnedToCustodyDateTime: undefined,

@@ -165,12 +165,7 @@ Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
 })
 
 Cypress.Commands.add('selectConfirmationCheckbox', (label, opts = {}) => {
-  cy.get(opts.parent || 'body')
-    .contains('legend', label)
-    .parent('fieldset')
-    .then($fieldset => {
-      cy.wrap($fieldset).contains('label', label).click()
-    })
+  return cy.contains('label', label).click()
 })
 
 // ============================ DROPDOWN / AUTOCOMPLETE ===============================
