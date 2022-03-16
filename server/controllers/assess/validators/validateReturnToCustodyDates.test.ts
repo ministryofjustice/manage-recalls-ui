@@ -62,13 +62,13 @@ describe('validateReturnToCustodyDates', () => {
     })
     expect(errors).toEqual([
       {
-        href: '#returnedToCustodyDateTime',
+        href: '#returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
         name: 'returnedToCustodyDateTime',
         text: 'Enter the date and time {{ recall.fullName }} returned to custody',
         values: {},
       },
       {
-        href: '#returnedToCustodyNotificationDateTime',
+        href: '#returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
         name: 'returnedToCustodyNotificationDateTime',
         text: 'Enter the date and time you found out {{ recall.fullName }} returned to custody',
         values: {},
@@ -111,7 +111,7 @@ describe('validateReturnToCustodyDates', () => {
     })
     expect(errors).toEqual([
       {
-        href: '#returnedToCustodyDateTime',
+        href: '#returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
         name: 'returnedToCustodyDateTime',
         text: 'The date and time {{ recall.fullName }} returned to custody must include a month and hour',
         values: {
@@ -123,7 +123,7 @@ describe('validateReturnToCustodyDates', () => {
         },
       },
       {
-        href: '#returnedToCustodyNotificationDateTime',
+        href: '#returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
         name: 'returnedToCustodyNotificationDateTime',
         text: 'The date and time you found out {{ recall.fullName }} returned to custody must include a day, year and minute',
         values: {

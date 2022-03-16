@@ -75,7 +75,7 @@ describe('validateEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#recallNotificationEmailSentDateTime',
+        href: '#recallNotificationEmailSentDateTime-recallNotificationEmailSentDateTimeDay',
         name: 'recallNotificationEmailSentDateTime',
         text: 'Enter the date and time you sent the email',
         values: {},

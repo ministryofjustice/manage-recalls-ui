@@ -23,7 +23,7 @@ context('Book an "in-custody" recall', () => {
     cy.login()
   })
 
-  it('book a recall', () => {
+  it('book an "in custody" recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectUpdateRecall', { recallId })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
@@ -316,7 +316,8 @@ context('Book an "in-custody" recall', () => {
       },
     })
     recallRequestReceived.clickContinue()
-    recallRequestReceived.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
       fieldName: 'recallEmailReceivedDateTime',
       summaryError: 'The date and time you received the recall email must include a day and month',
     })
@@ -356,7 +357,8 @@ context('Book an "in-custody" recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallLastRelease = recallLastReleasePage.verifyOnPage({ recallId })
     recallLastRelease.clickContinue()
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'lastReleaseDate-lastReleaseDateDay',
       fieldName: 'lastReleaseDate',
       summaryError: 'Enter the latest release date',
     })
@@ -368,19 +370,23 @@ context('Book an "in-custody" recall', () => {
       fieldName: 'sentencingCourt',
       summaryError: 'Select a sentencing court',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'sentenceDate-sentenceDateDay',
       fieldName: 'sentenceDate',
       summaryError: 'Enter the date of sentence',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'sentenceExpiryDate-sentenceExpiryDateDay',
       fieldName: 'sentenceExpiryDate',
       summaryError: 'Enter the sentence expiry date',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'licenceExpiryDate-licenceExpiryDateDay',
       fieldName: 'licenceExpiryDate',
       summaryError: 'Enter the licence expiry date',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'sentenceLength-sentenceLengthYears',
       fieldName: 'sentenceLength',
       summaryError: 'Enter the length of sentence',
     })

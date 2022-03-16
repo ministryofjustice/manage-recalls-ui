@@ -2,7 +2,6 @@ import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockRespo
 import { formatIsoDate } from '../support/utils'
 
 context('Rescind a recall', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
 
@@ -143,6 +142,7 @@ context('Rescind a recall', () => {
       summaryError: 'Provide more detail',
     })
     cy.assertErrorMessage({
+      fieldId: 'rescindRequestEmailReceivedDate-rescindRequestEmailReceivedDateDay',
       fieldName: 'rescindRequestEmailReceivedDate',
       summaryError: 'Enter the date you received the rescind request email',
     })

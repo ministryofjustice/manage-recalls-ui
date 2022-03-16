@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - User details" %}
+{% set pageTitle = makePageTitle("User details", errors) %}
 
 {% block content %}
     <div class="govuk-grid-row">
@@ -12,6 +12,13 @@
                     attributes: {
                         'data-qa': 'error-list'
                     }
+                }) }}
+            {% endif %}
+            {% if confirmationMessage %}
+                {{ mojBanner({
+                    type: confirmationMessage.type,
+                    html: '<span data-qa="confirmation">' + confirmationMessage.text + '</span>',
+                    iconFallbackText: confirmationMessage.type
                 }) }}
             {% endif %}
             <h1 class="govuk-heading-l">
@@ -106,7 +113,7 @@
                     }) }}
                     {%  if user.signature %}
                         <div class='govuk-!-margin-top-4'>
-                    <input data-qa='signature-image' name='signatureEncoded' type='hidden' value='{{ user.signature }}'>
+                    <input data-qa='signature-image' name='existingSignature' type='hidden' value='{{ user.signature }}'>
                     <img height='100' src="data:image/jpeg;base64,{{ user.signature }}" alt='User signature'/>
                         </div>
                     {% endif %}

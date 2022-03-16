@@ -43,22 +43,6 @@ export const validateIssuesNeeds = ({
         })
       )
     }
-    if (notInCustody && !arrestIssues) {
-      errors.push(
-        makeErrorObject({
-          id: 'arrestIssues',
-          text: 'Are there any arrest issues?',
-        })
-      )
-    }
-    if (!contraband) {
-      errors.push(
-        makeErrorObject({
-          id: 'contraband',
-          text: 'Do you think {{ recall.fullName }} will bring contraband into prison?',
-        })
-      )
-    }
     if (vulnerabilityDiversity === 'YES' && !vulnerabilityDiversityDetail) {
       errors.push(
         makeErrorObject({
@@ -67,11 +51,27 @@ export const validateIssuesNeeds = ({
         })
       )
     }
+    if (notInCustody && !arrestIssues) {
+      errors.push(
+        makeErrorObject({
+          id: 'arrestIssues',
+          text: 'Are there any arrest issues?',
+        })
+      )
+    }
     if (notInCustody && arrestIssues === 'YES' && !arrestIssuesDetail) {
       errors.push(
         makeErrorObject({
           id: 'arrestIssuesDetail',
           text: 'Provide more detail for any arrest issues',
+        })
+      )
+    }
+    if (!contraband) {
+      errors.push(
+        makeErrorObject({
+          id: 'contraband',
+          text: 'Do you think {{ recall.fullName }} will bring contraband into prison?',
         })
       )
     }

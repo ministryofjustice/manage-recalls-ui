@@ -42,7 +42,7 @@ context('Book a "not in custody" recall', () => {
     // valid input
     cy.selectFromDropdown('16 addresses', 'THE OAKS, LYNN ROAD, WALTON HIGHWAY, WISBECH, PE14 7DF')
     cy.clickButton('Continue')
-    cy.pageHeading().should('equal', 'Address added')
+    cy.pageHeading().should('equal', 'Last known addresses')
     cy.selectRadio('Do you want to add another address?', 'Yes')
     cy.clickButton('Continue')
     cy.clickLink("I can't find the postcode")
@@ -64,7 +64,7 @@ context('Book a "not in custody" recall', () => {
     cy.fillInput('Postcode', 'PO1 4OY', { clearExistingText: true })
     cy.clickButton('Continue')
 
-    cy.pageHeading().should('equal', 'Address added')
+    cy.pageHeading().should('equal', 'Last known addresses')
     cy.selectRadio('Do you want to add another address?', 'No')
     cy.clickButton('Continue')
 
@@ -242,10 +242,12 @@ context('Book a "not in custody" recall', () => {
     cy.visitRecallPage({ recallId, pageSuffix: 'rtc-dates' })
     cy.clickButton('Save and return')
     cy.assertErrorMessage({
+      fieldId: 'returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
       fieldName: 'returnedToCustodyDateTime',
       summaryError: `Enter the date and time ${personName} returned to custody`,
     })
     cy.assertErrorMessage({
+      fieldId: 'returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
       fieldName: 'returnedToCustodyNotificationDateTime',
       summaryError: `Enter the date and time you found out ${personName} returned to custody`,
     })

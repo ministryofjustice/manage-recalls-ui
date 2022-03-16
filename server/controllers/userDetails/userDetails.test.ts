@@ -19,6 +19,7 @@ describe('getUser', () => {
     signature: 'def',
     userId: '123',
   }
+
   it('renders the user if found', done => {
     ;(getCurrentUserDetails as jest.Mock).mockResolvedValue(userDetails)
     const req = mockGetRequest({ originalUrl: '/user-details' })
@@ -26,10 +27,21 @@ describe('getUser', () => {
       locals: {
         user: {
           token: userToken,
+          displayName: 'Barry Badger',
         },
       },
       render: view => {
         expect(view).toEqual(`pages/userDetails`)
+        expect(res.locals.user).toEqual({
+          firstName: 'Barry',
+          lastName: 'Badger',
+          email: 'barry@badger.com',
+          phoneNumber: '0739378378',
+          caseworkerBand: 'FOUR_PLUS',
+          signature: 'def',
+          displayName: 'Barry Badger',
+          token: userToken,
+        })
         done()
       },
     }
@@ -42,7 +54,7 @@ describe('postUser', () => {
     firstName: 'Barry',
     lastName: 'Badger',
     email: 'barry@badger.com',
-    phoneNumber: '0739378378',
+    phoneNumber: '07393783789',
     caseworkerBand: 'THREE',
   }
   const signature = 'def'
@@ -115,7 +127,7 @@ describe('postUser', () => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       cb()
     })
-    const req = mockPostRequest({ body: { signatureEncoded: signature }, originalUrl: '/user-details' })
+    const req = mockPostRequest({ body: { existingSignature: signature }, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -152,7 +164,7 @@ describe('postUser', () => {
           },
         ])
         expect(req.session.unsavedValues).toEqual({
-          signatureEncoded: signature,
+          existingSignature: signature,
         })
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/user-details')
@@ -199,7 +211,7 @@ describe('postUser', () => {
       userId,
     })
     const req = mockPostRequest({
-      body: { ...requestBody, signatureEncoded: signature },
+      body: { ...requestBody, existingSignature: signature },
       originalUrl: '/user-details',
     })
     const res = {

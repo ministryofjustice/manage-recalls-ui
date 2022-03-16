@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - How does the name appear on the licence?" %}
+{% set pageTitle = makePageTitle("How does the name appeaar on the licence?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

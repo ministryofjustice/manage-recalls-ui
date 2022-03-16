@@ -79,7 +79,7 @@ describe('validateRecallRequestReceived', () => {
     })
     expect(errors).toEqual([
       {
-        href: '#recallEmailReceivedDateTime',
+        href: '#recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
         name: 'recallEmailReceivedDateTime',
         text: 'Enter the date and time you received the recall email',
         values: {},
@@ -113,7 +113,7 @@ describe('validateRecallRequestReceived', () => {
     })
     expect(errors).toEqual([
       {
-        href: '#recallEmailReceivedDateTime',
+        href: '#recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
         name: 'recallEmailReceivedDateTime',
         text: 'The date and time you received the recall email must include a month and hour',
         values: {

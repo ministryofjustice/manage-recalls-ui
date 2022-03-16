@@ -3,7 +3,7 @@
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Assess a recall - How has the licence been breached?" %}
+{% set pageTitle = makePageTitle("How has the licence been breached?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Error" %}
+{% set pageTitle = makePageTitle("Sorry, there is a problem with the service", errors) %}
 
 {% block content %}
 

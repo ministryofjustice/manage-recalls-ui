@@ -1,7 +1,7 @@
 {% extends "../partials/layout.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Create a dossier - In which prison is the person?" %}
+{% set pageTitle = makePageTitle("In which prison is the person?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

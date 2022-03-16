@@ -45,7 +45,8 @@ export const validateDossierEmail = ({
     if (confirmDossierEmailSent && dateHasError(dossierEmailSentDate)) {
       errors.push(
         makeErrorObject({
-          id: 'dossierEmailSentDate',
+          name: 'dossierEmailSentDate',
+          id: 'dossierEmailSentDate-dossierEmailSentDateDay',
           text: errorMsgUserActionDateTime(dossierEmailSentDate as ValidationError, 'sent the email', true),
           values: dossierEmailSentDateParts,
         })

@@ -1,5 +1,5 @@
 import nunjucks from 'nunjucks'
-import { DatePartsParsed, FormError, ObjectMap, UiListItem, UrlInfo } from '../@types'
+import { DatePartsParsed, FormError, NamedFormError, ObjectMap, UiListItem, UrlInfo } from '../@types'
 import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
@@ -15,6 +15,7 @@ import { isDefined } from '../utils/utils'
 import { sensitiveInfo } from '../referenceData/sensitiveInfo'
 import { getReferenceDataItemLabel } from '../referenceData'
 import { formatDateTimeFromIsoString } from '../controllers/utils/dates/format'
+import config from '../config'
 
 export function personOrPeopleFilter(count: number): string {
   if (count === 1) {
@@ -232,3 +233,6 @@ export const formatNsyWarrantEmailLink = (recall: RecallResponse) => {
   )
   return `mailto:${email}?subject=${subject}&body=${body}`
 }
+
+export const makePageTitle = (pageHeading: string, errors?: NamedFormError[]) =>
+  `${errors ? 'Error: ' : ''}${pageHeading} - ${config.applicationName}`

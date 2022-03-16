@@ -48,7 +48,8 @@ export const validateRecallNotificationEmail = ({
     if (confirmRecallNotificationEmailSent && dateHasError(recallNotificationEmailSentDateTime)) {
       errors.push(
         makeErrorObject({
-          id: 'recallNotificationEmailSentDateTime',
+          name: 'recallNotificationEmailSentDateTime',
+          id: 'recallNotificationEmailSentDateTime-recallNotificationEmailSentDateTimeDay',
           text: errorMsgUserActionDateTime(recallNotificationEmailSentDateTime as ValidationError, 'sent the email'),
           values: recallNotificationEmailSentDateTimeParts,
         })

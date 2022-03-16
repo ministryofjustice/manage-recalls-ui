@@ -90,7 +90,7 @@ describe('validateSentenceDetails', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#sentenceDate',
+        href: '#sentenceDate-sentenceDateDay',
         name: 'sentenceDate',
         text: 'Enter the date of sentence',
         values: {
@@ -100,7 +100,7 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
-        href: '#licenceExpiryDate',
+        href: '#licenceExpiryDate-licenceExpiryDateDay',
         name: 'licenceExpiryDate',
         text: 'Enter the licence expiry date',
         values: {
@@ -110,7 +110,7 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
-        href: '#sentenceExpiryDate',
+        href: '#sentenceExpiryDate-sentenceExpiryDateDay',
         name: 'sentenceExpiryDate',
         text: 'Enter the sentence expiry date',
         values: {
@@ -120,7 +120,7 @@ describe('validateSentenceDetails', () => {
         },
       },
       {
-        href: '#sentenceLength',
+        href: '#sentenceLength-sentenceLengthYears',
         name: 'sentenceLength',
         text: 'Enter the length of sentence',
         values: {
@@ -150,7 +150,7 @@ describe('validateSentenceDetails', () => {
         text: 'Enter a booking number',
       },
       {
-        href: '#lastReleaseDate',
+        href: '#lastReleaseDate-lastReleaseDateDay',
         name: 'lastReleaseDate',
         text: 'Enter the latest release date',
         values: {

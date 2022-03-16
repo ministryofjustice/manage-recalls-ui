@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Create a new " + formatDocLabel(recall.versionedGeneratedDoc.category) %}
+{% set pageTitle = makePageTitle("Create a new " + formatDocLabel(recall.versionedGeneratedDoc.category), errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

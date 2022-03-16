@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - Missing documents" %}
+{% set pageTitle = makePageTitle("Missing documents", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

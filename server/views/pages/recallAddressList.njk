@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - Address added" %}
+{% set pageTitle = makePageTitle("Last known addresses", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -30,7 +30,7 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
-            <h1 class="govuk-heading-l">{% if urlInfo.fromPage %}Last known addresses{% else %}Address added{% endif %}</h1>
+            <h1 class="govuk-heading-l">Last known addresses</h1>
 
             {% if recall.lastKnownAddresses.length %}
             <form novalidate action="{{ makeUrl('address-list-delete', urlInfo) }}" method="post">

@@ -75,7 +75,7 @@ describe('validateDossierEmail', () => {
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
-        href: '#dossierEmailSentDate',
+        href: '#dossierEmailSentDate-dossierEmailSentDateDay',
         name: 'dossierEmailSentDate',
         text: 'Enter the date you sent the email',
         values: {},

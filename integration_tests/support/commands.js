@@ -246,13 +246,13 @@ Cypress.Commands.add('enterDateTime', (isoDateTime, opts = { parent: '#main-cont
 })
 
 Cypress.Commands.add('enterDateTimeForToday', (opts = { parent: '#main-content' }) => {
-  cy.clickButton('Today', opts)
+  cy.clickButton('Set date to today', opts)
   cy.fillInput('Hour', '00', opts)
   cy.fillInput('Minute', '01', opts)
 })
 
-Cypress.Commands.add('assertErrorMessage', ({ fieldName, summaryError, fieldError }) => {
-  cy.get(`[href="#${fieldName}"]`).should('have.text', summaryError)
+Cypress.Commands.add('assertErrorMessage', ({ fieldName, fieldId, summaryError, fieldError }) => {
+  cy.get(`[href="#${fieldId || fieldName}"]`).should('have.text', summaryError)
   cy.get(`#${fieldName}-error`).should($searchResults => {
     const text = $searchResults.text()
     expect(text.trim()).to.contain(fieldError || summaryError)

@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - What is the name of the local police force?" %}
+{% set pageTitle = makePageTitle("What is the name of the local police force?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

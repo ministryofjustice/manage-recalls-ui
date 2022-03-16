@@ -1,7 +1,7 @@
 
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - How does the name appear on the previous convictions sheet (pre-cons)?" %}
+{% set pageTitle = makePageTitle("How does the name appear on the previous convictions sheet (pre-cons)?", errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({

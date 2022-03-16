@@ -339,7 +339,8 @@ context('Create a dossier', () => {
     // confirm sending but don't enter a send date or upload an email
     dossierEmail.confirmEmailSent()
     dossierEmail.clickContinue()
-    dossierEmail.assertErrorMessage({
+    cy.assertErrorMessage({
+      fieldId: 'dossierEmailSentDate-dossierEmailSentDateDay',
       fieldName: 'dossierEmailSentDate',
       summaryError: 'Enter the date you sent the email',
     })

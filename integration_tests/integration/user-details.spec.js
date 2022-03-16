@@ -15,7 +15,7 @@ context('User details', () => {
     userDetails.enterTextInInput({ name: 'firstName', text: 'Barry' })
     userDetails.enterTextInInput({ name: 'lastName', text: 'Badger' })
     userDetails.enterTextInInput({ name: 'email', text: 'barry@badger.com' })
-    userDetails.enterTextInInput({ name: 'phoneNumber', text: '0739378378' })
+    userDetails.enterTextInInput({ name: 'phoneNumber', text: '07393783789' })
     userDetails.checkRadio({ fieldName: 'caseworkerBand', value: 'FOUR_PLUS' })
     userDetails.uploadFile({ fieldName: 'signature', fileName: 'signature.jpg', mimeType: 'image/jpeg' })
     userDetails.clickButton({ qaAttr: 'saveButton' })
@@ -26,7 +26,7 @@ context('User details', () => {
         firstName: 'Barry',
         lastName: 'Badger',
         email: 'barry@badger.com',
-        phoneNumber: '0739378378',
+        phoneNumber: '07393783789',
         caseworkerBand: 'FOUR_PLUS',
       },
     })

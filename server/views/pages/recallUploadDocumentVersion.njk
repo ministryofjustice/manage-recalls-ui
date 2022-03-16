@@ -1,6 +1,6 @@
 {% extends "../partials/layout.njk" %}
 
-{% set pageTitle = applicationName + " - Book a recall - Upload a new document" %}
+{% set pageTitle = makePageTitle("Upload a new " + formatDocLabel(recall.versionedUpload.category), errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({
