@@ -57,6 +57,8 @@ export const formatGeneratedDocFileName = ({
       return `${details} RECALL DOSSIER.pdf`
     case RecallDocument.category.LETTER_TO_PRISON:
       return `${details} LETTER TO PRISON.pdf`
+    case RecallDocument.category.LETTER_TO_PROBATION:
+      return `${details} LETTER TO PROBATION.pdf`
     case RecallDocument.category.REVOCATION_ORDER:
       return `${details} REVOCATION ORDER.pdf`
     case RecallDocument.category.REASONS_FOR_RECALL:

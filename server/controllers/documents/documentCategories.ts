@@ -157,6 +157,12 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     versioned: true,
   },
   {
+    label: 'Letter to probation',
+    name: RecallDocument.category.LETTER_TO_PROBATION,
+    type: 'generated',
+    versioned: true,
+  },
+  {
     label: 'Dossier',
     name: RecallDocument.category.DOSSIER,
     type: 'generated',

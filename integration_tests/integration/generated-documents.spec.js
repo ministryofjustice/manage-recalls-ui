@@ -40,6 +40,14 @@ context('Generated document versions', () => {
         fileName: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
       },
       {
+        category: 'LETTER_TO_PROBATION',
+        documentId: '3123',
+        version: 5,
+        createdDateTime: '2021-11-19T14:14:30.000Z',
+        details: 'Details / info changed',
+        fileName: 'BADGER BOBBY A123456 LETTER TO PROBATION.pdf',
+      },
+      {
         category: 'DOSSIER',
         documentId: '4123',
         version: 4,
@@ -111,6 +119,14 @@ context('Generated document versions', () => {
     recallInformation.assertLinkHref({
       qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON-Change',
       href: `${changeLinkHref}LETTER_TO_PRISON`,
+    })
+    recallInformation.assertElementHasText({
+      qaAttr: 'appGeneratedDocuments-LETTER_TO_PROBATION',
+      textToFind: 'BADGER BOBBY A123456 LETTER TO PROBATION.pdf',
+    })
+    recallInformation.assertLinkHref({
+      qaAttr: 'appGeneratedDocuments-LETTER_TO_PROBATION-Change',
+      href: `${changeLinkHref}LETTER_TO_PROBATION`,
     })
     recallInformation.assertElementHasText({
       qaAttr: 'appGeneratedDocuments-DOSSIER',

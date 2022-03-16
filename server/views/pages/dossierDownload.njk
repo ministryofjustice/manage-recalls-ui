@@ -2,8 +2,8 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {%- from "moj/components/search/macro.njk" import mojSearch -%}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-
-{% set pageTitle = makePageTitle("Download the dossier and letter", errors) %}
+{% set items = "dossier and letter" if isInCustody(recall) else "dossier and letters" %}
+{% set pageTitle = makePageTitle("Download the " + items, errors) %}
 
 {% block beforeContent %}
     {{ govukBackLink({
@@ -26,7 +26,7 @@
                 }) }}
             {% endif %}
             <span class="govuk-caption-l" data-qa="createDossierCaption">Create a dossier for {{ recall.fullName }}</span>
-            <h1 class='govuk-heading-l'>Download the dossier and letter</h1>
+            <h1 class='govuk-heading-l'>Download the {{ items }}</h1>
             <form novalidate action="{{ makeUrl('dossier-download', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
@@ -45,6 +45,22 @@
                 })
                 }}
             </div>
+            {% if not isInCustody(recall) %}
+            <div class="govuk-form-group govuk-!-margin-bottom-8">
+                {{ documentDownloadLink({
+                    linkText: "Letter to probation",
+                    fileName: getGeneratedDocFileName({
+                        recall: recall,
+                        category: 'LETTER_TO_PROBATION'
+                    }),
+                    url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PROBATION',
+                    dataQaLink: 'getLetterToProbationLink',
+                    dataQaFileName: 'getLetterToProbationFileName'
+                })
+                }}
+            </div>
+            {% endif %}
+
             <div class="govuk-form-group govuk-!-margin-bottom-8">
                 {{ documentDownloadLink({
                     linkText: "Letter to prison",
@@ -53,8 +69,8 @@
                         category: 'LETTER_TO_PRISON'
                     }),
                     url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',
-                    dataQaLink: 'getLetterLink',
-                    dataQaFileName: 'getLetterFileName'
+                    dataQaLink: 'getLetterToPrisonLink',
+                    dataQaFileName: 'getLetterToPrisonFileName'
                 })
                 }}
             </div>
@@ -72,7 +88,7 @@
                 items: [
                     {
                         value: "YES",
-                        text: "I have checked the information in the dossier and letter is correct",
+                        text: "I have checked the information in the " + items + " is correct",
                         checked: true if formValues.hasDossierBeenChecked == 'YES'
                     }
                 ],

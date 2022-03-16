@@ -210,25 +210,19 @@ context('Create a dossier', () => {
     dossierCheck.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
     dossierCheck.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
     dossierCheck.clickContinue()
-    const dossierDownload = dossierDownloadPage.verifyOnPage()
-    dossierDownload.assertLinkHref({
+
+    cy.pageHeading().should('equal', 'Download the dossier and letter')
+    cy.getLinkHref({
       qaAttr: 'getDossierLink',
-      href: `/recalls/${recallId}/documents/create?category=DOSSIER`,
-    })
-    dossierDownload.assertElementHasText({
-      qaAttr: 'getDossierFileName',
-      textToFind: 'Filename: BADGER BOBBY A123456 RECALL DOSSIER.pdf',
-    })
-    dossierDownload.assertLinkHref({
-      qaAttr: 'getLetterLink',
-      href: `/recalls/${recallId}/documents/create?category=LETTER`,
-    })
-    dossierDownload.assertElementHasText({
-      qaAttr: 'getLetterFileName',
-      textToFind: 'Filename: BADGER BOBBY A123456 LETTER TO PRISON.pdf',
-    })
-    dossierDownload.confirmDossierChecked()
-    dossierDownload.clickContinue()
+    }).should('contain', `/recalls/${recallId}/documents/create?category=DOSSIER`)
+    cy.getText('getDossierFileName').should('equal', 'Filename: BADGER BOBBY A123456 RECALL DOSSIER.pdf')
+    cy.getLinkHref({
+      qaAttr: 'getLetterToPrisonLink',
+    }).should('contain', `/recalls/${recallId}/documents/create?category=LETTER_TO_PRISON`)
+    cy.getText('getLetterToPrisonFileName').should('equal', 'Filename: BADGER BOBBY A123456 LETTER TO PRISON.pdf')
+    cy.selectConfirmationCheckbox('I have checked the information in the dossier and letter is correct')
+    cy.clickButton('Continue')
+
     const dossierEmail = dossierEmailPage.verifyOnPage()
     dossierEmail.confirmEmailSent()
     dossierEmail.clickTodayLink()
@@ -424,5 +418,24 @@ context('Create a dossier', () => {
         differentNomsNumberDetail: '',
       },
     })
+  })
+
+  it('makes letter to probation available to download for a not in custody recall', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        bookingNumber: 'A123456',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        recallId,
+      },
+    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-download' })
+    cy.pageHeading().should('equal', 'Download the dossier and letters')
+    cy.getLinkHref({
+      qaAttr: 'getLetterToProbationLink',
+    }).should('contain', `/recalls/${recallId}/documents/create?category=LETTER_TO_PROBATION`)
+    cy.getText('getLetterToProbationFileName').should('equal', 'Filename: BADGER BOBBY A123456 LETTER TO PROBATION.pdf')
   })
 })
