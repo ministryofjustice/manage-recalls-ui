@@ -39,6 +39,11 @@ describe('formatGeneratedDocFileName', () => {
     expect(fileName).toEqual('BADGER BOBBY A1234BC LETTER TO PRISON.pdf')
   })
 
+  it('returns a filename for letter to probation', () => {
+    const fileName = formatGeneratedDocFileName({ recall, category: RecallDocument.category.LETTER_TO_PROBATION })
+    expect(fileName).toEqual('BADGER BOBBY A1234BC LETTER TO PROBATION.pdf')
+  })
+
   it('returns a filename for revocation order', () => {
     const fileName = formatGeneratedDocFileName({ recall, category: RecallDocument.category.REVOCATION_ORDER })
     expect(fileName).toEqual('BADGER BOBBY A1234BC REVOCATION ORDER.pdf')

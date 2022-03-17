@@ -164,6 +164,10 @@ Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
     })
 })
 
+Cypress.Commands.add('selectConfirmationCheckbox', (label, opts = {}) => {
+  return cy.contains('label', label).click()
+})
+
 // ============================ DROPDOWN / AUTOCOMPLETE ===============================
 
 // TODO - look up ID using from recall object using passed text
