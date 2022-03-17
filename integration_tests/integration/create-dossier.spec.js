@@ -429,6 +429,8 @@ context('Create a dossier', () => {
         bookingNumber: 'A123456',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
+        returnedToCustodyDateTime: '2022-01-22T13:45:33.000Z',
+        returnedToCustodyNotificationDateTime: '2022-01-23T08:22:06.000Z',
         recallId,
       },
     })

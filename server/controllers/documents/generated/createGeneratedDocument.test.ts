@@ -7,6 +7,7 @@ jest.mock('../../../clients/manageRecallsApiClient')
 
 const recallId = '123'
 const documentId = '123'
+const userToken = '000'
 
 describe('createGeneratedDocument', () => {
   let req: Request
@@ -16,7 +17,7 @@ describe('createGeneratedDocument', () => {
   beforeEach(() => {
     req = { params: { recallId, documentId }, query: {} } as unknown as Request
     res = {
-      locals: { user: { token: '000' } },
+      locals: { user: { token: userToken } },
       contentType: jest.fn(),
       header: jest.fn(),
       send: jest.fn(),
@@ -27,7 +28,7 @@ describe('createGeneratedDocument', () => {
 
   afterEach(() => jest.resetAllMocks())
 
-  it("creates a new document if one doesn't already exist", async () => {
+  it("creates a new dossier if one doesn't already exist", async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({
       firstName: 'John',
       lastName: 'Smith',
@@ -39,7 +40,71 @@ describe('createGeneratedDocument', () => {
     ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
     ;(generateRecallDocument as jest.Mock).mockResolvedValue({ documentId })
     await createGeneratedDocument(req, res, next)
-    expect(generateRecallDocument).toHaveBeenCalled()
+    expect(generateRecallDocument).toHaveBeenCalledWith(
+      recallId,
+      { category: 'DOSSIER', fileName: 'SMITH JOHN 4567 RECALL DOSSIER.pdf' },
+      userToken
+    )
+    expect(res.locals.documentId).toBe(documentId)
+  })
+
+  it("creates a new letter to prison if one doesn't already exist", async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      firstName: 'John',
+      lastName: 'Smith',
+      bookingNumber: '4567',
+      inCustodyAtBooking: true,
+      status: RecallResponse.status.BOOKED_ON,
+    })
+    req.query.category = 'LETTER_TO_PRISON'
+    ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
+    ;(generateRecallDocument as jest.Mock).mockResolvedValue({ documentId })
+    await createGeneratedDocument(req, res, next)
+    expect(generateRecallDocument).toHaveBeenCalledWith(
+      recallId,
+      { category: 'LETTER_TO_PRISON', fileName: 'SMITH JOHN 4567 LETTER TO PRISON.pdf' },
+      userToken
+    )
+    expect(res.locals.documentId).toBe(documentId)
+  })
+
+  it("creates a new letter to probation if one doesn't already exist", async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      firstName: 'John',
+      lastName: 'Smith',
+      bookingNumber: '4567',
+      inCustodyAtBooking: true,
+      status: RecallResponse.status.BOOKED_ON,
+    })
+    req.query.category = 'LETTER_TO_PROBATION'
+    ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
+    ;(generateRecallDocument as jest.Mock).mockResolvedValue({ documentId })
+    await createGeneratedDocument(req, res, next)
+    expect(generateRecallDocument).toHaveBeenCalledWith(
+      recallId,
+      { category: 'LETTER_TO_PROBATION', fileName: 'SMITH JOHN 4567 LETTER TO PROBATION.pdf' },
+      userToken
+    )
+    expect(res.locals.documentId).toBe(documentId)
+  })
+
+  it("creates a new recall notification if one doesn't already exist", async () => {
+    ;(getRecall as jest.Mock).mockResolvedValue({
+      firstName: 'John',
+      lastName: 'Smith',
+      bookingNumber: '4567',
+      inCustodyAtBooking: true,
+      status: RecallResponse.status.BOOKED_ON,
+    })
+    req.query.category = 'RECALL_NOTIFICATION'
+    ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
+    ;(generateRecallDocument as jest.Mock).mockResolvedValue({ documentId })
+    await createGeneratedDocument(req, res, next)
+    expect(generateRecallDocument).toHaveBeenCalledWith(
+      recallId,
+      { category: 'RECALL_NOTIFICATION', fileName: 'IN CUSTODY RECALL SMITH JOHN 4567.pdf' },
+      userToken
+    )
     expect(res.locals.documentId).toBe(documentId)
   })
 
