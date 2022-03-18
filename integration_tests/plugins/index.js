@@ -48,6 +48,7 @@ module.exports = (on, config) => {
     expectAddNote: manageRecallsApi.expectAddNote,
     expectAddRescindRequestRecord: manageRecallsApi.expectAddRescindRequestRecord,
     expectUpdateRescindRequestRecord: manageRecallsApi.expectUpdateRescindRequestRecord,
+    expectAddPartBRecord: manageRecallsApi.expectAddPartBRecord,
     expectAddReturnToCustodyDates: manageRecallsApi.expectAddReturnToCustodyDates,
     expectSetRecommendedRecallType: manageRecallsApi.expectSetRecommendedRecallType,
     expectSetConfirmedRecallType: manageRecallsApi.expectSetConfirmedRecallType,

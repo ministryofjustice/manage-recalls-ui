@@ -29,6 +29,7 @@ import { assignUser } from '../controllers/assignUser/assignUser'
 import {
   addLastKnownAddress,
   addNote,
+  addPartbRecord,
   addRescindRecord,
   addReturnToCustodyDates,
   setConfirmedRecallType,
@@ -67,6 +68,8 @@ import { validateMissingDocuments } from '../controllers/documents/missing-docum
 import { validateRescindRequest } from '../controllers/rescind/validators/validateRescindRequest'
 import { validateRescindDecision } from '../controllers/rescind/validators/validateRescindDecision'
 import { validateAddressManual } from '../controllers/book/validators/validateAddressManual'
+import { combinedMultipleFilesAndFormSave } from '../controllers/combinedMultipleFilesAndFormSave'
+import { validatePartB } from '../controllers/partB/validators/validatePartB'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -252,6 +255,17 @@ export default function routes(router: Router): Router {
   // STOP RECALL
   get(`${basePath}/stop-recall`, recallPageGet('stopRecall'))
   post(`${basePath}/stop-recall`, recallFormPost(validateStopReason, stopRecall))
+
+  // UPLOAD PART B
+  get(`${basePath}/part-b`, recallPageGet('partB'))
+  post(
+    `${basePath}/part-b`,
+    combinedMultipleFilesAndFormSave({
+      uploadFormFieldNames: ['partBFileName', 'oasysFileName', 'emailFileName'],
+      validator: validatePartB,
+      saveToApiFn: addPartbRecord,
+    })
+  )
 
   // DETAILS FOR CURRENT USER
   get('/user-details', getUser)

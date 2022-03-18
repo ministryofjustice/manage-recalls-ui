@@ -99,6 +99,7 @@ export type ViewName =
   | 'rescindRequest'
   | 'rescindDecision'
   | 'stopRecall'
+  | 'partB'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 
@@ -115,7 +116,7 @@ export interface ReqValidatorReturn<T> {
   valuesToSave?: T
   unsavedValues?: ObjectMap<unknown>
   redirectToPage: string
-  confirmationMessage?: ConfirmationMessage
+  confirmationMessage?: ConfirmationMessage | ConfirmationMessageGroup
 }
 
 export interface User extends UserDetails {
@@ -165,13 +166,22 @@ export interface UrlInfo {
   basePath: string
 }
 
-export interface ConfirmationMessage {
+export interface ConfirmationMessageBase {
   text: string
-  type: string
   link?: {
     text: string
     href: string
   }
+}
+
+export interface ConfirmationMessage extends ConfirmationMessageBase {
+  type: string
+}
+
+export interface ConfirmationMessageGroup {
+  heading: string
+  bannerType: string
+  items: ConfirmationMessageBase[]
 }
 
 export interface DecoratedRecall extends RecallResponse, DocumentDecorations {

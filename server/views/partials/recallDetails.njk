@@ -266,5 +266,50 @@
                 </dd>
             </div>
         {% endif %}
+        {% if recall.partBRecords.length %}
+            <div class="govuk-summary-list__row" id='recallDetails-part-b'>
+                <dt class=" govuk-summary-list__key">
+                    Part B email received
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                        {{ recall.partBRecords[0].partBReceivedDate | dateTime }}
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Part B details
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                      <pre class='govuk-body' data-qa='partBDetail'>
+                            {{ recall.partBRecords[0].details }}
+                      </pre>
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Part B uploaded by
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                        {{ recall.partBRecords[0].createdByUserName }}
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Part B email uploaded
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                    <a href='{{ recall.partBRecords[0].emailUrl }}' class='govuk-link'
+                       data-qa='partBEmail' download>{{ recall.partBRecords[0].emailFileName }}</a>
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                </dd>
+            </div>
+        {% endif %}
     </dl>
 </div>

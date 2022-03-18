@@ -1,7 +1,26 @@
 {% if confirmationMessage %}
-    {{ mojBanner({
-        type: confirmationMessage.type,
-        html: '<span data-qa="confirmation">' + confirmationMessage.text + '</span>' + (' <a href="' + confirmationMessage.link.href + '" class="govuk-link"> '+ confirmationMessage.link.text + '</a>' if confirmationMessage.link),
-        iconFallbackText: confirmationMessage.type
-    }) }}
+    {% if confirmationMessage.bannerType == 'message_group' %}
+        {% set html %}
+            <h2 class="govuk-notification-banner__heading" data-qa="confirmationHeading">
+                {{ confirmationMessage.heading }}
+            </h2>
+            <p class="govuk-body" data-qa="confirmationBody">
+                {% for item in confirmationMessage.items %}
+                    {{ item.text }}
+                    {% if item.link %} <a href="{{ item.link.href }}" class="govuk-link">{{ item.link.text }}</a>{% endif %}<br />
+                {% endfor %}
+            </p>
+        {% endset %}
+
+        {{ govukNotificationBanner({
+            html: html,
+            type: 'success'
+        }) }}
+    {% else %}
+        {{ mojBanner({
+            type: confirmationMessage.type,
+            html: '<span data-qa="confirmation">' + confirmationMessage.text + '</span>' + (' <a href="' + confirmationMessage.link.href + '" class="govuk-link"> '+ confirmationMessage.link.text + '</a>' if confirmationMessage.link),
+            iconFallbackText: confirmationMessage.type
+        }) }}
+    {% endif %}
 {% endif %}

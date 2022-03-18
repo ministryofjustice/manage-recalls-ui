@@ -9,7 +9,12 @@ import { enableDeleteDocuments } from './documents/upload/helpers'
 import { decorateDocs } from './documents/download/helpers/decorateDocs'
 import { renderErrorMessages } from './utils/errorMessages'
 import { sortList } from './utils/lists'
-import { decorateMissingDocumentsRecords, decorateRescindRecords, decorateNotes } from './documents/download/helpers'
+import {
+  decorateMissingDocumentsRecords,
+  decorateRescindRecords,
+  decorateNotes,
+  decoratePartBRecords,
+} from './documents/download/helpers'
 
 export const recallPageGet =
   (viewName: ViewName) =>
@@ -31,6 +36,7 @@ export const recallPageGet =
       }),
       rescindRecords: decorateRescindRecords({ rescindRecords: recall.rescindRecords, recallId }),
       notes: decorateNotes({ notes: recall.notes, recallId }),
+      partBRecords: decoratePartBRecords({ partBRecords: recall.partBRecords, recallId }),
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
     }
     // get values to preload into form inputs

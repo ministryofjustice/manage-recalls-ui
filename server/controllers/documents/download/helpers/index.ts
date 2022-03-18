@@ -1,12 +1,14 @@
 import {
   DecoratedMissingDocumentsRecord,
   DecoratedNote,
+  DecoratedPartBRecord,
   DecoratedRescindRecord,
   DecoratedUploadedDoc,
 } from '../../../../@types/documents'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 import { MissingDocumentsRecord, Note, RescindRecord } from '../../../../@types/manage-recalls-api'
 import { sortList } from '../../../utils/lists'
+import { PartBRecord } from '../../../../@types/manage-recalls-api/models/PartBRecord'
 
 export const documentDownloadUrl = ({ recallId, documentId }: { recallId: string; documentId?: string }) =>
   `/recalls/${recallId}/documents/${documentId}`
@@ -79,4 +81,20 @@ export const decorateNotes = ({ notes, recallId }: { notes: Note[]; recallId: st
     documentUrl: documentDownloadUrl({ recallId, documentId: note.documentId }),
   }))
   return sortList(decorated, 'index', false)
+}
+
+export const decoratePartBRecords = ({
+  partBRecords,
+  recallId,
+}: {
+  partBRecords: PartBRecord[]
+  recallId: string
+}): DecoratedPartBRecord[] => {
+  const decorated = partBRecords?.map(rec => ({
+    ...rec,
+    emailUrl: documentDownloadUrl({ recallId, documentId: rec.emailId }),
+    partBUrl: documentDownloadUrl({ recallId, documentId: rec.partBDocumentId }),
+    oasysUrl: documentDownloadUrl({ recallId, documentId: rec.oasysDocumentId }),
+  }))
+  return sortList(decorated, 'version', false)
 }
