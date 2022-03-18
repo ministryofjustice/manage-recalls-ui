@@ -94,7 +94,7 @@ describe('validateMissingDocuments', () => {
       {
         href: '#missingDocumentsEmailFileName',
         name: 'missingDocumentsEmailFileName',
-        text: 'The selected file must be an MSG or EML',
+        text: "The selected file 'test.msl' must be a MSG or EML",
       },
     ])
   })

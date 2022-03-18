@@ -80,7 +80,11 @@ export const formatValidationErrorMessage = (validationError: ValidationError, f
 export const errorMsgEmailUpload = {
   noFile: 'Select an email',
   uploadFailed: 'The selected file could not be uploaded – try again',
-  invalidFileFormat: `The selected file must be an ${allowedEmailFileExtensions.map(ext => ext.label).join(' or ')}`,
+  invalidFileFormat: (fileName: string) =>
+    `The selected file '${fileName}' must be a ${listToString(
+      allowedEmailFileExtensions.map(ext => ext.label),
+      'or'
+    )}`,
   confirmSent: "Confirm you've sent the email to all recipients",
   containsVirus: (fileName: string) => `${fileName} contains a virus`,
 }

@@ -216,7 +216,7 @@ describe('validateDecision', () => {
       {
         href: '#confirmedRecallTypeEmailFileName',
         name: 'confirmedRecallTypeEmailFileName',
-        text: 'The selected file must be an MSG or EML',
+        text: "The selected file 'test.ppt' must be a MSG or EML",
       },
     ])
   })

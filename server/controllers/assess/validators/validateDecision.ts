@@ -75,7 +75,7 @@ export const validateDecision = ({
       errors.push(
         makeErrorObject({
           id: 'confirmedRecallTypeEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat,
+          text: errorMsgEmailUpload.invalidFileFormat(fileName),
         })
       )
     }

@@ -40,7 +40,7 @@ export const validateMissingDocuments = ({
       errors.push(
         makeErrorObject({
           id: 'missingDocumentsEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat,
+          text: errorMsgEmailUpload.invalidFileFormat(fileName),
         })
       )
     }

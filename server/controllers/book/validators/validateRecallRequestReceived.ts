@@ -65,7 +65,7 @@ export const validateRecallRequestReceived = ({
       errors.push(
         makeErrorObject({
           id: 'recallRequestEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat,
+          text: errorMsgEmailUpload.invalidFileFormat(fileName),
         })
       )
     }

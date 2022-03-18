@@ -40,7 +40,6 @@ context('View recall information', () => {
     })
   })
 
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
 
