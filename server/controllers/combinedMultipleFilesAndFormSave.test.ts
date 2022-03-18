@@ -97,7 +97,7 @@ describe('combinedMultipleFilesAndFormSave', () => {
                 href: '#uploaded-documents',
                 text: 'View',
               },
-              text: 'Part B report uploaded.',
+              text: 'Part B report and OASys uploaded.',
             },
             {
               link: {
