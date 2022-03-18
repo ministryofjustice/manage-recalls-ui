@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { validatePartB } from './validatePartB'
 import { padWithZeroes } from '../../utils/dates/format'
+import { ConfirmationMessageGroup } from '../../../@types'
 
 describe('validatePartB', () => {
   const requestBody = {
@@ -67,7 +68,7 @@ describe('validatePartB', () => {
             href: '#uploaded-documents',
             text: 'View',
           },
-          text: 'Part B report uploaded.',
+          text: 'Part B report and OASys uploaded.',
         },
         {
           link: {
@@ -85,7 +86,7 @@ describe('validatePartB', () => {
   })
 
   it('returns valuesToSave with subject and details, and no errors if only the optional OASys upload is missing', () => {
-    const { errors, valuesToSave } = validatePartB({
+    const { errors, valuesToSave, confirmationMessage } = validatePartB({
       requestBody,
       filesUploaded: {
         ...filesUploaded,
@@ -102,6 +103,7 @@ describe('validatePartB', () => {
       partBFileName: 'partB.pdf',
       partBReceivedDate: '2022-03-05',
     })
+    expect((confirmationMessage as ConfirmationMessageGroup).items[0].text).toEqual('Part B report uploaded.')
   })
 
   it('returns errors if subject and details are missing, and no valuesToSave', () => {

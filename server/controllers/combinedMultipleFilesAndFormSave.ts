@@ -3,6 +3,20 @@ import { FormWithDocumentUploadValidatorFn, SaveToApiFn } from '../@types'
 import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from './utils/errorMessages'
 import { makeUrl, makeUrlToFromPage } from './utils/makeUrl'
 import { processUpload } from './documents/upload/helpers/processUpload'
+import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
+
+const fieldNameFromDocCategory = (category: RecallDocument.category) => {
+  switch (category) {
+    case RecallDocument.category.PART_B_RISK_REPORT:
+      return 'partBFileName'
+    case RecallDocument.category.PART_B_EMAIL_FROM_PROBATION:
+      return 'emailFileName'
+    case RecallDocument.category.OASYS_RISK_ASSESSMENT:
+      return 'oasysFileName'
+    default:
+      throw new Error(`fieldNameFromDocCategory: invalid category: ${category}`)
+  }
+}
 
 export const combinedMultipleFilesAndFormSave =
   ({
@@ -31,10 +45,10 @@ export const combinedMultipleFilesAndFormSave =
       }
     } catch (err) {
       const saveError =
-        err.data?.message === 'VirusFoundException'
+        err.data?.error === 'VirusFoundException'
           ? makeErrorObject({
-              id: 'test', // uploadFormFieldName,
-              text: errorMsgDocumentUpload.containsVirus('FILENAME'),
+              id: fieldNameFromDocCategory(err.data.category),
+              text: errorMsgDocumentUpload.containsVirus(err.data.fileName),
             })
           : saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' })
       errorList = [...(errorList || []), saveError]

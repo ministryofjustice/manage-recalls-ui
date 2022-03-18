@@ -133,7 +133,7 @@ export const validatePartB = ({
       bannerType: 'message_group',
       items: [
         {
-          text: 'Part B report uploaded.',
+          text: `Part B report ${oasysFile ? 'and OASys ' : ''}uploaded.`,
           link: {
             text: 'View',
             href: '#uploaded-documents',

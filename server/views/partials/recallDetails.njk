@@ -275,6 +275,9 @@
                         {{ recall.partBRecords[0].partBReceivedDate | dateTime }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('part-b', urlInfo, 'recallDetails-part-b') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> part B email received date</span>
+                    </a>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -287,6 +290,9 @@
                       </pre>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('part-b', urlInfo, 'recallDetails-part-b') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> part B details</span>
+                    </a>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -308,6 +314,9 @@
                        data-qa='partBEmail' download>{{ recall.partBRecords[0].emailFileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('part-b', urlInfo, 'recallDetails-part-b') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> part B email</span>
+                    </a>
                 </dd>
             </div>
         {% endif %}

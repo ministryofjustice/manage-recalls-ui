@@ -217,16 +217,20 @@ describe('combinedMultipleFilesAndFormSave', () => {
       cb()
     })
     saveToApiFn.mockRejectedValue({
-      data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
+      data: {
+        category: 'PART_B_RISK_REPORT',
+        fileName: 'my part b.pdf',
+        error: 'VirusFoundException',
+      },
     })
     const res = {
       locals: resLocals,
       redirect: (httpStatus, path) => {
         expect(req.session.errors).toEqual([
           {
-            href: '#test',
-            name: 'test',
-            text: 'FILENAME contains a virus',
+            href: '#partBFileName',
+            name: 'partBFileName',
+            text: 'my part b.pdf contains a virus',
           },
         ])
         expect(httpStatus).toEqual(303)

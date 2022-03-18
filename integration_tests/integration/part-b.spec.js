@@ -7,7 +7,7 @@ context('Part B', () => {
     cy.login()
   })
 
-  it('lets the user upload a Part B', () => {
+  it('lets the user upload a part B', () => {
     const recalls = [
       {
         ...getEmptyRecallResponse,
@@ -52,7 +52,7 @@ context('Part B', () => {
 
     // confirmation banner
     cy.getText('confirmationHeading').should('equal', 'Part B added')
-    cy.getText('confirmationBody').should('contain', 'Part B report uploaded.')
+    cy.getText('confirmationBody').should('contain', 'Part B report and OASys uploaded.')
     cy.getText('confirmationBody').should('contain', 'Part B email and note added.')
     cy.getText('confirmationBody').should(
       'contain',
@@ -62,11 +62,17 @@ context('Part B', () => {
     // part B details
     cy.recallInfo('Part B email received').should('equal', formatDateTimeFromIsoString(partBRecord.partBReceivedDate))
     cy.recallInfo('Part B report').should('contain', 'Part B.pdf')
+    cy.recallInfo('Part B details').should('equal', partBRecord.details)
     cy.recallInfo('Part B uploaded by').should('equal', partBRecord.createdByUserName)
     cy.recallInfo('Part B email uploaded').should('equal', partBRecord.emailFileName)
+    // change links
+    cy.getLinkHref('Change part B email received date').should('contain', '/part-b')
+    cy.getLinkHref('Change part B details').should('contain', '/part-b')
+    cy.getLinkHref('Change part B email').should('contain', '/part-b')
+    cy.getLinkHref('Change part B report').should('contain', '/part-b')
   })
 
-  it('errors - upload a Part B', () => {
+  it('errors - upload a part B', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse },
     })
