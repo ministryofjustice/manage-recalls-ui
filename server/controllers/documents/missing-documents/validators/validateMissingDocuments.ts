@@ -1,4 +1,4 @@
-import { FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
+import { ConfirmationMessage, FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../../utils/errorMessages'
 import { isInvalidEmailFileName } from '../../upload/helpers/allowedUploadExtensions'
 
@@ -12,9 +12,11 @@ export const validateMissingDocuments = ({
   valuesToSave: { missingDocumentsDetail: string }
   unsavedValues: ObjectMap<unknown>
   redirectToPage: string
+  confirmationMessage?: ConfirmationMessage
 } => {
   let errors
   let valuesToSave
+  let confirmationMessage
   const invalidFileName = isInvalidEmailFileName(fileName)
   const { missingDocumentsDetail } = requestBody
 
@@ -58,6 +60,14 @@ export const validateMissingDocuments = ({
   }
   if (!errors) {
     valuesToSave = { missingDocumentsDetail }
+    confirmationMessage = {
+      text: 'Chase note added.',
+      link: {
+        text: 'View',
+        href: '#missing-documents',
+      },
+      type: 'success',
+    }
   }
-  return { errors, valuesToSave, unsavedValues, redirectToPage: 'check-answers' }
+  return { errors, valuesToSave, unsavedValues, redirectToPage: 'check-answers', confirmationMessage }
 }

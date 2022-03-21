@@ -75,12 +75,6 @@ context('View recall information', () => {
     cy.recallInfo('Dossier email uploaded').should('equal', 'email.msg')
     cy.getLinkHref('Change dossier email sent date').should('contain', '/dossier-email')
     cy.getLinkHref('Change uploaded dossier email').should('contain', '/dossier-email')
-
-    // missing documents detail
-    recallInformation.assertElementHasText({
-      qaAttr: 'missingDocumentsDetail',
-      textToFind: 'Documents were requested by email on 10/12/2020',
-    })
   })
 
   it('User can view not available for vulnerabilityDiversity and contraband when information is not provided', () => {
@@ -122,7 +116,6 @@ context('View recall information', () => {
     recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'No' })
   })
 
-  // TODO - just check hrefs and move the check of downloaded files to E2E
   it('user can download all uploaded emails', () => {
     const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
     const mockFileDownload = ({ fileName, category }) => {
@@ -150,12 +143,6 @@ context('View recall information', () => {
     fileName = 'dossier-email.msg'
     mockFileDownload({ fileName, category: 'RECALL_REQUEST_EMAIL' })
     recallInformation.clickButton({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL' })
-    recallInformation.checkFileDownloaded(fileName)
-
-    // sent missing documents email
-    fileName = 'missing-documents.msg'
-    mockFileDownload({ fileName, category: 'MISSING_DOCUMENTS_EMAIL' })
-    recallInformation.clickButton({ qaAttr: 'missingDocumentsEmail' })
     recallInformation.checkFileDownloaded(fileName)
   })
 })

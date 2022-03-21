@@ -148,7 +148,7 @@ export default function manageRecallsApi(wiremock) {
           urlPattern: '/missing-documents-records',
         },
         response: {
-          status: expectation.statusCode || 201,
+          status: (expectation && expectation.statusCode) || 201,
         },
       })
     },
