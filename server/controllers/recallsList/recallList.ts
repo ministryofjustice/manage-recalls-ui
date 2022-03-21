@@ -54,7 +54,7 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         )
       ) {
         notInCustody.push(recall)
-      } else if ([RecallResponse.status.AWAITING_PART_B].includes(recall.status)) {
+      } else if (recall.status === RecallResponse.status.AWAITING_PART_B) {
         awaitingPartB.push(recall)
       } else {
         toDoList.push(recall)

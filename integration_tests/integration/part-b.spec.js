@@ -96,4 +96,13 @@ context('Part B', () => {
       summaryError: 'Select a part B email from probation',
     })
   })
+
+  it('show part B is missing on recall info page', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: { ...getRecallResponse, status: 'AWAITING_PART_B', partBDueDate: '2022-03-02', partBRecords: [] },
+    })
+    cy.visitRecallPage({ recallId: '123', pageSuffix: 'view-recall' })
+    cy.getText('partBDueText').should('contain', 'Overdue: Part B report was due on 2 March 2022')
+    cy.getLinkHref('Add part B report').should('contain', '/part-b')
+  })
 })

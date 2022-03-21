@@ -11,6 +11,7 @@ export interface DocumentCategoryMetadata {
   error?: string
   standardFileName?: string
   required?: boolean
+  requiredReason?: string
   hintIfMissing?: boolean
   multiple?: boolean
   versioned?: boolean

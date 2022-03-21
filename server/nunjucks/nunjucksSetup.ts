@@ -23,7 +23,7 @@ import {
   formatNsyWarrantEmailLink,
   makePageTitle,
 } from './nunjucksFunctions'
-import { formatDateTimeFromIsoString, dueDateLabel, partBDueDateLabel } from '../controllers/utils/dates/format'
+import { formatDateTimeFromIsoString, dueDateTimeLabel, dueDateShortLabel } from '../controllers/utils/dates/format'
 import { isoDateToMillis } from '../controllers/utils/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
 import { formatDocLabel } from '../controllers/documents/upload/helpers'
@@ -80,8 +80,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('filterActiveItems', filterActiveItems)
   njkEnv.addGlobal('removeUndefinedFromObject', removeUndefinedFromObject)
   njkEnv.addGlobal('listDocumentLabels', listDocumentLabels)
-  njkEnv.addGlobal('dueDateLabel', dueDateLabel)
-  njkEnv.addGlobal('partBDueDateLabel', partBDueDateLabel)
+  njkEnv.addGlobal('dueDateTimeLabel', dueDateTimeLabel)
+  njkEnv.addGlobal('dueDateShortLabel', dueDateShortLabel)
   njkEnv.addGlobal('recallStatusTagProperties', recallStatusTagProperties)
   njkEnv.addGlobal('formatDocLabel', formatDocLabel)
   njkEnv.addGlobal('getGeneratedDocFileName', getGeneratedDocFileName)

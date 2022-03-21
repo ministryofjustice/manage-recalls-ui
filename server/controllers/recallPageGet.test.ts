@@ -113,17 +113,6 @@ describe('recallPageGet', () => {
     expect(res.locals.recall.fullName).toEqual('Bobby John Badger')
   })
 
-  it('should add overdue recallAssessmentDueText to res.locals given recallAssessmentDueDateTime in the past", ', async () => {
-    ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    await recallPageGet('assessRecall')(req, res)
-    expect(res.locals.recall.recallAssessmentDueText).toEqual(
-      'Overdue: recall assessment was due on 6 August 2020 by 16:33'
-    )
-    expect(res.render).toHaveBeenCalledWith('pages/assessRecall')
-  })
-
   it('should make document data available to render', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
     jest.spyOn(decorateDocsExports, 'decorateDocs')

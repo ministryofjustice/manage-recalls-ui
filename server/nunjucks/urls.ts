@@ -52,12 +52,12 @@ export const backLinkUrlRecallType = ({
 export const changeLinkUrl = (
   pageSlug: string,
   { currentPage, basePath }: UrlInfo,
-  fromHash: string,
+  fromHash?: string,
   toHash?: string,
   queryString?: string
 ) => {
   const queryParam = currentPage
-    ? `?fromPage=${currentPage}&fromHash=${fromHash}${queryString ? `&${queryString}` : ''}`
+    ? `?fromPage=${currentPage}${fromHash ? `&fromHash=${fromHash}` : ''}${queryString ? `&${queryString}` : ''}`
     : ''
   return `${basePath}${pageSlug}${queryParam}${toHash ? `#${toHash}` : ''}`
 }

@@ -42,20 +42,29 @@ export const getMetadataForUploadedFiles = (
 export const uploadedDocCategoriesList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document')
 
-export const requiredDocsList = (): DocumentCategoryMetadata[] =>
-  documentCategories.filter(doc => doc.type === 'document' && doc.required)
+export const requiredDocsList = (recall: RecallResponse): DocumentCategoryMetadata[] =>
+  documentCategories.filter(doc => {
+    if (doc.type === 'document' && doc.required) {
+      if (doc.name === RecallDocument.category.PART_B_RISK_REPORT) {
+        return Boolean(recall.partBDueDate && !recall.partBRecords?.length)
+      }
+      return true
+    }
+    return false
+  })
 
 export const missingNotRequiredDocsList = (): DocumentCategoryMetadata[] =>
   documentCategories.filter(doc => doc.type === 'document' && doc.hintIfMissing)
 
 export const listMissingRequiredDocs = ({
-  docs,
+  recall,
   returnLabels,
 }: {
-  docs: RecallDocument[]
+  recall: RecallResponse
   returnLabels: boolean
 }): string[] | RecallDocument.category[] => {
-  const listOfRequiredAndDesired = [...requiredDocsList(), ...missingNotRequiredDocsList()]
+  const docs = recall.documents
+  const listOfRequiredAndDesired = [...requiredDocsList(recall), ...missingNotRequiredDocsList()]
   return listOfRequiredAndDesired
     .map(requiredDocCategory => {
       const uploadedFile = docs.find(doc => doc.category === requiredDocCategory.name)
