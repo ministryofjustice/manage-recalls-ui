@@ -106,9 +106,6 @@ describe('combinedMultipleFilesAndFormSave', () => {
               },
               text: 'Part B email and note added.',
             },
-            {
-              text: 'Re-release recommendation added and recall moved to Dossier team list',
-            },
           ],
           bannerType: 'message_group',
         })

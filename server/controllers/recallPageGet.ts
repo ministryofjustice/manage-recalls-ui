@@ -4,7 +4,6 @@ import { formatPersonName } from './utils/person'
 import { getFormValues } from './utils/getFormValues'
 import { ViewName } from '../@types'
 import { referenceData } from '../referenceData'
-import { dossierDueDateString, recallAssessmentDueText } from './utils/dates/format'
 import { enableDeleteDocuments } from './documents/upload/helpers'
 import { decorateDocs } from './documents/download/helpers/decorateDocs'
 import { renderErrorMessages } from './utils/errorMessages'
@@ -62,10 +61,6 @@ export const recallPageGet =
 
     // sort any last known addresses
     res.locals.recall.lastKnownAddresses = sortList(recall.lastKnownAddresses, 'index', true)
-
-    // TODO - use nunjucks filters to format these from the views
-    res.locals.recall.recallAssessmentDueText = recallAssessmentDueText(recall.recallAssessmentDueDateTime)
-    res.locals.recall.dossierDueText = dossierDueDateString(recall.dossierTargetDate)
 
     // render errors after all data is available on res.locals
     res.locals.errors = renderErrorMessages(res.locals.errors, res.locals)

@@ -54,10 +54,10 @@ context('Part B', () => {
     cy.getText('confirmationHeading').should('equal', 'Part B added')
     cy.getText('confirmationBody').should('contain', 'Part B report and OASys uploaded.')
     cy.getText('confirmationBody').should('contain', 'Part B email and note added.')
-    cy.getText('confirmationBody').should(
-      'contain',
-      'Re-release recommendation added and recall moved to Dossier team list'
-    )
+    // cy.getText('confirmationBody').should(
+    //   'contain',
+    //   'Re-release recommendation added and recall moved to Dossier team list'
+    // )
 
     // part B details
     cy.recallInfo('Part B email received').should('equal', formatDateTimeFromIsoString(partBRecord.partBReceivedDate))
@@ -95,5 +95,14 @@ context('Part B', () => {
       fieldName: 'emailFileName',
       summaryError: 'Select a part B email from probation',
     })
+  })
+
+  it('show part B is missing on recall info page', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: { ...getRecallResponse, status: 'AWAITING_PART_B', partBDueDate: '2022-03-02', partBRecords: [] },
+    })
+    cy.visitRecallPage({ recallId: '123', pageSuffix: 'view-recall' })
+    cy.getText('partBDueText').should('contain', 'Overdue: Part B report was due on 2 March 2022')
+    cy.getLinkHref('Add part B report').should('contain', '/part-b')
   })
 })

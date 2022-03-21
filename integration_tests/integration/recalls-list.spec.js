@@ -1,8 +1,10 @@
+import { DateTime } from 'luxon'
 import { getRecallResponse } from '../mockApis/mockResponses'
 import recallsListPage from '../pages/recallsList'
 import dossierRecallInformationPage from '../pages/dossierRecallInformation'
 import recallInformationPage from '../pages/recallInformation'
 import userDetailsPage from '../pages/userDetails'
+import { formatIsoDate } from '../support/utils'
 
 describe('Recalls list', () => {
   const recallId = '123'
@@ -328,6 +330,8 @@ describe('Recalls list', () => {
   it('lists "awaiting part B" recalls on a separate tab', () => {
     const assessedRecallId = '2'
     const awaitingReturnRecallId = '3'
+    const yesterday = DateTime.now().minus({ days: 2 }).toISODate()
+    const tomorrow = DateTime.now().plus({ days: 1 }).toISODate()
     const recalls = [
       {
         ...getRecallResponse,
@@ -346,7 +350,7 @@ describe('Recalls list', () => {
         status: 'AWAITING_PART_B',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
-        partBDueDate: '2025-03-08',
+        partBDueDate: tomorrow,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
       },
@@ -358,7 +362,7 @@ describe('Recalls list', () => {
         status: 'AWAITING_PART_B',
         inCustodyAtBooking: false,
         inCustodyAtAssessment: false,
-        partBDueDate: '2022-03-07',
+        partBDueDate: yesterday,
         assignee: '122',
         assigneeUserName: 'Jimmy Pud',
       },
@@ -372,7 +376,7 @@ describe('Recalls list', () => {
     cy.assertTableColumnValues({
       qaAttrTable: 'awaitingPartB',
       qaAttrCell: 'due',
-      valuesToCompare: ['Overdue', '8 March 2025'],
+      valuesToCompare: ['Overdue', 'Tomorrow'],
     })
   })
 })

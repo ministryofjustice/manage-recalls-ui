@@ -50,7 +50,7 @@ export const decorateDocs = ({
     {
       documentsUploaded: [],
       docCategoriesWithUploads,
-      requiredDocsMissing: requiredDocsList().filter(
+      requiredDocsMissing: requiredDocsList(recall).filter(
         requiredDocCategory => !decoratedDocs.find(doc => doc.category === requiredDocCategory.name)
       ),
       missingNotRequiredDocs: missingNotRequiredDocsList().filter(

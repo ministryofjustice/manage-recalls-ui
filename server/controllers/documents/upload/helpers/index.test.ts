@@ -2,6 +2,7 @@ import * as docExports from './index'
 import { UrlInfo } from '../../../../@types'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { requiredDocsList } from './index'
 
 const { enableDeleteDocuments, makeMetaDataForFile } = docExports
 
@@ -61,5 +62,43 @@ describe('makeMetaDataForFile', () => {
   it('returns undefined if not given a file', () => {
     const result = makeMetaDataForFile(undefined, RecallDocument.category.LICENCE)
     expect(result).toBeUndefined()
+  })
+})
+
+describe('requiredDocsList', () => {
+  it('returns a list of required docs', () => {
+    const list = requiredDocsList({} as RecallResponse)
+    expect(list).toEqual([
+      {
+        fileNamePatterns: ['part a'],
+        label: 'Part A recall report',
+        labelLowerCase: 'part A recall report',
+        name: 'PART_A_RECALL_REPORT',
+        required: true,
+        requiredReason: 'DOSSIER',
+        standardFileName: 'Part A.pdf',
+        type: 'document',
+        versioned: true,
+      },
+      {
+        fileNamePatterns: ['licence'],
+        label: 'Licence',
+        name: 'LICENCE',
+        required: true,
+        requiredReason: 'DOSSIER',
+        standardFileName: 'Licence.pdf',
+        type: 'document',
+        versioned: true,
+      },
+    ])
+  })
+
+  it('includes part B if there is a part B due date and no part B record', () => {
+    const list = requiredDocsList({
+      partBDueDate: '2020-01-01',
+      partBRecords: [],
+    } as RecallResponse)
+    const partBIncluded = list.some(record => record.name === RecallDocument.category.PART_B_RISK_REPORT)
+    expect(partBIncluded).toEqual(true)
   })
 })

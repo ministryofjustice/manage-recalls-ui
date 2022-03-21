@@ -12,7 +12,9 @@
             </h1>
             {% set fromPage = 'dossier-recall' %}
             {% include '../partials/recallInformationHeading.njk' %}
-            <div class="govuk-body-l" data-qa="dossierTargetDate">{{ recall.dossierDueText }} {{ recall.dossierTargetDate | dateTime }} </div>
+            <div class="govuk-body-l" data-qa="dossierTargetDate">
+                {{ dueDateShortLabel(recall.dossierTargetDate) }}
+            </div>
         </div>
     </div>
 

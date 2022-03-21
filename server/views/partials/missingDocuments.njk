@@ -8,12 +8,18 @@
                         {{ document.label }}
                     </dt>
                     <dd class=" govuk-summary-list__value" data-qa='required-{{ document.name }}'>
-                        Missing: needed to create dossier
+                        Missing{% if document.requiredReason === 'DOSSIER' %}: needed to create dossier{% endif %}
                     </dd>
                     <dd class=" govuk-summary-list__actions">
+                    {% if document.name === 'PART_B_RISK_REPORT' %}
+                        <a href='{{ changeLinkUrl('part-b', urlInfo) }}' class='govuk-link'>
+                            Add <span class="govuk-visually-hidden"> part B report</span>
+                        </a>
+                    {% else %}
                         <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'uploaded-documents') }}'
                            data-qa='missingDocument-{{ document.name }}-Change' class='govuk-link'>Add <span
                                     class="govuk-visually-hidden">{{ document.label }}</span></a>
+                    {% endif %}
                     </dd>
                 </div>
             {% endfor %}

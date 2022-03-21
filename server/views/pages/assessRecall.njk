@@ -15,7 +15,9 @@
             </h1>
             {% set fromPage = 'assess' %}
             {% include '../partials/recallInformationHeading.njk' %}
-            <div class="govuk-body-l" data-qa="recallAssessmentDueText">{{ recall.recallAssessmentDueText }}</div>
+            <div class="govuk-body-l" data-qa="recallAssessmentDueText">
+                {{ dueDateTimeLabel({dueItemLabel: 'Recall assessment', dueIsoDateTime: recall.recallAssessmentDueDateTime }) }}
+            </div>
         </div>
     </div>
     <div class="govuk-grid-row">

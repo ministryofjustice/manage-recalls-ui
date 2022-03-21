@@ -146,9 +146,6 @@ export const validatePartB = ({
             href: '#recallDetails-part-b',
           },
         },
-        {
-          text: 'Re-release recommendation added and recall moved to Dossier team list',
-        },
       ],
     }
     valuesToSave = {
