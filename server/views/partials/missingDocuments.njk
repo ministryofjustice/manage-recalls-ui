@@ -75,10 +75,12 @@
             </p>
             {% endfor %}
             {% endset %}
+        {% if recall.missingDocumentsRecords.length > 0 %}
             {{ govukDetails({
-                summaryText:  "Show " + recall.missingDocumentsRecords.length + " notes",
+                summaryText:  "Show " + recall.missingDocumentsRecords.length + " note" + ("" if recall.missingDocumentsRecords.length === 1 else "s"),
                 html: detailsHtml
             }) }}
+        {% endif %}
 
     </div>
 {% endif %}
