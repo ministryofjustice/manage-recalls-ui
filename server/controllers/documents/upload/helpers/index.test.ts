@@ -93,12 +93,23 @@ describe('requiredDocsList', () => {
     ])
   })
 
-  it('includes part B if there is a part B due date and no part B record', () => {
+  it('includes part B if status is AWAITING_PART_B, there is a part B due date and no part B record', () => {
     const list = requiredDocsList({
       partBDueDate: '2020-01-01',
       partBRecords: [],
+      status: RecallResponse.status.AWAITING_PART_B,
     } as RecallResponse)
     const partBIncluded = list.some(record => record.name === RecallDocument.category.PART_B_RISK_REPORT)
     expect(partBIncluded).toEqual(true)
+  })
+
+  it('does not include part B if status is not AWAITING_PART_B, even if there is a part B due date and no part B record', () => {
+    const list = requiredDocsList({
+      partBDueDate: '2020-01-01',
+      partBRecords: [],
+      status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
+    } as RecallResponse)
+    const partBIncluded = list.some(record => record.name === RecallDocument.category.PART_B_RISK_REPORT)
+    expect(partBIncluded).toEqual(false)
   })
 })
