@@ -88,7 +88,7 @@
                                 </td>
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
                                 <td class="govuk-table__cell">
-                                    <a href='/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=completed' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -128,7 +128,7 @@
                                         <a href='/recalls/{{result.recallId}}/warrant-reference'>Add warrant reference</a>
                                     {% endif %}
                                     </span>
-                                    <a href='/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                     </div>
                                 </td>
                             </tr>
@@ -167,7 +167,7 @@
                                     <span class='govuk-!-padding-right-2'>
                                         <a href='/recalls/{{result.recallId}}/part-b' data-qa='upload-part-b-{{ result.recallId }}'>Upload part B</a>
                                     </span>
-                                    <a href='/recalls/{{result.recallId}}/view-recall?fromPage=/&fromHash=notInCustody' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
                                     </div>
                                 </td>
                             </tr>
