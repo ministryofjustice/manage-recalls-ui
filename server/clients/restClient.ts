@@ -1,6 +1,10 @@
 import superagent from 'superagent'
 import Agent, { HttpsAgent } from 'agentkeepalive'
+import promClient from 'prom-client'
+// import UrlValueParser from 'url-value-parser'
+import logNetworkTime from 'superagent-node-http-timings'
 
+import UrlValueParser from 'url-value-parser'
 import logger from '../../logger'
 import sanitiseError from '../utils/sanitisedError'
 import { ApiConfig } from '../config'
@@ -36,6 +40,25 @@ interface DeleteRequest {
   raw?: boolean
 }
 
+export const requestHistogram = new promClient.Histogram({
+  name: 'http_client_requests',
+  help: 'Timings and counts of http client requests',
+  buckets: [0.5, 0.75, 0.95, 0.99, 1],
+  labelNames: ['clientName', 'method', 'uri', 'status'],
+})
+
+export const timeoutCounter = new promClient.Counter({
+  name: 'http_client_requests_timeout',
+  help: 'Count of http client request timeouts',
+  labelNames: ['clientName', 'method', 'uri'],
+})
+
+function normalizePath(path: string) {
+  const urlPathReplacement = '#val'
+  const urlValueParser = new UrlValueParser()
+  return urlValueParser.replacePathValues(path, urlPathReplacement)
+}
+
 export default class RestClient {
   agent: Agent
 
@@ -51,6 +74,22 @@ export default class RestClient {
     return this.config.timeout
   }
 
+  private logNetworkTimeCallback(err: Error, result: any) {
+    const url = new URL(result.url)
+    const { hostname } = url
+    const path = normalizePath(url.pathname)
+
+    console.error(err)
+    console.error(result)
+    if (err) {
+      if (err.name === 'ETIMEDOUT') {
+        timeoutCounter.labels(hostname, 'GET', path).inc()
+      }
+    }
+
+    requestHistogram.labels(hostname, 'GET', path, String(result.status)).observe(result.timings.total)
+  }
+
   retry(err?: { code: string; message: string }): void {
     if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
     return undefined // retry handler only for logging retries, not to influence retry logic
@@ -62,6 +101,7 @@ export default class RestClient {
       if (this.token) {
         result = await superagent
           .get(`${this.apiUrl()}${path}`)
+          .use(logNetworkTime(this.logNetworkTimeCallback))
           .agent(this.agent)
           .retry(2, this.retry)
           .query(query)
@@ -72,12 +112,16 @@ export default class RestClient {
       } else {
         result = await superagent
           .get(`${this.apiUrl()}${path}`)
+          .use(logNetworkTime(this.logNetworkTimeCallback))
           .agent(this.agent)
           .retry(2, this.retry)
           .query(query)
           .set(headers)
           .responseType(responseType)
           .timeout(this.timeoutConfig())
+          .on('timeout', err => {
+            console.error(err)
+          })
       }
 
       return raw ? result : result.body
@@ -102,6 +146,7 @@ export default class RestClient {
       const result = await superagent
         .post(`${this.apiUrl()}${path}`)
         .send(data)
+        .use(logNetworkTime(this.logNetworkTimeCallback))
         .agent(this.agent)
         .retry(2, (err, res) => {
           if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
@@ -131,6 +176,7 @@ export default class RestClient {
       const result = await superagent
         .patch(`${this.apiUrl()}${path}`)
         .send(data)
+        .use(logNetworkTime(this.logNetworkTimeCallback))
         .agent(this.agent)
         .retry(2, (err, res) => {
           if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
@@ -153,6 +199,7 @@ export default class RestClient {
     try {
       const result = await superagent
         .delete(`${this.apiUrl()}${path}`)
+        .use(logNetworkTime(this.logNetworkTimeCallback))
         .agent(this.agent)
         .retry(2, (err, res) => {
           if (err) logger.info(`Retry handler found API error with ${err.code} ${err.message}`)
