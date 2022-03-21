@@ -54,10 +54,10 @@ context('Part B', () => {
     cy.getText('confirmationHeading').should('equal', 'Part B added')
     cy.getText('confirmationBody').should('contain', 'Part B report and OASys uploaded.')
     cy.getText('confirmationBody').should('contain', 'Part B email and note added.')
-    cy.getText('confirmationBody').should(
-      'contain',
-      'Re-release recommendation added and recall moved to Dossier team list'
-    )
+    // cy.getText('confirmationBody').should(
+    //   'contain',
+    //   'Re-release recommendation added and recall moved to Dossier team list'
+    // )
 
     // part B details
     cy.recallInfo('Part B email received').should('equal', formatDateTimeFromIsoString(partBRecord.partBReceivedDate))
