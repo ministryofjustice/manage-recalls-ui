@@ -7,13 +7,315 @@ import {
   getAllFieldsHistoryResponseJson,
   getPrisonsResponse,
 } from '../mockApis/mockResponses'
-import { changeHistoryFieldList } from '../../server/controllers/changeHistory/helpers/recallFieldList'
+import { documentCategories } from '../../server/controllers/documents/documentCategories'
+import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
+import { sortList } from '../../server/controllers/utils/lists'
 import { stubRefData } from '../support/mock-api'
 
 const changeHistoryPage = require('../pages/changeHistory')
 const changeHistoryDocumentPage = require('../pages/changeHistoryDocument')
 const changeHistoryFieldPage = require('../pages/changeHistoryField')
 const { formatDateTimeFromIsoString } = require('../../server/controllers/utils/dates/format')
+
+// FIXME: copied from 'server/controllers/changeHistory/recallFieldList.ts' - rework so we can re-use that code without including restClient
+const recallFieldList = {
+  // date / times
+  recallEmailReceivedDateTime: {
+    label: 'Recall email received',
+    fieldType: 'ISO_DATE_TIME',
+  },
+  recallNotificationEmailSentDateTime: {
+    label: 'Recall notification email sent',
+    fieldType: 'ISO_DATE_TIME',
+  },
+  sentenceDate: {
+    label: 'Date of sentence',
+    fieldType: 'ISO_DATE',
+  },
+  lastReleaseDate: {
+    label: 'Latest release date',
+    fieldType: 'ISO_DATE',
+  },
+  dossierEmailSentDate: {
+    label: 'Dossier and letter sent',
+    fieldType: 'ISO_DATE',
+  },
+  sentenceExpiryDate: {
+    label: 'Sentence expiry date',
+    fieldType: 'ISO_DATE',
+  },
+  licenceExpiryDate: {
+    label: 'Licence expiry date',
+    fieldType: 'ISO_DATE',
+  },
+  conditionalReleaseDate: {
+    label: 'Conditional release date',
+    fieldType: 'ISO_DATE',
+  },
+  returnedToCustodyDateTime: {
+    label: 'RTC date and time',
+    fieldType: 'ISO_DATE_TIME',
+  },
+  returnedToCustodyNotificationDateTime: {
+    label: 'Found out RTC date and time',
+    fieldType: 'ISO_DATE_TIME',
+  },
+
+  // booleans
+  hasDossierBeenChecked: {
+    label: 'Confirmed dossier and letter is correct',
+    fieldType: 'BOOLEAN',
+  },
+  additionalLicenceConditions: {
+    label: 'Additional licence conditions',
+    fieldType: 'BOOLEAN',
+  },
+  differentNomsNumber: {
+    label: 'Different NOMIS number',
+    fieldType: 'BOOLEAN',
+  },
+  contraband: {
+    label: 'Contraband',
+    fieldType: 'BOOLEAN',
+  },
+  vulnerabilityDiversity: {
+    label: 'Vulnerability and diversity',
+    fieldType: 'BOOLEAN',
+  },
+  arrestIssues: {
+    label: 'Arrest issues',
+    fieldType: 'BOOLEAN',
+  },
+
+  // text / enums / refdata
+  currentPrison: {
+    label: 'Prison held in',
+    fieldType: 'REF_DATA',
+    refDataCategory: 'prisons',
+  },
+  confirmedRecallType: {
+    label: 'Recall type - confirmed',
+    fieldType: 'ENUM', // FIXED / STANDARD
+    enumValues: {
+      FIXED: 'Fixed term',
+      STANDARD: 'Standard',
+    },
+  },
+  confirmedRecallTypeDetail: {
+    label: 'Recall type - confirmed detail',
+    fieldType: 'TEXT',
+  },
+  confirmedRecallTypeEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.CHANGE_RECALL_TYPE_EMAIL,
+  },
+  lastReleasePrison: {
+    label: 'Releasing prison',
+    fieldType: 'REF_DATA',
+    refDataCategory: 'prisons',
+  },
+  mappaLevel: {
+    label: 'MAPPA level',
+    fieldType: 'REF_DATA',
+    refDataCategory: 'mappaLevels',
+  },
+  sentencingCourt: {
+    label: 'Sentencing court',
+    fieldType: 'REF_DATA',
+    refDataCategory: 'courts',
+  },
+  indexOffence: {
+    label: 'Index offence',
+    fieldType: 'TEXT',
+  },
+  localPoliceForceId: {
+    label: 'Local police force',
+    fieldType: 'REF_DATA',
+    refDataCategory: 'policeForces',
+  },
+  bookingNumber: {
+    label: 'Booking number',
+    fieldType: 'TEXT',
+  },
+  probationOfficerName: {
+    label: 'Probation officer name',
+    fieldType: 'TEXT',
+  },
+  probationOfficerPhoneNumber: {
+    label: 'Probation officer phone number',
+    fieldType: 'TEXT',
+  },
+  probationOfficerEmail: {
+    label: 'Probation officer email address',
+    fieldType: 'TEXT',
+  },
+  localDeliveryUnit: {
+    label: 'Local Delivery Unit',
+    fieldType: 'REF_DATA',
+    refDataCategory: 'localDeliveryUnits',
+  },
+  authorisingAssistantChiefOfficer: {
+    label: 'ACO',
+    fieldType: 'TEXT',
+  },
+  contrabandDetail: {
+    label: 'Contraband detail',
+    fieldType: 'TEXT',
+  },
+  vulnerabilityDiversityDetail: {
+    label: 'Vulnerability and diversity detail',
+    fieldType: 'TEXT',
+  },
+  arrestIssuesDetail: {
+    label: 'Arrest issues detail',
+    fieldType: 'TEXT',
+  },
+  licenceConditionsBreached: {
+    label: 'Licence conditions breached',
+    fieldType: 'TEXT',
+  },
+  reasonsForRecall: {
+    label: 'Reasons for recall',
+    fieldType: 'REF_DATA_LIST',
+    refDataCategory: 'reasonsForRecall',
+  },
+  reasonsForRecallOtherDetail: {
+    label: 'Reasons for recall - other',
+    fieldType: 'TEXT',
+  },
+  additionalLicenceConditionsDetail: {
+    label: 'Additional licence conditions detail',
+    fieldType: 'TEXT',
+  },
+  confirmRecallNotificationEmailSent: {
+    fieldType: 'ENUM', // YES / NO
+  },
+  confirmDossierEmailSent: {
+    fieldType: 'ENUM', // YES / NO
+  },
+  differentNomsNumberDetail: {
+    label: 'Different NOMIS number detail',
+    fieldType: 'TEXT',
+  },
+  previousConvictionMainName: {
+    label: 'Name on pre-cons - other',
+    fieldType: 'TEXT',
+  },
+  licenceNameCategory: {
+    label: 'Name',
+    fieldType: 'ENUM',
+    enumValues: {
+      FIRST_LAST: 'First & last name',
+      FIRST_MIDDLE_LAST: 'First, middle & last name',
+    },
+  },
+  lastKnownAddressOption: {
+    label: 'Has last known address',
+    fieldType: 'ENUM',
+    enumValues: {
+      YES: 'Yes',
+      NO_FIXED_ABODE: 'No fixed abode',
+    },
+  },
+  previousConvictionMainNameCategory: {
+    label: 'Name on pre-cons',
+    fieldType: 'ENUM',
+    enumValues: {
+      FIRST_LAST: 'First & last name',
+      FIRST_MIDDLE_LAST: 'First, middle & last name',
+      OTHER: 'Other name',
+    },
+  },
+
+  sentenceYears: {
+    label: 'Length of sentence (years)',
+    fieldType: 'TEXT',
+  },
+  sentenceMonths: {
+    label: 'Length of sentence (months)',
+    fieldType: 'TEXT',
+  },
+  sentenceDays: {
+    label: 'Length of sentence (days)',
+    fieldType: 'TEXT',
+  },
+  warrantReferenceNumber: {
+    label: 'Warrant reference number',
+    fieldType: 'TEXT',
+  },
+  // uploaded emails
+  recallRequestEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.RECALL_REQUEST_EMAIL,
+  },
+  recallNotificationSentEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
+  },
+  recommendedRecallType: {
+    label: 'Recall type - recommended',
+    fieldType: 'ENUM',
+    enumValues: {
+      STANDARD: 'Standard',
+      FIXED: 'Fixed',
+    },
+  },
+  dossierSentEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.DOSSIER_EMAIL,
+  },
+  nsySentEmailUploaded: {
+    fieldType: 'UPLOADED_EMAIL',
+    documentCategory: RecallDocument.category.NSY_REMOVE_WARRANT_EMAIL,
+  },
+}
+
+// FIXME: copied from 'server/controllers/changeHistory/recallFieldList.ts' - rework so we can re-use that code without including restClient
+const findDocCategory = category => documentCategories.find(cat => cat.name === category)
+
+// FIXME: copied from 'server/controllers/changeHistory/recallFieldList.ts' - rework so we can re-use that code without including restClient
+const changedFieldProps = ({ id, value, changedFields, uploadedDocuments }) => {
+  if (value.fieldType === 'UPLOADED_EMAIL') {
+    const uploadedDoc = uploadedDocuments.find(doc => doc.category === value.documentCategory)
+    const docCategory = findDocCategory(value.documentCategory)
+    return uploadedDoc
+      ? {
+          label: docCategory.label,
+          updatedByUserName: uploadedDoc.createdByUserName,
+          updatedDateTime: uploadedDoc.createdDateTime,
+          hasHistory: true,
+        }
+      : {
+          hasHistory: false,
+        }
+  }
+  const changedField = changedFields.find(field => field.fieldName === id)
+  return changedField
+    ? {
+        updatedByUserName: changedField.updatedByUserName,
+        updatedDateTime: changedField.updatedDateTime,
+        hasHistory: true,
+      }
+    : {
+        hasHistory: false,
+      }
+}
+
+// FIXME: copied from 'server/controllers/changeHistory/recallFieldList.ts' - rework so we can re-use that code without including restClient
+const changeHistoryFieldList = ({ changedFields, uploadedDocuments }) => {
+  const list = Object.entries(recallFieldList)
+    .map(([id, value]) => {
+      const changedField = changedFields.find(field => field.fieldName === id)
+      return {
+        id,
+        ...value,
+        fieldPath: changedField ? changedField.fieldPath : id,
+        ...changedFieldProps({ id, value, changedFields, uploadedDocuments }),
+      }
+    })
+    .filter(field => field.label)
+  return sortList(list, 'label')
+}
 
 context('Change history', () => {
   const nomsNumber = 'A1234AA'
