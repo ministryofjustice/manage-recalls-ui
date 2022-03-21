@@ -60,7 +60,7 @@ context('Assess a recall', () => {
     cy.getText('recallStatus').should('equal', 'Booking complete')
     cy.getText('recallAssessmentDueText').should(
       'equal',
-      'Overdue: recall assessment was due on 6 August 2020 by 16:33'
+      'Overdue: Recall assessment was due on 6 August 2020 by 16:33'
     )
     cy.getLinkHref('Change recall email received date').should('contain', `/recalls/${recallId}/request-received`)
     cy.getLinkHref('Change uploaded recall email').should('contain', `/recalls/${recallId}/request-received`)

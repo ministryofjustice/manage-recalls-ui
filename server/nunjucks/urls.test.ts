@@ -26,6 +26,16 @@ describe('changeLinkUrl', () => {
     )
   })
 
+  it('omits hash if not supplied', () => {
+    const url = changeLinkUrl(
+      'last-release',
+      { basePath: '/person/123/recalls/456/', currentPage: 'check-answers' },
+      undefined,
+      'sentenceExpiryDateFieldset'
+    )
+    expect(url).toEqual('/person/123/recalls/456/last-release?fromPage=check-answers#sentenceExpiryDateFieldset')
+  })
+
   it('appends an extra query string if supplied', () => {
     const url = changeLinkUrl(
       'last-release',

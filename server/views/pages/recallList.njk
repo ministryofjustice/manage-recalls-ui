@@ -42,9 +42,9 @@
                                 data-qa="name">{{ result.fullName }}</td>
                             <td class="govuk-table__cell" data-qa="dueDate">
                                 {% if result.status == 'AWAITING_DOSSIER_CREATION' or result.status == 'DOSSIER_IN_PROGRESS' %}
-                                {{ dueDateLabel({ dueIsoDateTime: result.dossierTargetDate, includeTime: false, shortFormat: true }) }}
+                                {{ dueDateTimeLabel({ dueIsoDateTime: result.dossierTargetDate, includeTime: false, shortFormat: true }) }}
                                 {% elseif result.recallAssessmentDueDateTime %}
-                                {{ dueDateLabel({ dueIsoDateTime: result.recallAssessmentDueDateTime, includeTime: true, shortFormat: true }) }}
+                                {{ dueDateTimeLabel({ dueIsoDateTime: result.recallAssessmentDueDateTime, includeTime: true, shortFormat: true }) }}
                                 {% endif %}
                             </td>
                             <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
@@ -159,7 +159,7 @@
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                                 <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
                                 <td class="govuk-table__cell" data-qa="due">
-                                    {{ partBDueDateLabel({ partBDueDate: result.partBDueDate }) }}
+                                    {{ dueDateTimeLabel({ dueIsoDateTime: result.partBDueDate, includeTime: false, shortFormat: true, showOverdueForShortFormat: true }) }}
                                 </td>
                                 <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell">

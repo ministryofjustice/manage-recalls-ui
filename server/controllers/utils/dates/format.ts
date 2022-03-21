@@ -25,54 +25,41 @@ export const formatDateTimeFromIsoString = (isoDate: string, dateOnly = false) =
   }
 }
 
-export const recallAssessmentDueText = (isoDate: string): string | undefined => {
-  if (!isDefined(isoDate)) {
-    return undefined
-  }
-  try {
-    return dueDateLabel({
-      dueItemLabel: 'Recall assessment',
-      dueIsoDateTime: isoDate,
-      includeTime: true,
-      shortFormat: false,
-    })
-  } catch (err) {
-    logger.error(err)
-    return undefined
-  }
-}
-
-export const dossierDueDateString = (dueDateTime: string): string => {
+export const dueDateShortLabel = (dueDateTime: string): string => {
   if (!isDefined(dueDateTime)) {
     return undefined
   }
   const now = DateTime.now()
   try {
     const overdue = now.diff(getDateTimeUTC(dueDateTime), 'days').days >= 1
+    const formattedDate = formatDateTimeFromIsoString(dueDateTime, true)
     if (overdue) {
-      return 'Overdue: Due on'
+      return `Overdue: Due on ${formattedDate}`
     }
-    return 'Due on'
+    return `Due on ${formattedDate}`
   } catch (err) {
     logger.error(err)
     return undefined
   }
 }
 
-export const dueDateLabel = ({
+export const dueDateTimeLabel = ({
   dueItemLabel,
   dueIsoDateTime,
   includeTime = true,
   shortFormat = false,
+  showOverdueForShortFormat = false,
 }: {
   dueItemLabel?: string
   dueIsoDateTime: string
   includeTime?: boolean
   shortFormat?: boolean
+  showOverdueForShortFormat?: boolean
 }): string => {
   if (!dueIsoDateTime) {
     return ''
   }
+
   const dueDateTime = getDateTimeUTC(dueIsoDateTime)
   const now = DateTime.now()
   const overdue = includeTime ? now.diff(dueDateTime).toMillis() >= 0 : now.diff(dueDateTime, 'days').days >= 1
@@ -106,41 +93,24 @@ export const dueDateLabel = ({
     if (shortFormat) {
       return `Today${dueTimeOfDay}`
     }
-    return `Overdue: ${dueItemLabel.toLowerCase()} was due today${dueTimeOfDay}`
+    return `Overdue: ${dueItemLabel} was due today${dueTimeOfDay}`
   }
   if (overdue) {
     if (shortFormat) {
+      if (showOverdueForShortFormat) {
+        return 'Overdue'
+      }
       if (afterYesterday) {
         return `Yesterday${dueTimeOfDay}`
       }
       return `${dueDateNoYear}${dueTimeOfDay}`
     }
-    return `Overdue: ${dueItemLabel.toLowerCase()} was due on ${dueDate}${dueTimeOfDay}`
+    return `Overdue: ${dueItemLabel} was due on ${dueDate}${dueTimeOfDay}`
   }
   if (shortFormat) {
     return `Today${dueTimeOfDay}`
   }
   return `${dueItemLabel} due today${dueTimeOfDay}`
-}
-
-export const partBDueDateLabel = ({ partBDueDate }: { partBDueDate: string }): string => {
-  if (!partBDueDate) {
-    return 'MISSING DUE DATE'
-  }
-  const dueDateTime = getDateTimeUTC(partBDueDate)
-  const now = DateTime.now()
-  const overdue = now.diff(dueDateTime, 'days').days >= 1
-  const startOfToday = now.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-  const isDueToday = startOfToday.diff(dueDateTime, 'days').days === 0
-  const dueForPresentation = dueDateTime.setZone(europeLondon)
-  const dueDate = dueForPresentation.toFormat(datePresentationFormat)
-  if (isDueToday) {
-    return `Today`
-  }
-  if (overdue) {
-    return `Overdue`
-  }
-  return dueDate
 }
 
 export const padWithZeroes = (value?: number): string => {
