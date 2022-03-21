@@ -4,6 +4,7 @@ import Agent, { HttpsAgent } from 'agentkeepalive'
 import logger from '../../logger'
 import sanitiseError from '../utils/sanitisedError'
 import { ApiConfig } from '../config'
+import { restClientMetricsMiddleware } from './restClientMetricsMiddleware'
 
 export interface GetRequest {
   path?: string
@@ -63,6 +64,7 @@ export default class RestClient {
         result = await superagent
           .get(`${this.apiUrl()}${path}`)
           .agent(this.agent)
+          .use(restClientMetricsMiddleware)
           .retry(2, this.retry)
           .query(query)
           .auth(this.token, { type: 'bearer' })
@@ -73,6 +75,7 @@ export default class RestClient {
         result = await superagent
           .get(`${this.apiUrl()}${path}`)
           .agent(this.agent)
+          .use(restClientMetricsMiddleware)
           .retry(2, this.retry)
           .query(query)
           .set(headers)

@@ -4,6 +4,9 @@ import { FieldAuditSummary } from '../../../@types/manage-recalls-api/models/Fie
 import { FieldAuditEntry, SentenceLength } from '../../../@types/manage-recalls-api'
 import { getReferenceDataItemLabel } from '../../../referenceData'
 import { formatDateTimeFromIsoString } from '../../utils/dates/format'
+// FIXME: I think this code references the `manageRecallsApiClient` which in turn references `restClient`
+//        if we want to use this module in the integration tests (to remove duplication), we need to move
+//        the code that needs this I think...
 import { findDocCategory } from '../../documents/upload/helpers'
 import { sortList } from '../../utils/lists'
 

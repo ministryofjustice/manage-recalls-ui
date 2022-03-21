@@ -1,8 +1,11 @@
+import promClient from 'prom-client'
 import createApp from './app'
 import { createMetricsApp } from './monitoring/metricsApp'
 import { HmppsAuthClient } from './clients/hmppsAuthClient'
 import TokenStore from './clients/tokenStore'
 import UserService from './clients/userService'
+
+promClient.collectDefaultMetrics()
 
 const hmppsAuthClient = new HmppsAuthClient(new TokenStore())
 const userService = new UserService(hmppsAuthClient)
