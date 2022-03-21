@@ -159,6 +159,14 @@ export function addMissingDocumentRecord(
   return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
 }
 
+export function addPartbRecord({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post<superagent.Response>({
+    path: `/recalls/${recallId}/partb-records`,
+    data: valuesToSave as Record<string, unknown>,
+    raw: true,
+  })
+}
+
 export function addRescindRecord({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
   return restClient(user.token).post<superagent.Response>({
     path: `/recalls/${recallId}/rescind-records`,

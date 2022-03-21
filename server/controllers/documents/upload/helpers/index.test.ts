@@ -42,4 +42,24 @@ describe('makeMetaDataForFile', () => {
     expect(result.category).toEqual(RecallDocument.category.LICENCE)
     expect(result.details).toEqual(details)
   })
+
+  it('throws if given an invalid category', () => {
+    try {
+      makeMetaDataForFile(
+        {
+          originalname: 'test.pdf',
+          mimetype: 'application/pdf',
+          buffer: Buffer.from('def', 'base64'),
+        } as Express.Multer.File,
+        'RANDOM' as RecallDocument.category
+      )
+    } catch (err) {
+      expect(err.message).toEqual('makeMetaDataForFile: invalid category name: RANDOM')
+    }
+  })
+
+  it('returns undefined if not given a file', () => {
+    const result = makeMetaDataForFile(undefined, RecallDocument.category.LICENCE)
+    expect(result).toBeUndefined()
+  })
 })

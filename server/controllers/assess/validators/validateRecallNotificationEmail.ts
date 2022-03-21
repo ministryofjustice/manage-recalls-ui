@@ -76,7 +76,7 @@ export const validateRecallNotificationEmail = ({
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat,
+          text: errorMsgEmailUpload.invalidFileFormat(fileName),
           values: fileName,
         })
       )

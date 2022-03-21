@@ -1,0 +1,115 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = makePageTitle("Upload documents", errors) %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <h1 class="govuk-heading-l">
+                Upload documents
+            </h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
+                  method="post" enctype="multipart/form-data">
+                <p class="govuk-body">You can upload these documents:</p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>Part B</li>
+                    <li>an updated OASys report if provided</li>
+                </ul>
+                {{ govukFileUpload({
+                    id: "partBFileName",
+                    name: "partBFileName",
+                    label: {
+                        text: "Upload the part B",
+                        classes: "govuk-label--m"
+                    },
+                    attributes: {
+                        accept: allowedDocumentFileExtensionList()
+                    },
+                    errorMessage: errorMessage(errors.partBFileName)
+                }) }}
+
+                {{ govukFileUpload({
+                    id: "oasysFileName",
+                    name: "oasysFileName",
+                    label: {
+                        text: "Upload the OASys (optional)",
+                        classes: "govuk-label--m"
+                    },
+                    attributes: {
+                        accept: allowedDocumentFileExtensionList()
+                    },
+                    errorMessage: errorMessage(errors.oasysFileName)
+                }) }}
+
+                {{ govukTextarea({
+                    name: "details",
+                    id: "details",
+                    label: {
+                        text: "Provide more detail",
+                        classes: "govuk-label--m"
+                    },
+                    value: formValues.details,
+                    errorMessage: errorMessage(errors.details)
+                }) }}
+
+                {{ govukDateInput({
+                    name: 'partBReceivedDate',
+                    id: 'partBReceivedDate',
+                    formGroup: {
+                        classes: 'govuk-!-margin-bottom-3'
+                    },
+                    fieldset: {
+                        legend: {
+                            text: 'When did you receive the part B report?',
+                            classes: 'govuk-fieldset__legend--m'
+                        }
+                    },
+                    items: dateTimeItems("partBReceivedDate", formValues.partBReceivedDateParts, false),
+                    errorMessage: errorMessage(errors.partBReceivedDate),
+                    hint: {
+                        text: 'For example, 23 11 2021'
+                    }
+                }) }}
+                <div class='govuk-!-margin-bottom-4 govuk-body'>
+                    {{ todayLink({
+                        name: 'rescindDecisionEmailSentDate',
+                        cspNonce: cspNonce
+                    }) }}
+                </div>
+                {{ govukFileUpload({
+                    id: "emailFileName",
+                    name: "emailFileName",
+                    label: {
+                        text: "Upload the part B email from probation",
+                        classes: "govuk-label--m"
+                    },
+                    attributes: {
+                        accept: allowedEmailFileExtensionList()
+                    },
+                    errorMessage: errorMessage(errors.emailFileName)
+                }) }}
+                <div class='govuk-!-margin-top-6'>
+                    <button class="govuk-button">
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

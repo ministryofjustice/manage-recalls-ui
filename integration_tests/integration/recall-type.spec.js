@@ -1,7 +1,6 @@
 import { getEmptyRecallResponse } from '../mockApis/mockResponses'
 
 context('Standard / fixed term recall type', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const emptyRecall = {
     ...getEmptyRecallResponse,

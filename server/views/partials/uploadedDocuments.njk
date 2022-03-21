@@ -20,14 +20,20 @@
                     {% endif %}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
-                    {% if recall.status === 'BEING_BOOKED_ON' or document.category === 'UNCATEGORISED' %}
-                        <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'uploaded-documents') }}'
-                           data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
-                                    class="govuk-visually-hidden"> {{ document.label }}</span></a>
-                    {% elseif document.version %}
-                        <a href='{{ changeLinkUrl('upload-document-version', urlInfo, 'uploaded-documents', '', 'versionedCategoryName=' + document.category) }}'
-                           data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
-                                    class="govuk-visually-hidden"> {{ document.label }}</span></a>
+                    {% if document.category === 'PART_B_RISK_REPORT' %}
+                        <a href='{{ changeLinkUrl('part-b', urlInfo, 'recallDetails-part-b') }}' class='govuk-link'>
+                            Change <span class="govuk-visually-hidden"> part B report</span>
+                        </a>
+                    {% else %}
+                        {% if recall.status === 'BEING_BOOKED_ON' or document.category === 'UNCATEGORISED' %}
+                            <a href='{{ changeLinkUrl('upload-documents', urlInfo, 'uploaded-documents') }}'
+                               data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
+                                        class="govuk-visually-hidden"> {{ document.label }}</span></a>
+                        {% elseif document.version %}
+                            <a href='{{ changeLinkUrl('upload-document-version', urlInfo, 'uploaded-documents', '', 'versionedCategoryName=' + document.category) }}'
+                               data-qa='uploadedDocument-{{ document.category }}-Change' class='govuk-link'>Change <span
+                                        class="govuk-visually-hidden"> {{ document.label }}</span></a>
+                        {% endif %}
                     {% endif %}
                 </dd>
             </div>

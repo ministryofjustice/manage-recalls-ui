@@ -36,6 +36,13 @@ describe('decorateDocs', () => {
       createdDateTime: '2020-04-01T12:00:00.000Z',
     },
     {
+      category: RecallDocument.category.PART_B_EMAIL_FROM_PROBATION,
+      documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+      fileName: '2021-07-03 Phil Jones.msg',
+      createdByUserName: 'Arnold Caseworker',
+      createdDateTime: '2020-04-01T12:00:00.000Z',
+    },
+    {
       category: RecallDocument.category.RECALL_NOTIFICATION_EMAIL,
       documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
       fileName: '2021-07-03 Phil Jones recall.msg',
@@ -230,6 +237,10 @@ describe('decorateDocs', () => {
       },
       {
         ...findDocCategory(RecallDocument.category.EXCLUSION_ZONE_MAP),
+        uploaded: [],
+      },
+      {
+        ...findDocCategory(RecallDocument.category.PART_B_RISK_REPORT),
         uploaded: [],
       },
       {
@@ -447,6 +458,16 @@ describe('decorateDocs', () => {
         url: '/recalls/abc-456/documents/1234-3455-8542-c3ac-8c963f66afa6',
         createdByUserName: 'Arnold Caseworker',
         createdDateTime: '2020-04-01T12:00:00.000Z',
+      },
+      PART_B_EMAIL_FROM_PROBATION: {
+        category: 'PART_B_EMAIL_FROM_PROBATION',
+        createdByUserName: 'Arnold Caseworker',
+        createdDateTime: '2020-04-01T12:00:00.000Z',
+        documentId: '64bdf-3455-8542-c3ac-8c963f66afa6',
+        fileName: '2021-07-03 Phil Jones.msg',
+        label: 'Part B received email uploaded',
+        type: 'email',
+        url: '/recalls/abc-456/documents/64bdf-3455-8542-c3ac-8c963f66afa6',
       },
       RECALL_NOTIFICATION_EMAIL: {
         category: 'RECALL_NOTIFICATION_EMAIL',

@@ -288,7 +288,7 @@ context('Assess a recall', () => {
     assessRecallEmail.clickContinue()
     assessRecallEmail.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
-      summaryError: 'The selected file must be an MSG or EML',
+      summaryError: "The selected file 'part_a_recall_report.pdf' must be a MSG or EML",
     })
     // upload has a virus
     cy.task('expectUploadRecallDocument', {

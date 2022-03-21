@@ -186,6 +186,17 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
+    expectAddPartBRecord: expectation => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: '/recalls/(.*)/partb-records',
+        },
+        response: {
+          status: (expectation && expectation.statusCode) || 201,
+        },
+      })
+    },
     expectStopRecall: expectation => {
       return wiremock.stubFor({
         request: {

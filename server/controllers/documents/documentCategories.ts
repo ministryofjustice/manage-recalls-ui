@@ -88,6 +88,12 @@ export const documentCategories: DocumentCategoryMetadata[] = [
     versioned: true,
   },
   {
+    label: 'Part B report',
+    name: RecallDocument.category.PART_B_RISK_REPORT,
+    type: 'document',
+    standardFileName: 'Part B.pdf',
+  },
+  {
     label: 'Other',
     name: RecallDocument.category.OTHER,
     type: 'document',
@@ -136,6 +142,11 @@ export const documentCategories: DocumentCategoryMetadata[] = [
   {
     label: 'Recall type change email uploaded',
     name: RecallDocument.category.CHANGE_RECALL_TYPE_EMAIL,
+    type: 'email',
+  },
+  {
+    label: 'Part B received email uploaded',
+    name: RecallDocument.category.PART_B_EMAIL_FROM_PROBATION,
     type: 'email',
   },
   {

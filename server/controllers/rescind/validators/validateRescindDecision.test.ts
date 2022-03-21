@@ -214,7 +214,7 @@ describe('validateRescindDecision', () => {
       {
         href: '#rescindDecisionEmailFileName',
         name: 'rescindDecisionEmailFileName',
-        text: 'The selected file must be an MSG or EML',
+        text: "The selected file 'test.msl' must be a MSG or EML",
       },
     ])
   })

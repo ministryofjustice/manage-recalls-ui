@@ -90,7 +90,7 @@ export const validateRescindRequest = ({
       errors.push(
         makeErrorObject({
           id: 'rescindRequestEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat,
+          text: errorMsgEmailUpload.invalidFileFormat(fileName),
         })
       )
     }

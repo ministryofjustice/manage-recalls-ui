@@ -45,7 +45,7 @@ export const validateNsyEmail = ({
       errors.push(
         makeErrorObject({
           id: 'nsyEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat,
+          text: errorMsgEmailUpload.invalidFileFormat(fileName),
         })
       )
     }

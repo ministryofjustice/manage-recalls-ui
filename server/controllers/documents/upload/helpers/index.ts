@@ -11,8 +11,14 @@ export const makeMetaDataForFile = (
   file: Express.Multer.File,
   categoryName: RecallDocument.category,
   details?: string
-): UploadedFileMetadata => {
+): UploadedFileMetadata | undefined => {
   const documentCategory = findDocCategory(categoryName)
+  if (!documentCategory) {
+    throw new Error(`makeMetaDataForFile: invalid category name: ${categoryName}`)
+  }
+  if (!file) {
+    return undefined
+  }
   return {
     originalFileName: file.originalname,
     standardFileName: documentCategory.standardFileName,

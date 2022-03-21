@@ -225,7 +225,7 @@ describe('separateEmailAndFormSave', () => {
           {
             href: '#recallRequestEmailFileName',
             name: 'recallRequestEmailFileName',
-            text: 'The selected file must be an MSG or EML',
+            text: "The selected file 'email.pdf' must be a MSG or EML",
           },
         ])
         expect(httpStatus).toEqual(303)

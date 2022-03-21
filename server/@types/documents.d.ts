@@ -1,6 +1,7 @@
 import { RecallDocument, RescindRecord, Note } from './manage-recalls-api'
+import { PartBRecord } from './manage-recalls-api/models/PartBRecord'
 
-type DocumentType = 'document' | 'email' | 'generated' | 'note_document'
+export type DocumentType = 'document' | 'email' | 'generated' | 'note_document'
 
 export interface DocumentCategoryMetadata {
   label: string
@@ -69,6 +70,12 @@ export interface DecoratedRescindRecord extends RescindRecord {
 
 export interface DecoratedNote extends Note {
   documentUrl: string
+}
+
+export interface DecoratedPartBRecord extends PartBRecord {
+  partBUrl: string
+  oasysUrl: string
+  emailUrl: string
 }
 
 export interface DocumentDecorations {
