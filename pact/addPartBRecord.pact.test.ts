@@ -12,9 +12,9 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
 
   const requestBody = {
     details: 'Some text about what i did',
-    partbReceivedDate: '2022-03-05',
-    partbFileName: 'my part b.pdf',
-    partbFileContent: 'abc',
+    partBReceivedDate: '2022-03-05',
+    partBFileName: 'my part b.pdf',
+    partBFileContent: 'abc',
     emailFileName: 'part b email.msg',
     emailFileContent: 'def',
     oasysFileName: '2022 oasys.pdf',
