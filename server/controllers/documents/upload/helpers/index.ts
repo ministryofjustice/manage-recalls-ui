@@ -46,7 +46,9 @@ export const requiredDocsList = (recall: RecallResponse): DocumentCategoryMetada
   documentCategories.filter(doc => {
     if (doc.type === 'document' && doc.required) {
       if (doc.name === RecallDocument.category.PART_B_RISK_REPORT) {
-        return Boolean(recall.partBDueDate && !recall.partBRecords?.length)
+        return Boolean(
+          recall.status === RecallResponse.status.AWAITING_PART_B && recall.partBDueDate && !recall.partBRecords?.length
+        )
       }
       return true
     }
