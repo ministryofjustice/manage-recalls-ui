@@ -13,7 +13,6 @@ import helmet from 'helmet'
 import noCache from 'nocache'
 import passport from 'passport'
 import path from 'path'
-import rateLimit from 'express-rate-limit'
 import session from 'express-session'
 
 import auth from './authentication/auth'
@@ -229,18 +228,6 @@ export default function createApp(userService: UserService): express.Application
     req.session.nowInMinutes = Math.floor(Date.now() / 60e3)
     next()
   })
-
-  // Security recommendation - add rate limiting to prevent DOS attacks
-  // ref: https://github.com/ministryofjustice/manage-recalls-ui/security/code-scanning/21?query=ref%3Arefs%2Fpull%2F638%2Fmerge
-
-  const RateLimiter = rateLimit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    max: 1000, // Limit each IP to 1000 requests per `window` (here, per 5 minutes)
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  })
-
-  app.use(RateLimiter)
 
   app.get('/autherror', (req, res) => {
     res.status(401)

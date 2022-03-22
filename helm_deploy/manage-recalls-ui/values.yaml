@@ -17,6 +17,7 @@ generic-service:
       external-dns.alpha.kubernetes.io/aws-weight: "100"
       nginx.ingress.kubernetes.io/custom-http-errors: "501,502,503,504"
       nginx.ingress.kubernetes.io/default-backend: manage-recalls-error-pages
+      nginx.ingress.kubernetes.io/limit-rpm: "200"
     # which cluster are we on: live-1 is blue, live is green
     contextColour: green
 
