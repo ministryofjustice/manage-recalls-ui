@@ -1,7 +1,35 @@
 import superagent from 'superagent'
-import { restClientMetricsMiddleware, requestHistogram, timeoutCounter } from './restClientMetricsMiddleware'
+import {
+  restClientMetricsMiddleware,
+  normalizePath,
+  requestHistogram,
+  timeoutCounter,
+} from './restClientMetricsMiddleware'
 
 describe('restClientMetricsMiddleware', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  describe('normalizePath', () => {
+    it('removes the query params from the URL path', () => {
+      const result = normalizePath('https://httpbin.org/?foo=bar')
+      expect(result).toBe('/')
+    })
+
+    it('normalises recall ids', () => {
+      const result = normalizePath(
+        'https://manage-recalls-dev.hmpps.service.justice.gov.uk/recalls/15e4cccf-cc7b-4946-aa22-a82086735ec2/view-recall'
+      )
+      expect(result).toBe('/recalls/#val/view-recall')
+    })
+
+    it('normalises prisoner ids', () => {
+      const result = normalizePath('https://manage-recalls-dev.hmpps.service.justice.gov.uk/prisoner/A7826DY')
+      expect(result).toBe('/prisoner/#val')
+    })
+  })
+
   describe('request timers', () => {
     it('times the whole request', async () => {
       const requestHistogramLabelsSpy = jest.spyOn(requestHistogram, 'labels').mockReturnValue(requestHistogram)
