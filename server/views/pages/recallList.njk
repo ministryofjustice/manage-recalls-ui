@@ -22,7 +22,7 @@
 
             {% set toDoHtml %}
             {% if results and results.toDo.length > 0 %}
-                <table class="govuk-table">
+                <table class="govuk-table" data-qa='to-do'>
                     <caption class="govuk-table__caption govuk-table__caption--l" data-qa="toDo-list-heading">
                         To do
                     </caption>
@@ -54,7 +54,9 @@
                                 {% include "../partials/recallActionLink.njk" %}
                             </td>
                             <td class="govuk-table__cell">
-                                <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
+                                    View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -67,7 +69,7 @@
 
             {% set completedHtml %}
                 {% if results and results.completed.length > 0 %}
-                    <table class="govuk-table">
+                    <table class="govuk-table" data-qa='completed'>
                         <caption class="govuk-table__caption govuk-table__caption--l" data-qa="completed-list-heading">
                             Completed
                         </caption>
@@ -88,7 +90,9 @@
                                 </td>
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
                                 <td class="govuk-table__cell">
-                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
+                                        View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -123,12 +127,18 @@
                                     <div class='flex'>
                                     <span class='govuk-!-padding-right-2'>
                                     {% if result.status == 'AWAITING_RETURN_TO_CUSTODY' %}
-                                        <a href='/recalls/{{result.recallId}}/rtc-dates'>Add RTC date</a>
+                                        <a href='/recalls/{{result.recallId}}/rtc-dates'>
+                                       Add RTC date<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                        </a>
                                     {% else %}
-                                        <a href='/recalls/{{result.recallId}}/warrant-reference'>Add warrant reference</a>
+                                        <a href='/recalls/{{result.recallId}}/warrant-reference'>
+                                        Add warrant reference<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                        </a>
                                     {% endif %}
                                     </span>
-                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
+                                        View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                    </a>
                                     </div>
                                 </td>
                             </tr>
@@ -165,9 +175,13 @@
                                 <td class="govuk-table__cell">
                                     <div class='flex'>
                                     <span class='govuk-!-padding-right-2'>
-                                        <a href='/recalls/{{result.recallId}}/part-b' data-qa='upload-part-b-{{ result.recallId }}'>Upload part B</a>
+                                        <a href='/recalls/{{result.recallId}}/part-b' data-qa='upload-part-b-{{ result.recallId }}'>
+                                        Upload part B<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                        </a>
                                     </span>
-                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>View recall</a>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
+                                        View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                    </a>
                                     </div>
                                 </td>
                             </tr>

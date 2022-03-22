@@ -1,10 +1,6 @@
 import { DateTime } from 'luxon'
 import { getRecallResponse } from '../mockApis/mockResponses'
-import recallsListPage from '../pages/recallsList'
-import dossierRecallInformationPage from '../pages/dossierRecallInformation'
-import recallInformationPage from '../pages/recallInformation'
 import userDetailsPage from '../pages/userDetails'
-import { formatIsoDate } from '../support/utils'
 
 describe('Recalls list', () => {
   const recallId = '123'
@@ -38,12 +34,12 @@ describe('Recalls list', () => {
     })
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getRecallResponse, status: 'BEING_BOOKED_ON' } })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.continueBooking({ recallId })
-    cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
-    cy.getLinkHref('Back').should('equal', '/')
+    cy.pageHeading().should('equal', 'Recalls')
+    cy.getLinkHref(`Continue booking for ${personName}`).should(
+      'contain',
+      `/recalls/${recallId}/licence-name?returnToRecallList=1`
+    )
+    cy.getLinkHref(`View recall for ${personName}`).should('contain', `/recalls/${recallId}/view-recall`)
   })
 
   it('continue a previous booking to pre-cons page if the user has no middle names', () => {
@@ -58,15 +54,10 @@ describe('Recalls list', () => {
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, middleNames: '', status: 'BEING_BOOKED_ON' } })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectActionLinkText({ id: `continue-booking-${recallId}`, text: 'Continue booking' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.continueBooking({ recallId })
-    cy.pageHeading().should(
-      'equal',
-      `How does ${personName}'s name appear on the previous convictions sheet (pre-cons)?`
+    cy.getLinkHref(`Continue booking for ${personName}`).should(
+      'contain',
+      `/recalls/${recallId}/pre-cons-name?returnToRecallList=1`
     )
-    cy.getLinkHref('Back').should('equal', '/')
   })
 
   it('move on to assessRecall if the recall has status BOOKED_ON', () => {
@@ -83,11 +74,12 @@ describe('Recalls list', () => {
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'BOOKED_ON' } })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectActionLinkText({ id: `assess-recall-${recallId}`, text: 'Assess recall' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '5 Nov at 13:12' })
-    recallsList.assessRecall({ recallId })
+    cy.assertTableColumnValues({
+      qaAttrTable: 'to-do',
+      qaAttrCell: 'dueDate',
+      valuesToCompare: ['5 Nov at 13:12'],
+    })
+    cy.clickButton(`Assess recall for ${personName}`)
     cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
   })
 
@@ -106,13 +98,12 @@ describe('Recalls list', () => {
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'IN_ASSESSMENT' } })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '12 Oct at 15:30' })
-    recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
-    recallsList.expectActionLinkText({ id: `continue-assess-${recallId}`, text: 'Continue assessment' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.continueAssessment({ recallId })
-    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
+    cy.assertTableColumnValues({
+      qaAttrTable: 'to-do',
+      qaAttrCell: 'assignedTo',
+      valuesToCompare: ['Jimmy Pud'],
+    })
+    cy.getLinkHref(`Continue assessment for ${personName}`).should('contain', `/recalls/${recallId}/assess`)
   })
 
   it('move on to createDossier if the recall has status AWAITING_DOSSIER_CREATION', () => {
@@ -132,12 +123,8 @@ describe('Recalls list', () => {
     })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectActionLinkText({ id: `create-dossier-${recallId}`, text: 'Create dossier' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 Oct' })
-    recallsList.createDossier({ recallId })
-    dossierRecallInformationPage.verifyOnPage({ personName })
+    cy.clickButton(`Create dossier for ${personName}`)
+    cy.pageHeading().should('equal', `Create a dossier for ${personName} recall`)
   })
 
   it('continue dossier creation if the recall has status DOSSIER_IN_PROGRESS', () => {
@@ -154,22 +141,23 @@ describe('Recalls list', () => {
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_IN_PROGRESS' } })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectActionLinkText({ id: `continue-dossier-${recallId}`, text: 'Continue dossier creation' })
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    recallsList.assertElementHasText({ qaAttr: 'dueDate', textToFind: '13 Oct' })
-    recallsList.assertElementHasText({ qaAttr: 'assignedTo', textToFind: 'Jimmy Pud' })
-    recallsList.continueDossier({ recallId })
-    const dossierRecallInfo = dossierRecallInformationPage.verifyOnPage({ personName })
-    dossierRecallInfo.assertElementPresent({ qaAttr: 'licenceConditionsBreached' })
-    dossierRecallInfo.assertElementPresent({ qaAttr: 'assessedByUserName' })
+    cy.assertTableColumnValues({
+      qaAttrTable: 'to-do',
+      qaAttrCell: 'dueDate',
+      valuesToCompare: ['13 Oct'],
+    })
+    cy.getLinkHref(`Continue dossier creation for ${personName}`).should(
+      'contain',
+      `/recalls/${recallId}/dossier-recall`
+    )
   })
 
   it('move on to view recall if the recall has status DOSSIER_ISSUED', () => {
+    const stoppedRecallId = '987'
     const recalls = [
       {
         ...basicRecall,
-        recallId: '123445-5717-4562-b3fc-2c963f66afa6',
+        recallId: stoppedRecallId,
         status: 'STOPPED',
         lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
       },
@@ -185,18 +173,13 @@ describe('Recalls list', () => {
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.clickCompletedTab()
-    recallsList.expectActionLinkText({ id: `view-recall-${recallId}`, text: 'View recall' })
-    cy.get(`[data-qa="completedDate"]`)
-      .eq(0)
-      .should($results => expect($results.text().trim()).to.equal('4 May 2021'))
-    cy.get(`[data-qa="completedDate"]`)
-      .eq(1)
-      .should($results => expect($results.text().trim()).to.equal('22 October 2020'))
-    recallsList.viewRecall({ recallId })
-    const recallInfo = recallInformationPage.verifyOnPage({ personName })
-    recallInfo.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'AC3408303' })
+    cy.clickLink('Completed')
+    cy.getLinkHref(`View recall for ${personName}`).should('contain', `/recalls/${stoppedRecallId}/view-recall`)
+    cy.assertTableColumnValues({
+      qaAttrTable: 'completed',
+      qaAttrCell: 'completedDate',
+      valuesToCompare: ['4 May 2021', '22 October 2020'],
+    })
   })
 
   it('see recalls are ordered by due date on the todo list', () => {
@@ -272,8 +255,11 @@ describe('Recalls list', () => {
     })
 
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.expectRecallsSortOrder(['', '', '10 Dec at 15:33', '6 May at 16:33', '15 Aug', '15 Aug'])
+    cy.assertTableColumnValues({
+      qaAttrTable: 'to-do',
+      qaAttrCell: 'dueDate',
+      valuesToCompare: ['', '', '10 Dec at 15:33', '6 May at 16:33', '15 Aug', '15 Aug'],
+    })
   })
 
   it('lists "not in custody" recalls on a separate tab', () => {

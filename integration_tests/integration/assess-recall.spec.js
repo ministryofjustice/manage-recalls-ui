@@ -121,7 +121,7 @@ context('Assess a recall', () => {
     cy.clickButton('Continue')
 
     cy.pageHeading().should('equal', 'Download recall notification')
-    cy.clickLink('Recall notification')
+    cy.clickLink('Download the Recall notification')
     cy.getText('getRecallNotificationFileName').should(
       'equal',
       'Filename: NOT IN CUSTODY RECALL BADGER BOBBY A123456.pdf'

@@ -73,7 +73,7 @@
                                 <form novalidate action="/recalls/{{ person.nomsNumber }}" method="post">
                                     <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                                     <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="bookRecallButton">
-                                        Book a recall
+                                        Book a recall<span class="govuk-visually-hidden"> for {{ person.firstName }} {{ person.lastName }}</span>
                                     </button>
                                 </form>
                             </td>

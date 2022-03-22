@@ -318,7 +318,6 @@ const changeHistoryFieldList = ({ changedFields, uploadedDocuments }) => {
 }
 
 context('Change history', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
   const documents = [
@@ -512,10 +511,10 @@ context('Change history', () => {
         ],
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    cy.get('#tab_documents').click()
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('Documents')
     cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
-    changeHistory.clickLink({ qaAttr: 'viewHistory-LICENCE' })
+    cy.clickLink('View history for Licence.pdf')
     const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
       type: 'document',
     })
@@ -598,8 +597,8 @@ context('Change history', () => {
       },
     })
     cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    cy.get('#tab_documents').click()
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('Documents')
     cy.task('expectGetRecallDocumentHistory', {
       expectedResult: [
         {
@@ -628,7 +627,14 @@ context('Change history', () => {
         },
       ],
     })
-    changeHistory.clickLink({ qaAttr: 'viewHistory-DOSSIER' })
+    cy.getRowValuesFromTable({ rowQaAttr: 'DOSSIER' }).then(rowValues =>
+      expect(rowValues).to.include.members([
+        'BADGER BOBBY A123456 RECALL DOSSIER.pdf (version 4)',
+        '1 April 2020 at 13:00',
+        'Arnold Caseworker',
+      ])
+    )
+    cy.clickLink({ qaAttr: 'viewHistory-DOSSIER' })
     const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
       type: 'generated',
     })
