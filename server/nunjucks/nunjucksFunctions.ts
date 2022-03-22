@@ -1,5 +1,5 @@
 import nunjucks from 'nunjucks'
-import { DatePartsParsed, FormError, NamedFormError, ObjectMap, UiListItem, UrlInfo } from '../@types'
+import { DatePartsParsed, DecoratedRecall, FormError, NamedFormError, ObjectMap, UiListItem, UrlInfo } from '../@types'
 import {
   allowedDocumentFileExtensions,
   allowedEmailFileExtensions,
@@ -236,3 +236,8 @@ export const formatNsyWarrantEmailLink = (recall: RecallResponse) => {
 
 export const makePageTitle = (pageHeading: string, errors?: NamedFormError[]) =>
   `${errors ? 'Error: ' : ''}${pageHeading} - ${config.applicationName}`
+
+export const linkTextWithPerson = (recall: DecoratedRecall) => {
+  const { fullName, nomsNumber } = recall
+  return ` for ${fullName} (NOMIS - ${nomsNumber})`
+}

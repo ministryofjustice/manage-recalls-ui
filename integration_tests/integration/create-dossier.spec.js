@@ -213,13 +213,12 @@ context('Create a dossier', () => {
     dossierCheck.clickContinue()
 
     cy.pageHeading().should('equal', 'Download the dossier and letter')
-    cy.getLinkHref({
-      qaAttr: 'getDossierLink',
-    }).should('contain', `/recalls/${recallId}/documents/create?category=DOSSIER`)
+    cy.getLinkHref('Download the Dossier').should('contain', `/recalls/${recallId}/documents/create?category=DOSSIER`)
     cy.getText('getDossierFileName').should('equal', 'Filename: BADGER BOBBY A123456 RECALL DOSSIER.pdf')
-    cy.getLinkHref({
-      qaAttr: 'getLetterToPrisonLink',
-    }).should('contain', `/recalls/${recallId}/documents/create?category=LETTER_TO_PRISON`)
+    cy.getLinkHref('Download the Letter to prison').should(
+      'contain',
+      `/recalls/${recallId}/documents/create?category=LETTER_TO_PRISON`
+    )
     cy.getText('getLetterToPrisonFileName').should('equal', 'Filename: BADGER BOBBY A123456 LETTER TO PRISON.pdf')
     cy.selectConfirmationCheckbox('I have checked the information in the dossier and letter is correct')
     cy.clickButton('Continue')

@@ -1,7 +1,5 @@
 import { getEmptyRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
 
-const findOffenderPage = require('../pages/findOffender')
-
 context('Find a person', () => {
   const recallId = '123'
   const newRecall = { ...getEmptyRecallResponse, recallId }
@@ -44,7 +42,7 @@ context('Find a person', () => {
     firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
     firstResult.get('[data-qa=name]').should('contain.text', personName)
     firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
-    firstResult.get('[data-qa=bookRecallButton]').click()
+    cy.clickButton(`Book a recall for ${personName}`)
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
     cy.getLinkHref('Back').should('contain', '/find-person')
   })

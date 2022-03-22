@@ -185,6 +185,7 @@ export interface ConfirmationMessageGroup {
 }
 
 export interface DecoratedRecall extends RecallResponse, DocumentDecorations {
+  fullName?: string
   missingDocumentsRecords: DecoratedMissingDocumentsRecord[] // this is in both ancestor types, so override to get the correct one
   enableDeleteDocuments: boolean
 }
