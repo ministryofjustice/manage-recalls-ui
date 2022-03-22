@@ -102,6 +102,7 @@ context('Part B', () => {
       expectedResult: { ...getRecallResponse, status: 'AWAITING_PART_B', partBDueDate: '2022-03-02', partBRecords: [] },
     })
     cy.task('expectAddMissingDocumentsRecord')
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.visitRecallPage({ recallId: '123', pageSuffix: 'view-recall' })
     cy.getText('partBDueText').should('contain', 'Overdue: Part B report was due on 2 March 2022')
     cy.getLinkHref('Add part B report').should('contain', '/part-b')
