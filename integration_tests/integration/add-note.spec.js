@@ -170,7 +170,7 @@ context('Add a note to a recall', () => {
     recallInformation.assertElementHasText({ qaAttr: 'noteSubject3', textToFind: 'index 1 subject' })
   })
 
-  it('shows no notes text for recall without notes', () => {
+  it('shows no notes section for recall without notes', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
@@ -179,8 +179,7 @@ context('Add a note to a recall', () => {
       },
     })
     cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
-    cy.getText('notesHeading').should('equal', 'Notes')
-    cy.getText('noNotesText').should('equal', 'No notes have been added to this recall.')
+    cy.getElement('#notes').should('not.exist')
   })
 
   it('errors', () => {
