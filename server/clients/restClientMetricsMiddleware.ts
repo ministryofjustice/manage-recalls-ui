@@ -7,13 +7,13 @@ const requestHistogram = new promClient.Histogram({
   name: 'http_client_requests_seconds',
   help: 'Timings and counts of http client requests',
   buckets: [0.5, 0.75, 0.95, 0.99, 1],
-  labelNames: ['host', 'method', 'uri', 'status'],
+  labelNames: ['clientName', 'method', 'uri', 'status'],
 })
 
 const timeoutCounter = new promClient.Counter({
   name: 'http_client_requests_timeout_total',
   help: 'Count of http client request timeouts',
-  labelNames: ['host', 'method', 'uri'],
+  labelNames: ['clientName', 'method', 'uri'],
 })
 
 function restClientMetricsMiddleware(agent: SuperAgentRequest) {
