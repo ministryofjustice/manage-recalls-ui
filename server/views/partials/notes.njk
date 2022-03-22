@@ -1,6 +1,6 @@
-<div id='notes'>
-    <h2 class='govuk-heading-m govuk-!-margin-top-9' data-qa='notesHeading'>Notes</h2>
-    {% if recall.notes.length %}
+{% if recall.notes.length %}
+    <div id='notes'>
+        <h2 class='govuk-heading-m govuk-!-margin-top-9' data-qa='notesHeading'>Notes</h2>
         {% for note in recall.notes %}
             <div class='govuk-!-margin-bottom-8'>
                 <h3 class='govuk-heading-s' data-qa='noteSubject{{ loop.index }}'>{{ note.subject }}</h3>
@@ -48,7 +48,5 @@
                 </dl>
             </div>
         {% endfor %}
-    {% else %}
-        <p class='govuk-body' data-qa='noNotesText'>No notes have been added to this recall.</p>
-    {% endif %}
-</div>
+    </div>
+{% endif %}
