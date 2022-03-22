@@ -83,7 +83,6 @@ context('Add a note to a recall', () => {
     const note = getRecallResponse.notes[0]
     cy.task('expectAddNote')
     cy.visitRecallPage({ recallId, pageSuffix: 'assess' })
-    cy.getText('notesHeading').should('equal', 'Notes')
     cy.clickButton('Actions')
     cy.clickLink('Add a note')
     cy.pageHeading().should('equal', 'Add a note to the recall')
@@ -121,6 +120,7 @@ context('Add a note to a recall', () => {
     })
     cy.clickLink('View')
 
+    cy.getText('notesHeading').should('equal', 'Notes')
     cy.getElement({ qaAttr: 'noteSubject1' }).should('exist')
     cy.getElement({ qaAttr: 'noteDetails1' }).should('exist')
     cy.getElement({ qaAttr: 'noteDocumentRow1' }).should('not.exist')
