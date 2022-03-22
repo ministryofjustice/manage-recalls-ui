@@ -26,8 +26,8 @@ context('Book an "in-custody" recall', () => {
   it('book an "in custody" recall', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     cy.task('expectUpdateRecall', { recallId })
-    cy.task('expectUploadRecallDocument', { statusCode: 201 })
-    cy.task('expectAddMissingDocumentsRecord', { statusCode: 201 })
+    cy.task('expectUploadRecallDocument')
+    cy.task('expectAddMissingDocumentsRecord')
     cy.task('expectSetDocumentCategory')
     cy.task('expectSetRecommendedRecallType')
     cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })

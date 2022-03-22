@@ -101,8 +101,18 @@ context('Part B', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse, status: 'AWAITING_PART_B', partBDueDate: '2022-03-02', partBRecords: [] },
     })
+    cy.task('expectAddMissingDocumentsRecord')
     cy.visitRecallPage({ recallId: '123', pageSuffix: 'view-recall' })
     cy.getText('partBDueText').should('contain', 'Overdue: Part B report was due on 2 March 2022')
     cy.getLinkHref('Add part B report').should('contain', '/part-b')
+
+    // add missing document note
+    cy.clickLink('Add note to this section')
+    cy.uploadEmail({ field: 'missingDocumentsEmailFileName' })
+    cy.fillInput('Provide more detail', 'Chased up part B', { clearExistingText: true })
+    cy.clickButton('Continue')
+
+    cy.getText('confirmation').should('equal', 'Chase note added.')
+    cy.clickLink('View')
   })
 })

@@ -31,33 +31,51 @@ context('Missing uploaded documents', () => {
   })
 
   it('missing documents are listed on the view recall page', () => {
+    const record1 = {
+      missingDocumentsRecordId: '1',
+      emailId: '845',
+      emailFileName: 'missing-documents2.msg',
+      categories: ['OASYS_RISK_ASSESSMENT'],
+      details: 'OASYS requested by email on 10/12/2020',
+      version: 2,
+      createdByUserName: 'Bobby Badger',
+      createdDateTime: '2020-12-10T12:24:03.000Z',
+    }
+    const record2 = {
+      missingDocumentsRecordId: '2',
+      emailId: '123',
+      emailFileName: 'missing-documents.msg',
+      categories: ['OASYS_RISK_ASSESSMENT', 'PART_A_RECALL_REPORT'],
+      details: 'Documents were chased up',
+      version: 1,
+      createdByUserName: 'Bobby Badger',
+      createdDateTime: '2020-12-09T12:24:03.000Z',
+    }
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
         ...getRecallResponse,
         recallId,
         status: 'DOSSIER_ISSUED',
-        documents: [
-          {
-            category: 'PART_A_RECALL_REPORT',
-            documentId: '123',
-            version: 2,
-          },
-          {
-            category: 'PREVIOUS_CONVICTIONS_SHEET',
-            documentId: '789',
-            version: 1,
-          },
-        ],
+        missingDocumentsRecords: [record1, record2],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    // missing documents
-    recallInformation.assertElementHasText({
-      qaAttr: 'required-LICENCE',
-      textToFind: 'Missing: needed to create dossier',
-    })
-    recallInformation.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
+    cy.visitRecallPage({ recallId: '123', pageSuffix: 'view-recall' })
+    cy.getElement('Show 2 notes').click()
+    cy.getText('missingDocumentsRecordDetail-2').should('equal', record1.details)
+    cy.getText('missingDocumentsRecordEmail-2').should('equal', record1.emailFileName)
+    cy.getLinkHref({ qaAttr: 'missingDocumentsRecordEmail-2' }).should(
+      'contain',
+      `/recalls/${recallId}/documents/${record1.emailId}`
+    )
+    cy.getText('missingDocumentsRecordNotedBy-2').should('equal', 'Noted by Bobby Badger on 10 December 2020 at 12:24')
+    cy.getText('missingDocumentsRecordDetail-1').should('equal', record2.details)
+    cy.getText('missingDocumentsRecordEmail-1').should('equal', record2.emailFileName)
+    cy.getLinkHref({ qaAttr: 'missingDocumentsRecordEmail-1' }).should(
+      'contain',
+      `/recalls/${recallId}/documents/${record2.emailId}`
+    )
+    cy.getText('missingDocumentsRecordNotedBy-1').should('equal', 'Noted by Bobby Badger on 9 December 2020 at 12:24')
   })
 
   it('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
@@ -85,7 +103,7 @@ context('Missing uploaded documents', () => {
     })
   })
 
-  it('user can view details of a previous missing documents entry', () => {
+  it('shows the details of the previous missing documents entry on the add record form', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {

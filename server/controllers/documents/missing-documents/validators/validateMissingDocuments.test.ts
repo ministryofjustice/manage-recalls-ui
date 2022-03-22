@@ -1,11 +1,11 @@
 import { validateMissingDocuments } from './validateMissingDocuments'
 
 describe('validateMissingDocuments', () => {
-  it('returns valuesToSave if everything is valid', () => {
+  it('returns valuesToSave and a confirmation message if everything is valid', () => {
     const requestBody = {
       missingDocumentsDetail: 'Email sent on 12/10/2021',
     }
-    const { errors, valuesToSave, unsavedValues } = validateMissingDocuments({
+    const { errors, valuesToSave, unsavedValues, confirmationMessage } = validateMissingDocuments({
       requestBody,
       fileName: 'test.msg',
       wasUploadFileReceived: true,
@@ -16,6 +16,14 @@ describe('validateMissingDocuments', () => {
       missingDocumentsDetail: 'Email sent on 12/10/2021',
     })
     expect(errors).toBeUndefined()
+    expect(confirmationMessage).toEqual({
+      link: {
+        href: '#missing-documents',
+        text: 'View',
+      },
+      text: 'Chase note added.',
+      type: 'success',
+    })
   })
 
   it('returns an error if detail is missing, and no valuesToSave', () => {
