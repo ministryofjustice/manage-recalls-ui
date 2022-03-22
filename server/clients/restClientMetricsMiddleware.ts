@@ -4,16 +4,16 @@ import { Response, SuperAgentRequest } from 'superagent'
 import UrlValueParser from 'url-value-parser'
 
 const requestHistogram = new promClient.Histogram({
-  name: 'http_client_requests',
+  name: 'http_client_requests_seconds',
   help: 'Timings and counts of http client requests',
   buckets: [0.5, 0.75, 0.95, 0.99, 1],
-  labelNames: ['clientName', 'method', 'uri', 'status'],
+  labelNames: ['host', 'method', 'uri', 'status'],
 })
 
 const timeoutCounter = new promClient.Counter({
-  name: 'http_client_requests_timeout',
+  name: 'http_client_requests_timeout_total',
   help: 'Count of http client request timeouts',
-  labelNames: ['clientName', 'method', 'uri'],
+  labelNames: ['host', 'method', 'uri'],
 })
 
 function restClientMetricsMiddleware(agent: SuperAgentRequest) {

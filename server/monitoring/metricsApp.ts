@@ -2,9 +2,11 @@ import express from 'express'
 import promBundle from 'express-prom-bundle'
 
 const metricsMiddleware = promBundle({
+  autoregister: false,
+  buckets: [0.5, 0.75, 0.95, 0.99, 1],
+  httpDurationMetricName: 'http_server_requests_seconds',
   includeMethod: true,
   includePath: true,
-  autoregister: false,
   normalizePath: [['^/assets/.+$', '/assets/#assetPath']],
 })
 
