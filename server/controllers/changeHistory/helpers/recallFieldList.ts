@@ -79,6 +79,10 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Arrest issues',
     fieldType: 'BOOLEAN',
   },
+  rereleaseSupported: {
+    label: 'Re-release supported by probation',
+    fieldType: 'BOOLEAN',
+  },
 
   // text / enums / refdata
   currentPrison: {
