@@ -52,3 +52,9 @@ pre.govuk-body {
 .text-secondary {
   color: $govuk-secondary-text-colour;
 }
+
+.no-wrap-desktop {
+  @include govuk-media-query($from: desktop ) {
+    white-space: nowrap;
+  }
+}
