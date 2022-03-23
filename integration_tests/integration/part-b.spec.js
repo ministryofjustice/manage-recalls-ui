@@ -65,7 +65,10 @@ context('Part B', () => {
     )
 
     // part B details
-    cy.recallInfo('Part B email received').should('equal', formatDateTimeFromIsoString(partBRecord.partBReceivedDate))
+    cy.recallInfo('Part B email received').should(
+      'equal',
+      formatDateTimeFromIsoString({ isoDate: partBRecord.partBReceivedDate })
+    )
     cy.recallInfo('Part B report').should('contain', 'Part B.pdf')
     cy.recallInfo('Part B details').should('equal', partBRecord.details)
     cy.recallInfo('Part B uploaded by').should('equal', partBRecord.createdByUserName)

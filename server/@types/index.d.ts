@@ -1,4 +1,4 @@
-import { RecallDocument, RecallResponse } from './manage-recalls-api'
+import { RecallDocument, RecallResponse, RecallResponseLite } from './manage-recalls-api'
 import { DecoratedMissingDocumentsRecord, DocumentDecorations } from './documents'
 import { ReferenceDataCategories } from '../referenceData'
 import { UserDetails } from '../clients/userService'
@@ -226,3 +226,8 @@ export interface SaveToApiFnArgs {
 }
 
 export type SaveToApiFn = ({ recallId, valuesToSave, user }: SaveToApiFnArgs) => Promise<unknown>
+
+export interface RecallResponseLiteDecorated extends RecallResponseLite {
+  toDoDueDateTime?: string
+  completedDateTime?: string
+}

@@ -7,8 +7,17 @@ const datePresentationFormat = 'd MMMM yyyy'
 const datePresentationNoYearFormat = 'd MMM'
 const timePresentationFormat = 'HH:mm'
 
-export const formatDateTimeFromIsoString = (isoDate: string, dateOnly = false) => {
-  const dateAndTimePresentationFormat = "d MMMM yyyy' at 'HH:mm"
+export const formatDateTimeFromIsoString = ({
+  isoDate,
+  dateOnly = false,
+  shortDateFormat = false,
+}: {
+  isoDate: string
+  dateOnly?: boolean
+  shortDateFormat?: boolean
+}) => {
+  const dateFormat = shortDateFormat ? datePresentationNoYearFormat : datePresentationFormat
+  const dateAndTimePresentationFormat = `${dateFormat}' at '${timePresentationFormat}`
   if (!isDefined(isoDate)) {
     return undefined
   }
@@ -19,7 +28,7 @@ export const formatDateTimeFromIsoString = (isoDate: string, dateOnly = false) =
     if (includeTime) {
       return dateTime.toFormat(dateAndTimePresentationFormat)
     }
-    return dateTime.toFormat(datePresentationFormat)
+    return dateTime.toFormat(dateFormat)
   } catch (err) {
     return ''
   }
@@ -32,7 +41,7 @@ export const dueDateShortLabel = (dueDateTime: string): string => {
   const now = DateTime.now()
   try {
     const overdue = now.diff(getDateTimeUTC(dueDateTime), 'days').days >= 1
-    const formattedDate = formatDateTimeFromIsoString(dueDateTime, true)
+    const formattedDate = formatDateTimeFromIsoString({ isoDate: dueDateTime, dateOnly: true })
     if (overdue) {
       return `Overdue: Due on ${formattedDate}`
     }

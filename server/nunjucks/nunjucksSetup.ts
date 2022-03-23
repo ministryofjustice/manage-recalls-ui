@@ -57,8 +57,9 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
 
   njkEnv.addFilter('personOrPeople', personOrPeopleFilter)
   njkEnv.addFilter('userName', userNameFilter)
-  njkEnv.addFilter('dateOnly', val => formatDateTimeFromIsoString(val, true))
-  njkEnv.addFilter('dateTime', formatDateTimeFromIsoString)
+  njkEnv.addFilter('dateOnly', val => formatDateTimeFromIsoString({ isoDate: val, dateOnly: true }))
+  njkEnv.addFilter('dateTime', val => formatDateTimeFromIsoString({ isoDate: val }))
+  njkEnv.addFilter('dateTimeShort', val => formatDateTimeFromIsoString({ isoDate: val, shortDateFormat: true }))
   njkEnv.addGlobal('dateTimeItems', dateTimeItems)
   njkEnv.addGlobal('isoDateToMillis', isoDateToMillis)
   njkEnv.addGlobal('selectItems', selectItems)

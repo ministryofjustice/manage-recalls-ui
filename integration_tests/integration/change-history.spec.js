@@ -552,7 +552,9 @@ context('Change history', () => {
       }
       uploadedDocumentHistory.assertElementHasText({
         qaAttr: `document-${docId}-uploaded-by`,
-        textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
+        textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString({
+          isoDate: doc.createdDateTime,
+        })}`,
       })
     })
     // missing documents record
@@ -668,7 +670,9 @@ context('Change history', () => {
       }
       uploadedDocumentHistory.assertElementHasText({
         qaAttr: `document-${docId}-uploaded-by`,
-        textToFind: `Created by ${doc.createdByUserName} on ${formatDateTimeFromIsoString(doc.createdDateTime)}`,
+        textToFind: `Created by ${doc.createdByUserName} on ${formatDateTimeFromIsoString({
+          isoDate: doc.createdDateTime,
+        })}`,
       })
     })
   })
