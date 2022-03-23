@@ -53,8 +53,16 @@ pre.govuk-body {
   color: $govuk-secondary-text-colour;
 }
 
-.no-wrap-desktop {
-  @include govuk-media-query($from: desktop ) {
+.no-wrap-tablet {
+  @include govuk-media-query($from: tablet ) {
     white-space: nowrap;
   }
+}
+.wrapper-action-link {
+  max-width: 8rem;
+  display: inline-block;
+}
+.wrapper-date-short {
+  max-width: 9rem;
+  display: inline-block;
 }
