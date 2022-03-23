@@ -43,6 +43,7 @@ export type UpdateRecallRequest = {
     reasonsForRecallOtherDetail?: string;
     recallEmailReceivedDateTime?: string;
     recallNotificationEmailSentDateTime?: string;
+    rereleaseSupported?: boolean;
     sentenceDate?: string;
     sentenceExpiryDate?: string;
     sentenceLength?: SentenceLength;

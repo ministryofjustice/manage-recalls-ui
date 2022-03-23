@@ -1,6 +1,7 @@
 import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
 import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
 import { formatDateTimeFromIsoString } from '../../server/controllers/utils/dates/format'
+import { booleanToYesNo } from '../support/utils'
 
 context('Part B', () => {
   beforeEach(() => {
@@ -19,6 +20,7 @@ context('Part B', () => {
       expectedResults: recalls,
     })
     cy.task('expectAddPartBRecord')
+    cy.task('expectUpdateRecall', { recallId: '123' })
     const partBRecord = getRecallResponse.partBRecords[0]
     cy.visit('/')
     cy.clickLink('Awaiting part B (1)')
@@ -30,6 +32,9 @@ context('Part B', () => {
     cy.fillInput('Provide more detail', partBRecord.details)
     cy.enterDateTime(partBRecord.partBReceivedDate)
     cy.uploadEmail({ field: 'emailFileName' })
+    cy.clickButton('Continue')
+
+    cy.selectRadio('Do probation support re-release?', booleanToYesNo(getRecallResponse.rereleaseSupported))
 
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -46,18 +51,18 @@ context('Part B', () => {
         ],
       },
     })
-    const { firstName, lastName } = getRecallResponse
     cy.clickButton('Continue')
+    const { firstName, lastName } = getRecallResponse
     cy.pageHeading().should('equal', `View the recall for ${firstName} ${lastName}`)
 
     // confirmation banner
     cy.getText('confirmationHeading').should('equal', 'Part B added')
     cy.getText('confirmationBody').should('contain', 'Part B report and OASys uploaded.')
     cy.getText('confirmationBody').should('contain', 'Part B email and note added.')
-    // cy.getText('confirmationBody').should(
-    //   'contain',
-    //   'Re-release recommendation added and recall moved to Dossier team list'
-    // )
+    cy.getText('confirmationBody').should(
+      'contain',
+      'Re-release recommendation added' //  and recall moved to Dossier team list'
+    )
 
     // part B details
     cy.recallInfo('Part B email received').should('equal', formatDateTimeFromIsoString(partBRecord.partBReceivedDate))
@@ -65,6 +70,10 @@ context('Part B', () => {
     cy.recallInfo('Part B details').should('equal', partBRecord.details)
     cy.recallInfo('Part B uploaded by').should('equal', partBRecord.createdByUserName)
     cy.recallInfo('Part B email uploaded').should('equal', partBRecord.emailFileName)
+    cy.recallInfo('Re-release supported by probation').should(
+      'contain',
+      booleanToYesNo(getRecallResponse.rereleaseSupported)
+    )
     // change links
     cy.getLinkHref('Change part B email received date').should('contain', '/part-b')
     cy.getLinkHref('Change part B details').should('contain', '/part-b')

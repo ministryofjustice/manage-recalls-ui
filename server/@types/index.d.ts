@@ -100,6 +100,7 @@ export type ViewName =
   | 'rescindDecision'
   | 'stopRecall'
   | 'partB'
+  | 'supportRerelease'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 
@@ -176,11 +177,13 @@ export interface ConfirmationMessageBase {
 
 export interface ConfirmationMessage extends ConfirmationMessageBase {
   type: string
+  pageToDisplayOn?: string
 }
 
 export interface ConfirmationMessageGroup {
   heading: string
   bannerType: string
+  pageToDisplayOn?: string
   items: ConfirmationMessageBase[]
 }
 

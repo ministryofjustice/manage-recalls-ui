@@ -13,6 +13,7 @@ export const mockReq = ({
   session = {} as SessionData,
   originalUrl,
   baseUrl,
+  path = '/',
 }: {
   body?: ObjectMixed
   query?: ObjectMixed
@@ -22,6 +23,7 @@ export const mockReq = ({
   session?: SessionData
   originalUrl?: string
   baseUrl?: string
+  path?: string
 } = {}): Request => {
   return {
     query,
@@ -32,6 +34,7 @@ export const mockReq = ({
     session,
     originalUrl,
     baseUrl,
+    path,
   } as Request
 }
 

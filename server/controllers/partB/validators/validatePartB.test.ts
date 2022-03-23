@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { validatePartB } from './validatePartB'
 import { padWithZeroes } from '../../utils/dates/format'
-import { ConfirmationMessageGroup } from '../../../@types'
+import { ConfirmationMessageGroup, UrlInfo } from '../../../@types'
 
 describe('validatePartB', () => {
   const requestBody = {
@@ -33,12 +33,19 @@ describe('validatePartB', () => {
       },
     ] as Express.Multer.File[],
   }
+  const urlInfo: UrlInfo = {
+    fromPage: 'view-recall',
+    fromHash: 'recallDetails-part-b',
+    currentPage: 'part-b',
+    basePath: '/recalls/',
+  }
 
   it('returns valuesToSave, a confirmation message, and no errors if all fields are submitted', () => {
     const { errors, unsavedValues, valuesToSave, redirectToPage, confirmationMessage } = validatePartB({
       requestBody,
       filesUploaded,
       uploadFailed: false,
+      urlInfo,
     })
     expect(errors).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -59,9 +66,10 @@ describe('validatePartB', () => {
       partBFileName: 'partB.pdf',
       partBReceivedDate: '2022-03-05',
     })
-    expect(redirectToPage).toEqual('view-recall')
+    expect(redirectToPage).toEqual('/recalls/support-rerelease?fromPage=view-recall&fromHash=recallDetails-part-b')
     expect(confirmationMessage).toEqual({
       heading: 'Part B added',
+      pageToDisplayOn: 'view-recall',
       items: [
         {
           link: {
@@ -77,6 +85,9 @@ describe('validatePartB', () => {
           },
           text: 'Part B email and note added.',
         },
+        {
+          text: 'Re-release recommendation added',
+        },
       ],
       bannerType: 'message_group',
     })
@@ -90,6 +101,7 @@ describe('validatePartB', () => {
         oasysFileName: [],
       },
       uploadFailed: false,
+      urlInfo,
     })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
@@ -112,6 +124,7 @@ describe('validatePartB', () => {
         emailFileName: [],
       },
       uploadFailed: false,
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -151,6 +164,7 @@ describe('validatePartB', () => {
         emailFileName: [],
       },
       uploadFailed: true,
+      urlInfo,
     })
     expect(errors).toEqual([
       {
@@ -187,6 +201,7 @@ describe('validatePartB', () => {
         ] as Express.Multer.File[],
       },
       uploadFailed: false,
+      urlInfo,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -228,6 +243,7 @@ describe('validatePartB', () => {
       requestBody: body,
       filesUploaded,
       uploadFailed: false,
+      urlInfo,
     })
     expect(errors).toEqual([
       {

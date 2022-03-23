@@ -70,19 +70,26 @@ import { validateRescindDecision } from '../controllers/rescind/validators/valid
 import { validateAddressManual } from '../controllers/book/validators/validateAddressManual'
 import { combinedMultipleFilesAndFormSave } from '../controllers/combinedMultipleFilesAndFormSave'
 import { validatePartB } from '../controllers/partB/validators/validatePartB'
+import { validateSupportRerelease } from '../controllers/partB/validators/validateSupportRerelease'
+import { getStoredSessionData } from '../middleware/getStoredSessionData'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  router.get('/', checkUserDetailsExist, recallList)
-  get('/find-person', findPerson)
+  router.get('/user-details', getStoredSessionData, getUser)
+  router.post('/user-details', getStoredSessionData, postUser)
+
+  router.get('/', checkUserDetailsExist, getStoredSessionData, asyncMiddleware(recallList))
+
+  router.get('/find-person', getStoredSessionData, asyncMiddleware(findPerson))
 
   post('/recalls/:nomsNumber', createRecall)
 
   const basePath = '/recalls/:recallId'
 
-  router.use(`${basePath}/:pageSlug`, parseUrlParams, fetchRemoteRefData)
+  // getStoredSessionData must come after parseUrlParams
+  router.use(`${basePath}/:pageSlug`, parseUrlParams, getStoredSessionData, fetchRemoteRefData)
 
   // BOOK A RECALL
   router.get(`${basePath}/licence-name`, returnToRecallListParam, recallPageGet('recallLicenceName'))
@@ -266,10 +273,8 @@ export default function routes(router: Router): Router {
       saveToApiFn: addPartbRecord,
     })
   )
-
-  // DETAILS FOR CURRENT USER
-  get('/user-details', getUser)
-  post('/user-details', postUser)
+  get(`${basePath}/support-rerelease`, recallPageGet('supportRerelease'))
+  post(`${basePath}/support-rerelease`, recallFormPost(validateSupportRerelease))
 
   return router
 }

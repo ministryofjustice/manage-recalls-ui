@@ -24,7 +24,6 @@ import errorHandler from './middleware/errorHandler'
 import standardRouter from './routes/standardRouter'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import type UserService from './clients/userService'
-import { getStoredSessionData } from './middleware/getStoredSessionData'
 import { getRedisClient } from './clients/redis'
 import { appInsightsOperationId } from './middleware/appInsightsOperationId'
 import { metricsMiddleware } from './monitoring/metricsApp'
@@ -146,8 +145,6 @@ export default function createApp(userService: UserService): express.Application
 
   // Resource Delivery Configuration
   app.use(compression())
-
-  app.use(getStoredSessionData)
 
   // Cachebusting version string
   if (production) {
