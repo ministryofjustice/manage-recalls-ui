@@ -31,9 +31,10 @@
                         <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
                         <th scope="col" class="govuk-table__header" aria-sort="ascending">Due</th>
                         <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
+                        {%  if enableSort %}
                         <th scope="col" class="govuk-table__header" aria-sort="none">Last updated</th>
+                        {% endif %}
                         <th scope="col" class="govuk-table__header">Action</th>
-                        <th scope="col" class="govuk-table__header"><span class='govuk-visually-hidden'>View recall</span></th>
                     </tr>
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
@@ -48,28 +49,38 @@
                                 {% endif %}
                             </td>
                             <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
-                            <td class="govuk-table__cell" data-qa="lastUpdatedDateTime">{{ result.lastUpdatedDateTime | dateTimeShort }}</td>
+                            {%  if enableSort %}
+                            <td class="govuk-table__cell" data-qa="lastUpdatedDateTime">
+                                <span class='no-wrap-desktop'>
+                                {{ result.lastUpdatedDateTime | dateTimeShort }}
+                                </span>
+                            </td>
+                            {% endif %}
                             <td class="govuk-table__cell">
+                                <div class='flex flex--space-between'>
                                 {% set recall = result %}
                                 {% set returnToRecallList = '1' %}
+                                    <span class='govuk-!-padding-right-2 no-wrap-desktop'>
                                 {% include "../partials/recallActionLink.njk" %}
-                            </td>
-                            <td class="govuk-table__cell">
-                                <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
-                                    View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
-                                </a>
+                                    </span>
+                                    <span class='no-wrap-desktop'>
+                                    <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
+                                        View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                    </a>
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
+                {%  if enableSort %}
                 <script nonce='{{ cspNonce }}'>
-                  if (window.location.search === '?sort=1') {
-                    new MOJFrontend.SortableTable({
-                      table: $('#table-todo')[0]
-                    });
-                  }
+                new MOJFrontend.SortableTable({
+                  table: $('#table-todo')[0]
+                });
                 </script>
+                {% endif %}
             {% else %}
                 <p class='govuk-body'>No recalls</p>
             {% endif %}
@@ -106,13 +117,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                {%  if enableSort %}
                     <script nonce='{{ cspNonce }}'>
-                      if (window.location.search === '?sort=1') {
                         new MOJFrontend.SortableTable({
                           table: $('#table-completed')[0]
                         });
-                      }
                     </script>
+                {% endif %}
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
@@ -160,13 +171,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                {%  if enableSort %}
                     <script nonce='{{ cspNonce }}'>
-                      if (window.location.search === '?sort=1') {
                         new MOJFrontend.SortableTable({
                           table: $('#table-nic')[0]
                         });
-                      }
                     </script>
+                {% endif %}
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
@@ -210,13 +221,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    {%  if enableSort %}
                     <script nonce='{{ cspNonce }}'>
-                      if (window.location.search === '?sort=1') {
                         new MOJFrontend.SortableTable({
                           table: $('#table-partb')[0]
                         });
-                      }
                     </script>
+                    {% endif %}
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
