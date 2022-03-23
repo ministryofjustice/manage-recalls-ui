@@ -42,16 +42,18 @@
                         <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                             <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
                             <td class="govuk-table__cell" data-qa="dueDate" data-sort-value='{{ result.toDoDueDateTime }}'>
+                                <span class='wrapper-date-short'>
                                 {% if result.status == 'AWAITING_DOSSIER_CREATION' or result.status == 'DOSSIER_IN_PROGRESS' %}
                                 {{ dueDateTimeLabel({ dueIsoDateTime: result.dossierTargetDate, includeTime: false, shortFormat: true }) }}
                                 {% elseif result.recallAssessmentDueDateTime %}
                                 {{ dueDateTimeLabel({ dueIsoDateTime: result.recallAssessmentDueDateTime, includeTime: true, shortFormat: true }) }}
                                 {% endif %}
+                                </span>
                             </td>
                             <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
                             {%  if enableSort %}
                             <td class="govuk-table__cell" data-qa="lastUpdatedDateTime" data-sort-value='{{ result.lastUpdatedDateTime }}'>
-                                <span class='no-wrap-desktop'>
+                                <span class='wrapper-date-short'>
                                 {{ result.lastUpdatedDateTime | dateTimeShort }}
                                 </span>
                             </td>
@@ -60,10 +62,10 @@
                                 <div class='flex flex--space-between'>
                                 {% set recall = result %}
                                 {% set returnToRecallList = '1' %}
-                                    <span class='govuk-!-padding-right-2 no-wrap-desktop'>
+                                    <span class='govuk-!-padding-right-3 wrapper-action-link'>
                                 {% include "../partials/recallActionLink.njk" %}
                                     </span>
-                                    <span class='no-wrap-desktop'>
+                                    <span class='no-wrap-tablet'>
                                     <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
                                         View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
                                     </a>
