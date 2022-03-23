@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
 import { getProperty } from '../../../utils/utils'
+import { RecallResponseLiteDecorated } from '../../../@types'
 
 export const sortListByDateField = <T>({
   list,
@@ -25,7 +26,7 @@ export const moveDateToEndOfDay = (date: DateTime) => (date ? date.plus({ days: 
 
 const getDateProperty = <T>(obj: T, dateKey: string) => {
   const val = getProperty<T, string>(obj, dateKey)
-  return val ? DateTime.fromISO(val) : undefined
+  return val ? DateTime.fromISO(val, { zone: 'utc' }) : undefined
 }
 
 const diffDatesForSort = (dateA: DateTime, dateB: DateTime, newestFirst = true) => {
@@ -43,36 +44,50 @@ const diffDatesForSort = (dateA: DateTime, dateB: DateTime, newestFirst = true) 
 }
 
 export const sortCompletedList = (completedList: RecallResponseLite[]) =>
-  completedList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
-    const dossierEmailSentDateA = moveDateToEndOfDay(getDateProperty(a, 'dossierEmailSentDate'))
-    const lastUpdatedDateTimeA = getDateProperty(a, 'lastUpdatedDateTime')
-    const dossierEmailSentDateB = moveDateToEndOfDay(getDateProperty(b, 'dossierEmailSentDate'))
-    const lastUpdatedDateTimeB = getDateProperty(b, 'lastUpdatedDateTime')
-    const dateA = dossierEmailSentDateA || lastUpdatedDateTimeA
-    const dateB = dossierEmailSentDateB || lastUpdatedDateTimeB
-    return diffDatesForSort(dateA, dateB, true)
-  })
+  completedList
+    .map(recall => {
+      const dossierEmailSentDate = moveDateToEndOfDay(getDateProperty(recall, 'dossierEmailSentDate'))
+      const lastUpdatedDateTime = getDateProperty(recall, 'lastUpdatedDateTime')
+      const completedDateTime = dossierEmailSentDate || lastUpdatedDateTime
+      return {
+        ...recall,
+        completedDateTime: completedDateTime?.setZone('utc').toString(),
+      }
+    })
+    .sort((a: RecallResponseLiteDecorated, b: RecallResponseLiteDecorated): number => {
+      const dateA = getDateProperty(a, 'completedDateTime')
+      const dateB = getDateProperty(b, 'completedDateTime')
+      return diffDatesForSort(dateA, dateB, true)
+    })
 
 export const sortToDoList = (toDoList: RecallResponseLite[]) =>
-  toDoList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
-    const dossierTargetDateA = moveDateToEndOfDay(getDateProperty(a, 'dossierTargetDate'))
-    const assessmentDueDateA = getDateProperty(a, 'recallAssessmentDueDateTime')
-    const dossierTargetDateB = moveDateToEndOfDay(getDateProperty(b, 'dossierTargetDate'))
-    const assessmentDueDateB = getDateProperty(b, 'recallAssessmentDueDateTime')
-    let dateA = dossierTargetDateA || assessmentDueDateA
-    let dateB = dossierTargetDateB || assessmentDueDateB
-    if (!dateA || !dateB) {
-      if (!dateA && dateB) {
-        return -1
+  toDoList
+    .map(recall => {
+      const dossierTargetDate = moveDateToEndOfDay(getDateProperty(recall, 'dossierTargetDate'))
+      const assessmentDueDate = getDateProperty(recall, 'recallAssessmentDueDateTime')
+      const toDoDueDateTime = dossierTargetDate || assessmentDueDate
+      return {
+        ...recall,
+        toDoDueDateTime: toDoDueDateTime?.setZone('utc').toString(),
       }
-      if (dateA && !dateB) {
-        return 1
+    })
+    .sort((a: RecallResponseLiteDecorated, b: RecallResponseLiteDecorated): number => {
+      let dateA = getDateProperty(a, 'toDoDueDateTime')
+      let dateB = getDateProperty(b, 'toDoDueDateTime')
+      let newestFirst = false
+      if (!dateA || !dateB) {
+        if (!dateA && dateB) {
+          return -1
+        }
+        if (dateA && !dateB) {
+          return 1
+        }
+        dateA = getDateProperty(a, 'lastUpdatedDateTime')
+        dateB = getDateProperty(b, 'lastUpdatedDateTime')
+        newestFirst = true
       }
-      dateA = getDateProperty(a, 'createdDateTime')
-      dateB = getDateProperty(b, 'createdDateTime')
-    }
-    return diffDatesForSort(dateA, dateB, false)
-  })
+      return diffDatesForSort(dateA, dateB, newestFirst)
+    })
 
 export const sortNotInCustodyList = (notInCustodyList: RecallResponseLite[]) => {
   return notInCustodyList.sort((a: RecallResponseLite, b: RecallResponseLite): number => {

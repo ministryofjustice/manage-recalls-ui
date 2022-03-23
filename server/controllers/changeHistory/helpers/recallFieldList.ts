@@ -294,9 +294,9 @@ export const formatRecallFieldValue = ({
         .sort()
         .join(', ')
     case 'ISO_DATE_TIME':
-      return formatDateTimeFromIsoString(record.updatedValue)
+      return formatDateTimeFromIsoString({ isoDate: record.updatedValue })
     case 'ISO_DATE':
-      return formatDateTimeFromIsoString(record.updatedValue, true)
+      return formatDateTimeFromIsoString({ isoDate: record.updatedValue, dateOnly: true })
     case 'ENUM':
       return fieldTypeData.enumValues[record.updatedValue]
     default:

@@ -4,23 +4,37 @@ import { dueDateShortLabel, formatDateTimeFromIsoString, dueDateTimeLabel } from
 describe('Date helpers', () => {
   describe('formatDateTimeFromIsoString', () => {
     it('formats a date', () => {
-      const formatted = formatDateTimeFromIsoString('2021-11-12')
+      const formatted = formatDateTimeFromIsoString({ isoDate: '2021-11-12' })
       expect(formatted).toEqual('12 November 2021')
     })
 
     it('formats a date-time, adjusted if inside daylight saving', () => {
-      const formatted = formatDateTimeFromIsoString('2021-06-22T08:43:00.000Z')
+      const formatted = formatDateTimeFromIsoString({ isoDate: '2021-06-22T08:43:00.000Z' })
       expect(formatted).toEqual('22 June 2021 at 09:43')
     })
 
     it('formats a date-time, not adjusted if outside daylight saving', () => {
-      const formatted = formatDateTimeFromIsoString('2021-12-22T08:43:00.000Z')
+      const formatted = formatDateTimeFromIsoString({ isoDate: '2021-12-22T08:43:00.000Z' })
       expect(formatted).toEqual('22 December 2021 at 08:43')
     })
 
+    it('outputs a date-time in short format', () => {
+      const formatted = formatDateTimeFromIsoString({ isoDate: '2021-12-22T08:43:00.000Z', shortDateFormat: true })
+      expect(formatted).toEqual('22 Dec at 08:43')
+    })
+
     it('formats a date-time as a date if dateOnly param is true', () => {
-      const formatted = formatDateTimeFromIsoString('2021-12-22T08:43:00.000Z', true)
+      const formatted = formatDateTimeFromIsoString({ isoDate: '2021-12-22T08:43:00.000Z', dateOnly: true })
       expect(formatted).toEqual('22 December 2021')
+    })
+
+    it('formats date only in short format', () => {
+      const formatted = formatDateTimeFromIsoString({
+        isoDate: '2021-12-22T08:43:00.000Z',
+        dateOnly: true,
+        shortDateFormat: true,
+      })
+      expect(formatted).toEqual('22 Dec')
     })
   })
 
@@ -33,7 +47,7 @@ describe('Date helpers', () => {
     it("doesn't show a due date of today as overdue", () => {
       const date = DateTime.now().toString()
       const formatted = dueDateShortLabel(date)
-      expect(formatted).toEqual(`Due on ${formatDateTimeFromIsoString(date, true)}`)
+      expect(formatted).toEqual(`Due on ${formatDateTimeFromIsoString({ isoDate: date, dateOnly: true })}`)
     })
 
     it('from valid not overdue due date returns correct message', () => {
@@ -41,7 +55,7 @@ describe('Date helpers', () => {
         .plus(Duration.fromObject({ days: 1 }))
         .toString()
       const formatted = dueDateShortLabel(date)
-      expect(formatted).toEqual(`Due on ${formatDateTimeFromIsoString(date, true)}`)
+      expect(formatted).toEqual(`Due on ${formatDateTimeFromIsoString({ isoDate: date, dateOnly: true })}`)
     })
 
     it('of undefined returns undefined', () => {

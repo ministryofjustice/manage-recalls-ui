@@ -127,6 +127,7 @@ describe('recallList', () => {
         nomsNumber: '456',
         recallId: '3',
         status: 'BOOKED_ON',
+        toDoDueDateTime: '2021-08-13T23:59:59.000Z',
       },
       {
         firstName: 'Bobby',
@@ -137,6 +138,7 @@ describe('recallList', () => {
         recallAssessmentDueDateTime: '2021-08-14T10:22:05.000Z',
         recallId: '1',
         status: 'BOOKED_ON',
+        toDoDueDateTime: '2021-08-14T10:22:05.000Z',
       },
     ])
     expect(resp.locals.results.notInCustody).toEqual([
@@ -161,6 +163,7 @@ describe('recallList', () => {
     ])
     expect(resp.locals.results.completed).toEqual([
       {
+        completedDateTime: '2021-05-04T23:59:59.000Z',
         dossierEmailSentDate: '2021-05-04',
         firstName: 'Bartholomew',
         fullName: 'Bartholomew Badger',
@@ -172,6 +175,7 @@ describe('recallList', () => {
         status: 'DOSSIER_ISSUED',
       },
       {
+        completedDateTime: '2021-03-22T23:59:59.000Z',
         dossierEmailSentDate: '2021-03-22',
         firstName: 'Beyonce',
         fullName: 'Beyonce Badger',
@@ -183,6 +187,7 @@ describe('recallList', () => {
         status: 'STOPPED',
       },
       {
+        completedDateTime: '2020-10-22T23:59:59.000Z',
         dossierEmailSentDate: '2020-10-22',
         firstName: 'Brenda',
         fullName: 'Brenda Badger',

@@ -22,15 +22,16 @@
 
             {% set toDoHtml %}
             {% if results and results.toDo.length > 0 %}
-                <table class="govuk-table" data-qa='to-do'>
+                <table class="govuk-table" data-module="moj-sortable-table" id='table-todo' data-qa='to-do'>
                     <caption class="govuk-table__caption govuk-table__caption--l" data-qa="toDo-list-heading">
                         To do
                     </caption>
                     <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
-                        <th scope="col" class="govuk-table__header">Name</th>
-                        <th scope="col" class="govuk-table__header">Due</th>
-                        <th scope="col" class="govuk-table__header">Assigned to</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="ascending">Due</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
+                        <th scope="col" class="govuk-table__header" aria-sort="none">Last updated</th>
                         <th scope="col" class="govuk-table__header">Action</th>
                         <th scope="col" class="govuk-table__header"><span class='govuk-visually-hidden'>View recall</span></th>
                     </tr>
@@ -38,9 +39,8 @@
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for result in results.toDo %}
                         <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                            <td class="govuk-table__cell"
-                                data-qa="name">{{ result.fullName }}</td>
-                            <td class="govuk-table__cell" data-qa="dueDate">
+                            <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
+                            <td class="govuk-table__cell" data-qa="dueDate" data-sort-value='{{ result.toDoDueDateTime }}'>
                                 {% if result.status == 'AWAITING_DOSSIER_CREATION' or result.status == 'DOSSIER_IN_PROGRESS' %}
                                 {{ dueDateTimeLabel({ dueIsoDateTime: result.dossierTargetDate, includeTime: false, shortFormat: true }) }}
                                 {% elseif result.recallAssessmentDueDateTime %}
@@ -48,6 +48,7 @@
                                 {% endif %}
                             </td>
                             <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
+                            <td class="govuk-table__cell" data-qa="lastUpdatedDateTime">{{ result.lastUpdatedDateTime | dateTimeShort }}</td>
                             <td class="govuk-table__cell">
                                 {% set recall = result %}
                                 {% set returnToRecallList = '1' %}
@@ -62,6 +63,13 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <script nonce='{{ cspNonce }}'>
+                  if (window.location.search === '?sort=1') {
+                    new MOJFrontend.SortableTable({
+                      table: $('#table-todo')[0]
+                    });
+                  }
+                </script>
             {% else %}
                 <p class='govuk-body'>No recalls</p>
             {% endif %}
@@ -69,15 +77,15 @@
 
             {% set completedHtml %}
                 {% if results and results.completed.length > 0 %}
-                    <table class="govuk-table" data-qa='completed'>
+                    <table class="govuk-table" data-qa='completed' data-module="moj-sortable-table" id='table-completed'>
                         <caption class="govuk-table__caption govuk-table__caption--l" data-qa="completed-list-heading">
                             Completed
                         </caption>
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header">Name</th>
-                            <th scope="col" class="govuk-table__header">Date</th>
-                            <th scope="col" class="govuk-table__header">Status</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="descending">Date</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>
                             <th scope="col" class="govuk-table__header">Action</th>
                         </tr>
                         </thead>
@@ -85,7 +93,7 @@
                         {% for result in results.completed %}
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                                 <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
-                                <td class="govuk-table__cell" data-qa="completedDate">
+                                <td class="govuk-table__cell" data-qa="completedDate" data-sort-value='{{ result.completedDateTime }}'>
                                     {% if result.status == 'DOSSIER_ISSUED'%}{{ result.dossierEmailSentDate | dateTime }}{% elif result.status == 'STOPPED'%}{{ result.lastUpdatedDateTime | dateOnly }}{% endif %}
                                 </td>
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'DOSSIER_ISSUED'%}Dossier issued{% elif result.status == 'STOPPED'%}Stopped{% endif %}</td>
@@ -98,6 +106,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    <script nonce='{{ cspNonce }}'>
+                      if (window.location.search === '?sort=1') {
+                        new MOJFrontend.SortableTable({
+                          table: $('#table-completed')[0]
+                        });
+                      }
+                    </script>
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
@@ -105,15 +120,15 @@
 
             {% set notInCustodyHtml %}
                 {% if results and results.notInCustody.length > 0 %}
-                    <table class="govuk-table" data-qa='notInCustody'>
+                    <table class="govuk-table" data-qa='notInCustody' data-module="moj-sortable-table" id='table-nic'>
                         <caption class="govuk-table__caption govuk-table__caption--l" data-qa="notInCustody-list-heading">
                             Not in custody
                         </caption>
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header">Name</th>
-                            <th scope="col" class="govuk-table__header">Assigned to</th>
-                            <th scope="col" class="govuk-table__header">Status</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="ascending">Name</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>
                             <th scope="col" class="govuk-table__header">Action</th>
                         </tr>
                         </thead>
@@ -145,6 +160,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    <script nonce='{{ cspNonce }}'>
+                      if (window.location.search === '?sort=1') {
+                        new MOJFrontend.SortableTable({
+                          table: $('#table-nic')[0]
+                        });
+                      }
+                    </script>
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
@@ -152,15 +174,15 @@
 
             {% set awaitingPartBHtml %}
                 {% if results and results.awaitingPartB.length > 0 %}
-                    <table class="govuk-table" data-qa='awaitingPartB'>
+                    <table class="govuk-table" data-qa='awaitingPartB' data-module="moj-sortable-table" id='table-partb'>
                         <caption class="govuk-table__caption govuk-table__caption--l" data-qa="awaitingPartB-list-heading">
                             Awaiting part B
                         </caption>
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header">Name</th>
-                            <th scope="col" class="govuk-table__header">Due</th>
-                            <th scope="col" class="govuk-table__header">Assigned to</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="ascending">Due</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
                             <th scope="col" class="govuk-table__header">Action</th>
                         </tr>
                         </thead>
@@ -168,7 +190,7 @@
                         {% for result in results.awaitingPartB %}
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                                 <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
-                                <td class="govuk-table__cell" data-qa="due">
+                                <td class="govuk-table__cell" data-qa="due" data-sort-value='{{ result.partBDueDate }}'>
                                     {{ dueDateTimeLabel({ dueIsoDateTime: result.partBDueDate, includeTime: false, shortFormat: true, showOverdueForShortFormat: true }) }}
                                 </td>
                                 <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
@@ -188,6 +210,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                    <script nonce='{{ cspNonce }}'>
+                      if (window.location.search === '?sort=1') {
+                        new MOJFrontend.SortableTable({
+                          table: $('#table-partb')[0]
+                        });
+                      }
+                    </script>
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
