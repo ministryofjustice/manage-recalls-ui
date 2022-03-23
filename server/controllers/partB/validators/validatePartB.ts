@@ -1,4 +1,4 @@
-import { NamedFormError, ObjectMap, ReqValidatorReturn, ValidationError } from '../../../@types'
+import { NamedFormError, ObjectMap, ReqValidatorReturn, UrlInfo, ValidationError } from '../../../@types'
 import { PartBRecordRequest } from '../../../@types/manage-recalls-api/models/PartBRecordRequest'
 import { makeMetaDataForFile } from '../../documents/upload/helpers'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
@@ -11,19 +11,23 @@ import {
   errorMsgUserActionDateTime,
   makeErrorObject,
 } from '../../utils/errorMessages'
+import { makeUrl } from '../../utils/makeUrl'
 
 export const validatePartB = ({
   requestBody,
   filesUploaded,
   uploadFailed,
+  urlInfo,
 }: {
   requestBody: ObjectMap<string>
   filesUploaded: ObjectMap<Express.Multer.File[]>
   uploadFailed: boolean
+  urlInfo: UrlInfo
 }): ReqValidatorReturn<PartBRecordRequest> => {
   let errors: NamedFormError[]
   let valuesToSave
   let confirmationMessage
+  let redirectToPage
 
   const partBFile = filesUploaded?.partBFileName?.[0]
   const oasysFile = filesUploaded?.oasysFileName?.[0]
@@ -131,6 +135,7 @@ export const validatePartB = ({
     confirmationMessage = {
       heading: 'Part B added',
       bannerType: 'message_group',
+      pageToDisplayOn: 'view-recall',
       items: [
         {
           text: `Part B report ${oasysFile ? 'and OASys ' : ''}uploaded.`,
@@ -146,6 +151,9 @@ export const validatePartB = ({
             href: '#recallDetails-part-b',
           },
         },
+        {
+          text: 'Re-release recommendation added', // TODO - move to validateSupportRerelease and add to existing confirmationMessage
+        },
       ],
     }
     valuesToSave = {
@@ -158,10 +166,11 @@ export const validatePartB = ({
       oasysFileName: oasysFile?.originalname,
       oasysFileContent: oasysFile?.buffer.toString('base64'),
     }
+    redirectToPage = makeUrl('support-rerelease', urlInfo)
   }
   const unsavedValues = {
     details,
     partBReceivedDateParts,
   }
-  return { errors, valuesToSave, unsavedValues, confirmationMessage, redirectToPage: 'view-recall' }
+  return { errors, valuesToSave, unsavedValues, confirmationMessage, redirectToPage }
 }

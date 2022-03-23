@@ -66,7 +66,7 @@ describe('combinedMultipleFilesAndFormSave', () => {
         expect(saveToApiFn).toHaveBeenCalledTimes(1)
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/recalls/789/view-recall')
+        expect(path).toEqual('/recalls/789/support-rerelease')
         done()
       },
     }
@@ -87,10 +87,11 @@ describe('combinedMultipleFilesAndFormSave', () => {
     })
     const res = {
       locals: resLocals,
-      redirect: (httpStatus, path) => {
+      redirect: httpStatus => {
         expect(saveToApiFn).toHaveBeenCalledTimes(1)
         expect(req.session.confirmationMessage).toEqual({
           heading: 'Part B added',
+          pageToDisplayOn: 'view-recall',
           items: [
             {
               link: {
@@ -106,37 +107,13 @@ describe('combinedMultipleFilesAndFormSave', () => {
               },
               text: 'Part B email and note added.',
             },
+            {
+              text: 'Re-release recommendation added',
+            },
           ],
           bannerType: 'message_group',
         })
         expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/recalls/789/view-recall')
-        done()
-      },
-    }
-    combinedMultipleFilesAndFormSave({
-      uploadFormFieldNames: ['partBFileName', 'oasysFileName', 'emailFileName'],
-      validator: validatePartB,
-      saveToApiFn,
-    })(req, res)
-  })
-
-  it('redirects to the fromPage if supplied eg check answers', done => {
-    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.files = files
-      cb()
-    })
-    saveToApiFn.mockResolvedValue({
-      status: 200,
-    })
-    const res = {
-      locals: {
-        user: {},
-        urlInfo: { fromPage: 'check-answers', basePath: '/recalls/789/', fromHash: 'recall-details' },
-      },
-      redirect: (httpStatus, path) => {
-        expect(httpStatus).toEqual(303)
-        expect(path).toEqual('/recalls/789/check-answers#recall-details')
         done()
       },
     }

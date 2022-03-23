@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { FormWithDocumentUploadValidatorFn, SaveToApiFn } from '../@types'
 import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from './utils/errorMessages'
-import { makeUrl, makeUrlToFromPage } from './utils/makeUrl'
 import { processUpload } from './documents/upload/helpers/processUpload'
 import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
 
@@ -37,6 +36,7 @@ export const combinedMultipleFilesAndFormSave =
       requestBody: request.body,
       filesUploaded: files,
       uploadFailed,
+      urlInfo,
     })
     let errorList = errors
     try {
@@ -61,8 +61,5 @@ export const combinedMultipleFilesAndFormSave =
     if (confirmationMessage) {
       req.session.confirmationMessage = confirmationMessage
     }
-    return res.redirect(
-      303,
-      urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl(redirectToPage, urlInfo)
-    )
+    return res.redirect(303, redirectToPage)
   }

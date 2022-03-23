@@ -319,6 +319,20 @@
                     </a>
                 </dd>
             </div>
+            <div class="govuk-summary-list__row">
+                <dt class=" govuk-summary-list__key">
+                    Re-release supported by probation
+                </dt>
+                <dd class=" govuk-summary-list__value">
+                    {% if recall.rereleaseSupported == true %}Yes{% else %}No{% endif %}
+                </dd>
+                <dd class=" govuk-summary-list__actions">
+                    <a href='{{ changeLinkUrl('support-rerelease', urlInfo, 'recallDetails-part-b') }}' class='govuk-link'>
+                        Change <span class="govuk-visually-hidden"> re-release support</span>
+                    </a>
+                </dd>
+            </div>
+
         {% endif %}
     </dl>
 </div>
