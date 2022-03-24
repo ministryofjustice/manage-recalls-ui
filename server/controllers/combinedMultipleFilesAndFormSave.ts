@@ -3,6 +3,7 @@ import { FormWithDocumentUploadValidatorFn, SaveToApiFn } from '../@types'
 import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from './utils/errorMessages'
 import { processUpload } from './documents/upload/helpers/processUpload'
 import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
+import { FileError, MultiErrorResponse } from '../@types/manage-recalls-api'
 
 const fieldNameFromDocCategory = (category: RecallDocument.category) => {
   switch (category) {
@@ -15,6 +16,22 @@ const fieldNameFromDocCategory = (category: RecallDocument.category) => {
     default:
       throw new Error(`fieldNameFromDocCategory: invalid category: ${category}`)
   }
+}
+
+export const parseVirusErrors = (errorData: MultiErrorResponse) => {
+  if (!errorData || !errorData.fileErrors) {
+    return undefined
+  }
+  return errorData.fileErrors
+    .map((fileError: FileError) =>
+      fileError?.error === 'VirusFoundException'
+        ? makeErrorObject({
+            id: fieldNameFromDocCategory(fileError.category),
+            text: errorMsgDocumentUpload.containsVirus(fileError.fileName),
+          })
+        : undefined
+    )
+    .filter(Boolean)
 }
 
 export const combinedMultipleFilesAndFormSave =
@@ -44,14 +61,10 @@ export const combinedMultipleFilesAndFormSave =
         await saveToApiFn({ recallId, valuesToSave, user })
       }
     } catch (err) {
-      const saveError =
-        err.data?.error === 'VirusFoundException'
-          ? makeErrorObject({
-              id: fieldNameFromDocCategory(err.data.category),
-              text: errorMsgDocumentUpload.containsVirus(err.data.fileName),
-            })
-          : saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' })
-      errorList = [...(errorList || []), saveError]
+      const saveErrors = parseVirusErrors(err.data) || [
+        saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
+      ]
+      errorList = [...(errorList || []), ...saveErrors]
     }
     if (errorList) {
       req.session.errors = errorList
