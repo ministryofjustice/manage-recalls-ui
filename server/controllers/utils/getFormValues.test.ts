@@ -4,7 +4,6 @@ import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallRes
 import { RecallDocument } from '../../@types/manage-recalls-api/models/RecallDocument'
 import updateRecallResponse from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
-import { MissingDocumentsRecord } from '../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 import { ConfirmedRecallTypeRequest } from '../../@types/manage-recalls-api/models/ConfirmedRecallTypeRequest'
 
 describe('getFormValues', () => {
@@ -125,6 +124,15 @@ describe('getFormValues', () => {
     warrantReferenceNumber: { text: 'Warrant reference number' },
     returnedToCustodyDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
     returnedToCustodyNotificationDateTime: { values: { year: '', month: '', day: '05', hour: '05', minute: '3' } },
+    missingDocumentsDetail: {
+      text: 'Missing documents detail',
+    },
+    subject: {
+      text: 'Notes subject',
+    },
+    details: {
+      text: 'Notes detail',
+    },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -155,6 +163,7 @@ describe('getFormValues', () => {
     arrestIssues: 'YES',
     arrestIssuesDetail: 'Detail..',
     mappaLevel: 'LEVEL_2',
+    missingDocumentsDetail: 'Detail..',
     bookingNumber: '87378435D',
     probationOfficerName: 'Andy Fleming',
     probationOfficerPhoneNumber: '0739738383',
@@ -182,6 +191,8 @@ describe('getFormValues', () => {
     returnedToCustodyNotificationDateTimeParts: {
       values: { year: '2021', month: '12', day: '05', hour: '05', minute: '2' },
     },
+    subject: 'Subject for note',
+    details: 'Detail for note...',
   }
 
   const apiValues = {
@@ -194,7 +205,6 @@ describe('getFormValues', () => {
         bookingNumber: updateRecallResponse.bookingNumber,
         firstName: 'Bobby',
         lastName: 'Badger',
-        missingDocumentsRecords: updateRecallResponse.missingDocumentsRecords as MissingDocumentsRecord[],
       } as RecallResponse,
     }),
     enableDeleteDocuments: false,
@@ -217,6 +227,7 @@ describe('getFormValues', () => {
       contraband: '',
       contrabandDetail: '',
       currentPrison: '',
+      details: '',
       dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '13',
@@ -243,6 +254,7 @@ describe('getFormValues', () => {
       },
       localPoliceForceId: '',
       mappaLevel: '',
+      missingDocumentsDetail: '',
       previousConvictionMainName: '',
       localDeliveryUnit: '',
       probationOfficerEmail: 'invalid@email',
@@ -302,6 +314,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: '',
+      subject: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
       warrantReferenceNumber: '',
@@ -330,6 +343,7 @@ describe('getFormValues', () => {
       contraband: 'YES',
       contrabandDetail: 'Likelihood of smuggling knives',
       currentPrison: 'ACL',
+      details: 'Detail for note...',
       dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '17',
@@ -354,6 +368,7 @@ describe('getFormValues', () => {
       },
       localPoliceForceId: 'dyfed-powys',
       mappaLevel: 'LEVEL_2',
+      missingDocumentsDetail: 'Detail..',
       previousConvictionMainName: 'Wayne Holt',
       previousConvictionMainNameCategory: 'FIRST_LAST',
       licenceNameCategory: 'FIRST_LAST',
@@ -420,6 +435,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: 'Dorchester',
+      subject: 'Subject for note',
       vulnerabilityDiversity: 'NO',
       warrantReferenceNumber: '02RC/1234567C12345',
     })
@@ -443,6 +459,7 @@ describe('getFormValues', () => {
       contraband: '',
       contrabandDetail: '',
       currentPrison: '',
+      details: '',
       dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '13',
@@ -469,6 +486,7 @@ describe('getFormValues', () => {
       },
       localPoliceForceId: '',
       mappaLevel: '',
+      missingDocumentsDetail: '',
       previousConvictionMainName: '',
       localDeliveryUnit: '',
       probationOfficerEmail: 'invalid@email',
@@ -528,6 +546,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: '',
+      subject: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
       warrantReferenceNumber: '',
@@ -585,7 +604,6 @@ describe('getFormValues', () => {
       },
       localPoliceForceId: 'devon-and-cornwall',
       mappaLevel: 'LEVEL_1',
-      missingDocumentsDetail: 'Documents were requested by email on 10/12/2020',
       previousConvictionMainName: 'Walter Holt',
       localDeliveryUnit: 'CENTRAL_AUDIT_TEAM',
       probationOfficerEmail: 'probation.office@justice.com',
@@ -700,7 +718,6 @@ describe('getFormValues', () => {
       },
       localPoliceForceId: 'devon-and-cornwall',
       mappaLevel: 'LEVEL_1',
-      missingDocumentsDetail: 'Documents were requested by email on 10/12/2020',
       previousConvictionMainName: 'Walter Holt',
       localDeliveryUnit: 'CENTRAL_AUDIT_TEAM',
       probationOfficerEmail: 'probation.office@justice.com',

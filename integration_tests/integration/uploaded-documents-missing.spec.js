@@ -3,12 +3,11 @@ import { RecallResponse } from '../../server/@types/manage-recalls-api/models/Re
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
-import recallInformationPage from '../pages/recallInformation'
 
+// NOTE - a test for adding a missing document record is already in book-in-custody.spec.js
 context('Missing uploaded documents', () => {
   const recallId = '123'
   const documentId = '123'
-  const personName = 'Bobby Badger'
 
   beforeEach(() => {
     cy.task('reset')
@@ -103,7 +102,7 @@ context('Missing uploaded documents', () => {
     })
   })
 
-  it('shows the details of the previous missing documents entry on the add record form', () => {
+  it('shows a blank add record form, not using details from previous records', () => {
     cy.task('expectGetRecall', {
       recallId,
       expectedResult: {
@@ -127,11 +126,8 @@ context('Missing uploaded documents', () => {
         ],
       },
     })
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
-    recallMissingDocuments.assertInputValue({
-      fieldName: 'missingDocumentsDetail',
-      value: 'Chased up, see attached',
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'missing-documents' })
+    cy.getTextInputValue('Provide more detail').should('equal', '')
   })
 
   it("an error is shown if the missing documents email and detail aren't submitted", () => {
