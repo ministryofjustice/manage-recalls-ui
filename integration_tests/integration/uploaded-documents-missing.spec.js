@@ -102,6 +102,34 @@ context('Missing uploaded documents', () => {
     })
   })
 
+  it('shows a blank add record form, not using details from previous records', () => {
+    cy.task('expectGetRecall', {
+      recallId,
+      expectedResult: {
+        ...getEmptyRecallResponse,
+        recallId,
+        documents: [
+          {
+            category: 'MISSING_DOCUMENTS_EMAIL',
+          },
+        ],
+        missingDocumentsRecords: [
+          {
+            categories: ['OASYS_RISK_ASSESSMENT', 'PART_A_RECALL_REPORT'],
+            createdByUserId: '888',
+            createdDateTime: '2021-11-10T05:34:25.000Z',
+            details: 'Chased up, see attached',
+            emailId: '987',
+            missingDocumentsRecordId: '1',
+            version: 2,
+          },
+        ],
+      },
+    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'missing-documents' })
+    cy.getTextInputValue('Provide more detail').should('equal', '')
+  })
+
   it("an error is shown if the missing documents email and detail aren't submitted", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
