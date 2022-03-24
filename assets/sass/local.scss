@@ -15,6 +15,7 @@
 .link-button {
   @extend %govuk-link;
   color: $govuk-link-colour;
+  text-align: left;
 }
 
 .govuk-panel--neutral {
@@ -59,7 +60,7 @@ pre.govuk-body {
   }
 }
 .wrapper-action-link {
-  max-width: 8rem;
+  max-width: 9rem;
   display: inline-block;
 }
 .wrapper-date-short {
