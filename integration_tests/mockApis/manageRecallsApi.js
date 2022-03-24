@@ -194,6 +194,10 @@ export default function manageRecallsApi(wiremock) {
         },
         response: {
           status: (expectation && expectation.statusCode) || 201,
+          headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+          },
+          jsonBody: (expectation && expectation.body) || '',
         },
       })
     },

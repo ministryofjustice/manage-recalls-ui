@@ -109,6 +109,56 @@ context('Part B', () => {
     })
   })
 
+  it('errors - uploads contain viruses', () => {
+    const recallId = '789'
+    const recalls = [
+      {
+        ...getEmptyRecallResponse,
+        recallId,
+        confirmedRecallType: 'STANDARD',
+        status: 'AWAITING_PART_B',
+      },
+    ]
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.task('expectAddPartBRecord', {
+      statusCode: 400,
+      body: {
+        fileErrors: [
+          {
+            category: 'PART_B_RISK_REPORT',
+            fileName: 'part b.pdf',
+            error: 'VirusFoundException',
+          },
+          {
+            category: 'PART_B_EMAIL_FROM_PROBATION',
+            fileName: 'email.msg',
+            error: 'VirusFoundException',
+          },
+        ],
+      },
+    })
+
+    const partBRecord = getRecallResponse.partBRecords[0]
+    cy.visitRecallPage({ recallId, pageSuffix: 'part-b' })
+    cy.pageHeading().should('equal', 'Upload documents')
+    cy.uploadPDF({ field: 'partBFileName', file: 'test.pdf' })
+    cy.uploadPDF({ field: 'oasysFileName', file: 'test.pdf' })
+    cy.fillInput('Provide more detail', partBRecord.details)
+    cy.enterDateTime(partBRecord.partBReceivedDate)
+    cy.uploadEmail({ field: 'emailFileName' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'partBFileName',
+      summaryError: 'part b.pdf contains a virus',
+    })
+    cy.assertErrorMessage({
+      fieldName: 'emailFileName',
+      summaryError: 'email.msg contains a virus',
+    })
+  })
+
   it('show part B is missing on recall info page', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse, status: 'AWAITING_PART_B', partBDueDate: '2022-03-02', partBRecords: [] },
