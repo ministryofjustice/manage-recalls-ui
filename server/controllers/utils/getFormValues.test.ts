@@ -127,6 +127,12 @@ describe('getFormValues', () => {
     missingDocumentsDetail: {
       text: 'Missing documents detail',
     },
+    subject: {
+      text: 'Notes subject',
+    },
+    details: {
+      text: 'Notes detail',
+    },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -185,6 +191,8 @@ describe('getFormValues', () => {
     returnedToCustodyNotificationDateTimeParts: {
       values: { year: '2021', month: '12', day: '05', hour: '05', minute: '2' },
     },
+    subject: 'Subject for note',
+    details: 'Detail for note...',
   }
 
   const apiValues = {
@@ -219,6 +227,7 @@ describe('getFormValues', () => {
       contraband: '',
       contrabandDetail: '',
       currentPrison: '',
+      details: '',
       dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '13',
@@ -305,6 +314,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: '',
+      subject: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
       warrantReferenceNumber: '',
@@ -333,6 +343,7 @@ describe('getFormValues', () => {
       contraband: 'YES',
       contrabandDetail: 'Likelihood of smuggling knives',
       currentPrison: 'ACL',
+      details: 'Detail for note...',
       dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '17',
@@ -424,6 +435,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: 'Dorchester',
+      subject: 'Subject for note',
       vulnerabilityDiversity: 'NO',
       warrantReferenceNumber: '02RC/1234567C12345',
     })
@@ -447,6 +459,7 @@ describe('getFormValues', () => {
       contraband: '',
       contrabandDetail: '',
       currentPrison: '',
+      details: '',
       dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '13',
@@ -533,6 +546,7 @@ describe('getFormValues', () => {
         years: '',
       },
       sentencingCourt: '',
+      subject: '',
       vulnerabilityDiversity: '',
       vulnerabilityDiversityDetail: '',
       warrantReferenceNumber: '',

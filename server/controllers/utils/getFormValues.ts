@@ -77,12 +77,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
     'previousConvictionMainNameCategory',
     'licenceNameCategory',
     'lastKnownAddressOption',
-    'rescindRequestDetail',
     'warrantReferenceNumber',
     'recommendedRecallType',
-    'subject',
-    'details',
-    'fileName',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
   })
@@ -109,10 +105,11 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
       apiValues,
     }),
   }
-  // missing documents detail
-  values.missingDocumentsDetail = isDefined(errors.missingDocumentsDetail)
-    ? ''
-    : unsavedValues.missingDocumentsDetail || undefined
+
+  // these text properties will never use the API value. Subject and details are for notes
+  ;['rescindRequestDetail', 'missingDocumentsDetail', 'subject', 'details'].forEach((key: string) => {
+    values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || undefined
+  })
 
   return values
 }
