@@ -4,7 +4,6 @@ import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallRes
 import { RecallDocument } from '../../@types/manage-recalls-api/models/RecallDocument'
 import updateRecallResponse from '../../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { decorateDocs } from '../documents/download/helpers/decorateDocs'
-import { MissingDocumentsRecord } from '../../@types/manage-recalls-api/models/MissingDocumentsRecord'
 import { ConfirmedRecallTypeRequest } from '../../@types/manage-recalls-api/models/ConfirmedRecallTypeRequest'
 
 describe('getFormValues', () => {
