@@ -192,9 +192,24 @@ describe('combinedMultipleFilesAndFormSave', () => {
     })
     saveToApiFn.mockRejectedValue({
       data: {
-        category: 'PART_B_RISK_REPORT',
-        fileName: 'my part b.pdf',
-        error: 'VirusFoundException',
+        status: '400 BAD_REQUEST',
+        fileErrors: [
+          {
+            category: 'PART_B_RISK_REPORT',
+            fileName: 'part b.pdf',
+            error: 'VirusFoundException',
+          },
+          {
+            category: 'OASYS_RISK_ASSESSMENT',
+            fileName: 'oasysFile.pdf',
+            error: 'VirusFoundException',
+          },
+          {
+            category: 'PART_B_EMAIL_FROM_PROBATION',
+            fileName: 'my email.msg',
+            error: 'VirusFoundException',
+          },
+        ],
       },
     })
     const res = {
@@ -204,7 +219,17 @@ describe('combinedMultipleFilesAndFormSave', () => {
           {
             href: '#partBFileName',
             name: 'partBFileName',
-            text: 'my part b.pdf contains a virus',
+            text: 'part b.pdf contains a virus',
+          },
+          {
+            href: '#oasysFileName',
+            name: 'oasysFileName',
+            text: 'oasysFile.pdf contains a virus',
+          },
+          {
+            href: '#emailFileName',
+            name: 'emailFileName',
+            text: 'my email.msg contains a virus',
           },
         ])
         expect(httpStatus).toEqual(303)
