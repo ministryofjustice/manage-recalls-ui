@@ -128,7 +128,7 @@ context('Part B', () => {
         fileErrors: [
           {
             category: 'PART_B_RISK_REPORT',
-            fileName: 'part b.pdf',
+            fileName: 'test.pdf',
             error: 'VirusFoundException',
           },
           {
@@ -151,7 +151,7 @@ context('Part B', () => {
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'partBFileName',
-      summaryError: 'part b.pdf contains a virus',
+      summaryError: 'test.pdf contains a virus',
     })
     cy.assertErrorMessage({
       fieldName: 'emailFileName',
