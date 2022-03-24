@@ -3,12 +3,11 @@ import { RecallResponse } from '../../server/@types/manage-recalls-api/models/Re
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
-import recallInformationPage from '../pages/recallInformation'
 
+// NOTE - a test for adding a missing document record is already in book-in-custody.spec.js
 context('Missing uploaded documents', () => {
   const recallId = '123'
   const documentId = '123'
-  const personName = 'Bobby Badger'
 
   beforeEach(() => {
     cy.task('reset')
@@ -100,37 +99,6 @@ context('Missing uploaded documents', () => {
     uploadDocuments.assertListValues({
       qaAttrList: 'missingDocsList',
       valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys report'],
-    })
-  })
-
-  it('shows the details of the previous missing documents entry on the add record form', () => {
-    cy.task('expectGetRecall', {
-      recallId,
-      expectedResult: {
-        ...getEmptyRecallResponse,
-        recallId,
-        documents: [
-          {
-            category: 'MISSING_DOCUMENTS_EMAIL',
-          },
-        ],
-        missingDocumentsRecords: [
-          {
-            categories: ['OASYS_RISK_ASSESSMENT', 'PART_A_RECALL_REPORT'],
-            createdByUserId: '888',
-            createdDateTime: '2021-11-10T05:34:25.000Z',
-            details: 'Chased up, see attached',
-            emailId: '987',
-            missingDocumentsRecordId: '1',
-            version: 2,
-          },
-        ],
-      },
-    })
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
-    recallMissingDocuments.assertInputValue({
-      fieldName: 'missingDocumentsDetail',
-      value: 'Chased up, see attached',
     })
   })
 

@@ -112,7 +112,7 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
   // missing documents detail
   values.missingDocumentsDetail = isDefined(errors.missingDocumentsDetail)
     ? ''
-    : unsavedValues.missingDocumentsDetail || apiValues.missingDocumentsRecords?.[0]?.details
+    : unsavedValues.missingDocumentsDetail || undefined
 
   return values
 }
