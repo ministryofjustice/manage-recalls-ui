@@ -25,8 +25,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l"
-                  data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Assess a recall', name: recall.fullName }) }}
             <h1 class='govuk-heading-l'>Email the recall notification</h1>
             <p class='govuk-body'>You must now email the recall notification you've downloaded to:</p>
             <ul class="govuk-list govuk-list--bullet">

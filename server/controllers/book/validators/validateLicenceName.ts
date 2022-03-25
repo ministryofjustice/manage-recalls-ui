@@ -15,7 +15,7 @@ export const validateLicenceName = ({
     errors = [
       makeErrorObject({
         id: 'licenceNameCategory',
-        text: "How does {{ recall.fullName }}'s name appear on the licence?",
+        text: "How does <span data-private>{{ recall.fullName }}</span>'s name appear on the licence?",
       }),
     ]
   }

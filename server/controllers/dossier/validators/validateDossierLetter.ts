@@ -51,7 +51,7 @@ export const validateDossierLetter = ({
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumber',
-          text: 'Is {{ recall.fullName }} being held under a different NOMIS number to the one on the licence?',
+          text: 'Is <span data-private>{{ recall.fullName }}</span> being held under a different NOMIS number to the one on the licence?',
         })
       )
     }
@@ -59,7 +59,7 @@ export const validateDossierLetter = ({
       errors.push(
         makeErrorObject({
           id: 'differentNomsNumberDetail',
-          text: 'Enter the NOMIS number {{ recall.fullName }} is being held under',
+          text: 'Enter the NOMIS number <span data-private>{{ recall.fullName }}</span> is being held under',
         })
       )
     }

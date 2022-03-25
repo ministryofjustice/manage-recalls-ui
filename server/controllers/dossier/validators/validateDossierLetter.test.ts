@@ -77,7 +77,7 @@ describe('validateDossierLetter', () => {
       {
         href: '#differentNomsNumber',
         name: 'differentNomsNumber',
-        text: 'Is {{ recall.fullName }} being held under a different NOMIS number to the one on the licence?',
+        text: 'Is <span data-private>{{ recall.fullName }}</span> being held under a different NOMIS number to the one on the licence?',
       },
     ])
   })
@@ -115,7 +115,7 @@ describe('validateDossierLetter', () => {
         text: 'Provide more detail',
       },
       {
-        text: 'Enter the NOMIS number {{ recall.fullName }} is being held under',
+        text: 'Enter the NOMIS number <span data-private>{{ recall.fullName }}</span> is being held under',
         href: '#differentNomsNumberDetail',
         name: 'differentNomsNumberDetail',
       },

@@ -16,7 +16,7 @@ export const validateCustodyStatus = ({
     errors = [
       makeErrorObject({
         id: 'inCustodyAtBooking',
-        text: 'Is {{ recall.fullName }} in custody?',
+        text: 'Is <span data-private>{{ recall.fullName }}</span> in custody?',
       }),
     ]
   }

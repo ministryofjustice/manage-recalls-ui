@@ -25,8 +25,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l"
-                  data-qa="addRecallTypeCaption">Create a dossier for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Create a dossier', name: recall.fullName }) }}
             <h1 class='govuk-heading-l'>Email the dossier and letter</h1>
             <p>You must now email the dossier and letter you've downloaded to the:</p>
             <ul class="govuk-list govuk-list--bullet">

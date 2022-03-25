@@ -10,12 +10,12 @@
         <div class="govuk-grid-column-two-thirds-from-desktop">
             <div class="govuk-panel govuk-panel--confirmation">
                 <h1 class="govuk-panel__title">
-                    Recall assessed for {{ recall.fullName }}
+                    Recall assessed for <span data-private>{{ recall.fullName }}</span>
                 </h1>
             </div>
             <span class='govuk-!-display-none' data-qa='recallId'>{{recall.recallId}}</span>
             <p class='govuk-body govuk-!-margin-top-4 govuk-!-margin-bottom-8'>
-                {{ recall.fullName }} has been recalled and their licence revoked.
+                <span data-private>{{ recall.fullName }}</span> has been recalled and their licence revoked.
             </p>
             <p class="govuk-body"><a href="/" class="govuk-button" role="button">Assess another recall</a> </p>
         </div>

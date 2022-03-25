@@ -24,7 +24,7 @@
             <form novalidate action="{{ makeUrl('address-manual', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <input type="hidden" name="recallId" value="{{ recall.recallId }}" />
-                <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+                {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
                 {% call govukFieldset({
                     legend: {
                         text: "Add an address",

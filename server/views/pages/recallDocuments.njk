@@ -31,7 +31,7 @@
                     iconFallbackText: confirmationMessage.type
                 }) }}
             {% endif %}
-            {% if urlInfo.fromPage %}{% else %}<span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>{% endif %}
+            {% if urlInfo.fromPage %}{% else %}{{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}{% endif %}
             <h1 class="govuk-heading-l">
                 Upload documents
             </h1>

@@ -5,7 +5,7 @@
     <dt class=" govuk-summary-list__key">
       Name
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='name'>
+    <dd class=" govuk-summary-list__value" data-qa='name' data-private>
       {{ recall.fullName }}
     </dd>
     <dd class=" govuk-summary-list__actions">
@@ -18,7 +18,7 @@
     <dt class=" govuk-summary-list__key">
       Date of birth
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='dateOfBirth'>
+    <dd class=" govuk-summary-list__value" data-qa='dateOfBirth' data-private>
       {{ recall.dateOfBirth | dateTime }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
@@ -27,7 +27,7 @@
     <dt class=" govuk-summary-list__key">
       NOMIS
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='nomsNumber'>
+    <dd class=" govuk-summary-list__value" data-qa='nomsNumber' data-private>
       {{ recall.nomsNumber }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
@@ -36,7 +36,7 @@
     <dt class=" govuk-summary-list__key">
       CRO
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='croNumber'>
+    <dd class=" govuk-summary-list__value" data-qa='croNumber' data-private>
       {{ recall.croNumber }}
     </dd>
     <dd class=" govuk-summary-list__actions"></dd>
@@ -46,7 +46,7 @@
       <dt class=" govuk-summary-list__key">
         Booking number
       </dt>
-      <dd class=" govuk-summary-list__value" data-qa='bookingNumber'>
+      <dd class=" govuk-summary-list__value" data-qa='bookingNumber' data-private>
         {{ recall.bookingNumber }}
       </dd>
       <dd class=" govuk-summary-list__actions">
@@ -58,7 +58,7 @@
     <dt class=" govuk-summary-list__key">
       Name on pre-cons
     </dt>
-    <dd class=" govuk-summary-list__value" data-qa='previousConvictionMainName'>
+    <dd class=" govuk-summary-list__value" data-qa='previousConvictionMainName' data-private>
       {{ recall.previousConvictionMainName }}
     </dd>
     <dd class=" govuk-summary-list__actions">
@@ -74,7 +74,7 @@
             Address {{ loop.index if recall.lastKnownAddresses.length > 1 else '' }}
           </dt>
           <dd class=" govuk-summary-list__value">
-              <div class='govuk-body'>
+              <div class='govuk-body' data-private>
                 <div data-qa='line1'>{{ address.line1 }}</div>
                 {% if address.line2 %}
                 <div data-qa='line2'>{{ address.line2 }}</div>

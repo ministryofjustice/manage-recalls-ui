@@ -69,7 +69,7 @@ describe('validatePreConsName', () => {
       {
         href: '#previousConvictionMainNameCategory',
         name: 'previousConvictionMainNameCategory',
-        text: "How does {{ recall.fullName }}'s name appear on the previous convictions sheet (pre-cons)?",
+        text: "How does <span data-private>{{ recall.fullName }}</span>'s name appear on the previous convictions sheet (pre-cons)?",
       },
     ])
   })

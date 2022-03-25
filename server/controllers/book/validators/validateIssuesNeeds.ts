@@ -71,7 +71,7 @@ export const validateIssuesNeeds = ({
       errors.push(
         makeErrorObject({
           id: 'contraband',
-          text: 'Do you think {{ recall.fullName }} will bring contraband into prison?',
+          text: 'Do you think <span data-private>{{ recall.fullName }}</span> will bring contraband into prison?',
         })
       )
     }
@@ -79,7 +79,7 @@ export const validateIssuesNeeds = ({
       errors.push(
         makeErrorObject({
           id: 'contrabandDetail',
-          text: 'Provide more detail on why you think {{ recall.fullName }} will bring contraband into prison',
+          text: 'Provide more detail on why you think <span data-private>{{ recall.fullName }}</span> will bring contraband into prison',
         })
       )
     }

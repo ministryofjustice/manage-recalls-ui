@@ -8,7 +8,7 @@
         <div class="govuk-grid-column-full">
             {% include '../partials/recallInfoConfirmation.njk' %}
             <h1 class="govuk-heading-xl">
-                View the recall for {{ recall.fullName }}
+                View the recall for <span data-private>{{ recall.fullName }}</span>
             </h1>
             {% set fromPage = 'view-recall' %}
             {% include '../partials/recallInformationHeading.njk' %}

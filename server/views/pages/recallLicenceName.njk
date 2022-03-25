@@ -22,7 +22,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
 
             <form novalidate action="{{ makeUrl('licence-name', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -33,7 +33,7 @@
                         name: "licenceNameCategory",
                         fieldset: {
                             legend: {
-                                text: "How does " + recall.fullName + "'s name appear on the licence?",
+                                html: "How does <span data-private>" + recall.fullName + "'s</span> name appear on the licence?",
                                 classes: "govuk-fieldset__legend--l",
                                 isPageHeading: true
                             }
@@ -41,12 +41,12 @@
                         items: [
                             {
                                 value: "FIRST_LAST",
-                                text: recall.firstName + " " + recall.lastName,
+                                html: '<span data-private>' + recall.firstName + " " + recall.lastName + '</span>',
                                 checked: formValues.licenceNameCategory == 'FIRST_LAST'
                             },
                             {
                                 value: "FIRST_MIDDLE_LAST",
-                                text: recall.firstName + " " + recall.middleNames + " " + recall.lastName,
+                                html: '<span data-private>' + recall.middleNames + " " + recall.lastName + '</span>',
                                 checked: formValues.licenceNameCategory == 'FIRST_MIDDLE_LAST'
                             }
                         ],
@@ -54,8 +54,7 @@
                     }) }}
                 </div>
                 <div>
-                    <button class="govuk-button"
-                            data-qa='continueButton'>
+                    <button class="govuk-button" data-qa='continueButton'>
                         Continue
                     </button>
                 </div>

@@ -191,7 +191,7 @@ export const allowedNoteFileTypeLabelList = () =>
     'or'
   )
 
-export const errorMessage = (field: FormError) => (field ? { text: field.text } : undefined)
+export const errorMessage = (field: FormError) => (field ? { html: field.text } : undefined)
 
 export const removeUndefinedFromObject = (attributes: ObjectMap<unknown>) => {
   return Object.entries(attributes).reduce((acc, [key, val]) => {
@@ -216,7 +216,10 @@ export const selectDocCategory = (
   return false
 }
 
-export const renderTemplateString = (str: string, data: ObjectMap<unknown>): string => nunjucks.renderString(str, data)
+export const renderTemplateString = (str: string, data: ObjectMap<unknown>): string => {
+  const env = nunjucks.configure({ autoescape: false })
+  return env.renderString(str, data)
+}
 
 export const formatNsyWarrantEmailLink = (recall: RecallResponse) => {
   const email = sensitiveInfo.newScotlandYardPncEmail

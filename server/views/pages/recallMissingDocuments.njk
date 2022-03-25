@@ -24,7 +24,7 @@
                     }
                 }) }}
             {% endif %}
-            {% if not urlInfo.fromPage %}<span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>{% endif %}
+            {% if not urlInfo.fromPage %}{{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}{% endif %}
             <h1 class="govuk-heading-l">
                 Missing documents
             </h1>

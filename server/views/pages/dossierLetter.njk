@@ -25,7 +25,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Create a dossier for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Create a dossier', name: recall.fullName }) }}
             <h1 class='govuk-heading-l'>Add information to the prison letter</h1>
             <form novalidate action="{{ makeUrl('dossier-letter', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -80,7 +80,7 @@
                         name: "differentNomsNumberDetail",
                         id: "differentNomsNumberDetail",
                         label: {
-                            text: "NOMIS number " + recall.fullName + " is being held under"
+                            html: "NOMIS number <span data-private>" + recall.fullName + "</span> is being held under"
                         },
                         value: formValues.differentNomsNumberDetail,
                         classes: "govuk-input--width-10",
@@ -97,7 +97,7 @@
                     name: "differentNomsNumber",
                     fieldset: {
                         legend: {
-                            text: "Is " + recall.fullName + " being held under a different NOMIS number to the one on the licence?",
+                            html: "Is <span data-private>" + recall.fullName + "</span> being held under a different NOMIS number to the one on the licence?",
                             classes: "govuk-fieldset__legend--m"
                         }
                     },
@@ -116,9 +116,7 @@
                             checked: formValues.differentNomsNumber == 'NO'
                         }
                     ],
-                    errorMessage: {
-                        text: errors.differentNomsNumber.text
-                    } if errors.differentNomsNumber else undefined
+                    errorMessage: errorMessage(errors.differentNomsNumber)
                 }) }}
                 <div class="govuk-!-margin-top-4">
                     <button class="govuk-button" data-qa="continueButton">Continue</button>

@@ -23,6 +23,7 @@
 {% from "components/document-download-link/macro.njk"   import documentDownloadLink %}
 {% from "components/autocomplete/macro.njk"   import autocomplete %}
 {% from "components/today-link/macro.njk"   import todayLink %}
+{% from "components/page-heading-caption/macro.njk"   import pageHeadingCaption %}
 
 {% block head %}
   <!--[if !IE 8]><!-->
@@ -63,4 +64,20 @@
   <script src="/assets/govuk/all.js"></script>
   <script src="/assets/govukFrontendInit.js"></script>
   <script src="/assets/moj/all.js"></script>
+
+    {% if env and env == 'DEVELOPMENT' %}
+  <script src="https://cdn.lr-in.com/LogRocket.min.js" crossorigin="anonymous"></script>
+  <script nonce='{{ cspNonce }}'>window.LogRocket && window.LogRocket.init('nba848/dev', {
+      console: {
+        isEnabled: false,
+      },
+      shouldCaptureIP: false,
+      network: {
+        isEnabled: false,
+      },
+      dom: {
+        inputSanitizer: true,
+      },
+    });</script>
+    {% endif %}
 {% endblock %}
