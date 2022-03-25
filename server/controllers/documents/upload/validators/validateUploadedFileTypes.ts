@@ -11,7 +11,10 @@ import { findDocCategory } from '../helpers'
 export const isInvalidFileType = (file: UploadedFileMetadata) => {
   const docCategory = findDocCategory(file.category)
   const allowedExtensions = allowedExtensionsForFileType(docCategory.type)
-  return !allowedExtensions.some(ext => file.originalFileName.endsWith(ext.extension) && file.mimeType === ext.mimeType)
+  return !allowedExtensions.some(
+    ext =>
+      file.originalFileName.endsWith(ext.extension) && (file.mimeType === ext.mimeType || ext.allowAnyMimeType === true)
+  )
 }
 
 const allowedExtensionsForFileType = (fileType: DocumentType) => {
