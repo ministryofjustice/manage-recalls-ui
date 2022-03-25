@@ -66,8 +66,6 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
       notInCustody: sortNotInCustodyList(notInCustody),
       awaitingPartB: sortAwaitingPartBList(awaitingPartB),
     }
-    // TODO - temp
-    res.locals.enableSort = req.query.sort === '1'
 
     if (failed.length) {
       res.locals.errors = res.locals.errors || []
