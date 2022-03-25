@@ -152,37 +152,7 @@ describe('Recalls list', () => {
     )
   })
 
-  it('move on to view recall if the recall has status DOSSIER_ISSUED', () => {
-    const stoppedRecallId = '987'
-    const recalls = [
-      {
-        ...basicRecall,
-        recallId: stoppedRecallId,
-        status: 'STOPPED',
-        lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
-      },
-      {
-        recallId,
-        nomsNumber,
-        status: 'DOSSIER_ISSUED',
-        dossierEmailSentDate: '2021-05-04',
-      },
-    ]
-    cy.task('expectListRecalls', {
-      expectedResults: recalls,
-    })
-    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
-    cy.visit('/')
-    cy.clickLink('Completed')
-    cy.getLinkHref(`View recall for ${personName}`).should('contain', `/recalls/${stoppedRecallId}/view-recall`)
-    cy.assertTableColumnValues({
-      qaAttrTable: 'completed',
-      qaAttrCell: 'completedDate',
-      valuesToCompare: ['4 May 2021', '22 October 2020'],
-    })
-  })
-
-  it('see recalls are ordered by due date on the todo list', () => {
+  it('see recalls are ordered by due date on the todo list, and table can be re-sorted', () => {
     const recalls = [
       {
         ...basicRecall,
@@ -260,9 +230,51 @@ describe('Recalls list', () => {
       qaAttrCell: 'dueDate',
       valuesToCompare: ['', '', '10 Dec at 15:33', '6 May at 16:33', '15 Aug', '15 Aug'],
     })
+    cy.clickButton('Due')
+    cy.assertTableColumnValues({
+      qaAttrTable: 'to-do',
+      qaAttrCell: 'dueDate',
+      valuesToCompare: ['15 Aug', '15 Aug', '6 May at 16:33', '10 Dec at 15:33', '', ''],
+    })
   })
 
-  it('lists "not in custody" recalls on a separate tab', () => {
+  it('see recalls are ordered by date on the completed list, and table can be re-sorted', () => {
+    const stoppedRecallId = '987'
+    const recalls = [
+      {
+        ...basicRecall,
+        recallId: stoppedRecallId,
+        status: 'STOPPED',
+        lastUpdatedDateTime: '2020-10-22T18:33:57.000Z',
+      },
+      {
+        recallId,
+        nomsNumber,
+        status: 'DOSSIER_ISSUED',
+        dossierEmailSentDate: '2021-05-04',
+      },
+    ]
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_ISSUED' } })
+    cy.visit('/')
+    cy.clickLink('Completed')
+    cy.getLinkHref(`View recall for ${personName}`).should('contain', `/recalls/${stoppedRecallId}/view-recall`)
+    cy.assertTableColumnValues({
+      qaAttrTable: 'completed',
+      qaAttrCell: 'completedDate',
+      valuesToCompare: ['4 May 2021', '22 October 2020'],
+    })
+    cy.clickButton('Date', { parent: '#completed' })
+    cy.assertTableColumnValues({
+      qaAttrTable: 'completed',
+      qaAttrCell: 'completedDate',
+      valuesToCompare: ['22 October 2020', '4 May 2021'],
+    })
+  })
+
+  it('lists "not in custody" recalls on a separate tab, and table can be re-sorted', () => {
     const assessedRecallId = '2'
     const awaitingReturnRecallId = '3'
     const recalls = [
@@ -311,9 +323,15 @@ describe('Recalls list', () => {
     })
     cy.getLinkHref('Add warrant reference').should('equal', `/recalls/${assessedRecallId}/warrant-reference`)
     cy.getLinkHref('Add RTC date').should('equal', `/recalls/${awaitingReturnRecallId}/rtc-dates`)
+    cy.clickButton('Status', { parent: '#notInCustody' })
+    cy.assertTableColumnValues({
+      qaAttrTable: 'notInCustody',
+      qaAttrCell: 'status',
+      valuesToCompare: ['Awaiting return to custody', 'Assessment complete'],
+    })
   })
 
-  it('lists "awaiting part B" recalls on a separate tab', () => {
+  it('lists "awaiting part B" recalls on a separate tab, and table can be re-sorted', () => {
     const assessedRecallId = '2'
     const awaitingReturnRecallId = '3'
     const yesterday = DateTime.now().minus({ days: 2 }).toISODate()
@@ -363,6 +381,12 @@ describe('Recalls list', () => {
       qaAttrTable: 'awaitingPartB',
       qaAttrCell: 'due',
       valuesToCompare: ['Overdue', 'Tomorrow'],
+    })
+    cy.clickButton('Due', { parent: '#awaitingPartB' })
+    cy.assertTableColumnValues({
+      qaAttrTable: 'awaitingPartB',
+      qaAttrCell: 'due',
+      valuesToCompare: ['Tomorrow', 'Overdue'],
     })
   })
 })

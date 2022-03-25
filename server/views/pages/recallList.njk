@@ -31,9 +31,7 @@
                         <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
                         <th scope="col" class="govuk-table__header" aria-sort="ascending">Due</th>
                         <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
-                        {%  if enableSort %}
                         <th scope="col" class="govuk-table__header" aria-sort="none">Last updated</th>
-                        {% endif %}
                         <th scope="col" class="govuk-table__header">Action</th>
                     </tr>
                     </thead>
@@ -51,13 +49,11 @@
                                 </span>
                             </td>
                             <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
-                            {%  if enableSort %}
                             <td class="govuk-table__cell" data-qa="lastUpdatedDateTime" data-sort-value='{{ result.lastUpdatedDateTime }}'>
                                 <span class='wrapper-date-short'>
                                 {{ result.lastUpdatedDateTime | dateTimeShort }}
                                 </span>
                             </td>
-                            {% endif %}
                             <td class="govuk-table__cell">
                                 <div class='flex flex--space-between'>
                                 {% set recall = result %}
@@ -76,13 +72,11 @@
                     {% endfor %}
                     </tbody>
                 </table>
-                {%  if enableSort %}
                 <script nonce='{{ cspNonce }}'>
                 new MOJFrontend.SortableTable({
                   table: $('#table-todo')[0]
                 });
                 </script>
-                {% endif %}
             {% else %}
                 <p class='govuk-body'>No recalls</p>
             {% endif %}
@@ -119,13 +113,11 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                {%  if enableSort %}
                     <script nonce='{{ cspNonce }}'>
                         new MOJFrontend.SortableTable({
                           table: $('#table-completed')[0]
                         });
                     </script>
-                {% endif %}
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
@@ -139,9 +131,9 @@
                         </caption>
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header" aria-sort="ascending">Name</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
                             <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
-                            <th scope="col" class="govuk-table__header" aria-sort="none">Status</th>
+                            <th scope="col" class="govuk-table__header" aria-sort="ascending">Status</th>
                             <th scope="col" class="govuk-table__header">Action</th>
                         </tr>
                         </thead>
@@ -173,13 +165,11 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                {%  if enableSort %}
                     <script nonce='{{ cspNonce }}'>
                         new MOJFrontend.SortableTable({
                           table: $('#table-nic')[0]
                         });
                     </script>
-                {% endif %}
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
@@ -223,13 +213,11 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    {%  if enableSort %}
                     <script nonce='{{ cspNonce }}'>
                         new MOJFrontend.SortableTable({
                           table: $('#table-partb')[0]
                         });
                     </script>
-                    {% endif %}
                 {% else %}
                     <p class='govuk-body'>No recalls</p>
                 {% endif %}
