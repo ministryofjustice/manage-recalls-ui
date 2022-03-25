@@ -43,6 +43,7 @@ export interface UploadedFileMetadata {
   category: RecallDocument.category
   fileContent: string
   details?: string
+  sizeMB?: number
 }
 
 export interface CategorisedFileMetadata {

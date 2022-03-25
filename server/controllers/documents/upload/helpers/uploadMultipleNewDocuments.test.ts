@@ -121,47 +121,54 @@ describe('uploadMultipleNewDocuments', () => {
     uploadMultipleNewDocuments(req, res)
   })
 
-  it("doesn't try to save to the API if there are no uploaded files", async () => {
+  it("doesn't try to save to the API and throws an error if there are no uploaded files", async () => {
     req.files = []
-    await uploadMultipleNewDocuments(req, res)
-    expect(uploadRecallDocument).not.toHaveBeenCalled()
+    try {
+      await uploadMultipleNewDocuments(req, res)
+    } catch (err) {
+      expect(uploadRecallDocument).not.toHaveBeenCalled()
+      expect(err.message).toEqual('uploadMultipleNewDocuments')
+    }
   })
 
-  it('creates errors for failed saves to the API', done => {
-    ;(uploadRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
-    req.files = [
-      {
-        originalname: 'licence.pdf',
-        buffer: 'abc',
-        mimetype: 'application/pdf',
-      },
-      {
-        originalname: 'report.pdf',
-        buffer: 'def',
-        mimetype: 'application/pdf',
-      },
-      {
-        originalname: 'PreCons Wesley Holt.pdf',
-        buffer: 'def',
-        mimetype: 'application/pdf',
-      },
-      {
-        originalname: 'Barry Badger PART_A_REPORT.pdf',
-        buffer: 'def',
-        mimetype: 'application/pdf',
-      },
-      {
-        originalname: '2021-10-09charge-Sheet-Maria Badger.pdf',
-        buffer: 'hgf',
-        mimetype: 'application/pdf',
-      },
-      {
-        originalname: 'other.pdf',
-        buffer: 'hgf',
-        mimetype: 'application/pdf',
-      },
-    ]
-    res.json = () => {
+  it('creates errors for failed saves to the API, then throws', async () => {
+    try {
+      ;(uploadRecallDocument as jest.Mock).mockRejectedValue({ data: 'Error' })
+      req.files = [
+        {
+          originalname: 'licence.pdf',
+          buffer: 'abc',
+          mimetype: 'application/pdf',
+        },
+        {
+          originalname: 'report.pdf',
+          buffer: 'def',
+          mimetype: 'application/pdf',
+        },
+        {
+          originalname: 'PreCons Wesley Holt.pdf',
+          buffer: 'def',
+          mimetype: 'application/pdf',
+        },
+        {
+          originalname: 'Barry Badger PART_A_REPORT.pdf',
+          buffer: 'def',
+          mimetype: 'application/pdf',
+        },
+        {
+          originalname: '2021-10-09charge-Sheet-Maria Badger.pdf',
+          buffer: 'hgf',
+          mimetype: 'application/pdf',
+        },
+        {
+          originalname: 'other.pdf',
+          buffer: 'hgf',
+          mimetype: 'application/pdf',
+        },
+      ]
+      await uploadMultipleNewDocuments(req, res)
+    } catch (err) {
+      expect(err.message).toEqual('uploadMultipleNewDocuments')
       expect(req.session.errors).toEqual([
         {
           href: '#documents',
@@ -194,12 +201,10 @@ describe('uploadMultipleNewDocuments', () => {
           href: '#documents',
         },
       ])
-      done()
     }
-    uploadMultipleNewDocuments(req, res)
   })
 
-  it('creates an error for a failed save to the API due to a virus', done => {
+  it('creates an error for a failed save to the API due to a virus', async () => {
     ;(uploadRecallDocument as jest.Mock).mockRejectedValue({
       data: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
@@ -210,7 +215,10 @@ describe('uploadMultipleNewDocuments', () => {
         mimetype: 'application/pdf',
       },
     ]
-    res.json = () => {
+    try {
+      await uploadMultipleNewDocuments(req, res)
+    } catch (err) {
+      expect(err.message).toEqual('uploadMultipleNewDocuments')
       expect(req.session.errors).toEqual([
         {
           href: '#documents',
@@ -218,9 +226,7 @@ describe('uploadMultipleNewDocuments', () => {
           text: 'licence.pdf contains a virus',
         },
       ])
-      done()
     }
-    uploadMultipleNewDocuments(req, res)
   })
 
   it('forces all uploads to be uncategorised', async () => {
@@ -246,7 +252,7 @@ describe('uploadMultipleNewDocuments', () => {
     )
   })
 
-  it('creates errors for files with either invalid file extensions or MIME types', done => {
+  it('creates errors for files with either invalid file extensions or MIME types', async () => {
     ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
       documentId: '123',
     })
@@ -267,7 +273,11 @@ describe('uploadMultipleNewDocuments', () => {
       documents: [],
     })
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
-    res.json = () => {
+
+    try {
+      await uploadMultipleNewDocuments(req, res)
+    } catch (err) {
+      expect(err.message).toEqual('uploadMultipleNewDocuments')
       expect(req.session.errors).toEqual([
         {
           href: '#documents',
@@ -280,8 +290,6 @@ describe('uploadMultipleNewDocuments', () => {
           text: "The selected file 'report.pdf' must be a PDF",
         },
       ])
-      done()
     }
-    uploadMultipleNewDocuments(req, res)
   })
 })

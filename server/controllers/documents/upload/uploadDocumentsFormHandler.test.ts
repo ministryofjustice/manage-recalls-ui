@@ -54,4 +54,15 @@ describe('uploadRecallDocumentsFormHandler', () => {
     }
     uploadDocumentsFormHandler(req, res)
   })
+
+  it('sends an XHR response to reload if an error is thrown', done => {
+    req.body.upload = 'upload'
+    req.xhr = true
+    ;(uploadMultipleNewDocuments as jest.Mock).mockRejectedValue(new Error('error'))
+    res.json = body => {
+      expect(body).toEqual({ reload: true })
+      done()
+    }
+    uploadDocumentsFormHandler(req, res)
+  })
 })

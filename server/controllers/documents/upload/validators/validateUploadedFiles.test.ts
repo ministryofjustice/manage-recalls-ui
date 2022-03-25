@@ -1,7 +1,8 @@
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { validateUploadedFileTypes } from './validateUploadedFileTypes'
+import { validateUploadedFiles } from './validateUploadedFiles'
+import { MAX_UPLOAD_FILE_SIZE_MB } from '../helpers'
 
-describe('validateUploadedFileTypes', () => {
+describe('validateUploadedFiles', () => {
   it('returns errors for any docs with invalid file extensions or MIME types', () => {
     const fileData = [
       {
@@ -10,6 +11,7 @@ describe('validateUploadedFileTypes', () => {
         label: 'Part A recall report',
         fileContent: 'abc',
         mimeType: 'application/pdf',
+        sizeMB: 3,
       },
       {
         category: RecallDocument.category.UNCATEGORISED,
@@ -17,9 +19,10 @@ describe('validateUploadedFileTypes', () => {
         label: 'Pre-sentencing report',
         fileContent: 'def',
         mimeType: 'application/msword',
+        sizeMB: 0.5,
       },
     ]
-    const { errors } = validateUploadedFileTypes(fileData, 'documents')
+    const { errors } = validateUploadedFiles(fileData, 'documents')
     expect(errors).toEqual([
       {
         href: '#documents',
@@ -34,6 +37,35 @@ describe('validateUploadedFileTypes', () => {
     ])
   })
 
+  it('returns errors for any docs exceeding the max file size', () => {
+    const fileData = [
+      {
+        category: RecallDocument.category.UNCATEGORISED,
+        originalFileName: 'Wesley Holt part a.pdf',
+        label: 'Part A recall report',
+        fileContent: 'abc',
+        mimeType: 'application/pdf',
+        sizeMB: MAX_UPLOAD_FILE_SIZE_MB + 1,
+      },
+      {
+        category: RecallDocument.category.UNCATEGORISED,
+        originalFileName: 'Wesley Holt psr.pdf',
+        label: 'Pre-sentencing report',
+        fileContent: 'def',
+        mimeType: 'application/pdf',
+        sizeMB: MAX_UPLOAD_FILE_SIZE_MB - 1,
+      },
+    ]
+    const { errors } = validateUploadedFiles(fileData, 'documents')
+    expect(errors).toEqual([
+      {
+        href: '#documents',
+        name: 'documents',
+        text: "The selected file 'Wesley Holt part a.pdf' must be smaller than 25MB",
+      },
+    ])
+  })
+
   it('returns valuesToSave and no errors if inputs are valid', () => {
     const fileData = [
       {
@@ -42,9 +74,10 @@ describe('validateUploadedFileTypes', () => {
         label: 'Choose a type',
         fileContent: 'abc',
         mimeType: 'application/pdf',
+        sizeMB: 0.5,
       },
     ]
-    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, 'documents')
+    const { errors, valuesToSave } = validateUploadedFiles(fileData, 'documents')
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual([
       {

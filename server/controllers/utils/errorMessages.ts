@@ -8,6 +8,7 @@ import { listToString } from './lists'
 import { renderTemplateString } from '../../nunjucks/nunjucksFunctions'
 import { SanitisedError } from '../../utils/sanitisedError'
 import { MIN_VALUE_YEAR } from './dates/convert'
+import { MAX_UPLOAD_FILE_SIZE_MB } from '../documents/upload/helpers'
 
 export const errorMsgUserActionDateTime = (
   validationError: ValidationError,
@@ -104,6 +105,8 @@ export const errorMsgDocumentUpload = {
       allowedDocumentFileExtensions.map(ext => ext.label),
       'or'
     )}`,
+  invalidFileSize: (fileName: string) =>
+    `The selected file '${fileName}' must be smaller than ${MAX_UPLOAD_FILE_SIZE_MB}MB`,
 }
 
 export const errorMsgNoteFileUpload = {

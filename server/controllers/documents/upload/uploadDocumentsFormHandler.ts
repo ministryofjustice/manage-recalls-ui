@@ -26,12 +26,15 @@ export const uploadDocumentsFormHandler = async (req: Request, res: Response) =>
       }
     } catch (e) {
       logger.error(e)
-      req.session.errors = [
+      req.session.errors = req.session.errors || [
         makeErrorObject({
           id: 'documents',
           text: errorMsgDocumentUpload.saveError,
         }),
       ]
+      if (req.xhr) {
+        return res.json({ reload: true })
+      }
       res.redirect(303, req.originalUrl)
     }
   })

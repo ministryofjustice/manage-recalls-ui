@@ -2,7 +2,7 @@ import { NamedFormError, ObjectMap, ReqValidatorReturn, UrlInfo, ValidationError
 import { PartBRecordRequest } from '../../../@types/manage-recalls-api/models/PartBRecordRequest'
 import { makeMetaDataForFile } from '../../documents/upload/helpers'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
-import { isInvalidFileType } from '../../documents/upload/validators/validateUploadedFileTypes'
+import { isInvalidFileType } from '../../documents/upload/validators/validateUploadedFiles'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import {
   errorMsgDocumentUpload,
