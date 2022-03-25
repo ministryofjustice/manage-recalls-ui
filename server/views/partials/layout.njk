@@ -65,15 +65,39 @@
   <script src="/assets/govukFrontendInit.js"></script>
   <script src="/assets/moj/all.js"></script>
 
-    {% if env and env == 'DEVELOPMENT' %}
+    {% if env and env == 'PRE-PRODUCTION' %}
   <script src="https://cdn.lr-in.com/LogRocket.min.js" crossorigin="anonymous"></script>
-  <script nonce='{{ cspNonce }}'>window.LogRocket && window.LogRocket.init('nba848/dev', {
+  <script nonce='{{ cspNonce }}'>
+    window.LogRocket && window.LogRocket.init('nba848/dev', {
       console: {
         isEnabled: false,
       },
       shouldCaptureIP: false,
       network: {
-        isEnabled: false,
+        isEnabled: false
+      },
+      browser: {
+        urlSanitizer: url => {
+          try {
+            let sanitizedUrl = url
+            const patternRecallId = /\/recalls\/([a-z0-9-]+)\//
+            const containsRecallId = patternRecallId.exec(sanitizedUrl)
+            if (containsRecallId) {
+              const recallId = containsRecallId[1]
+              sanitizedUrl = sanitizedUrl.replace(recallId, recallId.substring(0, 4))
+              return sanitizedUrl
+            }
+            let patternNomsNumber = /\?nomsNumber=(.+)/
+            const containsNomsNumber = patternNomsNumber.exec(sanitizedUrl)
+            if (containsNomsNumber) {
+              const nomsNumber = containsNomsNumber[1]
+              return url.replace(nomsNumber, 'REDACTED')
+            }
+            return url
+          } catch (err) {
+            return url
+          }
+        }
       },
       dom: {
         inputSanitizer: true,
