@@ -77,7 +77,7 @@ context('Missing uploaded documents', () => {
     cy.getText('missingDocumentsRecordNotedBy-1').should('equal', 'Noted by Bobby Badger on 9 December 2020 at 12:24')
   })
 
-  it.only('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
+  it('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
