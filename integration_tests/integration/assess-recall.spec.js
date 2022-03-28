@@ -76,7 +76,7 @@ context('Assess a recall', () => {
     cy.getText('missing-OASYS_RISK_ASSESSMENT').should('equal', 'Missing')
   })
 
-  it.only('can assess a recall', () => {
+  it('can assess a recall', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
