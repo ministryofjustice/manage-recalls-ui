@@ -71,6 +71,8 @@ context('Generated document versions', () => {
     cy.task('expectGenerateRecallDocument', { statusCode: 201 })
   })
 
+  // NOTE - there's a test in assess-recall.spec.js for downloading the recall notification
+
   it("if a document hasn't been generated, it won't be listed on recall info", () => {
     cy.task('expectGetRecall', {
       expectedResult: {

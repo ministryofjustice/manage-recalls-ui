@@ -10,6 +10,7 @@ import {
 } from '../mockApis/mockResponses'
 import 'cypress-audit/commands'
 import { stubRefData } from './mock-api'
+import path from 'path'
 
 Cypress.Commands.add('login', () => {
   cy.task('reset')
@@ -203,6 +204,11 @@ Cypress.Commands.add('downloadPdf', linkText => {
 Cypress.Commands.add('downloadEmail', (target, opts = { parent: '#main-content' }) => {
   clickElement(target, 'a', opts)
   // TODO - check download folder
+})
+
+Cypress.Commands.add('confirmFileDownloaded', fileName => {
+  const downloadedFileName = path.join(Cypress.config('downloadsFolder'), fileName)
+  cy.readFile(downloadedFileName, 'binary')
 })
 
 Cypress.Commands.add('suggestedCategoryFor', fileName => {

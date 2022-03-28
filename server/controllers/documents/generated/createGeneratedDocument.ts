@@ -31,9 +31,9 @@ export const createGeneratedDocument = async (req: Request, res: Response, next:
       const { documentId } = await generateRecallDocument(recallId, { category: cat, fileName }, token)
       res.locals.documentId = documentId
     }
+    next()
   } catch (err) {
     logger.error(err)
-  } finally {
-    next()
+    res.sendStatus(500)
   }
 }

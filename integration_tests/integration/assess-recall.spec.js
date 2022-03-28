@@ -95,6 +95,15 @@ context('Assess a recall', () => {
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
     cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
+    cy.task('expectGenerateRecallDocument')
+    cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
+    const recallNotificationFileName = 'NOT IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
+    cy.task('expectGetRecallDocument', {
+      category: 'RECALL_NOTIFICATION',
+      file: 'abc',
+      fileName: recallNotificationFileName,
+      documentId: '123',
+    })
     cy.task('expectSetConfirmedRecallType')
     cy.visitPage('/')
     cy.clickButton('Assess recall')
@@ -122,10 +131,8 @@ context('Assess a recall', () => {
 
     cy.pageHeading().should('equal', 'Download recall notification')
     cy.clickLink('Download the Recall notification')
-    cy.getText('getRecallNotificationFileName').should(
-      'equal',
-      'Filename: NOT IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
-    )
+    cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${recallNotificationFileName}`)
+    cy.confirmFileDownloaded(recallNotificationFileName)
     cy.clickLink('Continue')
 
     cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
