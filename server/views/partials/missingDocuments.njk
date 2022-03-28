@@ -50,7 +50,7 @@
                         Details
                     </dt>
                     <dd class=" govuk-summary-list__value">
-                      <pre class='govuk-body' data-qa='missingDocumentsRecordDetail-{{ missingDocumentsRecord.version }}'>
+                      <pre class='govuk-body' data-qa='missingDocumentsRecordDetail-{{ missingDocumentsRecord.version }}' data-private>
                             {{ missingDocumentsRecord.details }}
                       </pre>
                     </dd>
@@ -63,14 +63,14 @@
                     </dt>
                     <dd class=" govuk-summary-list__value">
                         <a href='{{ missingDocumentsRecord.url }}' class='govuk-link'
-                           data-qa='missingDocumentsRecordEmail-{{ missingDocumentsRecord.version }}' download>{{ missingDocumentsRecord.fileName }}</a>
+                           data-qa='missingDocumentsRecordEmail-{{ missingDocumentsRecord.version }}' download data-private>{{ missingDocumentsRecord.fileName }}</a>
                     </dd>
                     <dd class="govuk-summary-list__actions">
                     </dd>
                 </div>
             </dl>
             <p class="govuk-!-margin-bottom-9 govuk-!-margin-top-0 govuk-body-s grey-text"
-               data-qa='missingDocumentsRecordNotedBy-{{ missingDocumentsRecord.version }}'>
+               data-qa='missingDocumentsRecordNotedBy-{{ missingDocumentsRecord.version }}' data-private>
                 Noted by {{ missingDocumentsRecord.createdByUserName}} on {{ missingDocumentsRecord.createdDateTime | dateTime }}
             </p>
             {% endfor %}

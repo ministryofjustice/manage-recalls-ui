@@ -5,7 +5,7 @@
       Vulnerability and diversity
     </dt>
     <dd class="govuk-summary-list__value">
-      <pre class='govuk-body' data-qa='vulnerabilityDiversity'>
+      <pre class='govuk-body' data-qa='vulnerabilityDiversity' data-private>
         {% if recall.vulnerabilityDiversity == true %}{{ recall.vulnerabilityDiversityDetail }}{% elif recall.vulnerabilityDiversity == false %}No{% else %}Not available{% endif %}
       </pre>
     </dd>
@@ -20,7 +20,7 @@
       Arrest issues
     </dt>
     <dd class="govuk-summary-list__value">
-      <pre class='govuk-body' data-qa='arrestIssues'>
+      <pre class='govuk-body' data-qa='arrestIssues' data-private>
         {% if recall.arrestIssues == true %}{{ recall.arrestIssuesDetail }}{% elif recall.arrestIssues == false %}No{% else %}Not available{% endif %}
       </pre>
     </dd>
@@ -35,7 +35,7 @@
       Contraband
     </dt>
     <dd class=" govuk-summary-list__value">
-      <pre class='govuk-body' data-qa='contraband'>
+      <pre class='govuk-body' data-qa='contraband' data-private>
         {% if recall.contraband == true %}{{ recall.contrabandDetail }}{% elif recall.contraband == false %}No{% else %}Not available{% endif %}
       </pre>
     </dd>

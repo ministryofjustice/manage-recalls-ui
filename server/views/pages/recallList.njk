@@ -37,8 +37,8 @@
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for result in results.toDo %}
-                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                            <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
+                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}' data-private>
+                            <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
                             <td class="govuk-table__cell" data-qa="dueDate" data-sort-value='{{ result.toDoDueDateTime }}'>
                                 <span class='wrapper-date-short'>
                                 {% if result.status == 'AWAITING_DOSSIER_CREATION' or result.status == 'DOSSIER_IN_PROGRESS' %}
@@ -48,7 +48,7 @@
                                 {% endif %}
                                 </span>
                             </td>
-                            <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
+                            <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.assigneeUserName }}</td>
                             <td class="govuk-table__cell" data-qa="lastUpdatedDateTime" data-sort-value='{{ result.lastUpdatedDateTime }}'>
                                 <span class='wrapper-date-short'>
                                 {{ result.lastUpdatedDateTime | dateTimeShort }}

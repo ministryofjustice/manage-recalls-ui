@@ -17,7 +17,7 @@
                 <dt class=" govuk-summary-list__key">
                     Recall stopped by
                 </dt>
-                <dd class=" govuk-summary-list__value">
+                <dd class=" govuk-summary-list__value" data-private>
                     {{ recall.stopByUserName }}
                 </dd>
                 <dd class=" govuk-summary-list__actions"></dd>
@@ -79,7 +79,7 @@
                     {% if recall.confirmedRecallType === 'FIXED' %}Downgraded{% else %}Upgraded{% endif %} recall detail
                 </dt>
                 <dd class=" govuk-summary-list__value">
-                    <pre class='govuk-body'>{{ recall.confirmedRecallTypeDetail }}</pre>
+                    <pre class='govuk-body' data-private>{{ recall.confirmedRecallTypeDetail }}</pre>
                 </dd>
                 <dd class=" govuk-summary-list__actions"></dd>
             </div>
@@ -101,7 +101,7 @@
                 <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
                     <a href='{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.url }}' class='govuk-link'
                        data-qa='uploadedDocument-{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.category }}'
-                       download>{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.fileName }}</a>
+                       download data-private>{{ recall.emailsUploaded.CHANGE_RECALL_TYPE_EMAIL.fileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions"></dd>
             </div>
@@ -126,7 +126,7 @@
             <dd class=" govuk-summary-list__value" data-qa='recallRequestEmailFileName'>
                 <a href='{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.url }}' class='govuk-link'
                    data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.category }}'
-                   download>{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.fileName }}</a>
+                   download data-private>{{ recall.emailsUploaded.RECALL_REQUEST_EMAIL.fileName }}</a>
             </dd>
             <dd class=" govuk-summary-list__actions">
                     <a href='{{ changeLinkUrl('request-received', urlInfo, 'recallDetails') }}'
@@ -140,7 +140,7 @@
                 <dt class=" govuk-summary-list__key">
                     Recall booked by
                 </dt>
-                <dd class=" govuk-summary-list__value" data-qa='bookedByUserName'>
+                <dd class=" govuk-summary-list__value" data-qa='bookedByUserName' data-private>
                     {{ recall.bookedByUserName }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
@@ -155,7 +155,7 @@
                     </dt>
                     <dd class=" govuk-summary-list__value">
                     <pre class='govuk-body'
-                         data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
+                         data-qa='licenceConditionsBreached' data-private>{{ recall.licenceConditionsBreached }}</pre>
                     </dd>
                     <dd class=" govuk-summary-list__actions">
                         <a href='{{ changeLinkUrl('assess-licence', urlInfo, 'recallDetails') }}' class='govuk-link'>
@@ -171,7 +171,7 @@
                         <ul class='govuk-list govuk-list--bullet'>
                             {% for reason in filterSelectedItems(referenceData.reasonsForRecall, recall.reasonsForRecall) %}
                                 <li data-qa='reasonsForRecall-{{ reason.value }}'>
-                                    {{ reason.text }}{% if reason.text == 'Other' %} - <br /><pre class='govuk-body'>{{ recall.reasonsForRecallOtherDetail }}</pre>{% endif %}
+                                    {{ reason.text }}{% if reason.text == 'Other' %} - <br /><pre class='govuk-body' data-private>{{ recall.reasonsForRecallOtherDetail }}</pre>{% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -188,7 +188,7 @@
                 <dt class=" govuk-summary-list__key">
                     Recall assessed by
                 </dt>
-                <dd class=" govuk-summary-list__value" data-qa='assessedByUserName'>
+                <dd class=" govuk-summary-list__value" data-qa='assessedByUserName' data-private>
                     {{ recall.assessedByUserName }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
@@ -217,7 +217,7 @@
                 <dd class=" govuk-summary-list__value" data-qa='recallNotificationEmailFileName'>
                     <a href='{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.url }}' class='govuk-link'
                        data-qa='uploadedDocument-{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.category }}'
-                       download>{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.fileName }}</a>
+                       download data-private>{{ recall.emailsUploaded.RECALL_NOTIFICATION_EMAIL.fileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
                     <a href='{{ changeLinkUrl('assess-email', urlInfo, 'recallDetails') }}' class='govuk-link'>
@@ -231,7 +231,7 @@
                 <dt class=" govuk-summary-list__key">
                     Dossier created by
                 </dt>
-                <dd class=" govuk-summary-list__value" data-qa='dossierCreatedByUserName'>
+                <dd class=" govuk-summary-list__value" data-qa='dossierCreatedByUserName' data-private>
                     {{ recall.dossierCreatedByUserName }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
@@ -257,7 +257,7 @@
                 <dd class=" govuk-summary-list__value" data-qa='dossierEmailFileName'>
                     <a href='{{ recall.emailsUploaded.DOSSIER_EMAIL.url }}' class='govuk-link'
                        data-qa='uploadedDocument-{{ recall.emailsUploaded.DOSSIER_EMAIL.category }}'
-                       download>{{ recall.emailsUploaded.DOSSIER_EMAIL.fileName }}</a>
+                       download data-private>{{ recall.emailsUploaded.DOSSIER_EMAIL.fileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
                     <a href='{{ changeLinkUrl('dossier-email', urlInfo, 'recallDetails') }}' class='govuk-link'>
@@ -285,7 +285,7 @@
                     Part B details
                 </dt>
                 <dd class=" govuk-summary-list__value">
-                      <pre class='govuk-body' data-qa='partBDetail'>
+                      <pre class='govuk-body' data-qa='partBDetail' data-private>
                             {{ recall.partBRecords[0].details }}
                       </pre>
                 </dd>
@@ -299,7 +299,7 @@
                 <dt class=" govuk-summary-list__key">
                     Part B uploaded by
                 </dt>
-                <dd class=" govuk-summary-list__value">
+                <dd class=" govuk-summary-list__value" data-private>
                         {{ recall.partBRecords[0].createdByUserName }}
                 </dd>
                 <dd class=" govuk-summary-list__actions">
@@ -311,7 +311,7 @@
                 </dt>
                 <dd class=" govuk-summary-list__value">
                     <a href='{{ recall.partBRecords[0].emailUrl }}' class='govuk-link'
-                       data-qa='partBEmail' download>{{ recall.partBRecords[0].emailFileName }}</a>
+                       data-qa='partBEmail' download data-private>{{ recall.partBRecords[0].emailFileName }}</a>
                 </dd>
                 <dd class=" govuk-summary-list__actions">
                     <a href='{{ changeLinkUrl('part-b', urlInfo, 'recallDetails-part-b') }}' class='govuk-link'>

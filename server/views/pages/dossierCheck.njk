@@ -25,7 +25,7 @@
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Name
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='name'>
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='name' data-private>
                         {{ recall.fullName }}
                     </dd>
                 </div>
@@ -33,7 +33,7 @@
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         NOMIS
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='nomsNumber'>
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='nomsNumber' data-private>
                         {{ recall.nomsNumber }}
                     </dd>
                 </div>
@@ -41,7 +41,7 @@
                     <dt class=" govuk-summary-list__key govuk-!-width-one-half">
                         Booking number
                     </dt>
-                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookingNumber'>
+                    <dd class=" govuk-summary-list__value govuk-!-width-one-half" data-qa='bookingNumber' data-private>
                         {{ recall.bookingNumber }}
                     </dd>
                 </div>
@@ -50,7 +50,7 @@
                         Licence conditions breached
                     </dt>
                     <dd class=" govuk-summary-list__value govuk-!-width-one-half">
-                        <pre class='govuk-body' data-qa='licenceConditionsBreached'>{{ recall.licenceConditionsBreached }}</pre>
+                        <pre class='govuk-body' data-qa='licenceConditionsBreached' data-private>{{ recall.licenceConditionsBreached }}</pre>
                     </dd>
                 </div>
                 <div class="govuk-summary-list__row">

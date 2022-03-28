@@ -7,7 +7,7 @@
       </dt>
       <dd class=" govuk-summary-list__value">
         <pre class='govuk-body'
-             data-qa='additionalLicenceConditions'>
+             data-qa='additionalLicenceConditions' data-private>
           {% if recall.additionalLicenceConditions == true %}{{ recall.additionalLicenceConditionsDetail }}{% elif recall.additionalLicenceConditions == false %}None{% else %}Not available{% endif %}
 
         </pre>

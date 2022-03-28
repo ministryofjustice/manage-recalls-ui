@@ -1,2 +1,2 @@
-<a class='govuk-link' href='{{ document.url }}' download data-qa='uploadedDocument-{{ document.category }}'>{{ document.standardFileName or document.fileName }}</a>
+<a class='govuk-link' href='{{ document.url }}' download data-qa='uploadedDocument-{{ document.category }}' data-private>{{ document.standardFileName or document.fileName }}</a>
 {% if document.version > 1 %} (<span data-qa='uploadedDocument-{{ document.category }}-version'>version {{ document.version }}</span>) {% endif %}
