@@ -8,7 +8,7 @@
                         Rescind request details
                     </dt>
                     <dd class=" govuk-summary-list__value">
-                      <pre class='govuk-body'>
+                      <pre class='govuk-body' data-private>
                             {{ rescind.requestDetails }}
                       </pre>
                     </dd>
@@ -28,7 +28,7 @@
                         Rescind request email
                     </dt>
                     <dd class=" govuk-summary-list__value">
-                        <a href='{{ rescind.requestEmailUrl }}' class='govuk-link' download>{{ rescind.requestEmailFileName }}</a>
+                        <a href='{{ rescind.requestEmailUrl }}' class='govuk-link' download data-private>{{ rescind.requestEmailFileName }}</a>
                     </dd>
                     <dd class=" govuk-summary-list__actions"></dd>
                 </div>
@@ -38,9 +38,7 @@
                         Recall rescinded
                     </dt>
                     <dd class=" govuk-summary-list__value">
-                      <pre class='govuk-body'>
-                            {% if rescind.approved %}Yes{% else %}No{% endif %}
-                      </pre>
+                        {% if rescind.approved %}Yes{% else %}No{% endif %}
                     </dd>
                     <dd class=" govuk-summary-list__actions"></dd>
                 </div>
@@ -49,7 +47,7 @@
                         Rescind decision details
                     </dt>
                     <dd class=" govuk-summary-list__value">
-                      <pre class='govuk-body'>
+                      <pre class='govuk-body' data-private>
                             {{ rescind.decisionDetails }}
                       </pre>
                     </dd>
@@ -69,7 +67,7 @@
                         Rescind decision email
                     </dt>
                     <dd class=" govuk-summary-list__value">
-                        <a href='{{ rescind.decisionEmailUrl }}' class='govuk-link' download>{{ rescind.decisionEmailFileName }}</a>
+                        <a href='{{ rescind.decisionEmailUrl }}' class='govuk-link' download data-private>{{ rescind.decisionEmailFileName }}</a>
                     </dd>
                     <dd class=" govuk-summary-list__actions"></dd>
                 </div>

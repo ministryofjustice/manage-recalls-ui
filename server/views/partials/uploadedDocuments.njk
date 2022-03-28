@@ -12,7 +12,7 @@
                 <dd class=" govuk-summary-list__value">
                     {% include '../partials/uploadedDocumentLink.njk' %}
                     {% if document.details %}
-                        <pre class='govuk-body govuk-!-margin-top-4' data-qa='uploadedDocument-{{ document.category }}-details'>
+                        <pre class='govuk-body govuk-!-margin-top-4' data-qa='uploadedDocument-{{ document.category }}-details' data-private>
                             {{ document.details }}
                         </pre>
                     {% endif %}
