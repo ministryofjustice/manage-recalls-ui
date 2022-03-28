@@ -21,7 +21,7 @@ context('Create a dossier', () => {
     cy.login()
   })
 
-  it('can verify recall details before creating a dossier', () => {
+  it.only('can verify recall details before creating a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
