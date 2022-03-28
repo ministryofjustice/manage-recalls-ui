@@ -100,7 +100,7 @@ describe('validateUploadedFiles', () => {
         mimeType: 'message/rfc822',
       },
     ]
-    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, 'documents')
+    const { errors, valuesToSave } = validateUploadedFiles(fileData, 'documents')
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual([
       {
