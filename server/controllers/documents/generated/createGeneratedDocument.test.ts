@@ -140,4 +140,13 @@ describe('createGeneratedDocument', () => {
     await createGeneratedDocument(req, res, next)
     expect(res.sendStatus).toHaveBeenCalledWith(400)
   })
+
+  it('returns 500 and does not call next middleware, if the create document call fails', async () => {
+    req.query.category = 'RECALL_NOTIFICATION'
+    ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
+    ;(generateRecallDocument as jest.Mock).mockRejectedValue({ statusCode: 500 })
+    await createGeneratedDocument(req, res, next)
+    expect(res.sendStatus).toHaveBeenCalledWith(500)
+    expect(next).not.toHaveBeenCalled()
+  })
 })
