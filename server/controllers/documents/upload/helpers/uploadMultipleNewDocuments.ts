@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { errorMsgDocumentUpload, makeErrorObject } from '../../../utils/errorMessages'
 import { getMetadataForUploadedFiles, saveUploadedFiles } from './index'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { validateUploadedFileTypes } from '../validators/validateUploadedFileTypes'
+import { validateUploadedFiles } from '../validators/validateUploadedFiles'
 import { renderXhrResponse } from './uploadRenderXhrResponse'
 import { getRecall } from '../../../../clients/manageRecallsApiClient'
 
@@ -26,7 +26,7 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
       RecallDocument.category.UNCATEGORISED,
       body.details
     )
-    const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFileTypes(
+    const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFiles(
       uploadedFileData,
       'documents'
     )
@@ -37,10 +37,7 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
     }
   }
   if (session.errors) {
-    if (req.xhr) {
-      return res.json({ reload: true })
-    }
-    return res.redirect(303, req.originalUrl)
+    throw new Error('uploadMultipleNewDocuments')
   }
 
   // only render a response for XHR if there were no errors

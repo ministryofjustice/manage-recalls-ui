@@ -6,6 +6,7 @@ import { RecallResponse } from '../../../../@types/manage-recalls-api/models/Rec
 import { DocumentCategoryMetadata, UploadedFileMetadata } from '../../../../@types/documents'
 import { uploadRecallDocument } from '../../../../clients/manageRecallsApiClient'
 import { errorMsgDocumentUpload, makeErrorObject } from '../../../utils/errorMessages'
+import { roundToDecimalPlaces } from '../../../utils/numbers'
 
 export const makeMetaDataForFile = (
   file: Express.Multer.File,
@@ -28,8 +29,11 @@ export const makeMetaDataForFile = (
     category: documentCategory.name,
     fileContent: file.buffer.toString('base64'),
     details,
+    sizeMB: bytesToMB(file.size),
   }
 }
+
+export const MAX_UPLOAD_FILE_SIZE_MB = 25
 
 export const getMetadataForUploadedFiles = (
   files: Express.Multer.File[],
@@ -138,3 +142,5 @@ export const enableDeleteDocuments = (recallStatus: RecallResponse.status, urlIn
 
 export const findDocCategory = (category: RecallDocument.category) =>
   documentCategories.find(cat => cat.name === category)
+
+export const bytesToMB = (bytes: number) => roundToDecimalPlaces(bytes / 1000000, 1)

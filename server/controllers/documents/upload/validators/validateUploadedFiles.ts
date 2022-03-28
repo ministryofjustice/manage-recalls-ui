@@ -6,7 +6,7 @@ import {
 import { DocumentType, UploadedFileMetadata } from '../../../../@types/documents'
 import { NamedFormError } from '../../../../@types'
 import { errorMsgDocumentUpload, makeErrorObject } from '../../../utils/errorMessages'
-import { findDocCategory } from '../helpers'
+import { findDocCategory, MAX_UPLOAD_FILE_SIZE_MB } from '../helpers'
 
 export const isInvalidFileType = (file: UploadedFileMetadata) => {
   const docCategory = findDocCategory(file.category)
@@ -30,7 +30,9 @@ const allowedExtensionsForFileType = (fileType: DocumentType) => {
   }
 }
 
-export const validateUploadedFileTypes = (
+export const isFileSizeTooLarge = (file: UploadedFileMetadata) => file.sizeMB > MAX_UPLOAD_FILE_SIZE_MB
+
+export const validateUploadedFiles = (
   uploadedFileData: UploadedFileMetadata[],
   fileUploadInputName: string
 ): {
@@ -40,20 +42,31 @@ export const validateUploadedFileTypes = (
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
   uploadedFileData.forEach(file => {
-    let hasError = false
-    if (isInvalidFileType(file)) {
+    let hasError = isInvalidFileType(file) || isFileSizeTooLarge(file)
+    if (hasError) {
       errors = errors || []
-      errors.push(
-        makeErrorObject({
-          id: fileUploadInputName,
-          text: errorMsgDocumentUpload.invalidFileFormat(file.originalFileName),
-        })
-      )
+      if (isInvalidFileType(file)) {
+        errors.push(
+          makeErrorObject({
+            id: fileUploadInputName,
+            text: errorMsgDocumentUpload.invalidFileFormat(file.originalFileName),
+          })
+        )
+      }
+      if (isFileSizeTooLarge(file)) {
+        errors.push(
+          makeErrorObject({
+            id: fileUploadInputName,
+            text: errorMsgDocumentUpload.invalidFileSize(file.originalFileName),
+          })
+        )
+      }
       hasError = true
     }
     if (!hasError) {
+      const { sizeMB, ...rest } = file
       valuesToSave = valuesToSave || []
-      valuesToSave.push(file)
+      valuesToSave.push(rest)
     }
   })
   return { errors, valuesToSave }
