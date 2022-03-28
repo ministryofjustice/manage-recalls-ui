@@ -168,10 +168,13 @@ export const renderErrorMessages = (
   return Object.entries(errors).reduce(
     (acc, [key, val]) => {
       if (key === 'list') {
-        acc.list = (val as unknown as NamedFormError[]).map(err => ({
-          ...err,
-          text: renderTemplateString(err.text, locals),
-        }))
+        acc.list = (val as unknown as NamedFormError[]).map(err => {
+          const { text, ...rest } = err
+          return {
+            ...rest,
+            html: renderTemplateString(err.text, locals),
+          }
+        })
       } else {
         acc[key] = { ...val, text: renderTemplateString(val.text, locals) }
       }

@@ -38,7 +38,7 @@ describe('Error messages', () => {
           text: 'Provide detail on additional licence conditions',
         },
         {
-          text: 'Enter the NOMIS number {{ recall.fullName }} is being held under',
+          text: 'Enter the NOMIS number <span data-private>{{ recall.fullName }}</span> is being held under',
           href: '#differentNomsNumberDetail',
           name: 'differentNomsNumberDetail',
           values: 'A123',
@@ -53,7 +53,7 @@ describe('Error messages', () => {
           text: 'Provide detail on additional licence conditions',
         },
         differentNomsNumberDetail: {
-          text: 'Enter the NOMIS number Dave Angel is being held under',
+          text: 'Enter the NOMIS number <span data-private>Dave Angel</span> is being held under',
           href: '#differentNomsNumberDetail',
           values: 'A123',
         },
@@ -61,12 +61,12 @@ describe('Error messages', () => {
           {
             href: '#additionalLicenceConditionsDetail',
             name: 'additionalLicenceConditionsDetail',
-            text: 'Provide detail on additional licence conditions',
+            html: 'Provide detail on additional licence conditions',
           },
           {
             href: '#differentNomsNumberDetail',
             name: 'differentNomsNumberDetail',
-            text: 'Enter the NOMIS number Dave Angel is being held under',
+            html: 'Enter the NOMIS number <span data-private>Dave Angel</span> is being held under',
             values: 'A123',
           },
         ],

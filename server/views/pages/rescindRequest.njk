@@ -15,7 +15,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Rescind recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Rescind recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Record a rescind request
             </h1>

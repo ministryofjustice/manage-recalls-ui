@@ -42,7 +42,7 @@ export const validateReturnToCustodyDates = ({
           id: 'returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
           text: formatValidationErrorMessage(
             returnedToCustodyDateTime as ValidationError,
-            'date and time {{ recall.fullName }} returned to custody'
+            'date and time <span data-private>{{ recall.fullName }}</span> returned to custody'
           ),
           values: returnedToCustodyDateTimeParts,
         })
@@ -55,7 +55,7 @@ export const validateReturnToCustodyDates = ({
           id: 'returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
           text: formatValidationErrorMessage(
             returnedToCustodyNotificationDateTime as ValidationError,
-            'date and time you found out {{ recall.fullName }} returned to custody'
+            'date and time you found out <span data-private>{{ recall.fullName }}</span> returned to custody'
           ),
           values: returnedToCustodyNotificationDateTimeParts,
         })

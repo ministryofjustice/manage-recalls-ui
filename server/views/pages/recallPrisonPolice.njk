@@ -22,7 +22,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <form novalidate action="{{ makeUrl('prison-police', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8 govuk-!-width-three-quarters'>

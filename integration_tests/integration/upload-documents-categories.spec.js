@@ -1,13 +1,11 @@
 import { getRecallResponse } from '../mockApis/mockResponses'
-import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import checkAnswersPage from '../pages/recallCheckAnswers'
 import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
 
 const recallInformationPage = require('../pages/recallInformation')
 
-context('Upload documents', () => {
-  const nomsNumber = 'A1234AA'
+context('Categorising documents', () => {
   const recallId = '123'
   const personName = 'Bobby Badger'
 

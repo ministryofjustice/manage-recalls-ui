@@ -29,7 +29,7 @@
                     iconFallbackText: confirmationMessage.type
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">Last known addresses</h1>
 
             {% if recall.lastKnownAddresses.length %}

@@ -20,7 +20,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Assess a recall', name: recall.fullName }) }}
             <h1 class='govuk-heading-l'>Download recall notification</h1>
 
             <p class='govuk-body-l'>Review the document and check the information is correct.</p>

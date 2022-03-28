@@ -25,7 +25,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l" data-qa="addRecallTypeCaption">Assess a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Assess a recall', name: recall.fullName }) }}
 
             <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
                   method="post" enctype="multipart/form-data">

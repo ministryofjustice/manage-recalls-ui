@@ -16,7 +16,7 @@
                 }) }}
             {% endif %}
             <form novalidate action="{{ makeUrl('stop-recall', urlInfo, csrfToken) }}" method="post">
-                <span class="govuk-caption-l">Stop recall for {{ recall.fullName }}</span>
+                {{ pageHeadingCaption({ action: 'Stop recall', name: recall.fullName }) }}
                 {{ govukSelect({
                     id: "stopReason",
                     name: "stopReason",

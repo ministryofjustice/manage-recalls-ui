@@ -23,7 +23,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
 
             <form novalidate action="{{ makeUrl('pre-cons-name', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -49,7 +49,7 @@
                         name: "previousConvictionMainNameCategory",
                         fieldset: {
                             legend: {
-                                text: "How does " + recall.fullName + "'s name appear on the previous convictions sheet (pre-cons)?",
+                                html: "How does <span data-private>" + recall.fullName + "'s</span> name appear on the previous convictions sheet (pre-cons)?",
                                 classes: "govuk-fieldset__legend--l",
                                 isPageHeading: true
                             }
@@ -60,12 +60,12 @@
                         items: [
                             {
                                 value: "FIRST_LAST",
-                                text: recall.firstName + " " + recall.lastName,
+                                html: '<span data-private>' + recall.firstName + " " + recall.lastName + '</span>',
                                 checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST'
                             },
                             {
                                 value: "FIRST_MIDDLE_LAST",
-                                text: recall.firstName + " " + recall.middleNames + " " + recall.lastName,
+                                html: '<span data-private>' + recall.firstName + " " + recall.middleNames + " " + recall.lastName + '</span>',
                                 checked: formValues.previousConvictionMainNameCategory == 'FIRST_MIDDLE_LAST'
                             } if recall.middleNames else undefined,
                             {

@@ -10,7 +10,7 @@
             }) }}
         {% endif %}
         {% if not urlInfo.fromPage %}
-        <span class="govuk-caption-l" data-qa="addRecallTypeCaption">{{ titlePrefix }}{{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: titlePrefix, name: recall.fullName }) }}
         {% endif %}
         <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -20,7 +20,7 @@
                         id: "currentPrison",
                         name: "currentPrison",
                         label: {
-                            text: "Which prison is " + recall.fullName + " in?",
+                            html: "Which prison is <span data-private>" + recall.fullName + "</span> in?",
                             classes: "govuk-label--l",
                             isPageHeading: true
                         },

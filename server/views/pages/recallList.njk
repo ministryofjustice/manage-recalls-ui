@@ -99,7 +99,7 @@
                         <tbody class="govuk-table__body" data-qa="search-results">
                         {% for result in results.completed %}
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                                <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
+                                <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
                                 <td class="govuk-table__cell" data-qa="completedDate" data-sort-value='{{ result.completedDateTime }}'>
                                     {% if result.status == 'DOSSIER_ISSUED'%}{{ result.dossierEmailSentDate | dateTime }}{% elif result.status == 'STOPPED'%}{{ result.lastUpdatedDateTime | dateOnly }}{% endif %}
                                 </td>
@@ -140,8 +140,8 @@
                         <tbody class="govuk-table__body" data-qa="search-results">
                         {% for result in results.notInCustody %}
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                                <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
-                                <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
+                                <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
+                                <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell" data-qa="status">{% if result.status == 'AWAITING_RETURN_TO_CUSTODY'%}Awaiting return to custody{% else %}Assessment complete{% endif %}</td>
                                 <td class="govuk-table__cell">
                                     <div class='flex'>
@@ -192,11 +192,11 @@
                         <tbody class="govuk-table__body" data-qa="search-results">
                         {% for result in results.awaitingPartB %}
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                                <td class="govuk-table__cell" data-qa="name">{{ result.fullName }}</td>
+                                <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
                                 <td class="govuk-table__cell" data-qa="due" data-sort-value='{{ result.partBDueDate }}'>
                                     {{ dueDateTimeLabel({ dueIsoDateTime: result.partBDueDate, includeTime: false, shortFormat: true, showOverdueForShortFormat: true }) }}
                                 </td>
-                                <td class="govuk-table__cell" data-qa="assignedTo">{{ result.assigneeUserName }}</td>
+                                <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell">
                                     <div class='flex'>
                                     <span class='govuk-!-padding-right-2'>

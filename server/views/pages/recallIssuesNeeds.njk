@@ -22,7 +22,7 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Are there any issues or needs?
             </h1>
@@ -139,7 +139,7 @@
                         name: "contraband",
                         fieldset: {
                             legend: {
-                                text: "Do you think " + recall.fullName + " will bring contraband into prison?",
+                                html: "Do you think <span data-private>" + recall.fullName + "</span> will bring contraband into prison?",
                                 classes: "govuk-fieldset__legend--m"
                             }
                         },
@@ -166,7 +166,7 @@
                         id: "mappaLevel",
                         name: "mappaLevel",
                         label: {
-                            text: "What is " + recall.fullName + "'s MAPPA level?",
+                            html: "What is <span data-private>" + recall.fullName + "'s</span> MAPPA level?",
                             classes: "govuk-label--m"
                         },
                         items: selectItems(

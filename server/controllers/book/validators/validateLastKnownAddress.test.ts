@@ -35,7 +35,7 @@ describe('validateLastKnownAddress', () => {
       {
         href: '#lastKnownAddressOption',
         name: 'lastKnownAddressOption',
-        text: 'Does {{ recall.fullName }} have a last known address?',
+        text: 'Does <span data-private>{{ recall.fullName }}</span> have a last known address?',
       },
     ])
   })

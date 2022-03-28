@@ -51,7 +51,7 @@ describe('validateLicenceName', () => {
       {
         href: '#licenceNameCategory',
         name: 'licenceNameCategory',
-        text: "How does {{ recall.fullName }}'s name appear on the licence?",
+        text: "How does <span data-private>{{ recall.fullName }}</span>'s name appear on the licence?",
       },
     ])
   })

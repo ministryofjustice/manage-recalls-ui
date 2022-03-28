@@ -64,13 +64,13 @@ describe('validateReturnToCustodyDates', () => {
       {
         href: '#returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
         name: 'returnedToCustodyDateTime',
-        text: 'Enter the date and time {{ recall.fullName }} returned to custody',
+        text: 'Enter the date and time <span data-private>{{ recall.fullName }}</span> returned to custody',
         values: {},
       },
       {
         href: '#returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
         name: 'returnedToCustodyNotificationDateTime',
-        text: 'Enter the date and time you found out {{ recall.fullName }} returned to custody',
+        text: 'Enter the date and time you found out <span data-private>{{ recall.fullName }}</span> returned to custody',
         values: {},
       },
     ])
@@ -113,7 +113,7 @@ describe('validateReturnToCustodyDates', () => {
       {
         href: '#returnedToCustodyDateTime-returnedToCustodyDateTimeDay',
         name: 'returnedToCustodyDateTime',
-        text: 'The date and time {{ recall.fullName }} returned to custody must include a month and hour',
+        text: 'The date and time <span data-private>{{ recall.fullName }}</span> returned to custody must include a month and hour',
         values: {
           day: '23',
           hour: '',
@@ -125,7 +125,7 @@ describe('validateReturnToCustodyDates', () => {
       {
         href: '#returnedToCustodyNotificationDateTime-returnedToCustodyNotificationDateTimeDay',
         name: 'returnedToCustodyNotificationDateTime',
-        text: 'The date and time you found out {{ recall.fullName }} returned to custody must include a day, year and minute',
+        text: 'The date and time you found out <span data-private>{{ recall.fullName }}</span> returned to custody must include a day, year and minute',
         values: {
           day: '',
           hour: '15',
@@ -155,10 +155,10 @@ describe('validateReturnToCustodyDates', () => {
       requestBody,
     })
     expect(errors[0].text).toEqual(
-      'The date and time {{ recall.fullName }} returned to custody must be today or in the past'
+      'The date and time <span data-private>{{ recall.fullName }}</span> returned to custody must be today or in the past'
     )
     expect(errors[1].text).toEqual(
-      'The date and time you found out {{ recall.fullName }} returned to custody must be today or in the past'
+      'The date and time you found out <span data-private>{{ recall.fullName }}</span> returned to custody must be today or in the past'
     )
   })
 
@@ -178,9 +178,11 @@ describe('validateReturnToCustodyDates', () => {
     const { errors } = validateReturnToCustodyDates({
       requestBody,
     })
-    expect(errors[0].text).toEqual('The date and time {{ recall.fullName }} returned to custody must be a real date')
+    expect(errors[0].text).toEqual(
+      'The date and time <span data-private>{{ recall.fullName }}</span> returned to custody must be a real date'
+    )
     expect(errors[1].text).toEqual(
-      'The date and time you found out {{ recall.fullName }} returned to custody must be a real date'
+      'The date and time you found out <span data-private>{{ recall.fullName }}</span> returned to custody must be a real date'
     )
   })
 
@@ -200,9 +202,11 @@ describe('validateReturnToCustodyDates', () => {
     const { errors } = validateReturnToCustodyDates({
       requestBody,
     })
-    expect(errors[0].text).toEqual('The date and time {{ recall.fullName }} returned to custody must be a real time')
+    expect(errors[0].text).toEqual(
+      'The date and time <span data-private>{{ recall.fullName }}</span> returned to custody must be a real time'
+    )
     expect(errors[1].text).toEqual(
-      'The date and time you found out {{ recall.fullName }} returned to custody must be a real time'
+      'The date and time you found out <span data-private>{{ recall.fullName }}</span> returned to custody must be a real time'
     )
   })
 })

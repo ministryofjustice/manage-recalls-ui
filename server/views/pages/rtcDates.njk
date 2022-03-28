@@ -22,9 +22,9 @@
                     }
                 }) }}
             {% endif %}
-            <span class="govuk-caption-l">Book a recall for {{ recall.fullName }}</span>
+            {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
-                When did {{ recall.fullName }} return to custody?
+                When did <span data-private>{{ recall.fullName }}</span> return to custody?
             </h1>
             <form novalidate action="{{ makeUrl('rtc-dates', urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
@@ -37,7 +37,7 @@
                         },
                         fieldset: {
                             legend: {
-                                text: 'Date and time ' + recall.fullName + ' returned to custody',
+                                html: 'Date and time <span data-private>' + recall.fullName + '</span> returned to custody',
                                 classes: 'govuk-fieldset__legend--m'
                             }
                         },
@@ -64,7 +64,7 @@
                         },
                         fieldset: {
                             legend: {
-                                text: 'Date and time you found out ' + recall.fullName + ' returned to custody',
+                                html: 'Date and time you found out <span data-private>' + recall.fullName + '</span> returned to custody',
                                 classes: 'govuk-fieldset__legend--m'
                             }
                         },
