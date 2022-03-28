@@ -76,7 +76,7 @@ context('Assess a recall', () => {
     cy.getText('missing-OASYS_RISK_ASSESSMENT').should('equal', 'Missing')
   })
 
-  it('can assess a recall', () => {
+  it.only('can assess a recall', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -95,6 +95,14 @@ context('Assess a recall', () => {
     cy.task('expectAssignUserToRecall', { expectedResult: recall })
     cy.task('expectUpdateRecall', { recallId, status: 'IN_ASSESSMENT' })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
+    cy.task('expectGenerateRecallDocument')
+    cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
+    cy.task('expectGetRecallDocument', {
+      category: 'RECALL_NOTIFICATION',
+      file: 'abc',
+      fileName: 'recall-notification.pdf',
+      documentId: '123',
+    })
     cy.task('expectSetConfirmedRecallType')
     cy.visitPage('/')
     cy.clickButton('Assess recall')
