@@ -22,7 +22,7 @@
                         {% if record.isMissingRecord == true %}
                             <span data-qa='missingDocumentsLabel'>Missing</span>
                         {% else %}
-                            <a href="{{ record.url }}" class="govuk-link govuk-!-margin-right-2" target="_blank" rel="noopener" data-qa='document-{{ documentId }}-link'>
+                            <a href="{{ record.url }}" class="govuk-link govuk-!-margin-right-2" target="_blank" rel="noopener" data-qa='document-{{ documentId }}-link' data-private>
                                 {{ record.fileName }}
                             </a>
                             {% if record.version > 1 %}
@@ -34,19 +34,19 @@
                 {% if record.details %}
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key govuk-!-width-one-third">Details</dt>
-                    <dd class="govuk-summary-list__value" data-qa='document-{{ documentId }}-details'>{{ record.details }}</dd>
+                    <dd class="govuk-summary-list__value" data-qa='document-{{ documentId }}-details' data-private>{{ record.details }}</dd>
                 </div>
                 {% endif %}
                 {% if record.isMissingRecord == true %}
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key govuk-!-width-one-third">Email uploaded</dt>
                         <dd class="govuk-summary-list__value" data-qa='document-{{ documentId }}-email'>
-                            <a href='{{ record.url }}' class='govuk-link' data-qa='missingDocumentsEmail' download>{{ record.fileName }}</a>
+                            <a href='{{ record.url }}' class='govuk-link' data-qa='missingDocumentsEmail' download data-private>{{ record.fileName }}</a>
                         </dd>
                     </div>
                 {% endif %}
             </dl>
-            <p class="govuk-!-margin-bottom-9 govuk-!-margin-top-0 govuk-body-s grey-text" data-qa='document-{{ documentId }}-uploaded-by'>
+            <p class="govuk-!-margin-bottom-9 govuk-!-margin-top-0 govuk-body-s grey-text" data-qa='document-{{ documentId }}-uploaded-by' data-private>
                 {% if documentHistory.type == 'generated' %}Created{% elseif record.isMissingRecord == true %}Noted{% else %}Uploaded{% endif %} by {{ record.createdByUserName}} on {{ record.createdDateTime | dateTime }}
             </p>
             {% endfor %}

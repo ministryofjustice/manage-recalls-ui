@@ -25,7 +25,7 @@
                             <td class="govuk-table__cell" data-qa='value'>
                                 {{ record.formattedValue }}</td>
                             <td class="govuk-table__cell" data-qa='dateAndTime'>{{ record.updatedDateTime | dateTime }}</td>
-                            <td class="govuk-table__cell" data-qa='updatedByUserName'>{{ record.updatedByUserName }}</td>
+                            <td class="govuk-table__cell" data-qa='updatedByUserName' data-private>{{ record.updatedByUserName }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
