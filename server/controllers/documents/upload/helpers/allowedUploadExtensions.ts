@@ -10,6 +10,7 @@ export const allowedEmailFileExtensions: AllowedUploadFileType[] = [
     extension: '.eml',
     label: 'EML',
     mimeType: 'application/octet-stream',
+    allowAnyMimeType: true,
   },
 ]
 

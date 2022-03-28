@@ -104,4 +104,5 @@ export interface AllowedUploadFileType {
   extension: string
   label: string
   mimeType?: string
+  allowAnyMimeType?: boolean
 }

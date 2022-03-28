@@ -56,4 +56,27 @@ describe('validateUploadedFileTypes', () => {
       },
     ])
   })
+
+  it('allows any mime type for .eml files', () => {
+    const fileData = [
+      {
+        category: RecallDocument.category.PART_B_EMAIL_FROM_PROBATION,
+        originalFileName: 'test.eml',
+        label: 'Choose a type',
+        fileContent: 'abc',
+        mimeType: 'message/rfc822',
+      },
+    ]
+    const { errors, valuesToSave } = validateUploadedFileTypes(fileData, 'documents')
+    expect(errors).toBeUndefined()
+    expect(valuesToSave).toEqual([
+      {
+        category: 'PART_B_EMAIL_FROM_PROBATION',
+        fileContent: 'abc',
+        label: 'Choose a type',
+        mimeType: 'message/rfc822',
+        originalFileName: 'test.eml',
+      },
+    ])
+  })
 })
