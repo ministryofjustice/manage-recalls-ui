@@ -7,7 +7,6 @@ import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
 const recallInformationPage = require('../pages/recallInformation')
 
 context('Upload documents', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'
 
@@ -76,7 +75,7 @@ context('Upload documents', () => {
       method: 'DELETE',
     })
     uploadDocuments.clickContinue()
-    recallMissingDocumentsPage.verifyOnPage()
+    checkAnswersPage.verifyOnPage()
   })
 
   it("user can't go back to delete documents from the view recall page, for an incomplete booking", () => {

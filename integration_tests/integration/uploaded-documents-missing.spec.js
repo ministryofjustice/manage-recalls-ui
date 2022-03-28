@@ -77,7 +77,7 @@ context('Missing uploaded documents', () => {
     cy.getText('missingDocumentsRecordNotedBy-1').should('equal', 'Noted by Bobby Badger on 9 December 2020 at 12:24')
   })
 
-  it('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
+  it.only('user can go back to add documents from the check your answers page to see a list of missing documents', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         recallId,
@@ -89,6 +89,10 @@ context('Missing uploaded documents', () => {
             documentId,
           },
         ],
+        missingDocuments: {
+          required: ['LICENCE'],
+          desired: ['OASYS_RISK_ASSESSMENT', 'PREVIOUS_CONVICTIONS_SHEET'],
+        },
       },
     })
     cy.task('expectDeleteRecallDocument')
@@ -98,7 +102,7 @@ context('Missing uploaded documents', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertListValues({
       qaAttrList: 'missingDocsList',
-      valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys report'],
+      valuesToCompare: ['Licence', 'OASys report', 'Previous convictions sheet'],
     })
   })
 

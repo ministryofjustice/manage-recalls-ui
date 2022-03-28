@@ -1,4 +1,5 @@
 import {
+  DecoratedMissingDocuments,
   DecoratedMissingDocumentsRecord,
   DecoratedNote,
   DecoratedPartBRecord,
@@ -6,9 +7,10 @@ import {
   DecoratedUploadedDoc,
 } from '../../../../@types/documents'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { MissingDocumentsRecord, Note, RescindRecord } from '../../../../@types/manage-recalls-api'
+import { MissingDocuments, MissingDocumentsRecord, Note, RescindRecord } from '../../../../@types/manage-recalls-api'
 import { sortList } from '../../../utils/lists'
 import { PartBRecord } from '../../../../@types/manage-recalls-api/models/PartBRecord'
+import { documentCategories } from '../../documentCategories'
 
 export const documentDownloadUrl = ({ recallId, documentId }: { recallId: string; documentId?: string }) =>
   `/recalls/${recallId}/documents/${documentId}`
@@ -73,6 +75,13 @@ export const decorateRescindRecords = ({
     decisionEmailUrl: documentDownloadUrl({ recallId, documentId: rec.decisionEmailId }),
   }))
   return sortList(decorated, 'version', false)
+}
+
+export const decorateMissingDocuments = (missingDocuments: MissingDocuments): DecoratedMissingDocuments => {
+  const decoratedRequired = missingDocuments?.required.map(req => documentCategories.find(cat => cat.name === req))
+  const decoratedDesired = missingDocuments?.desired.map(req => documentCategories.find(cat => cat.name === req))
+
+  return { required: decoratedRequired, desired: decoratedDesired }
 }
 
 export const decorateNotes = ({ notes, recallId }: { notes: Note[]; recallId: string }): DecoratedNote[] => {

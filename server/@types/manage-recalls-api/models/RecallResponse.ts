@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 import type { LastKnownAddress } from './LastKnownAddress';
+import type { MissingDocuments } from './MissingDocuments';
 import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
 import type { Note } from './Note';
 import type { PartBRecord } from './PartBRecord';
@@ -66,6 +67,7 @@ export type RecallResponse = {
     localDeliveryUnit?: RecallResponse.localDeliveryUnit;
     localPoliceForceId?: string;
     mappaLevel?: RecallResponse.mappaLevel;
+    missingDocuments?: MissingDocuments;
     partBDueDate?: string;
     previousConvictionMainName?: string;
     previousConvictionMainNameCategory?: RecallResponse.previousConvictionMainNameCategory;

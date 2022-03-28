@@ -10,10 +10,7 @@ export const createMissingDocumentRecord = async ({
   user,
 }: SaveToApiFnArgs): Promise<superagent.Response> => {
   const recall = await getRecall(recallId, user.token)
-  const missingDocumentCategories = listMissingRequiredDocs({
-    recall,
-    returnLabels: false,
-  }) as RecallDocument.category[]
+  const missingDocumentCategories = listMissingRequiredDocs(recall)
   const response = await addMissingDocumentRecord(
     {
       categories: missingDocumentCategories,

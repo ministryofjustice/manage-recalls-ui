@@ -57,6 +57,10 @@ context('Create a dossier', () => {
             createdByUserName: 'Arnold Caseworker',
           },
         ],
+        missingDocuments: {
+          required: ['LICENCE'],
+          desired: ['OASYS_RISK_ASSESSMENT'],
+        },
         returnedToCustodyDateTime: undefined,
         returnedToCustodyNotificationDateTime: undefined,
       },

@@ -2,7 +2,6 @@ import * as docExports from './index'
 import { UrlInfo } from '../../../../@types'
 import { RecallResponse } from '../../../../@types/manage-recalls-api/models/RecallResponse'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { requiredDocsList } from './index'
 
 const { enableDeleteDocuments, makeMetaDataForFile } = docExports
 
@@ -75,54 +74,5 @@ describe('makeMetaDataForFile', () => {
       RecallDocument.category.LICENCE
     )
     expect(result.sizeMB).toEqual(1.5)
-  })
-})
-
-describe('requiredDocsList', () => {
-  it('returns a list of required docs', () => {
-    const list = requiredDocsList({} as RecallResponse)
-    expect(list).toEqual([
-      {
-        fileNamePatterns: ['part a'],
-        label: 'Part A recall report',
-        labelLowerCase: 'part A recall report',
-        name: 'PART_A_RECALL_REPORT',
-        required: true,
-        requiredReason: 'DOSSIER',
-        standardFileName: 'Part A.pdf',
-        type: 'document',
-        versioned: true,
-      },
-      {
-        fileNamePatterns: ['licence'],
-        label: 'Licence',
-        name: 'LICENCE',
-        required: true,
-        requiredReason: 'DOSSIER',
-        standardFileName: 'Licence.pdf',
-        type: 'document',
-        versioned: true,
-      },
-    ])
-  })
-
-  it('includes part B if status is AWAITING_PART_B, there is a part B due date and no part B record', () => {
-    const list = requiredDocsList({
-      partBDueDate: '2020-01-01',
-      partBRecords: [],
-      status: RecallResponse.status.AWAITING_PART_B,
-    } as RecallResponse)
-    const partBIncluded = list.some(record => record.name === RecallDocument.category.PART_B_RISK_REPORT)
-    expect(partBIncluded).toEqual(true)
-  })
-
-  it('does not include part B if status is not AWAITING_PART_B, even if there is a part B due date and no part B record', () => {
-    const list = requiredDocsList({
-      partBDueDate: '2020-01-01',
-      partBRecords: [],
-      status: RecallResponse.status.AWAITING_DOSSIER_CREATION,
-    } as RecallResponse)
-    const partBIncluded = list.some(record => record.name === RecallDocument.category.PART_B_RISK_REPORT)
-    expect(partBIncluded).toEqual(false)
   })
 })

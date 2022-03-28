@@ -10,9 +10,7 @@ export interface DocumentCategoryMetadata {
   type: DocumentType
   error?: string
   standardFileName?: string
-  required?: boolean
   requiredReason?: string
-  hintIfMissing?: boolean
   multiple?: boolean
   versioned?: boolean
   fileNamePatterns?: string[]
@@ -70,6 +68,11 @@ export interface DecoratedRescindRecord extends RescindRecord {
   decisionEmailUrl: string
 }
 
+export interface DecoratedMissingDocuments extends MissingDocuments {
+  required: DocumentCategoryMetadata[]
+  desired: DocumentCategoryMetadata[]
+}
+
 export interface DecoratedNote extends Note {
   documentUrl: string
 }
@@ -83,8 +86,6 @@ export interface DecoratedPartBRecord extends PartBRecord {
 export interface DocumentDecorations {
   documentsUploaded: DecoratedUploadedDoc[]
   docCategoriesWithUploads: DocumentCategoryMetadata[]
-  requiredDocsMissing: DocumentCategoryMetadata[]
-  missingNotRequiredDocs: DocumentCategoryMetadata[]
   versionedUpload?: DecoratedUploadedDoc
   versionedGeneratedDoc?: DecoratedUploadedDoc
   emailsUploaded: {

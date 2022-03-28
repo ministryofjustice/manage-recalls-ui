@@ -35,6 +35,10 @@ context('Assess a recall', () => {
         fileName: 'recall-request.eml',
       },
     ],
+    missingDocuments: {
+      required: ['LICENCE'],
+      desired: ['OASYS_RISK_ASSESSMENT'],
+    },
   }
   const emptyRecall = {
     ...getEmptyRecallResponse,

@@ -1,7 +1,6 @@
 import { addMissingDocumentRecord, getRecall, assignUserToRecall } from '../../../clients/manageRecallsApiClient'
 import { createMissingDocumentRecord } from './createMissingDocumentRecord'
 import { User } from '../../../@types'
-import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('../upload/helpers/uploadStorage')
@@ -18,13 +17,10 @@ describe('addMissingDocumentRecordForm', () => {
   it('saves a list of missing document categories to the API', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({
       bookingNumber: '123',
-      documents: [
-        {
-          category: 'PREVIOUS_CONVICTIONS_SHEET',
-          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'PreCons Wesley Holt.pdf',
-        },
-      ],
+      missingDocuments: {
+        required: ['PART_A_RECALL_REPORT', 'LICENCE'],
+        desired: ['OASYS_RISK_ASSESSMENT'],
+      },
     })
     ;(addMissingDocumentRecord as jest.Mock).mockResolvedValue({
       status: 201,
@@ -40,16 +36,9 @@ describe('addMissingDocumentRecordForm', () => {
 
   it('assigns the user to the recall if one of the missing documents is part B', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({
-      bookingNumber: '123',
-      status: RecallResponse.status.AWAITING_PART_B,
-      partBDueDate: '2020-01-01',
-      documents: [
-        {
-          category: 'PREVIOUS_CONVICTIONS_SHEET',
-          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'PreCons Wesley Holt.pdf',
-        },
-      ],
+      missingDocuments: {
+        required: ['PART_B_RISK_REPORT'],
+      },
     })
     ;(addMissingDocumentRecord as jest.Mock).mockResolvedValue({
       status: 201,
