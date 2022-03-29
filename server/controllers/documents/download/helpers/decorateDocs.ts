@@ -1,5 +1,5 @@
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
-import { missingNotRequiredDocsList, requiredDocsList, uploadedDocCategoriesList } from '../../upload/helpers'
+import { uploadedDocCategoriesList } from '../../upload/helpers'
 import { getDocHistoryStatus } from './index'
 import { decorateAllDocTypes } from './decorateAllDocTypes'
 import { getVersionedUpload } from './getVersionedUpload'
@@ -50,12 +50,6 @@ export const decorateDocs = ({
     {
       documentsUploaded: [],
       docCategoriesWithUploads,
-      requiredDocsMissing: requiredDocsList(recall).filter(
-        requiredDocCategory => !decoratedDocs.find(doc => doc.category === requiredDocCategory.name)
-      ),
-      missingNotRequiredDocs: missingNotRequiredDocsList().filter(
-        requiredDocCategory => !decoratedDocs.find(doc => doc.category === requiredDocCategory.name)
-      ),
       versionedUpload,
       versionedGeneratedDoc: undefined,
       documentsGenerated: {},

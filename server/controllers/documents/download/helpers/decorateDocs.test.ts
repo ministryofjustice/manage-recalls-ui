@@ -344,14 +344,6 @@ describe('decorateDocs', () => {
     })
   })
 
-  it('returns data on missing required documents', () => {
-    expect(results.requiredDocsMissing).toEqual([findDocCategory(RecallDocument.category.PART_A_RECALL_REPORT)])
-  })
-
-  it('returns data on missing desired documents', () => {
-    expect(results.missingNotRequiredDocs).toEqual([findDocCategory(RecallDocument.category.OASYS_RISK_ASSESSMENT)])
-  })
-
   it('returns data on generated documents', () => {
     expect(results.documentsGenerated).toEqual({
       DOSSIER: {

@@ -17,6 +17,7 @@ export { GetDocumentResponse } from './models/GetDocumentResponse';
 export { LastKnownAddress } from './models/LastKnownAddress';
 export type { LocalDeliveryUnitResponse } from './models/LocalDeliveryUnitResponse';
 export type { MappaLevelResponse } from './models/MappaLevelResponse';
+export type { MissingDocuments } from './models/MissingDocuments';
 export type { MissingDocumentsRecord } from './models/MissingDocumentsRecord';
 export type { MissingDocumentsRecordRequest } from './models/MissingDocumentsRecordRequest';
 export { MultiErrorResponse } from './models/MultiErrorResponse';

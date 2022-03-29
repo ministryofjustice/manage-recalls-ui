@@ -161,7 +161,13 @@ context('Part B', () => {
 
   it('show part B is missing on recall info page', () => {
     cy.task('expectGetRecall', {
-      expectedResult: { ...getRecallResponse, status: 'AWAITING_PART_B', partBDueDate: '2022-03-02', partBRecords: [] },
+      expectedResult: {
+        ...getRecallResponse,
+        status: 'AWAITING_PART_B',
+        partBDueDate: '2022-03-02',
+        partBRecords: [],
+        missingDocuments: { required: ['PART_B_RISK_REPORT'], desired: [] },
+      },
     })
     cy.task('expectAddMissingDocumentsRecord')
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })

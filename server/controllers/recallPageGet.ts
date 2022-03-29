@@ -13,6 +13,7 @@ import {
   decorateRescindRecords,
   decorateNotes,
   decoratePartBRecords,
+  decorateMissingDocuments,
 } from './documents/download/helpers'
 
 export const recallPageGet =
@@ -37,6 +38,7 @@ export const recallPageGet =
       notes: decorateNotes({ notes: recall.notes, recallId }),
       partBRecords: decoratePartBRecords({ partBRecords: recall.partBRecords, recallId }),
       enableDeleteDocuments: enableDeleteDocuments(recall.status, res.locals.urlInfo),
+      missingDocuments: decorateMissingDocuments(recall.missingDocuments),
     }
     // get values to preload into form inputs
     res.locals.formValues = getFormValues({

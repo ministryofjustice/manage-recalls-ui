@@ -40,13 +40,13 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
             {% if urlInfo.fromPage %}
-                {% if recall.requiredDocsMissing.length or recall.missingNotRequiredDocs.length %}
+                {% if recall.missingDocuments %}
                     <p class="govuk-body">Upload these documents:</p>
                     <ul class="govuk-list govuk-list--bullet" data-qa='missingDocsList'>
-                        {% for doc in recall.requiredDocsMissing %}
+                        {% for doc in recall.missingDocuments.required %}
                             <li>{{ doc.label }}</li>
                         {% endfor %}
-                        {% for doc in recall.missingNotRequiredDocs %}
+                        {% for doc in recall.missingDocuments.desired %}
                             <li>{{ doc.label }}</li>
                         {% endfor %}
                     </ul>

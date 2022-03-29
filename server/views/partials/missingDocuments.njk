@@ -1,11 +1,11 @@
-{% if recall.requiredDocsMissing.length or recall.missingNotRequiredDocs.length %}
+{% if recall.missingDocuments %}
     <div id='missing-documents'>
         <h2 class='govuk-heading-m govuk-!-margin-bottom-2 govuk-!-margin-top-9' id='uploaded-documents'>Missing documents</h2>
         <p class='govuk-body'>
             <a href='{{ changeLinkUrl('missing-documents', urlInfo) }}' class='govuk-link'>Add note to this section</a>
         </p>
         <dl class="govuk-summary-list">
-            {% for document in recall.requiredDocsMissing %}
+            {% for document in recall.missingDocuments.required %}
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key">
                         {{ document.label }}
@@ -26,7 +26,7 @@
                     </dd>
                 </div>
             {% endfor %}
-            {% for document in recall.missingNotRequiredDocs %}
+            {% for document in recall.missingDocuments.desired %}
                 <div class="govuk-summary-list__row">
                     <dt class=" govuk-summary-list__key">
                         {{ document.label }}

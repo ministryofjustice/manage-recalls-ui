@@ -30,10 +30,10 @@
             </h1>
             <p class="govuk-body">You have not uploaded:</p>
             <ul class="govuk-list govuk-list--bullet">
-                {% for doc in recall.requiredDocsMissing %}
+                {% for doc in recall.missingDocuments.required %}
                     <li>{{ doc.label }}</li>
                 {% endfor %}
-                {% for doc in recall.missingNotRequiredDocs %}
+                {% for doc in recall.missingDocuments.desired %}
                     <li>{{ doc.label }}</li>
                 {% endfor %}
             </ul>

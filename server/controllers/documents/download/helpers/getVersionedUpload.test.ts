@@ -12,7 +12,6 @@ describe('getVersionedUpload', () => {
           labelLowerCase: 'part A recall report',
           name: RecallDocument.category.PART_A_RECALL_REPORT,
           type: 'document',
-          required: true,
           standardFileName: 'Part A.pdf',
           fileNamePatterns: ['part a'],
           versioned: true,

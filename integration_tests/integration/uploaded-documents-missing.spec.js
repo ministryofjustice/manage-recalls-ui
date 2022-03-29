@@ -89,6 +89,10 @@ context('Missing uploaded documents', () => {
             documentId,
           },
         ],
+        missingDocuments: {
+          required: ['LICENCE'],
+          desired: ['OASYS_RISK_ASSESSMENT', 'PREVIOUS_CONVICTIONS_SHEET'],
+        },
       },
     })
     cy.task('expectDeleteRecallDocument')
@@ -98,7 +102,7 @@ context('Missing uploaded documents', () => {
     const uploadDocuments = uploadDocumentsPage.verifyOnPage()
     uploadDocuments.assertListValues({
       qaAttrList: 'missingDocsList',
-      valuesToCompare: ['Licence', 'Previous convictions sheet', 'OASys report'],
+      valuesToCompare: ['Licence', 'OASys report', 'Previous convictions sheet'],
     })
   })
 

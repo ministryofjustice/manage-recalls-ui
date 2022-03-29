@@ -180,23 +180,10 @@ describe('categoriseFiles', () => {
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
       bookingNumber: '123',
-      documents: [
-        {
-          category: 'LICENCE',
-          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'Licence Wesley Holt.pdf',
-        },
-        {
-          category: 'PREVIOUS_CONVICTIONS_SHEET',
-          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'Pre Cons Wesley Holt.pdf',
-        },
-        {
-          category: 'OASYS_RISK_ASSESSMENT',
-          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'OAsys Wesley Holt.pdf',
-        },
-      ],
+      missingDocuments: {
+        required: ['PART_A_RECALL_REPORT'],
+        desired: [],
+      },
     })
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res = {
@@ -222,23 +209,10 @@ describe('categoriseFiles', () => {
     })
     ;(getRecall as jest.Mock).mockResolvedValue({
       bookingNumber: '123',
-      documents: [
-        {
-          category: 'LICENCE',
-          documentId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'Licence Wesley Holt.pdf',
-        },
-        {
-          category: 'PREVIOUS_CONVICTIONS_SHEET',
-          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'Pre Cons Wesley Holt.pdf',
-        },
-        {
-          category: 'OASYS_RISK_ASSESSMENT',
-          documentId: '1234-5717-4562-b3fc-2c963f66afa6',
-          fileName: 'OAsys Wesley Holt.pdf',
-        },
-      ],
+      missingDocuments: {
+        required: ['PART_A_RECALL_REPORT'],
+        desired: [],
+      },
     })
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     res = {

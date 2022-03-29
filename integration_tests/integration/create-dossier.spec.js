@@ -21,7 +21,7 @@ context('Create a dossier', () => {
     cy.login()
   })
 
-  it('can verify recall details before creating a dossier', () => {
+  it.only('can verify recall details before creating a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
         ...getRecallResponse,
@@ -57,6 +57,10 @@ context('Create a dossier', () => {
             createdByUserName: 'Arnold Caseworker',
           },
         ],
+        missingDocuments: {
+          required: ['LICENCE'],
+          desired: ['OASYS_RISK_ASSESSMENT'],
+        },
         returnedToCustodyDateTime: undefined,
         returnedToCustodyNotificationDateTime: undefined,
       },

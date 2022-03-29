@@ -1,4 +1,4 @@
-import { getEmptyRecallResponse, getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
+import { getEmptyRecallResponse, getPrisonerResponse, getRecallResponse } from '../mockApis/mockResponses'
 import recallLastReleasePage from '../pages/recallSentenceDetails'
 import uploadDocumentsPage from '../pages/uploadDocuments'
 import checkAnswersPage from '../pages/recallCheckAnswers'
@@ -24,7 +24,12 @@ context('Book an "in-custody" recall', () => {
   })
 
   it('book an "in custody" recall', () => {
-    cy.task('expectGetRecall', { expectedResult: newRecall })
+    cy.task('expectGetRecall', {
+      expectedResult: {
+        ...newRecall,
+        missingDocuments: { required: ['PART_A_RECALL_REPORT'], desired: [] },
+      },
+    })
     cy.task('expectUpdateRecall', { recallId })
     cy.task('expectUploadRecallDocument')
     cy.task('expectAddMissingDocumentsRecord')
@@ -126,6 +131,7 @@ context('Book an "in-custody" recall', () => {
         inCustodyAtBooking: true,
         returnedToCustodyDateTime: undefined,
         recommendedRecallType: 'FIXED',
+        missingDocuments: { required: ['LICENCE'], desired: [] },
       },
     })
     stubRefData()

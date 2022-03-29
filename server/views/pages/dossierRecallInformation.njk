@@ -32,17 +32,17 @@
             {% include '../partials/rescinds.njk' %}
             {% include '../partials/notes.njk' %}
             <div class="govuk-form-group govuk-!-margin-top-4" >
-                {% if recall.requiredDocsMissing.length %}
+                {% if recall.missingDocuments and recall.missingDocuments.required.length %}
                     <div class="govuk-inset-text govuk-!-margin-bottom-9">You cannot create a dossier without the
-                        {{ listDocumentLabels(recall.requiredDocsMissing) }} document{% if recall.requiredDocsMissing.length > 1 %}s{% endif %}.
+                        {{ listDocumentLabels(recall.missingDocuments.required) }} document{% if recall.missingDocuments.required.length > 1 %}s{% endif %}.
                     </div>
                     <button class="govuk-button govuk-button--disabled" disabled data-qa='createDossierDisabled'>
                         Create dossier
                     </button>
                 {% else %}
-                <a class="govuk-button" data-qa='continueButton' href='/recalls/{{ recall.recallId }}/{% if recall.returnedToCustodyDateTime %}dossier-prison{% else %}dossier-letter{% endif %}'>
-                    Create dossier
-                </a>
+                    <a class="govuk-button" data-qa='continueButton' href='/recalls/{{ recall.recallId }}/{% if recall.returnedToCustodyDateTime %}dossier-prison{% else %}dossier-letter{% endif %}'>
+                        Create dossier
+                    </a>
                 {% endif %}
             </div>
 

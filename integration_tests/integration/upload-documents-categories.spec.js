@@ -13,7 +13,7 @@ context('Categorising documents', () => {
     cy.login()
   })
 
-  it('an uncategorised document can be recategorised if it has a suggested category', () => {
+  it('an uncategorised document can be categorised if it has a suggested category', () => {
     const documentId = '123'
     cy.task('expectSetDocumentCategory')
     cy.task('expectGetRecall', {
@@ -42,7 +42,7 @@ context('Categorising documents', () => {
         category: 'OASYS_RISK_ASSESSMENT',
       },
     })
-    recallMissingDocumentsPage.verifyOnPage()
+    checkAnswersPage.verifyOnPage()
   })
 
   it("an uncategorised document can be recategorised if it doesn't have a suggested category", () => {
@@ -74,7 +74,7 @@ context('Categorising documents', () => {
         category: 'OASYS_RISK_ASSESSMENT',
       },
     })
-    recallMissingDocumentsPage.verifyOnPage()
+    checkAnswersPage.verifyOnPage()
   })
 
   it('clicking Continue with an uncategorised document shows an error', () => {
@@ -214,6 +214,10 @@ context('Categorising documents', () => {
             fileName: 'test.pdf',
           },
         ],
+        missingDocuments: {
+          required: ['PART_A_RECALL_REPORT', 'LICENCE'],
+          desired: ['OASYS_RISK_ASSESSMENT', 'PREVIOUS_CONVICTIONS_SHEET'],
+        },
       },
     })
     uploadDocuments.uploadFile({
