@@ -29,7 +29,7 @@
                             <td class="govuk-table__cell" data-sort-value='{{ field.updatedDateTime }}' data-qa='updatedDateTime-{{ field.id }}'>
                                 {{ field.updatedDateTime | dateTime }}
                             </td>
-                            <td class="govuk-table__cell" data-sort-value='{{ field.updatedByUserName }}' data-qa='updatedByUserName-{{ field.id }}'>
+                            <td class="govuk-table__cell" data-sort-value='{{ field.updatedByUserName }}' data-qa='updatedByUserName-{{ field.id }}' data-private>
                                 {{ field.updatedByUserName }}
                             </td>
                             <td class="govuk-table__cell" data-qa='action'>
@@ -81,7 +81,7 @@
                         {%  include '../partials/uploadedDocumentLink.njk' %}
                     </td>
                     <td class="govuk-table__cell" data-sort-value='{{ isoDateToMillis(document.createdDateTime) }}' data-qa='createdDateTime'>{{ document.createdDateTime | dateTime }}</td>
-                    <td class="govuk-table__cell" data-qa='createdByUserName'>{{ document.createdByUserName }}</td>
+                    <td class="govuk-table__cell" data-qa='createdByUserName' data-private>{{ document.createdByUserName }}</td>
                     <td class="govuk-table__cell" data-qa='action'>
                         {% if document.hasHistory %}
                         <a href='{{ makeUrl('change-history/document?category=' + document.category, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ document.category }}'>
@@ -119,11 +119,11 @@
                     {% for document in generatedDocs %}
                         <tr class="govuk-table__row" data-qa='{{ document.category }}'>
                             <td class="govuk-table__cell" data-sort-value='{{ document.fileName }}' data-qa='fileName'>
-                                <a class='govuk-link' href='{{ document.url }}' download data-qa='generatedDocument-{{ document.category }}'>{{ document.fileName }}</a>
+                                <a class='govuk-link' href='{{ document.url }}' download data-qa='generatedDocument-{{ document.category }}' data-private>{{ document.fileName }}</a>
                                 {% if document.version > 1 %} (<span data-qa='generatedDocument-{{ document.category }}-version'>version {{ document.version }}</span>) {% endif %}
                             </td>
                             <td class="govuk-table__cell" data-sort-value='{{ isoDateToMillis(document.createdDateTime) }}' data-qa='createdDateTime'>{{ document.createdDateTime | dateTime }}</td>
-                            <td class="govuk-table__cell" data-qa='createdByUserName'>{{ document.createdByUserName }}</td>
+                            <td class="govuk-table__cell" data-qa='createdByUserName' data-private>{{ document.createdByUserName }}</td>
                             <td class="govuk-table__cell" data-qa='action'>
                                 {% if document.version > 1 %}
                                     <a href='{{ makeUrl('change-history/document?category=' + document.category, { basePath: urlInfo.basePath }) }}' data-qa='viewHistory-{{ document.category }}'>View history<span class="govuk-visually-hidden"> for {{ document.label }}</span></a>

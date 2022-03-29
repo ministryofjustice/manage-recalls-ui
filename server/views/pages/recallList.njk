@@ -37,7 +37,7 @@
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for result in results.toDo %}
-                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}' data-private>
+                        <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                             <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
                             <td class="govuk-table__cell" data-qa="dueDate" data-sort-value='{{ result.toDoDueDateTime }}'>
                                 <span class='wrapper-date-short'>
