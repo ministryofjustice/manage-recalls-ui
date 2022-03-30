@@ -1,4 +1,5 @@
 import { validateRecallNotificationEmail } from './validateRecallNotificationEmail'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validateEmail', () => {
   const requestBody = {
@@ -154,7 +155,25 @@ describe('validateEmail', () => {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
         text: "The selected file 'email.pdf' must be a MSG or EML",
-        values: 'email.pdf',
+      },
+    ])
+  })
+
+  it('returns an error if the email was too large', () => {
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateRecallNotificationEmail({
+      requestBody,
+      file,
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+      actionedByUserId,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#recallNotificationEmailFileName',
+        name: 'recallNotificationEmailFileName',
+        text: "The selected file 'test.msg' must be smaller than 25MB",
       },
     ])
   })

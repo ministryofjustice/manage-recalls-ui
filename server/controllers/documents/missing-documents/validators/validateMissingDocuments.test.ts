@@ -1,4 +1,5 @@
 import { validateMissingDocuments } from './validateMissingDocuments'
+import * as uploadHelpers from '../../upload/helpers'
 
 describe('validateMissingDocuments', () => {
   const file = {
@@ -113,6 +114,27 @@ describe('validateMissingDocuments', () => {
         href: '#missingDocumentsEmailFileName',
         name: 'missingDocumentsEmailFileName',
         text: "The selected file 'email.pdf' must be a MSG or EML",
+      },
+    ])
+  })
+
+  it('returns an error if the email was too large', () => {
+    const requestBody = {
+      missingDocumentsDetail: 'Email sent on 12/10/2021',
+    }
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateMissingDocuments({
+      requestBody,
+      file,
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#missingDocumentsEmailFileName',
+        name: 'missingDocumentsEmailFileName',
+        text: "The selected file 'test.msg' must be smaller than 25MB",
       },
     ])
   })

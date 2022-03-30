@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { validateRecallRequestReceived } from './validateRecallRequestReceived'
 import { padWithZeroes } from '../../utils/dates/format'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validateRecallRequestReceived', () => {
   const file = {
@@ -264,6 +265,31 @@ describe('validateRecallRequestReceived', () => {
         href: '#recallRequestEmailFileName',
         name: 'recallRequestEmailFileName',
         text: "The selected file 'email.pdf' must be a MSG or EML",
+      },
+    ])
+  })
+
+  it('returns an error if the email was too large', () => {
+    const requestBody = {
+      recallEmailReceivedDateTimeDay: '12',
+      recallEmailReceivedDateTimeMonth: '09',
+      recallEmailReceivedDateTimeYear: '2021',
+      recallEmailReceivedDateTimeHour: '22',
+      recallEmailReceivedDateTimeMinute: '14',
+    }
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateRecallRequestReceived({
+      requestBody,
+      file,
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#recallRequestEmailFileName',
+        name: 'recallRequestEmailFileName',
+        text: "The selected file 'test.msg' must be smaller than 25MB",
       },
     ])
   })

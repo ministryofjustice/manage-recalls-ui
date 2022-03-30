@@ -2,6 +2,7 @@
 import { uploadDocumentVersionFormHandler } from './uploadDocumentVersionFormHandler'
 import { uploadRecallDocument } from '../../../clients/manageRecallsApiClient'
 import { uploadStorageField } from './helpers/uploadStorage'
+import * as uploadHelpers from './helpers'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 jest.mock('./helpers/uploadStorage')
@@ -114,9 +115,6 @@ describe('uploadDocumentVersionFormHandler', () => {
   })
 
   it('creates an error for a file with either an invalid file extension or MIME type', done => {
-    ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
-      documentId: '123',
-    })
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'licence.doc',
@@ -136,6 +134,34 @@ describe('uploadDocumentVersionFormHandler', () => {
           href: '#document',
           name: 'document',
           text: "The selected file 'licence.doc' must be a PDF",
+        },
+      ])
+      done()
+    }
+    uploadDocumentVersionFormHandler(req, res)
+  })
+
+  it('creates an error for a file that is too large', done => {
+    ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.file = {
+        originalname: 'licence.pdf',
+        buffer: 'abc',
+        mimetype: 'application/pdf',
+      }
+      req.body = {
+        categoryName: 'LICENCE',
+        details: 'Random details',
+      }
+      cb()
+    })
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    res.redirect = () => {
+      expect(uploadRecallDocument).not.toHaveBeenCalled()
+      expect(req.session.errors).toEqual([
+        {
+          href: '#document',
+          name: 'document',
+          text: "The selected file 'licence.pdf' must be smaller than 25MB",
         },
       ])
       done()

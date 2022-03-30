@@ -1,9 +1,15 @@
 import { FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../utils/errorMessages'
+import {
+  errorMsgDocumentUpload,
+  errorMsgEmailUpload,
+  errorMsgProvideDetail,
+  makeErrorObject,
+} from '../../utils/errorMessages'
 import { ConfirmedRecallTypeRequest } from '../../../@types/manage-recalls-api/models/ConfirmedRecallTypeRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export const validateDecision = ({
   file,
@@ -18,6 +24,7 @@ export const validateDecision = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.CHANGE_RECALL_TYPE_EMAIL })
     : false
+  const fileSizeTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
   const {
     recommendedRecallType,
     confirmedRecallType,
@@ -32,7 +39,8 @@ export const validateDecision = ({
   const standardDetailMissing = isStandard && !confirmedRecallTypeDetailStandard
   const existingUpload = requestBody[UploadDocumentRequest.category.CHANGE_RECALL_TYPE_EMAIL] === 'existingUpload'
   const uploadFailedValidation =
-    userDisagreedWithRecommendation && ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileType)
+    userDisagreedWithRecommendation &&
+    ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileType || fileSizeTooLarge)
   if (uploadFailedValidation || !isAgreeValueValid || fixedDetailMissing || standardDetailMissing) {
     errors = []
     if (!isAgreeValueValid) {
@@ -80,6 +88,14 @@ export const validateDecision = ({
         makeErrorObject({
           id: 'confirmedRecallTypeEmailFileName',
           text: errorMsgEmailUpload.invalidFileFormat(fileName),
+        })
+      )
+    }
+    if (!uploadFailed && fileSizeTooLarge) {
+      errors.push(
+        makeErrorObject({
+          id: 'confirmedRecallTypeEmailFileName',
+          text: errorMsgDocumentUpload.invalidFileSize(fileName),
         })
       )
     }

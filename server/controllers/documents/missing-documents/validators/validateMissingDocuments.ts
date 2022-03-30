@@ -1,7 +1,13 @@
 import { ConfirmationMessage, FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
-import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../../utils/errorMessages'
+import {
+  errorMsgDocumentUpload,
+  errorMsgEmailUpload,
+  errorMsgProvideDetail,
+  makeErrorObject,
+} from '../../../utils/errorMessages'
 import { isInvalidFileType } from '../../upload/helpers/allowedUploadExtensions'
 import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
+import { isFileSizeTooLarge } from '../../upload/helpers'
 
 export const validateMissingDocuments = ({
   requestBody,
@@ -22,10 +28,10 @@ export const validateMissingDocuments = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.MISSING_DOCUMENTS_EMAIL })
     : false
-
+  const fileSizeTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
   const { missingDocumentsDetail } = requestBody
 
-  if (!wasUploadFileReceived || uploadFailed || invalidFileType || !missingDocumentsDetail) {
+  if (!wasUploadFileReceived || uploadFailed || invalidFileType || fileSizeTooLarge || !missingDocumentsDetail) {
     errors = []
     if (!wasUploadFileReceived) {
       errors.push(
@@ -48,6 +54,14 @@ export const validateMissingDocuments = ({
         makeErrorObject({
           id: 'missingDocumentsEmailFileName',
           text: errorMsgEmailUpload.invalidFileFormat(fileName),
+        })
+      )
+    }
+    if (!uploadFailed && fileSizeTooLarge) {
+      errors.push(
+        makeErrorObject({
+          id: 'missingDocumentsEmailFileName',
+          text: errorMsgDocumentUpload.invalidFileSize(fileName),
         })
       )
     }

@@ -11,6 +11,7 @@ import {
   makeErrorObject,
 } from '../../utils/errorMessages'
 import { makeUrl } from '../../utils/makeUrl'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export const validatePartB = ({
   requestBody,
@@ -33,10 +34,13 @@ export const validatePartB = ({
   const emailFile = filesUploaded?.emailFileName?.[0]
   const partBInvalid =
     partBFile && isInvalidFileType({ file: partBFile, category: RecallDocument.category.PART_B_RISK_REPORT })
+  const partBFileTooLarge = partBFile && isFileSizeTooLarge(partBFile.size)
   const oasysInvalid =
     oasysFile && isInvalidFileType({ file: oasysFile, category: RecallDocument.category.OASYS_RISK_ASSESSMENT })
+  const oasysTooLarge = oasysFile && isFileSizeTooLarge(oasysFile.size)
   const emailInvalid =
     emailFile && isInvalidFileType({ file: emailFile, category: RecallDocument.category.PART_B_EMAIL_FROM_PROBATION })
+  const emailTooLarge = emailFile && isFileSizeTooLarge(emailFile.size)
 
   const { partBReceivedDateDay, partBReceivedDateMonth, partBReceivedDateYear, partBDetails } = requestBody
   const partBReceivedDateParts = {
@@ -53,9 +57,12 @@ export const validatePartB = ({
     uploadFailed ||
     !partBFile ||
     partBInvalid ||
+    partBFileTooLarge ||
     oasysInvalid ||
+    oasysTooLarge ||
     !emailFile ||
     emailInvalid ||
+    emailTooLarge ||
     dateHasError(partBReceivedDate) ||
     !partBDetails
   ) {
@@ -83,11 +90,27 @@ export const validatePartB = ({
           })
         )
       }
+      if (partBFileTooLarge) {
+        errors.push(
+          makeErrorObject({
+            id: 'partBFileName',
+            text: errorMsgDocumentUpload.invalidFileSize(partBFile.originalname),
+          })
+        )
+      }
       if (oasysInvalid) {
         errors.push(
           makeErrorObject({
             id: 'oasysFileName',
             text: errorMsgDocumentUpload.invalidFileFormat(oasysFile.originalname),
+          })
+        )
+      }
+      if (oasysTooLarge) {
+        errors.push(
+          makeErrorObject({
+            id: 'oasysFileName',
+            text: errorMsgDocumentUpload.invalidFileSize(oasysFile.originalname),
           })
         )
       }
@@ -124,6 +147,14 @@ export const validatePartB = ({
           makeErrorObject({
             id: 'emailFileName',
             text: errorMsgEmailUpload.invalidFileFormat(emailFile.originalname),
+          })
+        )
+      }
+      if (emailTooLarge) {
+        errors.push(
+          makeErrorObject({
+            id: 'emailFileName',
+            text: errorMsgDocumentUpload.invalidFileSize(emailFile.originalname),
           })
         )
       }

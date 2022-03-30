@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { validatePartB } from './validatePartB'
 import { padWithZeroes } from '../../utils/dates/format'
 import { ConfirmationMessageGroup, UrlInfo } from '../../../@types'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validatePartB', () => {
   const requestBody = {
@@ -39,6 +40,8 @@ describe('validatePartB', () => {
     currentPage: 'part-b',
     basePath: '/recalls/',
   }
+
+  afterEach(() => jest.resetAllMocks())
 
   it('returns valuesToSave, a confirmation message, and no errors if all fields are submitted', () => {
     const { errors, unsavedValues, valuesToSave, redirectToPage, confirmationMessage } = validatePartB({
@@ -227,6 +230,42 @@ describe('validatePartB', () => {
         href: '#emailFileName',
         name: 'emailFileName',
         text: "The selected file 'email.exe' must be a MSG or EML",
+      },
+    ])
+  })
+
+  it('returns errors if the uploaded file types are too large', () => {
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave, unsavedValues } = validatePartB({
+      requestBody,
+      filesUploaded,
+      uploadFailed: false,
+      urlInfo,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(unsavedValues).toEqual({
+      partBDetails: 'details text',
+      partBReceivedDateParts: {
+        day: '05',
+        month: '03',
+        year: '2022',
+      },
+    })
+    expect(errors).toEqual([
+      {
+        href: '#partBFileName',
+        name: 'partBFileName',
+        text: "The selected file 'partB.pdf' must be smaller than 25MB",
+      },
+      {
+        href: '#oasysFileName',
+        name: 'oasysFileName',
+        text: "The selected file 'oasys.pdf' must be smaller than 25MB",
+      },
+      {
+        href: '#emailFileName',
+        name: 'emailFileName',
+        text: "The selected file 'email.msg' must be smaller than 25MB",
       },
     ])
   })

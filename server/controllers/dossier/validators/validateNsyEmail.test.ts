@@ -1,4 +1,5 @@
 import { validateNsyEmail } from './validateNsyEmail'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validateNsyEmail', () => {
   const requestBody = {
@@ -105,6 +106,24 @@ describe('validateNsyEmail', () => {
         href: '#nsyEmailFileName',
         name: 'nsyEmailFileName',
         text: "The selected file 'email.pdf' must be a MSG or EML",
+      },
+    ])
+  })
+
+  it('returns an error if the email was too large', () => {
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateNsyEmail({
+      requestBody,
+      file,
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#nsyEmailFileName',
+        name: 'nsyEmailFileName',
+        text: "The selected file 'test.msg' must be smaller than 25MB",
       },
     ])
   })

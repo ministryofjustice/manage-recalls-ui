@@ -6,6 +6,7 @@ import {
   ValidationError,
 } from '../../../@types'
 import {
+  errorMsgDocumentUpload,
   errorMsgEmailUpload,
   errorMsgProvideDetail,
   errorMsgUserActionDateTime,
@@ -14,6 +15,7 @@ import {
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export const validateRescindRequest = ({
   requestBody,
@@ -34,6 +36,7 @@ export const validateRescindRequest = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_REQUEST_EMAIL })
     : false
+  const fileSizeTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
 
   const { rescindRequestDetail } = requestBody
   const rescindRequestEmailReceivedDateParts = {
@@ -50,6 +53,7 @@ export const validateRescindRequest = ({
     !wasUploadFileReceived ||
     uploadFailed ||
     invalidFileType ||
+    fileSizeTooLarge ||
     !rescindRequestDetail ||
     dateHasError(rescindRequestEmailReceivedDate)
   ) {
@@ -97,6 +101,14 @@ export const validateRescindRequest = ({
         makeErrorObject({
           id: 'rescindRequestEmailFileName',
           text: errorMsgEmailUpload.invalidFileFormat(fileName),
+        })
+      )
+    }
+    if (!uploadFailed && fileSizeTooLarge) {
+      errors.push(
+        makeErrorObject({
+          id: 'rescindRequestEmailFileName',
+          text: errorMsgDocumentUpload.invalidFileSize(fileName),
         })
       )
     }

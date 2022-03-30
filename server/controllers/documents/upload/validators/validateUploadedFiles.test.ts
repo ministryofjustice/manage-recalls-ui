@@ -25,7 +25,6 @@ describe('validateUploadedFiles', () => {
         label: 'Part A recall report',
         fileContent: 'abc',
         mimeType: 'application/pdf',
-        sizeMB: 3,
       },
       {
         category: RecallDocument.category.UNCATEGORISED,
@@ -33,7 +32,6 @@ describe('validateUploadedFiles', () => {
         label: 'Pre-sentencing report',
         fileContent: 'def',
         mimeType: 'application/msword',
-        sizeMB: 0.5,
       },
     ]
     const { errors } = validateUploadedFiles({
@@ -61,11 +59,13 @@ describe('validateUploadedFiles', () => {
         originalname: 'Wesley Holt part a.pdf',
         mimetype: 'application/pdf',
         buffer: Buffer.from('def', 'base64'),
+        size: 10000000000,
       },
       {
         originalname: 'Wesley Holt psr.pdf',
         mimetype: 'application/pdf',
         buffer: Buffer.from('def', 'base64'),
+        size: 1000,
       },
     ] as Express.Multer.File[]
     const uploadedFileData = [
@@ -75,7 +75,6 @@ describe('validateUploadedFiles', () => {
         label: 'Part A recall report',
         fileContent: 'abc',
         mimeType: 'application/pdf',
-        sizeMB: MAX_UPLOAD_FILE_SIZE_MB + 1,
       },
       {
         category: RecallDocument.category.UNCATEGORISED,
@@ -115,7 +114,6 @@ describe('validateUploadedFiles', () => {
         label: 'Choose a type',
         fileContent: 'abc',
         mimeType: 'application/pdf',
-        sizeMB: 0.5,
       },
     ]
     const { errors, valuesToSave } = validateUploadedFiles({
