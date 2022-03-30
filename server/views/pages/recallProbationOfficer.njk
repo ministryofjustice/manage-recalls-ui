@@ -76,7 +76,7 @@
                             text: "Local Delivery Unit (LDU)",
                             classes: "govuk-label--m"
                         },
-                        items: selectItems(referenceData.localDeliveryUnits, formValues.localDeliveryUnit, true),
+                        items: selectItems(filterActiveItems(referenceData.localDeliveryUnits), formValues.localDeliveryUnit, true),
                         errorMessage: errorMessage(errors.localDeliveryUnit)
                     }) }}
                 </div>
