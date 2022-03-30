@@ -57,6 +57,10 @@ context('Missing uploaded documents', () => {
         recallId,
         status: 'DOSSIER_ISSUED',
         missingDocumentsRecords: [record1, record2],
+        missingDocuments: {
+          required: ['PART_A_RECALL_REPORT'],
+          desired: ['OASYS_RISK_ASSESSMENT'],
+        },
       },
     })
     cy.visitRecallPage({ recallId: '123', pageSuffix: 'view-recall' })
