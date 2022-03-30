@@ -4,11 +4,16 @@ describe('validateNsyEmail', () => {
   const requestBody = {
     confirmNsyEmailSent: 'YES',
   }
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
 
   it('returns no valuesToSave if validation passes', () => {
     const { errors, valuesToSave, redirectToPage } = validateNsyEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -33,7 +38,7 @@ describe('validateNsyEmail', () => {
     }, {})
     const { errors, valuesToSave } = validateNsyEmail({
       requestBody: emptyBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -50,14 +55,12 @@ describe('validateNsyEmail', () => {
   it("returns an error if an email wasn't uploaded", () => {
     const { errors, unsavedValues, valuesToSave } = validateNsyEmail({
       requestBody,
-      fileName: 'test.msg',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
       confirmNsyEmailSent: 'YES',
-      nsyEmailFileName: 'test.msg',
     })
     expect(errors).toEqual([
       {
@@ -71,7 +74,7 @@ describe('validateNsyEmail', () => {
   it('returns an error if the email upload failed', () => {
     const { errors, valuesToSave } = validateNsyEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
     })
@@ -88,7 +91,11 @@ describe('validateNsyEmail', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const { errors, valuesToSave } = validateNsyEmail({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -97,7 +104,7 @@ describe('validateNsyEmail', () => {
       {
         href: '#nsyEmailFileName',
         name: 'nsyEmailFileName',
-        text: "The selected file 'test.msl' must be a MSG or EML",
+        text: "The selected file 'email.pdf' must be a MSG or EML",
       },
     ])
   })

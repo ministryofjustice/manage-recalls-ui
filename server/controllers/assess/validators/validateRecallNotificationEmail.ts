@@ -1,13 +1,14 @@
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime, makeErrorObject } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
-import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateRecallNotificationEmail = ({
   requestBody,
-  fileName,
+  file,
   wasUploadFileReceived,
   uploadFailed,
   actionedByUserId,
@@ -15,7 +16,10 @@ export const validateRecallNotificationEmail = ({
   let errors
   let valuesToSave
 
-  const invalidFileName = isInvalidEmailFileName(fileName)
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_DECISION_EMAIL })
+    : false
   const { confirmRecallNotificationEmailSent } = requestBody
   const recallNotificationEmailSentDateTimeParts = {
     year: requestBody.recallNotificationEmailSentDateTimeYear,
@@ -32,7 +36,7 @@ export const validateRecallNotificationEmail = ({
   if (
     (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
-    invalidFileName ||
+    invalidFileType ||
     !confirmRecallNotificationEmailSent ||
     dateHasError(recallNotificationEmailSentDateTime)
   ) {
@@ -72,7 +76,7 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileName) {
+    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'recallNotificationEmailFileName',

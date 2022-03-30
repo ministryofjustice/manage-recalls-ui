@@ -22,7 +22,7 @@ export const combinedDocumentAndFormSave =
     const wasUploadFileReceived = Boolean(file)
     const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
       requestBody: request.body,
-      fileName: wasUploadFileReceived ? file.originalname : '',
+      file,
       wasUploadFileReceived,
       uploadFailed,
       actionedByUserId: user.uuid,

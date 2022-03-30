@@ -26,7 +26,7 @@ export const separateEmailAndFormSave =
     const wasUploadFileReceived = Boolean(file)
     const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
       requestBody: request.body,
-      fileName: file?.originalname,
+      file,
       wasUploadFileReceived,
       uploadFailed,
       actionedByUserId: user.uuid,

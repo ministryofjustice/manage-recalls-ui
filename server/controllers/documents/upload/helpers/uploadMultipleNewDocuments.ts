@@ -26,10 +26,11 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
       RecallDocument.category.UNCATEGORISED,
       body.details
     )
-    const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFiles(
+    const { errors: invalidFileTypeErrors, valuesToSave: uploadsToSave } = validateUploadedFiles({
+      files: files as Express.Multer.File[],
       uploadedFileData,
-      'documents'
-    )
+      fileUploadInputName: 'documents',
+    })
     session.errors = invalidFileTypeErrors
     const failedUploads = await saveUploadedFiles({ uploadsToSave, recallId, token })
     if (failedUploads.length) {

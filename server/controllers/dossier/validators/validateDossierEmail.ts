@@ -1,23 +1,24 @@
 import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import {
-  allowedEmailFileExtensions,
-  isInvalidEmailFileName,
-} from '../../documents/upload/helpers/allowedUploadExtensions'
+import { allowedEmailFileExtensions, isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, errorMsgUserActionDateTime, makeErrorObject } from '../../utils/errorMessages'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 
 export const validateDossierEmail = ({
   requestBody,
-  fileName,
+  file,
   wasUploadFileReceived,
   uploadFailed,
   actionedByUserId,
 }: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
   let valuesToSave
-  const invalidFileName = isInvalidEmailFileName(fileName)
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_DECISION_EMAIL })
+    : false
   const { confirmDossierEmailSent } = requestBody
   const dossierEmailSentDateParts = {
     year: requestBody.dossierEmailSentDateYear,
@@ -29,7 +30,7 @@ export const validateDossierEmail = ({
   if (
     (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
-    invalidFileName ||
+    invalidFileType ||
     !confirmDossierEmailSent ||
     dateHasError(dossierEmailSentDate)
   ) {
@@ -68,7 +69,7 @@ export const validateDossierEmail = ({
         })
       )
     }
-    if (confirmDossierEmailSent && !uploadFailed && invalidFileName) {
+    if (confirmDossierEmailSent && !uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'dossierEmailFileName',

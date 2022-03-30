@@ -9,12 +9,17 @@ describe('validateEmail', () => {
     recallNotificationEmailSentDateTimeHour: '14',
     recallNotificationEmailSentDateTimeMinute: '47',
   }
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
   const actionedByUserId = '00000000-0000-0000-0000-000000000000'
 
   it('returns valuesToSave for all valid fields and a redirect', () => {
     const { errors, valuesToSave, redirectToPage } = validateRecallNotificationEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -46,7 +51,7 @@ describe('validateEmail', () => {
     }, {})
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody: emptyBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -67,7 +72,7 @@ describe('validateEmail', () => {
     }
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody: body,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -86,7 +91,7 @@ describe('validateEmail', () => {
   it("returns an error if an email wasn't uploaded", () => {
     const { errors, unsavedValues, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: false,
       uploadFailed: false,
       actionedByUserId,
@@ -115,7 +120,7 @@ describe('validateEmail', () => {
   it('returns an error if the email upload failed', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
       actionedByUserId,
@@ -134,7 +139,11 @@ describe('validateEmail', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const { errors, valuesToSave } = validateRecallNotificationEmail({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -144,8 +153,8 @@ describe('validateEmail', () => {
       {
         href: '#recallNotificationEmailFileName',
         name: 'recallNotificationEmailFileName',
-        text: "The selected file 'test.msl' must be a MSG or EML",
-        values: 'test.msl',
+        text: "The selected file 'email.pdf' must be a MSG or EML",
+        values: 'email.pdf',
       },
     ])
   })

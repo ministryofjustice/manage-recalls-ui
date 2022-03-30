@@ -3,6 +3,12 @@ import { validateRescindRequest } from './validateRescindRequest'
 import { padWithZeroes } from '../../utils/dates/format'
 
 describe('validateRescindRequest', () => {
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
+
   it('returns valuesToSave with a date, a confirmation message, and no errors if all fields are submitted', () => {
     const requestBody = {
       rescindRequestEmailReceivedDateDay: '23',
@@ -12,7 +18,7 @@ describe('validateRescindRequest', () => {
     }
     const { errors, valuesToSave, confirmationMessage } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -35,7 +41,7 @@ describe('validateRescindRequest', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -67,7 +73,7 @@ describe('validateRescindRequest', () => {
     }
     const { errors, valuesToSave, unsavedValues } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -104,7 +110,7 @@ describe('validateRescindRequest', () => {
     }
     const { errors } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -120,7 +126,7 @@ describe('validateRescindRequest', () => {
     }
     const { errors } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -136,7 +142,6 @@ describe('validateRescindRequest', () => {
     }
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
-      fileName: 'test.eml',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
@@ -159,7 +164,7 @@ describe('validateRescindRequest', () => {
     }
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
     })
@@ -182,7 +187,11 @@ describe('validateRescindRequest', () => {
     }
     const { errors, valuesToSave } = validateRescindRequest({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -191,7 +200,7 @@ describe('validateRescindRequest', () => {
       {
         href: '#rescindRequestEmailFileName',
         name: 'rescindRequestEmailFileName',
-        text: "The selected file 'test.msl' must be a MSG or EML",
+        text: "The selected file 'email.pdf' must be a MSG or EML",
       },
     ])
   })

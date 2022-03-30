@@ -1,21 +1,25 @@
 import { FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { errorMsgEmailUpload, makeErrorObject } from '../../utils/errorMessages'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 
 export const validateNsyEmail = ({
   requestBody,
-  fileName,
+  file,
   wasUploadFileReceived,
   uploadFailed,
 }: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<UpdateRecallRequest> => {
   let errors
 
-  const invalidFileName = isInvalidEmailFileName(fileName)
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_DECISION_EMAIL })
+    : false
   const { confirmNsyEmailSent } = requestBody
   const existingUpload = requestBody[UploadDocumentRequest.category.NSY_REMOVE_WARRANT_EMAIL] === 'existingUpload'
-  if ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileName || !confirmNsyEmailSent) {
+  if ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileType || !confirmNsyEmailSent) {
     errors = []
     if (!confirmNsyEmailSent) {
       errors.push(
@@ -41,7 +45,7 @@ export const validateNsyEmail = ({
         })
       )
     }
-    if (confirmNsyEmailSent && !uploadFailed && invalidFileName) {
+    if (confirmNsyEmailSent && !uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'nsyEmailFileName',

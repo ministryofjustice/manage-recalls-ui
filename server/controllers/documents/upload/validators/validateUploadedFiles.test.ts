@@ -3,8 +3,22 @@ import { validateUploadedFiles } from './validateUploadedFiles'
 import { MAX_UPLOAD_FILE_SIZE_MB } from '../helpers'
 
 describe('validateUploadedFiles', () => {
+  const fileUploadInputName = 'documents'
+
   it('returns errors for any docs with invalid file extensions or MIME types', () => {
-    const fileData = [
+    const files = [
+      {
+        originalname: 'Wesley Holt part a.doc',
+        mimetype: 'application/pdf',
+        buffer: Buffer.from('def', 'base64'),
+      },
+      {
+        originalname: 'Wesley Holt psr.pdf',
+        mimetype: 'application/msword',
+        buffer: Buffer.from('def', 'base64'),
+      },
+    ] as Express.Multer.File[]
+    const uploadedFileData = [
       {
         category: RecallDocument.category.UNCATEGORISED,
         originalFileName: 'Wesley Holt part a.doc',
@@ -22,7 +36,11 @@ describe('validateUploadedFiles', () => {
         sizeMB: 0.5,
       },
     ]
-    const { errors } = validateUploadedFiles(fileData, 'documents')
+    const { errors } = validateUploadedFiles({
+      files,
+      uploadedFileData,
+      fileUploadInputName,
+    })
     expect(errors).toEqual([
       {
         href: '#documents',
@@ -38,7 +56,19 @@ describe('validateUploadedFiles', () => {
   })
 
   it('returns errors for any docs exceeding the max file size', () => {
-    const fileData = [
+    const files = [
+      {
+        originalname: 'Wesley Holt part a.pdf',
+        mimetype: 'application/pdf',
+        buffer: Buffer.from('def', 'base64'),
+      },
+      {
+        originalname: 'Wesley Holt psr.pdf',
+        mimetype: 'application/pdf',
+        buffer: Buffer.from('def', 'base64'),
+      },
+    ] as Express.Multer.File[]
+    const uploadedFileData = [
       {
         category: RecallDocument.category.UNCATEGORISED,
         originalFileName: 'Wesley Holt part a.pdf',
@@ -56,7 +86,11 @@ describe('validateUploadedFiles', () => {
         sizeMB: MAX_UPLOAD_FILE_SIZE_MB - 1,
       },
     ]
-    const { errors } = validateUploadedFiles(fileData, 'documents')
+    const { errors } = validateUploadedFiles({
+      files,
+      uploadedFileData,
+      fileUploadInputName,
+    })
     expect(errors).toEqual([
       {
         href: '#documents',
@@ -67,7 +101,14 @@ describe('validateUploadedFiles', () => {
   })
 
   it('returns valuesToSave and no errors if inputs are valid', () => {
-    const fileData = [
+    const files = [
+      {
+        originalname: 'test.pdf',
+        mimetype: 'application/pdf',
+        buffer: Buffer.from('def', 'base64'),
+      },
+    ] as Express.Multer.File[]
+    const uploadedFileData = [
       {
         category: RecallDocument.category.UNCATEGORISED,
         originalFileName: 'test.pdf',
@@ -77,7 +118,11 @@ describe('validateUploadedFiles', () => {
         sizeMB: 0.5,
       },
     ]
-    const { errors, valuesToSave } = validateUploadedFiles(fileData, 'documents')
+    const { errors, valuesToSave } = validateUploadedFiles({
+      files,
+      uploadedFileData,
+      fileUploadInputName,
+    })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual([
       {
@@ -91,7 +136,14 @@ describe('validateUploadedFiles', () => {
   })
 
   it('allows any mime type for .eml files', () => {
-    const fileData = [
+    const files = [
+      {
+        originalname: 'test.eml',
+        mimetype: 'unknown',
+        buffer: Buffer.from('def', 'base64'),
+      },
+    ] as Express.Multer.File[]
+    const uploadedFileData = [
       {
         category: RecallDocument.category.PART_B_EMAIL_FROM_PROBATION,
         originalFileName: 'test.eml',
@@ -100,7 +152,11 @@ describe('validateUploadedFiles', () => {
         mimeType: 'message/rfc822',
       },
     ]
-    const { errors, valuesToSave } = validateUploadedFiles(fileData, 'documents')
+    const { errors, valuesToSave } = validateUploadedFiles({
+      files,
+      uploadedFileData,
+      fileUploadInputName,
+    })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual([
       {

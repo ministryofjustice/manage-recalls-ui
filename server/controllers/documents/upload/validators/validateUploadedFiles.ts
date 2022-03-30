@@ -1,70 +1,50 @@
-import {
-  allowedDocumentFileExtensions,
-  allowedEmailFileExtensions,
-  allowedNoteFileExtensions,
-} from '../helpers/allowedUploadExtensions'
-import { DocumentType, UploadedFileMetadata } from '../../../../@types/documents'
+import { isInvalidFileType } from '../helpers/allowedUploadExtensions'
+import { UploadedFileMetadata } from '../../../../@types/documents'
 import { NamedFormError } from '../../../../@types'
 import { errorMsgDocumentUpload, makeErrorObject } from '../../../utils/errorMessages'
-import { findDocCategory, MAX_UPLOAD_FILE_SIZE_MB } from '../helpers'
-
-export const isInvalidFileType = (file: UploadedFileMetadata) => {
-  const docCategory = findDocCategory(file.category)
-  const allowedExtensions = allowedExtensionsForFileType(docCategory.type)
-  return !allowedExtensions.some(
-    ext =>
-      file.originalFileName.endsWith(ext.extension) && (file.mimeType === ext.mimeType || ext.allowAnyMimeType === true)
-  )
-}
-
-const allowedExtensionsForFileType = (fileType: DocumentType) => {
-  switch (fileType) {
-    case 'document':
-      return allowedDocumentFileExtensions
-    case 'email':
-      return allowedEmailFileExtensions
-    case 'note_document':
-      return allowedNoteFileExtensions
-    default:
-      throw new Error(`Invalid file type: ${fileType}`)
-  }
-}
+import { MAX_UPLOAD_FILE_SIZE_MB } from '../helpers'
 
 export const isFileSizeTooLarge = (file: UploadedFileMetadata) => file.sizeMB > MAX_UPLOAD_FILE_SIZE_MB
 
-export const validateUploadedFiles = (
-  uploadedFileData: UploadedFileMetadata[],
+export const validateUploadedFiles = ({
+  files,
+  uploadedFileData,
+  fileUploadInputName,
+}: {
+  files: Express.Multer.File[]
+  uploadedFileData: UploadedFileMetadata[]
   fileUploadInputName: string
-): {
+}): {
   errors?: NamedFormError[]
   valuesToSave: UploadedFileMetadata[]
 } => {
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
-  uploadedFileData.forEach(file => {
-    let hasError = isInvalidFileType(file) || isFileSizeTooLarge(file)
+  uploadedFileData.forEach((fileData, idx) => {
+    const invalidFileType = isInvalidFileType({ file: files[idx], category: fileData.category })
+    let hasError = invalidFileType || isFileSizeTooLarge(fileData)
     if (hasError) {
       errors = errors || []
-      if (isInvalidFileType(file)) {
+      if (invalidFileType) {
         errors.push(
           makeErrorObject({
             id: fileUploadInputName,
-            text: errorMsgDocumentUpload.invalidFileFormat(file.originalFileName),
+            text: errorMsgDocumentUpload.invalidFileFormat(fileData.originalFileName),
           })
         )
       }
-      if (isFileSizeTooLarge(file)) {
+      if (isFileSizeTooLarge(fileData)) {
         errors.push(
           makeErrorObject({
             id: fileUploadInputName,
-            text: errorMsgDocumentUpload.invalidFileSize(file.originalFileName),
+            text: errorMsgDocumentUpload.invalidFileSize(fileData.originalFileName),
           })
         )
       }
       hasError = true
     }
     if (!hasError) {
-      const { sizeMB, ...rest } = file
+      const { sizeMB, ...rest } = fileData
       valuesToSave = valuesToSave || []
       valuesToSave.push(rest)
     }

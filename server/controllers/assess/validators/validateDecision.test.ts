@@ -1,6 +1,12 @@
 import { validateDecision } from './validateDecision'
 
 describe('validateDecision', () => {
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
+
   it('returns valuesToSave, redirect, and no errors if Fixed + detail is submitted', () => {
     const requestBody = {
       confirmedRecallType: 'FIXED',
@@ -8,7 +14,7 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave, redirectToPage } = validateDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -27,7 +33,7 @@ describe('validateDecision', () => {
     }
     const { errors, valuesToSave } = validateDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -43,7 +49,7 @@ describe('validateDecision', () => {
       requestBody: {},
       wasUploadFileReceived: true,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -60,7 +66,7 @@ describe('validateDecision', () => {
       requestBody: { confirmedRecallType: 'FIXED' },
       wasUploadFileReceived: true,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -77,7 +83,7 @@ describe('validateDecision', () => {
       requestBody: { confirmedRecallType: 'STANDARD' },
       wasUploadFileReceived: true,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -98,7 +104,7 @@ describe('validateDecision', () => {
       requestBody: { ...requestBody, CHANGE_RECALL_TYPE_EMAIL: 'existingUpload' },
       wasUploadFileReceived: false,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toEqual({
       confirmedRecallType: 'FIXED',
@@ -117,7 +123,7 @@ describe('validateDecision', () => {
       requestBody,
       wasUploadFileReceived: false,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -143,7 +149,7 @@ describe('validateDecision', () => {
       requestBody,
       wasUploadFileReceived: false,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toEqual({ confirmedRecallType: 'STANDARD', confirmedRecallTypeDetail: 'reason 1; reason 2' })
     expect(unsavedValues).toEqual({
@@ -163,7 +169,7 @@ describe('validateDecision', () => {
       requestBody,
       wasUploadFileReceived: false,
       uploadFailed: false,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
@@ -188,7 +194,7 @@ describe('validateDecision', () => {
       requestBody,
       wasUploadFileReceived: true,
       uploadFailed: true,
-      fileName: 'test.msg',
+      file,
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
@@ -209,14 +215,18 @@ describe('validateDecision', () => {
       requestBody,
       wasUploadFileReceived: true,
       uploadFailed: false,
-      fileName: 'test.ppt',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
     })
     expect(valuesToSave).toBeUndefined()
     expect(errors).toEqual([
       {
         href: '#confirmedRecallTypeEmailFileName',
         name: 'confirmedRecallTypeEmailFileName',
-        text: "The selected file 'test.ppt' must be a MSG or EML",
+        text: "The selected file 'email.pdf' must be a MSG or EML",
       },
     ])
   })

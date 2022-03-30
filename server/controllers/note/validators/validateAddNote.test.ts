@@ -1,6 +1,12 @@
 import { validateAddNote } from './validateAddNote'
 
 describe('validateAddNote', () => {
+  const file = {
+    originalname: 'test.docx',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  } as Express.Multer.File
+
   it('returns valuesToSave with subject and details, and no errors if all fields are submitted and file is valid', () => {
     const requestBody = {
       subject: 'subject text',
@@ -8,7 +14,7 @@ describe('validateAddNote', () => {
     }
     const { errors, unsavedValues, valuesToSave } = validateAddNote({
       requestBody,
-      fileName: 'test.docx',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -31,7 +37,7 @@ describe('validateAddNote', () => {
     }
     const { errors, valuesToSave } = validateAddNote({
       requestBody,
-      fileName: 'test.docx',
+      file,
       wasUploadFileReceived: false,
       uploadFailed: undefined,
     })
@@ -46,7 +52,7 @@ describe('validateAddNote', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
-      fileName: 'test.docx',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -75,7 +81,7 @@ describe('validateAddNote', () => {
     }
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
-      fileName: 'test.docx',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -96,7 +102,7 @@ describe('validateAddNote', () => {
     }
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
-      fileName: 'test.docx',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -118,7 +124,7 @@ describe('validateAddNote', () => {
     }
     const { errors, valuesToSave, unsavedValues } = validateAddNote({
       requestBody,
-      fileName: 'test.docx',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
     })
@@ -140,7 +146,11 @@ describe('validateAddNote', () => {
     }
     const { errors, valuesToSave } = validateAddNote({
       requestBody,
-      fileName: 'whatever.ext',
+      file: {
+        ...file,
+        originalname: 'whatever.ext',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
     })

@@ -1,13 +1,20 @@
 import { validateMissingDocuments } from './validateMissingDocuments'
 
 describe('validateMissingDocuments', () => {
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
+
   it('returns valuesToSave and a confirmation message if everything is valid', () => {
     const requestBody = {
       missingDocumentsDetail: 'Email sent on 12/10/2021',
     }
+
     const { errors, valuesToSave, unsavedValues, confirmationMessage } = validateMissingDocuments({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -30,7 +37,7 @@ describe('validateMissingDocuments', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateMissingDocuments({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -53,7 +60,6 @@ describe('validateMissingDocuments', () => {
     }
     const { errors, valuesToSave } = validateMissingDocuments({
       requestBody,
-      fileName: 'test.eml',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
@@ -73,7 +79,7 @@ describe('validateMissingDocuments', () => {
     }
     const { errors, valuesToSave } = validateMissingDocuments({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
     })
@@ -93,7 +99,11 @@ describe('validateMissingDocuments', () => {
     }
     const { errors, valuesToSave } = validateMissingDocuments({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -102,7 +112,7 @@ describe('validateMissingDocuments', () => {
       {
         href: '#missingDocumentsEmailFileName',
         name: 'missingDocumentsEmailFileName',
-        text: "The selected file 'test.msl' must be a MSG or EML",
+        text: "The selected file 'email.pdf' must be a MSG or EML",
       },
     ])
   })

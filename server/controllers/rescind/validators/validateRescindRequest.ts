@@ -12,13 +12,14 @@ import {
   makeErrorObject,
 } from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
-import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 
 export const validateRescindRequest = ({
   requestBody,
   wasUploadFileReceived,
   uploadFailed,
-  fileName,
+  file,
 }: FormWithDocumentUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave?: { details: string; emailReceivedDate: string }
@@ -28,7 +29,12 @@ export const validateRescindRequest = ({
   let errors
   let valuesToSave
   let confirmationMessage
-  const invalidFileName = isInvalidEmailFileName(fileName)
+
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_REQUEST_EMAIL })
+    : false
+
   const { rescindRequestDetail } = requestBody
   const rescindRequestEmailReceivedDateParts = {
     year: requestBody.rescindRequestEmailReceivedDateYear,
@@ -43,7 +49,7 @@ export const validateRescindRequest = ({
   if (
     !wasUploadFileReceived ||
     uploadFailed ||
-    invalidFileName ||
+    invalidFileType ||
     !rescindRequestDetail ||
     dateHasError(rescindRequestEmailReceivedDate)
   ) {
@@ -86,7 +92,7 @@ export const validateRescindRequest = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileName) {
+    if (!uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'rescindRequestEmailFileName',

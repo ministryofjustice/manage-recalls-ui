@@ -3,6 +3,12 @@ import { validateRecallRequestReceived } from './validateRecallRequestReceived'
 import { padWithZeroes } from '../../utils/dates/format'
 
 describe('validateRecallRequestReceived', () => {
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
+
   it('returns valuesToSave with a corrected time if in daylight-saving period, and no errors if all fields are submitted', () => {
     const requestBody = {
       recallEmailReceivedDateTimeDay: '10',
@@ -13,7 +19,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, valuesToSave, redirectToPage } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -34,7 +40,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -55,7 +61,6 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.eml',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
@@ -69,7 +74,7 @@ describe('validateRecallRequestReceived', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -97,7 +102,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, valuesToSave, unsavedValues } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -138,7 +143,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -155,7 +160,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -172,7 +177,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -189,7 +194,6 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, unsavedValues, valuesToSave } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.eml',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
@@ -222,7 +226,7 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
     })
@@ -246,7 +250,11 @@ describe('validateRecallRequestReceived', () => {
     }
     const { errors, valuesToSave } = validateRecallRequestReceived({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -255,7 +263,7 @@ describe('validateRecallRequestReceived', () => {
       {
         href: '#recallRequestEmailFileName',
         name: 'recallRequestEmailFileName',
-        text: "The selected file 'test.msl' must be a MSG or EML",
+        text: "The selected file 'email.pdf' must be a MSG or EML",
       },
     ])
   })

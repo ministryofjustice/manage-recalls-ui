@@ -1,8 +1,7 @@
 import { NamedFormError, ObjectMap, ReqValidatorReturn, UrlInfo, ValidationError } from '../../../@types'
 import { PartBRecordRequest } from '../../../@types/manage-recalls-api/models/PartBRecordRequest'
-import { makeMetaDataForFile } from '../../documents/upload/helpers'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
-import { isInvalidFileType } from '../../documents/upload/validators/validateUploadedFiles'
+import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import {
   errorMsgDocumentUpload,
@@ -33,11 +32,11 @@ export const validatePartB = ({
   const oasysFile = filesUploaded?.oasysFileName?.[0]
   const emailFile = filesUploaded?.emailFileName?.[0]
   const partBInvalid =
-    partBFile && isInvalidFileType(makeMetaDataForFile(partBFile, RecallDocument.category.PART_B_RISK_REPORT))
+    partBFile && isInvalidFileType({ file: partBFile, category: RecallDocument.category.PART_B_RISK_REPORT })
   const oasysInvalid =
-    oasysFile && isInvalidFileType(makeMetaDataForFile(oasysFile, RecallDocument.category.OASYS_RISK_ASSESSMENT))
+    oasysFile && isInvalidFileType({ file: oasysFile, category: RecallDocument.category.OASYS_RISK_ASSESSMENT })
   const emailInvalid =
-    emailFile && isInvalidFileType(makeMetaDataForFile(emailFile, RecallDocument.category.PART_B_EMAIL_FROM_PROBATION))
+    emailFile && isInvalidFileType({ file: emailFile, category: RecallDocument.category.PART_B_EMAIL_FROM_PROBATION })
 
   const { partBReceivedDateDay, partBReceivedDateMonth, partBReceivedDateYear, partBDetails } = requestBody
   const partBReceivedDateParts = {

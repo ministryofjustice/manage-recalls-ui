@@ -1,4 +1,6 @@
-import { AllowedUploadFileType } from '../../../../@types/documents'
+import { AllowedUploadFileType, DocumentType } from '../../../../@types/documents'
+import { findDocCategory, makeMetaDataForFile } from './index'
+import { RecallDocument } from '../../../../@types/manage-recalls-api'
 
 export const allowedEmailFileExtensions: AllowedUploadFileType[] = [
   {
@@ -61,5 +63,32 @@ export const allFileExtensions = [
   ...allowedImageFileExtensions,
 ]
 
-export const isInvalidEmailFileName = (fileName: string) =>
-  fileName ? !allowedEmailFileExtensions.some(ext => fileName.endsWith(ext.extension)) : false
+export const isInvalidFileType = ({
+  file,
+  category,
+}: {
+  file: Express.Multer.File
+  category: RecallDocument.category
+}) => {
+  const fileMetaData = makeMetaDataForFile(file, category)
+  const docCategory = findDocCategory(fileMetaData.category)
+  const allowedExtensions = allowedExtensionsForFileType(docCategory.type)
+  return !allowedExtensions.some(
+    ext =>
+      fileMetaData.originalFileName.endsWith(ext.extension) &&
+      (fileMetaData.mimeType === ext.mimeType || ext.allowAnyMimeType === true)
+  )
+}
+
+export const allowedExtensionsForFileType = (fileType: DocumentType) => {
+  switch (fileType) {
+    case 'document':
+      return allowedDocumentFileExtensions
+    case 'email':
+      return allowedEmailFileExtensions
+    case 'note_document':
+      return allowedNoteFileExtensions
+    default:
+      throw new Error(`Invalid file type: ${fileType}`)
+  }
+}

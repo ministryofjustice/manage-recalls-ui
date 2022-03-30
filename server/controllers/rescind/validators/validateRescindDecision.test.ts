@@ -3,6 +3,12 @@ import { validateRescindDecision } from './validateRescindDecision'
 import { padWithZeroes } from '../../utils/dates/format'
 
 describe('validateRescindDecision', () => {
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
+
   it('returns valuesToSave with a date, confirmation message and no errors if all fields are submitted', () => {
     const requestBody = {
       rescindRecordId: '1234',
@@ -15,7 +21,7 @@ describe('validateRescindDecision', () => {
     }
     const { errors, valuesToSave, confirmationMessage } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -40,7 +46,7 @@ describe('validateRescindDecision', () => {
     const requestBody = {}
     const { errors, valuesToSave, unsavedValues } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -78,7 +84,7 @@ describe('validateRescindDecision', () => {
     }
     const { errors, valuesToSave, unsavedValues } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -119,7 +125,7 @@ describe('validateRescindDecision', () => {
     }
     const { errors } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -137,7 +143,7 @@ describe('validateRescindDecision', () => {
     }
     const { errors } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -155,7 +161,6 @@ describe('validateRescindDecision', () => {
     }
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
-      fileName: 'test.eml',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
@@ -180,7 +185,7 @@ describe('validateRescindDecision', () => {
     }
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
     })
@@ -205,7 +210,11 @@ describe('validateRescindDecision', () => {
     }
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
     })
@@ -214,7 +223,7 @@ describe('validateRescindDecision', () => {
       {
         href: '#rescindDecisionEmailFileName',
         name: 'rescindDecisionEmailFileName',
-        text: "The selected file 'test.msl' must be a MSG or EML",
+        text: "The selected file 'email.pdf' must be a MSG or EML",
       },
     ])
   })
