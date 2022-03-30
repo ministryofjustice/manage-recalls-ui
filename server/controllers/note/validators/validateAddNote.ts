@@ -5,23 +5,26 @@ import {
   errorMsgProvideDetail,
   makeErrorObject,
 } from '../../utils/errorMessages'
-import { CreateNoteRequest } from '../../../@types/manage-recalls-api'
-import { allowedNoteFileExtensions } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { CreateNoteRequest } from '../../../@types/manage-recalls-api/models/CreateNoteRequest'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 
 export const validateAddNote = ({
   requestBody,
-  fileName,
+  file,
   wasUploadFileReceived,
   uploadFailed,
 }: FormWithDocumentUploadValidatorArgs): ReqValidatorReturn<CreateNoteRequest> => {
   let errors
   let valuesToSave
   let confirmationMessage
-  const invalidFileName = wasUploadFileReceived
-    ? !allowedNoteFileExtensions.some(ext => fileName.endsWith(ext.extension))
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.NOTE_DOCUMENT })
     : false
+
   const { subject, details } = requestBody
-  const fileError = wasUploadFileReceived && (uploadFailed || invalidFileName)
+  const fileError = wasUploadFileReceived && (uploadFailed || invalidFileType)
   if (fileError || !subject || !details) {
     errors = []
     if (!subject) {
@@ -48,7 +51,7 @@ export const validateAddNote = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileName) {
+    if (!uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'fileName',

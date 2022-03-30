@@ -1,12 +1,13 @@
 import { ConfirmationMessage, FormWithDocumentUploadValidatorArgs, NamedFormError, ObjectMap } from '../../../../@types'
 import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../../utils/errorMessages'
-import { isInvalidEmailFileName } from '../../upload/helpers/allowedUploadExtensions'
+import { isInvalidFileType } from '../../upload/helpers/allowedUploadExtensions'
+import { RecallDocument } from '../../../../@types/manage-recalls-api/models/RecallDocument'
 
 export const validateMissingDocuments = ({
   requestBody,
   wasUploadFileReceived,
   uploadFailed,
-  fileName,
+  file,
 }: FormWithDocumentUploadValidatorArgs): {
   errors?: NamedFormError[]
   valuesToSave: { missingDocumentsDetail: string }
@@ -17,10 +18,14 @@ export const validateMissingDocuments = ({
   let errors
   let valuesToSave
   let confirmationMessage
-  const invalidFileName = isInvalidEmailFileName(fileName)
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.MISSING_DOCUMENTS_EMAIL })
+    : false
+
   const { missingDocumentsDetail } = requestBody
 
-  if (!wasUploadFileReceived || uploadFailed || invalidFileName || !missingDocumentsDetail) {
+  if (!wasUploadFileReceived || uploadFailed || invalidFileType || !missingDocumentsDetail) {
     errors = []
     if (!wasUploadFileReceived) {
       errors.push(
@@ -38,7 +43,7 @@ export const validateMissingDocuments = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileName) {
+    if (!uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'missingDocumentsEmailFileName',

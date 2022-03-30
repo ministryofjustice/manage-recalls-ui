@@ -21,6 +21,12 @@ const handler = separateEmailAndFormSave({
 
 describe('separateEmailAndFormSave', () => {
   let req
+  const validFile = {
+    originalname: 'email.msg',
+    mimetype: 'application/octet-stream',
+    buffer: 'def',
+  }
+
   beforeEach(() => {
     req = mockReq({
       method: 'POST',
@@ -40,10 +46,7 @@ describe('separateEmailAndFormSave', () => {
 
   it('sends the uploaded email to the API, updates the recall then redirects', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
@@ -68,10 +71,7 @@ describe('separateEmailAndFormSave', () => {
 
   it('redirects to the fromPage if supplied eg check answers', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     ;(uploadRecallDocument as jest.Mock).mockResolvedValue({
@@ -93,10 +93,7 @@ describe('separateEmailAndFormSave', () => {
 
   it("doesn't update the recall if there are no recall properties to save (only the uploaded email)", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     req.body = {
@@ -128,10 +125,7 @@ describe('separateEmailAndFormSave', () => {
 
   it("creates an error, doesn't update the recall, and reloads the page if the document save fails", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'report.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     ;(uploadRecallDocument as jest.Mock).mockRejectedValue(new Error('test'))
@@ -143,7 +137,7 @@ describe('separateEmailAndFormSave', () => {
           {
             href: '#recallRequestEmailFileName',
             name: 'recallRequestEmailFileName',
-            text: 'report.msg could not be uploaded - try again',
+            text: 'email.msg could not be uploaded - try again',
           },
         ])
         expect(httpStatus).toEqual(303)
@@ -180,10 +174,7 @@ describe('separateEmailAndFormSave', () => {
 
   it('creates an error and reloads the page if the email has a virus', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'report.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     ;(uploadRecallDocument as jest.Mock).mockRejectedValue({
@@ -197,7 +188,7 @@ describe('separateEmailAndFormSave', () => {
           {
             href: '#recallRequestEmailFileName',
             name: 'recallRequestEmailFileName',
-            text: 'report.msg contains a virus',
+            text: 'email.msg contains a virus',
           },
         ])
         expect(httpStatus).toEqual(303)
@@ -213,6 +204,7 @@ describe('separateEmailAndFormSave', () => {
       req.file = {
         originalname: 'email.pdf',
         buffer: 'def',
+        mimetype: 'application/pdf',
       }
       cb()
     })
@@ -261,10 +253,7 @@ describe('separateEmailAndFormSave', () => {
 
   it("saves the email to the API if it's valid, even if there are validation errors for other form fields, and reloads the page", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     req.body.recallEmailReceivedDateTimeYear = ''
@@ -315,10 +304,7 @@ describe('separateEmailAndFormSave', () => {
       recallNotificationEmailSentDateTimeMinute: '47',
     }
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     ;(uploadRecallDocument as jest.Mock).mockResolvedValue({

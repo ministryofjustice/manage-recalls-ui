@@ -126,7 +126,7 @@ export interface User extends UserDetails {
 
 export interface FormWithDocumentUploadValidatorArgs {
   requestBody: ObjectMap<string>
-  fileName?: string
+  file?: Express.Multer.File
   wasUploadFileReceived: boolean
   uploadFailed: boolean
   actionedByUserId?: string

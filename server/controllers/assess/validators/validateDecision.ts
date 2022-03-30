@@ -2,10 +2,11 @@ import { FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../.
 import { errorMsgEmailUpload, errorMsgProvideDetail, makeErrorObject } from '../../utils/errorMessages'
 import { ConfirmedRecallTypeRequest } from '../../../@types/manage-recalls-api/models/ConfirmedRecallTypeRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
-import { isInvalidEmailFileName } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 
 export const validateDecision = ({
-  fileName,
+  file,
   requestBody,
   wasUploadFileReceived,
   uploadFailed,
@@ -13,7 +14,10 @@ export const validateDecision = ({
   let errors
   let valuesToSave
 
-  const invalidFileName = isInvalidEmailFileName(fileName)
+  const fileName = file?.originalname
+  const invalidFileType = wasUploadFileReceived
+    ? isInvalidFileType({ file, category: RecallDocument.category.CHANGE_RECALL_TYPE_EMAIL })
+    : false
   const {
     recommendedRecallType,
     confirmedRecallType,
@@ -28,7 +32,7 @@ export const validateDecision = ({
   const standardDetailMissing = isStandard && !confirmedRecallTypeDetailStandard
   const existingUpload = requestBody[UploadDocumentRequest.category.CHANGE_RECALL_TYPE_EMAIL] === 'existingUpload'
   const uploadFailedValidation =
-    userDisagreedWithRecommendation && ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileName)
+    userDisagreedWithRecommendation && ((!wasUploadFileReceived && !existingUpload) || uploadFailed || invalidFileType)
   if (uploadFailedValidation || !isAgreeValueValid || fixedDetailMissing || standardDetailMissing) {
     errors = []
     if (!isAgreeValueValid) {
@@ -71,7 +75,7 @@ export const validateDecision = ({
         })
       )
     }
-    if (!uploadFailed && invalidFileName) {
+    if (!uploadFailed && invalidFileType) {
       errors.push(
         makeErrorObject({
           id: 'confirmedRecallTypeEmailFileName',

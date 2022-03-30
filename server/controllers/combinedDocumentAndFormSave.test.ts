@@ -9,6 +9,12 @@ jest.mock('./documents/upload/helpers/uploadStorage')
 
 describe('combinedDocumentAndFormSave', () => {
   let req
+  const validFile = {
+    originalname: 'email.msg',
+    mimetype: 'application/octet-stream',
+    buffer: 'def',
+  }
+
   beforeEach(() => {
     req = mockReq({
       method: 'POST',
@@ -28,10 +34,7 @@ describe('combinedDocumentAndFormSave', () => {
 
   it('calls the supplied save function, then redirects', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     const saveToApiFn = jest.fn()
@@ -64,10 +67,7 @@ describe('combinedDocumentAndFormSave', () => {
       details: 'Details...',
     }
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     const saveToApiFn = jest.fn()
@@ -103,10 +103,7 @@ describe('combinedDocumentAndFormSave', () => {
 
   it('redirects to the fromPage if supplied eg check answers', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'email.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
 
@@ -134,10 +131,7 @@ describe('combinedDocumentAndFormSave', () => {
 
   it('creates an error and reloads the page if the save fails', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'report.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     const saveToApiFn = jest.fn()
@@ -202,10 +196,7 @@ describe('combinedDocumentAndFormSave', () => {
 
   it('creates an error and reloads the page if the email has a virus', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
-      req.file = {
-        originalname: 'report.msg',
-        buffer: 'def',
-      }
+      req.file = validFile
       cb()
     })
     const saveToApiFn = jest.fn()
@@ -219,7 +210,7 @@ describe('combinedDocumentAndFormSave', () => {
           {
             href: '#recallRequestEmailFileName',
             name: 'recallRequestEmailFileName',
-            text: 'report.msg contains a virus',
+            text: 'email.msg contains a virus',
           },
         ])
         expect(httpStatus).toEqual(303)
@@ -234,11 +225,12 @@ describe('combinedDocumentAndFormSave', () => {
     })(req, res)
   })
 
-  it("doesn't save the email to the API and reloads the page if the file extension is invalid", done => {
+  it("doesn't save the email to the API and reloads the page if the file type is invalid", done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {
         originalname: 'email.pdf',
         buffer: 'def',
+        mimetype: 'application/pdf',
       }
       cb()
     })

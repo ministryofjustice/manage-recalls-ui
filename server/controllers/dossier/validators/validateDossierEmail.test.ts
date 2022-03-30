@@ -8,11 +8,16 @@ describe('validateDossierEmail', () => {
     dossierEmailSentDateDay: '04',
   }
   const actionedByUserId = '00000000-0000-0000-0000-000000000000'
+  const file = {
+    originalname: 'test.msg',
+    buffer: Buffer.from('def', 'base64'),
+    mimetype: 'application/octet-stream',
+  } as Express.Multer.File
 
   it('returns valuesToSave for all valid fields', () => {
     const { errors, valuesToSave, redirectToPage } = validateDossierEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -46,7 +51,7 @@ describe('validateDossierEmail', () => {
     }, {})
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody: emptyBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -67,7 +72,7 @@ describe('validateDossierEmail', () => {
     }
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody: body,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
@@ -86,7 +91,7 @@ describe('validateDossierEmail', () => {
   it("returns an error if an email wasn't uploaded", () => {
     const { errors, unsavedValues, valuesToSave } = validateDossierEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: false,
       uploadFailed: false,
       actionedByUserId,
@@ -113,7 +118,7 @@ describe('validateDossierEmail', () => {
   it('returns an error if the email upload failed', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
-      fileName: 'test.msg',
+      file,
       wasUploadFileReceived: true,
       uploadFailed: true,
       actionedByUserId,
@@ -131,7 +136,11 @@ describe('validateDossierEmail', () => {
   it('returns an error if an invalid email file extension was uploaded', () => {
     const { errors, valuesToSave } = validateDossierEmail({
       requestBody,
-      fileName: 'test.msl',
+      file: {
+        ...file,
+        originalname: 'email.pdf',
+        mimetype: 'application/pdf',
+      },
       wasUploadFileReceived: true,
       uploadFailed: false,
       actionedByUserId,
