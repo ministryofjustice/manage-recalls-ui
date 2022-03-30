@@ -84,7 +84,7 @@ export default function routes(router: Router): Router {
 
   router.get('/find-person', getStoredSessionData, asyncMiddleware(findPerson))
 
-  post('/recalls/:nomsNumber', createRecall)
+  post('/recalls', createRecall)
 
   const basePath = '/recalls/:recallId'
 

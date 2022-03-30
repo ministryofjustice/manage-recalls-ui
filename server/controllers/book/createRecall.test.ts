@@ -18,7 +18,7 @@ describe('createRecall', () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(createRecallApi as jest.Mock).mockResolvedValue({ recallId })
 
-    const req = mockPostRequest({ params: { nomsNumber } })
+    const req = mockPostRequest({ body: { nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
     await createRecall(req, res)
@@ -31,7 +31,7 @@ describe('createRecall', () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
     ;(createRecallApi as jest.Mock).mockResolvedValue({ recallId })
 
-    const req = mockPostRequest({ params: { nomsNumber } })
+    const req = mockPostRequest({ body: { nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
     await createRecall(req, res)
@@ -43,7 +43,7 @@ describe('createRecall', () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
     ;(createRecallApi as jest.Mock).mockRejectedValue(new Error('Timeout'))
 
-    const req = mockPostRequest({ params: { nomsNumber } })
+    const req = mockPostRequest({ body: { nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
     try {
