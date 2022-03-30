@@ -161,7 +161,6 @@ describe('validateRescindDecision', () => {
     }
     const { errors, valuesToSave } = validateRescindDecision({
       requestBody,
-      fileName: 'test.eml',
       wasUploadFileReceived: false,
       uploadFailed: false,
     })
