@@ -137,6 +137,9 @@ describe('getFormValues', () => {
     partBDetails: {
       text: 'Part B detail',
     },
+    rereleaseSupported: {
+      text: 'Re-release supported',
+    },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -199,6 +202,7 @@ describe('getFormValues', () => {
     details: 'Detail for note...',
     partBReceivedDateParts: { values: { year: '2016', month: '', day: '13' } },
     partBDetails: 'Part B detail',
+    rereleaseSupported: 'NO',
   }
 
   const apiValues = {
@@ -285,6 +289,7 @@ describe('getFormValues', () => {
         year: '',
       },
       recommendedRecallType: '',
+      rereleaseSupported: '',
       rescindRequestDetail: '',
       rescindRequestEmailReceivedDateParts: {
         day: '',
@@ -408,6 +413,7 @@ describe('getFormValues', () => {
         year: '2019',
       },
       recommendedRecallType: 'STANDARD',
+      rereleaseSupported: 'NO',
       rescindRequestDetail: 'Detail...',
       rescindRequestEmailReceivedDateParts: {
         day: '23',
@@ -533,6 +539,7 @@ describe('getFormValues', () => {
         year: '',
       },
       recommendedRecallType: '',
+      rereleaseSupported: '',
       rescindRequestDetail: '',
       rescindRequestEmailReceivedDateParts: {
         day: '',
@@ -650,6 +657,7 @@ describe('getFormValues', () => {
         year: '2021',
       },
       recommendedRecallType: 'FIXED',
+      rereleaseSupported: 'YES',
       returnedToCustodyDateTimeParts: {
         day: '22',
         hour: '13',
@@ -764,6 +772,7 @@ describe('getFormValues', () => {
         year: '2021',
       },
       recommendedRecallType: 'FIXED',
+      rereleaseSupported: 'YES',
       returnedToCustodyDateTimeParts: {
         day: '22',
         hour: '13',
