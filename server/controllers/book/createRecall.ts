@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { createRecall as createRecallApi, getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
 
 export const createRecall = async (req: Request, res: Response): Promise<void> => {
-  const { nomsNumber } = req.params
+  const { nomsNumber } = req.body
   if (!nomsNumber) {
     res.sendStatus(400)
     return
