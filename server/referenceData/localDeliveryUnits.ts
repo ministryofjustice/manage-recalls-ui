@@ -8,9 +8,10 @@ class LocalDeliveryUnits extends RefDataBaseClass {
   }
 
   static formatLocalDeliveryUnitsList(list: LocalDeliveryUnitResponse[]) {
-    return list.map(({ label, name }: LocalDeliveryUnitResponse) => ({
+    return list.map(({ label, name, active }: LocalDeliveryUnitResponse) => ({
       value: name,
       text: label,
+      active,
     }))
   }
 }
