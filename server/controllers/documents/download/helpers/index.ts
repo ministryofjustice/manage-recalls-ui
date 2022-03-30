@@ -77,7 +77,10 @@ export const decorateRescindRecords = ({
   return sortList(decorated, 'version', false)
 }
 
-export const decorateMissingDocuments = (missingDocuments: MissingDocuments): DecoratedMissingDocuments => {
+export const decorateMissingDocuments = (missingDocuments?: MissingDocuments): DecoratedMissingDocuments => {
+  if (!missingDocuments) {
+    return undefined
+  }
   const decoratedRequired = missingDocuments?.required.map(req => documentCategories.find(cat => cat.name === req))
   const decoratedDesired = missingDocuments?.desired.map(req => documentCategories.find(cat => cat.name === req))
 
