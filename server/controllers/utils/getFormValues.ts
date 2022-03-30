@@ -107,7 +107,14 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
   }
 
   // these text properties will never use the API value. Subject and details are for notes
-  ;['rescindRequestDetail', 'missingDocumentsDetail', 'subject', 'details'].forEach((key: string) => {
+  ;[
+    'rescindRequestDetail',
+    'missingDocumentsDetail',
+    'subject',
+    'details',
+    'partBReceivedDateParts',
+    'partBDetails',
+  ].forEach((key: string) => {
     values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || undefined
   })
 

@@ -95,7 +95,7 @@ context('Part B', () => {
       summaryError: 'Select a part B',
     })
     cy.assertErrorMessage({
-      fieldName: 'details',
+      fieldName: 'partBDetails',
       summaryError: 'Provide more detail',
     })
     cy.assertErrorMessage({
@@ -107,6 +107,14 @@ context('Part B', () => {
       fieldName: 'emailFileName',
       summaryError: 'Select a part B email from probation',
     })
+    const partBRecord = getRecallResponse.partBRecords[0]
+    cy.fillInput('Provide more detail', partBRecord.details)
+    cy.enterDateTime(partBRecord.partBReceivedDate)
+    cy.clickButton('Continue')
+    cy.getTextInputValue('Provide more detail').should('equal', partBRecord.details)
+    cy.getTextInputValue('Day').should('equal', partBRecord.partBReceivedDate.substr(8, 2))
+    cy.getTextInputValue('Month').should('equal', partBRecord.partBReceivedDate.substr(5, 2))
+    cy.getTextInputValue('Year').should('equal', partBRecord.partBReceivedDate.substr(0, 4))
   })
 
   it('errors - uploads contain viruses', () => {

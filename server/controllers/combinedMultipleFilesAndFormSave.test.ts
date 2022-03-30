@@ -39,7 +39,7 @@ describe('combinedMultipleFilesAndFormSave', () => {
       method: 'POST',
       params: { recallId: '789' },
       body: {
-        details: 'details text',
+        partBDetails: 'details text',
         partBReceivedDateDay: '05',
         partBReceivedDateMonth: '03',
         partBReceivedDateYear: '2022',
@@ -166,7 +166,7 @@ describe('combinedMultipleFilesAndFormSave', () => {
           },
         ])
         expect(req.session.unsavedValues).toEqual({
-          details: 'details text',
+          partBDetails: 'details text',
           partBReceivedDateParts: {
             day: '05',
             month: '03',
