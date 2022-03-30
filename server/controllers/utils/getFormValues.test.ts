@@ -133,6 +133,10 @@ describe('getFormValues', () => {
     details: {
       text: 'Notes detail',
     },
+    partBReceivedDate: { values: { year: '2016', month: '', day: '13' } },
+    partBDetails: {
+      text: 'Part B detail',
+    },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -193,6 +197,8 @@ describe('getFormValues', () => {
     },
     subject: 'Subject for note',
     details: 'Detail for note...',
+    partBReceivedDateParts: { values: { year: '2016', month: '', day: '13' } },
+    partBDetails: 'Part B detail',
   }
 
   const apiValues = {
@@ -255,6 +261,7 @@ describe('getFormValues', () => {
       localPoliceForceId: '',
       mappaLevel: '',
       missingDocumentsDetail: '',
+      partBDetails: '',
       previousConvictionMainName: '',
       localDeliveryUnit: '',
       probationOfficerEmail: 'invalid@email',
@@ -369,6 +376,14 @@ describe('getFormValues', () => {
       localPoliceForceId: 'dyfed-powys',
       mappaLevel: 'LEVEL_2',
       missingDocumentsDetail: 'Detail..',
+      partBDetails: 'Part B detail',
+      partBReceivedDateParts: {
+        values: {
+          day: '13',
+          month: '',
+          year: '2016',
+        },
+      },
       previousConvictionMainName: 'Wayne Holt',
       previousConvictionMainNameCategory: 'FIRST_LAST',
       licenceNameCategory: 'FIRST_LAST',
@@ -487,6 +502,14 @@ describe('getFormValues', () => {
       localPoliceForceId: '',
       mappaLevel: '',
       missingDocumentsDetail: '',
+      partBDetails: '',
+      partBReceivedDateParts: {
+        values: {
+          day: '13',
+          month: '',
+          year: '2016',
+        },
+      },
       previousConvictionMainName: '',
       localDeliveryUnit: '',
       probationOfficerEmail: 'invalid@email',

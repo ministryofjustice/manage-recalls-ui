@@ -5,7 +5,7 @@ import { ConfirmationMessageGroup, UrlInfo } from '../../../@types'
 
 describe('validatePartB', () => {
   const requestBody = {
-    details: 'details text',
+    partBDetails: 'details text',
     partBReceivedDateDay: '05',
     partBReceivedDateMonth: '03',
     partBReceivedDateYear: '2022',
@@ -49,7 +49,7 @@ describe('validatePartB', () => {
     })
     expect(errors).toBeUndefined()
     expect(unsavedValues).toEqual({
-      details: 'details text',
+      partBDetails: 'details text',
       partBReceivedDateParts: {
         day: '05',
         month: '03',
@@ -137,8 +137,8 @@ describe('validatePartB', () => {
         text: 'Select a part B',
       },
       {
-        href: '#details',
-        name: 'details',
+        href: '#partBDetails',
+        name: 'partBDetails',
         text: 'Provide more detail',
       },
       {
@@ -205,7 +205,7 @@ describe('validatePartB', () => {
     })
     expect(valuesToSave).toBeUndefined()
     expect(unsavedValues).toEqual({
-      details: 'details text',
+      partBDetails: 'details text',
       partBReceivedDateParts: {
         day: '05',
         month: '03',
@@ -234,7 +234,7 @@ describe('validatePartB', () => {
   it('returns an error if the date is not in the past', () => {
     const { year, month, day } = DateTime.now().plus({ days: 1 })
     const body = {
-      details: 'details text',
+      partBDetails: 'details text',
       partBReceivedDateDay: padWithZeroes(day),
       partBReceivedDateMonth: padWithZeroes(month),
       partBReceivedDateYear: year.toString(),

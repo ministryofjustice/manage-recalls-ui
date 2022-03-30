@@ -39,7 +39,7 @@ export const validatePartB = ({
   const emailInvalid =
     emailFile && isInvalidFileType(makeMetaDataForFile(emailFile, RecallDocument.category.PART_B_EMAIL_FROM_PROBATION))
 
-  const { partBReceivedDateDay, partBReceivedDateMonth, partBReceivedDateYear, details } = requestBody
+  const { partBReceivedDateDay, partBReceivedDateMonth, partBReceivedDateYear, partBDetails } = requestBody
   const partBReceivedDateParts = {
     year: partBReceivedDateYear,
     month: partBReceivedDateMonth,
@@ -58,7 +58,7 @@ export const validatePartB = ({
     !emailFile ||
     emailInvalid ||
     dateHasError(partBReceivedDate) ||
-    !details
+    !partBDetails
   ) {
     errors = []
     if (uploadFailed) {
@@ -93,10 +93,10 @@ export const validatePartB = ({
         )
       }
     }
-    if (!details) {
+    if (!partBDetails) {
       errors.push(
         makeErrorObject({
-          id: 'details',
+          id: 'partBDetails',
           text: errorMsgProvideDetail,
         })
       )
@@ -157,7 +157,7 @@ export const validatePartB = ({
       ],
     }
     valuesToSave = {
-      details,
+      details: partBDetails,
       partBReceivedDate: partBReceivedDate as string,
       partBFileName: partBFile?.originalname,
       partBFileContent: partBFile?.buffer.toString('base64'),
@@ -169,7 +169,7 @@ export const validatePartB = ({
     redirectToPage = makeUrl('support-rerelease', urlInfo)
   }
   const unsavedValues = {
-    details,
+    partBDetails,
     partBReceivedDateParts,
   }
   return { errors, valuesToSave, unsavedValues, confirmationMessage, redirectToPage }
