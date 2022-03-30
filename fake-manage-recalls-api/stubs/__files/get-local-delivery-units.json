@@ -1,38 +1,52 @@
 [
   {
     "name": "CENTRAL_AUDIT_TEAM",
-    "label": "Central Audit Team"
+    "label": "Central Audit Team",
+    "active": true
   },
   {
     "name": "CHANNEL_ISLANDS",
-    "label": "Channel Islands"
+    "label": "Channel Islands",
+    "active": true
   },
   {
     "name": "ISLE_OF_MAN",
-    "label": "Isle of Man"
+    "label": "Isle of Man",
+    "active": true
   },
   {
     "name": "NORTHERN_IRELAND",
-    "label": "Northern Ireland"
+    "label": "Northern Ireland",
+    "active": true
   },
   {
     "name": "NOT_APPLICABLE",
-    "label": "Not applicable"
+    "label": "Not applicable",
+    "active": true
   },
   {
     "name": "NOT_SPECIFIED",
-    "label": "Not specified"
+    "label": "Not specified",
+    "active": true
   },
   {
     "name": "PS_BARKING_DAGENHAM_HAVERING",
-    "label": "PS - Barking, Dagenham & Havering"
+    "label": "PS - Barking, Dagenham & Havering",
+    "active": true
   },
   {
     "name": "PS_BARNET",
-    "label": "PS - Barnet"
+    "label": "PS - Barnet",
+    "active": true
   },
   {
     "name": "PS_BARNSLEY",
-    "label": "PS - Barnsley"
+    "label": "PS - Barnsley",
+    "active": true
+  },
+  {
+    "name": "PS_CUMBRIA",
+    "label": "PS - Cumbria",
+    "active": false
   }
 ]

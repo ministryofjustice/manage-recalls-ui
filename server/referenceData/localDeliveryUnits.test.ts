@@ -8,10 +8,12 @@ describe('Local Delivery Units ref data', () => {
     {
       name: 'ONE',
       label: 'First one',
+      active: true,
     },
     {
       name: 'TWO',
       label: 'Second one',
+      active: false,
     },
   ])
 
@@ -24,10 +26,12 @@ describe('Local Delivery Units ref data', () => {
         {
           value: 'ONE',
           text: 'First one',
+          active: true,
         },
         {
           value: 'TWO',
           text: 'Second one',
+          active: false,
         },
       ])
       jest.useRealTimers()
