@@ -3,8 +3,10 @@ import { combinedMultipleFilesAndFormSave } from './combinedMultipleFilesAndForm
 import { mockReq } from './testUtils/mockRequestUtils'
 import { uploadStorageFields } from './documents/upload/helpers/uploadStorage'
 import { validatePartB } from './partB/validators/validatePartB'
+import { sendFileSizeMetric } from './documents/upload/helpers/sendFileSizeMetric'
 
 jest.mock('./documents/upload/helpers/uploadStorage')
+jest.mock('./documents/upload/helpers/sendFileSizeMetric')
 
 describe('combinedMultipleFilesAndFormSave', () => {
   let req
@@ -67,6 +69,28 @@ describe('combinedMultipleFilesAndFormSave', () => {
         expect(req.session.errors).toBeUndefined()
         expect(httpStatus).toEqual(303)
         expect(path).toEqual('/recalls/789/support-rerelease')
+        done()
+      },
+    }
+    combinedMultipleFilesAndFormSave({
+      uploadFormFieldNames: ['partBFileName', 'oasysFileName', 'emailFileName'],
+      validator: validatePartB,
+      saveToApiFn,
+    })(req, res)
+  })
+
+  it('sends a metric with the file size', done => {
+    ;(uploadStorageFields as jest.Mock).mockReturnValue((request, response, cb) => {
+      req.files = files
+      cb()
+    })
+    saveToApiFn.mockResolvedValue({
+      status: 200,
+    })
+    const res = {
+      locals: resLocals,
+      redirect: () => {
+        expect(sendFileSizeMetric).toHaveBeenCalledTimes(3)
         done()
       },
     }
