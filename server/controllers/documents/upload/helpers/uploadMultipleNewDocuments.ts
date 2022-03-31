@@ -5,6 +5,7 @@ import { RecallDocument } from '../../../../@types/manage-recalls-api/models/Rec
 import { validateUploadedFiles } from '../validators/validateUploadedFiles'
 import { renderXhrResponse } from './uploadRenderXhrResponse'
 import { getRecall } from '../../../../clients/manageRecallsApiClient'
+import { sendFileSizeMetric } from './sendFileSizeMetric'
 
 export const uploadMultipleNewDocuments = async (req: Request, res: Response) => {
   const { files, session, body } = req
@@ -21,6 +22,7 @@ export const uploadMultipleNewDocuments = async (req: Request, res: Response) =>
       }),
     ]
   } else {
+    ;(files as Express.Multer.File[]).forEach(file => sendFileSizeMetric(file))
     const uploadedFileData = getMetadataForUploadedFiles(
       files as Express.Multer.File[],
       RecallDocument.category.UNCATEGORISED,
