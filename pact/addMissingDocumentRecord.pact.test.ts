@@ -7,6 +7,9 @@ import { pactPostRequest } from './pactTestUtils'
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const recallId = '00000000-0000-0000-0000-000000000000'
+
+  const path = `/recalls/${recallId}/missing-documents-records`
+
   const categories = ['PART_A_RECALL_REPORT', 'OASYS_RISK_ASSESSMENT']
   const details = 'Some text about what i did'
   const emailFileContent =
@@ -14,7 +17,6 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   const emailFileName = 'email.msg'
 
   const requestBody = {
-    recallId,
     categories,
     details,
     emailFileContent,
@@ -29,16 +31,11 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('can successfully add a record', async () => {
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
-        ...pactPostRequest(
-          'an add missing documents records request',
-          '/missing-documents-records',
-          requestBody,
-          accessToken
-        ),
+        ...pactPostRequest('an add missing documents records request', path, requestBody, accessToken),
         willRespondWith: { status: 201 },
       })
 
-      const actual = await addMissingDocumentRecord(requestBody, accessToken)
+      const actual = await addMissingDocumentRecord(recallId, requestBody, accessToken)
 
       expect(actual.status).toEqual(201)
     })
@@ -46,17 +43,12 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...pactPostRequest(
-          'an unauthorized add record request',
-          '/missing-documents-records',
-          requestBody,
-          accessToken
-        ),
+        ...pactPostRequest('an unauthorized add record request', path, requestBody, accessToken),
         willRespondWith: { status: 401 },
       })
 
       try {
-        await addMissingDocumentRecord(requestBody, accessToken)
+        await addMissingDocumentRecord(recallId, requestBody, accessToken)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

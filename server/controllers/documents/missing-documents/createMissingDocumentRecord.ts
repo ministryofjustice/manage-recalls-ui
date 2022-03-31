@@ -12,9 +12,9 @@ export const createMissingDocumentRecord = async ({
   const recall = await getRecall(recallId, user.token)
   const missingDocumentCategories = listMissingRequiredDocs(recall)
   const response = await addMissingDocumentRecord(
+    recallId,
     {
       categories: missingDocumentCategories,
-      recallId,
       details: valuesToSave.missingDocumentsDetail as string,
       emailFileName: valuesToSave.fileName as string,
       emailFileContent: valuesToSave.fileContent as string,
