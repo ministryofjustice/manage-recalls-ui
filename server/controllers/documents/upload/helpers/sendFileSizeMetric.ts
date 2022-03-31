@@ -5,7 +5,7 @@ import logger from '../../../../../logger'
 export const fileUploadHistogram = new promClient.Histogram({
   name: 'upload_file_sizes',
   help: 'sizes in MB of uploaded files',
-  buckets: promClient.linearBuckets(0, 1, 100),
+  buckets: promClient.linearBuckets(0, 5, 20),
   labelNames: ['fileExtension'],
 })
 
