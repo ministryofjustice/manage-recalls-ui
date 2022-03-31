@@ -50,7 +50,9 @@ export const combinedMultipleFilesAndFormSave =
     const { user, urlInfo } = res.locals
     const { request, uploadFailed } = await processUpload(uploadFormFieldNames, req, res)
     const { files } = request
-    Object.values(files).forEach(file => sendFileSizeMetric(file))
+    if (files) {
+      Object.values(files).forEach(file => sendFileSizeMetric(file))
+    }
     const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
       requestBody: request.body,
       filesUploaded: files,
