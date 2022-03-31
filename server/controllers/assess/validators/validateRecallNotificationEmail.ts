@@ -2,9 +2,15 @@ import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/U
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import { errorMsgEmailUpload, errorMsgUserActionDateTime, makeErrorObject } from '../../utils/errorMessages'
+import {
+  errorMsgDocumentUpload,
+  errorMsgEmailUpload,
+  errorMsgUserActionDateTime,
+  makeErrorObject,
+} from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export const validateRecallNotificationEmail = ({
   requestBody,
@@ -20,6 +26,7 @@ export const validateRecallNotificationEmail = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_DECISION_EMAIL })
     : false
+  const fileSizeTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
   const { confirmRecallNotificationEmailSent } = requestBody
   const recallNotificationEmailSentDateTimeParts = {
     year: requestBody.recallNotificationEmailSentDateTimeYear,
@@ -37,6 +44,7 @@ export const validateRecallNotificationEmail = ({
     (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
     invalidFileType ||
+    fileSizeTooLarge ||
     !confirmRecallNotificationEmailSent ||
     dateHasError(recallNotificationEmailSentDateTime)
   ) {
@@ -76,14 +84,23 @@ export const validateRecallNotificationEmail = ({
         })
       )
     }
-    if (confirmRecallNotificationEmailSent && !uploadFailed && invalidFileType) {
-      errors.push(
-        makeErrorObject({
-          id: 'recallNotificationEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat(fileName),
-          values: fileName,
-        })
-      )
+    if (confirmRecallNotificationEmailSent && !uploadFailed) {
+      if (invalidFileType) {
+        errors.push(
+          makeErrorObject({
+            id: 'recallNotificationEmailFileName',
+            text: errorMsgEmailUpload.invalidFileFormat(fileName),
+          })
+        )
+      }
+      if (fileSizeTooLarge) {
+        errors.push(
+          makeErrorObject({
+            id: 'recallNotificationEmailFileName',
+            text: errorMsgDocumentUpload.invalidFileSize(fileName),
+          })
+        )
+      }
     }
   }
   const unsavedValues = {

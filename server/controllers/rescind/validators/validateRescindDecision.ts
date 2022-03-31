@@ -6,6 +6,7 @@ import {
   ValidationError,
 } from '../../../@types'
 import {
+  errorMsgDocumentUpload,
   errorMsgEmailUpload,
   errorMsgProvideDetail,
   errorMsgUserActionDateTime,
@@ -14,6 +15,7 @@ import {
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export interface RescindDecisionValuesToSave {
   approved: boolean
@@ -41,6 +43,7 @@ export const validateRescindDecision = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_DECISION_EMAIL })
     : false
+  const fileSizeTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
   const { approveRescindDecision, rescindDecisionDetail, confirmEmailSent } = requestBody
   const rescindDecisionEmailSentDateParts = {
     year: requestBody.rescindDecisionEmailSentDateYear,
@@ -57,6 +60,7 @@ export const validateRescindDecision = ({
     !wasUploadFileReceived ||
     uploadFailed ||
     invalidFileType ||
+    fileSizeTooLarge ||
     !rescindDecisionDetail ||
     !confirmEmailSent ||
     dateHasError(rescindDecisionEmailSentDate)
@@ -116,13 +120,23 @@ export const validateRescindDecision = ({
         })
       )
     }
-    if (confirmEmailSent && !uploadFailed && invalidFileType) {
-      errors.push(
-        makeErrorObject({
-          id: 'rescindDecisionEmailFileName',
-          text: errorMsgEmailUpload.invalidFileFormat(fileName),
-        })
-      )
+    if (confirmEmailSent && !uploadFailed) {
+      if (invalidFileType) {
+        errors.push(
+          makeErrorObject({
+            id: 'rescindDecisionEmailFileName',
+            text: errorMsgEmailUpload.invalidFileFormat(fileName),
+          })
+        )
+      }
+      if (fileSizeTooLarge) {
+        errors.push(
+          makeErrorObject({
+            id: 'rescindDecisionEmailFileName',
+            text: errorMsgDocumentUpload.invalidFileSize(fileName),
+          })
+        )
+      }
     }
   }
   const unsavedValues = {

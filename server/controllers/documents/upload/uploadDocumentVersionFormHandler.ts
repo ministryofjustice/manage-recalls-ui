@@ -23,7 +23,12 @@ export const uploadDocumentVersionFormHandler = async (req: Request, res: Respon
         throw new Error('Invalid category')
       }
       const uploadedFileData = file && makeMetaDataForFile(file, body.categoryName, body.details)
-      const { errors } = validateDocumentVersion(uploadedFileData, body, uploadFailed)
+      const { errors } = validateDocumentVersion({
+        uploadedFileData,
+        file,
+        requestBody: body,
+        uploadFailed,
+      })
       session.errors = errors
       if (!session.errors) {
         const { category, fileContent, originalFileName, details } = uploadedFileData

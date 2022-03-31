@@ -29,7 +29,6 @@ export const makeMetaDataForFile = (
     category: documentCategory.name,
     fileContent: file.buffer.toString('base64'),
     details,
-    sizeMB: bytesToMB(file.size),
   }
 }
 
@@ -115,3 +114,5 @@ export const findDocCategory = (category: RecallDocument.category) =>
   documentCategories.find(cat => cat.name === category)
 
 export const bytesToMB = (bytes: number) => roundToDecimalPlaces(bytes / 1000000, 1)
+
+export const isFileSizeTooLarge = (sizeBytes: number) => bytesToMB(sizeBytes) > MAX_UPLOAD_FILE_SIZE_MB

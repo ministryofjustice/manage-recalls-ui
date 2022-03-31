@@ -1,10 +1,16 @@
 import { UpdateRecallRequest } from '../../../@types/manage-recalls-api/models/UpdateRecallRequest'
 import { UploadDocumentRequest } from '../../../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { ValidationError, FormWithDocumentUploadValidatorArgs, ReqValidatorReturn } from '../../../@types'
-import { errorMsgUserActionDateTime, errorMsgEmailUpload, makeErrorObject } from '../../utils/errorMessages'
+import {
+  errorMsgUserActionDateTime,
+  errorMsgEmailUpload,
+  makeErrorObject,
+  errorMsgDocumentUpload,
+} from '../../utils/errorMessages'
 import { convertGmtDatePartsToUtc, dateHasError } from '../../utils/dates/convert'
 import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export const validateRecallRequestReceived = ({
   requestBody,
@@ -19,6 +25,7 @@ export const validateRecallRequestReceived = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.RESCIND_DECISION_EMAIL })
     : false
+  const fileSizeTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
   const recallEmailReceivedDateTimeParts = {
     year: requestBody.recallEmailReceivedDateTimeYear,
     month: requestBody.recallEmailReceivedDateTimeMonth,
@@ -36,6 +43,7 @@ export const validateRecallRequestReceived = ({
     (!wasUploadFileReceived && !existingUpload) ||
     uploadFailed ||
     invalidFileType ||
+    fileSizeTooLarge ||
     dateHasError(recallEmailReceivedDateTime)
   ) {
     errors = []
@@ -71,6 +79,14 @@ export const validateRecallRequestReceived = ({
         makeErrorObject({
           id: 'recallRequestEmailFileName',
           text: errorMsgEmailUpload.invalidFileFormat(fileName),
+        })
+      )
+    }
+    if (!uploadFailed && fileSizeTooLarge) {
+      errors.push(
+        makeErrorObject({
+          id: 'recallRequestEmailFileName',
+          text: errorMsgDocumentUpload.invalidFileSize(fileName),
         })
       )
     }

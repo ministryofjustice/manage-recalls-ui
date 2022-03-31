@@ -1,4 +1,5 @@
 import { validateDecision } from './validateDecision'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validateDecision', () => {
   const file = {
@@ -227,6 +228,28 @@ describe('validateDecision', () => {
         href: '#confirmedRecallTypeEmailFileName',
         name: 'confirmedRecallTypeEmailFileName',
         text: "The selected file 'email.pdf' must be a MSG or EML",
+      },
+    ])
+  })
+
+  it('returns an error if the email was too large', () => {
+    const requestBody = {
+      confirmedRecallType: 'FIXED',
+      confirmedRecallTypeDetailFixed: 'reason 1; reason 2',
+    }
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateDecision({
+      requestBody,
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+      file,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#confirmedRecallTypeEmailFileName',
+        name: 'confirmedRecallTypeEmailFileName',
+        text: "The selected file 'test.msg' must be smaller than 25MB",
       },
     ])
   })

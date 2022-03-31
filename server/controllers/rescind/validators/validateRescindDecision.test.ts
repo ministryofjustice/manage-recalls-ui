@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { validateRescindDecision } from './validateRescindDecision'
 import { padWithZeroes } from '../../utils/dates/format'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validateRescindDecision', () => {
   const file = {
@@ -224,6 +225,32 @@ describe('validateRescindDecision', () => {
         href: '#rescindDecisionEmailFileName',
         name: 'rescindDecisionEmailFileName',
         text: "The selected file 'email.pdf' must be a MSG or EML",
+      },
+    ])
+  })
+
+  it('returns an error if the email was too large', () => {
+    const requestBody = {
+      approveRescindDecision: 'NO',
+      confirmEmailSent: 'YES',
+      rescindDecisionEmailSentDateDay: '12',
+      rescindDecisionEmailSentDateMonth: '09',
+      rescindDecisionEmailSentDateYear: '2021',
+      rescindDecisionDetail: 'Details..',
+    }
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateRescindDecision({
+      requestBody,
+      file,
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#rescindDecisionEmailFileName',
+        name: 'rescindDecisionEmailFileName',
+        text: "The selected file 'test.msg' must be smaller than 25MB",
       },
     ])
   })

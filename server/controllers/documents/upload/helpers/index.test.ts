@@ -62,17 +62,4 @@ describe('makeMetaDataForFile', () => {
     const result = makeMetaDataForFile(undefined, RecallDocument.category.LICENCE)
     expect(result).toBeUndefined()
   })
-
-  it('returns file size, converted to MB', () => {
-    const result = makeMetaDataForFile(
-      {
-        originalname: 'test.pdf',
-        mimetype: 'application/pdf',
-        buffer: Buffer.from('def', 'base64'),
-        size: 1540000,
-      } as Express.Multer.File,
-      RecallDocument.category.LICENCE
-    )
-    expect(result.sizeMB).toEqual(1.5)
-  })
 })

@@ -2,9 +2,7 @@ import { isInvalidFileType } from '../helpers/allowedUploadExtensions'
 import { UploadedFileMetadata } from '../../../../@types/documents'
 import { NamedFormError } from '../../../../@types'
 import { errorMsgDocumentUpload, makeErrorObject } from '../../../utils/errorMessages'
-import { MAX_UPLOAD_FILE_SIZE_MB } from '../helpers'
-
-export const isFileSizeTooLarge = (file: UploadedFileMetadata) => file.sizeMB > MAX_UPLOAD_FILE_SIZE_MB
+import { isFileSizeTooLarge } from '../helpers'
 
 export const validateUploadedFiles = ({
   files,
@@ -21,8 +19,9 @@ export const validateUploadedFiles = ({
   let errors: NamedFormError[]
   let valuesToSave: UploadedFileMetadata[]
   uploadedFileData.forEach((fileData, idx) => {
-    const invalidFileType = isInvalidFileType({ file: files[idx], category: fileData.category })
-    let hasError = invalidFileType || isFileSizeTooLarge(fileData)
+    const file = files[idx]
+    const invalidFileType = isInvalidFileType({ file, category: fileData.category })
+    let hasError = invalidFileType || isFileSizeTooLarge(file.size)
     if (hasError) {
       errors = errors || []
       if (invalidFileType) {
@@ -33,7 +32,7 @@ export const validateUploadedFiles = ({
           })
         )
       }
-      if (isFileSizeTooLarge(fileData)) {
+      if (isFileSizeTooLarge(file.size)) {
         errors.push(
           makeErrorObject({
             id: fileUploadInputName,
@@ -44,9 +43,8 @@ export const validateUploadedFiles = ({
       hasError = true
     }
     if (!hasError) {
-      const { sizeMB, ...rest } = fileData
       valuesToSave = valuesToSave || []
-      valuesToSave.push(rest)
+      valuesToSave.push(fileData)
     }
   })
   return { errors, valuesToSave }
