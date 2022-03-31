@@ -145,7 +145,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'POST',
-          urlPattern: '/missing-documents-records',
+          urlPattern: '/recalls/(.*)/missing-documents-records',
         },
         response: {
           status: (expectation && expectation.statusCode) || 201,

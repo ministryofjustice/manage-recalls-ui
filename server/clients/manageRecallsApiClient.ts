@@ -153,10 +153,15 @@ export function addNote({ recallId, valuesToSave, user }: SaveToApiFnArgs): Prom
 }
 
 export function addMissingDocumentRecord(
+  recallId: string,
   data: MissingDocumentsRecordRequest,
   token: string
 ): Promise<superagent.Response> {
-  return restClient(token).post<superagent.Response>({ path: '/missing-documents-records', data, raw: true })
+  return restClient(token).post<superagent.Response>({
+    path: `/recalls/${recallId}/missing-documents-records`,
+    data,
+    raw: true,
+  })
 }
 
 export function addPartbRecord({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {

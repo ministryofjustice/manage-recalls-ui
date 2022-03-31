@@ -27,7 +27,8 @@ describe('addMissingDocumentRecordForm', () => {
     })
 
     await createMissingDocumentRecord({ recallId, valuesToSave, user })
-    expect((addMissingDocumentRecord as jest.Mock).mock.calls[0][0].categories).toEqual([
+    expect((addMissingDocumentRecord as jest.Mock).mock.calls[0][0]).toEqual(recallId)
+    expect((addMissingDocumentRecord as jest.Mock).mock.calls[0][1].categories).toEqual([
       'PART_A_RECALL_REPORT',
       'LICENCE',
       'OASYS_RISK_ASSESSMENT',

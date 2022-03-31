@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "urlPathPattern": "/missing-documents-records"
+    "urlPathPattern": "/recalls/(.*)/missing-documents-records"
   },
   "response": {
     "status": 201,
