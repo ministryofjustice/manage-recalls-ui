@@ -6,7 +6,7 @@ import { NewDocumentResponse } from '../@types/manage-recalls-api/models/NewDocu
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { LocalDeliveryUnitResponse } from '../@types/manage-recalls-api/models/LocalDeliveryUnitResponse'
 import { Prisoner } from '../@types/manage-recalls-api/models/Prisoner'
-import { ObjectMap, SaveToApiFnArgs } from '../@types'
+import { ObjectMap, SaveToApiFnArgs, User } from '../@types'
 import {
   Court,
   GetDocumentResponse,
@@ -155,9 +155,9 @@ export function addNote({ recallId, valuesToSave, user }: SaveToApiFnArgs): Prom
 export function addMissingDocumentRecord(
   recallId: string,
   data: MissingDocumentsRecordRequest,
-  token: string
+  user: User
 ): Promise<superagent.Response> {
-  return restClient(token).post<superagent.Response>({
+  return restClient(user.token).post<superagent.Response>({
     path: `/recalls/${recallId}/missing-documents-records`,
     data,
     raw: true,
@@ -227,9 +227,9 @@ export function updateRescindRecord({ recallId, valuesToSave, user }: SaveToApiF
   })
 }
 
-export function addLastKnownAddress({ valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+export function addLastKnownAddress({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
   return restClient(user.token).post({
-    path: '/last-known-addresses',
+    path: `/recalls/${recallId}/last-known-addresses`,
     data: valuesToSave,
     raw: true,
   })

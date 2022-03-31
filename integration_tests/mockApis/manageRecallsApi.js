@@ -227,7 +227,7 @@ export default function manageRecallsApi(wiremock) {
       return wiremock.stubFor({
         request: {
           method: 'POST',
-          urlPattern: '/last-known-addresses',
+          urlPattern: `/recalls/(.*)/last-known-addresses`,
         },
         response: {
           status: (expectation && expectation.statusCode) || 201,

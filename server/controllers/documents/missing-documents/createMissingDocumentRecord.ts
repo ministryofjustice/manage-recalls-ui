@@ -19,7 +19,7 @@ export const createMissingDocumentRecord = async ({
       emailFileName: valuesToSave.fileName as string,
       emailFileContent: valuesToSave.fileContent as string,
     },
-    user.token
+    user
   )
   if (missingDocumentCategories.includes(RecallDocument.category.PART_B_RISK_REPORT)) {
     await assignUserToRecall(recallId, user.uuid, user.token)

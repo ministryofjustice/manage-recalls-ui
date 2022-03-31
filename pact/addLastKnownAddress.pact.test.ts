@@ -9,7 +9,9 @@ import { pactJsonResponse, pactPostRequest } from './pactTestUtils'
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
   const user = { token: accessToken }
-  const path = '/last-known-addresses'
+  const recallId = '00000000-0000-0000-0000-000000000000'
+
+  const path = `/recalls/${recallId}/last-known-addresses`
 
   beforeEach(() => {
     jest.spyOn(configModule, 'manageRecallsApiConfig').mockReturnValue({ url: provider.mockService.baseUrl })
@@ -23,7 +25,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: { status: 201 },
       })
 
-      const actual = await addLastKnownAddress({ valuesToSave, user })
+      const actual = await addLastKnownAddress({ recallId, valuesToSave, user })
 
       expect(actual.status).toEqual(201)
     })
@@ -40,7 +42,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await addLastKnownAddress({ valuesToSave: emptyBody, user })
+        await addLastKnownAddress({ recallId, valuesToSave: emptyBody, user })
       } catch (exception) {
         expect(exception.status).toEqual(400)
       }
@@ -54,7 +56,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await addLastKnownAddress({ valuesToSave, user })
+        await addLastKnownAddress({ recallId, valuesToSave, user })
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }

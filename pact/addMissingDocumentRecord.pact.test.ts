@@ -6,6 +6,7 @@ import { pactPostRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const accessToken = 'accessToken-1'
+  const user = { token: accessToken }
   const recallId = '00000000-0000-0000-0000-000000000000'
 
   const path = `/recalls/${recallId}/missing-documents-records`
@@ -35,7 +36,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
         willRespondWith: { status: 201 },
       })
 
-      const actual = await addMissingDocumentRecord(recallId, requestBody, accessToken)
+      const actual = await addMissingDocumentRecord(recallId, requestBody, user)
 
       expect(actual.status).toEqual(201)
     })
@@ -48,7 +49,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
       })
 
       try {
-        await addMissingDocumentRecord(recallId, requestBody, accessToken)
+        await addMissingDocumentRecord(recallId, requestBody, user)
       } catch (exception) {
         expect(exception.status).toEqual(401)
       }
