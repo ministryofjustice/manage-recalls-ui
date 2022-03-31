@@ -4,6 +4,7 @@ import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from '.
 import { processUpload } from './documents/upload/helpers/processUpload'
 import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
 import { FileError, MultiErrorResponse } from '../@types/manage-recalls-api'
+import { sendFileSizeMetric } from './documents/upload/helpers/sendFileSizeMetric'
 
 const fieldNameFromDocCategory = (category: RecallDocument.category) => {
   switch (category) {
@@ -49,6 +50,7 @@ export const combinedMultipleFilesAndFormSave =
     const { user, urlInfo } = res.locals
     const { request, uploadFailed } = await processUpload(uploadFormFieldNames, req, res)
     const { files } = request
+    Object.values(files).forEach(file => sendFileSizeMetric(file))
     const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
       requestBody: request.body,
       filesUploaded: files,

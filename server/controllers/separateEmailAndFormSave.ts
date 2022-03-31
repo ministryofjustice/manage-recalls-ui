@@ -5,6 +5,7 @@ import { NamedFormError, FormWithDocumentUploadValidatorFn, SaveToApiFn } from '
 import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from './utils/errorMessages'
 import { makeUrl, makeUrlToFromPage } from './utils/makeUrl'
 import { processUpload } from './documents/upload/helpers/processUpload'
+import { sendFileSizeMetric } from './documents/upload/helpers/sendFileSizeMetric'
 
 export const separateEmailAndFormSave =
   ({
@@ -23,6 +24,7 @@ export const separateEmailAndFormSave =
     const { user, urlInfo } = res.locals
     const { request, uploadFailed } = await processUpload(uploadFormFieldName, req, res)
     const { file } = request
+    sendFileSizeMetric(file)
     const wasUploadFileReceived = Boolean(file)
     const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
       requestBody: request.body,

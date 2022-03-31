@@ -7,6 +7,7 @@ import logger from '../../../../logger'
 import { errorMsgDocumentUpload, makeErrorObject } from '../../utils/errorMessages'
 import { uploadRecallDocument } from '../../../clients/manageRecallsApiClient'
 import { makeUrlToFromPage } from '../../utils/makeUrl'
+import { sendFileSizeMetric } from './helpers/sendFileSizeMetric'
 
 export const uploadDocumentVersionFormHandler = async (req: Request, res: Response) => {
   uploadStorageField('document')(req, res, async uploadError => {
@@ -18,6 +19,7 @@ export const uploadDocumentVersionFormHandler = async (req: Request, res: Respon
       const uploadFailed = Boolean(uploadError)
       const { recallId } = req.params
       const { file, session, body } = req
+      sendFileSizeMetric(file)
       const invalidCategory = !uploadedDocCategoriesList().find(cat => cat.name === body.categoryName)
       if (invalidCategory) {
         throw new Error('Invalid category')
