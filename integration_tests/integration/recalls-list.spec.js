@@ -73,6 +73,7 @@ describe('Recalls list', () => {
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'BOOKED_ON' } })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.task('expectAddPhaseStartTime')
     cy.visit('/')
     cy.assertTableColumnValues({
       qaAttrTable: 'to-do',
@@ -122,6 +123,7 @@ describe('Recalls list', () => {
       expectedResult: { ...getRecallResponse, status: 'AWAITING_DOSSIER_CREATION' },
     })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
+    cy.task('expectAddPhaseStartTime')
     cy.visit('/')
     cy.clickButton(`Create dossier for ${personName}`)
     cy.pageHeading().should('equal', `Create a dossier for ${personName} recall`)

@@ -16,7 +16,7 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('add a start of phase', () => {
     const path = `/recalls/${recallId}/start-phase`
     const valuesToSave = {
-      phase: 'BOOK',
+      phase: 'ASSESS',
     }
 
     test('can successfully add a start phase', async () => {

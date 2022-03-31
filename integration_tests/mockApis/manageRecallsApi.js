@@ -1,3 +1,5 @@
+import { addPhaseStartTime } from '../../server/clients/manageRecallsApiClient'
+
 export default function manageRecallsApi(wiremock) {
   return {
     expectPrisonerResult: expectation => {
@@ -404,6 +406,28 @@ export default function manageRecallsApi(wiremock) {
             'Content-Type': 'application/json;charset=UTF-8',
           },
           jsonBody: expectation ? expectation.expectedResult : {},
+        },
+      })
+    },
+    expectAddPhaseStartTime: () => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: `/recalls/(.*)/start-phase`,
+        },
+        response: {
+          status: 201,
+        },
+      })
+    },
+    expectAddPhaseEndTime: () => {
+      return wiremock.stubFor({
+        request: {
+          method: 'POST',
+          urlPattern: `/recalls/(.*)/end-phase`,
+        },
+        response: {
+          status: 201,
         },
       })
     },

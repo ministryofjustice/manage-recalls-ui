@@ -193,6 +193,9 @@ context('Create a dossier', () => {
     })
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.task('expectUpdateRecall', { recallId, status })
+    cy.task('expectAddPhaseStartTime')
+    cy.task('expectAddPhaseEndTime')
+
     cy.visit('/')
     const recallsList = recallsListPage.verifyOnPage()
     recallsList.createDossier({ recallId })
