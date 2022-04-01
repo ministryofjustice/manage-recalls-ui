@@ -26,7 +26,6 @@ export const validateAddressManual = ({
     line2: line2Unprocessed,
     town: townUnprocessed,
     postcode: postcodeUnprocessed,
-    recallId,
   } = requestBody
   const line1 = line1Unprocessed?.trim().toUpperCase()
   const line2 = line2Unprocessed?.trim().toUpperCase()
@@ -70,7 +69,6 @@ export const validateAddressManual = ({
   }
   if (!errors) {
     valuesToSave = {
-      recallId,
       line1,
       line2,
       town,

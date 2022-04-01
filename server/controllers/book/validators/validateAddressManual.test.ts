@@ -1,9 +1,7 @@
 import { validateAddressManual } from './validateAddressManual'
 
 describe('validateAddressManual', () => {
-  const recallId = '123'
   const requestBody = {
-    recallId,
     line1: '345 PORCHESTER ROAD ',
     line2: ' SOUTHSEA',
     town: 'PORTSMOUTH ',
@@ -15,7 +13,6 @@ describe('validateAddressManual', () => {
     const { errors, valuesToSave } = validateAddressManual({ requestBody, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      recallId: '123',
       line1: '345 PORCHESTER ROAD',
       line2: 'SOUTHSEA',
       town: 'PORTSMOUTH',
@@ -28,7 +25,6 @@ describe('validateAddressManual', () => {
     const { errors, valuesToSave } = validateAddressManual({ requestBody: { ...requestBody, line2: '' }, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      recallId: '123',
       line1: '345 PORCHESTER ROAD',
       line2: '',
       town: 'PORTSMOUTH',
@@ -41,7 +37,6 @@ describe('validateAddressManual', () => {
     const { errors, valuesToSave } = validateAddressManual({ requestBody: { ...requestBody, postcode: '' }, urlInfo })
     expect(errors).toBeUndefined()
     expect(valuesToSave).toEqual({
-      recallId: '123',
       line1: '345 PORCHESTER ROAD',
       line2: 'SOUTHSEA',
       town: 'PORTSMOUTH',

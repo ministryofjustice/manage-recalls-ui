@@ -21,6 +21,7 @@ export const selectLookupAddressHandler = async (req: Request, res: Response): P
     const { line1, line2, town, postcode } = await getAddressByUprn(valuesToSave.addressUprn)
 
     await addLastKnownAddress({
+      recallId,
       valuesToSave: { line1, line2, town, postcode, recallId, source: LastKnownAddress.source.LOOKUP },
       user,
     })
