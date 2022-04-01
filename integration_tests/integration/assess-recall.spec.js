@@ -109,6 +109,8 @@ context('Assess a recall', () => {
       documentId: '123',
     })
     cy.task('expectSetConfirmedRecallType')
+    cy.task('expectAddPhaseStartTime')
+    cy.task('expectAddPhaseEndTime')
     cy.visitPage('/')
     cy.clickButton('Assess recall')
     cy.pageHeading().should('equal', `Assess a recall for ${firstLastName}`)

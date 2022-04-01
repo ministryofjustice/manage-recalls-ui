@@ -3,6 +3,7 @@
 /* eslint-disable */
 
 export type CreateLastKnownAddressRequest = {
+    recallId?: string;
     line1: string;
     line2?: string;
     town: string;

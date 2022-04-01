@@ -286,6 +286,18 @@ export function unassignUserFromRecall(recallId: string, assignee: string, token
   return restClient(token).delete<Recall>({ path: `/recalls/${recallId}/assignee/${assignee}` })
 }
 
+export function addPhaseStartTime({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).post({ path: `/recalls/${recallId}/start-phase`, data: valuesToSave, raw: true })
+}
+
+export function addPhaseEndTime({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
+  return restClient(user.token).patch({
+    path: `/recalls/${recallId}/end-phase`,
+    data: valuesToSave,
+    raw: true,
+  })
+}
+
 function restClient(token?: string): RestClient {
   return new RestClient('Manage Recalls API Client', manageRecallsApiConfig(), token)
 }

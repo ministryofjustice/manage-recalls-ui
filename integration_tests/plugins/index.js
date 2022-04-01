@@ -52,6 +52,8 @@ module.exports = (on, config) => {
     expectAddReturnToCustodyDates: manageRecallsApi.expectAddReturnToCustodyDates,
     expectSetRecommendedRecallType: manageRecallsApi.expectSetRecommendedRecallType,
     expectSetConfirmedRecallType: manageRecallsApi.expectSetConfirmedRecallType,
+    expectAddPhaseStartTime: manageRecallsApi.expectAddPhaseStartTime,
+    expectAddPhaseEndTime: manageRecallsApi.expectAddPhaseEndTime,
     expectStopRecall: manageRecallsApi.expectStopRecall,
     findApiRequests: wiremockApi.findApiRequests,
     getLoginUrl: authApi.getLoginUrl,

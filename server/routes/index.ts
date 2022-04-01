@@ -25,7 +25,7 @@ import { validateCheckAnswers } from '../controllers/book/validators/validateChe
 import { getUser, postUser } from '../controllers/userDetails/userDetails'
 import { parseUrlParams, returnToRecallListParam } from '../middleware/parseUrlParams'
 import { fetchRemoteRefData } from '../referenceData'
-import { assignUser } from '../controllers/assignUser/assignUser'
+import { startRecallPhase } from '../controllers/saveToApi/startRecallPhase'
 import {
   addLastKnownAddress,
   addNote,
@@ -60,7 +60,7 @@ import { validateReturnToCustodyDates } from '../controllers/assess/validators/v
 import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
 import { validateNsyEmail } from '../controllers/dossier/validators/validateNsyEmail'
 import { validateRecallType } from '../controllers/book/validators/validateRecallType'
-import { saveRecallAndUnassignUser } from '../controllers/documents/upload/helpers/saveRecallAndUnassignUser'
+import { endRecallPhase } from '../controllers/saveToApi/endRecallPhase'
 import { UploadDocumentRequest } from '../@types/manage-recalls-api/models/UploadDocumentRequest'
 import { validateAddNote } from '../controllers/note/validators/validateAddNote'
 import { combinedDocumentAndFormSave } from '../controllers/combinedDocumentAndFormSave'
@@ -72,6 +72,8 @@ import { combinedMultipleFilesAndFormSave } from '../controllers/combinedMultipl
 import { validatePartB } from '../controllers/partB/validators/validatePartB'
 import { validateSupportRerelease } from '../controllers/partB/validators/validateSupportRerelease'
 import { getStoredSessionData } from '../middleware/getStoredSessionData'
+import { EndPhaseRequest } from '../@types/manage-recalls-api/models/EndPhaseRequest'
+import { StartPhaseRequest } from '../@types/manage-recalls-api/models/StartPhaseRequest'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -141,11 +143,14 @@ export default function routes(router: Router): Router {
   get(`${basePath}/upload-document-version`, recallPageGet('recallUploadDocumentVersion'))
   post(`${basePath}/upload-document-version`, uploadDocumentVersionFormHandler)
   get(`${basePath}/check-answers`, recallPageGet('recallCheckAnswers'))
-  post(`${basePath}/check-answers`, recallFormPost(validateCheckAnswers))
+  post(`${basePath}/check-answers`, recallFormPost(validateCheckAnswers, endRecallPhase(EndPhaseRequest.phase.BOOK)))
   get(`${basePath}/confirmation`, recallPageGet('recallConfirmation'))
 
   // ASSESS A RECALL
-  post(`${basePath}/assess-assign`, assignUser({ nextPageUrlSuffix: 'assess' }))
+  post(
+    `${basePath}/assess-assign`,
+    startRecallPhase({ phase: StartPhaseRequest.phase.ASSESS, nextPageUrlSuffix: 'assess' })
+  )
   get(`${basePath}/assess`, recallPageGet('assessRecall'))
   get(`${basePath}/assess-decision`, recallPageGet('assessDecision'))
 
@@ -171,7 +176,7 @@ export default function routes(router: Router): Router {
     separateEmailAndFormSave({
       uploadFormFieldName: 'recallNotificationEmailFileName',
       validator: validateRecallNotificationEmail,
-      saveToApiFn: saveRecallAndUnassignUser,
+      saveToApiFn: endRecallPhase(StartPhaseRequest.phase.ASSESS),
       documentCategory: UploadDocumentRequest.category.RECALL_NOTIFICATION_EMAIL,
     })
   )
@@ -182,7 +187,10 @@ export default function routes(router: Router): Router {
   post(`${basePath}/rtc-dates`, recallFormPost(validateReturnToCustodyDates, addReturnToCustodyDates))
 
   // CREATE DOSSIER
-  post(`${basePath}/dossier-assign`, assignUser({ nextPageUrlSuffix: 'dossier-recall' }))
+  post(
+    `${basePath}/dossier-assign`,
+    startRecallPhase({ phase: StartPhaseRequest.phase.DOSSIER, nextPageUrlSuffix: 'dossier-recall' })
+  )
   get(`${basePath}/dossier-recall`, recallPageGet('dossierRecallInformation'))
   get(`${basePath}/dossier-prison`, recallPageGet('dossierPrison'))
   post(`${basePath}/dossier-prison`, recallFormPost(validateDossierPrison))
@@ -206,7 +214,7 @@ export default function routes(router: Router): Router {
     separateEmailAndFormSave({
       uploadFormFieldName: 'dossierEmailFileName',
       validator: validateDossierEmail,
-      saveToApiFn: saveRecallAndUnassignUser,
+      saveToApiFn: endRecallPhase(EndPhaseRequest.phase.DOSSIER),
       documentCategory: UploadDocumentRequest.category.DOSSIER_EMAIL,
     })
   )
