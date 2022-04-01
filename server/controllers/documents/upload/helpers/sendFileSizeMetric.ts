@@ -11,7 +11,7 @@ export const fileUploadHistogram = new promClient.Histogram({
 
 export const sendFileSizeMetric = (file: Express.Multer.File) => {
   try {
-    if (['PRODUCTION', 'PRE-PRODUCTION'].includes(process.env.ENVIRONMENT) && file) {
+    if (file) {
       const fileExtension = file.originalname.split('.').pop().toLowerCase()
       fileUploadHistogram.labels({ fileExtension }).observe(bytesToMB(file.size))
     }
