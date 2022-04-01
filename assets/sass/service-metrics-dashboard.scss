@@ -1,0 +1,227 @@
+.dashboard {
+  $unit: 15px;
+
+  box-sizing: border-box;
+
+  .moj-primary-navigation, .phase-banner-container {
+    display: none;
+  }
+
+  .moj-header__container {
+    @include govuk-width-container(1600px);
+  }
+
+  .dashboard__container {
+    @include govuk-width-container(1600px);
+  }
+
+  .dashboard__main {
+    padding-top: govuk-spacing(2);
+  }
+
+  .dashboard__wrapper {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .dashboard__menu {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 4px;
+    margin-right: govuk-spacing(4);
+    display: none;
+    flex: 0 0 auto;
+    align-self: flex-start;
+
+  }
+
+  @media (min-width: 1024px) {
+    .dashboard__menu {
+      display: block;
+      width: 200px;
+    }
+  }
+
+  .dashboard__content {
+    flex: 1 1 auto;
+    padding-top: govuk-spacing(4)
+  }
+
+  .dashboard_row {
+
+    @include govuk-media-query($from: mobile) {
+      display: grid;
+    }
+    @include govuk-media-query($from: desktop) {
+      grid-template-columns: repeat(3, 1fr);
+      //flex-direction: row;
+    }
+  }
+
+  .dashboard__panel {
+    padding: 20px 10px;
+    background-color: #f8f8f8;
+    border: 1px #f3f2f1 solid;
+    margin-bottom: govuk-spacing(3);
+    margin-right: govuk-spacing(3);
+    &:last-child {
+      margin-right: 0;
+    }
+    @include govuk-media-query($from: tablet) {
+      padding: 20px;
+    }
+    @media (min-width: 1024px) {
+      margin-bottom: govuk-spacing(6);
+      margin-right: govuk-spacing(6);
+    }
+  }
+
+  .dashboard__panel-heading {
+    font-family: "GDS Transport", arial, sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+    @media (min-width: 1024px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .dashboard__cards {
+    display: flex;
+  }
+
+  .dashboard__card {
+    margin-right: $unit;
+
+    @include govuk-media-query($from: tablet) {
+      margin-right: $unit * 2;
+    }
+    @media (min-width: 1024px) {
+      margin-right: $unit * 4;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    @media (min-width: 1024px) {
+      font-size: 60px;
+    }
+  }
+
+  .stat-unit {
+    font-size: 32px;
+    padding-left: 5px;
+  }
+
+  .grey-title-m {
+    color: $govuk-secondary-text-colour;
+    font-weight: normal;
+    font-family: "GDS Transport", arial, sans-serif;
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    @media (min-width: 1024px) {
+      font-size: 1.125rem;
+    }
+  }
+
+  .timings__inner {
+    padding-right: 100px;
+  }
+
+  .timings__items {
+    display: flex;
+    font-family: "GDS Transport", arial, sans-serif;
+  }
+
+  .timings__item {
+    color: white;
+    flex: 1 1 auto;
+    height: $unit * 4;
+    position: relative;
+
+    &:after {
+      content: '';
+      display: block;
+      width: 0;
+      border-width: $unit * 2 $unit;
+      border-style: solid;
+      border-color: transparent;
+      position: absolute;
+      left: 100%;
+      top: 0;
+      z-index: 1;
+    }
+  }
+
+  .timings__item-last {
+    color: govuk-colour('black');
+    font-weight: bold;
+  }
+
+  .timings__total {
+    margin-left: $unit * 2;
+  }
+
+  .timings__label {
+    position: absolute;
+    left: $unit * 1.5;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    @include govuk-media-query($from: tablet) {
+      left: $unit * 2;
+      font-size: 16px;
+    }
+  }
+
+  .timings__label-first {
+    left: $unit * 0.5;
+    @include govuk-media-query($from: tablet) {
+      left: $unit;
+    }
+  }
+
+  .timings__value {
+    margin: 0
+  }
+
+  @for $i from 0 through 100 {
+    .width-#{$i} {
+      width: round(percentage($i/100));
+    }
+  }
+
+  $shade1: govuk-colour('pink');
+  $shade2: govuk-colour('bright-purple');
+  $shade3: govuk-colour('dark-blue');
+
+  .shade-1 {
+    background-color: $shade1;
+
+    &:after {
+      border-left-color: $shade1;
+    }
+  }
+
+  .shade-2 {
+    background-color: $shade2;
+
+    &:after {
+      border-left-color: $shade2;
+    }
+  }
+
+  .shade-3 {
+    background-color: $shade3;
+
+    &:after {
+      border-left-color: $shade3;
+    }
+  }
+}
+

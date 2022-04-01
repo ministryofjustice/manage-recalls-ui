@@ -244,3 +244,5 @@ export const linkTextWithPerson = (recall: DecoratedRecall) => {
   const { fullName, nomsNumber } = recall
   return ` for ${fullName} (NOMIS - ${nomsNumber})`
 }
+
+export const percentage = (value: number, total: number) => Math.round((value / total) * 100)

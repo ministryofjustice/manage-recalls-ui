@@ -340,3 +340,13 @@ Cypress.Commands.add('assertRecallFieldsSavedToApi', ({ recallId, bodyValues }) 
     bodyValues,
   })
 })
+
+// ================================ DEFINITION LIST ================================
+Cypress.Commands.add('definitionListValue', (listQaAttr, label) =>
+  cy
+    .getElement({ qaAttr: listQaAttr })
+    .contains(exactMatchIgnoreWhitespace(label))
+    .next('dd')
+    .invoke('text')
+    .then(text => text.trim())
+)

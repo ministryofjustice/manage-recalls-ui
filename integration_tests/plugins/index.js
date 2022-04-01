@@ -55,6 +55,7 @@ module.exports = (on, config) => {
     expectAddPhaseStartTime: manageRecallsApi.expectAddPhaseStartTime,
     expectAddPhaseEndTime: manageRecallsApi.expectAddPhaseEndTime,
     expectStopRecall: manageRecallsApi.expectStopRecall,
+    expectGetServiceMetrics: manageRecallsApi.expectGetServiceMetrics,
     findApiRequests: wiremockApi.findApiRequests,
     getLoginUrl: authApi.getLoginUrl,
     lighthouse: lighthouse(),
