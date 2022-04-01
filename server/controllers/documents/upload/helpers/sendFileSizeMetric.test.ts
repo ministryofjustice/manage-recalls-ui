@@ -39,13 +39,13 @@ describe('sendFileSizeMetric', () => {
     expect(observe).toHaveBeenCalledWith(10.5)
   })
 
-  it('does not send the metric in development', () => {
+  it('sends the metric in development', () => {
     process.env.ENVIRONMENT = 'DEVELOPMENT'
     sendFileSizeMetric({
       originalname: 'test.pdf',
       size: 10500000,
     })
-    expect(observe).not.toHaveBeenCalled()
+    expect(observe).toHaveBeenCalledWith(10.5)
   })
 
   it('does not send the metric if process.env.ENVIRONMENT is not set', () => {
