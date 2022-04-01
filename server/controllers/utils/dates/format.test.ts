@@ -1,5 +1,5 @@
 import { DateTime, Duration } from 'luxon'
-import { dueDateShortLabel, formatDateTimeFromIsoString, dueDateTimeLabel } from './format'
+import { dueDateShortLabel, formatDateTimeFromIsoString, dueDateTimeLabel, secondsToMinutes } from './format'
 
 describe('Date helpers', () => {
   describe('formatDateTimeFromIsoString', () => {
@@ -282,5 +282,19 @@ describe('Date helpers', () => {
     function asUtcDateTime(isoDateTimeStr: string) {
       return DateTime.fromISO(isoDateTimeStr, { zone: 'utc' })
     }
+  })
+
+  describe('secondsToMinutes', () => {
+    it('returns a result for > 1m', () => {
+      expect(secondsToMinutes(883)).toEqual('14m 43s')
+    })
+
+    it('returns a result for < 1m', () => {
+      expect(secondsToMinutes(34)).toEqual('0m 34s')
+    })
+
+    it('returns empty string if not passed a number', () => {
+      expect(secondsToMinutes(true as unknown as number)).toEqual('')
+    })
   })
 })

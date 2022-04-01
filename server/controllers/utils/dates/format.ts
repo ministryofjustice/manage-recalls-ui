@@ -1,7 +1,7 @@
 import { DateTime, Duration } from 'luxon'
 import logger from '../../../../logger'
 import { europeLondon, getDateTimeInEuropeLondon, getDateTimeUTC } from './convert'
-import { isDefined } from '../../../utils/utils'
+import { isDefined, isNumber } from '../../../utils/utils'
 
 const datePresentationFormat = 'd MMMM yyyy'
 const datePresentationNoYearFormat = 'd MMM'
@@ -123,9 +123,18 @@ export const dueDateTimeLabel = ({
 }
 
 export const padWithZeroes = (value?: number): string => {
-  if (!isDefined(value)) {
+  if (!isNumber(value)) {
     return ''
   }
   const padded = value.toString()
   return padded.length < 2 ? `0${padded}` : padded
+}
+
+export const secondsToMinutes = (seconds: number): string => {
+  if (!isNumber(seconds)) {
+    return ''
+  }
+  const minutes = Math.floor(seconds / 60)
+  const remainingSeconds = seconds % 60
+  return `${minutes}m ${padWithZeroes(remainingSeconds)}s`
 }

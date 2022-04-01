@@ -26,6 +26,7 @@ import { RecallReasonResponse } from '../@types/manage-recalls-api/models/Recall
 import { MappaLevelResponse } from '../@types/manage-recalls-api/models/MappaLevelResponse'
 import { RecallResponseLite } from '../@types/manage-recalls-api/models/RecallResponseLite'
 import { StopReasonResponse } from '../@types/manage-recalls-api/models/StopReasonResponse'
+import { StatisticsSummary } from '../@types/manage-recalls-api/models/StatisticsSummary'
 
 export async function getPrisonerByNomsNumber(nomsNumber: string, token: string): Promise<Prisoner | null> {
   return restClient(token).get<Prisoner>({
@@ -296,6 +297,10 @@ export function addPhaseEndTime({ recallId, valuesToSave, user }: SaveToApiFnArg
     data: valuesToSave,
     raw: true,
   })
+}
+
+export function getServiceMetrics(token: string): Promise<StatisticsSummary> {
+  return restClient(token).get<StatisticsSummary>({ path: '/statistics/summary' })
 }
 
 function restClient(token?: string): RestClient {
