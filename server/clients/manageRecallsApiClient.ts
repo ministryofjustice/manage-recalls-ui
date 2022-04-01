@@ -291,7 +291,7 @@ export function addPhaseStartTime({ recallId, valuesToSave, user }: SaveToApiFnA
 }
 
 export function addPhaseEndTime({ recallId, valuesToSave, user }: SaveToApiFnArgs): Promise<superagent.Response> {
-  return restClient(user.token).post({
+  return restClient(user.token).patch({
     path: `/recalls/${recallId}/end-phase`,
     data: valuesToSave,
     raw: true,

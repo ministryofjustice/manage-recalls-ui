@@ -2,7 +2,7 @@
 import { pactWith } from 'jest-pact'
 import { addPhaseEndTime, addPhaseStartTime } from '../server/clients/manageRecallsApiClient'
 import * as configModule from '../server/config'
-import { pactPostRequest } from './pactTestUtils'
+import { pactPatchRequest, pactPostRequest } from './pactTestUtils'
 
 pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, provider => {
   const recallId = '00000000-0000-0000-0000-000000000000'
@@ -49,26 +49,26 @@ pactWith({ consumer: 'manage-recalls-ui', provider: 'manage-recalls-api' }, prov
   describe('add an end of phase', () => {
     const path = `/recalls/${recallId}/end-phase`
     const valuesToSave = {
-      phase: 'ASSESS',
+      phase: 'BOOK',
       shouldUnassign: false,
     }
 
     test('can successfully add an end phase', async () => {
       await provider.addInteraction({
         state: 'a user and a fully populated recall without documents exists',
-        ...pactPostRequest('an add end phase request', path, valuesToSave, accessToken),
-        willRespondWith: { status: 201 },
+        ...pactPatchRequest('an add end phase request', path, valuesToSave, accessToken),
+        willRespondWith: { status: 200 },
       })
 
       const actual = await addPhaseEndTime({ recallId, valuesToSave, user })
 
-      expect(actual.status).toEqual(201)
+      expect(actual.status).toEqual(200)
     })
 
     test('returns 401 if invalid user', async () => {
       await provider.addInteraction({
         state: 'an unauthorized user accessToken',
-        ...pactPostRequest('an unauthorized add end phase request', path, valuesToSave, accessToken),
+        ...pactPatchRequest('an unauthorized add end phase request', path, valuesToSave, accessToken),
         willRespondWith: { status: 401 },
       })
 
