@@ -74,6 +74,7 @@ import { validateSupportRerelease } from '../controllers/partB/validators/valida
 import { getStoredSessionData } from '../middleware/getStoredSessionData'
 import { EndPhaseRequest } from '../@types/manage-recalls-api/models/EndPhaseRequest'
 import { StartPhaseRequest } from '../@types/manage-recalls-api/models/StartPhaseRequest'
+import { serviceMetricsDashboard } from '../controllers/serviceMetrics'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -85,6 +86,7 @@ export default function routes(router: Router): Router {
   router.get('/', checkUserDetailsExist, getStoredSessionData, asyncMiddleware(recallList))
 
   router.get('/find-person', getStoredSessionData, asyncMiddleware(findPerson))
+  get('/service-metrics', serviceMetricsDashboard)
 
   post('/recalls', createRecall)
 

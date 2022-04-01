@@ -1,0 +1,131 @@
+{% set bodyClasses = "dashboard" %}
+{% set containerClasses = 'dashboard__container' %}
+{% set mainClasses = 'dashboard__main' %}
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = applicationName + " - Service metrics" %}
+
+{% block content %}
+
+    <div class='dashboard__wrapper'>
+        {# <div class='dashboard__menu'> #}
+        {# <nav class="moj-side-navigation" aria-label="Side navigation"> #}
+        {# <ul class="moj-side-navigation__list"> #}
+        {# <li class="moj-side-navigation__item"> #}
+        {# <a href="#recallsCompleted">Recalls completed</a> #}
+        {# </li> #}
+
+        {# <li class="moj-side-navigation__item"> #}
+        {# <a href="#timesTaken">Times taken</a> #}
+        {# </li> #}
+        {# </ul> #}
+        {# </nav> #}
+        {# </div> #}
+        <div class='dashboard__content'>
+            <h1 class="govuk-heading-l">
+                Service metrics
+            </h1>
+{#            <div class='dashboard_row'>#}
+{#                <div class='dashboard__panel' id='recallsCompleted'>#}
+{#                    <h2 class="dashboard__panel-heading">Notifications sent on time</h2>#}
+{#                    <div class='dashboard__cards'>#}
+{#                        <div class='dashboard__card'>#}
+{#                            <h3 class="grey-title-m">#}
+{#                                Last 7 days</h3>#}
+{#                            <div class='govuk-body'>#}
+{#                                <div class='stat-number'>{{ notificationsSent.7days.percentage }}<span class='stat-unit'>%</span></div>#}
+{#                                <div class='grey-title-m'>{{ notificationsSent.7days.achieved }} out of {{ notificationsSent.7days.total }}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class='dashboard__card'>#}
+{#                            <h3 class="grey-title-m">#}
+{#                                Total</h3>#}
+{#                            <div class='govuk-body'>#}
+{#                                <span class='stat-number'>92</span><span class='stat-unit'>%</span>#}
+{#                                <div class='grey-title-m'>33 out of 36#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class='dashboard__panel' id='recallsCompleted'>#}
+{#                    <h2 class="dashboard__panel-heading">Dossiers issued on time</h2>#}
+{#                    <div class='dashboard__cards'>#}
+{#                        <div class='dashboard__card'>#}
+{#                            <h3 class="grey-title-m">#}
+{#                                Last 7 days</h3>#}
+{#                            <div class='govuk-body'>#}
+{#                                <div class='stat-number'>83<span class='stat-unit'>%</span></div>#}
+{#                                <div class='grey-title-m'>5 out of 6#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class='dashboard__card'>#}
+{#                            <h3 class="grey-title-m">#}
+{#                                Total</h3>#}
+{#                            <div class='govuk-body'>#}
+{#                                <span class='stat-number'>89</span><span class='stat-unit'>%</span>#}
+{#                                <div class='grey-title-m'>32 out of 36#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class='dashboard__panel' id='recallsCompleted'>#}
+{#                    <h2 class="dashboard__panel-heading">Recalls completed</h2>#}
+{#                    <div class='dashboard__cards'>#}
+{#                        <div class='dashboard__card'>#}
+{#                            <h3 class="grey-title-m">#}
+{#                                Last 7 days</h3>#}
+{#                            <div class='govuk-body'>#}
+{#                                <span class='stat-number'>100</span><span class='stat-unit'>%</span>#}
+{#                                <div class='grey-title-m'>6 out of 6#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class='dashboard__card'>#}
+{#                            <h3 class="grey-title-m">#}
+{#                                Total</h3>#}
+{#                            <div class='govuk-body'>#}
+{#                                <span class='stat-number'>97</span><span class='stat-unit'>%</span>#}
+{#                                <div class='grey-title-m'>35 out of 36#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+            <div class='dashboard__panel' id='timesTaken'>
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Average times taken</h2>
+                {% for timing in timingAveragesSec %}
+                    <h3 class="govuk-!-font-weight-regular govuk-!-margin-bottom-1">
+                        <div class='govuk-caption-m '>{{ timing.label }}</div>
+                    </h3>
+                    <div class='timings'>
+                        <div class='width-{{ timing.percentOfLargest }} timings__inner'>
+                            <dl class='timings__items' data-qa='timings-{{ timing.name }}'>
+                                {% for entry in timing.entries %}
+                                    <div class='timings__item width-{{ percentage(entry.averageDuration, timing.total) - 10 }} shade-{{ loop.index }}'>
+                                        <div class='timings__label{% if loop.index == 1 %} timings__label-first{% endif %}'>
+                                            <dt>{{ entry.label }}</dt>
+                                            <dd class='timings__value'>{{ secondsToMinutes(entry.averageDuration) }}</dd>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class='timings__item timings__item-last width-10'>
+                                    <div class="timings__label">
+                                        <dt>Total</dt>
+                                        <dd class='timings__value'>{{ secondsToMinutes(timing.total) }}</dd>
+                                    </div>
+                                </div>
+                            </dl>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
