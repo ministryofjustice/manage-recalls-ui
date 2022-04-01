@@ -427,7 +427,7 @@ export default function manageRecallsApi(wiremock) {
           urlPattern: `/recalls/(.*)/end-phase`,
         },
         response: {
-          status: 201,
+          status: 200,
         },
       })
     },
