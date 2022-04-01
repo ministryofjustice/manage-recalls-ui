@@ -23,8 +23,14 @@ import {
   formatNsyWarrantEmailLink,
   makePageTitle,
   linkTextWithPerson,
+  percentage,
 } from './nunjucksFunctions'
-import { formatDateTimeFromIsoString, dueDateTimeLabel, dueDateShortLabel } from '../controllers/utils/dates/format'
+import {
+  formatDateTimeFromIsoString,
+  dueDateTimeLabel,
+  dueDateShortLabel,
+  secondsToMinutes,
+} from '../controllers/utils/dates/format'
 import { isoDateToMillis } from '../controllers/utils/dates/convert'
 import { getReferenceDataItemLabel } from '../referenceData'
 import { formatDocLabel } from '../controllers/documents/upload/helpers'
@@ -98,6 +104,8 @@ export default function nunjucksSetup(app: express.Application, path: pathModule
   njkEnv.addGlobal('formatNsyWarrantEmailLink', formatNsyWarrantEmailLink)
   njkEnv.addGlobal('makePageTitle', makePageTitle)
   njkEnv.addGlobal('linkTextWithPerson', linkTextWithPerson)
+  njkEnv.addGlobal('percentage', percentage)
+  njkEnv.addGlobal('secondsToMinutes', secondsToMinutes)
 
   nunjucksDate.setDefaultFormat('d MMM YYYY')
   nunjucksDate.install(njkEnv)
