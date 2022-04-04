@@ -98,6 +98,7 @@
 {#            </div>#}
             <div class='dashboard__panel' id='timesTaken'>
                 <h2 class="govuk-heading-m govuk-!-margin-bottom-0">Average times taken</h2>
+                <p class='govuk-body-s text-secondary'>Sample sizes are in brackets</p>
                 {% for timing in timingAveragesSec %}
                     <h3 class="govuk-!-font-weight-regular govuk-!-margin-bottom-1">
                         <div class='govuk-caption-m '>{{ timing.label }}</div>
@@ -108,7 +109,7 @@
                                 {% for entry in timing.entries %}
                                     <div class='timings__item width-{{ percentage(entry.averageDuration, timing.total) - 10 }} shade-{{ loop.index }}'>
                                         <div class='timings__label{% if loop.index == 1 %} timings__label-first{% endif %}'>
-                                            <dt>{{ entry.label }}</dt>
+                                            <dt>{{ entry.label }} ({{ entry.count }})</dt>
                                             <dd class='timings__value'>{{ secondsToMinutes(entry.averageDuration) }}</dd>
                                         </div>
                                     </div>
