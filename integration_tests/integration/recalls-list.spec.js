@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { getRecallResponse } from '../mockApis/mockResponses'
 import userDetailsPage from '../pages/userDetails'
+import { formatDateTimeFromIsoString } from '../../server/controllers/utils/dates/format'
 
 describe('Recalls list', () => {
   const recallId = '123'
@@ -389,6 +390,69 @@ describe('Recalls list', () => {
       qaAttrTable: 'awaitingPartB',
       qaAttrCell: 'due',
       valuesToCompare: ['Tomorrow', 'Overdue'],
+    })
+  })
+
+  it('lists "dossier check" recalls on a separate tab, and table can be re-sorted', () => {
+    const assessedRecallId = '2'
+    const awaitingReturnRecallId = '3'
+    const fiveDaysTime = DateTime.now().plus({ days: 5 })
+    const fiveDaysTimeFormatted = formatDateTimeFromIsoString({
+      isoDate: fiveDaysTime,
+      dateOnly: true,
+      shortDateFormat: true,
+    })
+    const twentyDaysTime = DateTime.now().plus({ days: 20 })
+    const twentyDaysTimeFormatted = formatDateTimeFromIsoString({
+      isoDate: twentyDaysTime,
+      dateOnly: true,
+      shortDateFormat: true,
+    })
+    const recalls = [
+      {
+        ...getRecallResponse,
+        recallId: '1',
+        firstName: 'Jack',
+        lastName: 'Jones',
+        status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+        secondaryDossierDueDate: fiveDaysTime.toISODate(),
+        assignee: '123',
+        assigneeUserName: 'Mary Badger',
+      },
+      {
+        ...getRecallResponse,
+        recallId: assessedRecallId,
+        status: 'AWAITING_PART_B',
+        inCustodyAtBooking: false,
+        inCustodyAtAssessment: false,
+        assignee: '122',
+        assigneeUserName: 'Jimmy Pud',
+      },
+      {
+        ...getRecallResponse,
+        recallId: awaitingReturnRecallId,
+        firstName: 'Ben',
+        lastName: 'Adams',
+        status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+        secondaryDossierDueDate: twentyDaysTime.toISODate(),
+      },
+    ]
+
+    cy.task('expectListRecalls', {
+      expectedResults: recalls,
+    })
+    cy.visit('/')
+    cy.clickLink('Dossier check (2)')
+    cy.assertTableColumnValues({
+      qaAttrTable: 'dossierCheck',
+      qaAttrCell: 'due',
+      valuesToCompare: [fiveDaysTimeFormatted, twentyDaysTimeFormatted],
+    })
+    cy.clickButton('Dossier due', { parent: '#dossierCheck' })
+    cy.assertTableColumnValues({
+      qaAttrTable: 'dossierCheck',
+      qaAttrCell: 'due',
+      valuesToCompare: [twentyDaysTimeFormatted, fiveDaysTimeFormatted],
     })
   })
 })
