@@ -19,9 +19,9 @@ const afterAssessStartStatuses = [RecallResponse.status.IN_ASSESSMENT, ...afterA
 
 const allStatuses = [...beforeAssessStartStatuses, ...afterAssessStartStatuses]
 
-const throwIfStatusInvalid = (status: RecallResponse.status) => {
+export const throwIfStatusInvalid = (status: RecallResponse.status) => {
   if (!allStatuses.includes(status)) {
-    throw new Error(`isStatusAfterAssessStart - invalid status ${status}`)
+    throw new Error(`throwIfStatusInvalid - invalid status ${status}`)
   }
 }
 

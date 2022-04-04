@@ -1,4 +1,4 @@
-import { isInCustody, isRescindInProgress, recallStatusTagProperties } from './recallStatus'
+import { isInCustody, isRescindInProgress, recallStatusTagProperties, throwIfStatusInvalid } from './recallStatus'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 
 describe('isInCustody', () => {
@@ -172,6 +172,20 @@ describe('recallStatusTagProperties', () => {
       text: 'Ready for review',
       classes: `govuk-tag--red`,
     })
+  })
+})
+
+describe('check all statuses', () => {
+  it('doesnt error for all statuses', () => {
+    Object.keys(RecallResponse.status).forEach(recallStatus => {
+      expect(() => throwIfStatusInvalid(recallStatus as RecallResponse.status)).not.toThrow()
+    })
+  })
+
+  it('None of the statuses return `Unknown status`', () => {
+    Object.keys(RecallResponse.status).forEach(recallStatus =>
+      expect(recallStatusTagProperties({ status: recallStatus } as RecallResponse).text).not.toEqual('Unknown status')
+    )
   })
 })
 
