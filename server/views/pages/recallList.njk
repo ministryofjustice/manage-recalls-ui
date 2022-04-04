@@ -223,56 +223,6 @@
                 {% endif %}
             {% endset -%}
 
-            {% set dossierCheckHtml %}
-                {% if results and results.dossierCheck.length > 0 %}
-                    <table class="govuk-table" data-qa='dossierCheck' data-module="moj-sortable-table" id='table-dossier-check'>
-                        <caption class="govuk-table__caption govuk-table__caption--l" data-qa="awaitingPartB-list-heading">
-                            Dossier check
-                        </caption>
-                        <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
-                            <th scope="col" class="govuk-table__header" aria-sort="ascending">Dossier due</th>
-{#                            <th scope="col" class="govuk-table__header" aria-sort="none">Sentence end date</th>#}
-                            <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
-                            <th scope="col" class="govuk-table__header">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody class="govuk-table__body" data-qa="search-results">
-                        {% for result in results.dossierCheck %}
-                            <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
-                                <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
-                                <td class="govuk-table__cell" data-qa="due" data-sort-value='{{ result.secondaryDossierDueDate }}'>
-                                    {{ dueDateTimeLabel({ dueIsoDateTime: result.secondaryDossierDueDate, includeTime: false, shortFormat: true, showOverdueForShortFormat: true }) }}
-                                </td>
-{#                                <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.sentenceEndDate | dateTime }}</td>#}
-                                <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.assigneeUserName }}</td>
-                                <td class="govuk-table__cell">
-                                    <div class='flex'>
-{#                                        <span class='govuk-!-padding-right-2'>#}
-{#                                            <a href='/recalls/{{result.recallId}}/start-review' data-qa='start-review-{{ result.recallId }}'>#}
-{#                                            Start review<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>#}
-{#                                            </a>#}
-{#                                        </span>#}
-                                        <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
-                                            View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <script nonce='{{ cspNonce }}'>
-                      new MOJFrontend.SortableTable({
-                        table: $('#table-dossier-check')[0]
-                      });
-                    </script>
-                {% else %}
-                    <p class='govuk-body'>No recalls</p>
-                {% endif %}
-            {% endset -%}
-
             {{ govukTabs({
                 items: [
                     {
@@ -302,13 +252,6 @@
                         panel: {
                             html: awaitingPartBHtml
                         }
-                    },
-                    {
-                        label: "Dossier check (" + results.dossierCheck.length + ")",
-                        id: "dossierCheck",
-                        panel: {
-                        html: dossierCheckHtml
-                    }
                     }
                 ]
             }) }}
