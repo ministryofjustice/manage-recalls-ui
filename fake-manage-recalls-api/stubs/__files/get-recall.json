@@ -233,6 +233,5 @@
   "stopByUserName": "Bobby Badger",
   "stopDateTime": "2022-01-22T13:45:33.000Z",
   "partBDueDate": "2022-03-05",
-  "rereleaseSupported": true,
-  "secondaryDossierDueDate": "2022-03-05"
+  "rereleaseSupported": true
 }

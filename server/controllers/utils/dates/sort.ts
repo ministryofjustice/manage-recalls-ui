@@ -108,11 +108,3 @@ export const sortAwaitingPartBList = (awaitingPartBList: RecallResponseLite[]) =
     return diffDatesForSort(partBDueDateA, partBDueDateB, false)
   })
 }
-
-export const sortDossierCheckList = (list: RecallResponseLite[]) => {
-  return list.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
-    const dateA = getDateProperty(a, 'secondaryDossierDueDate')
-    const dateB = getDateProperty(b, 'secondaryDossierDueDate')
-    return diffDatesForSort(dateA, dateB, false)
-  })
-}

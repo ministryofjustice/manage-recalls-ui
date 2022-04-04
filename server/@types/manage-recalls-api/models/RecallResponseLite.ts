@@ -18,7 +18,6 @@ export type RecallResponseLite = {
     dossierTargetDate?: string;
     licenceNameCategory?: RecallResponseLite.licenceNameCategory;
     recallAssessmentDueDateTime?: string;
-    secondaryDossierDueDate?: string;
     assigneeUserName?: string;
     partBDueDate?: string;
 };
@@ -34,7 +33,6 @@ export namespace RecallResponseLite {
         BOOKED_ON = 'BOOKED_ON',
         DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
-        AWAITING_SECONDARY_DOSSIER_CREATION = 'AWAITING_SECONDARY_DOSSIER_CREATION',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         STOPPED = 'STOPPED',
     }
