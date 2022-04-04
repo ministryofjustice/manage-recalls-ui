@@ -163,6 +163,15 @@ describe('recallStatusTagProperties', () => {
       text: 'Rescind in progress',
       classes: `govuk-tag--orange`,
     })
+    expect(
+      recallStatusTagProperties({ status: RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION } as RecallResponse)
+    ).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Ready for review',
+      classes: `govuk-tag--red`,
+    })
   })
 })
 
