@@ -76,7 +76,10 @@ export const padWithZeroes = value => {
 
 export const booleanToYesNo = bool => (bool ? 'Yes' : 'No')
 
-export const exactMatchIgnoreWhitespace = str => new RegExp(`^\\s*${str}\\s*$`, 'g')
+export const exactMatchIgnoreWhitespace = str => {
+  const escaped = str.replace(/\(/g, '\\(').replace(/\)/g, '\\)')
+  return new RegExp(`^\\s*${escaped}\\s*$`, 'g')
+}
 
 export const getIsoDateForMinutesAgo = minutes => {
   const now = DateTime.utc()
