@@ -4,6 +4,7 @@ import {
   sortNotInCustodyList,
   sortToDoList,
   sortCompletedList,
+  sortDossierCheckList,
 } from './sort'
 import { RecallResponseLite } from '../../../@types/manage-recalls-api/models/RecallResponseLite'
 
@@ -169,6 +170,22 @@ describe('sortAwaitingPartBList', () => {
       { partBDueDate: '2022-03-07' },
       { partBDueDate: '2022-03-08' },
       { partBDueDate: '2022-03-09' },
+    ])
+  })
+})
+
+describe('sortDossierCheckList', () => {
+  it('sorts by secondaryDossierDueDate', () => {
+    const recalls = [
+      { secondaryDossierDueDate: '2022-03-08' },
+      { secondaryDossierDueDate: '2022-03-07' },
+      { secondaryDossierDueDate: '2022-03-09' },
+    ]
+    const sorted = sortDossierCheckList(recalls as RecallResponseLite[])
+    expect(sorted).toEqual([
+      { secondaryDossierDueDate: '2022-03-07' },
+      { secondaryDossierDueDate: '2022-03-08' },
+      { secondaryDossierDueDate: '2022-03-09' },
     ])
   })
 })
