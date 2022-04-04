@@ -448,7 +448,7 @@ describe('Recalls list', () => {
       qaAttrCell: 'due',
       valuesToCompare: [fiveDaysTimeFormatted, twentyDaysTimeFormatted],
     })
-    cy.clickButton('Dossier due', { parent: '#dossierCheck' })
+    cy.clickButton('Due', { parent: '#dossierCheck' })
     cy.assertTableColumnValues({
       qaAttrTable: 'dossierCheck',
       qaAttrCell: 'due',
