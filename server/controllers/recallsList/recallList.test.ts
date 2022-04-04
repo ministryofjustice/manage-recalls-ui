@@ -69,6 +69,14 @@ describe('recallList', () => {
       inCustodyAtAssessment: true,
     },
     {
+      firstName: 'Barry',
+      lastName: 'Badger',
+      recallId: '3',
+      nomsNumber: '456',
+      status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+      secondaryDossierDueDate: '2021-08-13',
+    },
+    {
       firstName: 'Brenda',
       lastName: 'Badger',
       recallId: '6',
@@ -86,6 +94,14 @@ describe('recallList', () => {
       status: 'BOOKED_ON',
       dossierTargetDate: '2021-08-13',
       inCustodyAtBooking: false,
+    },
+    {
+      firstName: 'Barry',
+      lastName: 'Badger',
+      recallId: '3',
+      nomsNumber: '456',
+      status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+      secondaryDossierDueDate: '2021-08-11',
     },
     {
       firstName: 'Barnaby',
@@ -210,6 +226,27 @@ describe('recallList', () => {
         partBDueDate: '2022-08-13',
         recallId: '13',
         status: 'AWAITING_PART_B',
+      },
+    ])
+
+    expect(resp.locals.results.dossierCheck).toEqual([
+      {
+        firstName: 'Barry',
+        lastName: 'Badger',
+        fullName: 'Barry Badger',
+        recallId: '3',
+        nomsNumber: '456',
+        status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+        secondaryDossierDueDate: '2021-08-11',
+      },
+      {
+        firstName: 'Barry',
+        lastName: 'Badger',
+        fullName: 'Barry Badger',
+        recallId: '3',
+        nomsNumber: '456',
+        status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+        secondaryDossierDueDate: '2021-08-13',
       },
     ])
   })

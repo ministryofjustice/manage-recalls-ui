@@ -83,6 +83,7 @@ export type RecallResponse = {
     rereleaseSupported?: boolean;
     returnedToCustodyDateTime?: string;
     returnedToCustodyNotificationDateTime?: string;
+    secondaryDossierDueDate?: string;
     sentenceDate?: string;
     sentenceExpiryDate?: string;
     sentenceLength?: SentenceLength;
@@ -106,6 +107,7 @@ export namespace RecallResponse {
         BOOKED_ON = 'BOOKED_ON',
         DOSSIER_IN_PROGRESS = 'DOSSIER_IN_PROGRESS',
         DOSSIER_ISSUED = 'DOSSIER_ISSUED',
+        AWAITING_SECONDARY_DOSSIER_CREATION = 'AWAITING_SECONDARY_DOSSIER_CREATION',
         IN_ASSESSMENT = 'IN_ASSESSMENT',
         STOPPED = 'STOPPED',
     }

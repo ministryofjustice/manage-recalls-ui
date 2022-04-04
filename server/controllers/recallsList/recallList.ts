@@ -4,7 +4,13 @@ import { buildAppInsightsClient } from '../../monitoring/azureAppInsights'
 import { getRecallList } from '../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 import logger from '../../../logger'
-import { sortAwaitingPartBList, sortCompletedList, sortNotInCustodyList, sortToDoList } from '../utils/dates/sort'
+import {
+  sortAwaitingPartBList,
+  sortCompletedList,
+  sortDossierCheckList,
+  sortNotInCustodyList,
+  sortToDoList,
+} from '../utils/dates/sort'
 import { formatPersonName } from '../utils/person'
 import { RecallResponseLite } from '../../@types/manage-recalls-api/models/RecallResponseLite'
 
@@ -45,6 +51,7 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
     const completed = [] as RecallResponseLite[]
     const notInCustody = [] as RecallResponseLite[]
     const awaitingPartB = [] as RecallResponseLite[]
+    const dossierCheck = [] as RecallResponseLite[]
     successful.forEach(recall => {
       if ([RecallResponse.status.DOSSIER_ISSUED, RecallResponse.status.STOPPED].includes(recall.status)) {
         completed.push(recall)
@@ -56,6 +63,8 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         notInCustody.push(recall)
       } else if (recall.status === RecallResponse.status.AWAITING_PART_B) {
         awaitingPartB.push(recall)
+      } else if (recall.status === RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION) {
+        dossierCheck.push(recall)
       } else {
         toDoList.push(recall)
       }
@@ -65,6 +74,7 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
       completed: sortCompletedList(completed),
       notInCustody: sortNotInCustodyList(notInCustody),
       awaitingPartB: sortAwaitingPartBList(awaitingPartB),
+      dossierCheck: sortDossierCheckList(dossierCheck),
     }
 
     if (failed.length) {
