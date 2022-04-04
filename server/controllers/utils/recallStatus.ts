@@ -12,15 +12,16 @@ const afterAssessCompleteStatuses = [
   RecallResponse.status.DOSSIER_IN_PROGRESS,
   RecallResponse.status.DOSSIER_ISSUED,
   RecallResponse.status.AWAITING_PART_B,
+  RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION,
 ]
 
 const afterAssessStartStatuses = [RecallResponse.status.IN_ASSESSMENT, ...afterAssessCompleteStatuses]
 
 const allStatuses = [...beforeAssessStartStatuses, ...afterAssessStartStatuses]
 
-const throwIfStatusInvalid = (status: RecallResponse.status) => {
+export const throwIfStatusInvalid = (status: RecallResponse.status) => {
   if (!allStatuses.includes(status)) {
-    throw new Error(`isStatusAfterAssessStart - invalid status ${status}`)
+    throw new Error(`throwIfStatusInvalid - invalid status ${status}`)
   }
 }
 
@@ -128,6 +129,12 @@ export const recallStatusTagProperties = (recall: RecallResponse) => {
       return {
         ...defaults,
         text: 'Dossier in progress',
+      }
+    case RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION:
+      return {
+        ...defaults,
+        text: 'Ready for review',
+        classes: `govuk-tag--red`,
       }
     case RecallResponse.status.STOPPED:
       return {
