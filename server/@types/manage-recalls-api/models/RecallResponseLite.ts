@@ -12,8 +12,6 @@ export type RecallResponseLite = {
     middleNames?: string;
     lastName: string;
     status: RecallResponseLite.status;
-    inCustodyAtBooking?: boolean;
-    inCustodyAtAssessment?: boolean;
     dossierEmailSentDate?: string;
     dossierTargetDate?: string;
     licenceNameCategory?: RecallResponseLite.licenceNameCategory;
