@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 import { createGeneratedDocument } from './createGeneratedDocument'
 import { generateRecallDocument, getDocumentCategoryHistory, getRecall } from '../../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
+import { mockReq, mockRes } from '../../testUtils/mockRequestUtils'
 
 jest.mock('../../../clients/manageRecallsApiClient')
 
@@ -15,14 +16,16 @@ describe('createGeneratedDocument', () => {
   let next: NextFunction
 
   beforeEach(() => {
-    req = { params: { recallId, documentId }, query: {} } as unknown as Request
-    res = {
-      locals: { user: { token: userToken } },
-      contentType: jest.fn(),
-      header: jest.fn(),
-      send: jest.fn(),
-      sendStatus: jest.fn(),
-    } as unknown as Response
+    req = mockReq({
+      params: { recallId, documentId },
+      query: { pageSuffix: 'assess-download' },
+    })
+    res = mockRes({
+      locals: {
+        urlInfo: { basePath: '/recalls/' },
+      },
+      token: userToken,
+    })
     next = jest.fn()
   })
 
@@ -137,16 +140,24 @@ describe('createGeneratedDocument', () => {
 
   it('returns 400 for an invalid category', async () => {
     req.query.category = 'LICENCE'
+    res.sendStatus = jest.fn()
     await createGeneratedDocument(req, res, next)
     expect(res.sendStatus).toHaveBeenCalledWith(400)
   })
 
-  it('returns 500 and does not call next middleware, if the create document call fails', async () => {
+  it('redirects with an error, if the create document call fails', async () => {
     req.query.category = 'RECALL_NOTIFICATION'
     ;(getDocumentCategoryHistory as jest.Mock).mockResolvedValue([])
     ;(generateRecallDocument as jest.Mock).mockRejectedValue({ statusCode: 500 })
     await createGeneratedDocument(req, res, next)
-    expect(res.sendStatus).toHaveBeenCalledWith(500)
+    expect(res.redirect).toHaveBeenCalledWith(301, '/recalls/assess-download')
+    expect(req.session.errors).toEqual([
+      {
+        href: '#error_RECALL_NOTIFICATION',
+        name: 'error_RECALL_NOTIFICATION',
+        text: 'An error occurred when creating the recall notification. Please try downloading it again',
+      },
+    ])
     expect(next).not.toHaveBeenCalled()
   })
 })

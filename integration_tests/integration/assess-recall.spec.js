@@ -136,9 +136,9 @@ context('Assess a recall', () => {
     cy.clickButton('Continue')
 
     cy.pageHeading().should('equal', 'Download recall notification')
-    cy.clickLink('Download the Recall notification')
     cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${recallNotificationFileName}`)
-    cy.confirmFileDownloaded(recallNotificationFileName)
+    cy.downloadPdf('Download the Recall notification')
+    cy.readDownloadedFile(recallNotificationFileName)
     cy.clickLink('Continue')
 
     cy.selectCheckboxes('I have sent the email to all recipients', ['I have sent the email to all recipients'])
@@ -267,6 +267,22 @@ context('Assess a recall', () => {
       fieldName: 'currentPrison',
       summaryError: 'Select a prison from the list',
     })
+  })
+
+  it('error - download document fails', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: getRecallResponse,
+    })
+    stubRefData()
+    cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
+    cy.task('expectGenerateRecallDocument', { statusCode: 500 })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-download' })
+    cy.downloadPdf('Download the Recall notification', { allowPageReload: true })
+    cy.get(`[href="#error_RECALL_NOTIFICATION"]`).should(
+      'have.text',
+      'An error occurred when creating the recall notification. Please try downloading it again'
+    )
+    cy.getElement('Continue').should('be.disabled')
   })
 
   it("error - if they don't upload the recall notification email or enter a sent date", () => {

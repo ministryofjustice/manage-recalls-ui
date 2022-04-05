@@ -8,12 +8,16 @@ import { sortList } from '../../utils/lists'
 import { isInvalid } from '../../../utils/utils'
 import { getGeneratedDocumentFileName } from './helpers'
 import logger from '../../../../logger'
+import { makeUrl } from '../../utils/makeUrl'
+import { makeErrorObject } from '../../utils/errorMessages'
+import { formatDocLabel } from '../upload/helpers'
 
 // for the initial creation only of recall notification / letter / dossier, not for creating further versions
 export const createGeneratedDocument = async (req: Request, res: Response, next: NextFunction) => {
+  const { category, pageSuffix } = req.query
+  const cat = category as RecallDocument.category
   try {
     const { recallId } = req.params
-    const { category } = req.query
     const { token } = res.locals.user
     if (
       isInvalid(recallId) ||
@@ -21,7 +25,6 @@ export const createGeneratedDocument = async (req: Request, res: Response, next:
     ) {
       return res.sendStatus(400)
     }
-    const cat = category as RecallDocument.category
     const existingDocs = await getDocumentCategoryHistory(recallId, cat, token)
     if (existingDocs.length > 0) {
       const sorted = sortList(existingDocs, 'version', false)
@@ -34,6 +37,13 @@ export const createGeneratedDocument = async (req: Request, res: Response, next:
     next()
   } catch (err) {
     logger.error(err)
-    res.sendStatus(500)
+    const documentType = formatDocLabel(cat)
+    req.session.errors = [
+      makeErrorObject({
+        id: `error_${category}`,
+        text: `An error occurred when creating the ${documentType}. Please try downloading it again`,
+      }),
+    ]
+    res.redirect(301, makeUrl(pageSuffix as string, res.locals.urlInfo))
   }
 }

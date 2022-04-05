@@ -32,28 +32,28 @@
 
                 <p class="govuk-body-l">Review the documents and check the information is correct.</p>
 
-            <div class="govuk-form-group govuk-!-margin-bottom-7">
+            <div class="govuk-form-group govuk-!-margin-bottom-7"{% if errors.error_DOSSIER %} id='downloadLinkError'{% endif %}>
                 {{ documentDownloadLink({
                     linkText: "Dossier",
                     fileName: getGeneratedDocFileName({
                         recall: recall,
                         category: 'DOSSIER'
                     }),
-                    url: '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER',
+                    url: '/recalls/' + recall.recallId + '/documents/create?category=DOSSIER&pageSuffix=dossier-download',
                     dataQaLink: 'getDossierLink',
                     dataQaFileName: 'getDossierFileName'
                 })
                 }}
             </div>
             {% if recall.returnedToCustodyDateTime %}
-            <div class="govuk-form-group govuk-!-margin-bottom-8">
+            <div class="govuk-form-group govuk-!-margin-bottom-8"{% if errors.error_LETTER_TO_PROBATION %} id='downloadLinkError'{% endif %}>
                 {{ documentDownloadLink({
                     linkText: "Letter to probation",
                     fileName: getGeneratedDocFileName({
                         recall: recall,
                         category: 'LETTER_TO_PROBATION'
                     }),
-                    url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PROBATION',
+                    url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PROBATION&pageSuffix=dossier-download',
                     dataQaLink: 'getLetterToProbationLink',
                     dataQaFileName: 'getLetterToProbationFileName'
                 })
@@ -61,14 +61,14 @@
             </div>
             {% endif %}
 
-            <div class="govuk-form-group govuk-!-margin-bottom-8">
+            <div class="govuk-form-group govuk-!-margin-bottom-8"{% if errors.error_LETTER_TO_PRISON %} id='downloadLinkError'{% endif %}>
                 {{ documentDownloadLink({
                     linkText: "Letter to prison",
                     fileName: getGeneratedDocFileName({
                         recall: recall,
                         category: 'LETTER_TO_PRISON'
                     }),
-                    url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON',
+                    url: '/recalls/' + recall.recallId + '/documents/create?category=LETTER_TO_PRISON&pageSuffix=dossier-download',
                     dataQaLink: 'getLetterToPrisonLink',
                     dataQaFileName: 'getLetterToPrisonFileName'
                 })
@@ -96,7 +96,7 @@
             }) }}
                 </div>
             <div class="govuk-!-margin-bottom-8">
-                <button class="govuk-button" data-qa="continueButton">Continue</button>
+                <button class="govuk-button" data-qa="continueButton" {% if errors %}disabled{% endif %}>Continue</button>
             </div>
 
             </form>

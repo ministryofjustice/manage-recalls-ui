@@ -2,10 +2,10 @@ import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockRespo
 
 import recallsListPage from '../pages/recallsList'
 import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
+import { stubRefData } from '../support/mock-api'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
-const dossierDownloadPage = require('../pages/dossierDownload')
 const dossierEmailPage = require('../pages/dossierEmail')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const dossierRecallPage = require('../pages/dossierRecallInformation')
@@ -220,11 +220,14 @@ context('Create a dossier', () => {
     dossierCheck.clickContinue()
 
     cy.pageHeading().should('equal', 'Download the dossier and letter')
-    cy.getLinkHref('Download the Dossier').should('contain', `/recalls/${recallId}/documents/create?category=DOSSIER`)
+    cy.getLinkHref('Download the Dossier').should(
+      'contain',
+      `/recalls/${recallId}/documents/create?category=DOSSIER&pageSuffix=dossier-download`
+    )
     cy.getText('getDossierFileName').should('equal', 'Filename: BADGER BOBBY A123456 RECALL DOSSIER.pdf')
     cy.getLinkHref('Download the Letter to prison').should(
       'contain',
-      `/recalls/${recallId}/documents/create?category=LETTER_TO_PRISON`
+      `/recalls/${recallId}/documents/create?category=LETTER_TO_PRISON&pageSuffix=dossier-download`
     )
     cy.getText('getLetterToPrisonFileName').should('equal', 'Filename: BADGER BOBBY A123456 LETTER TO PRISON.pdf')
     cy.selectConfirmationCheckbox('I have checked the information in the dossier and letter is correct')
@@ -313,16 +316,42 @@ context('Create a dossier', () => {
     })
   })
 
-  it('errors - download the dossier', () => {
+  it('errors - user did not confirm check', () => {
     cy.task('expectGetRecall', {
       expectedResult: emptyRecall,
     })
-    const dossierDownload = dossierDownloadPage.verifyOnPage({ recallId })
-    dossierDownload.clickContinue()
-    dossierDownload.assertErrorMessage({
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-download' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'hasDossierBeenChecked',
       summaryError: "Confirm you've checked the information in the dossier and letter",
     })
+  })
+
+  it('error - download document fails', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: { ...getRecallResponse, hasDossierBeenChecked: undefined },
+    })
+    stubRefData()
+    cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
+    cy.task('expectGenerateRecallDocument', { statusCode: 500 })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-download' })
+    cy.downloadPdf('Download the Dossier', { allowPageReload: true })
+    cy.get(`[href="#error_DOSSIER"]`).should(
+      'have.text',
+      'An error occurred when creating the dossier. Please try downloading it again'
+    )
+    cy.downloadPdf('Download the Letter to probation', { allowPageReload: true })
+    cy.get(`[href="#error_LETTER_TO_PROBATION"]`).should(
+      'have.text',
+      'An error occurred when creating the letter to probation. Please try downloading it again'
+    )
+    cy.downloadPdf('Download the Letter to prison', { allowPageReload: true })
+    cy.get(`[href="#error_LETTER_TO_PRISON"]`).should(
+      'have.text',
+      'An error occurred when creating the letter to prison. Please try downloading it again'
+    )
+    cy.getElement('Continue').should('be.disabled')
   })
 
   it('errors - email the dossier', () => {
