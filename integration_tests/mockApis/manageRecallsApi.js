@@ -243,7 +243,7 @@ export default function manageRecallsApi(wiremock) {
           urlPattern: `/recalls/(.*)/documents/(.*)`,
         },
         response: {
-          status: 200,
+          status: expectation.statusCode || 200,
           headers: {
             'Content-Type': 'application/json;charset=UTF-8',
           },

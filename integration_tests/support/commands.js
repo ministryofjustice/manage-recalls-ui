@@ -188,17 +188,16 @@ Cypress.Commands.add('selectFromDropdown', (label, option, opts = { parent: '#ma
 
 // ================================== UPLOAD / DOWNLOAD ===============================
 
-Cypress.Commands.add('downloadPdf', linkText => {
+Cypress.Commands.add('downloadPdf', (linkText, opts) => {
   return cy
     .contains('a', linkText)
     .then($link => {
-      const url = $link.attr('href')
-      return cy.request({
-        url,
-        encoding: 'base64',
-      })
+      if (opts && opts.allowPageReload) {
+        return $link
+      }
+      return cy.wrap($link).invoke('attr', 'download', 'download')
     })
-    .then(response => cy.task('readPdf', response.body).then(pdf => pdf.text))
+    .click()
 })
 
 Cypress.Commands.add('downloadEmail', (target, opts = { parent: '#main-content' }) => {
@@ -206,9 +205,9 @@ Cypress.Commands.add('downloadEmail', (target, opts = { parent: '#main-content' 
   // TODO - check download folder
 })
 
-Cypress.Commands.add('confirmFileDownloaded', fileName => {
+Cypress.Commands.add('readDownloadedFile', fileName => {
   const downloadedFileName = path.join(Cypress.config('downloadsFolder'), fileName)
-  cy.readFile(downloadedFileName, 'binary')
+  return cy.readFile(downloadedFileName, 'binary').then(pdf => pdf.text)
 })
 
 Cypress.Commands.add('suggestedCategoryFor', fileName => {
