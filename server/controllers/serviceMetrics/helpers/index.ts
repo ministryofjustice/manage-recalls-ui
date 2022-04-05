@@ -29,7 +29,10 @@ export const processPhaseTimings = (phaseTimings: StatisticsSummary) => {
   const ordered = Object.entries(phaseTimings).map(([key, value]) => ({
     name: key,
     label: getLabel(key),
-    entries: value.map(entry => ({ ...entry, label: getPhaseLabel(entry.phase) })),
+    entries: ['BOOK', 'ASSESS', 'DOSSIER'].map(phaseName => {
+      const entry = value.find(val => val.phase === phaseName)
+      return { ...entry, label: getPhaseLabel(entry.phase) }
+    }),
     total: value.reduce((acc, curr) => acc + curr.averageDuration, 0),
   }))
   const largestTotal = ordered.sort((a, b) => a.total - b.total)[ordered.length - 1].total
