@@ -1,4 +1,5 @@
 import { validateAddNote } from './validateAddNote'
+import * as uploadHelpers from '../../documents/upload/helpers'
 
 describe('validateAddNote', () => {
   const file = {
@@ -160,6 +161,32 @@ describe('validateAddNote', () => {
         href: '#fileName',
         name: 'fileName',
         text: "The selected file 'whatever.ext' must be an MSG, EML, DOC, DOCX or PDF",
+      },
+    ])
+  })
+
+  it('returns an error if the file upload was tried and the file size was too large', () => {
+    const requestBody = {
+      subject: 'subject text',
+      details: 'details text',
+    }
+    jest.spyOn(uploadHelpers, 'isFileSizeTooLarge').mockReturnValue(true)
+    const { errors, valuesToSave } = validateAddNote({
+      requestBody,
+      file: {
+        ...file,
+        originalname: 'whatever.pdf',
+        mimetype: 'application/pdf',
+      },
+      wasUploadFileReceived: true,
+      uploadFailed: false,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
+      {
+        href: '#fileName',
+        name: 'fileName',
+        text: "The selected file 'whatever.pdf' must be smaller than 25MB",
       },
     ])
   })
