@@ -60,4 +60,28 @@ describe('processPhaseTimings', () => {
       },
     ])
   })
+
+  it('deals with no entries', () => {
+    const response = {
+      lastSevenDays: [],
+      overall: [],
+    } as StatisticsSummary
+    const transformed = processPhaseTimings(response)
+    expect(transformed).toEqual([
+      {
+        entries: [],
+        label: 'Last 7 days',
+        name: 'lastSevenDays',
+        percentOfLargest: null,
+        total: 0,
+      },
+      {
+        entries: [],
+        label: 'All recalls',
+        name: 'overall',
+        percentOfLargest: null,
+        total: 0,
+      },
+    ])
+  })
 })
