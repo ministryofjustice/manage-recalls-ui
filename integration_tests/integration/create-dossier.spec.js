@@ -6,7 +6,6 @@ import { stubRefData } from '../support/mock-api'
 
 const dossierLetterPage = require('../pages/dossierLetter')
 const dossierCheckPage = require('../pages/dossierCheck')
-const dossierDownloadPage = require('../pages/dossierDownload')
 const dossierEmailPage = require('../pages/dossierEmail')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const dossierRecallPage = require('../pages/dossierRecallInformation')
@@ -331,7 +330,7 @@ context('Create a dossier', () => {
 
   it('error - download document fails', () => {
     cy.task('expectGetRecall', {
-      expectedResult: getRecallResponse,
+      expectedResult: { ...getRecallResponse, hasDossierBeenChecked: undefined },
     })
     stubRefData()
     cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
@@ -352,6 +351,7 @@ context('Create a dossier', () => {
       'have.text',
       'An error occurred when creating the letter to prison. Please try downloading it again'
     )
+    cy.getElement('Continue').should('be.disabled')
   })
 
   it('errors - email the dossier', () => {

@@ -48,7 +48,13 @@
             </div>
 
             <div class="govuk-!-margin-top-8">
-                <a class="govuk-button" data-qa="continueButton" href="/recalls/{{ recall.recallId}}/assess-email">Continue</a>
+                {% if errors %}
+                    <button class="govuk-button govuk-button--disabled" disabled>
+                        Continue
+                    </button>
+                {% else %}
+                    <a class="govuk-button" data-qa="continueButton" href="/recalls/{{ recall.recallId}}/assess-email">Continue</a>
+                {% endif %}
             </div>
         </div>
     </div>

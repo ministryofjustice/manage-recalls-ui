@@ -282,6 +282,7 @@ context('Assess a recall', () => {
       'have.text',
       'An error occurred when creating the recall notification. Please try downloading it again'
     )
+    cy.getElement('Continue').should('be.disabled')
   })
 
   it("error - if they don't upload the recall notification email or enter a sent date", () => {

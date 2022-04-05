@@ -96,7 +96,7 @@
             }) }}
                 </div>
             <div class="govuk-!-margin-bottom-8">
-                <button class="govuk-button" data-qa="continueButton">Continue</button>
+                <button class="govuk-button" data-qa="continueButton" {% if errors %}disabled{% endif %}>Continue</button>
             </div>
 
             </form>
