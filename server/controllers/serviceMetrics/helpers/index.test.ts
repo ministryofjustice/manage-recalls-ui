@@ -72,14 +72,14 @@ describe('processPhaseTimings', () => {
         entries: [],
         label: 'Last 7 days',
         name: 'lastSevenDays',
-        percentOfLargest: null,
+        percentOfLargest: 100,
         total: 0,
       },
       {
         entries: [],
         label: 'All recalls',
         name: 'overall',
-        percentOfLargest: null,
+        percentOfLargest: 100,
         total: 0,
       },
     ])
