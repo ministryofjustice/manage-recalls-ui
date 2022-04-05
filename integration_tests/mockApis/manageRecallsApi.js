@@ -394,7 +394,7 @@ export default function manageRecallsApi(wiremock) {
         },
       })
     },
-    expectUnassignAssessment: expectation => {
+    expectUnassignRecall: expectation => {
       return wiremock.stubFor({
         request: {
           method: 'DELETE',

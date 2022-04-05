@@ -54,7 +54,7 @@ import { addAnotherAddressHandler } from '../controllers/book/addAnotherAddressH
 import { deleteAddressHandler } from '../controllers/book/deleteAddressHandler'
 import { validateConfirmCustodyStatus } from '../controllers/assess/validators/validateConfirmCustodyStatus'
 import { validateWarrantReference } from '../controllers/assess/validators/validateWarrantReference'
-import { saveWarrantReference } from '../controllers/assess/helpers/saveWarrantReference'
+import { updateAndUnassign } from '../controllers/assess/helpers/updateAndUnassign'
 import { validateStopReason } from '../controllers/stop/validators/validateStopReason'
 import { validateReturnToCustodyDates } from '../controllers/assess/validators/validateReturnToCustodyDates'
 import { validateDossierPrison } from '../controllers/dossier/validators/validateDossierPrison'
@@ -184,7 +184,7 @@ export default function routes(router: Router): Router {
   )
   get(`${basePath}/assess-confirmation`, recallPageGet('assessConfirmation'))
   get(`${basePath}/warrant-reference`, recallPageGet('warrantReference'))
-  post(`${basePath}/warrant-reference`, recallFormPost(validateWarrantReference, saveWarrantReference))
+  post(`${basePath}/warrant-reference`, recallFormPost(validateWarrantReference, updateAndUnassign))
   get(`${basePath}/rtc-dates`, recallPageGet('rtcDates'))
   post(`${basePath}/rtc-dates`, recallFormPost(validateReturnToCustodyDates, addReturnToCustodyDates))
 
@@ -284,7 +284,7 @@ export default function routes(router: Router): Router {
     })
   )
   get(`${basePath}/support-rerelease`, recallPageGet('supportRerelease'))
-  post(`${basePath}/support-rerelease`, recallFormPost(validateSupportRerelease))
+  post(`${basePath}/support-rerelease`, recallFormPost(validateSupportRerelease, updateAndUnassign))
 
   return router
 }

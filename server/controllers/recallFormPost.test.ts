@@ -6,10 +6,10 @@ import { validatePolice } from './book/validators/validatePolice'
 import { validateAssessPrison } from './assess/validators/validatePrison'
 import * as referenceDataExports from '../referenceData'
 import { validateWarrantReference } from './assess/validators/validateWarrantReference'
-import { saveWarrantReference } from './assess/helpers/saveWarrantReference'
+import { updateAndUnassign } from './assess/helpers/updateAndUnassign'
 
 jest.mock('../clients/manageRecallsApiClient')
-jest.mock('./assess/helpers/saveWarrantReference')
+jest.mock('./assess/helpers/updateAndUnassign')
 
 const handler = recallFormPost(validatePolice)
 
@@ -145,9 +145,9 @@ describe('recallFormPost', () => {
         },
       },
     })
-    ;(saveWarrantReference as jest.Mock).mockResolvedValue(undefined)
-    await recallFormPost(validateWarrantReference, saveWarrantReference)(req, res)
+    ;(updateAndUnassign as jest.Mock).mockResolvedValue(undefined)
+    await recallFormPost(validateWarrantReference, updateAndUnassign)(req, res)
 
-    expect(saveWarrantReference).toHaveBeenCalled()
+    expect(updateAndUnassign).toHaveBeenCalled()
   })
 })
