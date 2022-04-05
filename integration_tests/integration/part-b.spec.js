@@ -34,6 +34,8 @@ context('Part B', () => {
     cy.uploadEmail({ field: 'emailFileName' })
     cy.clickButton('Continue')
 
+    cy.task('expectUnassignRecall')
+
     cy.selectRadio('Do probation support re-release?', booleanToYesNo(getRecallResponse.rereleaseSupported))
 
     cy.task('expectGetRecall', {

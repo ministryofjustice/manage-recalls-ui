@@ -42,7 +42,7 @@ module.exports = (on, config) => {
     expectRefData: manageRecallsApi.expectRefData,
     expectSearchRecalls: manageRecallsApi.expectSearchRecalls,
     expectSetDocumentCategory: manageRecallsApi.expectSetDocumentCategory,
-    expectUnassignAssessment: manageRecallsApi.expectUnassignAssessment,
+    expectUnassignRecall: manageRecallsApi.expectUnassignRecall,
     expectUpdateRecall: manageRecallsApi.expectUpdateRecall,
     expectUploadRecallDocument: manageRecallsApi.expectUploadRecallDocument,
     expectAddNote: manageRecallsApi.expectAddNote,
