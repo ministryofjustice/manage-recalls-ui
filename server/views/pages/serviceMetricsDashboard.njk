@@ -103,6 +103,7 @@
                     <h3 class="govuk-!-font-weight-regular govuk-!-margin-bottom-1">
                         <div class='govuk-caption-m '>{{ timing.label }}</div>
                     </h3>
+                    {% if timing.entries.length %}
                     <div class='timings'>
                         <div class='width-{{ timing.percentOfLargest }} timings__inner'>
                             <dl class='timings__items' data-qa='timings-{{ timing.name }}'>
@@ -124,6 +125,9 @@
 
                         </div>
                     </div>
+                    {% else %}
+                    <p class='govuk-body' data-qa='no-data-{{ timing.name }}'>No data available</p>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

@@ -26,20 +26,22 @@ const getPhaseLabel = (phaseName: StartPhaseRequest.phase) => {
 }
 
 export const processPhaseTimings = (phaseTimings: StatisticsSummary) => {
-  const ordered = Object.entries(phaseTimings).map(([key, value]) => ({
+  const list = Object.entries(phaseTimings).map(([key, value]) => ({
     name: key,
     label: getLabel(key),
-    entries: ['BOOK', 'ASSESS', 'DOSSIER'].map(phaseName => {
-      const entry = value.find(val => val.phase === phaseName)
-      return { ...entry, label: getPhaseLabel(entry.phase) }
-    }),
+    entries: ['BOOK', 'ASSESS', 'DOSSIER']
+      .map(phaseName => {
+        const entry = value.find(val => val.phase === phaseName)
+        return entry ? { ...entry, label: getPhaseLabel(entry.phase) } : undefined
+      })
+      .filter(Boolean),
     total: value.reduce((acc, curr) => acc + curr.averageDuration, 0),
   }))
-  const largestTotal = ordered.sort((a, b) => a.total - b.total)[ordered.length - 1].total
-  return ordered.map(entry => {
+  const largestTotal = list.sort((a, b) => a.total - b.total)[list.length - 1].total || 0
+  return list.map(entry => {
     return {
       ...entry,
-      percentOfLargest: Math.round((entry.total / largestTotal) * 100),
+      percentOfLargest: largestTotal ? Math.round((entry.total / largestTotal) * 100) : 100,
     }
   })
 }
