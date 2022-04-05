@@ -8,6 +8,7 @@ import {
 import { CreateNoteRequest } from '../../../@types/manage-recalls-api/models/CreateNoteRequest'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { isInvalidFileType } from '../../documents/upload/helpers/allowedUploadExtensions'
+import { isFileSizeTooLarge } from '../../documents/upload/helpers'
 
 export const validateAddNote = ({
   requestBody,
@@ -22,9 +23,10 @@ export const validateAddNote = ({
   const invalidFileType = wasUploadFileReceived
     ? isInvalidFileType({ file, category: RecallDocument.category.NOTE_DOCUMENT })
     : false
+  const fileTooLarge = wasUploadFileReceived && isFileSizeTooLarge(file.size)
 
   const { subject, details } = requestBody
-  const fileError = wasUploadFileReceived && (uploadFailed || invalidFileType)
+  const fileError = wasUploadFileReceived && (uploadFailed || invalidFileType || fileTooLarge)
   if (fileError || !subject || !details) {
     errors = []
     if (!subject) {
@@ -56,6 +58,14 @@ export const validateAddNote = ({
         makeErrorObject({
           id: 'fileName',
           text: errorMsgNoteFileUpload.invalidFileFormat(fileName),
+        })
+      )
+    }
+    if (!uploadFailed && fileTooLarge) {
+      errors.push(
+        makeErrorObject({
+          id: 'fileName',
+          text: errorMsgDocumentUpload.invalidFileSize(fileName),
         })
       )
     }
