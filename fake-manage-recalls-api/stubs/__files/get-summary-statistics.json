@@ -1,6 +1,11 @@
 {
   "lastSevenDays": [
     {
+      "phase": "DOSSIER",
+      "averageDuration": 65,
+      "count": 4
+    },
+    {
       "phase": "BOOK",
       "averageDuration": 100,
       "count": 5
@@ -9,23 +14,18 @@
       "phase": "ASSESS",
       "averageDuration": 80,
       "count": 4
-    },
-    {
-      "phase": "DOSSIER",
-      "averageDuration": 65,
-      "count": 4
     }
   ],
   "overall": [
     {
-      "phase": "BOOK",
-      "averageDuration": 120,
-      "count": 8
-    },
-    {
       "phase": "ASSESS",
       "averageDuration": 85,
       "count": 7
+    },
+    {
+      "phase": "BOOK",
+      "averageDuration": 120,
+      "count": 8
     },
     {
       "phase": "DOSSIER",
