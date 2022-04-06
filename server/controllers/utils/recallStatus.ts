@@ -13,6 +13,7 @@ const afterAssessCompleteStatuses = [
   RecallResponse.status.DOSSIER_ISSUED,
   RecallResponse.status.AWAITING_PART_B,
   RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION,
+  RecallResponse.status.SECONDARY_DOSSIER_IN_PROGRESS,
 ]
 
 const afterAssessStartStatuses = [RecallResponse.status.IN_ASSESSMENT, ...afterAssessCompleteStatuses]
@@ -93,7 +94,6 @@ export const recallStatusTagProperties = (recall: RecallResponse) => {
       return {
         ...defaults,
         text: 'Awaiting part B',
-        classes: `govuk-tag--orange`,
       }
     case RecallResponse.status.BEING_BOOKED_ON:
       return {
@@ -134,7 +134,11 @@ export const recallStatusTagProperties = (recall: RecallResponse) => {
       return {
         ...defaults,
         text: 'Ready for review',
-        classes: `govuk-tag--red`,
+      }
+    case RecallResponse.status.SECONDARY_DOSSIER_IN_PROGRESS:
+      return {
+        ...defaults,
+        text: 'Preparation in progress',
       }
     case RecallResponse.status.STOPPED:
       return {

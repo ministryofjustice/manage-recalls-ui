@@ -2,7 +2,7 @@ import type { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import { findPerson } from '../controllers/findPerson/findPerson'
 import { createRecall } from '../controllers/book/createRecall'
-import { recallList } from '../controllers/recallsList/recallList'
+import { recallList } from '../controllers/recallList/recallList'
 import { uploadDocumentsFormHandler } from '../controllers/documents/upload/uploadDocumentsFormHandler'
 import { recallPageGet } from '../controllers/recallPageGet'
 import { separateEmailAndFormSave } from '../controllers/separateEmailAndFormSave'
@@ -188,7 +188,7 @@ export default function routes(router: Router): Router {
   get(`${basePath}/rtc-dates`, recallPageGet('rtcDates'))
   post(`${basePath}/rtc-dates`, recallFormPost(validateReturnToCustodyDates, addReturnToCustodyDates))
 
-  // CREATE DOSSIER
+  // CREATE PRIMARY DOSSIER
   post(
     `${basePath}/dossier-assign`,
     startRecallPhase({ phase: StartPhaseRequest.phase.DOSSIER, nextPageUrlSuffix: 'dossier-recall' })
@@ -285,6 +285,15 @@ export default function routes(router: Router): Router {
   )
   get(`${basePath}/support-rerelease`, recallPageGet('supportRerelease'))
   post(`${basePath}/support-rerelease`, recallFormPost(validateSupportRerelease, updateAndUnassign))
+
+  // CREATE SECONDARY DOSSIER
+  post(
+    `${basePath}/secondary-dossier-assign`,
+    startRecallPhase({
+      nextPageUrlSuffix: 'secondary-dossier-recall',
+    })
+  )
+  get(`${basePath}/secondary-dossier-recall`, recallPageGet('secondaryDossierRecallInfo'))
 
   return router
 }

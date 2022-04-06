@@ -40,6 +40,14 @@ describe('startRecallPhase', () => {
     expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/assess`)
   })
 
+  it('should not save the timing if told not to', async () => {
+    ;(assignUserToRecall as jest.Mock).mockResolvedValue({ status: 200 })
+    await startRecallPhase({ nextPageUrlSuffix: 'assess', saveTiming: false })(req, res)
+    expect(assignUserToRecall).toHaveBeenCalledWith(recallId, uuid, token)
+    expect(addPhaseStartTime).not.toHaveBeenCalled()
+    expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/assess`)
+  })
+
   it('should reload the page if the assignment fails', async () => {
     ;(assignUserToRecall as jest.Mock).mockRejectedValue({ status: 500 })
     ;(addPhaseStartTime as jest.Mock).mockResolvedValue({ status: 200 })

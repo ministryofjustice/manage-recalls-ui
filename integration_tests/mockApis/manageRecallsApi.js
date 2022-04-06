@@ -1,5 +1,3 @@
-import { addPhaseStartTime } from '../../server/clients/manageRecallsApiClient'
-
 export default function manageRecallsApi(wiremock) {
   return {
     expectPrisonerResult: expectation => {

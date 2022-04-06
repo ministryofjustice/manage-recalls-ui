@@ -10,7 +10,7 @@ const dossierEmailPage = require('../pages/dossierEmail')
 const dossierConfirmationPage = require('../pages/dossierConfirmation')
 const dossierRecallPage = require('../pages/dossierRecallInformation')
 
-context('Create a dossier', () => {
+context('Primary dossier', () => {
   const nomsNumber = 'A1234AA'
   const recallId = '123'
   const personName = 'Bobby Badger'

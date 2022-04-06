@@ -170,7 +170,16 @@ describe('recallStatusTagProperties', () => {
         'data-qa': 'recallStatus',
       },
       text: 'Ready for review',
-      classes: `govuk-tag--red`,
+      classes: `govuk-tag--orange`,
+    })
+    expect(
+      recallStatusTagProperties({ status: RecallResponse.status.SECONDARY_DOSSIER_IN_PROGRESS } as RecallResponse)
+    ).toEqual({
+      attributes: {
+        'data-qa': 'recallStatus',
+      },
+      text: 'Preparation in progress',
+      classes: `govuk-tag--orange`,
     })
   })
 })

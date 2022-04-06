@@ -101,6 +101,7 @@ export type ViewName =
   | 'stopRecall'
   | 'partB'
   | 'supportRerelease'
+  | 'secondaryDossierRecallInfo'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 

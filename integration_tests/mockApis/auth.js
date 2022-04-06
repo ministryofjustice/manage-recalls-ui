@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import tokenVerificationApi from './tokenVerification'
+import { caseworker } from '../fixtures/caseworker'
 
 export default function auth(wiremock, uiClientId, manageRecallsUiUrl) {
   const tokenVerification = tokenVerificationApi(wiremock)
@@ -131,13 +132,7 @@ const stubUser = wiremock =>
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: {
-        staffId: 231232,
-        username: 'USER1',
-        active: true,
-        name: 'john smith',
-        uuid: '1223',
-      },
+      jsonBody: caseworker,
     },
   })
 

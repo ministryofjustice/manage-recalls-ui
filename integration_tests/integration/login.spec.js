@@ -18,7 +18,7 @@ context('Login', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
     const landingPage = IndexPage.verifyOnPage()
-    landingPage.headerUserName().should('contain.text', 'J. Smith')
+    landingPage.headerUserName().should('contain.text', 'M. Badger')
     landingPage.logout().click()
     AuthLoginPage.verifyOnPage()
   })
