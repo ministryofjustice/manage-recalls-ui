@@ -42,6 +42,10 @@ context('Book an "in-custody" recall', () => {
     cy.clickButton('Book a recall')
 
     // licence name
+    const personNameWithMiddleNames = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.middleNames} ${getEmptyRecallResponse.lastName}`
+    cy.getRadioOptionByLabel(`How does ${personName}'s name appear on the licence?`, personNameWithMiddleNames).should(
+      'exist'
+    )
     cy.selectRadio(`How does ${personName}'s name appear on the licence?`, personName)
     cy.clickButton('Continue')
 
