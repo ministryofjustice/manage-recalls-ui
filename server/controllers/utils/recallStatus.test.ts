@@ -177,9 +177,9 @@ describe('recallStatusTagProperties', () => {
     ).toEqual({
       attributes: {
         'data-qa': 'recallStatus',
-        classes: `govuk-tag--orange`,
       },
       text: 'Preparation in progress',
+      classes: `govuk-tag--orange`,
     })
   })
 })
