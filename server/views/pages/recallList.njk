@@ -252,7 +252,7 @@
                                             <div class='govuk-!-padding-right-2'>
                                         <form novalidate action="/recalls/{{ result.recallId }}/secondary-dossier-assign" method="post">
                                             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                                            <button class="govuk-link reset-button link-button" data-module="govuk-button">
+                                            <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="prepare-dossier-{{ result.recallId }}">
                                             Prepare dossier<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
                                             </button>
                                         </form>
