@@ -249,12 +249,15 @@
                                 <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell">
                                     <div class='flex'>
-{#                                        <span class='govuk-!-padding-right-2'>#}
-{#                                            <a href='/recalls/{{result.recallId}}/start-review' data-qa='start-review-{{ result.recallId }}'>#}
-{#                                            Start review<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>#}
-{#                                            </a>#}
-{#                                        </span>#}
-                                        <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
+                                            <div class='govuk-!-padding-right-2'>
+                                        <form novalidate action="/recalls/{{ result.recallId }}/secondary-dossier-assign" method="post">
+                                            <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                                            <button class="govuk-link reset-button link-button" data-module="govuk-button">
+                                            Prepare dossier<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                            </button>
+                                        </form>
+                                        </div>
+                                    <a href='/recalls/{{result.recallId}}/view-recall'>
                                             View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
                                         </a>
                                     </div>

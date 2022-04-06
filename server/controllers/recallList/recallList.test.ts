@@ -100,7 +100,7 @@ describe('recallList', () => {
       lastName: 'Badger',
       recallId: '3',
       nomsNumber: '456',
-      status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+      status: 'SECONDARY_DOSSIER_IN_PROGRESS',
       secondaryDossierDueDate: '2021-08-11',
     },
     {
@@ -236,7 +236,7 @@ describe('recallList', () => {
         fullName: 'Barry Badger',
         recallId: '3',
         nomsNumber: '456',
-        status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+        status: 'SECONDARY_DOSSIER_IN_PROGRESS',
         secondaryDossierDueDate: '2021-08-11',
       },
       {

@@ -63,7 +63,12 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         notInCustody.push(recall)
       } else if (recall.status === RecallResponse.status.AWAITING_PART_B) {
         awaitingPartB.push(recall)
-      } else if (recall.status === RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION) {
+      } else if (
+        [
+          RecallResponse.status.AWAITING_SECONDARY_DOSSIER_CREATION,
+          RecallResponse.status.SECONDARY_DOSSIER_IN_PROGRESS,
+        ].includes(recall.status)
+      ) {
         dossierCheck.push(recall)
       } else {
         toDoList.push(recall)

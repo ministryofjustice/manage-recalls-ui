@@ -414,7 +414,7 @@ describe('Recalls list', () => {
         recallId: '1',
         firstName: 'Jack',
         lastName: 'Jones',
-        status: 'AWAITING_SECONDARY_DOSSIER_CREATION',
+        status: 'SECONDARY_DOSSIER_IN_PROGRESS',
         secondaryDossierDueDate: fiveDaysTime.toISODate(),
         assignee: '123',
         assigneeUserName: 'Mary Badger',
