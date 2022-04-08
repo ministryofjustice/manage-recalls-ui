@@ -4,34 +4,22 @@
             Continue booking<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
         </a>
     </div>
-{% elif recall.status == 'BOOKED_ON' %}
+{% elif recall.status in ['BOOKED_ON', 'IN_ASSESSMENT'] %}
 <div>
     <form novalidate action="/recalls/{{ recall.recallId }}/assess-assign" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="assess-recall-{{ recall.recallId }}">
-            Assess recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
+            {% if recall.status == 'IN_ASSESSMENT' %}Continue assessment{% else %}Assess recall{% endif %}<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
         </button>
     </form>
 </div>
-{% elif recall.status == 'IN_ASSESSMENT' %}
-<div>
-    <a href='/recalls/{{recall.recallId}}/assess' data-qa='continue-assess-{{ recall.recallId }}'>
-        Continue assessment<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
-    </a>
-</div>
-{% elif recall.status == 'AWAITING_DOSSIER_CREATION' %}
+{% elif recall.status in ['AWAITING_DOSSIER_CREATION', 'DOSSIER_IN_PROGRESS'] %}
 <div>
     <form novalidate action="/recalls/{{ recall.recallId }}/dossier-assign" method="post">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
         <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="create-dossier-{{ recall.recallId }}">
-            Create dossier<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
+            {% if recall.status == 'DOSSIER_IN_PROGRESS' %}Continue dossier creation{% else %}Create dossier{% endif %}<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
         </button>
     </form>
-</div>
-{% elif recall.status == 'DOSSIER_IN_PROGRESS' %}
-<div>
-    <a href='/recalls/{{recall.recallId}}/dossier-recall' data-qa='continue-dossier-{{ recall.recallId }}'>
-        Continue dossier creation<span class="govuk-visually-hidden">{{ linkTextWithPerson(recall) }}</span>
-    </a>
 </div>
 {% endif %}

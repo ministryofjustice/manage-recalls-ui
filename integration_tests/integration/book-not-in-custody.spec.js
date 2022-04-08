@@ -272,12 +272,4 @@ context('Book a "not in custody" recall', () => {
     )
     cy.getLinkHref('Change current prison').should('contain', `/assess-prison?fromPage=view-recall&fromHash=custody`)
   })
-
-  it('shows if recall status is "Ready for review" on recall info page', () => {
-    cy.task('expectGetRecall', {
-      expectedResult: { ...getRecallResponse, status: 'AWAITING_SECONDARY_DOSSIER_CREATION' },
-    })
-    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
-    cy.getText('recallStatus').should('equal', 'Ready for review')
-  })
 })
