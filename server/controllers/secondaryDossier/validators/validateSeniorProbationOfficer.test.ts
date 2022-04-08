@@ -6,6 +6,7 @@ describe('validateSeniorProbationOfficer', () => {
     seniorProbationOfficerInfo_fullName: 'Dave Angel',
     seniorProbationOfficerInfo_email: 'probation.office@justice.com',
     seniorProbationOfficerInfo_phoneNumber: '07473739388',
+    seniorProbationOfficerInfo_probationEmail: 'general@probation.com',
   }
 
   it('returns valuesToSave and no errors if all fields are submitted', () => {
@@ -16,6 +17,7 @@ describe('validateSeniorProbationOfficer', () => {
         email: 'probation.office@justice.com',
         fullName: 'Dave Angel',
         phoneNumber: '07473739388',
+        probationEmail: 'general@probation.com',
       },
     })
   })
@@ -53,15 +55,21 @@ describe('validateSeniorProbationOfficer', () => {
         name: 'seniorProbationOfficerInfo_phoneNumber',
         text: 'Enter a phone number',
       },
+      {
+        href: '#seniorProbationOfficerInfo_probationEmail',
+        name: 'seniorProbationOfficerInfo_probationEmail',
+        text: 'Enter a probation functional email address',
+      },
     ])
   })
 
-  it('returns errors for invalid email and phone, and no valuesToSave', () => {
+  it('returns errors for invalid emails and phone, and no valuesToSave', () => {
     const { errors, valuesToSave } = validateSeniorProbationOfficer({
       requestBody: {
         ...requestBody,
         seniorProbationOfficerInfo_phoneNumber: '003139485349',
         seniorProbationOfficerInfo_email: 'probation.office',
+        seniorProbationOfficerInfo_probationEmail: 'probation@general',
       },
       urlInfo,
     })
@@ -78,6 +86,12 @@ describe('validateSeniorProbationOfficer', () => {
         name: 'seniorProbationOfficerInfo_phoneNumber',
         text: 'Enter a phone number in the correct format, like 01277 960901',
         values: '003139485349',
+      },
+      {
+        href: '#seniorProbationOfficerInfo_probationEmail',
+        name: 'seniorProbationOfficerInfo_probationEmail',
+        text: 'Enter a probation functional email address in the correct format, like name@example.com',
+        values: 'probation@general',
       },
     ])
   })

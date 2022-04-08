@@ -264,6 +264,10 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Senior Probation Officer email address',
     fieldType: 'TEXT',
   },
+  probationFunctionalEmailAddress: {
+    label: 'Probation functional email address',
+    fieldType: 'TEXT',
+  },
 
   // uploaded emails
   recallRequestEmailUploaded: {

@@ -6,4 +6,5 @@ export type SeniorProbationOfficerInfo = {
     fullName: string;
     email: string;
     phoneNumber: string;
+    probationEmail: string;
 };

@@ -66,6 +66,18 @@
                     value: formValues.seniorProbationOfficerInfo_phoneNumber,
                     errorMessage: errorMessage(errors.seniorProbationOfficerInfo_phoneNumber)
                 }) }}
+
+                {{ govukInput({
+                    label: {
+                        text: "Probation functional email address",
+                        classes: "govuk-label--m"
+                    },
+                    id: "seniorProbationOfficerInfo_probationEmail",
+                    name: "seniorProbationOfficerInfo_probationEmail",
+                    type: 'email',
+                    value: formValues.seniorProbationOfficerInfo_probationEmail,
+                    errorMessage: errorMessage(errors.seniorProbationOfficerInfo_probationEmaill)
+                }) }}
                 <div class='govuk-!-margin-top-8'>
                     <button class="govuk-button">
                         Continue

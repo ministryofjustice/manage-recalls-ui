@@ -16,13 +16,16 @@ export const validateSeniorProbationOfficer = ({
     seniorProbationOfficerInfo_fullName,
     seniorProbationOfficerInfo_email,
     seniorProbationOfficerInfo_phoneNumber,
+    seniorProbationOfficerInfo_probationEmail,
   } = requestBody
   const emailValid = isEmailValid(seniorProbationOfficerInfo_email)
+  const probationEmailValid = isEmailValid(seniorProbationOfficerInfo_probationEmail)
   const phoneValid = isPhoneValid(seniorProbationOfficerInfo_phoneNumber)
   if (
     !seniorProbationOfficerInfo_fullName ||
     !seniorProbationOfficerInfo_email ||
     !emailValid ||
+    !probationEmailValid ||
     !seniorProbationOfficerInfo_phoneNumber ||
     !phoneValid
   ) {
@@ -69,10 +72,28 @@ export const validateSeniorProbationOfficer = ({
         })
       )
     }
+    if (!seniorProbationOfficerInfo_probationEmail) {
+      errors.push(
+        makeErrorObject({
+          id: 'seniorProbationOfficerInfo_probationEmail',
+          text: 'Enter a probation functional email address',
+        })
+      )
+    }
+    if (seniorProbationOfficerInfo_probationEmail && !emailValid) {
+      errors.push(
+        makeErrorObject({
+          id: 'seniorProbationOfficerInfo_probationEmail',
+          text: 'Enter a probation functional email address in the correct format, like name@example.com',
+          values: seniorProbationOfficerInfo_probationEmail,
+        })
+      )
+    }
     unsavedValues = {
       seniorProbationOfficerInfo_fullName,
       seniorProbationOfficerInfo_email,
       seniorProbationOfficerInfo_phoneNumber,
+      seniorProbationOfficerInfo_probationEmail,
     }
   }
   if (!errors) {
@@ -81,6 +102,7 @@ export const validateSeniorProbationOfficer = ({
         fullName: seniorProbationOfficerInfo_fullName,
         email: seniorProbationOfficerInfo_email,
         phoneNumber: seniorProbationOfficerInfo_phoneNumber,
+        probationEmail: seniorProbationOfficerInfo_probationEmail,
       },
     }
   }
