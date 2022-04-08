@@ -188,7 +188,7 @@ Cypress.Commands.add('selectFromDropdown', (label, option, opts = { parent: '#ma
 
 // ================================== UPLOAD / DOWNLOAD ===============================
 
-Cypress.Commands.add('downloadPdf', (linkText, opts) => {
+Cypress.Commands.add('downloadFile', (linkText, opts) => {
   return cy
     .contains('a', linkText)
     .then($link => {
@@ -207,7 +207,7 @@ Cypress.Commands.add('downloadEmail', (target, opts = { parent: '#main-content' 
 
 Cypress.Commands.add('readDownloadedFile', fileName => {
   const downloadedFileName = path.join(Cypress.config('downloadsFolder'), fileName)
-  return cy.readFile(downloadedFileName, 'binary').then(pdf => pdf.text)
+  return cy.readFile(downloadedFileName).then(contents => contents.text)
 })
 
 Cypress.Commands.add('suggestedCategoryFor', fileName => {

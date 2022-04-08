@@ -336,17 +336,17 @@ context('Primary dossier', () => {
     cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
     cy.task('expectGenerateRecallDocument', { statusCode: 500 })
     cy.visitRecallPage({ recallId, pageSuffix: 'dossier-download' })
-    cy.downloadPdf('Download the Dossier', { allowPageReload: true })
+    cy.downloadFile('Download the Dossier', { allowPageReload: true })
     cy.get(`[href="#error_DOSSIER"]`).should(
       'have.text',
       'An error occurred when creating the dossier. Please try downloading it again'
     )
-    cy.downloadPdf('Download the Letter to probation', { allowPageReload: true })
+    cy.downloadFile('Download the Letter to probation', { allowPageReload: true })
     cy.get(`[href="#error_LETTER_TO_PROBATION"]`).should(
       'have.text',
       'An error occurred when creating the letter to probation. Please try downloading it again'
     )
-    cy.downloadPdf('Download the Letter to prison', { allowPageReload: true })
+    cy.downloadFile('Download the Letter to prison', { allowPageReload: true })
     cy.get(`[href="#error_LETTER_TO_PRISON"]`).should(
       'have.text',
       'An error occurred when creating the letter to prison. Please try downloading it again'

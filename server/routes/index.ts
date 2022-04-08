@@ -76,6 +76,8 @@ import { EndPhaseRequest } from '../@types/manage-recalls-api/models/EndPhaseReq
 import { StartPhaseRequest } from '../@types/manage-recalls-api/models/StartPhaseRequest'
 import { serviceMetricsDashboard } from '../controllers/serviceMetrics'
 import { validateLegalRep } from '../controllers/secondaryDossier/validators/validateLegalRep'
+import { reportsView } from '../controllers/reports'
+import { downloadReport } from '../controllers/reports/downloadReport'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -88,6 +90,10 @@ export default function routes(router: Router): Router {
 
   router.get('/find-person', getStoredSessionData, asyncMiddleware(findPerson))
   get('/service-metrics', serviceMetricsDashboard)
+
+  // GET REPORTS
+  get('/reports', reportsView)
+  router.get(`/reports/weekly-recalls-new`, downloadReport)
 
   post('/recalls', createRecall)
 

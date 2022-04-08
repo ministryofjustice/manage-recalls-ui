@@ -137,7 +137,7 @@ context('Assess a recall', () => {
 
     cy.pageHeading().should('equal', 'Download recall notification')
     cy.getText('getRecallNotificationFileName').should('equal', `Filename: ${recallNotificationFileName}`)
-    cy.downloadPdf('Download the Recall notification')
+    cy.downloadFile('Download the Recall notification')
     cy.readDownloadedFile(recallNotificationFileName)
     cy.clickLink('Continue')
 
@@ -277,7 +277,7 @@ context('Assess a recall', () => {
     cy.task('expectGetRecallDocumentHistory', { expectedResult: [] })
     cy.task('expectGenerateRecallDocument', { statusCode: 500 })
     cy.visitRecallPage({ recallId, pageSuffix: 'assess-download' })
-    cy.downloadPdf('Download the Recall notification', { allowPageReload: true })
+    cy.downloadFile('Download the Recall notification', { allowPageReload: true })
     cy.get(`[href="#error_RECALL_NOTIFICATION"]`).should(
       'have.text',
       'An error occurred when creating the recall notification. Please try downloading it again'
