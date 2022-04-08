@@ -1,7 +1,7 @@
 import { ObjectMap, RecallField } from '../../../@types'
 import { RecallDocument } from '../../../@types/manage-recalls-api/models/RecallDocument'
 import { FieldAuditSummary } from '../../../@types/manage-recalls-api/models/FieldAuditSummary'
-import { FieldAuditEntry, SentenceLength } from '../../../@types/manage-recalls-api'
+import { FieldAuditEntry } from '../../../@types/manage-recalls-api'
 import { getReferenceDataItemLabel } from '../../../referenceData'
 import { formatDateTimeFromIsoString } from '../../utils/dates/format'
 // FIXME: I think this code references the `manageRecallsApiClient` which in turn references `restClient`
@@ -240,6 +240,19 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Warrant reference number',
     fieldType: 'TEXT',
   },
+  legalRepresentativeName: {
+    label: 'Legal representative name',
+    fieldType: 'TEXT',
+  },
+  legalRepresentativePhoneNumber: {
+    label: 'Legal representative phone number',
+    fieldType: 'TEXT',
+  },
+  legalRepresentativeEmail: {
+    label: 'Legal representative email address',
+    fieldType: 'TEXT',
+  },
+
   // uploaded emails
   recallRequestEmailUploaded: {
     fieldType: 'UPLOADED_EMAIL',
@@ -302,11 +315,6 @@ export const formatRecallFieldValue = ({
     default:
       return record.updatedValue
   }
-}
-
-export const formatSentenceLength = (sentenceLength: SentenceLength) => {
-  const { years, months, days } = sentenceLength
-  return `${years ? `${years} years ` : ''}${months ? `${months} months ` : ''}${days ? `${days} days ` : ''}`
 }
 
 const changedFieldProps = ({

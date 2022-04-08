@@ -1,6 +1,6 @@
 import { DecoratedRecall, FormError, ObjectMap } from '../../@types'
 import { splitIsoDateToParts } from './dates/convert'
-import { isDefined } from '../../utils/utils'
+import { getProperty, isDefined } from '../../utils/utils'
 import { confirmRecallTypeDetailFields } from './confirmRecallTypeDetailFields'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
 
@@ -16,18 +16,14 @@ const booleanToYesNo = (val: boolean) => {
   return undefined
 }
 
+// field names used in the templates, validation and formValues, use underscore _ to indicate a nested property
+// eg legalRepresentativeInfo_fullName would be accessed on the API response as legalRepresentativeInfo.fullName
+// this utility converts _ to .
+const fieldNameToApiKey = (fieldName: string) => fieldName.replace(/_/g, '.')
+
 export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: GetFormValuesArgs) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let values = {
     sentenceLengthParts: errors.sentenceLength?.values || unsavedValues.sentenceLengthParts || apiValues.sentenceLength,
-    recallNotificationEmailFileName:
-      errors.recallNotificationEmailFileName?.values ||
-      unsavedValues.recallNotificationEmailFileName ||
-      apiValues.emailsUploaded?.RECALL_NOTIFICATION_EMAIL?.fileName,
-    dossierEmailFileName:
-      errors.dossierEmailFileName?.values ||
-      unsavedValues.dossierEmailFileName ||
-      apiValues.emailsUploaded?.DOSSIER_EMAIL?.fileName,
   } as ObjectMap<unknown>
 
   // dates / times
@@ -79,8 +75,13 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
     'lastKnownAddressOption',
     'warrantReferenceNumber',
     'recommendedRecallType',
+    'legalRepresentativeInfo_fullName',
+    'legalRepresentativeInfo_email',
+    'legalRepresentativeInfo_phoneNumber',
   ].forEach((key: string) => {
-    values[key] = isDefined(errors[key]) ? errors[key].values || '' : unsavedValues[key] || apiValues[key]
+    values[key] = isDefined(errors[key])
+      ? errors[key].values || ''
+      : unsavedValues[key] || getProperty(apiValues, fieldNameToApiKey(key))
   })
 
   // Yes / no options - stored as booleans in the API, but sent as 'YES' / 'NO' values in the front end
@@ -107,7 +108,8 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
     }),
   }
 
-  // these text properties will never use the API value. Subject and details are for notes
+  // These text properties will never use the API value because each time the form is used it's to add a new record, not edit an existing one
+  // Subject and details are for notes
   ;[
     'rescindRequestDetail',
     'missingDocumentsDetail',

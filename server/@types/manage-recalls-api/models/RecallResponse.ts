@@ -3,12 +3,14 @@
 /* eslint-disable */
 
 import type { LastKnownAddress } from './LastKnownAddress';
+import type { LegalRepresentativeInfo } from './LegalRepresentativeInfo';
 import type { MissingDocuments } from './MissingDocuments';
 import type { MissingDocumentsRecord } from './MissingDocumentsRecord';
 import type { Note } from './Note';
 import type { PartBRecord } from './PartBRecord';
 import type { RecallDocument } from './RecallDocument';
 import type { RescindRecord } from './RescindRecord';
+import type { SeniorProbationOfficerInfo } from './SeniorProbationOfficerInfo';
 import type { SentenceLength } from './SentenceLength';
 
 export type RecallResponse = {
@@ -61,6 +63,7 @@ export type RecallResponse = {
     lastKnownAddressOption?: RecallResponse.lastKnownAddressOption;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
+    legalRepresentativeInfo?: LegalRepresentativeInfo;
     licenceConditionsBreached?: string;
     licenceExpiryDate?: string;
     licenceNameCategory?: RecallResponse.licenceNameCategory;
@@ -84,6 +87,7 @@ export type RecallResponse = {
     returnedToCustodyDateTime?: string;
     returnedToCustodyNotificationDateTime?: string;
     secondaryDossierDueDate?: string;
+    seniorProbationOfficerInfo?: SeniorProbationOfficerInfo;
     sentenceDate?: string;
     sentenceExpiryDate?: string;
     sentenceLength?: SentenceLength;

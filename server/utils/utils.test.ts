@@ -1,4 +1,4 @@
-import convertToTitleCase from './utils'
+import convertToTitleCase, { getProperty } from './utils'
 
 describe('Convert to title case', () => {
   it('null string', () => {
@@ -27,5 +27,35 @@ describe('Convert to title case', () => {
   })
   it('Hyphenated', () => {
     expect(convertToTitleCase('Robert-John SmiTH-jONes-WILSON')).toEqual('Robert-John Smith-Jones-Wilson')
+  })
+})
+
+describe('getProperty', () => {
+  it('returns a nested property', () => {
+    const obj = {
+      legalRepresentativeInfo: {
+        email: 'davey@crockett.com',
+      },
+    }
+    const val = getProperty(obj, 'legalRepresentativeInfo.email')
+    expect(val).toEqual('davey@crockett.com')
+  })
+
+  it('returns a top level property', () => {
+    const obj = {
+      legalRepresentativeInfo: 'blah',
+    }
+    const val = getProperty(obj, 'legalRepresentativeInfo')
+    expect(val).toEqual('blah')
+  })
+
+  it("returns undefined for a nested property thtaa doesn't exist", () => {
+    const obj = {
+      legalRepresentativeInfo: {
+        email: 'davey@crockett.com',
+      },
+    }
+    const val = getProperty(obj, 'legalRepresentativeInfo.phone')
+    expect(val).toBeUndefined()
   })
 })

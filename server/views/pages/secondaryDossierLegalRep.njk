@@ -1,0 +1,77 @@
+{% extends "../partials/layout.njk" %}
+
+{% set pageTitle = makePageTitle("Who is the legal representative?", errors) %}
+
+{% block beforeContent %}
+    {{ govukBackLink({
+        text: "Back",
+        href: backLinkUrl("secondary-dossier-recall", urlInfo)
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            {{ pageHeadingCaption({ action: 'Prepare and send a dossier', name: recall.fullName }) }}
+            <h1 class="govuk-heading-l">
+                Who is {{ recall.fullName }}'s legal representative?
+            </h1>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
+                <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+                {{ govukInput({
+                    label: {
+                        text: "Name",
+                        classes: "govuk-label--m"
+                    },
+                    id: "legalRepresentativeInfo_fullName",
+                    name: "legalRepresentativeInfo_fullName",
+                    value: formValues.legalRepresentativeInfo_fullName,
+                    errorMessage: errorMessage(errors.legalRepresentativeInfo_fullName)
+                }) }}
+
+                {{ govukInput({
+                    label: {
+                        text: "Email address",
+                        classes: "govuk-label--m"
+                    },
+                    id: "legalRepresentativeInfo_email",
+                    name: "legalRepresentativeInfo_email",
+                    type: 'email',
+                    value: formValues.legalRepresentativeInfo_email,
+                    errorMessage: errorMessage(errors.legalRepresentativeInfo_email)
+                }) }}
+
+                {{ govukInput({
+                    label: {
+                        text: "Phone number",
+                        classes: "govuk-label--m"
+                    },
+                    id: "legalRepresentativeInfo_phoneNumber",
+                    name: "legalRepresentativeInfo_phoneNumber",
+                    type: 'tel',
+                    classes: "govuk-input--width-20",
+                    value: formValues.legalRepresentativeInfo_phoneNumber,
+                    errorMessage: errorMessage(errors.legalRepresentativeInfo_phoneNumber)
+                }) }}
+                <div class='govuk-!-margin-top-8'>
+                    <button class="govuk-button">
+                        Continue
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

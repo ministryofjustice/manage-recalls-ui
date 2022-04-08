@@ -36,7 +36,7 @@ export const getProperty = <T, U>(obj: T, accessor: string): U => {
   const listOfKeys = accessor.split('.')
   let traversed = obj
   listOfKeys.forEach(key => {
-    traversed = traversed[key]
+    traversed = traversed?.[key]
   })
   return traversed as unknown as U
 }

@@ -105,1071 +105,6 @@
       }
     },
     {
-      "description": "an add return to custody dates request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/returned-to-custody",
-        "headers": {
-          "Authorization": "Bearer token-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
-          "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized add return to custody dates request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/returned-to-custody",
-        "headers": {
-          "Authorization": "Bearer token-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
-          "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a get recall field history request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "GET",
-        "path": "/audit/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "auditId": 195,
-            "fieldName": "sentenceDays",
-            "fieldPath": "sentencingInfo.sentenceLength.sentenceDays",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 208,
-            "fieldName": "recordedByUserId",
-            "fieldPath": "returnedToCustody.recordedByUserId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:53.946204Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 196,
-            "fieldName": "localPoliceForceId",
-            "fieldPath": "localPoliceForceId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:36.996194Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 197,
-            "fieldName": "arrestIssues",
-            "fieldPath": "arrestIssues",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:39.669285Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "indexOffence",
-            "fieldPath": "sentencingInfo.indexOffence",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 208,
-            "fieldName": "recordedDateTime",
-            "fieldPath": "returnedToCustody.recordedDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:53.946204Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 216,
-            "fieldName": "contraband",
-            "fieldPath": "contraband",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:54:12.145529Z",
-            "auditCount": 2
-          },
-          {
-            "auditId": 213,
-            "fieldName": "dossierEmailSentDate",
-            "fieldPath": "dossierEmailSentDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:46:01.519411Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "sentencingCourt",
-            "fieldPath": "sentencingInfo.sentencingCourt",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 198,
-            "fieldName": "probationOfficerPhoneNumber",
-            "fieldPath": "probationInfo.probationOfficerPhoneNumber",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:41.352591Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "sentenceExpiryDate",
-            "fieldPath": "sentencingInfo.sentenceExpiryDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 192,
-            "fieldName": "inCustodyAtBooking",
-            "fieldPath": "inCustodyAtBooking",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:19.338082Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 210,
-            "fieldName": "currentPrison",
-            "fieldPath": "currentPrison",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:45:05.913089Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "lastUpdatedByUserId",
-            "fieldPath": "lastUpdatedByUserId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 208,
-            "fieldName": "notificationDateTime",
-            "fieldPath": "returnedToCustody.notificationDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:53.946204Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "licenceNameCategory",
-            "fieldPath": "licenceNameCategory",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 193,
-            "fieldName": "lastKnownAddressOption",
-            "fieldPath": "lastKnownAddressOption",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:24.200621Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 194,
-            "fieldName": "recallEmailReceivedDateTime",
-            "fieldPath": "recallEmailReceivedDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:32.052584Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "dateOfBirth",
-            "fieldPath": "dateOfBirth",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "lastReleasePrison",
-            "fieldPath": "lastReleasePrison",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 197,
-            "fieldName": "vulnerabilityDiversityDetail",
-            "fieldPath": "vulnerabilityDiversityDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:39.669285Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 217,
-            "fieldName": "lastUpdatedDateTime",
-            "fieldPath": "lastUpdatedDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:56:26.79499Z",
-            "auditCount": 30
-          },
-          {
-            "auditId": 217,
-            "fieldName": "confirmedRecallType",
-            "fieldPath": "confirmedRecallType",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:56:26.79499Z",
-            "auditCount": 2
-          },
-          {
-            "auditId": 216,
-            "fieldName": "contrabandDetail",
-            "fieldPath": "contrabandDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:54:12.145529Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 212,
-            "fieldName": "hasDossierBeenChecked",
-            "fieldPath": "hasDossierBeenChecked",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:45:53.063857Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 215,
-            "fieldName": "differentNomsNumberDetail",
-            "fieldPath": "differentNomsNumberDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:53:47.90053Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 217,
-            "fieldName": "confirmedRecallTypeDetail",
-            "fieldPath": "confirmedRecallTypeDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:56:26.79499Z",
-            "auditCount": 2
-          },
-          {
-            "auditId": 206,
-            "fieldName": "warrantReferenceNumber",
-            "fieldPath": "warrantReferenceNumber",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:32.255274Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "sentenceMonths",
-            "fieldPath": "sentencingInfo.sentenceLength.sentenceMonths",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 202,
-            "fieldName": "licenceConditionsBreached",
-            "fieldPath": "licenceConditionsBreached",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:42:42.088899Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "middleNames",
-            "fieldPath": "middleNames",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 211,
-            "fieldName": "additionalLicenceConditions",
-            "fieldPath": "additionalLicenceConditions",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:45:39.495158Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 211,
-            "fieldName": "additionalLicenceConditionsDetail",
-            "fieldPath": "additionalLicenceConditionsDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:45:39.495158Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 205,
-            "fieldName": "assessedByUserId",
-            "fieldPath": "assessedByUserId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:23.37754Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "nomsNumber",
-            "fieldPath": "nomsNumber",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 203,
-            "fieldName": "inCustodyAtAssessment",
-            "fieldPath": "inCustodyAtAssessment",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:42:59.225766Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "recallLength",
-            "fieldPath": "recallLength",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 213,
-            "fieldName": "dossierCreatedByUserId",
-            "fieldPath": "dossierCreatedByUserId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:46:01.519411Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 199,
-            "fieldName": "bookedByUserId",
-            "fieldPath": "bookedByUserId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:55.340769Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 197,
-            "fieldName": "arrestIssuesDetail",
-            "fieldPath": "arrestIssuesDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:39.669285Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "conditionalReleaseDate",
-            "fieldPath": "sentencingInfo.conditionalReleaseDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "sentenceDate",
-            "fieldPath": "sentencingInfo.sentenceDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "createdByUserId",
-            "fieldPath": "createdByUserId",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 202,
-            "fieldName": "reasonsForRecallOtherDetail",
-            "fieldPath": "reasonsForRecallOtherDetail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:42:42.088899Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 198,
-            "fieldName": "probationOfficerName",
-            "fieldPath": "probationInfo.probationOfficerName",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:41.352591Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 191,
-            "fieldName": "previousConvictionMainNameCategory",
-            "fieldPath": "previousConvictionMainNameCategory",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:16.212058Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 191,
-            "fieldName": "previousConvictionMainName",
-            "fieldPath": "previousConvictionMainName",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:16.212058Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 198,
-            "fieldName": "probationOfficerEmail",
-            "fieldPath": "probationInfo.probationOfficerEmail",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:41.352591Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 214,
-            "fieldName": "assignee",
-            "fieldPath": "assignee",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:46:01.553903Z",
-            "auditCount": 4
-          },
-          {
-            "auditId": 198,
-            "fieldName": "localDeliveryUnit",
-            "fieldPath": "probationInfo.localDeliveryUnit",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:41.352591Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "lastReleaseDate",
-            "fieldPath": "lastReleaseDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "croNumber",
-            "fieldPath": "croNumber",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 197,
-            "fieldName": "mappaLevel",
-            "fieldPath": "mappaLevel",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:39.669285Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 208,
-            "fieldName": "returnedToCustodyDateTime",
-            "fieldPath": "returnedToCustody.returnedToCustodyDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:53.946204Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 208,
-            "fieldName": "returnedToCustodyNotificationDateTime",
-            "fieldPath": "returnedToCustody.returnedToCustodyNotificationDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:53.946204Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 205,
-            "fieldName": "recallNotificationEmailSentDateTime",
-            "fieldPath": "recallNotificationEmailSentDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:23.37754Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "createdDateTime",
-            "fieldPath": "createdDateTime",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 197,
-            "fieldName": "vulnerabilityDiversity",
-            "fieldPath": "vulnerabilityDiversity",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:39.669285Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 198,
-            "fieldName": "authorisingAssistantChiefOfficer",
-            "fieldPath": "probationInfo.authorisingAssistantChiefOfficer",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:41.352591Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 215,
-            "fieldName": "differentNomsNumber",
-            "fieldPath": "differentNomsNumber",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:53:47.90053Z",
-            "auditCount": 2
-          },
-          {
-            "auditId": 36,
-            "fieldName": "recommendedRecallType",
-            "fieldPath": "recommendedRecallType",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.769799Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "sentenceYears",
-            "fieldPath": "sentencingInfo.sentenceLength.sentenceYears",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 208,
-            "fieldName": "dossierTargetDate",
-            "fieldPath": "dossierTargetDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:43:53.946204Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "firstName",
-            "fieldPath": "firstName",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "licenceExpiryDate",
-            "fieldPath": "sentencingInfo.licenceExpiryDate",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 35,
-            "fieldName": "lastName",
-            "fieldPath": "lastName",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-23T13:56:37.222362Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 195,
-            "fieldName": "bookingNumber",
-            "fieldPath": "bookingNumber",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:41:35.145494Z",
-            "auditCount": 1
-          },
-          {
-            "auditId": 14,
-            "fieldName": "reasonsForRecall",
-            "fieldPath": "reasonsForRecall",
-            "updatedByUserName": "Maria Badger",
-            "updatedDateTime": "2022-02-24T16:42:42.088899Z",
-            "auditCount": 1
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recall field history request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/audit/00000000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a generate recall document request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/generated",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "REVOCATION_ORDER",
-          "details": "Details changed.",
-          "fileName": "BADGER BOBBY 12345C RECALL DOSSIER.pdf"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "documentId": "11111111-0000-0000-0000-000000000000"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized generate recall document request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/generated",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "REVOCATION_ORDER",
-          "details": "Details changed.",
-          "fileName": "BADGER BOBBY 12345C RECALL DOSSIER.pdf"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a search request by NOMS number",
-      "providerState": "a list of recalls exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/search",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": "A1234AA"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "A1234AA",
-            "status": "BOOKED_ON",
-            "firstName": "Bobby",
-            "lastName": "Badger",
-            "inCustodyAtBooking": false,
-            "inCustodyAtAssessment": true,
-            "createdByUserId": "11111111-1111-1111-1111-111111111111",
-            "createdDateTime": "2020-12-05T16:33:57.000Z",
-            "dossierEmailSentDate": "2021-09-08",
-            "dossierTargetDate": "2020-12-14",
-            "licenceNameCategory": "FIRST_LAST"
-          },
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "A1234AA",
-            "status": "BEING_BOOKED_ON",
-            "firstName": "Dave",
-            "lastName": "Angel",
-            "inCustodyAtBooking": false,
-            "createdByUserId": "11111111-1111-1111-1111-111111111111",
-            "createdDateTime": "2020-12-05T16:33:57.000Z",
-            "licenceNameCategory": "FIRST_LAST",
-            "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z"
-          },
-          {
-            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-            "nomsNumber": "A1234AA",
-            "status": "AWAITING_DOSSIER_CREATION",
-            "firstName": "Bob",
-            "middleNames": "John",
-            "lastName": "Monkfish",
-            "inCustodyAtBooking": false,
-            "inCustodyAtAssessment": true,
-            "createdByUserId": "11111111-1111-1111-1111-111111111111",
-            "createdDateTime": "2020-12-05T16:33:57.000Z",
-            "licenceNameCategory": "FIRST_MIDDLE_LAST",
-            "recallAssessmentDueDateTime": "2021-08-06T15:33:57.000Z"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a search request with blank NOMS number",
-      "providerState": "no state required",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/search",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": ""
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "nomsNumber: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized search request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/prisoner/A1234AA",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an assign user request",
-      "providerState": "a user and an unassigned fully populated recall exists without documents",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/assignee/11111111-1111-1111-1111-111111111111",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {}
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "firstName": "Bobby",
-          "middleNames": "John",
-          "lastName": "Badger",
-          "dateOfBirth": "1999-05-28",
-          "croNumber": "1234/56A",
-          "assignee": "11111111-1111-1111-1111-111111111111",
-          "assigneeUserName": "Jimmy Pud",
-          "createdByUserId": "11111111-1111-1111-1111-111111111111",
-          "createdDateTime": "2020-12-05T16:33:57.000Z",
-          "inCustodyAtBooking": false,
-          "inCustodyAtAssessment": true,
-          "lastUpdatedDateTime": "2020-12-05T18:33:57.000Z",
-          "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-          "nomsNumber": "A1234AA",
-          "recommendedRecallType": "FIXED",
-          "recallLength": "FOURTEEN_DAYS",
-          "confirmedRecallType": "FIXED",
-          "confirmedRecallTypeDetail": "Agree with fixed term recall recommendation",
-          "previousConvictionMainName": "Walter Holt",
-          "licenceNameCategory": "FIRST_LAST",
-          "previousConvictionMainNameCategory": "OTHER",
-          "documents": [
-            {
-              "category": "LICENCE",
-              "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "fileName": "Bobby Badger licence.pdf",
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "NOTE_DOCUMENT",
-              "documentId": "1dceb003-9c47-4247-bd2a-fc2865e50eed",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "fileName": "recall-note.doc",
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "PART_A_RECALL_REPORT",
-              "documentId": "34bdf-5717-4562-b3fc-2c963f66afa6",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "fileName": "Bobby Badger Part A.pdf",
-              "version": 3,
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "PREVIOUS_CONVICTIONS_SHEET",
-              "documentId": "1234-5717-4562-b3fc-2c963f66afa6",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "fileName": "Bobby Badger pre cons.pdf",
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "PRE_SENTENCING_REPORT",
-              "documentId": "4563456-5717-4562-b3fc-2c963f66afa6",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "fileName": "Bobby Badger presentencing.pdf",
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "RECALL_NOTIFICATION_EMAIL",
-              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
-              "fileName": "2021-07-03 Phil Jones recall.msg",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "RECALL_REQUEST_EMAIL",
-              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
-              "fileName": "recall-request.eml",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "createdByUserName": "Arnold Caseworker"
-            },
-            {
-              "category": "MISSING_DOCUMENTS_EMAIL",
-              "documentId": "845",
-              "fileName": "missing-documents.msg",
-              "createdDateTime": "2020-12-05T18:33:57.000Z",
-              "createdByUserName": "Arnold Caseworker"
-            }
-          ],
-          "missingDocumentsRecords": [
-            {
-              "missingDocumentsRecordId": "0120412-410124",
-              "emailId": "845",
-              "emailFileName": "missing-documents2.msg",
-              "categories": ["OASYS_RISK_ASSESSMENT"],
-              "details": "Documents were requested by email on 10/12/2020",
-              "version": 2,
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2020-12-10T12:24:03.000Z"
-            },
-            {
-              "missingDocumentsRecordId": "0120412-848484",
-              "emailId": "123",
-              "emailFileName": "missing-documents.msg",
-              "categories": ["OASYS_RISK_ASSESSMENT", "PART_A_RECALL_REPORT"],
-              "details": "Documents were requested by email on 09/12/2020",
-              "version": 1,
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2020-12-09T12:24:03.000Z"
-            }
-          ],
-          "notes": [
-            {
-              "noteId": "678",
-              "subject": "another note subject",
-              "details": "another note, this one with document",
-              "index": 3,
-              "documentId": "834",
-              "fileName": "my-note-attachment.doc",
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2021-03-12T12:24:03.000Z"
-            },
-            {
-              "noteId": "345",
-              "subject": "note without document",
-              "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              "index": 1,
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2021-03-11T12:24:03.000Z"
-            }
-          ],
-          "lastKnownAddressOption": "YES",
-          "lastKnownAddresses": [
-            {
-              "line1": "345 Porchester Road",
-              "line2": "Southsea",
-              "town": "Portsmouth",
-              "postcode": "PO1 4OY",
-              "source": "LOOKUP",
-              "index": 3,
-              "lastKnownAddressId": "678",
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2021-03-12T12:24:03.000Z"
-            },
-            {
-              "line1": "Highwood Cottage, 43 Blandford Road",
-              "town": "Wareham",
-              "source": "MANUAL",
-              "index": 1,
-              "lastKnownAddressId": "345",
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2021-03-11T12:24:03.000Z"
-            }
-          ],
-          "partBRecords": [
-            {
-              "partBRecordId": "123",
-              "details": "Part B received",
-              "partBReceivedDate": "2022-03-05",
-              "version": 1,
-              "partBDocumentId": "456",
-              "partBFileName": "2022 part B.pdf",
-              "emailId": "789",
-              "emailFileName": "part B.msg",
-              "oasysDocumentId": "012",
-              "oasysFileName": "offender oasys.pdf",
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2022-03-05T14:15:43.000Z"
-            }
-          ],
-          "rescindRecords": [
-            {
-              "rescindRecordId": "123",
-              "requestEmailId": "123",
-              "requestEmailFileName": "rescind-request.msg",
-              "requestEmailReceivedDate": "2020-12-08",
-              "requestDetails": "Rescind was requested by email",
-              "approved": true,
-              "decisionDetails": "Rescind was confirmed by email",
-              "decisionEmailId": "456",
-              "decisionEmailFileName": "rescind-confirm.msg",
-              "decisionEmailSentDate": "2020-12-09",
-              "version": 1,
-              "createdByUserName": "Bobby Badger",
-              "createdDateTime": "2020-12-09T12:24:03.000Z",
-              "lastUpdatedDateTime": "2020-12-09T12:24:03.000Z"
-            }
-          ],
-          "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
-          "lastReleasePrison": "KTI",
-          "sentenceDate": "2019-08-03",
-          "sentenceExpiryDate": "2021-02-03",
-          "licenceExpiryDate": "2021-08-03",
-          "conditionalReleaseDate": "2021-12-03",
-          "lastReleaseDate": "2020-08-03",
-          "localPoliceForceId": "devon-and-cornwall",
-          "sentencingCourt": "ABDRCT",
-          "indexOffence": "Burglary",
-          "contraband": true,
-          "contrabandDetail": "Intention to smuggle drugs",
-          "vulnerabilityDiversity": true,
-          "vulnerabilityDiversityDetail": "Various...",
-          "arrestIssues": true,
-          "arrestIssuesDetail": "Detail...",
-          "mappaLevel": "LEVEL_1",
-          "sentenceLength": {
-            "years": 2,
-            "months": 3,
-            "days": 0
-          },
-          "bookingNumber": "A123456",
-          "probationOfficerName": "Dave Angel",
-          "probationOfficerPhoneNumber": "07473739388",
-          "probationOfficerEmail": "probation.office@justice.com",
-          "localDeliveryUnit": "CENTRAL_AUDIT_TEAM",
-          "authorisingAssistantChiefOfficer": "Bob Monkfish",
-          "licenceConditionsBreached": "(i) one (ii) two",
-          "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
-          "reasonsForRecallOtherDetail": "other reason detail...",
-          "currentPrison": "KTI",
-          "additionalLicenceConditions": true,
-          "additionalLicenceConditionsDetail": "one, two",
-          "differentNomsNumber": true,
-          "differentNomsNumberDetail": "AC3408303",
-          "recallNotificationEmailSentDateTime": "2021-08-15T13:04:00.000Z",
-          "dossierEmailSentDate": "2021-09-08",
-          "hasDossierBeenChecked": true,
-          "assessedByUserId": "00000000-0000-0000-0000-000000000000",
-          "bookedByUserId": "00000000-1111-0000-0000-000000000000",
-          "dossierCreatedByUserId": "00000000-2222-0000-0000-000000000000",
-          "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z",
-          "dossierTargetDate": "2020-12-14",
-          "status": "AWAITING_DOSSIER_CREATION",
-          "assessedByUserName": "Bertie Badger",
-          "bookedByUserName": "Brenda Badger",
-          "dossierCreatedByUserName": "Bobby Badger",
-          "warrantReferenceNumber": "02RC/1234567C12345",
-          "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
-          "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z",
-          "stopReason": "DECEASED",
-          "stopByUserName": "Bobby Badger",
-          "stopDateTime": "2022-01-22T13:45:33.000Z",
-          "partBDueDate": "2022-03-05",
-          "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized user accessToken",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "DELETE",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
       "description": "a get recall request",
       "providerState": "a user and a fully populated recall without documents exists",
       "request": {
@@ -1420,7 +355,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -1680,7 +620,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -1940,7 +885,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -2200,7 +1150,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -2460,7 +1415,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -2720,7 +1680,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -2785,443 +1750,6 @@
           "details": "Some text about what i did",
           "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
           "emailFileName": "email.msg"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a create recall request",
-      "providerState": "no state required",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": "A1234AA",
-          "firstName": "Bobby",
-          "lastName": "Badger",
-          "middleNames": "Bryan",
-          "croNumber": "1234/56A",
-          "dateOfBirth": "1999-05-28"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "recallId": "6e3ab21c-5717-4562-b3fc-2c963f66afa6",
-          "nomsNumber": "A1234AA",
-          "firstName": "Bobby",
-          "middleNames": "John",
-          "lastName": "Badger",
-          "croNumber": "1234/56A",
-          "dateOfBirth": "1999-05-28",
-          "createdByUserId": "11111111-1111-1111-1111-111111111111"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a create recall request with blank nomsNumber",
-      "providerState": "a user exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "nomsNumber": "",
-          "firstName": "",
-          "lastName": "",
-          "middleNames": "",
-          "croNumber": "",
-          "dateOfBirth": ""
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST",
-          "message": "nomsNumber: must not be blank"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "a get request by NOMS number",
-      "providerState": "a prisoner exists for NOMS number",
-      "request": {
-        "method": "GET",
-        "path": "/prisoner/A1234AA",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "firstName": "Bobby",
-          "middleNames": "John",
-          "lastName": "Badger",
-          "dateOfBirth": "1999-05-28",
-          "gender": "Male",
-          "nomsNumber": "A1234AA",
-          "croNumber": "1234/56A",
-          "pncNumber": "98/7654Z"
-        }
-      }
-    },
-    {
-      "description": "a get prisoner request with blank NOMS number",
-      "providerState": "no state required",
-      "request": {
-        "method": "GET",
-        "path": "/prisoner/",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 404,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an add start phase request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/start-phase",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "phase": "ASSESS"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized add start phase request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/start-phase",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "phase": "ASSESS"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an add end phase request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/end-phase",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "phase": "BOOK",
-          "shouldUnassign": false
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized add end phase request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/end-phase",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "phase": "BOOK",
-          "shouldUnassign": false
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a get service metrics request",
-      "providerState": "summary statistics exist",
-      "request": {
-        "method": "GET",
-        "path": "/statistics/summary",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "lastSevenDays": [
-            {
-              "phase": "BOOK",
-              "averageDuration": 100,
-              "count": 5
-            },
-            {
-              "phase": "ASSESS",
-              "averageDuration": 80,
-              "count": 4
-            },
-            {
-              "phase": "DOSSIER",
-              "averageDuration": 65,
-              "count": 4
-            }
-          ],
-          "overall": [
-            {
-              "phase": "BOOK",
-              "averageDuration": 120,
-              "count": 8
-            },
-            {
-              "phase": "ASSESS",
-              "averageDuration": 85,
-              "count": 7
-            },
-            {
-              "phase": "DOSSIER",
-              "averageDuration": 73,
-              "count": 5
-            }
-          ]
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get service metrics request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/statistics/summary",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an add address request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "line1": "345 Porchester Road",
-          "line2": "Southsea",
-          "town": "Portsmouth",
-          "postcode": "PO1 4OY",
-          "recallId": "00000000-0000-0000-0000-000000000000",
-          "source": "MANUAL"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an add address request with blank fields",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {}
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized add address request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "line1": "345 Porchester Road",
-          "line2": "Southsea",
-          "town": "Portsmouth",
-          "postcode": "PO1 4OY",
-          "recallId": "00000000-0000-0000-0000-000000000000",
-          "source": "MANUAL"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a full add note request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "subject": "Some note subject",
-          "details": "Some note details text",
-          "fileName": "file.doc",
-          "fileContent": "1234"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a minimal add note request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "subject": "Some note subject",
-          "details": "Some note details text"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an add note request with missing details",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "subject": "Note without details"
-        }
-      },
-      "response": {
-        "status": 400,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "status": "BAD_REQUEST"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized add note request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "subject": "Some note subject",
-          "details": "Some note details text",
-          "fileName": "file.doc",
-          "fileContent": "1234"
         }
       },
       "response": {
@@ -3526,7 +2054,12 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -3671,18 +2204,16 @@
       }
     },
     {
-      "description": "an update category request",
-      "providerState": "a recall and uncategorised document exist",
+      "description": "an assign user request",
+      "providerState": "a user and an unassigned fully populated recall exists without documents",
       "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/assignee/11111111-1111-1111-1111-111111111111",
         "headers": {
           "Authorization": "Bearer accessToken-1",
           "Content-Type": "application/json"
         },
-        "body": {
-          "category": "OASYS_RISK_ASSESSMENT"
-        }
+        "body": {}
       },
       "response": {
         "status": 200,
@@ -3690,10 +2221,247 @@
           "Content-Type": "application/json"
         },
         "body": {
-          "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "recallId": "efdfb675-81a8-43d5-836f-5c2614722830",
-          "category": "LICENCE",
-          "fileName": "filename.txt"
+          "firstName": "Bobby",
+          "middleNames": "John",
+          "lastName": "Badger",
+          "dateOfBirth": "1999-05-28",
+          "croNumber": "1234/56A",
+          "assignee": "11111111-1111-1111-1111-111111111111",
+          "assigneeUserName": "Jimmy Pud",
+          "createdByUserId": "11111111-1111-1111-1111-111111111111",
+          "createdDateTime": "2020-12-05T16:33:57.000Z",
+          "inCustodyAtBooking": false,
+          "inCustodyAtAssessment": true,
+          "lastUpdatedDateTime": "2020-12-05T18:33:57.000Z",
+          "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+          "nomsNumber": "A1234AA",
+          "recommendedRecallType": "FIXED",
+          "recallLength": "FOURTEEN_DAYS",
+          "confirmedRecallType": "FIXED",
+          "confirmedRecallTypeDetail": "Agree with fixed term recall recommendation",
+          "previousConvictionMainName": "Walter Holt",
+          "licenceNameCategory": "FIRST_LAST",
+          "previousConvictionMainNameCategory": "OTHER",
+          "documents": [
+            {
+              "category": "LICENCE",
+              "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "fileName": "Bobby Badger licence.pdf",
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "NOTE_DOCUMENT",
+              "documentId": "1dceb003-9c47-4247-bd2a-fc2865e50eed",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "fileName": "recall-note.doc",
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "PART_A_RECALL_REPORT",
+              "documentId": "34bdf-5717-4562-b3fc-2c963f66afa6",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "fileName": "Bobby Badger Part A.pdf",
+              "version": 3,
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "PREVIOUS_CONVICTIONS_SHEET",
+              "documentId": "1234-5717-4562-b3fc-2c963f66afa6",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "fileName": "Bobby Badger pre cons.pdf",
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "PRE_SENTENCING_REPORT",
+              "documentId": "4563456-5717-4562-b3fc-2c963f66afa6",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "fileName": "Bobby Badger presentencing.pdf",
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "RECALL_NOTIFICATION_EMAIL",
+              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
+              "fileName": "2021-07-03 Phil Jones recall.msg",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "RECALL_REQUEST_EMAIL",
+              "documentId": "64bdf-3455-8542-c3ac-8c963f66afa6",
+              "fileName": "recall-request.eml",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "createdByUserName": "Arnold Caseworker"
+            },
+            {
+              "category": "MISSING_DOCUMENTS_EMAIL",
+              "documentId": "845",
+              "fileName": "missing-documents.msg",
+              "createdDateTime": "2020-12-05T18:33:57.000Z",
+              "createdByUserName": "Arnold Caseworker"
+            }
+          ],
+          "missingDocumentsRecords": [
+            {
+              "missingDocumentsRecordId": "0120412-410124",
+              "emailId": "845",
+              "emailFileName": "missing-documents2.msg",
+              "categories": ["OASYS_RISK_ASSESSMENT"],
+              "details": "Documents were requested by email on 10/12/2020",
+              "version": 2,
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2020-12-10T12:24:03.000Z"
+            },
+            {
+              "missingDocumentsRecordId": "0120412-848484",
+              "emailId": "123",
+              "emailFileName": "missing-documents.msg",
+              "categories": ["OASYS_RISK_ASSESSMENT", "PART_A_RECALL_REPORT"],
+              "details": "Documents were requested by email on 09/12/2020",
+              "version": 1,
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2020-12-09T12:24:03.000Z"
+            }
+          ],
+          "notes": [
+            {
+              "noteId": "678",
+              "subject": "another note subject",
+              "details": "another note, this one with document",
+              "index": 3,
+              "documentId": "834",
+              "fileName": "my-note-attachment.doc",
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2021-03-12T12:24:03.000Z"
+            },
+            {
+              "noteId": "345",
+              "subject": "note without document",
+              "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              "index": 1,
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2021-03-11T12:24:03.000Z"
+            }
+          ],
+          "lastKnownAddressOption": "YES",
+          "lastKnownAddresses": [
+            {
+              "line1": "345 Porchester Road",
+              "line2": "Southsea",
+              "town": "Portsmouth",
+              "postcode": "PO1 4OY",
+              "source": "LOOKUP",
+              "index": 3,
+              "lastKnownAddressId": "678",
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2021-03-12T12:24:03.000Z"
+            },
+            {
+              "line1": "Highwood Cottage, 43 Blandford Road",
+              "town": "Wareham",
+              "source": "MANUAL",
+              "index": 1,
+              "lastKnownAddressId": "345",
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2021-03-11T12:24:03.000Z"
+            }
+          ],
+          "partBRecords": [
+            {
+              "partBRecordId": "123",
+              "details": "Part B received",
+              "partBReceivedDate": "2022-03-05",
+              "version": 1,
+              "partBDocumentId": "456",
+              "partBFileName": "2022 part B.pdf",
+              "emailId": "789",
+              "emailFileName": "part B.msg",
+              "oasysDocumentId": "012",
+              "oasysFileName": "offender oasys.pdf",
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2022-03-05T14:15:43.000Z"
+            }
+          ],
+          "rescindRecords": [
+            {
+              "rescindRecordId": "123",
+              "requestEmailId": "123",
+              "requestEmailFileName": "rescind-request.msg",
+              "requestEmailReceivedDate": "2020-12-08",
+              "requestDetails": "Rescind was requested by email",
+              "approved": true,
+              "decisionDetails": "Rescind was confirmed by email",
+              "decisionEmailId": "456",
+              "decisionEmailFileName": "rescind-confirm.msg",
+              "decisionEmailSentDate": "2020-12-09",
+              "version": 1,
+              "createdByUserName": "Bobby Badger",
+              "createdDateTime": "2020-12-09T12:24:03.000Z",
+              "lastUpdatedDateTime": "2020-12-09T12:24:03.000Z"
+            }
+          ],
+          "recallEmailReceivedDateTime": "2020-12-05T15:33:57.000Z",
+          "lastReleasePrison": "KTI",
+          "sentenceDate": "2019-08-03",
+          "sentenceExpiryDate": "2021-02-03",
+          "licenceExpiryDate": "2021-08-03",
+          "conditionalReleaseDate": "2021-12-03",
+          "lastReleaseDate": "2020-08-03",
+          "localPoliceForceId": "devon-and-cornwall",
+          "sentencingCourt": "ABDRCT",
+          "indexOffence": "Burglary",
+          "contraband": true,
+          "contrabandDetail": "Intention to smuggle drugs",
+          "vulnerabilityDiversity": true,
+          "vulnerabilityDiversityDetail": "Various...",
+          "arrestIssues": true,
+          "arrestIssuesDetail": "Detail...",
+          "mappaLevel": "LEVEL_1",
+          "sentenceLength": {
+            "years": 2,
+            "months": 3,
+            "days": 0
+          },
+          "bookingNumber": "A123456",
+          "probationOfficerName": "Dave Angel",
+          "probationOfficerPhoneNumber": "07473739388",
+          "probationOfficerEmail": "probation.office@justice.com",
+          "localDeliveryUnit": "CENTRAL_AUDIT_TEAM",
+          "authorisingAssistantChiefOfficer": "Bob Monkfish",
+          "licenceConditionsBreached": "(i) one (ii) two",
+          "reasonsForRecall": ["OTHER", "ELM_FAILURE_CHARGE_BATTERY"],
+          "reasonsForRecallOtherDetail": "other reason detail...",
+          "currentPrison": "KTI",
+          "additionalLicenceConditions": true,
+          "additionalLicenceConditionsDetail": "one, two",
+          "differentNomsNumber": true,
+          "differentNomsNumberDetail": "AC3408303",
+          "recallNotificationEmailSentDateTime": "2021-08-15T13:04:00.000Z",
+          "dossierEmailSentDate": "2021-09-08",
+          "hasDossierBeenChecked": true,
+          "assessedByUserId": "00000000-0000-0000-0000-000000000000",
+          "bookedByUserId": "00000000-1111-0000-0000-000000000000",
+          "dossierCreatedByUserId": "00000000-2222-0000-0000-000000000000",
+          "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z",
+          "dossierTargetDate": "2020-12-14",
+          "status": "AWAITING_DOSSIER_CREATION",
+          "assessedByUserName": "Bertie Badger",
+          "bookedByUserName": "Brenda Badger",
+          "dossierCreatedByUserName": "Bobby Badger",
+          "warrantReferenceNumber": "02RC/1234567C12345",
+          "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
+          "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z",
+          "stopReason": "DECEASED",
+          "stopByUserName": "Bobby Badger",
+          "stopDateTime": "2022-01-22T13:45:33.000Z",
+          "partBDueDate": "2022-03-05",
+          "rereleaseSupported": true,
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
@@ -3703,393 +2471,11 @@
       }
     },
     {
-      "description": "an update document request for a document that does not exist",
-      "providerState": "no state required",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11100000-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "OASYS_RISK_ASSESSMENT"
-        }
-      },
-      "response": {
-        "status": 404,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized update document request",
+      "description": "an unauthorized user accessToken",
       "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "OASYS_RISK_ASSESSMENT"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a delete last known address request",
-      "providerState": "a recall with last known addresses exists",
       "request": {
         "method": "DELETE",
         "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses/22222222-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 204,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an update confirmed recall type request",
-      "providerState": "a user and a fully populated FIXED recall without documents exists",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/confirmed-recall-type",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "confirmedRecallType": "STANDARD",
-          "confirmedRecallTypeDetail": "Details..."
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized update confirmed recall type request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/confirmed-recall-type",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "confirmedRecallType": "STANDARD",
-          "confirmedRecallTypeDetail": "Details..."
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an upload recall document request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/uploaded",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "PART_A_RECALL_REPORT",
-          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
-          "fileName": "Part_A.pdf"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8"
-        },
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized upload recall document request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/uploaded",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "category": "PART_A_RECALL_REPORT",
-          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
-          "fileName": "Part_A.pdf"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an update recommended recall type request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/recommended-recall-type",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "recommendedRecallType": "STANDARD"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized update recommended recall type request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/recommended-recall-type",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "recommendedRecallType": "STANDARD"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an update rescind record request",
-      "providerState": "a recall with open rescind record exists",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/rescind-records/33333333-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "details": "Some text about what i did",
-          "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
-          "emailFileName": "email.msg",
-          "emailSentDate": "2021-10-05",
-          "approved": true
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an unauthorized update record request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "PATCH",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/rescind-records/33333333-0000-0000-0000-000000000000",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "details": "Some text about what i did",
-          "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
-          "emailFileName": "email.msg",
-          "emailSentDate": "2021-10-05",
-          "approved": true
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "an add rescind record request",
-      "providerState": "a user and a fully populated recall without documents exists",
-      "request": {
-        "method": "POST",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/rescind-records",
-        "headers": {
-          "Authorization": "Bearer accessToken-1",
-          "Content-Type": "application/json"
-        },
-        "body": {
-          "details": "Some text about what i did",
-          "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
-          "emailFileName": "email.msg",
-          "emailReceivedDate": "2021-10-05"
-        }
-      },
-      "response": {
-        "status": 201,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a get recall document history request",
-      "providerState": "a recall and document history exist",
-      "request": {
-        "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
-        "query": "category=LICENCE",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "category": "LICENCE",
-            "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "createdDateTime": "2020-12-05T18:33:57.000Z",
-            "fileName": "Bobby Badger licence.pdf",
-            "createdByUserName": "Arnold Caseworker",
-            "version": 1
-          },
-          {
-            "category": "LICENCE",
-            "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-            "createdDateTime": "2020-12-06T18:33:57.000Z",
-            "fileName": "Bobby Badger licence.pdf",
-            "createdByUserName": "Arnold Caseworker",
-            "version": 2,
-            "details": "Changed"
-          },
-          {
-            "category": "LICENCE",
-            "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
-            "createdDateTime": "2020-12-07T18:33:57.000Z",
-            "fileName": "Bobby Badger licence.pdf",
-            "createdByUserName": "Arnold Caseworker",
-            "version": 3,
-            "details": "Changed again"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recall document history request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
-        "query": "category=LICENCE",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 401,
-        "headers": {}
-      }
-    },
-    {
-      "description": "a get recalls request",
-      "providerState": "a list of recalls exists",
-      "request": {
-        "method": "GET",
-        "path": "/recalls",
-        "headers": {
-          "Authorization": "Bearer accessToken-1"
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "body": [
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "A1234AA",
-            "status": "BOOKED_ON",
-            "firstName": "Bobby",
-            "lastName": "Badger",
-            "inCustodyAtBooking": false,
-            "inCustodyAtAssessment": true,
-            "createdByUserId": "11111111-1111-1111-1111-111111111111",
-            "createdDateTime": "2020-12-05T16:33:57.000Z",
-            "dossierEmailSentDate": "2021-09-08",
-            "dossierTargetDate": "2020-12-14",
-            "licenceNameCategory": "FIRST_LAST"
-          },
-          {
-            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "nomsNumber": "A1234AA",
-            "status": "BEING_BOOKED_ON",
-            "firstName": "Dave",
-            "lastName": "Angel",
-            "inCustodyAtBooking": false,
-            "createdByUserId": "11111111-1111-1111-1111-111111111111",
-            "createdDateTime": "2020-12-05T16:33:57.000Z",
-            "licenceNameCategory": "FIRST_LAST",
-            "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z"
-          },
-          {
-            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
-            "nomsNumber": "A1234AA",
-            "status": "AWAITING_DOSSIER_CREATION",
-            "firstName": "Bob",
-            "middleNames": "John",
-            "lastName": "Monkfish",
-            "inCustodyAtBooking": false,
-            "inCustodyAtAssessment": true,
-            "createdByUserId": "11111111-1111-1111-1111-111111111111",
-            "createdDateTime": "2020-12-05T16:33:57.000Z",
-            "licenceNameCategory": "FIRST_MIDDLE_LAST",
-            "recallAssessmentDueDateTime": "2021-08-06T15:33:57.000Z"
-          }
-        ],
-        "matchingRules": {
-          "$.body": {
-            "match": "type"
-          }
-        }
-      }
-    },
-    {
-      "description": "an unauthorized get recalls request",
-      "providerState": "an unauthorized user accessToken",
-      "request": {
-        "method": "GET",
-        "path": "/recalls",
         "headers": {
           "Authorization": "Bearer accessToken-1"
         }
@@ -4348,13 +2734,40 @@
           "stopDateTime": "2022-01-22T13:45:33.000Z",
           "partBDueDate": "2022-03-05",
           "rereleaseSupported": true,
-          "secondaryDossierDueDate": "2022-03-05"
+          "secondaryDossierDueDate": "2022-03-05",
+          "legalRepresentativeInfo": {
+            "fullName": "Jenny Eclair",
+            "phoneNumber": "07824637629",
+            "email": "jenny@legalreps.com"
+          }
         },
         "matchingRules": {
           "$.body": {
             "match": "type"
           }
         }
+      }
+    },
+    {
+      "description": "an add rescind record request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/rescind-records",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "details": "Some text about what i did",
+          "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
+          "emailFileName": "email.msg",
+          "emailReceivedDate": "2021-10-05"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {}
       }
     },
     {
@@ -4400,6 +2813,212 @@
       }
     },
     {
+      "description": "a get service metrics request",
+      "providerState": "summary statistics exist",
+      "request": {
+        "method": "GET",
+        "path": "/statistics/summary",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "lastSevenDays": [
+            {
+              "phase": "DOSSIER",
+              "averageDuration": 65,
+              "count": 4
+            },
+            {
+              "phase": "BOOK",
+              "averageDuration": 100,
+              "count": 5
+            },
+            {
+              "phase": "ASSESS",
+              "averageDuration": 80,
+              "count": 4
+            }
+          ],
+          "overall": [
+            {
+              "phase": "ASSESS",
+              "averageDuration": 85,
+              "count": 7
+            },
+            {
+              "phase": "BOOK",
+              "averageDuration": 120,
+              "count": 8
+            },
+            {
+              "phase": "DOSSIER",
+              "averageDuration": 73,
+              "count": 5
+            }
+          ]
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized get service metrics request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/statistics/summary",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a full add note request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "subject": "Some note subject",
+          "details": "Some note details text",
+          "fileName": "file.doc",
+          "fileContent": "1234"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a minimal add note request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "subject": "Some note subject",
+          "details": "Some note details text"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an add note request with missing details",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "subject": "Note without details"
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized add note request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/notes",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "subject": "Some note subject",
+          "details": "Some note details text",
+          "fileName": "file.doc",
+          "fileContent": "1234"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an update confirmed recall type request",
+      "providerState": "a user and a fully populated FIXED recall without documents exists",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/confirmed-recall-type",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "confirmedRecallType": "STANDARD",
+          "confirmedRecallTypeDetail": "Details..."
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized update confirmed recall type request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/confirmed-recall-type",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "confirmedRecallType": "STANDARD",
+          "confirmedRecallTypeDetail": "Details..."
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
       "description": "an add missing documents records request",
       "providerState": "a user and a fully populated recall without documents exists",
       "request": {
@@ -4422,6 +3041,391 @@
       }
     },
     {
+      "description": "an add start phase request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/start-phase",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "phase": "ASSESS"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized add start phase request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/start-phase",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "phase": "ASSESS"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an add end phase request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/end-phase",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "phase": "BOOK",
+          "shouldUnassign": false
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized add end phase request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/end-phase",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "phase": "BOOK",
+          "shouldUnassign": false
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a generate recall document request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/generated",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "REVOCATION_ORDER",
+          "details": "Details changed.",
+          "fileName": "BADGER BOBBY 12345C RECALL DOSSIER.pdf"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "documentId": "11111111-0000-0000-0000-000000000000"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized generate recall document request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/generated",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "REVOCATION_ORDER",
+          "details": "Details changed.",
+          "fileName": "BADGER BOBBY 12345C RECALL DOSSIER.pdf"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a get recalls request",
+      "providerState": "a list of recalls exists",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "A1234AA",
+            "status": "BOOKED_ON",
+            "firstName": "Bobby",
+            "lastName": "Badger",
+            "createdByUserId": "11111111-1111-1111-1111-111111111111",
+            "createdDateTime": "2020-12-05T16:33:57.000Z",
+            "dossierEmailSentDate": "2021-09-08",
+            "dossierTargetDate": "2020-12-14",
+            "licenceNameCategory": "FIRST_LAST"
+          },
+          {
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "A1234AA",
+            "status": "BEING_BOOKED_ON",
+            "firstName": "Dave",
+            "lastName": "Angel",
+            "createdByUserId": "11111111-1111-1111-1111-111111111111",
+            "createdDateTime": "2020-12-05T16:33:57.000Z",
+            "licenceNameCategory": "FIRST_LAST",
+            "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z"
+          },
+          {
+            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+            "nomsNumber": "A1234AA",
+            "status": "AWAITING_DOSSIER_CREATION",
+            "firstName": "Bob",
+            "middleNames": "John",
+            "lastName": "Monkfish",
+            "createdByUserId": "11111111-1111-1111-1111-111111111111",
+            "createdDateTime": "2020-12-05T16:33:57.000Z",
+            "licenceNameCategory": "FIRST_MIDDLE_LAST",
+            "recallAssessmentDueDateTime": "2021-08-06T15:33:57.000Z"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized get recalls request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an upload recall document request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/uploaded",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "PART_A_RECALL_REPORT",
+          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
+          "fileName": "Part_A.pdf"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "documentId": "3fa85f64-5718-4562-b3fc-2c963f66afa8"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized upload recall document request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/uploaded",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "PART_A_RECALL_REPORT",
+          "fileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
+          "fileName": "Part_A.pdf"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a create recall request",
+      "providerState": "no state required",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA",
+          "firstName": "Bobby",
+          "lastName": "Badger",
+          "middleNames": "Bryan",
+          "croNumber": "1234/56A",
+          "dateOfBirth": "1999-05-28"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recallId": "6e3ab21c-5717-4562-b3fc-2c963f66afa6",
+          "nomsNumber": "A1234AA",
+          "firstName": "Bobby",
+          "middleNames": "John",
+          "lastName": "Badger",
+          "croNumber": "1234/56A",
+          "dateOfBirth": "1999-05-28",
+          "createdByUserId": "11111111-1111-1111-1111-111111111111"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a create recall request with blank nomsNumber",
+      "providerState": "a user exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "",
+          "firstName": "",
+          "lastName": "",
+          "middleNames": "",
+          "croNumber": "",
+          "dateOfBirth": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST",
+          "message": "nomsNumber: must not be blank"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a get recall field history request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "GET",
+        "path": "/audit/00000000-0000-0000-0000-000000000000/currentPrison",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "auditId": 0,
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "updatedByUserName": "Maria Badger",
+            "updatedDateTime": "2022-01-04T13:17:34.443Z",
+            "updatedValue": "KTI"
+          },
+          {
+            "auditId": 1,
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "updatedByUserName": "Marcus Baimbridge",
+            "updatedDateTime": "2022-01-04T17:56:22.000Z",
+            "updatedValue": "ASI"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized get recall field history request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/audit/00000000-0000-0000-0000-000000000000/currentPrison",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
       "description": "a delete document request",
       "providerState": "a recall in being booked on state with a document exists",
       "request": {
@@ -4433,6 +3437,356 @@
       },
       "response": {
         "status": 204,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a get policeForces request",
+      "providerState": "no state required",
+      "request": {
+        "method": "GET",
+        "path": "/reference-data/police-forces",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": "avon-and-somerset",
+            "name": "Avon and Somerset Constabulary"
+          },
+          {
+            "id": "bedfordshire",
+            "name": "Bedfordshire Police"
+          },
+          {
+            "id": "cambridgeshire",
+            "name": "Cambridgeshire Constabulary"
+          },
+          {
+            "id": "cheshire",
+            "name": "Cheshire Constabulary"
+          },
+          {
+            "id": "city-of-london",
+            "name": "City of London Police"
+          },
+          {
+            "id": "cleveland",
+            "name": "Cleveland Police"
+          },
+          {
+            "id": "cumbria",
+            "name": "Cumbria Constabulary"
+          },
+          {
+            "id": "derbyshire",
+            "name": "Derbyshire Constabulary"
+          },
+          {
+            "id": "devon-and-cornwall",
+            "name": "Devon & Cornwall Police"
+          },
+          {
+            "id": "dorset",
+            "name": "Dorset Police"
+          },
+          {
+            "id": "durham",
+            "name": "Durham Constabulary"
+          },
+          {
+            "id": "dyfed-powys",
+            "name": "Dyfed-Powys Police"
+          },
+          {
+            "id": "essex",
+            "name": "Essex Police"
+          },
+          {
+            "id": "gloucestershire",
+            "name": "Gloucestershire Constabulary"
+          },
+          {
+            "id": "greater-manchester",
+            "name": "Greater Manchester Police"
+          },
+          {
+            "id": "gwent",
+            "name": "Gwent Police"
+          },
+          {
+            "id": "hampshire",
+            "name": "Hampshire Constabulary"
+          },
+          {
+            "id": "hertfordshire",
+            "name": "Hertfordshire Constabulary"
+          },
+          {
+            "id": "humberside",
+            "name": "Humberside Police"
+          },
+          {
+            "id": "kent",
+            "name": "Kent Police"
+          },
+          {
+            "id": "lancashire",
+            "name": "Lancashire Constabulary"
+          },
+          {
+            "id": "leicestershire",
+            "name": "Leicestershire Police"
+          },
+          {
+            "id": "lincolnshire",
+            "name": "Lincolnshire Police"
+          },
+          {
+            "id": "merseyside",
+            "name": "Merseyside Police"
+          },
+          {
+            "id": "metropolitan",
+            "name": "Metropolitan Police Service"
+          },
+          {
+            "id": "norfolk",
+            "name": "Norfolk Constabulary"
+          },
+          {
+            "id": "north-wales",
+            "name": "North Wales Police"
+          },
+          {
+            "id": "north-yorkshire",
+            "name": "North Yorkshire Police"
+          },
+          {
+            "id": "northamptonshire",
+            "name": "Northamptonshire Police"
+          },
+          {
+            "id": "northumbria",
+            "name": "Northumbria Police"
+          },
+          {
+            "id": "nottinghamshire",
+            "name": "Nottinghamshire Police"
+          },
+          {
+            "id": "northern-ireland",
+            "name": "Police Service of Northern Ireland"
+          },
+          {
+            "id": "south-wales",
+            "name": "South Wales Police"
+          },
+          {
+            "id": "south-yorkshire",
+            "name": "South Yorkshire Police"
+          },
+          {
+            "id": "staffordshire",
+            "name": "Staffordshire Police"
+          },
+          {
+            "id": "suffolk",
+            "name": "Suffolk Constabulary"
+          },
+          {
+            "id": "surrey",
+            "name": "Surrey Police"
+          },
+          {
+            "id": "sussex",
+            "name": "Sussex Police"
+          },
+          {
+            "id": "thames-valley",
+            "name": "Thames Valley Police"
+          },
+          {
+            "id": "warwickshire",
+            "name": "Warwickshire Police"
+          },
+          {
+            "id": "west-mercia",
+            "name": "West Mercia Police"
+          },
+          {
+            "id": "west-midlands",
+            "name": "West Midlands Police"
+          },
+          {
+            "id": "west-yorkshire",
+            "name": "West Yorkshire Police"
+          },
+          {
+            "id": "wiltshire",
+            "name": "Wiltshire Police"
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "a get stop reasons request",
+      "providerState": "no state required",
+      "request": {
+        "method": "GET",
+        "path": "/reference-data/stop-reasons",
+        "headers": {}
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": [
+          {
+            "id": "ALTERNATIVE_INTERVENTION",
+            "name": "Alternative intervention",
+            "validForStopCall": true
+          },
+          {
+            "id": "DECEASED",
+            "name": "Deceased",
+            "validForStopCall": true
+          },
+          {
+            "id": "HDC_WARNING_LETTER",
+            "name": "HDC warning letter",
+            "validForStopCall": true
+          },
+          {
+            "id": "INCORRECT_LICENCE",
+            "name": "Incorrect licence",
+            "validForStopCall": true
+          },
+          {
+            "id": "LEGAL_REASON",
+            "name": "Legal reason",
+            "validForStopCall": true
+          },
+          {
+            "id": "NO_ACTION",
+            "name": "No action",
+            "validForStopCall": true
+          },
+          {
+            "id": "NOT_APPLICABLE",
+            "name": "Not applicable",
+            "validForStopCall": true
+          },
+          {
+            "id": "NOT_SPECIFIED",
+            "name": "Not specified",
+            "validForStopCall": true
+          },
+          {
+            "id": "RAISED_IN_ERROR",
+            "name": "Raise in error",
+            "validForStopCall": true
+          },
+          {
+            "id": "SOS_WARNING_LETTER",
+            "name": "SoS warning letter",
+            "validForStopCall": true
+          },
+          {
+            "id": "UO_28DAY_AND_DEEMED_NOTIFIED",
+            "name": "UO 28 day & deemed notified",
+            "validForStopCall": true
+          },
+          {
+            "id": "WITHDRAWAL_BY_ACO",
+            "name": "Withdrawal by ACO",
+            "validForStopCall": true
+          },
+          {
+            "id": "RESCINDED",
+            "name": "Rescinded",
+            "validForStopCall": false
+          },
+          {
+            "id": "POOR_BEHAVIOUR_DRUGS",
+            "name": "Poor behaviour - Drugs",
+            "validForStopCall": true
+          },
+          {
+            "id": "POOR_BEHAVIOUR_NON_COMPLIANCE",
+            "name": "Poor behaviour - Non-compliance",
+            "validForStopCall": true
+          },
+          {
+            "id": "POOR_BEHAVIOUR_RELATIONSHIPS",
+            "name": "Poor behaviour - Relationships",
+            "validForStopCall": true
+          },
+          {
+            "id": "TRAVELLING_OUTSIDE_UK",
+            "name": "Travelling outside the UK",
+            "validForStopCall": true
+          },
+          {
+            "id": "OTHER",
+            "name": "Other",
+            "validForStopCall": true
+          }
+        ],
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an add return to custody dates request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/returned-to-custody",
+        "headers": {
+          "Authorization": "Bearer token-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
+          "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized add return to custody dates request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/returned-to-custody",
+        "headers": {
+          "Authorization": "Bearer token-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "returnedToCustodyDateTime": "2022-01-22T13:45:33.000Z",
+          "returnedToCustodyNotificationDateTime": "2022-01-23T08:22:06.000Z"
+        }
+      },
+      "response": {
+        "status": 401,
         "headers": {}
       }
     },
@@ -5299,11 +4653,11 @@
       }
     },
     {
-      "description": "a get policeForces request",
+      "description": "a get local delivery units request",
       "providerState": "no state required",
       "request": {
         "method": "GET",
-        "path": "/reference-data/police-forces",
+        "path": "/reference-data/local-delivery-units",
         "headers": {}
       },
       "response": {
@@ -5313,180 +4667,54 @@
         },
         "body": [
           {
-            "id": "avon-and-somerset",
-            "name": "Avon and Somerset Constabulary"
+            "name": "CENTRAL_AUDIT_TEAM",
+            "label": "Central Audit Team",
+            "active": true
           },
           {
-            "id": "bedfordshire",
-            "name": "Bedfordshire Police"
+            "name": "CHANNEL_ISLANDS",
+            "label": "Channel Islands",
+            "active": true
           },
           {
-            "id": "cambridgeshire",
-            "name": "Cambridgeshire Constabulary"
+            "name": "ISLE_OF_MAN",
+            "label": "Isle of Man",
+            "active": true
           },
           {
-            "id": "cheshire",
-            "name": "Cheshire Constabulary"
+            "name": "NORTHERN_IRELAND",
+            "label": "Northern Ireland",
+            "active": true
           },
           {
-            "id": "city-of-london",
-            "name": "City of London Police"
+            "name": "NOT_APPLICABLE",
+            "label": "Not applicable",
+            "active": true
           },
           {
-            "id": "cleveland",
-            "name": "Cleveland Police"
+            "name": "NOT_SPECIFIED",
+            "label": "Not specified",
+            "active": true
           },
           {
-            "id": "cumbria",
-            "name": "Cumbria Constabulary"
+            "name": "PS_BARKING_DAGENHAM_HAVERING",
+            "label": "PS - Barking, Dagenham & Havering",
+            "active": true
           },
           {
-            "id": "derbyshire",
-            "name": "Derbyshire Constabulary"
+            "name": "PS_BARNET",
+            "label": "PS - Barnet",
+            "active": true
           },
           {
-            "id": "devon-and-cornwall",
-            "name": "Devon & Cornwall Police"
+            "name": "PS_BARNSLEY",
+            "label": "PS - Barnsley",
+            "active": true
           },
           {
-            "id": "dorset",
-            "name": "Dorset Police"
-          },
-          {
-            "id": "durham",
-            "name": "Durham Constabulary"
-          },
-          {
-            "id": "dyfed-powys",
-            "name": "Dyfed-Powys Police"
-          },
-          {
-            "id": "essex",
-            "name": "Essex Police"
-          },
-          {
-            "id": "gloucestershire",
-            "name": "Gloucestershire Constabulary"
-          },
-          {
-            "id": "greater-manchester",
-            "name": "Greater Manchester Police"
-          },
-          {
-            "id": "gwent",
-            "name": "Gwent Police"
-          },
-          {
-            "id": "hampshire",
-            "name": "Hampshire Constabulary"
-          },
-          {
-            "id": "hertfordshire",
-            "name": "Hertfordshire Constabulary"
-          },
-          {
-            "id": "humberside",
-            "name": "Humberside Police"
-          },
-          {
-            "id": "kent",
-            "name": "Kent Police"
-          },
-          {
-            "id": "lancashire",
-            "name": "Lancashire Constabulary"
-          },
-          {
-            "id": "leicestershire",
-            "name": "Leicestershire Police"
-          },
-          {
-            "id": "lincolnshire",
-            "name": "Lincolnshire Police"
-          },
-          {
-            "id": "merseyside",
-            "name": "Merseyside Police"
-          },
-          {
-            "id": "metropolitan",
-            "name": "Metropolitan Police Service"
-          },
-          {
-            "id": "norfolk",
-            "name": "Norfolk Constabulary"
-          },
-          {
-            "id": "north-wales",
-            "name": "North Wales Police"
-          },
-          {
-            "id": "north-yorkshire",
-            "name": "North Yorkshire Police"
-          },
-          {
-            "id": "northamptonshire",
-            "name": "Northamptonshire Police"
-          },
-          {
-            "id": "northumbria",
-            "name": "Northumbria Police"
-          },
-          {
-            "id": "nottinghamshire",
-            "name": "Nottinghamshire Police"
-          },
-          {
-            "id": "northern-ireland",
-            "name": "Police Service of Northern Ireland"
-          },
-          {
-            "id": "south-wales",
-            "name": "South Wales Police"
-          },
-          {
-            "id": "south-yorkshire",
-            "name": "South Yorkshire Police"
-          },
-          {
-            "id": "staffordshire",
-            "name": "Staffordshire Police"
-          },
-          {
-            "id": "suffolk",
-            "name": "Suffolk Constabulary"
-          },
-          {
-            "id": "surrey",
-            "name": "Surrey Police"
-          },
-          {
-            "id": "sussex",
-            "name": "Sussex Police"
-          },
-          {
-            "id": "thames-valley",
-            "name": "Thames Valley Police"
-          },
-          {
-            "id": "warwickshire",
-            "name": "Warwickshire Police"
-          },
-          {
-            "id": "west-mercia",
-            "name": "West Mercia Police"
-          },
-          {
-            "id": "west-midlands",
-            "name": "West Midlands Police"
-          },
-          {
-            "id": "west-yorkshire",
-            "name": "West Yorkshire Police"
-          },
-          {
-            "id": "wiltshire",
-            "name": "Wiltshire Police"
+            "name": "PS_CUMBRIA",
+            "label": "PS - Cumbria",
+            "active": false
           }
         ],
         "matchingRules": {
@@ -5494,6 +4722,67 @@
             "match": "type"
           }
         }
+      }
+    },
+    {
+      "description": "a get request by NOMS number",
+      "providerState": "a prisoner exists for NOMS number",
+      "request": {
+        "method": "GET",
+        "path": "/prisoner/A1234AA",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "firstName": "Bobby",
+          "middleNames": "John",
+          "lastName": "Badger",
+          "dateOfBirth": "1999-05-28",
+          "gender": "Male",
+          "nomsNumber": "A1234AA",
+          "croNumber": "1234/56A",
+          "pncNumber": "98/7654Z"
+        }
+      }
+    },
+    {
+      "description": "a get prisoner request with blank NOMS number",
+      "providerState": "no state required",
+      "request": {
+        "method": "GET",
+        "path": "/prisoner/",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized search request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/search",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
       }
     },
     {
@@ -5934,12 +5223,102 @@
       }
     },
     {
-      "description": "a get local delivery units request",
-      "providerState": "no state required",
+      "description": "an update recommended recall type request",
+      "providerState": "a user and a fully populated recall without documents exists",
       "request": {
-        "method": "GET",
-        "path": "/reference-data/local-delivery-units",
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/recommended-recall-type",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recommendedRecallType": "STANDARD"
+        }
+      },
+      "response": {
+        "status": 200,
         "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized update recommended recall type request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/recommended-recall-type",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "recommendedRecallType": "STANDARD"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an update rescind record request",
+      "providerState": "a recall with open rescind record exists",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/rescind-records/33333333-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "details": "Some text about what i did",
+          "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
+          "emailFileName": "email.msg",
+          "emailSentDate": "2021-10-05",
+          "approved": true
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized update record request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/rescind-records/33333333-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "details": "Some text about what i did",
+          "emailFileContent": "JVBERi0xLjINJeLjz9MNCjMgMCBvYmoNPDwgDS9MaW5lYXJpemVkIDEgDS9PIDUgDS9IIFsgNzYwIDE1NyBdIA0vTCAzOTA4IA0vRSAzNjU4IA0vTiAxIA0vVCAzNzMxIA0+PiANZW5kb2JqDSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB4cmVmDTMgMTUgDTAwMDAwMDAwMTYgMDAwMDAgbg0KMDAwMDAwMDY0NCAwMDAwMCBuDQowMDAwMDAwOTE3IDAwMDAwIG4NCjAwMDAwMDEwNjggMDAwMDAgbg0KMDAwMDAwMTIyNCAwMDAwMCBuDQowMDAwMDAxNDEwIDAwMDAwIG4NCjAwMDAwMDE1ODkgMDAwMDAgbg0KMDAwMDAwMTc2OCAwMDAwMCBuDQowMDAwMDAyMTk3IDAwMDAwIG4NCjAwMDAwMDIzODMgMDAwMDAgbg0KMDAwMDAwMjc2OSAwMDAwMCBuDQowMDAwMDAzMTcyIDAwMDAwIG4NCjAwMDAwMDMzNTEgMDAwMDAgbg0KMDAwMDAwMDc2MCAwMDAwMCBuDQowMDAwMDAwODk3IDAwMDAwIG4NCnRyYWlsZXINPDwNL1NpemUgMTgNL0luZm8gMSAwIFIgDS9Sb290IDQgMCBSIA0vUHJldiAzNzIyIA0vSURbPGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPjxkNzBmNDZjNWJhNGZlOGJkNDlhOWRkMDU5OWIwYjE1MT5dDT4+DXN0YXJ0eHJlZg0wDSUlRU9GDSAgICAgIA00IDAgb2JqDTw8IA0vVHlwZSAvQ2F0YWxvZyANL1BhZ2VzIDIgMCBSIA0vT3BlbkFjdGlvbiBbIDUgMCBSIC9YWVogbnVsbCBudWxsIG51bGwgXSANL1BhZ2VNb2RlIC9Vc2VOb25lIA0+PiANZW5kb2JqDTE2IDAgb2JqDTw8IC9TIDM2IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlIC9MZW5ndGggMTcgMCBSID4+IA1zdHJlYW0NCkiJYmBg4GVgYPrBAAScFxiwAQ4oLQDE3FDMwODHwKkyubctWLfmpsmimQ5AEYAAAwC3vwe0DWVuZHN0cmVhbQ1lbmRvYmoNMTcgMCBvYmoNNTMgDWVuZG9iag01IDAgb2JqDTw8IA0vVHlwZSAvUGFnZSANL1BhcmVudCAyIDAgUiANL1Jlc291cmNlcyA2IDAgUiANL0NvbnRlbnRzIDEwIDAgUiANL01lZGlhQm94IFsgMCAwIDYxMiA3OTIgXSANL0Nyb3BCb3ggWyAwIDAgNjEyIDc5MiBdIA0vUm90YXRlIDAgDT4+IA1lbmRvYmoNNiAwIG9iag08PCANL1Byb2NTZXQgWyAvUERGIC9UZXh0IF0gDS9Gb250IDw8IC9UVDIgOCAwIFIgL1RUNCAxMiAwIFIgL1RUNiAxMyAwIFIgPj4gDS9FeHRHU3RhdGUgPDwgL0dTMSAxNSAwIFIgPj4gDS9Db2xvclNwYWNlIDw8IC9DczUgOSAwIFIgPj4gDT4+IA1lbmRvYmoNNyAwIG9iag08PCANL1R5cGUgL0ZvbnREZXNjcmlwdG9yIA0vQXNjZW50IDg5MSANL0NhcEhlaWdodCAwIA0vRGVzY2VudCAtMjE2IA0vRmxhZ3MgMzQgDS9Gb250QkJveCBbIC01NjggLTMwNyAyMDI4IDEwMDcgXSANL0ZvbnROYW1lIC9UaW1lc05ld1JvbWFuIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNOCAwIG9iag08PCANL1R5cGUgL0ZvbnQgDS9TdWJ0eXBlIC9UcnVlVHlwZSANL0ZpcnN0Q2hhciAzMiANL0xhc3RDaGFyIDMyIA0vV2lkdGhzIFsgMjUwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL1RpbWVzTmV3Um9tYW4gDS9Gb250RGVzY3JpcHRvciA3IDAgUiANPj4gDWVuZG9iag05IDAgb2JqDVsgDS9DYWxSR0IgPDwgL1doaXRlUG9pbnQgWyAwLjk1MDUgMSAxLjA4OSBdIC9HYW1tYSBbIDIuMjIyMjEgMi4yMjIyMSAyLjIyMjIxIF0gDS9NYXRyaXggWyAwLjQxMjQgMC4yMTI2IDAuMDE5MyAwLjM1NzYgMC43MTUxOSAwLjExOTIgMC4xODA1IDAuMDcyMiAwLjk1MDUgXSA+PiANDV0NZW5kb2JqDTEwIDAgb2JqDTw8IC9MZW5ndGggMzU1IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+IA1zdHJlYW0NCkiJdJDBTsMwEETv/oo92ohuvXHsJEeggOCEwDfEIU1SCqIJIimIv2dthyJVQpGc0Xo88+xzL5beZ0DgN4IIq6oCzd8sK43amAyK3GKmTQV+J5YXo4VmjDYNYyOW1w8Ez6PQ4JuwfAkJyr+yXNgSSwt+NU+4Kp+rcg4uy9Q1a6MdarLcpgvUeUGh7RBFSLk1f1n+5FgsHJaZttFqA+tKLJhfZ3kEY+VcoHuUfvui2O3kCL9COSwk1Ok3deMEd6srUCVa2Q7Nftf1Ewar5a4nfxuu4v59NcLMGAKXlcjMLtwj1BsTQCITUSK52cC3IoNGDnto6l5VmEv4YAwjO8VWJ+s2DSeGttw/qmA/PZyLu3vY1p9p0MGZIs2iHdZxjwdNSkzedT0pJiW+CWl5H0O7uu2SB1JLn8rHlMkH2F+/xa20Rjp+nAQ39Ec8c1gz7KJ4T3H7uXnuwvSWl178CDAA/bGPlAplbmRzdHJlYW0NZW5kb2JqDTExIDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTYyOCAtMzc2IDIwMzQgMTA0OCBdIA0vRm9udE5hbWUgL0FyaWFsLEJvbGQgDS9JdGFsaWNBbmdsZSAwIA0vU3RlbVYgMTMzIA0+PiANZW5kb2JqDTEyIDAgb2JqDTw8IA0vVHlwZSAvRm9udCANL1N1YnR5cGUgL1RydWVUeXBlIA0vRmlyc3RDaGFyIDMyIA0vTGFzdENoYXIgMTE3IA0vV2lkdGhzIFsgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgDTAgMCAwIDAgMCA3MjIgMCA2MTEgMCAwIDAgMCAwIDAgMCAwIDAgNjY3IDAgMCAwIDYxMSAwIDAgMCAwIDAgMCANMCAwIDAgMCAwIDAgNTU2IDAgNTU2IDYxMSA1NTYgMCAwIDYxMSAyNzggMCAwIDAgODg5IDYxMSA2MTEgMCAwIA0wIDU1NiAzMzMgNjExIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsLEJvbGQgDS9Gb250RGVzY3JpcHRvciAxMSAwIFIgDT4+IA1lbmRvYmoNMTMgMCBvYmoNPDwgDS9UeXBlIC9Gb250IA0vU3VidHlwZSAvVHJ1ZVR5cGUgDS9GaXJzdENoYXIgMzIgDS9MYXN0Q2hhciAxMjEgDS9XaWR0aHMgWyAyNzggMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDI3OCAwIDI3OCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCANMCAwIDAgNjY3IDAgMCAwIDAgMCAwIDAgMjc4IDAgMCAwIDAgMCAwIDAgMCA3MjIgMCAwIDAgMCAwIDAgMCAwIA0wIDAgMCAwIDAgMCA1NTYgNTU2IDUwMCA1NTYgNTU2IDI3OCAwIDU1NiAyMjIgMCAwIDIyMiA4MzMgNTU2IDU1NiANNTU2IDAgMzMzIDUwMCAyNzggNTU2IDUwMCAwIDAgNTAwIF0gDS9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nIA0vQmFzZUZvbnQgL0FyaWFsIA0vRm9udERlc2NyaXB0b3IgMTQgMCBSIA0+PiANZW5kb2JqDTE0IDAgb2JqDTw8IA0vVHlwZSAvRm9udERlc2NyaXB0b3IgDS9Bc2NlbnQgOTA1IA0vQ2FwSGVpZ2h0IDAgDS9EZXNjZW50IC0yMTEgDS9GbGFncyAzMiANL0ZvbnRCQm94IFsgLTY2NSAtMzI1IDIwMjggMTAzNyBdIA0vRm9udE5hbWUgL0FyaWFsIA0vSXRhbGljQW5nbGUgMCANL1N0ZW1WIDAgDT4+IA1lbmRvYmoNMTUgMCBvYmoNPDwgDS9UeXBlIC9FeHRHU3RhdGUgDS9TQSBmYWxzZSANL1NNIDAuMDIgDS9UUiAvSWRlbnRpdHkgDT4+IA1lbmRvYmoNMSAwIG9iag08PCANL1Byb2R1Y2VyIChBY3JvYmF0IERpc3RpbGxlciA0LjA1IGZvciBXaW5kb3dzKQ0vQ3JlYXRvciAoTWljcm9zb2Z0IFdvcmQgOS4wKQ0vTW9kRGF0ZSAoRDoyMDAxMDgyOTA5NTUwMS0wNycwMCcpDS9BdXRob3IgKEdlbmUgQnJ1bWJsYXkpDS9UaXRsZSAoVGhpcyBpcyBhIHRlc3QgUERGIGRvY3VtZW50KQ0vQ3JlYXRpb25EYXRlIChEOjIwMDEwODI5MDk1NDU3KQ0+PiANZW5kb2JqDTIgMCBvYmoNPDwgDS9UeXBlIC9QYWdlcyANL0tpZHMgWyA1IDAgUiBdIA0vQ291bnQgMSANPj4gDWVuZG9iag14cmVmDTAgMyANMDAwMDAwMDAwMCA2NTUzNSBmDQowMDAwMDAzNDI5IDAwMDAwIG4NCjAwMDAwMDM2NTggMDAwMDAgbg0KdHJhaWxlcg08PA0vU2l6ZSAzDS9JRFs8ZDcwZjQ2YzViYTRmZThiZDQ5YTlkZDA1OTliMGIxNTE+PGQ3MGY0NmM1YmE0ZmU4YmQ0OWE5ZGQwNTk5YjBiMTUxPl0NPj4Nc3RhcnR4cmVmDTE3Mw0lJUVPRg0=",
+          "emailFileName": "email.msg",
+          "emailSentDate": "2021-10-05",
+          "approved": true
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a search request by NOMS number",
+      "providerState": "a list of recalls exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/search",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": "A1234AA"
+        }
       },
       "response": {
         "status": 200,
@@ -5948,54 +5327,39 @@
         },
         "body": [
           {
-            "name": "CENTRAL_AUDIT_TEAM",
-            "label": "Central Audit Team",
-            "active": true
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "A1234AA",
+            "status": "BOOKED_ON",
+            "firstName": "Bobby",
+            "lastName": "Badger",
+            "createdByUserId": "11111111-1111-1111-1111-111111111111",
+            "createdDateTime": "2020-12-05T16:33:57.000Z",
+            "dossierEmailSentDate": "2021-09-08",
+            "dossierTargetDate": "2020-12-14",
+            "licenceNameCategory": "FIRST_LAST"
           },
           {
-            "name": "CHANNEL_ISLANDS",
-            "label": "Channel Islands",
-            "active": true
+            "recallId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "nomsNumber": "A1234AA",
+            "status": "BEING_BOOKED_ON",
+            "firstName": "Dave",
+            "lastName": "Angel",
+            "createdByUserId": "11111111-1111-1111-1111-111111111111",
+            "createdDateTime": "2020-12-05T16:33:57.000Z",
+            "licenceNameCategory": "FIRST_LAST",
+            "recallAssessmentDueDateTime": "2020-08-06T15:33:57.000Z"
           },
           {
-            "name": "ISLE_OF_MAN",
-            "label": "Isle of Man",
-            "active": true
-          },
-          {
-            "name": "NORTHERN_IRELAND",
-            "label": "Northern Ireland",
-            "active": true
-          },
-          {
-            "name": "NOT_APPLICABLE",
-            "label": "Not applicable",
-            "active": true
-          },
-          {
-            "name": "NOT_SPECIFIED",
-            "label": "Not specified",
-            "active": true
-          },
-          {
-            "name": "PS_BARKING_DAGENHAM_HAVERING",
-            "label": "PS - Barking, Dagenham & Havering",
-            "active": true
-          },
-          {
-            "name": "PS_BARNET",
-            "label": "PS - Barnet",
-            "active": true
-          },
-          {
-            "name": "PS_BARNSLEY",
-            "label": "PS - Barnsley",
-            "active": true
-          },
-          {
-            "name": "PS_CUMBRIA",
-            "label": "PS - Cumbria",
-            "active": false
+            "recallId": "8ab377a6-4587-2598-abc4-98fc53737",
+            "nomsNumber": "A1234AA",
+            "status": "AWAITING_DOSSIER_CREATION",
+            "firstName": "Bob",
+            "middleNames": "John",
+            "lastName": "Monkfish",
+            "createdByUserId": "11111111-1111-1111-1111-111111111111",
+            "createdDateTime": "2020-12-05T16:33:57.000Z",
+            "licenceNameCategory": "FIRST_MIDDLE_LAST",
+            "recallAssessmentDueDateTime": "2021-08-06T15:33:57.000Z"
           }
         ],
         "matchingRules": {
@@ -6006,12 +5370,115 @@
       }
     },
     {
-      "description": "a get stop reasons request",
+      "description": "a search request with blank NOMS number",
       "providerState": "no state required",
       "request": {
-        "method": "GET",
-        "path": "/reference-data/stop-reasons",
+        "method": "POST",
+        "path": "/recalls/search",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "nomsNumber": ""
+        }
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST",
+          "message": "nomsNumber: must not be blank"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an update category request",
+      "providerState": "a recall and uncategorised document exist",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "OASYS_RISK_ASSESSMENT"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "recallId": "efdfb675-81a8-43d5-836f-5c2614722830",
+          "category": "LICENCE",
+          "fileName": "filename.txt"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an update document request for a document that does not exist",
+      "providerState": "no state required",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11100000-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "OASYS_RISK_ASSESSMENT"
+        }
+      },
+      "response": {
+        "status": 404,
         "headers": {}
+      }
+    },
+    {
+      "description": "an unauthorized update document request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "PATCH",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents/11111111-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "category": "OASYS_RISK_ASSESSMENT"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a get recall document history request",
+      "providerState": "a recall and document history exist",
+      "request": {
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
+        "query": "category=LICENCE",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
       },
       "response": {
         "status": 200,
@@ -6020,94 +5487,30 @@
         },
         "body": [
           {
-            "id": "ALTERNATIVE_INTERVENTION",
-            "name": "Alternative intervention",
-            "validForStopCall": true
+            "category": "LICENCE",
+            "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "createdDateTime": "2020-12-05T18:33:57.000Z",
+            "fileName": "Bobby Badger licence.pdf",
+            "createdByUserName": "Arnold Caseworker",
+            "version": 1
           },
           {
-            "id": "DECEASED",
-            "name": "Deceased",
-            "validForStopCall": true
+            "category": "LICENCE",
+            "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+            "createdDateTime": "2020-12-06T18:33:57.000Z",
+            "fileName": "Bobby Badger licence.pdf",
+            "createdByUserName": "Arnold Caseworker",
+            "version": 2,
+            "details": "Changed"
           },
           {
-            "id": "HDC_WARNING_LETTER",
-            "name": "HDC warning letter",
-            "validForStopCall": true
-          },
-          {
-            "id": "INCORRECT_LICENCE",
-            "name": "Incorrect licence",
-            "validForStopCall": true
-          },
-          {
-            "id": "LEGAL_REASON",
-            "name": "Legal reason",
-            "validForStopCall": true
-          },
-          {
-            "id": "NO_ACTION",
-            "name": "No action",
-            "validForStopCall": true
-          },
-          {
-            "id": "NOT_APPLICABLE",
-            "name": "Not applicable",
-            "validForStopCall": true
-          },
-          {
-            "id": "NOT_SPECIFIED",
-            "name": "Not specified",
-            "validForStopCall": true
-          },
-          {
-            "id": "RAISED_IN_ERROR",
-            "name": "Raise in error",
-            "validForStopCall": true
-          },
-          {
-            "id": "SOS_WARNING_LETTER",
-            "name": "SoS warning letter",
-            "validForStopCall": true
-          },
-          {
-            "id": "UO_28DAY_AND_DEEMED_NOTIFIED",
-            "name": "UO 28 day & deemed notified",
-            "validForStopCall": true
-          },
-          {
-            "id": "WITHDRAWAL_BY_ACO",
-            "name": "Withdrawal by ACO",
-            "validForStopCall": true
-          },
-          {
-            "id": "RESCINDED",
-            "name": "Rescinded",
-            "validForStopCall": false
-          },
-          {
-            "id": "POOR_BEHAVIOUR_DRUGS",
-            "name": "Poor behaviour - Drugs",
-            "validForStopCall": true
-          },
-          {
-            "id": "POOR_BEHAVIOUR_NON_COMPLIANCE",
-            "name": "Poor behaviour - Non-compliance",
-            "validForStopCall": true
-          },
-          {
-            "id": "POOR_BEHAVIOUR_RELATIONSHIPS",
-            "name": "Poor behaviour - Relationships",
-            "validForStopCall": true
-          },
-          {
-            "id": "TRAVELLING_OUTSIDE_UK",
-            "name": "Travelling outside the UK",
-            "validForStopCall": true
-          },
-          {
-            "id": "OTHER",
-            "name": "Other",
-            "validForStopCall": true
+            "category": "LICENCE",
+            "documentId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+            "createdDateTime": "2020-12-07T18:33:57.000Z",
+            "fileName": "Bobby Badger licence.pdf",
+            "createdByUserName": "Arnold Caseworker",
+            "version": 3,
+            "details": "Changed again"
           }
         ],
         "matchingRules": {
@@ -6115,6 +5518,112 @@
             "match": "type"
           }
         }
+      }
+    },
+    {
+      "description": "an unauthorized get recall document history request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "GET",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/documents",
+        "query": "category=LICENCE",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an add address request",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "line1": "345 Porchester Road",
+          "line2": "Southsea",
+          "town": "Portsmouth",
+          "postcode": "PO1 4OY",
+          "recallId": "00000000-0000-0000-0000-000000000000",
+          "source": "MANUAL"
+        }
+      },
+      "response": {
+        "status": 201,
+        "headers": {}
+      }
+    },
+    {
+      "description": "an add address request with blank fields",
+      "providerState": "a user and a fully populated recall without documents exists",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {}
+      },
+      "response": {
+        "status": 400,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "status": "BAD_REQUEST"
+        },
+        "matchingRules": {
+          "$.body": {
+            "match": "type"
+          }
+        }
+      }
+    },
+    {
+      "description": "an unauthorized add address request",
+      "providerState": "an unauthorized user accessToken",
+      "request": {
+        "method": "POST",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses",
+        "headers": {
+          "Authorization": "Bearer accessToken-1",
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "line1": "345 Porchester Road",
+          "line2": "Southsea",
+          "town": "Portsmouth",
+          "postcode": "PO1 4OY",
+          "recallId": "00000000-0000-0000-0000-000000000000",
+          "source": "MANUAL"
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {}
+      }
+    },
+    {
+      "description": "a delete last known address request",
+      "providerState": "a recall with last known addresses exists",
+      "request": {
+        "method": "DELETE",
+        "path": "/recalls/00000000-0000-0000-0000-000000000000/last-known-addresses/22222222-0000-0000-0000-000000000000",
+        "headers": {
+          "Authorization": "Bearer accessToken-1"
+        }
+      },
+      "response": {
+        "status": 204,
+        "headers": {}
       }
     }
   ],
