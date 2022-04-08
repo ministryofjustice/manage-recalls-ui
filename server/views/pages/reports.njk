@@ -1,0 +1,38 @@
+{% extends "../partials/layout.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/search/macro.njk" import mojSearch -%}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = makePageTitle("Reports", errors) %}
+
+{% block content %}
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% if errors %}
+                {{ govukErrorSummary({
+                    titleText: "There is a problem",
+                    errorList: errors.list,
+                    attributes: {
+                        'data-qa': 'error-list'
+                    }
+                }) }}
+            {% endif %}
+            <h1 class='govuk-heading-l'>Reports</h1>
+
+            <p class='govuk-body-l'>Click on a report to download it.</p>
+            <div{% if errors.error_WEEKLY_RECALLS_NEW %} id='downloadLinkError'{% endif %}>
+            {{ documentDownloadLink({
+                linkText: "Weekly Recalls New",
+                fileName: "weekly-recalls-new.csv",
+                url: '/reports/weekly-recalls-new',
+                dataQaLink: 'getWeeklyRecallsNewLink',
+                dataQaFileName: 'getWeeklyRecallsNewFileName'
+            })
+            }}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

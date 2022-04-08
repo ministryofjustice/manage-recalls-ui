@@ -15,6 +15,7 @@ export type { FieldAuditSummary } from './models/FieldAuditSummary';
 export { FileError } from './models/FileError';
 export { GenerateDocumentRequest } from './models/GenerateDocumentRequest';
 export { GetDocumentResponse } from './models/GetDocumentResponse';
+export { GetReportResponse } from './models/GetReportResponse';
 export { LastKnownAddress } from './models/LastKnownAddress';
 export type { LegalRepresentativeInfo } from './models/LegalRepresentativeInfo';
 export type { LocalDeliveryUnitResponse } from './models/LocalDeliveryUnitResponse';

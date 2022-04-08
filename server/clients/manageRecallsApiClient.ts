@@ -16,6 +16,7 @@ import {
   RecallDocument,
   BookRecallRequest,
   AddUserDetailsRequest,
+  GetReportResponse,
 } from '../@types/manage-recalls-api'
 import { MissingDocumentsRecordRequest } from '../@types/manage-recalls-api/models/MissingDocumentsRecordRequest'
 import { PoliceForce } from '../@types/manage-recalls-api/models/PoliceForce'
@@ -301,6 +302,10 @@ export function addPhaseEndTime({ recallId, valuesToSave, user }: SaveToApiFnArg
 
 export function getServiceMetrics(token: string): Promise<StatisticsSummary> {
   return restClient(token).get<StatisticsSummary>({ path: '/statistics/summary' })
+}
+
+export function getWeeklyRecallsNew(token: string): Promise<GetReportResponse> {
+  return restClient(token).get<GetReportResponse>({ path: '/reports/weekly-recalls-new' })
 }
 
 function restClient(token?: string): RestClient {
