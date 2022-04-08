@@ -234,5 +234,10 @@
   "stopDateTime": "2022-01-22T13:45:33.000Z",
   "partBDueDate": "2022-03-05",
   "rereleaseSupported": true,
-  "secondaryDossierDueDate": "2022-03-05"
+  "secondaryDossierDueDate": "2022-03-05",
+  "legalRepresentativeInfo": {
+    "fullName": "Jenny Eclair",
+    "phoneNumber": "07824637629",
+    "email": "jenny@legalreps.com"
+  }
 }

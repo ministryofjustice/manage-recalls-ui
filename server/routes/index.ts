@@ -75,6 +75,7 @@ import { getStoredSessionData } from '../middleware/getStoredSessionData'
 import { EndPhaseRequest } from '../@types/manage-recalls-api/models/EndPhaseRequest'
 import { StartPhaseRequest } from '../@types/manage-recalls-api/models/StartPhaseRequest'
 import { serviceMetricsDashboard } from '../controllers/serviceMetrics'
+import { validateLegalRep } from '../controllers/secondaryDossier/validators/validateLegalRep'
 
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -294,6 +295,8 @@ export default function routes(router: Router): Router {
     })
   )
   get(`${basePath}/secondary-dossier-recall`, recallPageGet('secondaryDossierRecallInfo'))
+  get(`${basePath}/secondary-dossier-legal-rep`, recallPageGet('secondaryDossierLegalRep'))
+  post(`${basePath}/secondary-dossier-legal-rep`, recallFormPost(validateLegalRep))
 
   return router
 }

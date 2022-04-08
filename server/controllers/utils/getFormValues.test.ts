@@ -140,6 +140,17 @@ describe('getFormValues', () => {
     rereleaseSupported: {
       text: 'Re-release supported',
     },
+    legalRepresentativeInfo_fullName: {
+      text: 'Legal rep name',
+    },
+    legalRepresentativeInfo_email: {
+      text: 'Legal rep email',
+      values: 'invalidemail.com',
+    },
+    legalRepresentativeInfo_phoneNumber: {
+      text: 'Legal rep phone',
+      values: '999',
+    },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -203,6 +214,9 @@ describe('getFormValues', () => {
     partBReceivedDateParts: { values: { year: '2016', month: '', day: '13' } },
     partBDetails: 'Part B detail',
     rereleaseSupported: 'NO',
+    legalRepresentativeInfo_fullName: 'Jenny Edwards',
+    legalRepresentativeInfo_email: 'jenny@edwards.com',
+    legalRepresentativeInfo_phoneNumber: '07484839483',
   }
 
   const apiValues = {
@@ -238,7 +252,6 @@ describe('getFormValues', () => {
       contrabandDetail: '',
       currentPrison: '',
       details: '',
-      dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '13',
         month: '',
@@ -256,6 +269,9 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: '',
+      legalRepresentativeInfo_fullName: '',
+      legalRepresentativeInfo_email: 'invalidemail.com',
+      legalRepresentativeInfo_phoneNumber: '999',
       licenceConditionsBreached: '',
       licenceExpiryDateParts: {
         day: '05',
@@ -280,7 +296,6 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
-      recallNotificationEmailFileName: 'email.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: '05',
         hour: '05',
@@ -356,7 +371,6 @@ describe('getFormValues', () => {
       contrabandDetail: 'Likelihood of smuggling knives',
       currentPrison: 'ACL',
       details: 'Detail for note...',
-      dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '17',
         month: '11',
@@ -372,6 +386,9 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: 'Portland',
+      legalRepresentativeInfo_email: 'jenny@edwards.com',
+      legalRepresentativeInfo_fullName: 'Jenny Edwards',
+      legalRepresentativeInfo_phoneNumber: '07484839483',
       licenceConditionsBreached: '(iii) three \n (iv) four',
       licenceExpiryDateParts: {
         day: '05',
@@ -404,7 +421,6 @@ describe('getFormValues', () => {
         month: '12',
         year: '2020',
       },
-      recallNotificationEmailFileName: 'recall.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: '23',
         hour: '6',
@@ -481,7 +497,6 @@ describe('getFormValues', () => {
       contrabandDetail: '',
       currentPrison: '',
       details: '',
-      dossierEmailFileName: 'dossier.msg',
       dossierEmailSentDateParts: {
         day: '13',
         month: '',
@@ -499,6 +514,9 @@ describe('getFormValues', () => {
         year: 'www',
       },
       lastReleasePrison: '',
+      legalRepresentativeInfo_email: 'invalidemail.com',
+      legalRepresentativeInfo_fullName: '',
+      legalRepresentativeInfo_phoneNumber: '999',
       licenceConditionsBreached: '',
       licenceExpiryDateParts: {
         day: '05',
@@ -530,7 +548,6 @@ describe('getFormValues', () => {
         month: '12',
         year: '',
       },
-      recallNotificationEmailFileName: 'email.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: '05',
         hour: '05',
@@ -617,6 +634,9 @@ describe('getFormValues', () => {
       inCustodyAtBooking: 'NO',
       inCustodyAtAssessment: 'YES',
       previousConvictionMainNameCategory: 'OTHER',
+      legalRepresentativeInfo_email: 'jenny@legalreps.com',
+      legalRepresentativeInfo_fullName: 'Jenny Eclair',
+      legalRepresentativeInfo_phoneNumber: '07824637629',
       licenceNameCategory: 'FIRST_LAST',
       indexOffence: 'Burglary',
       lastKnownAddressOption: 'YES',
@@ -648,7 +668,6 @@ describe('getFormValues', () => {
         month: '12',
         year: '2020',
       },
-      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: '15',
         hour: '14',
@@ -741,6 +760,9 @@ describe('getFormValues', () => {
         year: '2020',
       },
       lastReleasePrison: 'KTI',
+      legalRepresentativeInfo_email: 'jenny@legalreps.com',
+      legalRepresentativeInfo_fullName: 'Jenny Eclair',
+      legalRepresentativeInfo_phoneNumber: '07824637629',
       licenceConditionsBreached: '(i) one (ii) two',
       licenceExpiryDateParts: {
         day: '03',
@@ -763,7 +785,6 @@ describe('getFormValues', () => {
         month: '12',
         year: '2020',
       },
-      recallNotificationEmailFileName: '2021-07-03 Phil Jones recall.msg',
       recallNotificationEmailSentDateTimeParts: {
         day: '15',
         hour: '14',

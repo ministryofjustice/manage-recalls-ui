@@ -2,6 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
+import type { LegalRepresentativeInfo } from './LegalRepresentativeInfo';
+import type { SeniorProbationOfficerInfo } from './SeniorProbationOfficerInfo';
 import type { SentenceLength } from './SentenceLength';
 
 export type UpdateRecallRequest = {
@@ -28,6 +30,7 @@ export type UpdateRecallRequest = {
     lastKnownAddressOption?: UpdateRecallRequest.lastKnownAddressOption;
     lastReleaseDate?: string;
     lastReleasePrison?: string;
+    legalRepresentativeInfo?: LegalRepresentativeInfo;
     licenceConditionsBreached?: string;
     licenceExpiryDate?: string;
     licenceNameCategory?: UpdateRecallRequest.licenceNameCategory;
@@ -44,6 +47,7 @@ export type UpdateRecallRequest = {
     recallEmailReceivedDateTime?: string;
     recallNotificationEmailSentDateTime?: string;
     rereleaseSupported?: boolean;
+    seniorProbationOfficerInfo?: SeniorProbationOfficerInfo;
     sentenceDate?: string;
     sentenceExpiryDate?: string;
     sentenceLength?: SentenceLength;
