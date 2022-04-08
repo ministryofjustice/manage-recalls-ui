@@ -19,7 +19,6 @@
             <h1 class="govuk-heading-xl">
                 Recalls
             </h1>
-
             {% set toDoHtml %}
             {% if results and results.toDo.length > 0 %}
                 <table class="govuk-table" data-module="moj-sortable-table" id='table-todo' data-qa='to-do'>
@@ -58,9 +57,9 @@
                                 <div class='flex flex--space-between'>
                                 {% set recall = result %}
                                 {% set returnToRecallList = '1' %}
-                                    <span class='govuk-!-padding-right-3 wrapper-action-link'>
+                                    <div class='govuk-!-padding-right-3 wrapper-action-link'>
                                 {% include "../partials/recallActionLink.njk" %}
-                                    </span>
+                                    </div>
                                     <span class='no-wrap-tablet'>
                                     <a href='/recalls/{{result.recallId}}/view-recall' data-qa='view-recall-{{ result.recallId }}'>
                                         View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
@@ -233,7 +232,7 @@
                         <tr class="govuk-table__row">
                             <th scope="col" class="govuk-table__header" aria-sort="none">Name</th>
                             <th scope="col" class="govuk-table__header" aria-sort="ascending">Due</th>
-{#                            <th scope="col" class="govuk-table__header" aria-sort="none">Sentence end date</th>#}
+                            <th scope="col" class="govuk-table__header" aria-sort="none">Sentence end date</th>
                             <th scope="col" class="govuk-table__header" aria-sort="none">Assigned to</th>
                             <th scope="col" class="govuk-table__header">Action</th>
                         </tr>
@@ -243,23 +242,29 @@
                             <tr class="govuk-table__row" data-qa='recall-id-{{ result.recallId }}'>
                                 <td class="govuk-table__cell" data-qa="name" data-private>{{ result.fullName }}</td>
                                 <td class="govuk-table__cell" data-qa="due" data-sort-value='{{ result.secondaryDossierDueDate }}'>
+                                    <div class='no-wrap-tablet'>
                                     {{ dueDateTimeLabel({ dueIsoDateTime: result.secondaryDossierDueDate, includeTime: false, shortFormat: true, showOverdueForShortFormat: true }) }}
+                                    </div>
                                 </td>
-{#                                <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.sentenceEndDate | dateTime }}</td>#}
+                                <td class="govuk-table__cell" data-qa="sentenceEndDate" data-private>
+{#                                    {{ result.sentenceEndDate | dateTime }}#}
+                                </td>
                                 <td class="govuk-table__cell" data-qa="assignedTo" data-private>{{ result.assigneeUserName }}</td>
                                 <td class="govuk-table__cell">
-                                    <div class='flex'>
+                                    <div class='flex flex--space-between'>
                                             <div class='govuk-!-padding-right-2'>
                                         <form novalidate action="/recalls/{{ result.recallId }}/secondary-dossier-assign" method="post">
                                             <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                                             <button class="govuk-link reset-button link-button" data-module="govuk-button" data-qa="prepare-dossier-{{ result.recallId }}">
-                                            Prepare dossier<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
+                                                {% if result.status == 'SECONDARY_DOSSIER_IN_PROGRESS' %}Continue dossier preparation{% else %}Prepare dossier{% endif %}<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
                                             </button>
                                         </form>
                                         </div>
-                                    <a href='/recalls/{{result.recallId}}/view-recall'>
+                                        <div class='no-wrap-tablet'>
+                                        <a href='/recalls/{{result.recallId}}/view-recall'>
                                             View recall<span class="govuk-visually-hidden">{{ linkTextWithPerson(result) }}</span>
                                         </a>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

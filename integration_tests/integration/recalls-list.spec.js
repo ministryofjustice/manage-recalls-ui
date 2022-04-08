@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { getRecallResponse } from '../mockApis/mockResponses'
 import userDetailsPage from '../pages/userDetails'
 import { formatDateTimeFromIsoString } from '../../server/controllers/utils/dates/format'
+import { caseworker } from '../fixtures'
 
 describe('Recalls list', () => {
   const recallId = '123'
@@ -61,7 +62,7 @@ describe('Recalls list', () => {
     )
   })
 
-  it('move on to assessRecall if the recall has status BOOKED_ON', () => {
+  it('move on to assessRecall if the recall has been booked on', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -83,9 +84,15 @@ describe('Recalls list', () => {
     })
     cy.clickButton(`Assess recall for ${personName}`)
     cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
+    // check that user was assigned to recall
+    cy.assertSaveToRecallsApi({
+      url: `/recalls/${recallId}/assignee/${caseworker.uuid}`,
+      method: 'POST',
+      bodyValues: {},
+    })
   })
 
-  it('continue assessment if the recall has status IN_ASSESSMENT', () => {
+  it('continue assessment if assessment has previously been started', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -99,16 +106,25 @@ describe('Recalls list', () => {
       ],
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'IN_ASSESSMENT' } })
+    cy.task('expectAddPhaseStartTime')
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.visit('/')
     cy.assertTableColumnValues({
       qaAttrTable: 'to-do',
       qaAttrCell: 'assignedTo',
       valuesToCompare: ['Jimmy Pud'],
     })
-    cy.getLinkHref(`Continue assessment for ${personName}`).should('contain', `/recalls/${recallId}/assess`)
+    cy.clickButton(`Continue assessment for ${personName}`)
+    cy.pageHeading().should('equal', `Assess a recall for ${personName}`)
+    // check that user was assigned to recall
+    cy.assertSaveToRecallsApi({
+      url: `/recalls/${recallId}/assignee/${caseworker.uuid}`,
+      method: 'POST',
+      bodyValues: {},
+    })
   })
 
-  it('move on to createDossier if the recall has status AWAITING_DOSSIER_CREATION', () => {
+  it('Start dossier creation', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -123,14 +139,21 @@ describe('Recalls list', () => {
       recallId,
       expectedResult: { ...getRecallResponse, status: 'AWAITING_DOSSIER_CREATION' },
     })
+    cy.task('expectAddPhaseStartTime')
     cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.task('expectAddPhaseStartTime')
     cy.visit('/')
     cy.clickButton(`Create dossier for ${personName}`)
     cy.pageHeading().should('equal', `Create a dossier for ${personName} recall`)
+    // check that user was assigned to recall
+    cy.assertSaveToRecallsApi({
+      url: `/recalls/${recallId}/assignee/${caseworker.uuid}`,
+      method: 'POST',
+      bodyValues: {},
+    })
   })
 
-  it('continue dossier creation if the recall has status DOSSIER_IN_PROGRESS', () => {
+  it('continue dossier creation if it has previously been started', () => {
     cy.task('expectListRecalls', {
       expectedResults: [
         {
@@ -143,16 +166,22 @@ describe('Recalls list', () => {
       ],
     })
     cy.task('expectGetRecall', { expectedResult: { ...getRecallResponse, status: 'DOSSIER_IN_PROGRESS' } })
+    cy.task('expectAddPhaseStartTime')
+    cy.task('expectAssignUserToRecall', { expectedResult: getRecallResponse })
     cy.visit('/')
     cy.assertTableColumnValues({
       qaAttrTable: 'to-do',
       qaAttrCell: 'dueDate',
       valuesToCompare: ['13 Oct'],
     })
-    cy.getLinkHref(`Continue dossier creation for ${personName}`).should(
-      'contain',
-      `/recalls/${recallId}/dossier-recall`
-    )
+    cy.clickButton(`Continue dossier creation for ${personName}`)
+    cy.pageHeading().should('equal', `Create a dossier for ${personName} recall`)
+    // check that user was assigned to recall
+    cy.assertSaveToRecallsApi({
+      url: `/recalls/${recallId}/assignee/${caseworker.uuid}`,
+      method: 'POST',
+      bodyValues: {},
+    })
   })
 
   it('see recalls are ordered by due date on the todo list, and table can be re-sorted', () => {
