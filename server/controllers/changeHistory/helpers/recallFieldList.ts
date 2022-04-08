@@ -252,6 +252,18 @@ export const recallFieldList: ObjectMap<RecallField> = {
     label: 'Legal representative email address',
     fieldType: 'TEXT',
   },
+  seniorProbationOfficerName: {
+    label: 'Senior Probation Officer name',
+    fieldType: 'TEXT',
+  },
+  seniorProbationOfficerPhoneNumber: {
+    label: 'Senior Probation Officer phone number',
+    fieldType: 'TEXT',
+  },
+  seniorProbationOfficerEmail: {
+    label: 'Senior Probation Officer email address',
+    fieldType: 'TEXT',
+  },
 
   // uploaded emails
   recallRequestEmailUploaded: {

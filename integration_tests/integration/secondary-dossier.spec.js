@@ -78,22 +78,44 @@ context('Secondary dossier', () => {
     cy.clickLink('Prepare and send dossier')
     // legal rep
     cy.getLinkHref('Back').should('contain', `/recalls/${recallId}/secondary-dossier-recall`)
-    const { fullName, email, phoneNumber } = getRecallResponse.legalRepresentativeInfo
-    cy.fillInput('Name', fullName)
-    cy.fillInput('Email address', email)
-    cy.fillInput('Phone number', phoneNumber)
+    const {
+      fullName: legalRepName,
+      email: legalRepEmail,
+      phoneNumber: legalRepPhone,
+    } = getRecallResponse.legalRepresentativeInfo
+    cy.fillInput('Name', legalRepName)
+    cy.fillInput('Email address', legalRepEmail)
+    cy.fillInput('Phone number', legalRepPhone)
+    cy.clickButton('Continue')
+    // senior probation officer
+    cy.getLinkHref('Back').should('contain', `/recalls/${recallId}/secondary-dossier-legal-rep`)
+    const {
+      fullName: probationOfficerName,
+      email: probationOfficerEmail,
+      phoneNumber: probationOfficerPhone,
+    } = getRecallResponse.seniorProbationOfficerInfo
+    cy.fillInput('Name', probationOfficerName)
+    cy.fillInput('Email address', probationOfficerEmail)
+    cy.fillInput('Phone number', probationOfficerPhone)
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse, status: 'SECONDARY_DOSSIER_IN_PROGRESS' },
     })
     cy.clickButton('Continue')
     cy.pageHeading().should('contain', `View the recall`)
     // view recall
-    cy.getText('legalRepresentativeInfo_fullName').should('equal', fullName)
-    cy.getText('legalRepresentativeInfo_email').should('equal', email)
-    cy.getText('legalRepresentativeInfo_phoneNumber').should('equal', phoneNumber)
+    cy.getText('legalRepresentativeInfo_fullName').should('equal', legalRepName)
+    cy.getText('legalRepresentativeInfo_email').should('equal', legalRepEmail)
+    cy.getText('legalRepresentativeInfo_phoneNumber').should('equal', legalRepPhone)
     cy.getLinkHref('Change legal representative details').should(
       'contain',
       `/recalls/${recallId}/secondary-dossier-legal-rep?fromPage=view-recall&fromHash=legalRep`
+    )
+    cy.getText('seniorProbationOfficerInfo_fullName').should('equal', probationOfficerName)
+    cy.getText('seniorProbationOfficerInfo_email').should('equal', probationOfficerEmail)
+    cy.getText('seniorProbationOfficerInfo_phoneNumber').should('equal', probationOfficerPhone)
+    cy.getLinkHref('Change Senior Probation Officer details').should(
+      'contain',
+      `/recalls/${recallId}/secondary-dossier-probation?fromPage=view-recall&fromHash=probation`
     )
   })
 
@@ -144,12 +166,41 @@ context('Secondary dossier', () => {
     })
   })
 
+  it('errors - senior probation officer details', () => {
+    cy.task('expectGetRecall', { expectedResult: { ...getEmptyRecallResponse, recallId } })
+    cy.visitRecallPage({ pageSuffix: 'secondary-dossier-probation' })
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
+      fieldName: 'seniorProbationOfficerInfo_fullName',
+      summaryError: 'Enter a name',
+    })
+    cy.assertErrorMessage({
+      fieldName: 'seniorProbationOfficerInfo_email',
+      summaryError: 'Enter an email',
+    })
+    cy.assertErrorMessage({
+      fieldName: 'seniorProbationOfficerInfo_phoneNumber',
+      summaryError: 'Enter a phone number',
+    })
+  })
+
   it('populates legal rep form with saved values', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse, status: 'SECONDARY_DOSSIER_IN_PROGRESS' },
     })
     cy.visitRecallPage({ pageSuffix: 'secondary-dossier-legal-rep' })
     const { fullName, email, phoneNumber } = getRecallResponse.legalRepresentativeInfo
+    cy.getTextInputValue('Name').should('equal', fullName)
+    cy.getTextInputValue('Email').should('equal', email)
+    cy.getTextInputValue('Phone number').should('equal', phoneNumber)
+  })
+
+  it('populates senior probation officer form with saved values', () => {
+    cy.task('expectGetRecall', {
+      expectedResult: { ...getRecallResponse, status: 'SECONDARY_DOSSIER_IN_PROGRESS' },
+    })
+    cy.visitRecallPage({ pageSuffix: 'secondary-dossier-probation' })
+    const { fullName, email, phoneNumber } = getRecallResponse.seniorProbationOfficerInfo
     cy.getTextInputValue('Name').should('equal', fullName)
     cy.getTextInputValue('Email').should('equal', email)
     cy.getTextInputValue('Phone number').should('equal', phoneNumber)

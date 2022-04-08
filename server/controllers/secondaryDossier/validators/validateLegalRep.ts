@@ -85,6 +85,8 @@ export const validateLegalRep = ({
     errors,
     valuesToSave,
     unsavedValues,
-    redirectToPage: urlInfo.fromPage ? makeUrlToFromPage(urlInfo.fromPage, urlInfo) : makeUrl('view-recall', urlInfo),
+    redirectToPage: urlInfo.fromPage
+      ? makeUrlToFromPage(urlInfo.fromPage, urlInfo)
+      : makeUrl('secondary-dossier-probation', urlInfo),
   }
 }

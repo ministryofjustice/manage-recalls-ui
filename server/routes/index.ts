@@ -76,6 +76,7 @@ import { EndPhaseRequest } from '../@types/manage-recalls-api/models/EndPhaseReq
 import { StartPhaseRequest } from '../@types/manage-recalls-api/models/StartPhaseRequest'
 import { serviceMetricsDashboard } from '../controllers/serviceMetrics'
 import { validateLegalRep } from '../controllers/secondaryDossier/validators/validateLegalRep'
+import { validateSeniorProbationOfficer } from '../controllers/secondaryDossier/validators/validateSeniorProbationOfficer'
 import { reportsView } from '../controllers/reports'
 import { downloadReport } from '../controllers/reports/downloadReport'
 
@@ -303,6 +304,8 @@ export default function routes(router: Router): Router {
   get(`${basePath}/secondary-dossier-recall`, recallPageGet('secondaryDossierRecallInfo'))
   get(`${basePath}/secondary-dossier-legal-rep`, recallPageGet('secondaryDossierLegalRep'))
   post(`${basePath}/secondary-dossier-legal-rep`, recallFormPost(validateLegalRep))
+  get(`${basePath}/secondary-dossier-probation`, recallPageGet('secondaryDossierProbation'))
+  post(`${basePath}/secondary-dossier-probation`, recallFormPost(validateSeniorProbationOfficer))
 
   return router
 }

@@ -38,4 +38,26 @@
       <a href='{{ changeLinkUrl('probation-officer', urlInfo, 'probation', 'authorisingAssistantChiefOfficerGroup') }}' data-qa='authorisingAssistantChiefOfficerChange' class='govuk-link'>Change <span class="govuk-visually-hidden"> ACO</span></a>
     </dd>
   </div>
+  {% if recall.seniorProbationOfficerInfo %}
+    <div class="govuk-summary-list__row">
+      <dt class=" govuk-summary-list__key">
+        Senior Probation Officer
+      </dt>
+      <dd class=" govuk-summary-list__value" data-private>
+        <p class='govuk-body' data-qa='seniorProbationOfficerInfo_fullName'>{{ recall.seniorProbationOfficerInfo.fullName }}</p>
+        <p class='govuk-body'>
+          <a class='govuk-link' href='mailto:{{ recall.seniorProbationOfficerInfo.email }}' target='_blank' rel='noopener' data-qa='seniorProbationOfficerInfo_email'>
+            {{ recall.seniorProbationOfficerInfo.email }}
+          </a>
+        </p>
+        <p class='govuk-body' data-qa='seniorProbationOfficerInfo_phoneNumber'>{{ recall.seniorProbationOfficerInfo.phoneNumber }}</p>
+      </dd>
+      <dd class=" govuk-summary-list__actions">
+        <a href='{{ changeLinkUrl('secondary-dossier-probation', urlInfo, 'probation') }}' class='govuk-link'>
+          Change <span class="govuk-visually-hidden"> Senior Probation Officer details</span>
+        </a>
+      </dd>
+    </div>
+  {% endif %}
+
 </dl>
