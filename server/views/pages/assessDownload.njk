@@ -20,15 +20,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Assess a recall', name: recall.fullName }) }}
             <h1 class='govuk-heading-l'>Download recall notification</h1>
 
@@ -53,7 +45,7 @@
                         Continue
                     </button>
                 {% else %}
-                    <a class="govuk-button" data-qa="continueButton" href="/recalls/{{ recall.recallId}}/assess-email">Continue</a>
+                    <a class="govuk-button" href="/recalls/{{ recall.recallId}}/assess-email">Continue</a>
                 {% endif %}
             </div>
         </div>

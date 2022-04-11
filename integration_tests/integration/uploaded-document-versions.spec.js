@@ -69,7 +69,7 @@ context('Uploaded document versions', () => {
       },
     })
     uploadDocumentVersion.enterTextInInput({ name: 'details', text: 'Some details' })
-    uploadDocumentVersion.clickContinue()
+    cy.clickButton('Continue')
     uploadDocumentVersion.assertApiRequestBody({
       url: `/recalls/${recallId}/documents/uploaded`,
       method: 'POST',
@@ -113,8 +113,8 @@ context('Uploaded document versions', () => {
       documentCategoryLabel: 'part A recall report',
       documentCategoryName: 'PART_A_RECALL_REPORT',
     })
-    uploadDocumentVersion.clickContinue()
-    uploadDocumentVersion.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'document',
       summaryError: 'Select a file',
     })
@@ -125,8 +125,8 @@ context('Uploaded document versions', () => {
       fileName: 'test.pdf',
       mimeType: 'application/pdf',
     })
-    uploadDocumentVersion.clickContinue()
-    uploadDocumentVersion.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'details',
       summaryError: 'Provide more detail',
     })

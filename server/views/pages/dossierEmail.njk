@@ -16,15 +16,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Create a dossier', name: recall.fullName }) }}
             <h1 class='govuk-heading-l'>Email the dossier and letter</h1>
             <p>You must now email the dossier and letter you've downloaded to the:</p>
@@ -39,7 +31,7 @@
 
             <div class="govuk-!-margin-top-4">
 
-                <form novalidate action="{{ makeUrl('dossier-email', urlInfo, csrfToken) }}"
+                <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
                       method="post" enctype="multipart/form-data">
                     {% set emailConfirmHtml %}
                         <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
@@ -107,7 +99,7 @@
                         ],
                         errorMessage: errorMessage(errors.confirmDossierEmailSent)
                     }) }}
-                    <button class="govuk-button" data-qa="continueButton">Complete dossier creation</button>
+                    {{ formSubmitButton({ label: 'Complete dossier creation'}) }}
                 </form>
             </div>
         </div>

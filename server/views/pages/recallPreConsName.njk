@@ -1,4 +1,3 @@
-
 {% extends "../partials/layout.njk" %}
 
 {% set pageTitle = makePageTitle("How does the name appear on the previous convictions sheet (pre-cons)?", errors) %}
@@ -14,78 +13,63 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
 
-            <form novalidate action="{{ makeUrl('pre-cons-name', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
 
-                    {% set yesDetailHtml %}
-                        {{ govukInput({
-                            name: "previousConvictionMainName",
-                            id: "previousConvictionMainName",
-                            label: {
-                                text: "Provide the full name on the pre-cons"
-                            },
-                            value: formValues.previousConvictionMainName,
-                            classes: "govuk-input--width-30",
-                            errorMessage: errorMessage(errors.previousConvictionMainName)
-                        }) }}
-                    {% endset -%}
-                    {% if recall.previousConvictionMainNameCategory == 'OTHER' and recall.previousConvictionMainName %}
-                        <input type='hidden' name='hasExistingPreviousConvictionMainName' value='1' />
-                    {% endif %}
-                    {{ govukRadios({
-                        idPrefix: "previousConvictionMainNameCategory",
-                        name: "previousConvictionMainNameCategory",
-                        fieldset: {
-                            legend: {
-                                html: "How does <span data-private>" + recall.fullName + "'s</span> name appear on the previous convictions sheet (pre-cons)?",
-                                classes: "govuk-fieldset__legend--l",
-                                isPageHeading: true
-                            }
+                {% set yesDetailHtml %}
+                    {{ govukInput({
+                        name: "previousConvictionMainName",
+                        id: "previousConvictionMainName",
+                        label: {
+                            text: "Provide the full name on the pre-cons"
                         },
-                        hint: {
-                            text: 'Check the forename(s) and surname on the pre-cons'
-                        },
-                        items: [
-                            {
-                                value: "FIRST_LAST",
-                                html: '<span data-private>' + recall.firstName + " " + recall.lastName + '</span>',
-                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST'
-                            },
-                            {
-                                value: "FIRST_MIDDLE_LAST",
-                                html: '<span data-private>' + recall.firstName + " " + recall.middleNames + " " + recall.lastName + '</span>',
-                                checked: formValues.previousConvictionMainNameCategory == 'FIRST_MIDDLE_LAST'
-                            } if recall.middleNames else undefined,
-                            {
-                                value: "OTHER",
-                                text: "Other name",
-                                checked: formValues.previousConvictionMainNameCategory == 'OTHER',
-                                conditional: {
-                                    html: yesDetailHtml
-                                }
-                            }
-                        ],
-                        errorMessage: errorMessage(errors.previousConvictionMainNameCategory)
+                        value: formValues.previousConvictionMainName,
+                        classes: "govuk-input--width-30",
+                        errorMessage: errorMessage(errors.previousConvictionMainName)
                     }) }}
-                </div>
-                <div>
-                    <button class="govuk-button"
-                            data-qa='continueButton'>
-                        Continue
-                    </button>
-                </div>
+                {% endset -%}
+                {% if recall.previousConvictionMainNameCategory == 'OTHER' and recall.previousConvictionMainName %}
+                    <input type='hidden' name='hasExistingPreviousConvictionMainName' value='1' />
+                {% endif %}
+                {{ govukRadios({
+                    idPrefix: "previousConvictionMainNameCategory",
+                    name: "previousConvictionMainNameCategory",
+                    fieldset: {
+                        legend: {
+                            html: "How does <span data-private>" + recall.fullName + "'s</span> name appear on the previous convictions sheet (pre-cons)?",
+                            classes: "govuk-fieldset__legend--l",
+                            isPageHeading: true
+                        }
+                    },
+                    hint: {
+                        text: 'Check the forename(s) and surname on the pre-cons'
+                    },
+                    items: [
+                        {
+                            value: "FIRST_LAST",
+                            html: '<span data-private>' + recall.firstName + " " + recall.lastName + '</span>',
+                            checked: formValues.previousConvictionMainNameCategory == 'FIRST_LAST'
+                        },
+                        {
+                            value: "FIRST_MIDDLE_LAST",
+                            html: '<span data-private>' + recall.firstName + " " + recall.middleNames + " " + recall.lastName + '</span>',
+                            checked: formValues.previousConvictionMainNameCategory == 'FIRST_MIDDLE_LAST'
+                        } if recall.middleNames else undefined,
+                        {
+                            value: "OTHER",
+                            text: "Other name",
+                            checked: formValues.previousConvictionMainNameCategory == 'OTHER',
+                            conditional: {
+                            html: yesDetailHtml
+                        }
+                        }
+                    ],
+                    errorMessage: errorMessage(errors.previousConvictionMainNameCategory)
+                }) }}
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

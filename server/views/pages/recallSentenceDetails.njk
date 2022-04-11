@@ -13,15 +13,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 What are the sentence, offence and release details?
@@ -30,7 +22,7 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="{{ makeUrl('last-release', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group' id='sentenceDateGroup'>
                     {{ govukDateInput({
@@ -183,7 +175,7 @@
                     }) }}
 
                 </div>
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='conditionalReleaseDateGroup'>
+                <div id='conditionalReleaseDateGroup'>
                     {{ govukDateInput({
                         name: 'conditionalReleaseDate',
                         id: 'conditionalReleaseDate',
@@ -197,12 +189,7 @@
                         errorMessage: errorMessage(errors.conditionalReleaseDate)
                     }) }}
                 </div>
-                <div>
-                    <button class="govuk-button"
-                            data-qa='continueButton'>
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

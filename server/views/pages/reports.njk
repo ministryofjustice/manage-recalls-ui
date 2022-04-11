@@ -9,15 +9,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             <h1 class='govuk-heading-l'>Reports</h1>
 
             <p class='govuk-body-l'>Click on a report to download it.</p>
@@ -31,7 +23,6 @@
             })
             }}
             </div>
-
         </div>
     </div>
 

@@ -204,20 +204,20 @@ context('Primary dossier', () => {
       qaAttr: 'revocationOrderNotAvailable',
       textToFind: 'Not available',
     })
-    dossierRecall.clickContinue()
+    cy.clickLink('Create dossier')
     const dossierLetter = dossierLetterPage.verifyOnPage()
     dossierLetter.additionalLicenceConditions()
     dossierLetter.addLicenceDetail()
     dossierLetter.differentNomsNumber()
     dossierLetter.addNomsDetail()
-    dossierLetter.clickContinue()
+    cy.clickButton('Continue')
     const dossierCheck = dossierCheckPage.verifyOnPage()
     dossierCheck.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
     dossierCheck.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: 'A1234AA' })
     dossierCheck.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
     dossierCheck.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
     dossierCheck.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
-    dossierCheck.clickContinue()
+    cy.clickLink('Continue')
 
     cy.pageHeading().should('equal', 'Download the dossier and letter')
     cy.getLinkHref('Download the Dossier').should(
@@ -237,7 +237,7 @@ context('Primary dossier', () => {
     dossierEmail.confirmEmailSent()
     dossierEmail.clickTodayLink()
     dossierEmail.uploadFile({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
-    dossierEmail.clickContinue()
+    cy.clickButton('Complete dossier creation')
     dossierConfirmationPage.verifyOnPage()
   })
 
@@ -360,21 +360,21 @@ context('Primary dossier', () => {
       expectedResult: emptyRecall,
     })
     const dossierEmail = dossierEmailPage.verifyOnPage({ recallId })
-    dossierEmail.clickContinue()
-    dossierEmail.assertErrorMessage({
+    cy.clickButton('Complete dossier creation')
+    cy.assertErrorMessage({
       fieldName: 'confirmDossierEmailSent',
       summaryError: "Confirm you've sent the email to all recipients",
     })
 
     // confirm sending but don't enter a send date or upload an email
     dossierEmail.confirmEmailSent()
-    dossierEmail.clickContinue()
+    cy.clickButton('Complete dossier creation')
     cy.assertErrorMessage({
       fieldId: 'dossierEmailSentDate-dossierEmailSentDateDay',
       fieldName: 'dossierEmailSentDate',
       summaryError: 'Enter the date you sent the email',
     })
-    dossierEmail.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'dossierEmailFileName',
       summaryError: 'Select an email',
     })

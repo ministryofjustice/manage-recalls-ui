@@ -13,20 +13,12 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 When did <span data-private>{{ recall.fullName }}</span> return to custody?
             </h1>
-            <form novalidate action="{{ makeUrl('rtc-dates', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
                     {{ govukDateInput({
@@ -54,38 +46,29 @@
                         }) }}
                     </div>
                 </div>
-
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
-                    {{ govukDateInput({
-                        name: 'returnedToCustodyNotificationDateTime',
-                        id: 'returnedToCustodyNotificationDateTime',
-                        formGroup: {
-                            classes: 'govuk-!-margin-bottom-3'
-                        },
-                        fieldset: {
-                            legend: {
-                                html: 'Date and time you found out <span data-private>' + recall.fullName + '</span> returned to custody',
-                                classes: 'govuk-fieldset__legend--m'
-                            }
-                        },
-                        items: dateTimeItems("returnedToCustodyNotificationDateTime", formValues.returnedToCustodyNotificationDateTimeParts, true),
-                        errorMessage: errorMessage(errors.returnedToCustodyNotificationDateTime),
-                        hint: {
-                            text: 'For example, 23 11 2021 at 15:46'
+                {{ govukDateInput({
+                    name: 'returnedToCustodyNotificationDateTime',
+                    id: 'returnedToCustodyNotificationDateTime',
+                    formGroup: {
+                        classes: 'govuk-!-margin-bottom-3'
+                    },
+                    fieldset: {
+                        legend: {
+                            html: 'Date and time you found out <span data-private>' + recall.fullName + '</span> returned to custody',
+                            classes: 'govuk-fieldset__legend--m'
                         }
-                    }) }}
-                    <div class='govuk-!-margin-bottom-6'>
-                        {{ todayLink({
-                            name: 'returnedToCustodyNotificationDateTime',
-                            cspNonce: cspNonce
-                        }) }}
-                    </div>
-                </div>
-                <div>
-                    <button class="govuk-button">
-                        Save and return
-                    </button>
-                </div>
+                    },
+                    items: dateTimeItems("returnedToCustodyNotificationDateTime", formValues.returnedToCustodyNotificationDateTimeParts, true),
+                    errorMessage: errorMessage(errors.returnedToCustodyNotificationDateTime),
+                    hint: {
+                        text: 'For example, 23 11 2021 at 15:46'
+                    }
+                }) }}
+                {{ todayLink({
+                    name: 'returnedToCustodyNotificationDateTime',
+                    cspNonce: cspNonce
+                }) }}
+                {{ formSubmitButton({ label: 'Save and return'}) }}
             </form>
         </div>
     </div>

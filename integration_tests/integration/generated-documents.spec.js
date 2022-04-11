@@ -171,15 +171,15 @@ context('Generated document versions', () => {
     })
 
     // error shown if details not entered
-    newGeneratedDocumentVersion.clickContinue()
-    newGeneratedDocumentVersion.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'details',
       errorMessage: 'Provide more detail',
       summaryError: 'Provide more detail',
     })
 
     newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
-    newGeneratedDocumentVersion.clickContinue()
+    cy.clickButton('Continue')
     newGeneratedDocumentVersion.assertApiRequestBody({
       url: `/recalls/${recallId2}/documents/generated`,
       method: 'POST',
@@ -202,8 +202,8 @@ context('Generated document versions', () => {
       documentCategoryName: 'RECALL_NOTIFICATION',
       documentCategoryLabel: 'recall notification',
     })
-    newGeneratedDocumentVersion.clickContinue()
-    newGeneratedDocumentVersion.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'details',
       errorMessage: 'Provide more detail',
       summaryError: 'Provide more detail',
