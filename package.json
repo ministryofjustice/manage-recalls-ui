@@ -31,8 +31,8 @@
     "pact-test": "rm -rf pact/pacts/* && jest --runInBand --coverage --forceExit --config=./jest.pact.config.js"
   },
   "engines": {
-    "node": "16.13.2",
-    "npm": "8.4.0"
+    "node": "16.14.2",
+    "npm": "8.5.4"
   },
   "config": {
     "pact_do_not_track": true
@@ -197,5 +197,8 @@
     "typescript": "^4.6.3",
     "wiremock-rest-client": "^1.9.0",
     "y18n": ">=5.0.8"
+  },
+  "overrides": {
+    "moment": "^2.29.2"
   }
 }
