@@ -6,15 +6,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             <h1 class="govuk-heading-l">
                 Upload documents
             </h1>
@@ -103,11 +95,7 @@
                     },
                     errorMessage: errorMessage(errors.emailFileName)
                 }) }}
-                <div class='govuk-!-margin-top-6'>
-                    <button class="govuk-button">
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

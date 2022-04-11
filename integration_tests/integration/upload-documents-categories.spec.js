@@ -34,7 +34,7 @@ context('Categorising documents', () => {
       fieldName: `category-${documentId}`,
       value: 'OASys report',
     })
-    uploadDocuments.clickContinue()
+    cy.clickButton('Continue')
     uploadDocuments.assertApiRequestBody({
       url: `/recalls/${recallId}/documents/${documentId}`,
       method: 'PATCH',
@@ -66,7 +66,7 @@ context('Categorising documents', () => {
       fieldName: `category-${documentId}`,
       value: 'OASys report',
     })
-    uploadDocuments.clickContinue()
+    cy.clickButton('Continue')
     uploadDocuments.assertApiRequestBody({
       url: `/recalls/${recallId}/documents/${documentId}`,
       method: 'PATCH',
@@ -94,7 +94,7 @@ context('Categorising documents', () => {
       },
     })
     const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
-    uploadDocuments.clickContinue()
+    cy.clickButton('Continue')
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: '123',
       summaryError: 'Choose a type for random.pdf',
@@ -170,7 +170,7 @@ context('Categorising documents', () => {
       fieldName: `category-${documentId2}`,
       value: 'Previous convictions sheet',
     })
-    uploadDocuments.clickContinue()
+    cy.clickButton('Continue')
     uploadDocuments.assertSummaryErrorMessage({
       fieldName: documentId2,
       summaryError: 'You can only upload one previous convictions sheet',
@@ -230,7 +230,7 @@ context('Categorising documents', () => {
       value: 'Other',
     })
     cy.task('expectSetDocumentCategory')
-    uploadDocuments.clickContinue()
+    cy.clickButton('Continue')
     recallMissingDocumentsPage.verifyOnPage()
     uploadDocuments.assertApiRequestBody({
       url: `/recalls/${recallId}/documents/${documentId2}`,

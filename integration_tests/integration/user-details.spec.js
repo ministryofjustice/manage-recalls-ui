@@ -18,7 +18,7 @@ context('User details', () => {
     userDetails.enterTextInInput({ name: 'phoneNumber', text: '07393783789' })
     userDetails.checkRadio({ fieldName: 'caseworkerBand', value: 'FOUR_PLUS' })
     userDetails.uploadFile({ fieldName: 'signature', fileName: 'signature.jpg', mimeType: 'image/jpeg' })
-    userDetails.clickButton({ qaAttr: 'saveButton' })
+    cy.clickButton('Save')
     userDetails.assertApiRequestBody({
       url: '/users',
       method: 'POST',

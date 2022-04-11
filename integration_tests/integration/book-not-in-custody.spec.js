@@ -202,7 +202,7 @@ context('Book a "not in custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse, warrantReferenceNumber, returnedToCustodyDateTime: undefined },
     })
-    cy.clickButton('Continue')
+    cy.clickButton('Save and return')
 
     cy.getText('confirmation').should('equal', 'Warrant reference number has been added.')
     cy.clickLink('View')

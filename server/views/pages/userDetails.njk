@@ -5,15 +5,7 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {% if confirmationMessage %}
                 {{ mojBanner({
                     type: confirmationMessage.type,
@@ -26,103 +18,98 @@
             </h1>
             <div class="govuk-body-l">We will use your details in the service and on recall documents</div>
             <form novalidate action="/user-details?_csrf={{ csrfToken }}" method="post" enctype="multipart/form-data">
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
-                    {{ govukInput({
-                        label: {
-                            text: "First name",
-                            classes: "govuk-label--m"
-                        },
-                        id: "firstName",
-                        name: "firstName",
-                        value: user.firstName,
-                        errorMessage: errorMessage(errors.firstName)
-                    }) }}
+                {{ govukInput({
+                    label: {
+                        text: "First name",
+                        classes: "govuk-label--m"
+                    },
+                    id: "firstName",
+                    name: "firstName",
+                    value: user.firstName,
+                    errorMessage: errorMessage(errors.firstName)
+                }) }}
 
-                    {{ govukInput({
-                        label: {
-                            text: "Last name",
-                            classes: "govuk-label--m"
-                        },
-                        id: "lastName",
-                        name: "lastName",
-                        value: user.lastName,
-                        errorMessage: errorMessage(errors.lastName)
-                    }) }}
+                {{ govukInput({
+                    label: {
+                        text: "Last name",
+                        classes: "govuk-label--m"
+                    },
+                    id: "lastName",
+                    name: "lastName",
+                    value: user.lastName,
+                    errorMessage: errorMessage(errors.lastName)
+                }) }}
 
-                    {{ govukInput({
-                        label: {
-                            text: "Email address",
-                            classes: "govuk-label--m"
-                        },
-                        id: "email",
-                        name: "email",
-                        type: 'email',
-                        value: user.email,
-                        errorMessage: errorMessage(errors.email)
-                    }) }}
+                {{ govukInput({
+                    label: {
+                        text: "Email address",
+                        classes: "govuk-label--m"
+                    },
+                    id: "email",
+                    name: "email",
+                    type: 'email',
+                    value: user.email,
+                    errorMessage: errorMessage(errors.email)
+                }) }}
 
-                    {{ govukInput({
-                        label: {
-                            text: "Phone number",
-                            classes: "govuk-label--m"
-                        },
-                        id: "phoneNumber",
-                        name: "phoneNumber",
-                        type: 'tel',
-                        classes: "govuk-input--width-20",
-                        value: user.phoneNumber,
-                        errorMessage: errorMessage(errors.phoneNumber)
-                    }) }}
+                {{ govukInput({
+                    label: {
+                        text: "Phone number",
+                        classes: "govuk-label--m"
+                    },
+                    id: "phoneNumber",
+                    name: "phoneNumber",
+                    type: 'tel',
+                    classes: "govuk-input--width-20",
+                    value: user.phoneNumber,
+                    errorMessage: errorMessage(errors.phoneNumber)
+                }) }}
 
-                    {{ govukRadios({
-                        classes: "govuk-radios--inline",
-                        idPrefix: "caseworkerBand",
-                        name: "caseworkerBand",
-                        fieldset: {
-                            legend: {
-                                text: "Caseworker band",
-                                classes: "govuk-fieldset__legend--m"
-                            }
+                {{ govukRadios({
+                    classes: "govuk-radios--inline",
+                    idPrefix: "caseworkerBand",
+                    name: "caseworkerBand",
+                    fieldset: {
+                        legend: {
+                            text: "Caseworker band",
+                            classes: "govuk-fieldset__legend--m"
+                        }
+                    },
+                    items: checkboxItems([
+                        {
+                            value: "THREE",
+                            text: "Band 3"
                         },
-                        items: checkboxItems([
-                            {
-                                value: "THREE",
-                                text: "Band 3"
-                            },
-                            {
-                                value: "FOUR_PLUS",
-                                text: "Band 4+"
-                            }
-                        ], user.caseworkerBand),
-                        errorMessage: errorMessage(errors.caseworkerBand)
-                    }) }}
-                    {{ govukFileUpload({
-                        id: 'signature',
-                        name: 'signature',
-                        hint: {
-                            text: 'The file must be a ' + allowedImageFileTypeLabelList()
-                        },
-                        attributes: {
-                            accept: allowedImageFileExtensionList()
-                        },
-                        label: {
-                            text: 'Upload signature',
-                            classes: "govuk-label--m"
-                        },
-                        errorMessage: errorMessage(errors.signature)
-                    }) }}
-                    {%  if user.signature %}
-                        <div class='govuk-!-margin-top-4' data-private>
-                            <input data-qa='signature-image' name='existingSignature' type='hidden' value='{{ user.signature }}'>
-                            <img height='100' src="data:image/jpeg;base64,{{ user.signature }}" alt='User signature'/>
-                        </div>
-                    {% endif %}
-                </div>
-                <div>
-                    <button class="govuk-button" data-qa='saveButton'>
-                        Save
-                    </button>
-                </div>
+                        {
+                            value: "FOUR_PLUS",
+                            text: "Band 4+"
+                        }
+                    ], user.caseworkerBand),
+                    errorMessage: errorMessage(errors.caseworkerBand)
+                }) }}
+                {{ govukFileUpload({
+                    id: 'signature',
+                    name: 'signature',
+                    hint: {
+                        text: 'The file must be a ' + allowedImageFileTypeLabelList()
+                    },
+                    attributes: {
+                        accept: allowedImageFileExtensionList()
+                    },
+                    label: {
+                        text: 'Upload signature',
+                        classes: "govuk-label--m"
+                    },
+                    errorMessage: errorMessage(errors.signature)
+                }) }}
+                {% if user.signature %}
+                    <div class='govuk-!-margin-top-4' data-private>
+                        <input data-qa='signature-image' name='existingSignature' type='hidden'
+                               value='{{ user.signature }}'>
+                        <img height='100' src="data:image/jpeg;base64,{{ user.signature }}" alt='User signature' />
+                    </div>
+                {% endif %}
+                {{ formSubmitButton({ label: 'Save'}) }}
             </form>
         </div>
     </div>

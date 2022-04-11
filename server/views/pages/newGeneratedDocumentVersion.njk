@@ -12,15 +12,7 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             <h1 class="govuk-heading-l">
                 Create a new {{ formatDocLabel(recall.versionedGeneratedDoc.category) }}
             </h1>
@@ -36,7 +28,7 @@
             </div>
             {% endif %}
             <div class="govuk-form-group">
-                <form novalidate action="{{ makeUrl('generated-document-version', urlInfo, csrfToken) }}" method="post">
+                <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}" method="post">
                     <input type='hidden' name='category' value='{{ recall.versionedGeneratedDoc.category }}'>
                     {% if recall.documentsGenerated.DOSSIER %}
                     <input type='hidden' name='dossierExists' value='1'>
@@ -55,9 +47,7 @@
                     {% if recall.versionedGeneratedDoc.category === 'REVOCATION_ORDER' %}
                         <p class='govuk-body' data-qa='textAdvisory'>We will also create {% if recall.documentsGenerated.DOSSIER %}new versions of the recall notification and dossier, as they both contain the revocation order.{% else %}a new version of the recall notification, as it contains the revocation order.{% endif %}</p>
                     {% endif %}
-                    <div class="govuk-!-margin-top-8">
-                        <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
-                    </div>
+                    {{ formSubmitButton() }}
                 </form>
             </div>
         </div>

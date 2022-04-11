@@ -13,15 +13,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Select an address
@@ -31,7 +23,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-one-half-from-desktop">
-            <form novalidate action="{{ makeUrl('postcode-results', urlInfo) }}" method='post'>
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method='post'>
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <h2 class='govuk-heading-m'>Postcode</h2>
                 <p class='govuk-body'><span class='govuk-!-font-weight-bold govuk-!-padding-right-2'>{{ postcode }}</span> <a href="{{ makeUrl('postcode-lookup', urlInfo) }}" class="govuk-link">Change <span class="govuk-visually-hidden">postcode</span></a></p>
@@ -50,11 +42,7 @@
                     <a href="{{ makeUrl('address-manual', urlInfo) }}" class="govuk-link">I can't find the
                         address in the list</a>
                 </p>
-                <div class='govuk-!-margin-top-7'>
-                    <button class="govuk-button">
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

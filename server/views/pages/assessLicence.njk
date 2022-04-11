@@ -16,22 +16,14 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Assess a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 How has the licence been breached?
             </h1>
         </div>
         <div class="govuk-grid-column-full">
-            <form novalidate action="{{ makeUrl('assess-licence', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {% if recall.inCustodyAtBooking == true %}
                     <input type="hidden" name="inCustodyAtBooking" value="1" />
@@ -85,9 +77,7 @@
                     })
                     }}
                 {% endif %}
-                <div class="govuk-!-margin-top-8">
-                    <button class="govuk-button" data-qa="continueButton">Continue</button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

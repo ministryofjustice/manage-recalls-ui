@@ -6,15 +6,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             <h1 class="govuk-heading-l">
                 Add a note to the recall
             </h1>
@@ -23,7 +15,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="{{ makeUrl('add-note', urlInfo, csrfToken) }}"
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
                   method="post" enctype="multipart/form-data">
                 {{ govukInput({
                     name: "subject",
@@ -62,11 +54,7 @@
                     },
                     errorMessage: errorMessage(errors.fileName)
                 }) }}
-                <div class='govuk-!-margin-top-6'>
-                    <button class="govuk-button">
-                        Add note
-                    </button>
-                </div>
+                {{ formSubmitButton({ label: 'Add note' }) }}
             </form>
         </div>
     </div>

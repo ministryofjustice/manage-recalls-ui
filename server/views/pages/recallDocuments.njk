@@ -15,15 +15,7 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {% if confirmationMessage %}
                 {{ mojBanner({
                     type: confirmationMessage.type,
@@ -66,7 +58,7 @@
             {% endif %}
             <div class="document-upload">
                 <div class="govuk-form-group">
-                    <form novalidate action="{{ makeUrl('upload-documents', urlInfo, csrfToken) }}" method="post"
+                    <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}" method="post"
                           enctype="multipart/form-data">
                         <input type="submit" class="moj-hidden" name="continue" value="continue" />
                         <div class="moj-multi-file__uploaded-files"
@@ -94,9 +86,7 @@
                                 value="upload">
                             Upload files
                         </button>
-                        <div class="govuk-!-margin-top-8">
-                            <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
-                        </div>
+                        {{ formSubmitButton() }}
                     </form>
                 </div>
             </div>

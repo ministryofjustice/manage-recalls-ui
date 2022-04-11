@@ -13,15 +13,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Find an address
@@ -46,11 +38,7 @@
                     <a href="{{ makeUrl('address-manual', urlInfo) }}" class="govuk-link">I can't find the
                         postcode</a>
                 </p>
-                <div class='govuk-!-margin-top-7'>
-                    <button class="govuk-button">
-                        Find
-                    </button>
-                </div>
+                {{ formSubmitButton({ label: 'Find'}) }}
             </form>
         </div>
     </div>

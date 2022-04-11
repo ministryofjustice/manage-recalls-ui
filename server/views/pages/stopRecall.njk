@@ -6,16 +6,8 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
-            <form novalidate action="{{ makeUrl('stop-recall', urlInfo, csrfToken) }}" method="post">
+            {% include '../partials/error-summary.njk' %}
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}" method="post">
                 {{ pageHeadingCaption({ action: 'Stop recall', name: recall.fullName }) }}
                 {{ govukSelect({
                     id: "stopReason",
@@ -28,11 +20,7 @@
                     items: selectItems(filterActiveItems(referenceData.stopReasons)),
                     errorMessage: errorMessage(errors.stopReason)
                 }) }}
-                <div class='govuk-!-margin-top-6'>
-                    <button class="govuk-button">
-                        Save and return
-                    </button>
-                </div>
+                {{ formSubmitButton({ label: 'Save and return'}) }}
             </form>
         </div>
     </div>

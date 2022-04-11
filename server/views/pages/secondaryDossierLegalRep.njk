@@ -12,15 +12,7 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Prepare and send a dossier', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Who is {{ recall.fullName }}'s legal representative?
@@ -66,11 +58,7 @@
                     value: formValues.legalRepresentativeInfo_phoneNumber,
                     errorMessage: errorMessage(errors.legalRepresentativeInfo_phoneNumber)
                 }) }}
-                <div class='govuk-!-margin-top-8'>
-                    <button class="govuk-button">
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

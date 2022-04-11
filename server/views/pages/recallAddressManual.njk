@@ -12,16 +12,8 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
-            <form novalidate action="{{ makeUrl('address-manual', urlInfo) }}" method="post">
+            {% include '../partials/error-summary.njk' %}
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <input type="hidden" name="recallId" value="{{ recall.recallId }}" />
                 {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
@@ -78,14 +70,8 @@
                         value: unsavedValues.postcode,
                         errorMessage: errorMessage(errors.postcode)
                     }) }}
-
                 {% endcall %}
-                <div class='govuk-!-margin-top-2'>
-                    <button class="govuk-button"
-                       data-qa='continueButton'>
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

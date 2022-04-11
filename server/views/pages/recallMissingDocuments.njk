@@ -15,15 +15,7 @@
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-three-quarters-from-desktop">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {% if not urlInfo.fromPage %}{{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}{% endif %}
             <h1 class="govuk-heading-l">
                 Missing documents
@@ -43,39 +35,33 @@
                 <li>email probation asking for the missing files</li>
                 <li>upload the email to probation</li>
             </ul>
-            <div class="govuk-form-group">
-                <form novalidate action="{{ makeUrl('missing-documents', urlInfo, csrfToken) }}" method="post"
-                      enctype="multipart/form-data">
-                    {{ govukTextarea({
-                        name: "missingDocumentsDetail",
-                        id: "missingDocumentsDetail",
-                        label: {
-                            text: "Provide more detail",
-                            classes: "govuk-label--m"
-                        },
-                        value: formValues.missingDocumentsDetail,
-                        errorMessage: errorMessage(errors.missingDocumentsDetail)
-                    }) }}
-                    <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
-                        {{ govukFileUpload({
-                            id: "missingDocumentsEmailFileName",
-                            name: "missingDocumentsEmailFileName",
-                            label: {
-                                text: "Upload the email",
-                                classes: 'govuk-visually-hidden'
-                            },
-                            attributes: {
-                                accept: allowedEmailFileExtensionList()
-                            },
-                            errorMessage: errorMessage(errors.missingDocumentsEmailFileName)
-                        }) }}
-                    </div>
-                    <div class="govuk-!-margin-top-4">
-                        <button class="govuk-button" name="continue" value="continue" data-qa='continueButton'>Continue</button>
-                    </div>
-                </form>
-            </div>
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}" method="post"
+                  enctype="multipart/form-data">
+                {{ govukTextarea({
+                    name: "missingDocumentsDetail",
+                    id: "missingDocumentsDetail",
+                    label: {
+                        text: "Provide more detail",
+                        classes: "govuk-label--m"
+                    },
+                    value: formValues.missingDocumentsDetail,
+                    errorMessage: errorMessage(errors.missingDocumentsDetail)
+                }) }}
+                <h2 class="govuk-heading-m govuk-!-margin-bottom-3">Upload the email</h2>
+                {{ govukFileUpload({
+                    id: "missingDocumentsEmailFileName",
+                    name: "missingDocumentsEmailFileName",
+                    label: {
+                        text: "Upload the email",
+                        classes: 'govuk-visually-hidden'
+                    },
+                    attributes: {
+                        accept: allowedEmailFileExtensionList()
+                    },
+                    errorMessage: errorMessage(errors.missingDocumentsEmailFileName)
+                }) }}
+                {{ formSubmitButton() }}
+            </form>
         </div>
     </div>
 {% endblock %}

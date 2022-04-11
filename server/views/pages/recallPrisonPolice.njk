@@ -10,22 +10,13 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
-            <form novalidate action="{{ makeUrl('prison-police', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8 govuk-!-width-three-quarters'>
+                <div class='govuk-!-width-three-quarters'>
                     {{ govukSelect({
                         label: {
                             text: "What is the name of the local police force?",
@@ -38,12 +29,7 @@
                         errorMessage: errorMessage(errors.localPoliceForceId)
                     }) }}
                 </div>
-                <div>
-                    <button class="govuk-button"
-                            data-qa='continueButton'>
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

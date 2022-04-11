@@ -13,15 +13,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Are there any issues or needs?
@@ -30,7 +22,7 @@
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="{{ makeUrl('issues-needs', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='vulnerabilityDiversityGroup'>
                     {% set vulnerabilityDiversityYesHtml %}
@@ -161,7 +153,7 @@
                         errorMessage: errorMessage(errors.contraband)
                     }) }}
                 </div>
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8' id='mappaLevelGroup'>
+                <div id='mappaLevelGroup'>
                     {{ govukSelect({
                         id: "mappaLevel",
                         name: "mappaLevel",
@@ -175,12 +167,7 @@
                         errorMessage: errorMessage(errors.mappaLevel)
                     }) }}
                 </div>
-                <div>
-                    <button class="govuk-button"
-                       data-qa='continueButton'>
-                        Continue
-                    </button>
-                </div>
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

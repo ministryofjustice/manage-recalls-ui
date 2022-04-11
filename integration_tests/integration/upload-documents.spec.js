@@ -74,7 +74,7 @@ context('Upload documents', () => {
       url: `/recalls/${recallId}/documents/${documentId}`,
       method: 'DELETE',
     })
-    uploadDocuments.clickContinue()
+    cy.clickButton('Continue')
     checkAnswersPage.verifyOnPage()
   })
 

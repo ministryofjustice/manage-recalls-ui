@@ -254,16 +254,16 @@ context('Assess a recall', () => {
   it('errors - current prison', () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
     const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ recallId, personName: firstLastName })
-    assessRecallPrison.clickContinue()
-    assessRecallPrison.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'currentPrison',
       summaryError: 'Select a prison',
     })
     // invalid input for current prison
     cy.get('[id="currentPrison"]').clear().type('blah blah blah')
-    assessRecallPrison.clickContinue()
+    cy.clickButton('Continue')
     assessRecallPrison.assertSelectValue({ fieldName: 'currentPrisonInput', value: 'blah blah blah' })
-    assessRecallPrison.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'currentPrison',
       summaryError: 'Select a prison from the list',
     })
@@ -289,8 +289,8 @@ context('Assess a recall', () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
     const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ recallId })
     assessRecallEmail.confirmEmailSent()
-    assessRecallEmail.clickContinue()
-    assessRecallEmail.assertErrorMessage({
+    cy.clickButton('Complete assessment')
+    cy.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
       summaryError: 'Select an email',
     })
@@ -314,8 +314,8 @@ context('Assess a recall', () => {
       fieldName: 'recallNotificationEmailFileName',
       fileName: 'part_a_recall_report.pdf',
     })
-    assessRecallEmail.clickContinue()
-    assessRecallEmail.assertErrorMessage({
+    cy.clickButton('Complete assessment')
+    cy.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
       summaryError: "The selected file 'part_a_recall_report.pdf' must be a MSG or EML",
     })
@@ -328,8 +328,8 @@ context('Assess a recall', () => {
       fieldName: 'recallNotificationEmailFileName',
       fileName: 'email.msg',
     })
-    assessRecallEmail.clickContinue()
-    assessRecallEmail.assertErrorMessage({
+    cy.clickButton('Complete assessment')
+    cy.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
       summaryError: 'email.msg contains a virus',
     })

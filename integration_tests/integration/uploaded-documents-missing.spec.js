@@ -141,12 +141,12 @@ context('Missing uploaded documents', () => {
   it("an error is shown if the missing documents email and detail aren't submitted", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
     const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
-    recallMissingDocuments.clickContinue()
-    recallMissingDocuments.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'missingDocumentsEmailFileName',
       summaryError: 'Select an email',
     })
-    recallMissingDocuments.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'missingDocumentsDetail',
       summaryError: 'Provide more detail',
     })

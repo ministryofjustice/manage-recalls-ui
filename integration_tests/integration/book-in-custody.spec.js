@@ -252,8 +252,8 @@ context('Book an "in-custody" recall', () => {
       },
     })
     const recallLicenceName = recallLicenceNamePage.verifyOnPage({ recallId, personName })
-    recallLicenceName.clickContinue()
-    recallLicenceName.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'licenceNameCategory',
       summaryError: "How does Bobby Badger's name appear on the licence?",
     })
@@ -325,14 +325,14 @@ context('Book an "in-custody" recall', () => {
         Minute: '3',
       },
     })
-    recallRequestReceived.clickContinue()
+    cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldId: 'recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
       fieldName: 'recallEmailReceivedDateTime',
       summaryError: 'The date and time you received the recall email must include a day and month',
     })
     // recall email is not uploaded'
-    recallRequestReceived.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'recallRequestEmailFileName',
       summaryError: 'Select an email',
     })
@@ -366,17 +366,17 @@ context('Book an "in-custody" recall', () => {
   it('errors - sentence, offence and release details', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallLastRelease = recallLastReleasePage.verifyOnPage({ recallId })
-    recallLastRelease.clickContinue()
+    cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldId: 'lastReleaseDate-lastReleaseDateDay',
       fieldName: 'lastReleaseDate',
       summaryError: 'Enter the latest release date',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'lastReleasePrison',
       summaryError: 'Select a releasing prison',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'sentencingCourt',
       summaryError: 'Select a sentencing court',
     })
@@ -400,14 +400,14 @@ context('Book an "in-custody" recall', () => {
       fieldName: 'sentenceLength',
       summaryError: 'Enter the length of sentence',
     })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'bookingNumber',
       summaryError: 'Enter a booking number',
     })
     // invalid booking number is entered
     recallLastRelease.setBookingNumber('12343')
-    recallLastRelease.clickContinue()
-    recallLastRelease.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'bookingNumber',
       summaryError: 'Enter a booking number in the correct format, like 12345C, A12347 or AB1234',
     })
@@ -415,14 +415,14 @@ context('Book an "in-custody" recall', () => {
     // invalid inputs for sentencing court or releasing prison
     cy.get('[id="sentencingCourt"]').clear().type('blah blah blah')
     cy.get('[id="lastReleasePrison"]').clear().type('piffle')
-    recallLastRelease.clickContinue()
+    cy.clickButton('Continue')
     recallLastRelease.assertSelectValue({ fieldName: 'sentencingCourtInput', value: 'blah blah blah' })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'sentencingCourt',
       summaryError: 'Select a sentencing court from the list',
     })
     recallLastRelease.assertSelectValue({ fieldName: 'lastReleasePrisonInput', value: 'piffle' })
-    recallLastRelease.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'lastReleasePrison',
       summaryError: 'Select a releasing prison from the list',
     })
@@ -431,16 +431,16 @@ context('Book an "in-custody" recall', () => {
   it('errors - Local Police Force', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ recallId })
-    recallPrisonPolice.clickContinue()
-    recallPrisonPolice.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force',
     })
     // invalid Local Police Force is entered
     recallPrisonPolice.enterLocalPoliceForceId('foobar')
-    recallPrisonPolice.clickContinue()
+    cy.clickButton('Continue')
     recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceIdInput', value: 'foobar' })
-    recallPrisonPolice.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force from the list',
     })
@@ -525,44 +525,44 @@ context('Book an "in-custody" recall', () => {
   it('errors - probation details', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
     const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ recallId, personName })
-    recallProbationOfficer.clickContinue()
-    recallProbationOfficer.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'probationOfficerName',
       summaryError: 'Enter a name',
     })
-    recallProbationOfficer.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'probationOfficerEmail',
       summaryError: 'Enter an email',
     })
-    recallProbationOfficer.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'probationOfficerPhoneNumber',
       summaryError: 'Enter a phone number',
     })
-    recallProbationOfficer.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'localDeliveryUnit',
       summaryError: 'Select a Local Delivery Unit',
     })
-    recallProbationOfficer.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'authorisingAssistantChiefOfficer',
       summaryError: 'Enter the Assistant Chief Officer that signed-off the recall',
     })
     // invalid probation officer email and phone are entered
     recallProbationOfficer.setProbationOfficerEmail('invalid@email')
     recallProbationOfficer.setProbationOfficerPhoneNumber('12343')
-    recallProbationOfficer.clickContinue()
-    recallProbationOfficer.assertErrorMessage({
+    cy.clickButton('Continue')
+    cy.assertErrorMessage({
       fieldName: 'probationOfficerEmail',
       summaryError: 'Enter an email address in the correct format, like name@example.com',
     })
-    recallProbationOfficer.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'probationOfficerPhoneNumber',
       summaryError: 'Enter a phone number in the correct format, like 01277 960901',
     })
     // invalid input for local delivery unit
     cy.get('[id="localDeliveryUnit"]').clear().type('blah blah blah')
-    recallProbationOfficer.clickContinue()
+    cy.clickButton('Continue')
     recallProbationOfficer.assertSelectValue({ fieldName: 'localDeliveryUnitInput', value: 'blah blah blah' })
-    recallProbationOfficer.assertErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'localDeliveryUnit',
       summaryError: 'Select a Local Delivery Unit from the list',
     })

@@ -13,54 +13,39 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Book a recall', name: recall.fullName }) }}
 
-            <form novalidate action="{{ makeUrl('custody-status', urlInfo) }}" method="post">
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo) }}" method="post">
                 <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
                 {% if recall.middleNames %}
-                <input type="hidden" name="hasMiddleNames" value="1" />
+                    <input type="hidden" name="hasMiddleNames" value="1" />
                 {% endif %}
-                <div class='govuk-body govuk-form-group govuk-!-margin-bottom-8'>
-                    {{ govukRadios({
-                        idPrefix: "inCustodyAtBooking",
-                        name: "inCustodyAtBooking",
-                        fieldset: {
-                            legend: {
-                                html: "Is <span data-private>" + recall.fullName + "</span> in custody?",
-                                classes: "govuk-fieldset__legend--l",
-                                isPageHeading: true
-                            }
+                {{ govukRadios({
+                    idPrefix: "inCustodyAtBooking",
+                    name: "inCustodyAtBooking",
+                    fieldset: {
+                        legend: {
+                            html: "Is <span data-private>" + recall.fullName + "</span> in custody?",
+                            classes: "govuk-fieldset__legend--l",
+                            isPageHeading: true
+                        }
+                    },
+                    items: [
+                        {
+                            value: "YES",
+                            text: 'Yes',
+                            checked: formValues.inCustodyAtBooking == 'YES'
                         },
-                        items: [
-                            {
-                                value: "YES",
-                                text: 'Yes',
-                                checked: formValues.inCustodyAtBooking == 'YES'
-                            },
-                            {
-                                value: "NO",
-                                text: 'No',
-                                checked: formValues.inCustodyAtBooking == 'NO'
-                            }
-                        ],
-                        errorMessage: errorMessage(errors.inCustodyAtBooking)
-                    }) }}
-                </div>
-                <div>
-                    <button class="govuk-button"
-                            data-qa='continueButton'>
-                        Continue
-                    </button>
-                </div>
+                        {
+                            value: "NO",
+                            text: 'No',
+                            checked: formValues.inCustodyAtBooking == 'NO'
+                        }
+                    ],
+                    errorMessage: errorMessage(errors.inCustodyAtBooking)
+                }) }}
+                {{ formSubmitButton() }}
             </form>
         </div>
     </div>

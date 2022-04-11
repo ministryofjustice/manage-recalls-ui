@@ -6,15 +6,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
-            {% if errors %}
-                {{ govukErrorSummary({
-                    titleText: "There is a problem",
-                    errorList: errors.list,
-                    attributes: {
-                        'data-qa': 'error-list'
-                    }
-                }) }}
-            {% endif %}
+            {% include '../partials/error-summary.njk' %}
             {{ pageHeadingCaption({ action: 'Rescind recall', name: recall.fullName }) }}
             <h1 class="govuk-heading-l">
                 Record a rescind request
@@ -24,7 +16,7 @@
 
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds-from-desktop">
-            <form novalidate action="{{ makeUrl('rescind-request', urlInfo, csrfToken) }}"
+            <form novalidate action="{{ makeUrl(urlInfo.currentPage, urlInfo, csrfToken) }}"
                   method="post" enctype="multipart/form-data">
                 {{ govukTextarea({
                     name: "rescindRequestDetail",
@@ -75,11 +67,7 @@
                     },
                     errorMessage: errorMessage(errors.rescindRequestEmailFileName)
                 }) }}
-                <div class='govuk-!-margin-top-6'>
-                    <button class="govuk-button">
-                        Save and return
-                    </button>
-                </div>
+                {{ formSubmitButton({ label: 'Save and return'}) }}
             </form>
         </div>
     </div>
