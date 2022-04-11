@@ -188,6 +188,20 @@ describe('sortDossierCheckList', () => {
       { secondaryDossierDueDate: '2022-03-09' },
     ])
   })
+
+  it('sorts undefined values first', () => {
+    const recalls = [
+      { secondaryDossierDueDate: '2022-03-08' },
+      { secondaryDossierDueDate: '2022-03-07' },
+      { secondaryDossierDueDate: undefined },
+    ]
+    const sorted = sortDossierCheckList(recalls as RecallResponseLite[])
+    expect(sorted).toEqual([
+      { secondaryDossierDueDate: undefined },
+      { secondaryDossierDueDate: '2022-03-07' },
+      { secondaryDossierDueDate: '2022-03-08' },
+    ])
+  })
 })
 
 describe('sortListByDateField', () => {

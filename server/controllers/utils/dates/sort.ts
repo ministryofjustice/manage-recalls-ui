@@ -113,6 +113,14 @@ export const sortDossierCheckList = (list: RecallResponseLite[]) => {
   return list.sort((a: RecallResponseLite, b: RecallResponseLite): number => {
     const dateA = getDateProperty(a, 'secondaryDossierDueDate')
     const dateB = getDateProperty(b, 'secondaryDossierDueDate')
+    if (!dateA || !dateB) {
+      if (!dateA && dateB) {
+        return -1
+      }
+      if (dateA && !dateB) {
+        return 1
+      }
+    }
     return diffDatesForSort(dateA, dateB, false)
   })
 }
