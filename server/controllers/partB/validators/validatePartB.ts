@@ -166,6 +166,7 @@ export const validatePartB = ({
       heading: 'Part B added',
       bannerType: 'message_group',
       pageToDisplayOn: 'view-recall',
+      pagesInBetween: ['support-rerelease'],
       items: [
         {
           text: `Part B report ${oasysFile ? 'and OASys ' : ''}uploaded.`,

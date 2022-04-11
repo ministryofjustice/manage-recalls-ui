@@ -64,11 +64,12 @@ describe('store flash errors on request session (middleware)', () => {
     expect(req.session).toEqual({})
   })
 
-  it('does not delete confirmation message if the requested page slug does not match pageToDisplayOn', () => {
+  it('does not delete confirmation message if the requested page does not match pageToDisplayOn but is in the list of pagesInBetween', () => {
     const confirmationMessage = {
       text: 'Document was deleted',
       type: 'success',
       pageToDisplayOn: 'view-recall',
+      pagesInBetween: 'support-rerelease',
     }
     const req = mockReq({ session: { confirmationMessage }, params: { pageSlug: 'support-rerelease' } })
     const res = mockRes()
@@ -77,6 +78,21 @@ describe('store flash errors on request session (middleware)', () => {
     expect(req.session).toEqual({
       confirmationMessage,
     })
+  })
+
+  it('deletes the confirmation message if the requested page does not match pageToDisplayOn and is not in the list of pagesInBetween', () => {
+    const confirmationMessage = {
+      text: 'Document was deleted',
+      type: 'success',
+      pageToDisplayOn: 'view-recall',
+      pagesInBetween: 'support-rerelease',
+    }
+    const req = mockReq({ session: { confirmationMessage }, params: { pageSlug: '/' } })
+    const res = mockRes()
+    const next = jest.fn()
+    getStoredSessionData(req, res, next)
+    expect(res.locals.confirmationMessage).toBeUndefined()
+    expect(req.session.confirmationMessage).toBeUndefined()
   })
 
   it('deletes confirmation message if the request path matches pageToDisplayOn', () => {
