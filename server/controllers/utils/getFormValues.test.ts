@@ -151,6 +151,21 @@ describe('getFormValues', () => {
       text: 'Legal rep phone',
       values: '999',
     },
+    seniorProbationOfficerInfo_fullName: {
+      text: 'Senior probation officer name',
+    },
+    seniorProbationOfficerInfo_email: {
+      text: 'Senior probation officer email',
+      values: 'invalidemail.com',
+    },
+    seniorProbationOfficerInfo_phoneNumber: {
+      text: 'Senior probation officer phone',
+      values: '999',
+    },
+    seniorProbationOfficerInfo_functionalEmail: {
+      text: 'Probation functional email address',
+      values: '',
+    },
   } as unknown as ObjectMap<FormError>
 
   const unsavedValues = {
@@ -217,6 +232,10 @@ describe('getFormValues', () => {
     legalRepresentativeInfo_fullName: 'Jenny Edwards',
     legalRepresentativeInfo_email: 'jenny@edwards.com',
     legalRepresentativeInfo_phoneNumber: '07484839483',
+    seniorProbationOfficerInfo_fullName: 'Jimi Matthews',
+    seniorProbationOfficerInfo_email: 'jim@probation.com',
+    seniorProbationOfficerInfo_phoneNumber: '07434534583',
+    seniorProbationOfficerInfo_functionalEmail: 'unsaved@probation.com',
   }
 
   const apiValues = {
@@ -325,6 +344,10 @@ describe('getFormValues', () => {
         month: '',
         year: '',
       },
+      seniorProbationOfficerInfo_email: 'invalidemail.com',
+      seniorProbationOfficerInfo_fullName: '',
+      seniorProbationOfficerInfo_phoneNumber: '999',
+      seniorProbationOfficerInfo_functionalEmail: '',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -456,6 +479,10 @@ describe('getFormValues', () => {
           year: '2021',
         },
       },
+      seniorProbationOfficerInfo_email: 'jim@probation.com',
+      seniorProbationOfficerInfo_fullName: 'Jimi Matthews',
+      seniorProbationOfficerInfo_phoneNumber: '07434534583',
+      seniorProbationOfficerInfo_functionalEmail: 'unsaved@probation.com',
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -577,6 +604,10 @@ describe('getFormValues', () => {
         month: '',
         year: '',
       },
+      seniorProbationOfficerInfo_email: 'invalidemail.com',
+      seniorProbationOfficerInfo_fullName: '',
+      seniorProbationOfficerInfo_phoneNumber: '999',
+      seniorProbationOfficerInfo_functionalEmail: '',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -691,6 +722,10 @@ describe('getFormValues', () => {
         month: '01',
         year: '2022',
       },
+      seniorProbationOfficerInfo_email: 'mark@probation.com',
+      seniorProbationOfficerInfo_fullName: 'Mark Harvard',
+      seniorProbationOfficerInfo_phoneNumber: '07383789332',
+      seniorProbationOfficerInfo_functionalEmail: 'general@probation.com',
       sentenceDateParts: {
         day: '03',
         month: '08',
@@ -808,6 +843,10 @@ describe('getFormValues', () => {
         month: '01',
         year: '2022',
       },
+      seniorProbationOfficerInfo_email: 'mark@probation.com',
+      seniorProbationOfficerInfo_fullName: 'Mark Harvard',
+      seniorProbationOfficerInfo_phoneNumber: '07383789332',
+      seniorProbationOfficerInfo_functionalEmail: 'general@probation.com',
       sentenceDateParts: {
         day: '03',
         month: '08',

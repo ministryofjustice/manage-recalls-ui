@@ -78,6 +78,10 @@ export const getFormValues = ({ errors = {}, unsavedValues = {}, apiValues }: Ge
     'legalRepresentativeInfo_fullName',
     'legalRepresentativeInfo_email',
     'legalRepresentativeInfo_phoneNumber',
+    'seniorProbationOfficerInfo_fullName',
+    'seniorProbationOfficerInfo_email',
+    'seniorProbationOfficerInfo_phoneNumber',
+    'seniorProbationOfficerInfo_functionalEmail',
   ].forEach((key: string) => {
     values[key] = isDefined(errors[key])
       ? errors[key].values || ''

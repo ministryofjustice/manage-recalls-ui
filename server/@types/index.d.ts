@@ -103,6 +103,7 @@ export type ViewName =
   | 'supportRerelease'
   | 'secondaryDossierRecallInfo'
   | 'secondaryDossierLegalRep'
+  | 'secondaryDossierProbation'
 
 export type ReqValidatorFn = ({ requestBody, user, urlInfo }: ReqValidatorArgs) => ReqValidatorReturn
 

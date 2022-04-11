@@ -239,5 +239,11 @@
     "fullName": "Jenny Eclair",
     "phoneNumber": "07824637629",
     "email": "jenny@legalreps.com"
+  },
+  "seniorProbationOfficerInfo": {
+    "fullName": "Mark Harvard",
+    "phoneNumber": "07383789332",
+    "email": "mark@probation.com",
+    "functionalEmail": "general@probation.com"
   }
 }

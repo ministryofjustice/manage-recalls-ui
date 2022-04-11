@@ -1,7 +1,7 @@
 import { validateLegalRep } from './validateLegalRep'
 
 describe('validateLegalRep', () => {
-  const urlInfo = { basePath: '/recalls/', currentPage: 'probation-officer' }
+  const urlInfo = { basePath: '/recalls/', currentPage: 'secondary-legal-rep' }
   const requestBody = {
     legalRepresentativeInfo_fullName: 'Dave Angel',
     legalRepresentativeInfo_email: 'probation.office@justice.com',
@@ -20,17 +20,17 @@ describe('validateLegalRep', () => {
     })
   })
 
-  it('redirects to view recall if fromPage not supplied', () => {
+  it('redirects to probation officer page if fromPage not supplied', () => {
     const { redirectToPage } = validateLegalRep({ requestBody, urlInfo })
-    expect(redirectToPage).toEqual('/recalls/view-recall')
+    expect(redirectToPage).toEqual('/recalls/secondary-dossier-probation')
   })
 
   it('redirects to fromPage if supplied', () => {
     const { redirectToPage } = validateLegalRep({
       requestBody,
-      urlInfo: { ...urlInfo, fromPage: 'dossier-recall' },
+      urlInfo: { ...urlInfo, fromPage: 'view-recall' },
     })
-    expect(redirectToPage).toEqual('/recalls/dossier-recall')
+    expect(redirectToPage).toEqual('/recalls/view-recall')
   })
 
   it('returns errors for missing fields, and no valuesToSave', () => {
