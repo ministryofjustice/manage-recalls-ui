@@ -162,7 +162,7 @@ describe('getFormValues', () => {
       text: 'Senior probation officer phone',
       values: '999',
     },
-    seniorProbationOfficerInfo_probationEmail: {
+    seniorProbationOfficerInfo_functionalEmail: {
       text: 'Probation functional email address',
       values: '',
     },
@@ -235,7 +235,7 @@ describe('getFormValues', () => {
     seniorProbationOfficerInfo_fullName: 'Jimi Matthews',
     seniorProbationOfficerInfo_email: 'jim@probation.com',
     seniorProbationOfficerInfo_phoneNumber: '07434534583',
-    seniorProbationOfficerInfo_probationEmail: 'unsaved@probation.com',
+    seniorProbationOfficerInfo_functionalEmail: 'unsaved@probation.com',
   }
 
   const apiValues = {
@@ -347,7 +347,7 @@ describe('getFormValues', () => {
       seniorProbationOfficerInfo_email: 'invalidemail.com',
       seniorProbationOfficerInfo_fullName: '',
       seniorProbationOfficerInfo_phoneNumber: '999',
-      seniorProbationOfficerInfo_probationEmail: '',
+      seniorProbationOfficerInfo_functionalEmail: '',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -482,7 +482,7 @@ describe('getFormValues', () => {
       seniorProbationOfficerInfo_email: 'jim@probation.com',
       seniorProbationOfficerInfo_fullName: 'Jimi Matthews',
       seniorProbationOfficerInfo_phoneNumber: '07434534583',
-      seniorProbationOfficerInfo_probationEmail: 'unsaved@probation.com',
+      seniorProbationOfficerInfo_functionalEmail: 'unsaved@probation.com',
       sentenceDateParts: {
         day: '05',
         month: '12',
@@ -607,7 +607,7 @@ describe('getFormValues', () => {
       seniorProbationOfficerInfo_email: 'invalidemail.com',
       seniorProbationOfficerInfo_fullName: '',
       seniorProbationOfficerInfo_phoneNumber: '999',
-      seniorProbationOfficerInfo_probationEmail: '',
+      seniorProbationOfficerInfo_functionalEmail: '',
       sentenceDateParts: {
         day: '05',
         month: '',
@@ -725,7 +725,7 @@ describe('getFormValues', () => {
       seniorProbationOfficerInfo_email: 'mark@probation.com',
       seniorProbationOfficerInfo_fullName: 'Mark Harvard',
       seniorProbationOfficerInfo_phoneNumber: '07383789332',
-      seniorProbationOfficerInfo_probationEmail: 'general@probation.com',
+      seniorProbationOfficerInfo_functionalEmail: 'general@probation.com',
       sentenceDateParts: {
         day: '03',
         month: '08',
@@ -846,7 +846,7 @@ describe('getFormValues', () => {
       seniorProbationOfficerInfo_email: 'mark@probation.com',
       seniorProbationOfficerInfo_fullName: 'Mark Harvard',
       seniorProbationOfficerInfo_phoneNumber: '07383789332',
-      seniorProbationOfficerInfo_probationEmail: 'general@probation.com',
+      seniorProbationOfficerInfo_functionalEmail: 'general@probation.com',
       sentenceDateParts: {
         day: '03',
         month: '08',

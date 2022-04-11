@@ -6,7 +6,7 @@ describe('validateSeniorProbationOfficer', () => {
     seniorProbationOfficerInfo_fullName: 'Dave Angel',
     seniorProbationOfficerInfo_email: 'probation.office@justice.com',
     seniorProbationOfficerInfo_phoneNumber: '07473739388',
-    seniorProbationOfficerInfo_probationEmail: 'general@probation.com',
+    seniorProbationOfficerInfo_functionalEmail: 'general@probation.com',
   }
 
   it('returns valuesToSave and no errors if all fields are submitted', () => {
@@ -17,7 +17,7 @@ describe('validateSeniorProbationOfficer', () => {
         email: 'probation.office@justice.com',
         fullName: 'Dave Angel',
         phoneNumber: '07473739388',
-        probationEmail: 'general@probation.com',
+        functionalEmail: 'general@probation.com',
       },
     })
   })
@@ -56,8 +56,8 @@ describe('validateSeniorProbationOfficer', () => {
         text: 'Enter a phone number',
       },
       {
-        href: '#seniorProbationOfficerInfo_probationEmail',
-        name: 'seniorProbationOfficerInfo_probationEmail',
+        href: '#seniorProbationOfficerInfo_functionalEmail',
+        name: 'seniorProbationOfficerInfo_functionalEmail',
         text: 'Enter a probation functional email address',
       },
     ])
@@ -69,7 +69,7 @@ describe('validateSeniorProbationOfficer', () => {
         ...requestBody,
         seniorProbationOfficerInfo_phoneNumber: '003139485349',
         seniorProbationOfficerInfo_email: 'probation.office',
-        seniorProbationOfficerInfo_probationEmail: 'probation@general',
+        seniorProbationOfficerInfo_functionalEmail: 'probation@general',
       },
       urlInfo,
     })
@@ -88,8 +88,8 @@ describe('validateSeniorProbationOfficer', () => {
         values: '003139485349',
       },
       {
-        href: '#seniorProbationOfficerInfo_probationEmail',
-        name: 'seniorProbationOfficerInfo_probationEmail',
+        href: '#seniorProbationOfficerInfo_functionalEmail',
+        name: 'seniorProbationOfficerInfo_functionalEmail',
         text: 'Enter a probation functional email address in the correct format, like name@example.com',
         values: 'probation@general',
       },

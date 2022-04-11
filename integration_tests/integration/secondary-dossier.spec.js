@@ -93,12 +93,12 @@ context('Secondary dossier', () => {
       fullName: probationOfficerName,
       email: probationOfficerEmail,
       phoneNumber: probationOfficerPhone,
-      probationEmail,
+      functionalEmail,
     } = getRecallResponse.seniorProbationOfficerInfo
     cy.fillInput('Name', probationOfficerName)
     cy.fillInput('Email address', probationOfficerEmail)
     cy.fillInput('Phone number', probationOfficerPhone)
-    cy.fillInput('Probation functional email address', probationEmail)
+    cy.fillInput('Probation functional email address', functionalEmail)
     cy.task('expectGetRecall', {
       expectedResult: { ...getRecallResponse, status: 'SECONDARY_DOSSIER_IN_PROGRESS' },
     })
@@ -115,7 +115,7 @@ context('Secondary dossier', () => {
     cy.getText('seniorProbationOfficerInfo_fullName').should('equal', probationOfficerName)
     cy.getText('seniorProbationOfficerInfo_email').should('equal', probationOfficerEmail)
     cy.getText('seniorProbationOfficerInfo_phoneNumber').should('equal', probationOfficerPhone)
-    cy.getText('seniorProbationOfficerInfo_probationEmail').should('equal', probationEmail)
+    cy.getText('seniorProbationOfficerInfo_functionalEmail').should('equal', functionalEmail)
     cy.getLinkHref('Change Senior Probation Officer details').should(
       'contain',
       `/recalls/${recallId}/secondary-dossier-probation?fromPage=view-recall&fromHash=probation`
@@ -186,7 +186,7 @@ context('Secondary dossier', () => {
       summaryError: 'Enter a phone number',
     })
     cy.assertErrorMessage({
-      fieldName: 'seniorProbationOfficerInfo_probationEmail',
+      fieldName: 'seniorProbationOfficerInfo_functionalEmail',
       summaryError: 'Enter a probation functional email address',
     })
   })
@@ -207,10 +207,10 @@ context('Secondary dossier', () => {
       expectedResult: { ...getRecallResponse, status: 'SECONDARY_DOSSIER_IN_PROGRESS' },
     })
     cy.visitRecallPage({ pageSuffix: 'secondary-dossier-probation' })
-    const { fullName, email, phoneNumber, probationEmail } = getRecallResponse.seniorProbationOfficerInfo
+    const { fullName, email, phoneNumber, functionalEmail } = getRecallResponse.seniorProbationOfficerInfo
     cy.getTextInputValue('Name').should('equal', fullName)
     cy.getTextInputValue('Email').should('equal', email)
     cy.getTextInputValue('Phone number').should('equal', phoneNumber)
-    cy.getTextInputValue('Probation functional email address').should('equal', probationEmail)
+    cy.getTextInputValue('Probation functional email address').should('equal', functionalEmail)
   })
 })
