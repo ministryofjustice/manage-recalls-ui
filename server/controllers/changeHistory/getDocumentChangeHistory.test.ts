@@ -54,11 +54,6 @@ describe('getDocumentChangeHistory', () => {
 
   afterEach(() => jest.resetAllMocks())
 
-  it('returns 400 if recallId missing', () => {
-    getDocumentChangeHistory(req, res, next)
-    expect(next).toHaveBeenCalledWith(new Error('Invalid recallId'))
-  })
-
   it('returns 400 if category missing', () => {
     req.params.recallId = '456'
     req.params.nomsNumber = '123'

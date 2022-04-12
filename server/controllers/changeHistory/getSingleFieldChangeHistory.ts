@@ -12,9 +12,6 @@ export const getSingleFieldChangeHistory = async (req: Request, res: Response, n
     user: { token },
   } = res.locals
   try {
-    if (!isString(recallId)) {
-      throw new Error('Invalid recallId')
-    }
     if (!isString(fieldName)) {
       throw new Error('Invalid fieldName')
     }
