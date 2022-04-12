@@ -1,6 +1,5 @@
 import express, { Router } from 'express'
 import passport from 'passport'
-import flash from 'connect-flash'
 import config from '../config'
 
 export default function setUpAuth(): Router {
