@@ -114,8 +114,13 @@ context('Secondary dossier', () => {
     )
     cy.getText('seniorProbationOfficerInfo_fullName').should('equal', probationOfficerName)
     cy.getText('seniorProbationOfficerInfo_email').should('equal', probationOfficerEmail)
+    cy.getLinkHref({ qaAttr: 'seniorProbationOfficerInfo_email' }).should('equal', `mailto:${probationOfficerEmail}`)
     cy.getText('seniorProbationOfficerInfo_phoneNumber').should('equal', probationOfficerPhone)
     cy.getText('seniorProbationOfficerInfo_functionalEmail').should('equal', functionalEmail)
+    cy.getLinkHref({ qaAttr: 'seniorProbationOfficerInfo_functionalEmail' }).should(
+      'equal',
+      `mailto:${functionalEmail}`
+    )
     cy.getLinkHref('Change Senior Probation Officer details').should(
       'contain',
       `/recalls/${recallId}/secondary-dossier-probation?fromPage=view-recall&fromHash=probation`

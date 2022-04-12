@@ -51,7 +51,10 @@
           </a>
         </p>
         <p class='govuk-body' data-qa='seniorProbationOfficerInfo_phoneNumber'>{{ recall.seniorProbationOfficerInfo.phoneNumber }}</p>
-        <p class='govuk-body' data-qa='seniorProbationOfficerInfo_functionalEmail'>{{ recall.seniorProbationOfficerInfo.functionalEmail }}</p>
+        <p class='govuk-body' data-qa='seniorProbationOfficerInfo_functionalEmail'>
+          <a class='govuk-link' href='mailto:{{ recall.seniorProbationOfficerInfo.functionalEmail }}' target='_blank' rel='noopener' data-qa='seniorProbationOfficerInfo_functionalEmail'>
+            {{ recall.seniorProbationOfficerInfo.functionalEmail }}</a>
+        </p>
       </dd>
       <dd class=" govuk-summary-list__actions">
         <a href='{{ changeLinkUrl('secondary-dossier-probation', urlInfo, 'probation') }}' class='govuk-link'>
