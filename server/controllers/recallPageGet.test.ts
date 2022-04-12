@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from './testUtils/mockRequestUtils'
+import { mockReq, mockRes } from './testUtils/mockRequestUtils'
 import { recallPageGet } from './recallPageGet'
 import recall from '../../fake-manage-recalls-api/stubs/__files/get-recall.json'
 import { RecallResponse } from '../@types/manage-recalls-api/models/RecallResponse'
@@ -11,16 +11,21 @@ jest.mock('../clients/manageRecallsApiClient')
 
 const accessToken = 'abc'
 const recallId = '123'
+let req
+let res
 
 describe('recallPageGet', () => {
+  beforeEach(() => {
+    req = mockReq({ params: { recallId } })
+    res = mockRes({ token: accessToken })
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
 
   it('should attach uploaded documents to res locals', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.documentsUploaded.map(doc => doc.category)).toEqual([
       'PART_A_RECALL_REPORT',
@@ -33,9 +38,6 @@ describe('recallPageGet', () => {
 
   it('should return person and recall data and assessed by user name from api for a valid noms number and recallId', done => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     res.render = view => {
       expect(res.locals.recall.assessedByUserName).toEqual('Bertie Badger')
       expect(res.locals.recall.bookedByUserName).toEqual('Brenda Badger')
@@ -48,8 +50,6 @@ describe('recallPageGet', () => {
 
   it('should make reference data available to render', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue(recall)
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.referenceData).toHaveProperty('reasonsForRecall')
     expect(res.locals.referenceData).toHaveProperty('mappaLevels')
@@ -61,8 +61,6 @@ describe('recallPageGet', () => {
 
   it('should set previousConvictionMainName to Other value if specified', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, previousConvictionMainName: 'Barry Badger' })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Barry Badger')
   })
@@ -73,8 +71,6 @@ describe('recallPageGet', () => {
       previousConvictionMainNameCategory: 'FIRST_LAST',
       previousConvictionMainName: '',
     })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby Badger')
   })
@@ -85,8 +81,6 @@ describe('recallPageGet', () => {
       previousConvictionMainNameCategory: 'FIRST_MIDDLE_LAST',
       previousConvictionMainName: '',
     })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.previousConvictionMainName).toEqual('Bobby John Badger')
   })
@@ -96,8 +90,6 @@ describe('recallPageGet', () => {
       ...recall,
       licenceNameCategory: 'FIRST_LAST',
     })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.fullName).toEqual('Bobby Badger')
   })
@@ -107,8 +99,6 @@ describe('recallPageGet', () => {
       ...recall,
       licenceNameCategory: 'FIRST_MIDDLE_LAST',
     })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.fullName).toEqual('Bobby John Badger')
   })
@@ -116,9 +106,6 @@ describe('recallPageGet', () => {
   it('should make document data available to render', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    res.locals.urlInfo = {}
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.enableDeleteDocuments).toEqual(true)
     expect(decorateDocsExports.decorateDocs.mock.calls[0][0].docs).toEqual(recall.documents)
@@ -127,9 +114,7 @@ describe('recallPageGet', () => {
   it('should pass document category query string to decorateDocs', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({ ...recall, status: RecallResponse.status.BEING_BOOKED_ON })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
-    const req = mockGetRequest({ params: { recallId }, query: { versionedCategoryName: 'LICENCE' } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    res.locals.urlInfo = {}
+    req.query.versionedCategoryName = 'LICENCE'
     await recallPageGet('assessRecall')(req, res)
     expect(decorateDocsExports.decorateDocs.mock.calls[0][0].versionedCategoryName).toEqual('LICENCE')
   })
@@ -141,9 +126,6 @@ describe('recallPageGet', () => {
       lastKnownAddresses: [{ index: 2 }, { index: 1 }],
     })
     jest.spyOn(decorateDocsExports, 'decorateDocs')
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
-    res.locals.urlInfo = {}
     await recallPageGet('assessRecall')(req, res)
     expect(res.locals.recall.lastKnownAddresses.map(a => a.index)).toEqual([1, 2])
   })
@@ -174,8 +156,6 @@ describe('recallPageGet', () => {
         },
       ],
     })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.missingDocumentsRecords).toEqual([
       {
@@ -239,8 +219,6 @@ describe('recallPageGet', () => {
         },
       ],
     })
-    const req = mockGetRequest({ params: { recallId } })
-    const { res } = mockResponseWithAuthenticatedUser(accessToken)
     await recallPageGet('recallIssuesNeeds')(req, res)
     expect(res.locals.recall.rescindRecords).toEqual([
       {
@@ -280,5 +258,13 @@ describe('recallPageGet', () => {
         version: 1,
       },
     ])
+  })
+
+  it('should call error middleware on error', async () => {
+    const err = new Error('test')
+    const next = jest.fn()
+    ;(getRecall as jest.Mock).mockRejectedValue(err)
+    await recallPageGet('assessRecall')(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })

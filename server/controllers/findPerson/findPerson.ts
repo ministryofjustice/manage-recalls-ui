@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
 import logger from '../../../logger'
 import { validateFindPerson } from './validators/validateFindPerson'
 import { makeErrorObject, transformErrorMessages } from '../utils/errorMessages'
 import { isDefined } from '../../utils/utils'
 
-export const findPerson = async (req: Request, res: Response, _next: NextFunction): Promise<Response | void> => {
+export const findPerson = async (req: Request, res: Response): Promise<Response | void> => {
   const { nomsNumber } = req.query
   let errors
   try {

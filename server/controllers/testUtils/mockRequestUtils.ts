@@ -42,10 +42,12 @@ export const mockRes = ({
   locals = {},
   token = 'token',
   redirect = jest.fn(),
+  render = jest.fn(),
 }: {
   locals?: ObjectMap<unknown>
   token?: string
   redirect?: jest.Mock
+  render?: jest.Mock
 } = {}): Response => {
   return {
     locals: {
@@ -57,6 +59,7 @@ export const mockRes = ({
       env: locals.env || 'PRODUCTION',
     },
     redirect,
+    render,
   } as unknown as Response
 }
 

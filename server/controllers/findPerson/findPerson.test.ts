@@ -1,11 +1,18 @@
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testUtils/mockRequestUtils'
+import { Response } from 'express'
+import { mockReq, mockRes } from '../testUtils/mockRequestUtils'
 import { findPerson } from './findPerson'
 import { getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
 
 jest.mock('../../clients/manageRecallsApiClient')
 const nomsNumber = ' A1234AB '
+let res: Response
+const token = 'token'
 
 describe('findPerson', () => {
+  beforeEach(() => {
+    res = mockRes({ token })
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -18,9 +25,8 @@ describe('findPerson', () => {
       dateOfBirth: '1990-10-30',
     }
     ;(getPrisonerByNomsNumber as jest.Mock).mockReturnValueOnce(person)
-    const req = mockGetRequest({ query: { nomsNumber } })
-    const { res, next } = mockResponseWithAuthenticatedUser('token')
-    await findPerson(req, res, next)
+    const req = mockReq({ query: { nomsNumber } })
+    await findPerson(req, res)
     expect(getPrisonerByNomsNumber).toHaveBeenCalledWith(nomsNumber.trim(), 'token')
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.persons).toEqual([person])
@@ -28,9 +34,8 @@ describe('findPerson', () => {
 
   it('should render an error, if the person request fails', async () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockRejectedValue(new Error('test'))
-    const req = mockGetRequest({ query: { nomsNumber } })
-    const { res, next } = mockResponseWithAuthenticatedUser('token')
-    await findPerson(req, res, next)
+    const req = mockReq({ query: { nomsNumber } })
+    await findPerson(req, res)
     expect(res.locals.errors).toEqual({
       list: [
         {
@@ -47,9 +52,8 @@ describe('findPerson', () => {
   })
 
   it('should return error message if invalid noms number', async () => {
-    const req = mockGetRequest({ query: { nomsNumber: 0 as unknown as string } })
-    const { res, next } = mockResponseWithAuthenticatedUser('')
-    await findPerson(req, res, next)
+    const req = mockReq({ query: { nomsNumber: 0 as unknown as string } })
+    await findPerson(req, res)
     expect(getPrisonerByNomsNumber).not.toHaveBeenCalled()
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.errors).toEqual({
@@ -70,9 +74,8 @@ describe('findPerson', () => {
   })
 
   it('should return error message and not call the API if noms number is empty string', async () => {
-    const req = mockGetRequest({ query: { nomsNumber: '' } })
-    const { res, next } = mockResponseWithAuthenticatedUser('')
-    await findPerson(req, res, next)
+    const req = mockReq({ query: { nomsNumber: '' } })
+    await findPerson(req, res)
     expect(getPrisonerByNomsNumber).not.toHaveBeenCalled()
     expect(res.render).toHaveBeenCalledWith('pages/findPerson')
     expect(res.locals.errors).toEqual({

@@ -1,8 +1,9 @@
 // @ts-nocheck
 import { separateEmailAndFormSave } from './separateEmailAndFormSave'
 import { uploadRecallDocument, updateRecall } from '../clients/manageRecallsApiClient'
-import { mockReq } from './testUtils/mockRequestUtils'
+import { mockReq, mockRes } from './testUtils/mockRequestUtils'
 import { uploadStorageField } from './documents/upload/helpers/uploadStorage'
+import * as processUploadExports from './documents/upload/helpers/processUpload'
 import { validateRecallRequestReceived } from './book/validators/validateRecallRequestReceived'
 import { RecallDocument } from '../@types/manage-recalls-api/models/RecallDocument'
 import { validateRecallNotificationEmail } from './assess/validators/validateRecallNotificationEmail'
@@ -328,5 +329,14 @@ describe('separateEmailAndFormSave', () => {
       },
     }
     handlerWithSaveFn(req, res)
+  })
+
+  it('calls error middleware if an error is thrown', async () => {
+    const err = new Error('test')
+    jest.spyOn(processUploadExports, 'processUpload').mockRejectedValue(err)
+    const res = mockRes()
+    const next = jest.fn()
+    await handler(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })

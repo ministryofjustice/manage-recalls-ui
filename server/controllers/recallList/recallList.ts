@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { performance } from 'perf_hooks'
 import { buildAppInsightsClient } from '../../monitoring/azureAppInsights'
 import { getRecallList } from '../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../@types/manage-recalls-api/models/RecallResponse'
-import logger from '../../../logger'
 import {
   sortAwaitingPartBList,
   sortCompletedList,
@@ -14,7 +13,7 @@ import {
 import { formatPersonName } from '../utils/person'
 import { RecallResponseLite } from '../../@types/manage-recalls-api/models/RecallResponseLite'
 
-export const recallList = async (req: Request, res: Response): Promise<Response | void> => {
+export const recallList = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     const appInsightsClient = buildAppInsightsClient()
     const { token } = res.locals.user
@@ -89,15 +88,9 @@ export const recallList = async (req: Request, res: Response): Promise<Response 
         text: `${failed.length} recalls could not be retrieved`,
       })
     }
-  } catch (err) {
-    logger.error(err)
-    res.locals.errors = res.locals.errors || []
-    res.locals.errors.push({
-      name: 'fetchError',
-      text: 'Recalls could not be retrieved',
-    })
-  } finally {
     res.locals.isTodoPage = true
     res.render('pages/recallList')
+  } catch (err) {
+    next(err)
   }
 }
