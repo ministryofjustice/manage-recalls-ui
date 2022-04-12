@@ -28,7 +28,7 @@ Note - adding more tests leads to slower test runs. If you can easily combine yo
 2. If adding a validator for a form submission, be sure to return a full redirect path (see existing examples)
 
 ### Form validation
-- [Flow diagrams](./user-input-validation.md)
+- [Flow diagram](./user-input-validation.md)
 - To see saved / unsaved values rendering to form inputs, add to `getFormValues.ts`
 
 ### Audit history
