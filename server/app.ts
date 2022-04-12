@@ -1,37 +1,31 @@
-import express, { Response } from 'express'
+import express from 'express'
 import * as Sentry from '@sentry/node'
-import * as Tracing from '@sentry/tracing'
-
-import { randomBytes } from 'crypto'
 import addRequestId from 'express-request-id'
-import compression from 'compression'
-import connectRedis from 'connect-redis'
 import createError from 'http-errors'
 import csurf from 'csurf'
 import flash from 'connect-flash'
-import helmet from 'helmet'
-import noCache from 'nocache'
 import passport from 'passport'
 import path from 'path'
-import session from 'express-session'
-
 import auth from './authentication/auth'
 import indexRoutes from './routes'
-import healthcheck from './healthChecks/healthCheck'
+import setUpHealthChecks from './middleware/setUpHealthChecks'
+import setUpSentry from './middleware/setUpSentry'
+import setUpWebSecurity from './middleware/setUpWebSecurity'
+import setUpStaticResources from './middleware/setUpStaticResources'
 import nunjucksSetup from './nunjucks/nunjucksSetup'
 import config from './config'
 import errorHandler from './middleware/errorHandler'
 import standardRouter from './routes/standardRouter'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import type UserService from './clients/userService'
-import { getRedisClient } from './clients/redis'
 import { appInsightsOperationId } from './middleware/appInsightsOperationId'
 import { metricsMiddleware } from './monitoring/metricsApp'
+import setUpWebSession from './middleware/setUpWebSession'
+import setUpAuth from './middleware/setUpAuth'
 
 const version = Date.now().toString()
 const production = process.env.NODE_ENV === 'production'
 const testMode = process.env.NODE_ENV === 'test'
-const RedisStore = connectRedis(session)
 
 export default function createApp(userService: UserService): express.Application {
   const app = express()
@@ -39,41 +33,7 @@ export default function createApp(userService: UserService): express.Application
   // Setup prometheus metrics
   app.use(metricsMiddleware)
 
-  Sentry.init({
-    integrations: [
-      // enable HTTP calls tracing
-      new Sentry.Integrations.Http({ tracing: true }),
-      // enable Express.js middleware tracing
-      new Tracing.Integrations.Express({ app }),
-    ],
-    ignoreErrors: ['AbortError', /^Invalid URL$/, /^Redis connection to/],
-    // Quarter of all requests will be used for performance sampling
-    tracesSampler: samplingContext => {
-      const transactionName =
-        samplingContext && samplingContext.transactionContext && samplingContext.transactionContext.name
-
-      if (transactionName && (transactionName.includes('ping') || transactionName.includes('health'))) {
-        return 0
-      }
-
-      // Default sample rate
-      return 0.05
-    },
-  })
-
-  // RequestHandler creates a separate execution context using domains, so that every
-  // transaction/span/breadcrumb is attached to its own Hub instance
-  app.use(
-    Sentry.Handlers.requestHandler({
-      // Ensure we don't include `data` to avoid sending any PPI
-      request: ['cookies', 'headers', 'method', 'query_string', 'url'],
-      user: ['id', 'username', 'permissions'],
-    })
-  )
-
-  // TracingHandler creates a trace for every incoming request
-  app.use(Sentry.Handlers.tracingHandler())
-
+  app.use(setUpSentry())
   app.use(appInsightsOperationId)
 
   auth.init()
@@ -92,63 +52,18 @@ export default function createApp(userService: UserService): express.Application
   // Server Configuration
   app.set('port', process.env.PORT || 3000)
 
-  app.use((req, res, next) => {
-    res.locals.cspNonce = randomBytes(16).toString('hex')
-    next()
-  })
-  // Secure code best practice - see:
-  // 1. https://expressjs.com/en/advanced/best-practice-security.html,
-  // 2. https://www.npmjs.com/package/helmet
-  app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          // Hash allows inline script pulled in from https://github.com/alphagov/govuk-frontend/blob/master/src/govuk/template.njk
-          scriptSrc: [
-            "'self'",
-            'code.jquery.com',
-            'www.googletagmanager.com',
-            'cdn.lr-in.com',
-            'cdn.logrocket.io',
-            "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
-            (req, res) => `'nonce-${(res as Response).locals.cspNonce}'`,
-          ],
-          connectSrc: ["'self'", 'www.google-analytics.com', 'https://*.lr-in.com', 'https://r.logrocket.io'],
-          styleSrc: ["'self'", 'code.jquery.com'],
-          fontSrc: ["'self'"],
-          imgSrc: ["'self'", 'data:', 'www.google-analytics.com'],
-          childSrc: ["'self'", 'blob:'],
-          workerSrc: ["'self'", 'blob:'],
-        },
-      },
-    })
-  )
+  app.use(setUpWebSecurity())
 
   app.use(addRequestId())
-
-  app.use(
-    session({
-      store: new RedisStore({ client: getRedisClient() }),
-      cookie: { secure: config.https, sameSite: 'lax', maxAge: config.session.expiryMinutes * 60 * 1000 },
-      secret: config.session.secret,
-      resave: false, // redis implements touch so shouldn't need this
-      saveUninitialized: false,
-      rolling: true,
-    })
-  )
+  app.use(setUpWebSession())
 
   app.use(passport.initialize())
   app.use(passport.session())
+  app.use(flash())
 
   // Request Processing Configuration
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-
-  app.use(flash())
-
-  // Resource Delivery Configuration
-  app.use(compression())
 
   // Cachebusting version string
   if (production) {
@@ -161,43 +76,8 @@ export default function createApp(userService: UserService): express.Application
       return next()
     })
   }
-
-  //  Static Resources Configuration
-  const cacheControl = { maxAge: config.staticResourceCacheDuration * 1000 }
-  ;[
-    '/assets',
-    '/assets/stylesheets',
-    '/assets/js',
-    '/node_modules/govuk-frontend/govuk/assets',
-    '/node_modules/govuk-frontend',
-    '/node_modules/@ministryofjustice/frontend/moj/assets',
-    '/node_modules/@ministryofjustice/frontend',
-    '/node_modules/jquery/dist',
-    '/node_modules/web-vitals/dist',
-  ].forEach(dir => {
-    app.use('/assets', express.static(path.join(process.cwd(), dir), cacheControl))
-  })
-  ;['/node_modules/govuk_frontend_toolkit/images'].forEach(dir => {
-    app.use('/assets/images/icons', express.static(path.join(process.cwd(), dir), cacheControl))
-  })
-  ;['/node_modules/jquery/dist/jquery.min.js'].forEach(dir => {
-    app.use('/assets/js/jquery.min.js', express.static(path.join(process.cwd(), dir), cacheControl))
-  })
-
-  // Express Routing Configuration
-  app.get('/health', (req, res, next) => {
-    healthcheck(result => {
-      if (!result.healthy) {
-        res.status(503)
-      }
-      res.json(result)
-    })
-  })
-  app.get('/ping', (req, res) =>
-    res.send({
-      status: 'UP',
-    })
-  )
+  app.use(setUpStaticResources())
+  app.use(setUpHealthChecks())
 
   // GovUK Template Configuration
   app.locals.asset_path = '/assets/'
@@ -215,46 +95,11 @@ export default function createApp(userService: UserService): express.Application
     next()
   })
 
-  // Don't cache dynamic resources
-  app.use(noCache())
-
   // CSRF protection
   if (!testMode) {
     app.use(csurf())
   }
-
-  // Update a value in the cookie so that the set-cookie will be sent.
-  // Only changes every minute so that it's not sent with every request.
-  app.use((req, res, next) => {
-    req.session.nowInMinutes = Math.floor(Date.now() / 60e3)
-    next()
-  })
-
-  app.get('/autherror', (req, res) => {
-    res.status(401)
-    return res.render('autherror')
-  })
-
-  app.get('/login', passport.authenticate('oauth2'))
-
-  app.get('/login/callback', (req, res, next) =>
-    passport.authenticate('oauth2', {
-      successReturnToOrRedirect: req.session.returnTo || '/',
-      failureRedirect: '/autherror',
-    })(req, res, next)
-  )
-
-  const authLogoutUrl = `${config.apis.hmppsAuth.externalUrl}/logout?client_id=${config.apis.hmppsAuth.apiClientId}&redirect_uri=${config.domain}`
-
-  app.use('/logout', (req, res) => {
-    if (req.user) {
-      req.logout()
-      req.session.destroy(() => res.redirect(authLogoutUrl))
-      return
-    }
-    res.redirect(authLogoutUrl)
-  })
-
+  app.use(setUpAuth())
   app.use(authorisationMiddleware())
   app.use('/', indexRoutes(standardRouter(userService)))
 
