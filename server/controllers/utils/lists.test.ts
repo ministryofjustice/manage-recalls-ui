@@ -1,4 +1,5 @@
-import { listToString, sortList } from './lists'
+import { getLatestVersionFromList, listDocumentLabels, listToString, sortList } from './lists'
+import { UploadedFileMetadata } from '../../@types/documents'
 
 describe('listToString', () => {
   it('returns a list for 1 item', () => {
@@ -32,5 +33,23 @@ describe('sortList', () => {
     const list = [{ name: 'Licence.pdf' }, { name: 'Part A.pdf' }, { name: 'OASys.pdf' }]
     const result = sortList(list, 'name', false)
     expect(result).toEqual([{ name: 'Part A.pdf' }, { name: 'OASys.pdf' }, { name: 'Licence.pdf' }])
+  })
+})
+
+describe('getLatestVersionFromList', () => {
+  it('returns the latest version', () => {
+    const latest = getLatestVersionFromList([{ version: 4 }, { version: 8 }, { version: 1 }])
+    expect(latest).toEqual({ version: 8 })
+  })
+})
+
+describe('listDocumentLabels', () => {
+  it('returns a string list', () => {
+    const result = listDocumentLabels([
+      { label: 'Part A' },
+      { label: 'Licence' },
+      { label: 'Part B' },
+    ] as UploadedFileMetadata[])
+    expect(result).toEqual('Part A, Licence and Part B')
   })
 })

@@ -7,12 +7,6 @@ jest.mock('../../clients/manageRecallsApiClient')
 describe('getFieldChangeHistory', () => {
   afterEach(() => jest.resetAllMocks())
 
-  it('errors if recallId missing', async () => {
-    const next = mockNext()
-    await getSingleFieldChangeHistory(mockReq(), mockRes(), next)
-    expect(next).toHaveBeenCalledWith(new Error('Invalid recallId'))
-  })
-
   it('errors if fieldName is missing', async () => {
     const next = mockNext()
     await getSingleFieldChangeHistory(mockReq({ params: { recallId: '456' } }), mockRes(), next)

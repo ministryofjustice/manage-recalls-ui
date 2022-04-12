@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { getMockReq, getMockRes } from '@jest-mock/express'
 import { Request, Response } from 'express'
 import { SessionData } from 'express-session'
 import { ObjectMap, ObjectMixed } from '../../@types'
@@ -43,11 +41,13 @@ export const mockRes = ({
   token = 'token',
   redirect = jest.fn(),
   render = jest.fn(),
+  sendStatus = jest.fn(),
 }: {
   locals?: ObjectMap<unknown>
   token?: string
   redirect?: jest.Mock
   render?: jest.Mock
+  sendStatus?: jest.Mock
 } = {}): Response => {
   return {
     locals: {
@@ -60,74 +60,8 @@ export const mockRes = ({
     },
     redirect,
     render,
+    sendStatus,
   } as unknown as Response
 }
 
 export const mockNext = () => jest.fn()
-
-// all functions below this line are deprecated, use the two above if possible
-
-export function mockPostRequest({
-  body,
-  params,
-  headers,
-  session = {} as SessionData,
-  originalUrl,
-}: {
-  body?: ObjectMixed
-  params?: ObjectMixed
-  headers?: ObjectMixed
-  session?: SessionData
-  originalUrl?: string
-}) {
-  return getMockReq({
-    body,
-    params,
-    headers,
-    session,
-    originalUrl,
-  })
-}
-
-export function mockGetRequest({
-  query,
-  params,
-  session = {} as SessionData,
-  originalUrl,
-  baseUrl,
-}: {
-  query?: ObjectMixed
-  params?: ObjectMixed
-  session?: SessionData
-  originalUrl?: string
-  baseUrl?: string
-}): Request {
-  return getMockReq<Request>({
-    query,
-    params,
-    session,
-    originalUrl,
-    baseUrl,
-  })
-}
-
-export function mockResponseWithAuthenticatedUser(userAccessToken: string) {
-  return getMockRes({
-    locals: {
-      user: {
-        token: userAccessToken,
-      },
-    },
-  })
-}
-
-export function mockResponseWithAuthenticatedUserAndUserId(userAccessToken: string, userId: string) {
-  return getMockRes({
-    locals: {
-      user: {
-        token: userAccessToken,
-        uuid: userId,
-      },
-    },
-  })
-}

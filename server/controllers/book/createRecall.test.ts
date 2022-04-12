@@ -1,11 +1,9 @@
 import { NextFunction } from 'express'
-import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../testUtils/mockRequestUtils'
+import { mockReq, mockRes } from '../testUtils/mockRequestUtils'
 import { createRecall } from './createRecall'
 import { createRecall as createRecallApi, getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
 
 jest.mock('../../clients/manageRecallsApiClient')
-
-const userToken = { access_token: 'token-1', expires_in: 300 }
 
 describe('createRecall', () => {
   const person = {
@@ -20,8 +18,8 @@ describe('createRecall', () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue(person)
     ;(createRecallApi as jest.Mock).mockResolvedValue({ recallId })
 
-    const req = mockPostRequest({ body: { nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    const req = mockReq({ method: 'POST', body: { nomsNumber } })
+    const res = mockRes()
 
     await createRecall(req, res, next)
 
@@ -33,8 +31,8 @@ describe('createRecall', () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
     ;(createRecallApi as jest.Mock).mockResolvedValue({ recallId })
 
-    const req = mockPostRequest({ body: { nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    const req = mockReq({ method: 'POST', body: { nomsNumber } })
+    const res = mockRes()
 
     await createRecall(req, res, next)
 
@@ -47,8 +45,8 @@ describe('createRecall', () => {
     ;(createRecallApi as jest.Mock).mockRejectedValue(err)
     next = jest.fn()
 
-    const req = mockPostRequest({ body: { nomsNumber } })
-    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
+    const req = mockReq({ method: 'POST', body: { nomsNumber } })
+    const res = mockRes()
 
     await createRecall(req, res, next)
     expect(next).toHaveBeenCalledWith(err)
