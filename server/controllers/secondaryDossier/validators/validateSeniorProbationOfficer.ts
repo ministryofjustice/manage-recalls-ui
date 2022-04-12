@@ -80,7 +80,7 @@ export const validateSeniorProbationOfficer = ({
         })
       )
     }
-    if (seniorProbationOfficerInfo_functionalEmail && !emailValid) {
+    if (seniorProbationOfficerInfo_functionalEmail && !functionalEmailValid) {
       errors.push(
         makeErrorObject({
           id: 'seniorProbationOfficerInfo_functionalEmail',
