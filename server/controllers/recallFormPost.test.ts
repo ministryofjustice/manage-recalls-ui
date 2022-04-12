@@ -1,5 +1,6 @@
 // @ts-nocheck
-import { mockPostRequest, mockResponseWithAuthenticatedUser, mockReq, mockRes } from './testUtils/mockRequestUtils'
+import { Response } from 'express'
+import { mockReq, mockRes } from './testUtils/mockRequestUtils'
 import { recallFormPost } from './recallFormPost'
 import { updateRecall } from '../clients/manageRecallsApiClient'
 import { validatePolice } from './book/validators/validatePolice'
@@ -19,6 +20,7 @@ describe('recallFormPost', () => {
     localPoliceForceId: 'metropolitan',
     localPoliceForceIdInput: 'Metropolitan Police Service',
   }
+  let res: Response
 
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -31,6 +33,13 @@ describe('recallFormPost', () => {
         },
       ],
     })
+    res = mockRes({
+      locals: {
+        urlInfo: {
+          basePath: `/recalls/${recallId}/`,
+        },
+      },
+    })
   })
 
   afterEach(() => {
@@ -39,47 +48,32 @@ describe('recallFormPost', () => {
 
   it('should update recall and redirect to recall view', async () => {
     const recallDetails = { recallId }
-
     updateRecall.mockResolvedValueOnce(recallDetails)
-
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-    }
-
     await handler(req, res)
-
     expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/issues-needs`)
   })
 
   it('should reload the page if the request body is invalid', async () => {
     const recallDetails = { recallId }
     const currentPageUrl = `/recalls/${recallId}/prison-police`
-
     updateRecall.mockResolvedValueOnce(recallDetails)
-
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       originalUrl: currentPageUrl,
       params: { recallId },
       body: {},
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-    }
-
     await handler(req, res)
-
     expect(res.redirect).toHaveBeenCalledWith(303, currentPageUrl)
   })
 
   it('should reload the page if the API errors', async () => {
     const currentPageUrl = `/recalls/${recallId}/prison-police`
-
     updateRecall.mockRejectedValueOnce(new Error('API error'))
     const req = mockReq({
       method: 'POST',
@@ -87,16 +81,7 @@ describe('recallFormPost', () => {
       params: { recallId },
       body: requestBody,
     })
-    const res = mockRes({
-      locals: {
-        urlInfo: {
-          basePath: `/recalls/${recallId}/`,
-        },
-      },
-    })
-
     await handler(req, res)
-
     expect(req.session.errors).toEqual([
       {
         name: 'saveError',
@@ -109,22 +94,15 @@ describe('recallFormPost', () => {
   it('should use redirectToPage if one is returned from the validator function', async () => {
     const recallDetails = { recallId }
     const requestHandler = recallFormPost(validateAssessPrison)
-
     updateRecall.mockResolvedValueOnce(recallDetails)
-
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       params: { recallId },
       body: {
         currentPrison: 'KTI',
       },
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-    }
-
     await requestHandler(req, res)
-
     expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/assess-download`)
   })
 
@@ -137,13 +115,6 @@ describe('recallFormPost', () => {
         warrantReferenceNumber: '04RC/6457367A74325',
       },
       method: 'POST',
-    })
-    const res = mockRes({
-      locals: {
-        urlInfo: {
-          basePath: `/recalls/${recallId}/`,
-        },
-      },
     })
     ;(updateAndUnassign as jest.Mock).mockResolvedValue(undefined)
     await recallFormPost(validateWarrantReference, updateAndUnassign)(req, res)

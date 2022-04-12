@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { mockGetRequest, mockPostRequest } from '../testUtils/mockRequestUtils'
+import { mockReq } from '../testUtils/mockRequestUtils'
 import { getUser, postUser } from './userDetails'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
 import { addUserDetails, getCurrentUserDetails } from '../../clients/manageRecallsApiClient'
@@ -22,7 +22,7 @@ describe('getUser', () => {
 
   it('renders the user if found', done => {
     ;(getCurrentUserDetails as jest.Mock).mockResolvedValue(userDetails)
-    const req = mockGetRequest({ originalUrl: '/user-details' })
+    const req = mockReq({ originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -74,7 +74,7 @@ describe('postUser', () => {
     ;(addUserDetails as jest.Mock).mockResolvedValue({
       userId,
     })
-    const req = mockPostRequest({ body: requestBody, originalUrl: '/user-details' })
+    const req = mockReq({ method: 'POST', body: requestBody, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -102,7 +102,7 @@ describe('postUser', () => {
       }
       cb()
     })
-    const req = mockPostRequest({ body: requestBody, originalUrl: '/user-details' })
+    const req = mockReq({ method: 'POST', body: requestBody, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -127,7 +127,11 @@ describe('postUser', () => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       cb()
     })
-    const req = mockPostRequest({ body: { existingSignature: signature }, originalUrl: '/user-details' })
+    const req = mockReq({
+      method: 'POST',
+      body: { existingSignature: signature },
+      originalUrl: '/user-details',
+    })
     const res = {
       locals: {
         user: {
@@ -178,7 +182,7 @@ describe('postUser', () => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       cb()
     })
-    const req = mockPostRequest({ body: requestBody, originalUrl: '/user-details' })
+    const req = mockReq({ method: 'POST', body: requestBody, originalUrl: '/user-details' })
     const res = {
       locals: {
         user: {
@@ -210,7 +214,8 @@ describe('postUser', () => {
     ;(addUserDetails as jest.Mock).mockResolvedValue({
       userId,
     })
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       body: { ...requestBody, existingSignature: signature },
       originalUrl: '/user-details',
     })

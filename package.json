@@ -129,7 +129,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
-    "@jest-mock/express": "^1.4.5",
     "@pact-foundation/pact": "^9.17.2",
     "@types/bunyan": "^1.8.8",
     "@types/bunyan-format": "^0.2.4",
