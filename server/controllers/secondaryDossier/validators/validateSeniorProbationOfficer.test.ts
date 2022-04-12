@@ -69,7 +69,6 @@ describe('validateSeniorProbationOfficer', () => {
         ...requestBody,
         seniorProbationOfficerInfo_phoneNumber: '003139485349',
         seniorProbationOfficerInfo_email: 'probation.office',
-        seniorProbationOfficerInfo_functionalEmail: 'probation@general',
       },
       urlInfo,
     })
@@ -87,6 +86,19 @@ describe('validateSeniorProbationOfficer', () => {
         text: 'Enter a phone number in the correct format, like 01277 960901',
         values: '003139485349',
       },
+    ])
+  })
+
+  it('returns an error for invalid functional email, and no valuesToSave', () => {
+    const { errors, valuesToSave } = validateSeniorProbationOfficer({
+      requestBody: {
+        ...requestBody,
+        seniorProbationOfficerInfo_functionalEmail: 'probation@general',
+      },
+      urlInfo,
+    })
+    expect(valuesToSave).toBeUndefined()
+    expect(errors).toEqual([
       {
         href: '#seniorProbationOfficerInfo_functionalEmail',
         name: 'seniorProbationOfficerInfo_functionalEmail',
