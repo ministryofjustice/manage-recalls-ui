@@ -181,12 +181,14 @@ export interface ConfirmationMessageBase {
 export interface ConfirmationMessage extends ConfirmationMessageBase {
   type: string
   pageToDisplayOn?: string
+  pagesInBetween?: string[]
 }
 
 export interface ConfirmationMessageGroup {
   heading: string
   bannerType: string
   pageToDisplayOn?: string
+  pagesInBetween?: string[]
   items: ConfirmationMessageBase[]
 }
 

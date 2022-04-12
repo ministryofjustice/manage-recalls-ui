@@ -113,30 +113,7 @@ describe('combinedMultipleFilesAndFormSave', () => {
       locals: resLocals,
       redirect: httpStatus => {
         expect(saveToApiFn).toHaveBeenCalledTimes(1)
-        expect(req.session.confirmationMessage).toEqual({
-          heading: 'Part B added',
-          pageToDisplayOn: 'view-recall',
-          items: [
-            {
-              link: {
-                href: '#uploaded-documents',
-                text: 'View',
-              },
-              text: 'Part B report and OASys uploaded.',
-            },
-            {
-              link: {
-                href: '#recallDetails-part-b',
-                text: 'View',
-              },
-              text: 'Part B email and note added.',
-            },
-            {
-              text: 'Re-release recommendation added',
-            },
-          ],
-          bannerType: 'message_group',
-        })
+        expect(req.session.confirmationMessage).toBeDefined()
         expect(httpStatus).toEqual(303)
         done()
       },

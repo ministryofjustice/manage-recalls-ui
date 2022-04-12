@@ -73,6 +73,7 @@ describe('validatePartB', () => {
     expect(confirmationMessage).toEqual({
       heading: 'Part B added',
       pageToDisplayOn: 'view-recall',
+      pagesInBetween: ['support-rerelease'],
       items: [
         {
           link: {
