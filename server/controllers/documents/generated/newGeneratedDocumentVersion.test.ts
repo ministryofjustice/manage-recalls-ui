@@ -1,5 +1,6 @@
 // @ts-nocheck
-import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../../testUtils/mockRequestUtils'
+import { NextFunction, Response } from 'express'
+import { mockReq, mockRes } from '../../testUtils/mockRequestUtils'
 import { newGeneratedDocumentVersion } from './newGeneratedDocumentVersion'
 import { generateRecallDocument, getRecall } from '../../../clients/manageRecallsApiClient'
 import { RecallResponse } from '../../../@types/manage-recalls-api/models/RecallResponse'
@@ -10,6 +11,8 @@ describe('generatedDocumentVersionFormHandler', () => {
   const recallId = '00000000-0000-0000-0000-000000000000'
   const basePath = `/recalls/${recallId}/`
   const originalUrl = `${basePath}generated-document-version?fromPage=view-recall`
+  let res: Response
+  let next: NextFunction
 
   beforeEach(() => {
     // used to form the fileName
@@ -20,6 +23,16 @@ describe('generatedDocumentVersionFormHandler', () => {
       inCustodyAtBooking: true,
       status: RecallResponse.status.BOOKED_ON,
     })
+    res = mockRes({
+      token: 'token',
+      locals: {
+        urlInfo: {
+          basePath,
+          fromPage: 'view-recall',
+        },
+      },
+    })
+    next = jest.fn()
   })
   afterEach(() => {
     jest.resetAllMocks()
@@ -30,20 +43,14 @@ describe('generatedDocumentVersionFormHandler', () => {
       details: 'Details changed',
       category: 'RECALL_NOTIFICATION',
     }
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       params: { recallId },
       body: requestBody,
       originalUrl,
     })
     generateRecallDocument.mockResolvedValue({ documentId: '123' })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath,
-      fromPage: 'view-recall',
-    }
-
-    await newGeneratedDocumentVersion(req, res)
-
+    await newGeneratedDocumentVersion(req, res, next)
     expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}view-recall`)
   })
 
@@ -55,23 +62,23 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       originalUrl,
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.urlInfo = {
       basePath,
       fromPage: 'view-recall',
     }
 
-    await newGeneratedDocumentVersion(req, res)
+    await newGeneratedDocumentVersion(req, res, next)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `${originalUrl}&versionedCategoryName=RECALL_NOTIFICATION`)
   })
 
-  it('should throw an error if category is invalid', async () => {
+  it('should call next if category is invalid', async () => {
     const recallDetails = { recallId }
     const requestBody = {
       category: 'LICENCE',
@@ -79,21 +86,14 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       originalUrl,
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath,
-      fromPage: 'view-recall',
-    }
-    try {
-      await newGeneratedDocumentVersion(req, res)
-    } catch (err) {
-      expect(err.message).toEqual('Invalid category')
-    }
+    await newGeneratedDocumentVersion(req, res, next)
+    expect(next).toHaveBeenCalled()
   })
 
   it('should reload the page if the API errors', async () => {
@@ -102,19 +102,15 @@ describe('generatedDocumentVersionFormHandler', () => {
       category: 'RECALL_NOTIFICATION',
     }
     generateRecallDocument.mockRejectedValueOnce(new Error('API error'))
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       originalUrl,
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
     res.locals.env = 'PRODUCTION'
-    res.locals.urlInfo = {
-      basePath,
-      fromPage: 'view-recall',
-    }
 
-    await newGeneratedDocumentVersion(req, res)
+    await newGeneratedDocumentVersion(req, res, next)
 
     expect(req.session.errors).toEqual([
       {
@@ -134,18 +130,15 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-      fromPage: 'dossier-recall',
-      fromHash: 'generated-documents',
-    }
+    res.locals.urlInfo.fromPage = 'dossier-recall'
+    res.locals.urlInfo.fromHash = 'generated-documents'
 
-    await newGeneratedDocumentVersion(req, res)
+    await newGeneratedDocumentVersion(req, res, next)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall#generated-documents`)
   })
@@ -159,17 +152,14 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('token')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-      fromPage: 'dossier-recall',
-    }
+    res.locals.urlInfo.fromPage = 'dossier-recall'
 
-    await newGeneratedDocumentVersion(req, res)
+    await newGeneratedDocumentVersion(req, res, next)
     expect(generateRecallDocument).toHaveBeenNthCalledWith(
       1,
       '00000000-0000-0000-0000-000000000000',
@@ -205,17 +195,14 @@ describe('generatedDocumentVersionFormHandler', () => {
 
     generateRecallDocument.mockResolvedValueOnce(recallDetails)
 
-    const req = mockPostRequest({
+    const req = mockReq({
+      method: 'POST',
       params: { recallId },
       body: requestBody,
     })
-    const { res } = mockResponseWithAuthenticatedUser('token')
-    res.locals.urlInfo = {
-      basePath: `/recalls/${recallId}/`,
-      fromPage: 'dossier-recall',
-    }
+    res.locals.urlInfo.fromPage = 'dossier-recall'
 
-    await newGeneratedDocumentVersion(req, res)
+    await newGeneratedDocumentVersion(req, res, next)
     expect(generateRecallDocument).toHaveBeenNthCalledWith(
       3,
       '00000000-0000-0000-0000-000000000000',
@@ -223,5 +210,20 @@ describe('generatedDocumentVersionFormHandler', () => {
       'token'
     )
     expect(res.redirect).toHaveBeenCalledWith(303, `${basePath}dossier-recall`)
+  })
+
+  it('calls error middleware if an error occurs', async () => {
+    const req = mockReq({
+      method: 'POST',
+      params: { recallId },
+      body: {
+        details: 'Details changed',
+        category: 'REVOCATION_ORDER',
+      },
+    })
+    const err = new Error('test')
+    ;(getRecall as jest.Mock).mockRejectedValue(err)
+    await newGeneratedDocumentVersion(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })

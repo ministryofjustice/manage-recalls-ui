@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { downloadDocumentOrEmail } from './downloadDocumentOrEmail'
 import { getDocumentWithContents } from '../../../clients/manageRecallsApiClient'
 
@@ -11,6 +11,7 @@ describe('downloadDocumentOrEmail', () => {
   const downloadFileContents = 'file contents'
   let req: Request
   let res: Response
+  let next: NextFunction
 
   beforeEach(() => {
     req = { params: { recallId, documentId } } as unknown as Request
@@ -20,6 +21,7 @@ describe('downloadDocumentOrEmail', () => {
       header: jest.fn(),
       send: jest.fn(),
     } as unknown as Response
+    next = jest.fn()
   })
 
   afterEach(() => jest.resetAllMocks())
@@ -31,7 +33,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName,
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -44,7 +46,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName,
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -57,7 +59,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName,
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -70,7 +72,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName,
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -83,7 +85,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName,
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="${fileName}"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -94,7 +96,7 @@ describe('downloadDocumentOrEmail', () => {
       category: 'PART_A_RECALL_REPORT',
       content: downloadFileContents,
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="Part A.pdf"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -106,7 +108,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName: 'report.pdf',
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="report.pdf"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -118,7 +120,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName: 'email.eml',
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/octet-stream')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="email.eml"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -130,7 +132,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName: 'note.doc',
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/msword')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.doc"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
@@ -142,7 +144,7 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName: 'Weeknote 42 – Friday 4 March 2022.pdf',
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/pdf')
     expect(res.header).toHaveBeenCalledWith(
       'Content-Disposition',
@@ -157,9 +159,16 @@ describe('downloadDocumentOrEmail', () => {
       content: downloadFileContents,
       fileName: 'note.eml',
     })
-    await downloadDocumentOrEmail(req, res)
+    await downloadDocumentOrEmail(req, res, next)
     expect(res.contentType).toHaveBeenCalledWith('application/octet-stream')
     expect(res.header).toHaveBeenCalledWith('Content-Disposition', `attachment; filename="note.eml"`)
     expect(res.send).toHaveBeenCalledWith(Buffer.from(downloadFileContents, 'base64'))
+  })
+
+  it('calls error middleware if an error occurs', async () => {
+    const err = new Error('test')
+    ;(getDocumentWithContents as jest.Mock).mockRejectedValue(err)
+    await downloadDocumentOrEmail(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })

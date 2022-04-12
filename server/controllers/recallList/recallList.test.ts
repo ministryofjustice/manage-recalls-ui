@@ -1,11 +1,11 @@
-import { Request, Response } from 'express'
-import { mockGetRequest, mockResponseWithAuthenticatedUser } from '../testUtils/mockRequestUtils'
+import { NextFunction, Request, Response } from 'express'
+import { mockReq, mockRes } from '../testUtils/mockRequestUtils'
 import { recallList } from './recallList'
 import { getRecallList } from '../../clients/manageRecallsApiClient'
 
 jest.mock('../../clients/manageRecallsApiClient')
 
-const userToken = { access_token: 'token-1', expires_in: 300 }
+const token = 'token'
 
 describe('recallList', () => {
   afterEach(() => {
@@ -13,7 +13,8 @@ describe('recallList', () => {
   })
 
   let req: Request
-  let resp: Response
+  let res: Response
+  let next: NextFunction
   const listOfRecalls = [
     {
       firstName: 'Bobby',
@@ -116,15 +117,15 @@ describe('recallList', () => {
   ]
 
   beforeEach(() => {
-    req = mockGetRequest({})
-    const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
-    resp = res
+    req = mockReq()
+    res = mockRes({ token })
+    next = jest.fn()
   })
 
   it('should make filtered lists of recalls', async () => {
     ;(getRecallList as jest.Mock).mockResolvedValue(listOfRecalls)
-    await recallList(req, resp)
-    expect(resp.locals.results.toDo).toEqual([
+    await recallList(req, res, next)
+    expect(res.locals.results.toDo).toEqual([
       {
         firstName: 'Belinda',
         fullName: 'Belinda Badger',
@@ -157,7 +158,7 @@ describe('recallList', () => {
         toDoDueDateTime: '2021-08-14T10:22:05.000Z',
       },
     ])
-    expect(resp.locals.results.notInCustody).toEqual([
+    expect(res.locals.results.notInCustody).toEqual([
       {
         dossierTargetDate: '2021-08-13',
         firstName: 'Barry',
@@ -177,7 +178,7 @@ describe('recallList', () => {
         status: 'AWAITING_RETURN_TO_CUSTODY',
       },
     ])
-    expect(resp.locals.results.completed).toEqual([
+    expect(res.locals.results.completed).toEqual([
       {
         completedDateTime: '2021-05-04T23:59:59.000Z',
         dossierEmailSentDate: '2021-05-04',
@@ -215,7 +216,7 @@ describe('recallList', () => {
         status: 'DOSSIER_ISSUED',
       },
     ])
-    expect(resp.locals.results.awaitingPartB).toEqual([
+    expect(res.locals.results.awaitingPartB).toEqual([
       {
         dossierTargetDate: '2021-08-13',
         firstName: 'Barnaby',
@@ -229,7 +230,7 @@ describe('recallList', () => {
       },
     ])
 
-    expect(resp.locals.results.dossierCheck).toEqual([
+    expect(res.locals.results.dossierCheck).toEqual([
       {
         firstName: 'Barry',
         lastName: 'Badger',
@@ -251,14 +252,9 @@ describe('recallList', () => {
     ])
   })
 
-  it('should make a list of failed recall requests available to render', async () => {
+  it('should call next on error', async () => {
     ;(getRecallList as jest.Mock).mockRejectedValue({ statusCode: 404 })
-    await recallList(req, resp)
-    expect(resp.locals.errors).toEqual([
-      {
-        name: 'fetchError',
-        text: 'Recalls could not be retrieved',
-      },
-    ])
+    await recallList(req, res, next)
+    expect(next).toHaveBeenCalled()
   })
 })

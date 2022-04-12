@@ -1,3 +1,4 @@
+import { NextFunction } from 'express'
 import { mockPostRequest, mockResponseWithAuthenticatedUser } from '../testUtils/mockRequestUtils'
 import { createRecall } from './createRecall'
 import { createRecall as createRecallApi, getPrisonerByNomsNumber } from '../../clients/manageRecallsApiClient'
@@ -12,6 +13,7 @@ describe('createRecall', () => {
     lastName: 'Badger',
   }
   const nomsNumber = '123ABC'
+  let next: NextFunction
 
   it("redirects to pre cons if the person doesn't have a middle name", async () => {
     const recallId = '123'
@@ -21,7 +23,7 @@ describe('createRecall', () => {
     const req = mockPostRequest({ body: { nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
-    await createRecall(req, res)
+    await createRecall(req, res, next)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/pre-cons-name`)
   })
@@ -34,23 +36,21 @@ describe('createRecall', () => {
     const req = mockPostRequest({ body: { nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
-    await createRecall(req, res)
+    await createRecall(req, res, next)
 
     expect(res.redirect).toHaveBeenCalledWith(303, `/recalls/${recallId}/licence-name`)
   })
 
-  it("doesn't catch an error thrown if createRecall fails", async () => {
+  it('calls next if createRecall fails', async () => {
     ;(getPrisonerByNomsNumber as jest.Mock).mockResolvedValue({ ...person, middleNames: 'Bryan' })
-    ;(createRecallApi as jest.Mock).mockRejectedValue(new Error('Timeout'))
+    const err = new Error('Timeout')
+    ;(createRecallApi as jest.Mock).mockRejectedValue(err)
+    next = jest.fn()
 
     const req = mockPostRequest({ body: { nomsNumber } })
     const { res } = mockResponseWithAuthenticatedUser(userToken.access_token)
 
-    try {
-      await createRecall(req, res)
-    } catch (err) {
-      expect(res.redirect).not.toHaveBeenCalled()
-      expect(err.message).toEqual('Timeout')
-    }
+    await createRecall(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })

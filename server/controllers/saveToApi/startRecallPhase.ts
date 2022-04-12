@@ -14,9 +14,9 @@ export const startRecallPhase =
     saveTiming?: boolean
   }) =>
   async (req: Request, res: Response): Promise<void> => {
-    const { recallId } = req.params
-    const { user, urlInfo } = res.locals
     try {
+      const { recallId } = req.params
+      const { user, urlInfo } = res.locals
       await assignUserToRecall(recallId, user.uuid, user.token)
       if (saveTiming && phase) {
         await addPhaseStartTime({ recallId, valuesToSave: { phase }, user })

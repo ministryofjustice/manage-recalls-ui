@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { FormWithDocumentUploadValidatorFn, SaveToApiFn } from '../@types'
 import { errorMsgDocumentUpload, makeErrorObject, saveErrorWithDetails } from './utils/errorMessages'
 import { processUpload } from './documents/upload/helpers/processUpload'
@@ -45,38 +45,42 @@ export const combinedMultipleFilesAndFormSave =
     validator: FormWithDocumentUploadValidatorFn
     saveToApiFn?: SaveToApiFn
   }) =>
-  async (req: Request, res: Response): Promise<void> => {
-    const { recallId } = req.params
-    const { user, urlInfo } = res.locals
-    const { request, uploadFailed } = await processUpload(uploadFormFieldNames, req, res)
-    const { files } = request
-    if (files) {
-      Object.values(files).forEach(file => sendFileSizeMetric(file))
-    }
-    const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
-      requestBody: request.body,
-      filesUploaded: files,
-      uploadFailed,
-      urlInfo,
-    })
-    let errorList = errors
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      if (!errorList) {
-        await saveToApiFn({ recallId, valuesToSave, user })
+      const { recallId } = req.params
+      const { user, urlInfo } = res.locals
+      const { request, uploadFailed } = await processUpload(uploadFormFieldNames, req, res)
+      const { files } = request
+      if (files) {
+        Object.values(files).forEach(file => sendFileSizeMetric(file))
       }
+      const { errors, valuesToSave, unsavedValues, redirectToPage, confirmationMessage } = validator({
+        requestBody: request.body,
+        filesUploaded: files,
+        uploadFailed,
+        urlInfo,
+      })
+      let errorList = errors
+      try {
+        if (!errorList) {
+          await saveToApiFn({ recallId, valuesToSave, user })
+        }
+      } catch (err) {
+        const saveErrors = parseVirusErrors(err.data) || [
+          saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
+        ]
+        errorList = [...(errorList || []), ...saveErrors]
+      }
+      if (errorList) {
+        req.session.errors = errorList
+        req.session.unsavedValues = unsavedValues
+        return res.redirect(303, req.originalUrl)
+      }
+      if (confirmationMessage) {
+        req.session.confirmationMessage = confirmationMessage
+      }
+      return res.redirect(303, redirectToPage)
     } catch (err) {
-      const saveErrors = parseVirusErrors(err.data) || [
-        saveErrorWithDetails({ err, isProduction: res.locals.env === 'PRODUCTION' }),
-      ]
-      errorList = [...(errorList || []), ...saveErrors]
+      next(err)
     }
-    if (errorList) {
-      req.session.errors = errorList
-      req.session.unsavedValues = unsavedValues
-      return res.redirect(303, req.originalUrl)
-    }
-    if (confirmationMessage) {
-      req.session.confirmationMessage = confirmationMessage
-    }
-    return res.redirect(303, redirectToPage)
   }

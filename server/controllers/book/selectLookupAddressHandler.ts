@@ -9,10 +9,10 @@ import { saveErrorWithDetails } from '../utils/errorMessages'
 export const selectLookupAddressHandler = async (req: Request, res: Response): Promise<void> => {
   const { recallId } = req.params
   const { addressUprn, postcode: postcodeQuery } = req.body
-  const { user, urlInfo } = res.locals
   const reloadOnError = () => res.redirect(303, `${req.originalUrl}?postcode=${postcodeQuery}`)
-
   try {
+    const { user, urlInfo } = res.locals
+
     const { errors, valuesToSave } = validateSelectedAddress(addressUprn)
     if (errors) {
       req.session.errors = errors

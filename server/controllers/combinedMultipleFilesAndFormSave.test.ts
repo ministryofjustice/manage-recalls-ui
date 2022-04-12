@@ -1,9 +1,10 @@
 // @ts-nocheck
 import { combinedMultipleFilesAndFormSave } from './combinedMultipleFilesAndFormSave'
-import { mockReq } from './testUtils/mockRequestUtils'
+import { mockReq, mockRes } from './testUtils/mockRequestUtils'
 import { uploadStorageFields } from './documents/upload/helpers/uploadStorage'
 import { validatePartB } from './partB/validators/validatePartB'
 import { sendFileSizeMetric } from './documents/upload/helpers/sendFileSizeMetric'
+import * as processUploadExports from './documents/upload/helpers/processUpload'
 
 jest.mock('./documents/upload/helpers/uploadStorage')
 jest.mock('./documents/upload/helpers/sendFileSizeMetric')
@@ -243,5 +244,18 @@ describe('combinedMultipleFilesAndFormSave', () => {
       validator: validatePartB,
       saveToApiFn,
     })(req, res)
+  })
+
+  it('calls error middleware if an error is thrown', async () => {
+    const err = new Error('test')
+    jest.spyOn(processUploadExports, 'processUpload').mockRejectedValue(err)
+    const res = mockRes()
+    const next = jest.fn()
+    await combinedMultipleFilesAndFormSave({
+      uploadFormFieldNames: ['partBFileName', 'oasysFileName', 'emailFileName'],
+      validator: validatePartB,
+      saveToApiFn: jest.fn(),
+    })(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })

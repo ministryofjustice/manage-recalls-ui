@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { combinedDocumentAndFormSave } from './combinedDocumentAndFormSave'
-import { mockReq } from './testUtils/mockRequestUtils'
+import { mockReq, mockRes } from './testUtils/mockRequestUtils'
 import { uploadStorageField } from './documents/upload/helpers/uploadStorage'
 import { validateRecallRequestReceived } from './book/validators/validateRecallRequestReceived'
 import { validateAddNote } from './note/validators/validateAddNote'
@@ -256,5 +256,20 @@ describe('combinedDocumentAndFormSave', () => {
       validator: validateRecallRequestReceived,
       saveToApiFn,
     })(req, res)
+  })
+
+  it('calls error middleware if an error is thrown', async () => {
+    const err = new Error('test')
+    ;(uploadStorageField as jest.Mock).mockImplementation(() => {
+      throw err
+    })
+    const res = mockRes()
+    const next = jest.fn()
+    await combinedDocumentAndFormSave({
+      uploadFormFieldName: 'recallRequestEmailFileName',
+      validator: validateRecallRequestReceived,
+      saveToApiFn: jest.fn(),
+    })(req, res, next)
+    expect(next).toHaveBeenCalledWith(err)
   })
 })
