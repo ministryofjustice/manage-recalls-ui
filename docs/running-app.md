@@ -1,6 +1,6 @@
 # Running the app
 
-The easiest way to run ui and api is to use
+The easiest way to run ui and api, against mock services, is to use
 
 `./start-local-services.sh`
 
@@ -12,9 +12,9 @@ This user has the `MANAGE_RECALLS` role that allows access to the service.
 
 You can also check that the prometheus metrics are being served correctly on `http://localhost:3001/metrics`
 
-### Rerunning the ui
+## Re-starting the ui
 
-In order to restart the ui during development changes, kill the ui by running
+In order to restart the ui after code changes, kill the ui by running
 
 `npm run kill`
 
@@ -22,28 +22,9 @@ And rerun ui with
 
 ` npm run start:e2e`
 
-### Old way to run the app
+## Debugging the Node.js app in Chrome Developer Tools
 
-The old way was to run the app using docker compose to create the service and all dependencies.
-This method is no longer the best due to limited functionality of fake api. Will keep it here till future changes.
-It starts the latest published docker container for hmpps-auth and redis, a fake manage-recalls-api (wiremock) and a local build of the manage-recalls-ui.
-
-`docker compose up`
-
-OR use the following script to run in the background and ensure the fake-mange-recalls-api is up to date and all services start correctly:
-
-`scripts/start-local.sh`
-
-#### Running the app for development
-
-To start the main services and the manage recalls ui app in dev mode (you can attach to the Node.js debugger):
-
-```
-scripts/start-dev-local.sh
-npm run start:dev
-```
-
-#### Debugging in Chrome Developer Tools
+If you ran the app as above using `./start-local-services.sh`, then the Node.js app will automatically by running in debug mode.
 
 1. open the app in Chrome browser
 2. open devtools (CMD + Option + I)
@@ -54,7 +35,7 @@ npm run start:dev
 7. in the browser, navigate to the correct page or perform an action to trigger the breakpoint (eg submit a form)
 8. use the debugger tools to play, step over or step into
 
-#### Debugging in IntelliJ IDEA
+## Debugging in IntelliJ IDEA
 
 IDEA supports debugging of the typescript source via attaching to a running node process
 as long as e.g. the `--inspect` flag has been passed to node.
@@ -71,9 +52,3 @@ When the debugger has attached the node process will log:
 ```
 [Node] Debugger attached.
 ```
-
-#### Updating (fake-manage-recalls-api) wiremock responses
-
-If you need to update the wiremock (fake-manage-recalls-api) mappings you can use the `scripts/restart-fake-manage-recalls-api.sh`
-to stop and start the wiremock server. Or you can use the `manual-stub.test.ts` test to prime the running wiremock server
-with any additional expectation.
