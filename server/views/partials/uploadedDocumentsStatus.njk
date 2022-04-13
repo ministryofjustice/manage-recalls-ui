@@ -31,7 +31,7 @@
       </dd>
       {% if recall.enableDeleteDocuments == true %}
       <dd class="govuk-summary-list__actions">
-        <button type="submit" class="reset-button link-button" name="delete" value="{{file.documentId}}" data-qa='delete-{{ file.documentId }}'>Delete<span class='govuk-visually-hidden'> {{ file.fileName }}</span></button>
+        <button type="submit" class="reset-button link-button" name="delete" value="{{file.documentId}}" data-qa='delete-{{ file.documentId }}'>Delete<span class='govuk-visually-hidden'> {{ file.standardFileName if file.standardFileName else file.fileName }}</span></button>
       </dd>
       {% endif %}
     </div>

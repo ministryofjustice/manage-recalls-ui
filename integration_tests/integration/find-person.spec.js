@@ -38,10 +38,9 @@ context('Find a person', () => {
     cy.clickButton('Search')
     cy.getText('search-results-count').should('equal', '1 person found')
     cy.get('[data-qa=search-results]').find('tr').should('have.length', 1)
-    const firstResult = cy.get('[data-qa=search-results]').find('tr').first()
-    firstResult.get('[data-qa=nomsNumber]').should('contain.text', nomsNumber)
-    firstResult.get('[data-qa=name]').should('contain.text', personName)
-    firstResult.get('[data-qa=dateOfBirth]').should('contain.text', '28 May 1999')
+    cy.getRowValuesFromTable({ rowQaAttr: `result-${nomsNumber}` }).then(rowValues =>
+      expect(rowValues).to.include.members([nomsNumber, getPrisonerResponse.croNumber, personName, '28 May 1999'])
+    )
     cy.clickButton(`Book a recall for ${personName}`)
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
     cy.getLinkHref('Back').should('contain', '/find-person')

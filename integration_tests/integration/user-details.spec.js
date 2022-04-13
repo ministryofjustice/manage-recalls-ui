@@ -1,6 +1,3 @@
-const userDetailsPage = require('../pages/userDetails')
-const recallsListPage = require('../pages/recallsList')
-
 context('User details', () => {
   beforeEach(() => {
     cy.login()
@@ -11,15 +8,15 @@ context('User details', () => {
       status: 404,
     })
     cy.task('expectAddUserDetails')
-    const userDetails = userDetailsPage.verifyOnPage()
-    userDetails.enterTextInInput({ name: 'firstName', text: 'Barry' })
-    userDetails.enterTextInInput({ name: 'lastName', text: 'Badger' })
-    userDetails.enterTextInInput({ name: 'email', text: 'barry@badger.com' })
-    userDetails.enterTextInInput({ name: 'phoneNumber', text: '07393783789' })
-    userDetails.checkRadio({ fieldName: 'caseworkerBand', value: 'FOUR_PLUS' })
-    userDetails.uploadFile({ fieldName: 'signature', fileName: 'signature.jpg', mimeType: 'image/jpeg' })
+    cy.visit('/user-details')
+    cy.fillInput('First name', 'Barry')
+    cy.fillInput('Last name', 'Badger')
+    cy.fillInput('Email address', 'barry@badger.com', { clearExistingText: true })
+    cy.fillInput('Phone number', '07393783789', { clearExistingText: true })
+    cy.selectRadio('Caseworker band', 'Band 4+')
+    cy.uploadImage({ field: 'signature', file: 'signature.jpg' })
     cy.clickButton('Save')
-    userDetails.assertApiRequestBody({
+    cy.assertSaveToRecallsApi({
       url: '/users',
       method: 'POST',
       bodyValues: {
@@ -45,13 +42,13 @@ context('User details', () => {
         userId: '123',
       },
     })
-    const userDetails = userDetailsPage.verifyOnPage()
-    userDetails.assertInputValue({ fieldName: 'firstName', value: 'Barry' })
-    userDetails.assertInputValue({ fieldName: 'lastName', value: 'Badger' })
-    userDetails.assertInputValue({ fieldName: 'email', value: 'barry@badger.com' })
-    userDetails.assertInputValue({ fieldName: 'phoneNumber', value: '0739378378' })
-    userDetails.assertRadioChecked({ fieldName: 'caseworkerBand', value: 'FOUR_PLUS' })
-    userDetails.assertElementPresent({ qaAttr: 'signature-image' })
+    cy.visit('/user-details')
+    cy.getTextInputValue('First name').should('contain', 'Barry')
+    cy.getTextInputValue('Last name').should('contain', 'Badger')
+    cy.getTextInputValue('Email address').should('contain', 'barry@badger.com')
+    cy.getTextInputValue('Phone number').should('contain', '0739378378')
+    cy.getRadioOptionByLabel('Caseworker band', 'Band 4+').should('be.checked')
+    cy.getElement({ qaAttr: 'signature-image' }).should('exist')
   })
 
   it('user clicks on their name in the header to go to user details page', () => {
@@ -70,8 +67,8 @@ context('User details', () => {
         userId: '123',
       },
     })
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.clickLink({ qaAttr: 'header-user-name' })
-    userDetailsPage.verifyOnPage()
+    cy.visit('/')
+    cy.clickLink({ qaAttr: 'header-user-name' })
+    cy.pageHeading().should('contain', 'User details')
   })
 })

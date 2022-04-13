@@ -1,8 +1,5 @@
 import { getEmptyRecallResponse, getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import uploadDocumentsPage from '../pages/uploadDocuments'
-import checkAnswersPage from '../pages/recallCheckAnswers'
-import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
 
 // NOTE - a test for adding a missing document record is already in book-in-custody.spec.js
 context('Missing uploaded documents', () => {
@@ -101,13 +98,11 @@ context('Missing uploaded documents', () => {
     })
     cy.task('expectDeleteRecallDocument')
     cy.task('expectSetDocumentCategory')
-    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId })
-    checkAnswers.clickLink({ label: 'Add documents' })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.assertListValues({
-      qaAttrList: 'missingDocsList',
-      valuesToCompare: ['Licence', 'OASys report', 'Previous convictions sheet'],
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'check-answers' })
+    cy.clickLink('Add documents')
+    cy.getListValues('missingDocsList').then(rowValues =>
+      expect(rowValues).to.include.members(['Licence', 'OASys report', 'Previous convictions sheet'])
+    )
   })
 
   it('shows a blank add record form, not using details from previous records', () => {
@@ -140,7 +135,7 @@ context('Missing uploaded documents', () => {
 
   it("an error is shown if the missing documents email and detail aren't submitted", () => {
     cy.task('expectGetRecall', { recallId, expectedResult: { ...getEmptyRecallResponse, recallId } })
-    const recallMissingDocuments = recallMissingDocumentsPage.verifyOnPage({ recallId })
+    cy.visitRecallPage({ recallId, pageSuffix: 'missing-documents' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'missingDocumentsEmailFileName',

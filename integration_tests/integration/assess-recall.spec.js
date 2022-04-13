@@ -2,9 +2,6 @@ import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockRespo
 import { stubRefData } from '../support/mock-api'
 import { getIsoDateForMinutesAgo } from '../support/utils'
 
-const assessRecallPrisonPage = require('../pages/assessRecallPrison')
-const assessRecallEmailPage = require('../pages/assessRecallEmail')
-
 context('Assess a recall', () => {
   const recall = getRecallResponse
   const nomsNumber = 'A1234AA'
@@ -253,7 +250,7 @@ context('Assess a recall', () => {
 
   it('errors - current prison', () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallPrison = assessRecallPrisonPage.verifyOnPage({ recallId, personName: firstLastName })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-prison' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'currentPrison',
@@ -262,7 +259,7 @@ context('Assess a recall', () => {
     // invalid input for current prison
     cy.get('[id="currentPrison"]').clear().type('blah blah blah')
     cy.clickButton('Continue')
-    assessRecallPrison.assertSelectValue({ fieldName: 'currentPrisonInput', value: 'blah blah blah' })
+    cy.getFormFieldByLabel(`Which prison is ${firstLastName} in?`).should('have.value', 'blah blah blah')
     cy.assertErrorMessage({
       fieldName: 'currentPrison',
       summaryError: 'Select a prison from the list',
@@ -287,8 +284,9 @@ context('Assess a recall', () => {
 
   it("error - if they don't upload the recall notification email or enter a sent date", () => {
     cy.task('expectGetRecall', { expectedResult: emptyRecall })
-    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ recallId })
-    assessRecallEmail.confirmEmailSent()
+    cy.task('expectUploadRecallDocument')
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-email' })
+    cy.selectConfirmationCheckbox('I have sent the email to all recipients')
     cy.clickButton('Complete assessment')
     cy.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
@@ -300,34 +298,19 @@ context('Assess a recall', () => {
       summaryError: 'Enter the date and time you sent the email',
     })
     // upload an invalid format for recall notification email
-    assessRecallEmail.enterDateTime({
-      prefix: 'recallNotificationEmailSentDateTime',
-      values: {
-        Day: '15',
-        Month: '08',
-        Year: '2021',
-        Hour: '14',
-        Minute: '04',
-      },
-    })
-    assessRecallEmail.uploadFile({
-      fieldName: 'recallNotificationEmailFileName',
-      fileName: 'part_a_recall_report.pdf',
-    })
+    cy.enterDateTimeFromRecall('recallNotificationEmailSentDateTime')
+    cy.uploadPDF({ field: 'recallNotificationEmailFileName', file: 'test.pdf' })
     cy.clickButton('Complete assessment')
     cy.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
-      summaryError: "The selected file 'part_a_recall_report.pdf' must be a MSG or EML",
+      summaryError: "The selected file 'test.pdf' must be a MSG or EML",
     })
     // upload has a virus
     cy.task('expectUploadRecallDocument', {
       statusCode: 400,
       responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
-    assessRecallEmail.uploadFile({
-      fieldName: 'recallNotificationEmailFileName',
-      fileName: 'email.msg',
-    })
+    cy.uploadEmail({ field: 'recallNotificationEmailFileName' })
     cy.clickButton('Complete assessment')
     cy.assertErrorMessage({
       fieldName: 'recallNotificationEmailFileName',
@@ -351,10 +334,7 @@ context('Assess a recall', () => {
         ],
       },
     })
-    const assessRecallEmail = assessRecallEmailPage.verifyOnPage({ recallId })
-    assessRecallEmail.assertElementHasText({
-      qaAttr: 'uploadedDocument-RECALL_NOTIFICATION_EMAIL',
-      textToFind: 'email.msg',
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'assess-email' })
+    cy.getText('uploadedDocument-RECALL_NOTIFICATION_EMAIL').should('equal', 'email.msg')
   })
 })
