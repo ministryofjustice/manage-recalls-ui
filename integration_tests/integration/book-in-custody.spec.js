@@ -1,16 +1,8 @@
 import { getEmptyRecallResponse, getPrisonerResponse, getRecallResponse } from '../mockApis/mockResponses'
-import recallLastReleasePage from '../pages/recallSentenceDetails'
-import uploadDocumentsPage from '../pages/uploadDocuments'
-import checkAnswersPage from '../pages/recallCheckAnswers'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import recallLicenceNamePage from '../pages/recallLicenceName'
 import { booleanToYesNo } from '../support/utils'
 import { stubRefData } from '../support/mock-api'
 
-const recallPreConsNamePage = require('../pages/recallPreConsName')
-const recallRequestReceivedPage = require('../pages/recallRequestReceived')
-const recallPrisonPolicePage = require('../pages/recallPrisonPolice')
-const recallProbationOfficerPage = require('../pages/recallProbationOfficer')
 const { recall } = require('../fixtures')
 
 context('Book an "in-custody" recall', () => {
@@ -139,61 +131,52 @@ context('Book an "in-custody" recall', () => {
       },
     })
     stubRefData()
-    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId })
-    checkAnswers.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
-    checkAnswers.assertElementHasText({ qaAttr: 'dateOfBirth', textToFind: '28 May 1999' })
-    checkAnswers.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: nomsNumber })
-    checkAnswers.assertElementHasText({ qaAttr: 'croNumber', textToFind: '1234/56A' })
-    checkAnswers.assertElementHasText({ qaAttr: 'previousConvictionMainName', textToFind: 'Walter Holt' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'check-answers' })
+    cy.getText('name').should('equal', 'Bobby Badger')
+    cy.getText('dateOfBirth').should('equal', '28 May 1999')
+    cy.getText('nomsNumber').should('equal', nomsNumber)
+    cy.getText('croNumber').should('equal', '1234/56A')
+    cy.getText('previousConvictionMainName').should('equal', 'Walter Holt')
 
-    checkAnswers.assertElementHasText({ qaAttr: 'inCustodyAtBooking', textToFind: 'In custody' })
+    cy.getText('inCustodyAtBooking').should('equal', 'In custody')
 
     // Recall details
     cy.recallInfo('Recall type').should('equal', 'Fixed term')
     cy.recallInfo('Recall length').should('equal', '14 days')
-    checkAnswers.assertElementHasText({ qaAttr: 'recallEmailReceivedDateTime', textToFind: '5 December 2020 at 15:33' })
+    cy.getText('recallEmailReceivedDateTime').should('equal', '5 December 2020 at 15:33')
 
     // Sentence, offence and release details
-    checkAnswers.assertElementHasText({ qaAttr: 'sentenceType', textToFind: 'Determinate' })
-    checkAnswers.assertElementHasText({ qaAttr: 'sentenceDate', textToFind: '3 August 2019' })
-    checkAnswers.assertElementHasText({ qaAttr: 'licenceExpiryDate', textToFind: '3 August 2021' })
-    checkAnswers.assertElementHasText({ qaAttr: 'sentenceExpiryDate', textToFind: '3 February 2021' })
-    checkAnswers.assertElementHasText({ qaAttr: 'sentenceLength', textToFind: '2 years 3 months' })
-    checkAnswers.assertElementHasText({ qaAttr: 'sentencingCourt', textToFind: 'Aberdare County Court' })
-    checkAnswers.assertElementHasText({ qaAttr: 'indexOffence', textToFind: 'Burglary' })
-    checkAnswers.assertElementHasText({ qaAttr: 'lastReleasePrison', textToFind: 'Kennet (HMP)' })
-    checkAnswers.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
-    checkAnswers.assertElementHasText({ qaAttr: 'lastReleaseDate', textToFind: '3 August 2020' })
-    checkAnswers.assertElementHasText({ qaAttr: 'conditionalReleaseDate', textToFind: '3 December 2021' })
+    cy.getText('sentenceType').should('equal', 'Determinate')
+    cy.getText('sentenceDate').should('equal', '3 August 2019')
+    cy.getText('licenceExpiryDate').should('equal', '3 August 2021')
+    cy.getText('sentenceExpiryDate').should('equal', '3 February 2021')
+    cy.getText('sentenceLength').should('equal', '2 years 3 months')
+    cy.getText('sentencingCourt').should('equal', 'Aberdare County Court')
+    cy.getText('indexOffence').should('equal', 'Burglary')
+    cy.getText('lastReleasePrison').should('equal', 'Kennet (HMP)')
+    cy.getText('bookingNumber').should('equal', 'A123456')
+    cy.getText('lastReleaseDate').should('equal', '3 August 2020')
+    cy.getText('conditionalReleaseDate').should('equal', '3 December 2021')
     // local police force
-    checkAnswers.assertElementHasText({ qaAttr: 'localPoliceForce', textToFind: 'Devon & Cornwall Police' })
+    cy.getText('localPoliceForce').should('equal', 'Devon & Cornwall Police')
     // issues or needs
-    checkAnswers.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Various...' })
-    checkAnswers.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Intention to smuggle drugs' })
-    checkAnswers.assertElementHasText({ qaAttr: 'mappaLevel', textToFind: 'Level 1' })
+    cy.getText('vulnerabilityDiversity').should('equal', 'Various...')
+    cy.getText('contraband').should('equal', 'Intention to smuggle drugs')
+    cy.getText('mappaLevel').should('equal', 'Level 1')
     // probation details
-    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerName', textToFind: 'Dave Angel' })
-    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerEmail', textToFind: 'probation.office@justice.com' })
-    checkAnswers.assertElementHasText({ qaAttr: 'probationOfficerPhoneNumber', textToFind: '07473739388' })
-    checkAnswers.assertElementHasText({ qaAttr: 'localDeliveryUnit', textToFind: 'Central Audit Team' })
-    checkAnswers.assertElementHasText({ qaAttr: 'authorisingAssistantChiefOfficer', textToFind: 'Bob Monkfish' })
+    cy.getText('probationOfficerName').should('equal', 'Dave Angel')
+    cy.getText('probationOfficerEmail').should('equal', 'probation.office@justice.com')
+    cy.getText('probationOfficerPhoneNumber').should('equal', '07473739388')
+    cy.getText('localDeliveryUnit').should('equal', 'Central Audit Team')
+    cy.getText('authorisingAssistantChiefOfficer').should('equal', 'Bob Monkfish')
 
     // uploaded documents
-    checkAnswers.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      textToFind: 'Part A.pdf',
-    })
-    checkAnswers.assertElementHasText({
-      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
-      textToFind: 'Pre Cons.pdf',
-    })
-    checkAnswers.assertElementHasText({
-      qaAttr: 'uploadedDocument-PRE_SENTENCING_REPORT',
-      textToFind: 'PSR.pdf',
-    })
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT').should('equal', 'Part A.pdf')
+    cy.getText('uploadedDocument-PREVIOUS_CONVICTIONS_SHEET').should('equal', 'Pre Cons.pdf')
+    cy.getText('uploadedDocument-PRE_SENTENCING_REPORT').should('equal', 'PSR.pdf')
 
     // missing documents
-    checkAnswers.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
+    cy.getText('required-LICENCE').should('equal', 'Missing: needed to create dossier')
   })
 
   it('error - the custody status question is not answered', () => {
@@ -227,7 +210,7 @@ context('Book an "in-custody" recall', () => {
   })
 
   it('errors - address details are not entered or are invalid', () => {
-    cy.visit(`/recalls/${recallId}/address-manual`)
+    cy.visitRecallPage({ recallId, pageSuffix: 'address-manual' })
     cy.fillInput('Postcode', '1234')
     cy.clickButton('Continue')
     cy.assertErrorMessage({
@@ -251,7 +234,7 @@ context('Book an "in-custody" recall', () => {
         ...getEmptyRecallResponse,
       },
     })
-    const recallLicenceName = recallLicenceNamePage.verifyOnPage({ recallId, personName })
+    cy.visitRecallPage({ recallId, pageSuffix: 'licence-name' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'licenceNameCategory',
@@ -263,11 +246,8 @@ context('Book an "in-custody" recall', () => {
     cy.task('expectGetRecall', {
       expectedResult: { recallId, ...getRecallResponse, middleNames: '' },
     })
-    const recallPreConsName = recallPreConsNamePage.verifyOnPage({ recallId, personName })
-    recallPreConsName.showPreConsOptions([
-      { label: 'Bobby Badger', value: 'FIRST_LAST' },
-      { label: 'Other name', value: 'OTHER' },
-    ])
+    cy.visitRecallPage({ recallId, pageSuffix: 'pre-cons-name' })
+    cy.getElement('Bobby John Badger').should('not.exist')
   })
 
   it('pre-cons - errors, detail', () => {
@@ -316,20 +296,13 @@ context('Book an "in-custody" recall', () => {
 
   it('errors - email request received', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
-    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ recallId })
-    recallRequestReceived.enterDateTime({
-      prefix: 'recallEmailReceivedDateTime',
-      values: {
-        Year: '2021',
-        Hour: '05',
-        Minute: '3',
-      },
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'request-received' })
+    cy.clickButton('Set date to today')
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldId: 'recallEmailReceivedDateTime-recallEmailReceivedDateTimeDay',
       fieldName: 'recallEmailReceivedDateTime',
-      summaryError: 'The date and time you received the recall email must include a day and month',
+      summaryError: 'Enter the time you received the recall email',
     })
     // recall email is not uploaded'
     cy.assertErrorMessage({
@@ -352,20 +325,16 @@ context('Book an "in-custody" recall', () => {
         ],
       },
     })
-    const recallRequestReceived = recallRequestReceivedPage.verifyOnPage({ recallId })
-    recallRequestReceived.assertElementHasText({
+    cy.visitRecallPage({ recallId, pageSuffix: 'request-received' })
+    cy.getText('uploadedDocument-RECALL_REQUEST_EMAIL').should('equal', 'email.msg')
+    cy.getLinkHref({
       qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL',
-      textToFind: 'email.msg',
-    })
-    recallRequestReceived.assertLinkHref({
-      qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL',
-      href: '/recalls/123/documents/456',
-    })
+    }).should('contain', '/recalls/123/documents/456')
   })
 
   it('errors - sentence, offence and release details', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
-    const recallLastRelease = recallLastReleasePage.verifyOnPage({ recallId })
+    cy.visitRecallPage({ recallId, pageSuffix: 'last-release' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldId: 'lastReleaseDate-lastReleaseDateDay',
@@ -405,7 +374,7 @@ context('Book an "in-custody" recall', () => {
       summaryError: 'Enter a booking number',
     })
     // invalid booking number is entered
-    recallLastRelease.setBookingNumber('12343')
+    cy.fillInput('Booking number', '12343')
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'bookingNumber',
@@ -416,12 +385,12 @@ context('Book an "in-custody" recall', () => {
     cy.get('[id="sentencingCourt"]').clear().type('blah blah blah')
     cy.get('[id="lastReleasePrison"]').clear().type('piffle')
     cy.clickButton('Continue')
-    recallLastRelease.assertSelectValue({ fieldName: 'sentencingCourtInput', value: 'blah blah blah' })
+    cy.getFormFieldByLabel('Sentencing court').should('have.value', 'blah blah blah')
     cy.assertErrorMessage({
       fieldName: 'sentencingCourt',
       summaryError: 'Select a sentencing court from the list',
     })
-    recallLastRelease.assertSelectValue({ fieldName: 'lastReleasePrisonInput', value: 'piffle' })
+    cy.getFormFieldByLabel('Releasing prison').should('have.value', 'piffle')
     cy.assertErrorMessage({
       fieldName: 'lastReleasePrison',
       summaryError: 'Select a releasing prison from the list',
@@ -430,16 +399,16 @@ context('Book an "in-custody" recall', () => {
 
   it('errors - Local Police Force', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
-    const recallPrisonPolice = recallPrisonPolicePage.verifyOnPage({ recallId })
+    cy.visitRecallPage({ recallId, pageSuffix: 'prison-police' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force',
     })
     // invalid Local Police Force is entered
-    recallPrisonPolice.enterLocalPoliceForceId('foobar')
+    cy.fillInput('What is the name of the local police force?', 'foo')
     cy.clickButton('Continue')
-    recallPrisonPolice.assertSelectValue({ fieldName: 'localPoliceForceIdInput', value: 'foobar' })
+    cy.getFormFieldByLabel('What is the name of the local police force?').should('have.value', 'foo')
     cy.assertErrorMessage({
       fieldName: 'localPoliceForceId',
       summaryError: 'Select a local police force from the list',
@@ -524,7 +493,7 @@ context('Book an "in-custody" recall', () => {
 
   it('errors - probation details', () => {
     cy.task('expectGetRecall', { expectedResult: newRecall })
-    const recallProbationOfficer = recallProbationOfficerPage.verifyOnPage({ recallId, personName })
+    cy.visitRecallPage({ recallId, pageSuffix: 'probation-officer' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'probationOfficerName',
@@ -547,8 +516,8 @@ context('Book an "in-custody" recall', () => {
       summaryError: 'Enter the Assistant Chief Officer that signed-off the recall',
     })
     // invalid probation officer email and phone are entered
-    recallProbationOfficer.setProbationOfficerEmail('invalid@email')
-    recallProbationOfficer.setProbationOfficerPhoneNumber('12343')
+    cy.fillInput('Email', 'invalid@email')
+    cy.fillInput('Phone number', '12343')
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'probationOfficerEmail',
@@ -559,9 +528,9 @@ context('Book an "in-custody" recall', () => {
       summaryError: 'Enter a phone number in the correct format, like 01277 960901',
     })
     // invalid input for local delivery unit
-    cy.get('[id="localDeliveryUnit"]').clear().type('blah blah blah')
+    cy.fillInput('Local Delivery Unit (LDU)', 'blah blah blah')
     cy.clickButton('Continue')
-    recallProbationOfficer.assertSelectValue({ fieldName: 'localDeliveryUnitInput', value: 'blah blah blah' })
+    cy.getFormFieldByLabel('Local Delivery Unit (LDU)').should('have.value', 'blah blah blah')
     cy.assertErrorMessage({
       fieldName: 'localDeliveryUnit',
       summaryError: 'Select a Local Delivery Unit from the list',
@@ -577,11 +546,87 @@ context('Book an "in-custody" recall', () => {
         returnedToCustodyDateTime: undefined,
       },
     })
-    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId })
-    checkAnswers.checkChangeLinks()
-    checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.clickElement({ qaAttr: 'backLinkUploadDocuments' })
-    checkAnswersPage.verifyOnPage()
+    cy.visitRecallPage({ recallId, pageSuffix: 'check-answers' })
+    cy.getText('name').should('equal', 'Bobby Badger')
+    const checkLink = (qaAttr, href) => cy.get(`[data-qa=${qaAttr}]`).should('have.attr', 'href').and('include', href)
+    cy.getLinkHref('Change licence name').should(
+      'contain',
+      '/licence-name?fromPage=check-answers&fromHash=personalDetails'
+    )
+    cy.getLinkHref('Change custody status at booking').should(
+      'contain',
+      '/custody-status?fromPage=check-answers&fromHash=custody'
+    )
+    checkLink('previousConvictionMainNameChange', '/pre-cons-name?fromPage=check-answers&fromHash=personalDetails')
+    cy.getLinkHref('Change recall type').should('contain', '/recall-type?fromPage=check-answers&fromHash=recallDetails')
+    checkLink('recallEmailReceivedDateTimeChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
+    checkLink('recallRequestEmailFileNameChange', '/request-received?fromPage=check-answers&fromHash=recallDetails')
+    checkLink('sentenceDateChange', '/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceDateGroup')
+    checkLink(
+      'licenceExpiryDateChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#licenceExpiryDateGroup'
+    )
+    checkLink(
+      'sentenceExpiryDateChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceExpiryDateGroup'
+    )
+    checkLink(
+      'sentenceLengthChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentenceLengthGroup'
+    )
+    checkLink(
+      'sentencingCourtChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#sentencingCourtGroup'
+    )
+    checkLink('indexOffenceChange', '/last-release?fromPage=check-answers&fromHash=sentenceDetails#indexOffenceGroup')
+    checkLink(
+      'lastReleasePrisonChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#lastReleasePrisonGroup'
+    )
+    checkLink('bookingNumberChange', '/last-release?fromPage=check-answers&fromHash=sentenceDetails#bookingNumberGroup')
+    checkLink(
+      'lastReleaseDateChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#lastReleaseDateGroup'
+    )
+    checkLink(
+      'conditionalReleaseDateChange',
+      '/last-release?fromPage=check-answers&fromHash=sentenceDetails#conditionalReleaseDateGroup'
+    )
+    checkLink('localPoliceForceChange', '/prison-police?fromPage=check-answers&fromHash=police')
+    checkLink(
+      'vulnerabilityDiversityChange',
+      '/issues-needs?fromPage=check-answers&fromHash=issues#vulnerabilityDiversityGroup'
+    )
+    checkLink('contrabandChange', '/issues-needs?fromPage=check-answers&fromHash=issues#contrabandGroup')
+    checkLink('arrestIssuesChange', '/issues-needs?fromPage=check-answers&fromHash=issues#arrestIssuesGroup')
+    checkLink('mappaLevelChange', '/issues-needs?fromPage=check-answers&fromHash=issues#mappaLevelGroup')
+    checkLink(
+      'probationOfficerChange',
+      '/probation-officer?fromPage=check-answers&fromHash=probation#probationOfficerGroup'
+    )
+    checkLink(
+      'localDeliveryUnitChange',
+      '/probation-officer?fromPage=check-answers&fromHash=probation#localDeliveryUnitGroup'
+    )
+    checkLink(
+      'authorisingAssistantChiefOfficerChange',
+      '/probation-officer?fromPage=check-answers&fromHash=probation#authorisingAssistantChiefOfficerGroup'
+    )
+    checkLink(
+      'uploadedDocument-PART_A_RECALL_REPORT-Change',
+      '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
+    )
+    checkLink('uploadedDocument-LICENCE-Change', '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents')
+    checkLink(
+      'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET-Change',
+      '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
+    )
+    checkLink(
+      'uploadedDocument-PRE_SENTENCING_REPORT-Change',
+      '/upload-documents?fromPage=check-answers&fromHash=uploaded-documents'
+    )
+    cy.clickLink('Change Part A recall report')
+    cy.clickLink('Back')
+    cy.pageHeading().should('equal', 'Check the details before booking this recall')
   })
 })

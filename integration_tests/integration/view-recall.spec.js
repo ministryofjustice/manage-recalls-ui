@@ -1,7 +1,5 @@
 import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
 
-const recallInformationPage = require('../pages/recallInformation')
-
 context('View recall information', () => {
   beforeEach(() => {
     cy.login()
@@ -44,33 +42,21 @@ context('View recall information', () => {
   const personName = 'Bobby Badger'
 
   it('User can view all recall information (after dossier issued)', () => {
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Dossier complete' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.getElement({ qaAttr: 'recallStatus' }).should('contain', 'Dossier complete')
 
     // as person doesn't have middle names, don't offer a change link for name
     cy.getElement('Change licence name').should('not.exist')
-
-    recallInformation.assertElementHasText({
-      qaAttr: 'inCustodyAtBooking',
-      textToFind: 'In custody',
-    })
-    recallInformation.assertElementNotPresent({ qaAttr: 'inCustodyChange' })
-    recallInformation.assertElementNotPresent({ qaAttr: 'arrestIssues' })
-    recallInformation.assertElementHasText({
-      qaAttr: 'recallNotificationEmailSentDateTime',
-      textToFind: '15 August 2021 at 14:04',
-    })
-
-    recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'one, two' })
-    recallInformation.assertElementHasText({ qaAttr: 'differentNomsNumber', textToFind: 'AC3408303' })
-    recallInformation.assertElementHasText({
-      qaAttr: 'dossierEmailSentDate',
-      textToFind: '8 September 2021',
-    })
-    recallInformation.assertElementHasText({ qaAttr: 'bookedByUserName', textToFind: 'Brenda Badger' })
-    recallInformation.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
-    recallInformation.assertElementHasText({ qaAttr: 'dossierCreatedByUserName', textToFind: 'Bobby Badger' })
-
+    cy.recallInfo('Custody status at booking').should('equal', 'In custody')
+    cy.getElement({ qaAttr: 'inCustodyChange' }).should('not.exist')
+    cy.getElement({ qaAttr: 'arrestIssues' }).should('not.exist')
+    cy.recallInfo('Recall notification email sent').should('equal', '15 August 2021 at 14:04')
+    cy.recallInfo('Additional licence conditions').should('equal', 'one, two')
+    cy.recallInfo('Different NOMIS number').should('equal', 'AC3408303')
+    cy.recallInfo('Dossier sent').should('equal', '8 September 2021')
+    cy.recallInfo('Recall booked by').should('equal', 'Brenda Badger')
+    cy.recallInfo('Recall assessed by').should('equal', 'Bertie Badger')
+    cy.recallInfo('Dossier created by').should('equal', 'Bobby Badger')
     cy.recallInfo('Dossier sent').should('equal', '8 September 2021')
     cy.recallInfo('Dossier email uploaded').should('equal', 'email.msg')
     cy.getLinkHref('Change dossier email sent date').should('contain', '/dossier-email')
@@ -87,10 +73,11 @@ context('View recall information', () => {
         status: 'DOSSIER_ISSUED',
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'Not available' })
-    recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'Not available' })
-    recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'Not available' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.recallInfo('Vulnerability and diversity').should('equal', 'Not available')
+    cy.recallInfo('Contraband').should('equal', 'Not available')
+    cy.recallInfo('MAPPA level').should('equal', 'Not available')
+    cy.recallInfo('Arrest issues').should('equal', 'Not available')
   })
 
   it('User can view No, No and None respectively for additionalLicenceConditions,vulnerabilityDiversity and contraband when selected No', () => {
@@ -109,40 +96,44 @@ context('View recall information', () => {
         returnedToCustodyDateTime: undefined,
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.assertElementHasText({ qaAttr: 'additionalLicenceConditions', textToFind: 'None' })
-    recallInformation.assertElementHasText({ qaAttr: 'vulnerabilityDiversity', textToFind: 'No' })
-    recallInformation.assertElementHasText({ qaAttr: 'contraband', textToFind: 'No' })
-    recallInformation.assertElementHasText({ qaAttr: 'arrestIssues', textToFind: 'No' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.recallInfo('Additional licence conditions').should('equal', 'None')
+    cy.recallInfo('Vulnerability and diversity').should('equal', 'No')
+    cy.recallInfo('Contraband').should('equal', 'No')
+    cy.recallInfo('Arrest issues').should('equal', 'No')
   })
 
   it('user can download all uploaded emails', () => {
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    const mockFileDownload = ({ fileName, category }) => {
-      cy.task('expectGetRecallDocument', {
-        category,
-        file: 'abc',
-        fileName,
-        documentId: '123',
-      })
-    }
-
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
     // recall request
-    let fileName = 'recall-request.eml'
-    mockFileDownload({ fileName, category: 'RECALL_REQUEST_EMAIL' })
-    recallInformation.clickButton({ qaAttr: 'uploadedDocument-RECALL_REQUEST_EMAIL' })
-    recallInformation.checkFileDownloaded(fileName)
-
+    const recallRequestFileName = 'recall-request.eml'
+    cy.task('expectGetRecallDocument', {
+      category: 'RECALL_REQUEST_EMAIL',
+      file: 'abc',
+      fileName: recallRequestFileName,
+      documentId: '123',
+    })
+    cy.downloadEmail(recallRequestFileName)
+    cy.readDownloadedFile(recallRequestFileName)
     // sent recall notification email
-    fileName = '2021-07-03 Phil Jones recall.msg'
-    mockFileDownload({ fileName, category: 'RECALL_NOTIFICATION_EMAIL' })
-    recallInformation.clickButton({ qaAttr: 'uploadedDocument-RECALL_NOTIFICATION_EMAIL' })
-    recallInformation.checkFileDownloaded(fileName)
-
+    const recallNotificationFileName = '2021-07-03 Phil Jones recall.msg'
+    cy.task('expectGetRecallDocument', {
+      category: 'RECALL_NOTIFICATION_EMAIL',
+      file: 'abc',
+      fileName: recallNotificationFileName,
+      documentId: '123',
+    })
+    cy.downloadEmail(recallNotificationFileName)
+    cy.readDownloadedFile(recallNotificationFileName)
     // sent dossier email
-    fileName = 'dossier-email.msg'
-    mockFileDownload({ fileName, category: 'RECALL_REQUEST_EMAIL' })
-    recallInformation.clickButton({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL' })
-    recallInformation.checkFileDownloaded(fileName)
+    const dossierEmailFileName = 'email.msg'
+    cy.task('expectGetRecallDocument', {
+      category: 'DOSSIER_EMAIL',
+      file: 'abc',
+      fileName: dossierEmailFileName,
+      documentId: '123',
+    })
+    cy.downloadEmail(dossierEmailFileName)
+    cy.readDownloadedFile(dossierEmailFileName)
   })
 })

@@ -56,7 +56,7 @@
                     </thead>
                     <tbody class="govuk-table__body" data-qa="search-results">
                     {% for person in persons %}
-                        <tr class="govuk-table__row">
+                        <tr class="govuk-table__row" data-qa='result-{{ person.nomsNumber }}'>
                             <td class="govuk-table__cell" data-qa="nomsNumber" data-private>{{ person.nomsNumber }}</td>
                             <td class="govuk-table__cell" data-qa="croNumber" data-private>{{ person.croNumber }}</td>
                             <td class="govuk-table__cell" data-qa="name" data-private>{{ person.firstName }} {{ person.lastName }}</td>

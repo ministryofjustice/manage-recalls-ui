@@ -1,5 +1,4 @@
 import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
-import recallInformationPage from '../pages/recallInformation'
 
 context('Add a note to a recall', () => {
   const recallId = '123'
@@ -60,11 +59,10 @@ context('Add a note to a recall', () => {
     })
     cy.clickLink('View')
 
-    const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
 
-    recallInformation.assertElementHasText({ qaAttr: 'noteSubject1', textToFind: note.subject })
-    recallInformation.assertElementHasText({ qaAttr: 'noteDetails1', textToFind: note.details })
+    cy.getText('noteSubject1').should('contain', note.subject)
+    cy.getText('noteDetails1').should('contain', note.details)
 
     cy.recallInfo('Date and time of note').should('equal', '5 December 2020 at 18:33')
     cy.recallInfo('Note made by').should('equal', 'Arnold Caseworker')
@@ -162,12 +160,10 @@ context('Add a note to a recall', () => {
       },
     })
 
-    const personName = `${getEmptyRecallResponse.firstName} ${getEmptyRecallResponse.lastName}`
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-
-    recallInformation.assertElementHasText({ qaAttr: 'noteSubject1', textToFind: 'index 4 subject' })
-    recallInformation.assertElementHasText({ qaAttr: 'noteSubject2', textToFind: 'index 2 subject' })
-    recallInformation.assertElementHasText({ qaAttr: 'noteSubject3', textToFind: 'index 1 subject' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.getText('noteSubject1').should('contain', 'index 4 subject')
+    cy.getText('noteSubject2').should('contain', 'index 2 subject')
+    cy.getText('noteSubject3').should('contain', 'index 1 subject')
   })
 
   it('shows no notes section for recall without notes', () => {

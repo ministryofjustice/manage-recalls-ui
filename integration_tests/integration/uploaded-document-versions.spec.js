@@ -1,13 +1,8 @@
-import { getRecallResponse, getPrisonerResponse } from '../mockApis/mockResponses'
+import { getRecallResponse } from '../mockApis/mockResponses'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import uploadDocumentVersionPage from '../pages/uploadNewDocumentVersion'
-
-const recallInformationPage = require('../pages/recallInformation')
 
 context('Uploaded document versions', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '123'
-  const personName = 'Bobby Badger'
 
   beforeEach(() => {
     cy.login()
@@ -31,27 +26,16 @@ context('Uploaded document versions', () => {
       },
     })
     cy.task('expectUploadRecallDocument', { statusCode: 201 })
-    let recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
-      documentCategoryLabel: 'part A recall report',
-    })
-    uploadDocumentVersion.assertLinkHref({
-      qaAttr: 'previousVersionFileName',
-      href: `/recalls/${recallId}/documents/123`,
-    })
-    uploadDocumentVersion.assertElementHasText({
-      qaAttr: 'previousVersionNumber',
-      textToFind: 'version 2',
-    })
-    uploadDocumentVersion.assertElementHasText({
-      qaAttr: 'previousVersionUploadedDateTime',
-      textToFind: 'Uploaded on 21 November 2021 at 12:34',
-    })
-    uploadDocumentVersion.uploadFile({
-      fieldName: 'document',
-      fileName: 'test.pdf',
-      mimeType: 'application/pdf',
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.clickLink('Change Part A recall report')
+
+    cy.pageHeading().should('contain', 'Upload a new part A recall report')
+    cy.getLinkHref({ qaAttr: 'previousVersionFileName' }).should('contain', `/recalls/${recallId}/documents/123`)
+    cy.getText('previousVersionNumber').should('contain', 'version 2')
+    cy.getText('previousVersionUploadedDateTime').should('contain', 'Uploaded on 21 November 2021 at 12:34')
+    cy.uploadPDF({
+      field: 'document',
+      file: 'test.pdf',
     })
     cy.task('expectGetRecall', {
       expectedResult: {
@@ -68,9 +52,9 @@ context('Uploaded document versions', () => {
         ],
       },
     })
-    uploadDocumentVersion.enterTextInInput({ name: 'details', text: 'Some details' })
+    cy.fillInput('Provide more detail', 'Some details')
     cy.clickButton('Continue')
-    uploadDocumentVersion.assertApiRequestBody({
+    cy.assertSaveToRecallsApi({
       url: `/recalls/${recallId}/documents/uploaded`,
       method: 'POST',
       bodyValues: {
@@ -79,15 +63,9 @@ context('Uploaded document versions', () => {
         details: 'Some details',
       },
     })
-    recallInformation = recallInformationPage.verifyOnPage({ personName })
-    recallInformation.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
-      textToFind: 'version 2',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-details',
-      textToFind: 'Some details',
-    })
+    cy.pageHeading().should('contain', 'View the recall')
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT-version').should('contain', 'version 2')
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT-details').should('contain', 'Some details')
   })
 
   it('errors - add a new document version', () => {
@@ -107,12 +85,7 @@ context('Uploaded document versions', () => {
         ],
       },
     })
-    const uploadDocumentVersion = uploadDocumentVersionPage.verifyOnPage({
-      nomsNumber,
-      recallId,
-      documentCategoryLabel: 'part A recall report',
-      documentCategoryName: 'PART_A_RECALL_REPORT',
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'upload-document-version?versionedCategoryName=PART_A_RECALL_REPORT' })
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'document',
@@ -120,10 +93,9 @@ context('Uploaded document versions', () => {
     })
 
     // details are not provided
-    uploadDocumentVersion.uploadFile({
-      fieldName: 'document',
-      fileName: 'test.pdf',
-      mimeType: 'application/pdf',
+    cy.uploadPDF({
+      field: 'document',
+      file: 'test.pdf',
     })
     cy.clickButton('Continue')
     cy.assertErrorMessage({

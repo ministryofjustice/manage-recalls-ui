@@ -12,9 +12,6 @@ import { RecallDocument } from '../../server/@types/manage-recalls-api/models/Re
 import { sortList } from '../../server/controllers/utils/lists'
 import { stubRefData } from '../support/mock-api'
 
-const changeHistoryPage = require('../pages/changeHistory')
-const changeHistoryDocumentPage = require('../pages/changeHistoryDocument')
-const changeHistoryFieldPage = require('../pages/changeHistoryField')
 const { formatDateTimeFromIsoString } = require('../../server/controllers/utils/dates/format')
 
 // FIXME: copied from 'server/controllers/changeHistory/recallFieldList.ts' - rework so we can re-use that code without including restClient
@@ -372,67 +369,64 @@ context('Change history', () => {
     cy.pageHeading().should('equal', `View the recall for ${personName}`)
     cy.clickButton('Actions')
     cy.clickLink('View change history')
-    const changeHistory = changeHistoryPage.verifyOnPage()
-    cy.get('#tab_documents').click()
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('Documents')
     // UPLOADED DOCUMENTS
-    changeHistory.assertLinkHref({
+    cy.getLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
       href: '/recalls/123/documents/123',
     })
-    changeHistory.assertLinkHref({
+    cy.getLinkHref({
       qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
-      href: '/recalls/123/documents/456',
-    })
-    changeHistory.assertTableColumnValues({
+    }).should('contain', '/recalls/123/documents/456')
+    cy.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['Part A.pdf', 'Pre Cons.pdf'],
     })
-    changeHistory.assertTableColumnValues({
+    cy.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'createdDateTime',
       valuesToCompare: ['1 April 2020 at 13:00', '10 May 2020 at 15:22'],
     })
-    changeHistory.assertTableColumnValues({
+    cy.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'createdByUserName',
       valuesToCompare: ['Arnold Caseworker', 'Carrie Arnold'],
     })
     // re-sort the table by file name (descending)
-    changeHistory.clickButton({ parentQaAttr: 'uploadedDocuments', label: 'Document' })
-    changeHistory.assertTableColumnValues({
+    cy.clickButton('Document', { parent: '#table-uploaded' })
+    cy.assertTableColumnValues({
       qaAttrTable: 'uploadedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['Pre Cons.pdf', 'Part A.pdf'],
     })
 
     // GENERATED DOCUMENTS
-    changeHistory.assertLinkHref({
+    cy.getLinkHref({
       qaAttr: 'generatedDocument-RECALL_NOTIFICATION',
-      href: '/recalls/123/documents/789',
-    })
-    changeHistory.assertLinkHref({
+    }).should('contain', '/recalls/123/documents/789')
+    cy.getLinkHref({
       qaAttr: 'generatedDocument-DOSSIER',
-      href: '/recalls/123/documents/012',
-    })
-    changeHistory.assertTableColumnValues({
+    }).should('contain', '/recalls/123/documents/012')
+    cy.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['BADGER BOBBY A123456 RECALL DOSSIER.pdf', 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf'],
     })
-    changeHistory.assertTableColumnValues({
+    cy.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
       qaAttrCell: 'createdDateTime',
       valuesToCompare: ['10 April 2020 at 15:22', '9 May 2020 at 15:22'],
     })
-    changeHistory.assertTableColumnValues({
+    cy.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
       qaAttrCell: 'createdByUserName',
       valuesToCompare: ['Steve Barry', 'Barry Arnold'],
     })
     // re-sort the table by file name (descending)
-    changeHistory.clickButton({ parentQaAttr: 'generatedDocuments', label: 'Document' })
-    changeHistory.assertTableColumnValues({
+    cy.clickButton('Document', { parent: '#table-generated' })
+    cy.assertTableColumnValues({
       qaAttrTable: 'generatedDocuments',
       qaAttrCell: 'fileName',
       valuesToCompare: ['IN CUSTODY RECALL BADGER BOBBY A123456.pdf', 'BADGER BOBBY A123456 RECALL DOSSIER.pdf'],
@@ -459,12 +453,9 @@ context('Change history', () => {
         documents: [document],
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    cy.get('#tab_documents').click()
-    changeHistory.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
-      textToFind: 'version 3',
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('Documents')
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT-version').should('contain', 'version 3')
     const fileName = 'Part A.pdf'
     cy.task('expectGetRecallDocument', {
       category: document.category,
@@ -472,10 +463,8 @@ context('Change history', () => {
       fileName,
       documentId: '123',
     })
-    changeHistory.checkPdfContents({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      fileContents: 'abc',
-    })
+    cy.downloadFile('Part A.pdf')
+    cy.readDownloadedFile(fileName)
   })
 
   it('can see uploaded document history and missing records', () => {
@@ -515,65 +504,34 @@ context('Change history', () => {
     cy.clickLink('Documents')
     cy.task('expectGetRecallDocumentHistory', { expectedResult: getDocumentCategoryHistoryResponseJson })
     cy.clickLink('View history for Licence.pdf')
-    const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
-      type: 'document',
-    })
+
+    cy.pageHeading().should('equal', 'Uploaded document change history')
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
       const docId = doc.documentId
-      uploadedDocumentHistory.assertElementHasText({
+      cy.getText(`document-${docId}-link`).should('contain', 'Licence.pdf')
+      cy.getLinkHref({
         qaAttr: `document-${docId}-link`,
-        textToFind: 'Licence.pdf',
-      })
-      uploadedDocumentHistory.assertLinkHref({
-        qaAttr: `document-${docId}-link`,
-        href: `/recalls/${recallId}/documents/${docId}`,
-      })
+      }).should('contain', `/recalls/${recallId}/documents/${docId}`)
       if (doc.version === 1) {
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-heading`,
-          textToFind: `Licence`,
-        })
-        uploadedDocumentHistory.assertElementNotPresent({
-          qaAttr: `document-${docId}-version`,
-        })
+        cy.getText(`document-${docId}-heading`).should('contain', `Licence`)
+        cy.getElement(`document-${docId}-version`).should('not.exist')
       } else {
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-heading`,
-          textToFind: `Licence (version ${doc.version})`,
-        })
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-details`,
-          textToFind: doc.details,
-        })
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-version`,
-          textToFind: `(version ${doc.version})`,
-        })
+        cy.getText(`document-${docId}-heading`).should('contain', `Licence (version ${doc.version})`)
+        cy.getText(`document-${docId}-details`).should('contain', doc.details)
+        cy.getText(`document-${docId}-version`).should('contain', `(version ${doc.version})`)
       }
-      uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-uploaded-by`,
-        textToFind: `Uploaded by ${doc.createdByUserName} on ${formatDateTimeFromIsoString({
-          isoDate: doc.createdDateTime,
-        })}`,
+      const date = formatDateTimeFromIsoString({
+        isoDate: doc.createdDateTime,
       })
+      cy.getText(`document-${docId}-uploaded-by`).should('contain', `Uploaded by ${doc.createdByUserName} on ${date}`)
     })
     // missing documents record
-    uploadedDocumentHistory.assertElementHasText({
-      qaAttr: 'missingDocumentsLabel',
-      textToFind: 'Missing',
-    })
-    uploadedDocumentHistory.assertElementHasText({
-      qaAttr: 'document-845-details',
-      textToFind: 'Documents were requested by email on 10/12/2020',
-    })
-    uploadedDocumentHistory.assertLinkHref({
+    cy.getText('missingDocumentsLabel').should('contain', 'Missing')
+    cy.getText('document-845-details').should('contain', 'Documents were requested by email on 10/12/2020')
+    cy.getLinkHref({
       qaAttr: 'missingDocumentsEmail',
-      href: `/recalls/${recallId}/documents/845`,
-    })
-    uploadedDocumentHistory.assertElementHasText({
-      qaAttr: 'document-845-uploaded-by',
-      textToFind: 'Noted by Bobby Badger on 12 March 2021 at 12:24',
-    })
+    }).should('contain', `/recalls/${recallId}/documents/845`)
+    cy.getText('document-845-uploaded-by').should('contain', 'Noted by Bobby Badger on 12 March 2021 at 12:24')
   })
 
   it('User can navigate to generated document history', () => {
@@ -637,43 +595,25 @@ context('Change history', () => {
       ])
     )
     cy.clickLink({ qaAttr: 'viewHistory-DOSSIER' })
-    const uploadedDocumentHistory = changeHistoryDocumentPage.verifyOnPage({
-      type: 'generated',
-    })
+    cy.pageHeading().should('equal', 'Generated document change history')
     getDocumentCategoryHistoryResponseJson.forEach(doc => {
       const docId = doc.documentId
-      uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-link`,
-        textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
-      })
-      uploadedDocumentHistory.assertLinkHref({
+      cy.getText(`document-${docId}-link`).should('contain', 'BADGER BOBBY A123456 RECALL DOSSIER.pdf')
+      cy.getLinkHref({
         qaAttr: `document-${docId}-link`,
         href: `/recalls/${recallId}/documents/${docId}`,
       })
       if (doc.version === 1) {
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-heading`,
-          textToFind: `Dossier`,
-        })
-        uploadedDocumentHistory.assertElementNotPresent({
-          qaAttr: `document-${docId}-version`,
-        })
+        cy.getText(`document-${docId}-heading`).should('contain', `Dossier`)
+        cy.getElement(`document-${docId}-version`).should('not.exist')
       } else {
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-heading`,
-          textToFind: `Dossier (version ${doc.version})`,
-        })
-        uploadedDocumentHistory.assertElementHasText({
-          qaAttr: `document-${docId}-version`,
-          textToFind: `(version ${doc.version})`,
-        })
+        cy.getText(`document-${docId}-heading`).should('contain', `Dossier (version ${doc.version})`)
+        cy.getText(`document-${docId}-version`).should('contain', `(version ${doc.version})`)
       }
-      uploadedDocumentHistory.assertElementHasText({
-        qaAttr: `document-${docId}-uploaded-by`,
-        textToFind: `Created by ${doc.createdByUserName} on ${formatDateTimeFromIsoString({
-          isoDate: doc.createdDateTime,
-        })}`,
+      const date = formatDateTimeFromIsoString({
+        isoDate: doc.createdDateTime,
       })
+      cy.getText(`document-${docId}-uploaded-by`).should('contain', `Created by ${doc.createdByUserName} on ${date}`)
     })
   })
 
@@ -719,19 +659,18 @@ context('Change history', () => {
       },
     })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
     const fieldList = changeHistoryFieldList({ changedFields: getAllFieldsHistoryResponseJson, uploadedDocuments })
     const baseHref = `/recalls/${recallId}/change-history`
     fieldList.forEach(field => {
-      changeHistory.assertElementHasText({ qaAttr: `label-${field.id}`, textToFind: field.label })
+      cy.getText(`label-${field.id}`).should('contain', field.label)
       const href =
         field.fieldType === 'UPLOADED_EMAIL'
           ? `${baseHref}/document?category=${field.documentCategory}`
           : `${baseHref}/field?fieldName=${field.id}&fieldPath=${field.fieldPath}`
-      changeHistory.assertLinkHref({
+      cy.getLinkHref({
         qaAttr: `viewHistory-${field.id}`,
-        href,
-      })
+      }).should('contain', href)
     })
     // check user and date for one field
     cy.getRowValuesFromTable({ parent: '#table-info-entered', rowQaAttr: 'currentPrison' }).then(rowValues =>
@@ -759,21 +698,21 @@ context('Change history', () => {
     })
     cy.task('expectGetSingleFieldChangeHistory', { expectedResult: getSingleFieldHistoryResponseJson })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    changeHistory.clickLink({ qaAttr: 'viewHistory-currentPrison' })
-    const fieldHistory = changeHistoryFieldPage.verifyOnPage()
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('View history for Prison held in')
+    cy.pageHeading().should('equal', 'Field change history')
     getSingleFieldHistoryResponseJson.forEach(() => {
-      fieldHistory.assertTableColumnValues({
+      cy.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'dateAndTime',
         valuesToCompare: ['4 January 2022 at 17:56', '4 January 2022 at 13:17'],
       })
-      fieldHistory.assertTableColumnValues({
+      cy.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'value',
         valuesToCompare: ['Ashfield (HMP)', 'Kennet (HMP)'],
       })
-      fieldHistory.assertTableColumnValues({
+      cy.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'updatedByUserName',
         valuesToCompare: ['Marcus Baimbridge', 'Maria Badger'],
@@ -811,16 +750,16 @@ context('Change history', () => {
       ],
     })
     cy.task('expectRefData', { refDataPath: 'prisons', expectedResult: getPrisonsResponse })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    changeHistory.clickLink({ qaAttr: 'viewHistory-reasonsForRecall' })
-    const fieldHistory = changeHistoryFieldPage.verifyOnPage()
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('View history for Reasons for recall')
+    cy.pageHeading().should('equal', 'Field change history')
     getSingleFieldHistoryResponseJson.forEach(() => {
-      fieldHistory.assertTableColumnValues({
+      cy.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'dateAndTime',
         valuesToCompare: ['4 January 2022 at 17:56', '4 January 2022 at 13:17'],
       })
-      fieldHistory.assertTableColumnValues({
+      cy.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'value',
         valuesToCompare: [
@@ -828,7 +767,7 @@ context('Change history', () => {
           'Electronic locking and monitoring (ELM) - Breach of non-curfew related condition, Other',
         ],
       })
-      fieldHistory.assertTableColumnValues({
+      cy.assertTableColumnValues({
         qaAttrTable: 'fieldChangeHistory',
         qaAttrCell: 'updatedByUserName',
         valuesToCompare: ['Marcus Baimbridge', 'Maria Badger'],
@@ -876,21 +815,14 @@ context('Change history', () => {
         },
       ],
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    changeHistory.clickLink({ qaAttr: 'viewHistory-recallRequestEmailUploaded' })
-    const emailHistory = changeHistoryDocumentPage.verifyOnPage({ type: 'email' })
-    emailHistory.assertElementHasText({
-      qaAttr: `document-${documentId}-heading`,
-      textToFind: 'Recall request email uploaded',
-    })
-    emailHistory.assertElementHasText({
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.clickLink('View history for Recall request email uploaded')
+    cy.pageHeading().should('equal', 'Uploaded email change history')
+    cy.getText(`document-${documentId}-heading`).should('contain', 'Recall request email uploaded')
+    cy.getText(`document-${documentId}-link`).should('contain', fileName)
+    cy.getLinkHref({
       qaAttr: `document-${documentId}-link`,
-      textToFind: fileName,
-    })
-    emailHistory.assertLinkHref({
-      qaAttr: `document-${documentId}-link`,
-      href: `/recalls/${recallId}/documents/${documentId}`,
-    })
+    }).should('contain', `/recalls/${recallId}/documents/${documentId}`)
   })
 
   it("doesn't show a view history link for a field that has no value set", () => {
@@ -903,7 +835,7 @@ context('Change history', () => {
         recallId,
       },
     })
-    const changeHistory = changeHistoryPage.verifyOnPage({ recallId })
-    changeHistory.assertElementNotPresent({ qaAttr: 'viewHistory-currentPrison' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
+    cy.getElement('viewHistory-currentPrison').should('not.exist')
   })
 })

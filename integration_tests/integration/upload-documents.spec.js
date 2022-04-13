@@ -1,14 +1,8 @@
 import { getRecallResponse } from '../mockApis/mockResponses'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
-import uploadDocumentsPage from '../pages/uploadDocuments'
-import checkAnswersPage from '../pages/recallCheckAnswers'
-import recallMissingDocumentsPage from '../pages/recallMissingDocuments'
-
-const recallInformationPage = require('../pages/recallInformation')
 
 context('Upload documents', () => {
   const recallId = '123'
-  const personName = 'Bobby Badger'
 
   beforeEach(() => {
     cy.login()
@@ -22,13 +16,12 @@ context('Upload documents', () => {
       },
     })
     cy.task('expectUploadRecallDocument', { statusCode: 500 })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage({ recallId })
-    uploadDocuments.uploadFile({
-      fieldName: 'documents',
-      fileName: 'test.pdf',
-      mimeType: 'application/pdf',
+    cy.visitRecallPage({ recallId, pageSuffix: 'upload-documents' })
+    cy.uploadPDF({
+      field: 'documents',
+      file: 'test.pdf',
     })
-    uploadDocuments.assertSummaryErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'documents',
       summaryError: 'test.pdf could not be uploaded - try again',
     })
@@ -38,12 +31,11 @@ context('Upload documents', () => {
       statusCode: 400,
       responseBody: { status: 'BAD_REQUEST', message: 'VirusFoundException' },
     })
-    uploadDocuments.uploadFile({
-      fieldName: 'documents',
-      fileName: 'test.pdf',
-      mimeType: 'application/pdf',
+    cy.uploadPDF({
+      field: 'documents',
+      file: 'test.pdf',
     })
-    uploadDocuments.assertSummaryErrorMessage({
+    cy.assertErrorMessage({
       fieldName: 'documents',
       summaryError: 'test.pdf contains a virus',
     })
@@ -66,16 +58,15 @@ context('Upload documents', () => {
     })
     cy.task('expectDeleteRecallDocument')
     cy.task('expectSetDocumentCategory')
-    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId })
-    checkAnswers.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.clickElement({ qaAttr: `delete-${documentId}` })
-    uploadDocuments.assertApiRequestBody({
+    cy.visitRecallPage({ recallId, pageSuffix: 'check-answers' })
+    cy.clickLink('Change Part A recall report')
+    cy.clickButton('Delete Part A.pdf')
+    cy.assertSaveToRecallsApi({
       url: `/recalls/${recallId}/documents/${documentId}`,
       method: 'DELETE',
     })
     cy.clickButton('Continue')
-    checkAnswersPage.verifyOnPage()
+    cy.pageHeading().should('equal', 'Check the details before booking this recall')
   })
 
   it("user can't go back to delete documents from the view recall page, for an incomplete booking", () => {
@@ -94,10 +85,10 @@ context('Upload documents', () => {
       },
     })
     cy.task('expectDeleteRecallDocument')
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.clickElement({ qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change' })
-    const uploadDocuments = uploadDocumentsPage.verifyOnPage()
-    uploadDocuments.assertElementNotPresent({ qaAttr: `delete-${documentId}` })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.clickLink('Change Part A recall report')
+    cy.pageHeading().should('equal', 'Upload documents')
+    cy.getElement({ qaAttr: `delete-${documentId}` }).should('not.exist')
   })
 
   it('all uploaded documents are listed on the view recall page, with change links', () => {
@@ -126,28 +117,21 @@ context('Upload documents', () => {
         ],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      textToFind: 'Part A.pdf',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-version',
-      textToFind: 'version 2',
-    })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT').should('contain', 'Part A.pdf')
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT-version').should('contain', 'version 2')
     // change link for an uploaded document goes to the 'add new document version' page
-    recallInformation.assertLinkHref({
+    cy.getLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/recalls/123/upload-document-version?fromPage=view-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'uploadedDocument-OTHER',
-      textToFind: 'record.pdf',
-    })
+    }).should(
+      'contain',
+      '/recalls/123/upload-document-version?fromPage=view-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT'
+    )
+    cy.getText('uploadedDocument-OTHER').should('contain', 'record.pdf')
     // Other documents should not have change links
-    recallInformation.assertElementNotPresent({
+    cy.getElement({
       qaAttr: 'uploadedDocument-OTHER-Change',
-    })
+    }).should('not.exist')
   })
 
   it('from the check your answers page, for an incomplete booking, Change links for uploaded docs go to the upload page', () => {
@@ -166,15 +150,11 @@ context('Upload documents', () => {
         ],
       },
     })
-    const checkAnswers = checkAnswersPage.verifyOnPage({ recallId, personName })
+    cy.visitRecallPage({ recallId, pageSuffix: 'check-answers' })
     // change link for an uploaded document goes to the 'upload documents' page
-    checkAnswers.assertElementHasText({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      textToFind: 'Part A.pdf',
-    })
-    checkAnswers.assertLinkHref({
+    cy.getText('uploadedDocument-PART_A_RECALL_REPORT').should('contain', 'Part A.pdf')
+    cy.getLinkHref({
       qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents',
-    })
+    }).should('contain', '/recalls/123/upload-documents?fromPage=check-answers&fromHash=uploaded-documents')
   })
 })

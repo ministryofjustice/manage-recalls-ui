@@ -1,6 +1,3 @@
-const IndexPage = require('../pages/findOffender')
-const AuthLoginPage = require('../pages/authLogin')
-
 context('Login', () => {
   beforeEach(() => {
     cy.task('reset')
@@ -11,15 +8,15 @@ context('Login', () => {
   it('Unauthenticated user directed to auth', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.visit('/')
-    AuthLoginPage.verifyOnPage()
+    cy.pageHeading().should('contain', 'Sign in')
   })
 
   it('User can see their name in the header and can log out', () => {
     cy.task('expectListRecalls', { expectedResults: [] })
     cy.login()
-    const landingPage = IndexPage.verifyOnPage()
-    landingPage.headerUserName().should('contain.text', 'M. Badger')
-    landingPage.logout().click()
-    AuthLoginPage.verifyOnPage()
+    cy.pageHeading().should('equal', 'Recalls')
+    cy.getText('header-user-name').should('contain', 'M. Badger')
+    cy.clickLink('Sign out')
+    cy.pageHeading().should('contain', 'Sign in')
   })
 })

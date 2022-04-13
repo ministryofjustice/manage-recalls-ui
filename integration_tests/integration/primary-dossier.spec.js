@@ -1,14 +1,7 @@
 import { getRecallResponse, getEmptyRecallResponse } from '../mockApis/mockResponses'
 
-import recallsListPage from '../pages/recallsList'
 import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
 import { stubRefData } from '../support/mock-api'
-
-const dossierLetterPage = require('../pages/dossierLetter')
-const dossierCheckPage = require('../pages/dossierCheck')
-const dossierEmailPage = require('../pages/dossierEmail')
-const dossierConfirmationPage = require('../pages/dossierConfirmation')
-const dossierRecallPage = require('../pages/dossierRecallInformation')
 
 context('Primary dossier', () => {
   const nomsNumber = 'A1234AA'
@@ -65,41 +58,30 @@ context('Primary dossier', () => {
         returnedToCustodyNotificationDateTime: undefined,
       },
     })
-    const dossierRecall = dossierRecallPage.verifyOnPage({ recallId, personName })
-
-    dossierRecall.assertElementHasText({ qaAttr: 'dossierTargetDate', textToFind: 'Overdue: Due on 14 December 2020' })
-
-    dossierRecall.assertElementHasText({ qaAttr: 'recallStatus', textToFind: 'Assessment complete' })
-    dossierRecall.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
-    dossierRecall.assertElementHasText({ qaAttr: 'assessedByUserName', textToFind: 'Bertie Badger' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-recall' })
+    cy.getElement('Overdue: Due on 14 December 2020').should('exist')
+    cy.getText('recallStatus').should('contain', 'Assessment complete')
+    cy.recallInfo('Booking number').should('equal', 'A123456')
+    cy.recallInfo('Recall assessed by').should('equal', 'Bertie Badger')
 
     // custody details
-    dossierRecall.assertElementHasText({
-      qaAttr: 'inCustodyAtBooking',
-      textToFind: 'Not in custody',
-    })
-    dossierRecall.assertElementHasText({
-      qaAttr: 'inCustodyAtAssessment',
-      textToFind: 'In custody',
-    })
-    dossierRecall.assertElementHasText({ qaAttr: 'currentPrison', textToFind: 'Kennet (HMP)' })
+    cy.recallInfo('Custody status at booking').should('equal', 'Not in custody')
+    cy.recallInfo('Custody status at assessment').should('equal', 'In custody')
     cy.getElement('Change custody status at booking').should('not.exist')
     cy.getElement('Change custody status at assessment').should('not.exist')
+    cy.recallInfo('Prison held in').should('equal', 'Kennet (HMP)')
 
     // recall details
     cy.recallInfo('Recall email received').should('equal', '5 December 2020 at 15:33')
     cy.recallInfo('Recall email uploaded').should('equal', 'recall-request.eml')
-    dossierRecall.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
+    cy.recallInfo('Licence conditions breached').should('equal', '(i) one (ii) two')
     cy.getLinkHref('Change licence conditions breached').should('contain', '/assess-licence')
     cy.getLinkHref('Change reasons for recall').should('contain', '/assess-licence')
-    dossierRecall.assertElementHasText({
-      qaAttr: 'reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY',
-      textToFind: 'Electronic locking and monitoring (ELM) - Failure to charge battery',
-    })
-    dossierRecall.assertElementHasText({
-      qaAttr: 'reasonsForRecall-OTHER',
-      textToFind: 'Other - other reason detail...',
-    })
+    cy.getText('reasonsForRecall-ELM_FAILURE_CHARGE_BATTERY').should(
+      'contain',
+      'Electronic locking and monitoring (ELM) - Failure to charge battery'
+    )
+    cy.getText('reasonsForRecall-OTHER').should('contain', 'Other - other reason detail...')
     cy.recallInfo('Recall notification email sent').should('equal', '15 August 2021 at 14:04')
     cy.recallInfo('Recall notification email uploaded').should('equal', 'notification.msg')
     cy.getLinkHref('Change recall notification email sent date').should('contain', '/assess-email')
@@ -113,25 +95,19 @@ context('Primary dossier', () => {
     )
 
     // uploaded documents
-    dossierRecall.assertLinkHref({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT',
-      href: `/recalls/${recallId}/documents/123`,
-    })
-    dossierRecall.assertLinkHref({
-      qaAttr: 'uploadedDocument-PREVIOUS_CONVICTIONS_SHEET',
-      href: `/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`,
-    })
+    cy.getLinkHref('Part A.pdf').should('contain', `/recalls/${recallId}/documents/123`)
+    cy.getLinkHref('Pre Cons.pdf').should('contain', `/recalls/${recallId}/documents/1234-5717-4562-b3fc-2c963f66afa6`)
 
     // change link for an uploaded document goes to the 'add new document version' page
-    dossierRecall.assertLinkHref({
-      qaAttr: 'uploadedDocument-PART_A_RECALL_REPORT-Change',
-      href: '/recalls/123/upload-document-version?fromPage=dossier-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT',
-    })
+    cy.getLinkHref('Change Part A recall report').should(
+      'contain',
+      '/recalls/123/upload-document-version?fromPage=dossier-recall&fromHash=uploaded-documents&versionedCategoryName=PART_A_RECALL_REPORT'
+    )
     // missing documents
-    dossierRecall.assertElementHasText({ qaAttr: 'required-LICENCE', textToFind: 'Missing: needed to create dossier' })
-    dossierRecall.assertElementHasText({ qaAttr: 'missing-OASYS_RISK_ASSESSMENT', textToFind: 'Missing' })
+    cy.recallInfo('Licence').should('equal', 'Missing: needed to create dossier')
+    cy.recallInfo('OASys report').should('equal', 'Missing')
     // disabled Create dossier button
-    dossierRecall.assertElementHasText({ qaAttr: 'createDossierDisabled', textToFind: 'Create dossier' })
+    cy.getText('createDossierDisabled').should('contain', 'Create dossier')
   })
 
   it('can verify recall details before creating a dossier (not in custody)', () => {
@@ -155,10 +131,14 @@ context('Primary dossier', () => {
   it('can create a dossier', () => {
     cy.task('expectGetRecall', {
       expectedResult: {
-        ...getRecallResponse,
+        ...getEmptyRecallResponse,
         hasDossierBeenChecked: undefined,
         recallId,
         status,
+        bookingNumber: 'A123456',
+        confirmedRecallType: 'FIXED',
+        recallLength: 'FOURTEEN_DAYS',
+        licenceConditionsBreached: '(i) one (ii) two',
         returnedToCustodyDateTime: undefined,
         returnedToCustodyNotificationDateTime: undefined,
         documents: [
@@ -195,30 +175,26 @@ context('Primary dossier', () => {
     cy.task('expectUpdateRecall', { recallId, status })
     cy.task('expectAddPhaseStartTime')
     cy.task('expectAddPhaseEndTime')
-
+    const firstLastName = 'Bobby Badger'
     cy.visit('/')
-    const recallsList = recallsListPage.verifyOnPage()
-    recallsList.createDossier({ recallId })
-    const dossierRecall = dossierRecallPage.verifyOnPage({ personName })
-    dossierRecall.assertElementHasText({
-      qaAttr: 'revocationOrderNotAvailable',
-      textToFind: 'Not available',
-    })
+    cy.pageHeading().should('equal', 'Recalls')
+    cy.clickButton('Create dossier')
+    cy.pageHeading().should('equal', 'Create a dossier for Bobby Badger recall')
     cy.clickLink('Create dossier')
-    const dossierLetter = dossierLetterPage.verifyOnPage()
-    dossierLetter.additionalLicenceConditions()
-    dossierLetter.addLicenceDetail()
-    dossierLetter.differentNomsNumber()
-    dossierLetter.addNomsDetail()
+    cy.selectRadio('Are there additional licence conditions?', 'Yes')
+    cy.fillInput('Provide more detail', 'Details', { parent: '#conditional-additionalLicenceConditions' })
+    cy.selectRadio(`Is ${firstLastName} being held under a different NOMIS number to the one on the licence?`, 'Yes')
+    cy.fillInput(`NOMIS number ${firstLastName} is being held under`, nomsNumber, {
+      parent: '#conditional-differentNomsNumber',
+    })
     cy.clickButton('Continue')
-    const dossierCheck = dossierCheckPage.verifyOnPage()
-    dossierCheck.assertElementHasText({ qaAttr: 'name', textToFind: 'Bobby Badger' })
-    dossierCheck.assertElementHasText({ qaAttr: 'nomsNumber', textToFind: 'A1234AA' })
-    dossierCheck.assertElementHasText({ qaAttr: 'bookingNumber', textToFind: 'A123456' })
-    dossierCheck.assertElementHasText({ qaAttr: 'licenceConditionsBreached', textToFind: '(i) one (ii) two' })
-    dossierCheck.assertElementHasText({ qaAttr: 'recallLength', textToFind: '14 days' })
+    cy.recallInfo('Name').should('equal', firstLastName)
+    cy.recallInfo('NOMIS').should('equal', nomsNumber)
+    cy.recallInfo('Booking number').should('equal', 'A123456')
+    cy.recallInfo('Licence conditions breached').should('contain', '(i) one (ii) two')
+    cy.recallInfo('Recall type').should('equal', 'Fixed term')
+    cy.recallInfo('Recall length').should('equal', '14 days')
     cy.clickLink('Continue')
-
     cy.pageHeading().should('equal', 'Download the dossier and letter')
     cy.getLinkHref('Download the Dossier').should(
       'contain',
@@ -233,12 +209,11 @@ context('Primary dossier', () => {
     cy.selectConfirmationCheckbox('I have checked the information in the dossier and letter is correct')
     cy.clickButton('Continue')
 
-    const dossierEmail = dossierEmailPage.verifyOnPage()
-    dossierEmail.confirmEmailSent()
-    dossierEmail.clickTodayLink()
-    dossierEmail.uploadFile({ fieldName: 'dossierEmailFileName', fileName: 'email.msg' })
+    cy.selectConfirmationCheckbox('I have sent the email to all recipients')
+    cy.clickButton('Set date to today')
+    cy.uploadEmail({ field: 'dossierEmailFileName' })
     cy.clickButton('Complete dossier creation')
-    dossierConfirmationPage.verifyOnPage()
+    cy.pageHeading().should('equal', `Dossier created and sent for ${firstLastName}`)
   })
 
   it('asks for current prison then NSY email confirmation, if the person has returned to custody', () => {
@@ -270,7 +245,7 @@ context('Primary dossier', () => {
       'contain',
       'mailto:test@domain.com?subject=RTC%20-%20Bobby%20Badger%20-%20A123456&body=Please%20note%20that%20Bobby%20Badger%20-%2028%20May%201999%2C%20CRO%20-%201234%2F56A%2C%20Booking%20number%20-%20A123456%20-%20was%20returned%20to%20Kennet%20(HMP)%20on%2022%20January%202022%20at%2013%3A45.%20Please%20remove%20them%20from%20the%20PNC%20if%20this%20has%20not%20already%20been%20done.'
     )
-    cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
+    cy.selectConfirmationCheckbox('I have sent the email')
     cy.uploadEmail({ field: 'nsyEmailFileName' })
     cy.clickButton('Continue')
     cy.getLinkHref('Back').should('contain', '/dossier-nsy-email')
@@ -308,7 +283,7 @@ context('Primary dossier', () => {
     })
 
     // confirm sending but don't enter a send date or upload an email
-    cy.selectCheckboxes('I have sent the email', ['I have sent the email'])
+    cy.selectConfirmationCheckbox('I have sent the email')
     cy.clickButton('Continue')
     cy.assertErrorMessage({
       fieldName: 'nsyEmailFileName',
@@ -359,7 +334,8 @@ context('Primary dossier', () => {
       recallId,
       expectedResult: emptyRecall,
     })
-    const dossierEmail = dossierEmailPage.verifyOnPage({ recallId })
+
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-email' })
     cy.clickButton('Complete dossier creation')
     cy.assertErrorMessage({
       fieldName: 'confirmDossierEmailSent',
@@ -367,7 +343,7 @@ context('Primary dossier', () => {
     })
 
     // confirm sending but don't enter a send date or upload an email
-    dossierEmail.confirmEmailSent()
+    cy.selectConfirmationCheckbox('I have sent the email to all recipients')
     cy.clickButton('Complete dossier creation')
     cy.assertErrorMessage({
       fieldId: 'dossierEmailSentDate-dossierEmailSentDateDay',
@@ -393,8 +369,9 @@ context('Primary dossier', () => {
         ],
       },
     })
-    const dossierEmail = dossierEmailPage.verifyOnPage({ recallId })
-    dossierEmail.assertElementHasText({ qaAttr: 'uploadedDocument-DOSSIER_EMAIL', textToFind: 'email.msg' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'dossier-email' })
+    cy.selectConfirmationCheckbox('I have sent the email to all recipients')
+    cy.getText('uploadedDocument-DOSSIER_EMAIL').should('contain', 'email.msg')
   })
 
   it('letter page', () => {

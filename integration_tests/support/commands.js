@@ -1,3 +1,4 @@
+import path from 'path'
 import { exactMatchIgnoreWhitespace, isDefined, splitIsoDateToParts } from './utils'
 import { recall } from '../fixtures/recall'
 import {
@@ -10,7 +11,6 @@ import {
 } from '../mockApis/mockResponses'
 import 'cypress-audit/commands'
 import { stubRefData } from './mock-api'
-import path from 'path'
 
 Cypress.Commands.add('login', () => {
   cy.task('reset')
@@ -117,6 +117,13 @@ Cypress.Commands.add('getTextInputValue', (label, text, opts = {}) => {
     .then(textVal => textVal.trim())
 })
 
+Cypress.Commands.add('getFormFieldByLabel', (label, text, opts = {}) => {
+  cy.get(opts.parent || 'body')
+    .contains('label', label)
+    .invoke('attr', 'for')
+    .then(id => cy.get(`#${id}`))
+})
+
 Cypress.Commands.add('fillInputGroup', (values, opts = { parent: 'body' }) => {
   Object.entries(values).forEach(([label, text]) => cy.fillInput(label, text, opts))
 })
@@ -165,7 +172,7 @@ Cypress.Commands.add('selectCheckboxes', (groupLabel, values, opts = {}) => {
     })
 })
 
-Cypress.Commands.add('selectConfirmationCheckbox', (label, opts = {}) => {
+Cypress.Commands.add('selectConfirmationCheckbox', label => {
   return cy.contains('label', label).click()
 })
 
@@ -229,6 +236,10 @@ Cypress.Commands.add('uploadEmail', ({ field }) => {
   cy.uploadFile({ field, file: 'email.msg', mimeType: 'application/octet-stream' })
 })
 
+Cypress.Commands.add('uploadImage', ({ field, file }) => {
+  cy.uploadFile({ field, file, encoding: 'binary', mimeType: 'image/jpeg' })
+})
+
 Cypress.Commands.add('uploadDocx', ({ field }) => {
   cy.uploadFile({
     field,
@@ -262,10 +273,12 @@ Cypress.Commands.add('enterDateTimeForToday', (opts = { parent: '#main-content' 
 
 Cypress.Commands.add('assertErrorMessage', ({ fieldName, fieldId, summaryError, fieldError }) => {
   cy.get(`[href="#${fieldId || fieldName}"]`).should('have.text', summaryError)
-  cy.get(`#${fieldName}-error`).should($searchResults => {
-    const text = $searchResults.text()
-    expect(text.trim()).to.contain(fieldError || summaryError)
-  })
+  if (fieldError) {
+    cy.get(`#${fieldName}-error`).should($searchResults => {
+      const text = $searchResults.text()
+      expect(text.trim()).to.contain(fieldError || summaryError)
+    })
+  }
 })
 
 // ================================ RECALL INFO ================================
@@ -348,4 +361,12 @@ Cypress.Commands.add('definitionListValue', (listQaAttr, label) =>
     .next('dd')
     .invoke('text')
     .then(text => text.trim())
+)
+
+// LIST VALUES
+Cypress.Commands.add('getListValues', qaAttrList =>
+  cy
+    .get(`[data-qa="${qaAttrList}"]`)
+    .find(`li`)
+    .then($els => Cypress.$.makeArray($els).map(el => el.innerText.trim()))
 )

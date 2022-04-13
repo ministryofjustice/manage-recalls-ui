@@ -23,6 +23,11 @@ Types are output to `./server/@types/manage-recalls-api`.
 The online swagger, for comparison, is [here]
 (https://manage-recalls-api-dev.hmpps.service.justice.gov.uk/swagger-ui/index.html)
 
+To run a Typescript compilation check:
+```
+npm run typecheck
+```
+
 ## Run linter
 
 `npm run lint`

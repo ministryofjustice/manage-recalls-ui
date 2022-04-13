@@ -1,14 +1,9 @@
 import { getEmptyRecallResponse, getRecallResponse } from '../mockApis/mockResponses'
-import newGeneratedDocumentVersionPage from '../pages/newGeneratedDocumentVersion'
 import { RecallResponse } from '../../server/@types/manage-recalls-api/models/RecallResponse'
 import { RecallDocument } from '../../server/@types/manage-recalls-api/models/RecallDocument'
 
-const recallInformationPage = require('../pages/recallInformation')
-
 context('Generated document versions', () => {
-  const nomsNumber = 'A1234AA'
   const recallId = '3456345664356'
-  const personName = 'Bobby Badger'
   const documentId = '123'
   const recall = {
     ...getRecallResponse,
@@ -80,95 +75,62 @@ context('Generated document versions', () => {
         documents: [],
       },
     })
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId, personName })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-not-available',
-      textToFind: 'Not available',
-    })
-    recallInformation.assertElementNotPresent({ qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-Change' })
+    cy.visitRecallPage({ recallId, pageSuffix: 'view-recall' })
+    cy.getText('appGeneratedDocuments-RECALL_NOTIFICATION-not-available').should('contain', 'Not available')
+    cy.getElement('appGeneratedDocuments-RECALL_NOTIFICATION-Change').should('not.exist')
   })
 
   it('all generated documents are listed and user can generate a new document version', () => {
     const recallId2 = '83472929'
     cy.task('expectGetRecall', { expectedResult: { ...recall, recallId: recallId2 } })
     const changeLinkHref = `/recalls/${recallId2}/generated-document-version?fromPage=view-recall&fromHash=generated-documents&versionedCategoryName=`
-    const recallInformation = recallInformationPage.verifyOnPage({ recallId: recallId2, personName })
+    cy.visitRecallPage({ recallId: recallId2, pageSuffix: 'view-recall' })
     // show link, version number, detail for a document with verion > 1
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION',
-      textToFind: 'IN CUSTODY RECALL BADGER BOBBY A123456.pdf',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-version',
-      textToFind: 'version 2',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-RECALL_NOTIFICATION-details',
-      textToFind: 'Sentencing info changed',
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER',
-      textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
-    })
-    recallInformation.assertLinkHref({
+    cy.getText('appGeneratedDocuments-RECALL_NOTIFICATION').should(
+      'contain',
+      'IN CUSTODY RECALL BADGER BOBBY A123456.pdf'
+    )
+    cy.getText('appGeneratedDocuments-RECALL_NOTIFICATION-version').should('contain', 'version 2')
+    cy.getText('appGeneratedDocuments-RECALL_NOTIFICATION-details').should('contain', 'Sentencing info changed')
+    cy.getText('appGeneratedDocuments-REVOCATION_ORDER').should('contain', 'BADGER BOBBY A123456 REVOCATION ORDER.pdf')
+    cy.getLinkHref({
       qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER-Change',
-      href: `${changeLinkHref}REVOCATION_ORDER`,
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON',
-      textToFind: 'BADGER BOBBY A123456 LETTER TO PRISON.pdf',
-    })
-    recallInformation.assertLinkHref({
+    }).should('contain', `${changeLinkHref}REVOCATION_ORDER`)
+    cy.getText('appGeneratedDocuments-LETTER_TO_PRISON').should('contain', 'BADGER BOBBY A123456 LETTER TO PRISON.pdf')
+    cy.getLinkHref({
       qaAttr: 'appGeneratedDocuments-LETTER_TO_PRISON-Change',
-      href: `${changeLinkHref}LETTER_TO_PRISON`,
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-LETTER_TO_PROBATION',
-      textToFind: 'BADGER BOBBY A123456 LETTER TO PROBATION.pdf',
-    })
-    recallInformation.assertLinkHref({
+    }).should('contain', `${changeLinkHref}LETTER_TO_PRISON`)
+    cy.getText('appGeneratedDocuments-LETTER_TO_PROBATION').should(
+      'contain',
+      'BADGER BOBBY A123456 LETTER TO PROBATION.pdf'
+    )
+    cy.getLinkHref({
       qaAttr: 'appGeneratedDocuments-LETTER_TO_PROBATION-Change',
-      href: `${changeLinkHref}LETTER_TO_PROBATION`,
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-DOSSIER',
-      textToFind: 'BADGER BOBBY A123456 RECALL DOSSIER.pdf',
-    })
-    recallInformation.assertLinkHref({
+    }).should('contain', `${changeLinkHref}LETTER_TO_PROBATION`)
+    cy.getText('appGeneratedDocuments-DOSSIER').should('contain', 'BADGER BOBBY A123456 RECALL DOSSIER.pdf')
+    cy.getLinkHref({
       qaAttr: 'appGeneratedDocuments-DOSSIER-Change',
-      href: `${changeLinkHref}DOSSIER`,
-    })
-    recallInformation.assertElementHasText({
-      qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL',
-      textToFind: 'BADGER BOBBY A123456 REASONS FOR RECALL.pdf',
-    })
-    recallInformation.assertLinkHref({
+    }).should('contain', `${changeLinkHref}DOSSIER`)
+    cy.getText('appGeneratedDocuments-REASONS_FOR_RECALL').should(
+      'contain',
+      'BADGER BOBBY A123456 REASONS FOR RECALL.pdf'
+    )
+    cy.getLinkHref({
       qaAttr: 'appGeneratedDocuments-REASONS_FOR_RECALL-Change',
-      href: `${changeLinkHref}REASONS_FOR_RECALL`,
-    })
+    }).should('contain', `${changeLinkHref}REASONS_FOR_RECALL`)
 
     // create a new version of revocation order
-    recallInformation.clickElement({ qaAttr: 'appGeneratedDocuments-REVOCATION_ORDER-Change' })
-    const newGeneratedDocumentVersion = newGeneratedDocumentVersionPage.verifyOnPage({
-      documentCategoryLabel: 'revocation order',
-    })
-    newGeneratedDocumentVersion.assertElementHasText({
+    cy.clickLink('Change Revocation order')
+    cy.pageHeading().should('contain', 'Create a new revocation order')
+    cy.getText('previousVersionFileName').should('contain', 'BADGER BOBBY A123456 REVOCATION ORDER.pdf')
+    cy.getLinkHref({
       qaAttr: 'previousVersionFileName',
-      textToFind: 'BADGER BOBBY A123456 REVOCATION ORDER.pdf',
-    })
-    newGeneratedDocumentVersion.assertLinkHref({
-      qaAttr: 'previousVersionFileName',
-      href: `/recalls/${recallId2}/documents/2123`,
-    })
-    newGeneratedDocumentVersion.assertElementHasText({
-      qaAttr: 'previousVersionCreatedDateTime',
-      textToFind: 'Created on 19 November 2021 at 14:14',
-    })
-    newGeneratedDocumentVersion.assertElementHasText({
-      qaAttr: 'textAdvisory',
-      textToFind:
-        'We will also create new versions of the recall notification and dossier, as they both contain the revocation order.',
-    })
+    }).should('contain', `/recalls/${recallId2}/documents/2123`)
+    cy.getText('previousVersionCreatedDateTime').should('contain', 'Created on 19 November 2021 at 14:14')
+    cy.getText('textAdvisory').should(
+      'contain',
+      'We will also create new versions of the recall notification and dossier, as they both contain the revocation order.'
+    )
 
     // error shown if details not entered
     cy.clickButton('Continue')
@@ -178,9 +140,9 @@ context('Generated document versions', () => {
       summaryError: 'Provide more detail',
     })
 
-    newGeneratedDocumentVersion.enterTextInInput({ name: 'details', text: 'Sentencing date corrected.' })
+    cy.fillInput('Provide more detail', 'Sentencing date corrected.')
     cy.clickButton('Continue')
-    newGeneratedDocumentVersion.assertApiRequestBody({
+    cy.assertSaveToRecallsApi({
       url: `/recalls/${recallId2}/documents/generated`,
       method: 'POST',
       bodyValues: {
@@ -188,7 +150,7 @@ context('Generated document versions', () => {
         details: 'Sentencing date corrected.',
       },
     })
-    recallInformationPage.verifyOnPage({ personName })
+    cy.pageHeading().should('contain', 'View the recall')
   })
 
   it("an error is shown if details aren't entered", () => {
@@ -196,11 +158,9 @@ context('Generated document versions', () => {
       recallId,
       expectedResult: recall,
     })
-    const newGeneratedDocumentVersion = newGeneratedDocumentVersionPage.verifyOnPage({
+    cy.visitRecallPage({
       recallId,
-      nomsNumber,
-      documentCategoryName: 'RECALL_NOTIFICATION',
-      documentCategoryLabel: 'recall notification',
+      pageSuffix: 'generated-document-version?fromPage=view-recall&versionedCategoryName=RECALL_NOTIFICATION',
     })
     cy.clickButton('Continue')
     cy.assertErrorMessage({

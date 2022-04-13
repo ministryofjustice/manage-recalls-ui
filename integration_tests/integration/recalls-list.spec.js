@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 import { getRecallResponse } from '../mockApis/mockResponses'
-import userDetailsPage from '../pages/userDetails'
 import { formatDateTimeFromIsoString } from '../../server/controllers/utils/dates/format'
 import { caseworker } from '../fixtures'
 
@@ -19,10 +18,11 @@ describe('Recalls list', () => {
   beforeEach(() => {
     cy.login()
   })
+
   it("redirected to user details page if they haven't entered any", () => {
-    cy.task('expectGetCurrentUserDetails', { status: 404 })
+    cy.task('expectGetCurrentUserDetails', { status: 404, expectedResult: { status: 'NOT_FOUND' } })
     cy.visit('/')
-    userDetailsPage.verifyOnPage()
+    cy.pageHeading().should('equal', 'User details')
   })
 
   it('continue a previous booking if recall status is BEING_BOOKED_ON', () => {
