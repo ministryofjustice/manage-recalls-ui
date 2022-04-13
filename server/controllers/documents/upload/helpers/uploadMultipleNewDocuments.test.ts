@@ -27,8 +27,6 @@ describe('uploadMultipleNewDocuments', () => {
     }
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('renders newly uploaded documents only, to insert (XHR request)', done => {
     req.files = [
       {

@@ -26,8 +26,6 @@ describe('uploadDocumentVersionFormHandler', () => {
     },
   }
 
-  afterEach(() => jest.resetAllMocks())
-
   it('saves the file and details', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {

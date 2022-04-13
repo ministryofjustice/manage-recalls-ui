@@ -43,8 +43,6 @@ describe('separateEmailAndFormSave', () => {
     })
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('sends the uploaded email to the API, updates the recall then redirects', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = validFile

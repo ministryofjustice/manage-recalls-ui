@@ -42,10 +42,6 @@ describe('recallFormPost', () => {
     })
   })
 
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
   it('should update recall and redirect to recall view', async () => {
     const recallDetails = { recallId }
     updateRecall.mockResolvedValueOnce(recallDetails)

@@ -21,7 +21,6 @@ describe('hmppsAuthClient', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
     nock.cleanAll()
   })
 

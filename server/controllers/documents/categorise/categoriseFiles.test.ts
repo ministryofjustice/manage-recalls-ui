@@ -34,8 +34,6 @@ describe('categoriseFiles', () => {
     })
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('saves category changes for existing uploads', async () => {
     ;(setDocumentCategory as jest.Mock).mockResolvedValue({
       documentId: '123',

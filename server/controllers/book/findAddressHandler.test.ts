@@ -5,8 +5,6 @@ import { mockReq, mockRes } from '../testUtils/mockRequestUtils'
 jest.mock('../../clients/osPlacesApiClient')
 
 describe('findAddressHandler', () => {
-  afterEach(() => jest.resetAllMocks())
-
   const postcode = 'PE147df'
 
   it('adds postcode and addresses to res.locals and calls next', async () => {

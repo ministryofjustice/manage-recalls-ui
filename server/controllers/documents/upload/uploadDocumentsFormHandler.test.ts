@@ -25,8 +25,6 @@ describe('uploadRecallDocumentsFormHandler', () => {
     })
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('calls deleteDocument if the delete button was pressed', async () => {
     req.body.delete = 'delete'
     await uploadDocumentsFormHandler(req, res)

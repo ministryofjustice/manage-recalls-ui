@@ -24,8 +24,6 @@ describe('downloadDocumentOrEmail', () => {
     next = jest.fn()
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('should serve a recall notification', async () => {
     const fileName = 'IN CUSTODY RECALL BADGER BOBBY A1234AB.pdf'
     ;(getDocumentWithContents as jest.Mock).mockResolvedValue({

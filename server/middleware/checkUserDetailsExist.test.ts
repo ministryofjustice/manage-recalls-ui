@@ -32,8 +32,6 @@ describe('checkUserDetailsExist', () => {
     next = jest.fn()
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('calls manage recalls APIs, then calls next middleware, if user present on res.locals', async () => {
     ;(getCurrentUserDetails as jest.Mock).mockResolvedValue(userDetails)
     await checkUserDetailsExist(req, res, next)

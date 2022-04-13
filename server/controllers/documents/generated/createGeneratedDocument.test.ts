@@ -29,8 +29,6 @@ describe('createGeneratedDocument', () => {
     next = jest.fn()
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it("creates a new dossier if one doesn't already exist", async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({
       firstName: 'John',

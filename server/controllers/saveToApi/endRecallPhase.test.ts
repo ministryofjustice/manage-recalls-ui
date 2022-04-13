@@ -15,8 +15,6 @@ describe('endRecallPhase', () => {
   const uuid = '456'
   const user = { uuid, token } as User
 
-  afterEach(() => jest.resetAllMocks())
-
   it('should update the recall and set a phase timing', async () => {
     const phase = StartPhaseRequest.phase.BOOK
     const recall = {}

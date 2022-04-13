@@ -14,10 +14,6 @@ describe('tokenStore', () => {
     tokenStore = new TokenStore(redisClient as unknown as RedisClient)
   })
 
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
   it('Can retrieve token', async () => {
     redisClient.get.mockImplementation((key, callback) => callback(null, 'token-1'))
 
