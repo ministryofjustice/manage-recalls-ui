@@ -30,8 +30,6 @@ describe('combinedDocumentAndFormSave', () => {
     })
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('calls the supplied save function, then redirects', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = validFile

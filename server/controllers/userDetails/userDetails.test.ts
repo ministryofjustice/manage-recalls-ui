@@ -60,8 +60,6 @@ describe('postUser', () => {
   const signature = 'def'
   const userId = '123'
 
-  beforeEach(() => jest.resetAllMocks())
-
   it('saves submitted values', done => {
     ;(uploadStorageField as jest.Mock).mockReturnValue((request, response, cb) => {
       req.file = {

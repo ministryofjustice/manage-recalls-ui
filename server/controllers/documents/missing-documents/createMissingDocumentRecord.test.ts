@@ -12,8 +12,6 @@ describe('addMissingDocumentRecordForm', () => {
   }
   const user = { uuid: '123', token: 'token' } as User
 
-  afterEach(() => jest.resetAllMocks())
-
   it('saves a list of missing document categories to the API', async () => {
     ;(getRecall as jest.Mock).mockResolvedValue({
       bookingNumber: '123',

@@ -71,7 +71,8 @@
       "js",
       "json",
       "ts"
-    ]
+    ],
+    "resetMocks": true
   },
   "lint-staged": {
     "*.{ts,js,css}": [

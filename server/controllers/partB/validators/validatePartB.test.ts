@@ -41,8 +41,6 @@ describe('validatePartB', () => {
     basePath: '/recalls/',
   }
 
-  afterEach(() => jest.resetAllMocks())
-
   it('returns valuesToSave, a confirmation message, and no errors if all fields are submitted', () => {
     const { errors, unsavedValues, valuesToSave, redirectToPage, confirmationMessage } = validatePartB({
       requestBody,

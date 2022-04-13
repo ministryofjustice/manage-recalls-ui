@@ -70,13 +70,6 @@ describe('Date helpers', () => {
   })
 
   describe('dueDateLabel', () => {
-    let dateNowSpy: jest.SpyInstance
-
-    afterAll(() => {
-      // Unlock Time
-      dateNowSpy.mockRestore()
-    })
-
     describe('dueDateTimeLabel all variants in BST one hour ahead of UTC', () => {
       const dueItemLabel = 'Recall assessment'
       const fixedNow = '2020-07-15T15:10:00.000Z'
@@ -86,9 +79,8 @@ describe('Date helpers', () => {
       const tomorrow = '2020-07-16T11:10:00.000Z'
       const afterTomorrow = '2020-07-17T10:10:00.000Z'
 
-      beforeAll(() => {
-        // Lock Time
-        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+      beforeEach(() => {
+        jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
       })
 
       it('due date later today shows today by time of day', () => {
@@ -158,9 +150,8 @@ describe('Date helpers', () => {
       const laterToday = '2020-03-15T15:15:00.000Z'
       const earlierToday = '2020-03-15T15:05:00.000Z'
 
-      beforeAll(() => {
-        // Lock Time
-        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+      beforeEach(() => {
+        jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
       })
 
       it('due date later today shows today by time of day', () => {
@@ -192,9 +183,9 @@ describe('Date helpers', () => {
       const tomorrow = '2020-03-16'
       const dayAfterTomorrow = '2020-03-17'
 
-      beforeAll(() => {
+      beforeEach(() => {
         // Lock Time
-        dateNowSpy = jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
+        jest.spyOn(DateTime, 'now').mockReturnValue(asUtcDateTime(fixedNow))
       })
 
       it('due date today shows today', () => {

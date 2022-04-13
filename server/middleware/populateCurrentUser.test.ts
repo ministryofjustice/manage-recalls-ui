@@ -26,8 +26,6 @@ describe('populateCurrentUser', () => {
     }
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('makes no API calls, then calls next middleware, if no user on res.locals', async () => {
     res.locals = {}
     await populateCurrentUser(userService)(req, res, next)

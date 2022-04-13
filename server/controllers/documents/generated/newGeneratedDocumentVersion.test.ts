@@ -34,9 +34,6 @@ describe('generatedDocumentVersionFormHandler', () => {
     })
     next = jest.fn()
   })
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
 
   it('should call the API and redirect to recall view', async () => {
     const requestBody = {

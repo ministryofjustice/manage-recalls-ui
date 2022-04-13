@@ -7,8 +7,6 @@ jest.mock('../../clients/osPlacesApiClient')
 jest.mock('../../clients/manageRecallsApiClient')
 
 describe('selectLookupAddressHandler', () => {
-  afterEach(() => jest.resetAllMocks())
-
   it('redirects to the next page if addressUprn is submitted', async () => {
     const addressUprn = '12345'
     const postcode = 'SW1A 1AA'

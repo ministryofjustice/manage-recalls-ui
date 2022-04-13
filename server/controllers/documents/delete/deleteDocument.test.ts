@@ -14,8 +14,6 @@ describe('deleteDocument', () => {
     req = { params: { recallId }, session: {} }
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('deletes a document', done => {
     const documentId = '123'
     const fromPage = 'check-answers'

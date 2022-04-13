@@ -28,8 +28,6 @@ describe('startRecallPhase', () => {
     })
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('should redirect to the assess recall page if calls succeed', async () => {
     const phase = StartPhaseRequest.phase.DOSSIER
     ;(assignUserToRecall as jest.Mock).mockResolvedValue({ status: 200 })

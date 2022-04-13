@@ -25,8 +25,6 @@ describe('downloadReports', () => {
     res.send = jest.fn()
   })
 
-  afterEach(() => jest.resetAllMocks())
-
   it('should serve a weekly recalls new report with contentType text/csv', async () => {
     const fileName = 'weekly-recalls-new.csv'
     ;(getWeeklyRecallsNew as jest.Mock).mockResolvedValue({
