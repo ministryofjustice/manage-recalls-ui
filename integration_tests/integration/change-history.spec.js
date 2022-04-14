@@ -556,7 +556,6 @@ context('Change history', () => {
         documents: [document],
       },
     })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.visitRecallPage({ recallId, pageSuffix: 'change-history' })
     cy.clickLink('Documents')
     cy.task('expectGetRecallDocumentHistory', {

@@ -8,10 +8,10 @@ export const checkUserDetailsExist = async (req: Request, res: Response, next: N
     await getCurrentUserDetails(token)
     next()
   } catch (err) {
-    if (err.data?.status === 'NOT_FOUND') {
+    if (err.status === 404) {
       logger.info(err.data?.reason, `Error retrieving user details from manage-recalls-api`)
       return res.redirect('/user-details')
     }
-    next()
+    next(err)
   }
 }

@@ -45,4 +45,10 @@ context('Find a person', () => {
     cy.pageHeading().should('equal', `How does ${personName}'s name appear on the licence?`)
     cy.getLinkHref('Back').should('contain', '/find-person')
   })
+
+  it("redirects to user details page if they haven't entered any", () => {
+    cy.task('expectGetCurrentUserDetails', { status: 404, expectedResult: { status: 'NOT_FOUND' } })
+    cy.visit('/find-person')
+    cy.pageHeading().should('equal', 'User details')
+  })
 })

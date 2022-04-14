@@ -47,6 +47,22 @@ describe('getUser', () => {
     }
     getUser(req, res)
   })
+
+  it('calls error middleware if the API call fails', async () => {
+    ;(getCurrentUserDetails as jest.Mock).mockRejectedValue({ status: 401 })
+    const req = mockReq({ originalUrl: '/user-details' })
+    const res = {
+      locals: {
+        user: {
+          token: userToken,
+          displayName: 'Barry Badger',
+        },
+      },
+    }
+    const next = jest.fn()
+    await getUser(req, res, next)
+    expect(next).toHaveBeenCalled()
+  })
 })
 
 describe('postUser', () => {

@@ -22,7 +22,6 @@ context('Missing uploaded documents', () => {
         documents: [],
       },
     })
-    cy.task('expectPrisonerResult', { expectedPrisonerResult: getPrisonerResponse })
     cy.login()
   })
 
