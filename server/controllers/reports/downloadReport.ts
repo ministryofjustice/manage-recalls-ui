@@ -1,9 +1,13 @@
-import type { NextFunction, Request, Response } from 'express'
+import type { Request, Response } from 'express'
 import contentDisposition from 'content-disposition'
 
 import { getWeeklyRecallsNew } from '../../clients/manageRecallsApiClient'
+import logger from '../../../logger'
+import { makeErrorObject } from '../utils/errorMessages'
+import { makeUrl } from '../utils/makeUrl'
 
-export const downloadReport = async (req: Request, res: Response, next: NextFunction) => {
+export const downloadReport = async (req: Request, res: Response) => {
+  const { pageSuffix } = req.query
   try {
     const {
       user: { token },
@@ -13,6 +17,13 @@ export const downloadReport = async (req: Request, res: Response, next: NextFunc
     res.header('Content-Disposition', contentDisposition(fileName))
     res.send(content)
   } catch (err) {
-    next(err)
+    logger.error(err)
+    req.session.errors = [
+      makeErrorObject({
+        id: `error_WEEKLY_RECALLS_NEW`,
+        text: `An error occurred when creating the report. Please try downloading it again`,
+      }),
+    ]
+    res.redirect(301, makeUrl(pageSuffix as string, res.locals.urlInfo))
   }
 }
