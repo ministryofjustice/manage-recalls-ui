@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { getCurrentUserDetails, addUserDetails } from '../../clients/manageRecallsApiClient'
 import logger from '../../../logger'
 import { uploadStorageField } from '../documents/upload/helpers/uploadStorage'
@@ -24,24 +24,9 @@ const getFormValues = ({
   return values
 }
 
-export const getUser = async (req: Request, res: Response): Promise<void> => {
-  let user
-  try {
-    const { token } = res.locals.user
-    user = await getCurrentUserDetails(token)
-  } catch (err) {
-    if (err.status !== 404) {
-      logger.info(err.message)
-      res.locals.errors = {
-        list: [
-          {
-            name: 'error',
-            text: 'An error occurred fetching your details',
-          },
-        ],
-      }
-    }
-  } finally {
+export const getUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  let user: UserDetailsResponse
+  const render = () => {
     res.locals.user = {
       ...res.locals.user,
       ...getFormValues({
@@ -51,6 +36,16 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
       }),
     }
     res.render(`pages/userDetails`)
+  }
+  try {
+    const { token } = res.locals.user
+    user = await getCurrentUserDetails(token)
+    render()
+  } catch (err) {
+    if (err.status !== 404) {
+      return next(err)
+    }
+    render()
   }
 }
 

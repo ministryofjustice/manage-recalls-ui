@@ -25,7 +25,7 @@ export const basePath = '/recalls/:recallId'
 export default function routes(router: Router): Router {
   userDetailsRoutes(router)
   router.get('/', checkUserDetailsExist, getStoredSessionData, recallList)
-  router.get('/find-person', getStoredSessionData, findPerson)
+  router.get('/find-person', checkUserDetailsExist, getStoredSessionData, findPerson)
   router.get('/service-metrics', serviceMetricsDashboard)
   reportsRoutes(router)
   router.post('/recalls', createRecall)

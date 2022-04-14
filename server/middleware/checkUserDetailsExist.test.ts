@@ -40,13 +40,13 @@ describe('checkUserDetailsExist', () => {
   })
 
   it('redirects to user details page if the user details are not present', async () => {
-    ;(getCurrentUserDetails as jest.Mock).mockRejectedValue({ data: { status: 'NOT_FOUND' } })
+    ;(getCurrentUserDetails as jest.Mock).mockRejectedValue({ status: 404 })
     await checkUserDetailsExist(req, res, next)
     expect(res.redirect).toHaveBeenCalledWith('/user-details')
   })
 
   it('calls next if the user details call errors with a code other than 404', async () => {
-    ;(getCurrentUserDetails as jest.Mock).mockRejectedValue({ data: { status: 'SERVER_ERROR' } })
+    ;(getCurrentUserDetails as jest.Mock).mockRejectedValue({ status: 401 })
     await checkUserDetailsExist(req, res, next)
     expect(next).toHaveBeenCalled()
   })
