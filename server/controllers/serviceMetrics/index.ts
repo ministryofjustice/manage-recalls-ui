@@ -12,6 +12,7 @@ export const serviceMetricsDashboard = async (
     const metrics = await getServiceMetrics(user.token)
     const processed = processPhaseTimings(metrics)
     res.locals = { ...res.locals, timingAveragesSec: processed }
+    res.locals.isStatisticsPage = true
     res.render('pages/serviceMetricsDashboard')
   } catch (err) {
     next(err)
