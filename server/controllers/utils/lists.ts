@@ -23,7 +23,7 @@ export const getLatestVersionFromList = <T>(list: T[]) => {
   return sorted[sorted.length - 1]
 }
 
-export const listToString = (list: string[], conjunction: string) => {
+export const listToString = (list: string[], conjunction?: string) => {
   if (list.length === 1) {
     return list[0]
   }
@@ -32,7 +32,7 @@ export const listToString = (list: string[], conjunction: string) => {
     const lastItem = copy.pop()
     return `${copy.join(', ')} ${conjunction} ${lastItem}`
   }
-  copy.join(', ')
+  return copy.join(', ')
 }
 
 export const listDocumentLabels = (docs: UploadedFileMetadata[]) =>

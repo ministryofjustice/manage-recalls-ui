@@ -21,6 +21,10 @@ describe('listToString', () => {
   it('returns a list for 4 items', () => {
     expect(listToString(['year', 'month', 'day', 'minute'], 'and')).toEqual('year, month, day and minute')
   })
+
+  it('returns a list when no conjunction supplied', () => {
+    expect(listToString(['year', 'month', 'day', 'minute'])).toEqual('year, month, day, minute')
+  })
 })
 
 describe('sortList', () => {
